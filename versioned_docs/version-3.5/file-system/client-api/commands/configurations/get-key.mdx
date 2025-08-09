@@ -1,0 +1,107 @@
+---
+title: "Commands: GetKeyAsync"
+hide_table_of_contents: true
+sidebar_label: GetKey
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: GetKeyAsync
+
+**GetKeyAsync** is used to retrieve an object stored as [a configuration item](../../../configurations.mdx) in RavenFS.
+
+
+
+<TabItem value="get_key_1" label="get_key_1">
+<CodeBlock language="csharp">
+{`Task<T> GetKeyAsync<T>(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The configuration name |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;T&gt;** | A task that represents the asynchronous operation. The task result is the deserialized object of type *T*. |
+
+## Example
+
+<TabItem value="get_key_2" label="get_key_2">
+<CodeBlock language="csharp">
+{`FileDescription desc = await store
+	.AsyncFilesCommands
+	.Configuration
+	.GetKeyAsync<FileDescription>("descriptions/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: GetKey
+
+The **PUT** operation is used to retrieve an object stored as [a configuration item](../../../configurations.mdx) in RavenFS.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/config?name=\{name\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The name of an configuration item |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **JSON** | The configuration object |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/config?name=descriptions/intro.avi
+< HTTP/1.1 200 OK
+\{"Author":"Hibernathing Rhinos"\}
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

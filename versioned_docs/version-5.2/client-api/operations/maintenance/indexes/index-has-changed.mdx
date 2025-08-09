@@ -1,0 +1,228 @@
+---
+title: "Index has Changed Operation"
+hide_table_of_contents: true
+sidebar_label: Index Has Changed
+sidebar_position: 17
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Index has Changed Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* __When deploying an index__:  
+  * If the new index definition is __different__ than the current index definition on the server,  
+    the current index will be overwritten and data will be re-indexed according to the new index definition.
+  * If the new index definition is the __same__ as the one on the server,  
+    it will not be overwritten and re-indexing will not occur upon deploying the index.
+
+* __Prior to deploying an index:__,  
+  * Use `IndexHasChangedOperation` to check if the new index definition differs from the one  
+    on the server to avoid any unwanted changes to the existing indexed data.  
+
+* In this page:
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
+
+</Admonition>
+## Check if index has changed
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Some index definition
+var indexDefinition = new IndexDefinition
+{
+    Name = "UsersByName",
+    Maps = { "from user in docs.Users select new { user.Name }"}
+};
+
+// Define the has-changed operation, pass the index definition
+var indexHasChangedOp = new IndexHasChangedOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.Send
+bool indexHasChanged = store.Maintenance.Send(indexHasChangedOp);
+
+// Return values:
+// false: The definition of the index passed is the SAME as the one deployed on the server  
+// true:  The definition of the index passed is DIFFERENT than the one deployed on the server
+//        Or - index does not exist
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Some index definition
+var indexDefinition = new IndexDefinition
+{
+    Name = "UsersByName",
+    Maps = { "from user in docs.Users select new { user.Name }"}
+};
+
+// Define the has-changed operation, pass the index definition
+var indexHasChangedOp = new IndexHasChangedOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
+
+// Return values:
+// false: The definition of the index passed is the SAME as the one deployed on the server  
+// true:  The definition of the index passed is DIFFERENT than the one deployed on the server
+//        Or - index does not exist
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public IndexHasChangedOperation(IndexDefinition definition)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| __definition__ | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
+
+| Return Value | |
+| - | - |
+| `true` | When the index __does not exist__ on the server<br/>or - <br/>When the index definition __is different__ than the one deployed on the server  |
+| `false` | When the index definition is __the same__ as the one deployed on the server |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**IndexHasChangedOperation** will let you check if the given index definition differs from the one on a server. This might be useful when you want to check the prior index deployment, if the index will be overwritten, and if indexing data will be lost.
+
+## Syntax
+
+<TabItem value="index_has_changed_1" label="index_has_changed_1">
+<CodeBlock language="java">
+{`public IndexHasChangedOperation(IndexDefinition definition)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexDef** | `IndexDefinition` | index definition |
+
+| Return Value | |
+| ------------- | ----- |
+| true | if an index **does not exist** on a server |
+| true | if an index definition **does not match** the one from the **indexDef** parameter |
+| false | if there are no differences between an index definition on the server and the one from the **indexDef** parameter |
+
+## Example
+
+<TabItem value="index_has_changed_2" label="index_has_changed_2">
+<CodeBlock language="java">
+{`Boolean ordersIndexHasChanged =
+    store.maintenance().send(new IndexHasChangedOperation(ordersIndexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* __When deploying an index__:  
+  * If the new index definition is __different__ than the current index definition on the server,  
+    the current index will be overwritten and data will be re-indexed according to the new index definition.
+  * If the new index definition is the __same__ as the one on the server,  
+    it will not be overwritten and re-indexing will not occur upon deploying the index.
+
+* __Prior to deploying an index:__,  
+  * Use `IndexHasChangedOperation` to check if the new index definition differs from the one  
+    on the server to avoid any unwanted changes to the existing indexed data.  
+
+* In this page:
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
+
+</Admonition>
+## Check if index has changed
+
+<TabItem value="index_has_changed" label="index_has_changed">
+<CodeBlock language="js">
+{`// Some index definition
+const indexDefinition = new IndexDefinition();
+indexDefinition.name = "UsersByName";
+indexDefinition.maps = new Set([ \`from user in docs.Users select new \{ user.Name \}\` ]);
+
+// Define the has-changed operation, pass the index definition
+const indexHasChangedOp = new IndexHasChangedOperation(indexDefinition);
+
+// Execute the operation by passing it to maintenance.send
+const indexHasChanged = await documentStore.maintenance.send(indexHasChangedOp);
+
+// Return values:
+// false: The definition of the index passed is the SAME as the one deployed on the server  
+// true:  The definition of the index passed is DIFFERENT than the one deployed on the server
+//        Or - index does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const indexHasChangedOp = new IndexHasChangedOperation(definition);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| __definition__ | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
+
+| Return Value | |
+| - | - |
+| `true` | When the index __does not exist__ on the server<br/>or - <br/>When the index definition __is different__ than the one deployed on the server  |
+| `false` | When the index definition is __the same__ as the one deployed on the server |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

@@ -1,0 +1,195 @@
+---
+title: "Basic transformations"
+hide_table_of_contents: true
+sidebar_label: Basic transformations
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Basic transformations
+
+Assuming that you already know how to [create](../transformers/creating-and-deploying.mdx) transformers, you will want to know what can be done with them and what projection functions can be created.
+
+<Admonition type="info" title="Projection function" id="projection-function" href="#projection-function">
+Transformers core is its projection function. It is a LINQ-based function with the ability to [load](../transformers/loading-documents.mdx) or [include](../transformers/including-documents.mdx) additional documents. [Parameters](../transformers/passing-parameters.mdx) can be also passed to customize the behavior.
+</Admonition>
+
+## Basics
+
+To start, let's create a projection that will return only the `FirstName` and the `LastName` from each returned `Employee` from the `Northwind` database.
+
+- first, let's start creating a transformer `Employees/FirstAndLastName`
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Employees_FirstAndLastName : AbstractTransformerCreationTask<Employee>
+`}
+</CodeBlock>
+</TabItem>
+
+You have probably noticed that we're passing `Employee` as a generic parameter to `AbstractTransformerCreationTask`. By doing so, our transformation function will have a strongly-typed syntax.
+
+- the next step is to create a transformation itself. To do so, we need to set the `TransformResults` property with our function in **parameterless constructor**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query-syntax" label="Query-syntax">
+<CodeBlock language="csharp">
+{`public Employees_FirstAndLastName()
+{
+	TransformResults = employees => from employee in employees
+					select new
+					{
+						FirstName = employee.FirstName,
+						LastName = employee.LastName
+					};
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Method-syntax" label="Method-syntax">
+<CodeBlock language="csharp">
+{`public Employees_FirstAndLastName()
+{
+	TransformResults = employees => employees
+		.Select(employee => new
+		{
+			FirstName = employee.FirstName, 
+			LastName = employee.LastName
+		});
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+- the final step is to [deploy it to the server](../transformers/creating-and-deploying.mdx) (omitted) and transform our query results using the [TransformWith](../client-api/session/querying/how-to-use-transformers-in-queries.mdx) query extension method:
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`IList<dynamic> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_FirstAndLastName, dynamic>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Probably `dynamic` is not the best return type so, obviously, projections to concrete types are supported:
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="csharp">
+{`public class Result
+\{
+	public string FirstName \{ get; set; \}
+
+	public string LastName \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_6" label="transformers_6">
+<CodeBlock language="csharp">
+{`IList<Employees_FirstAndLastName.Result> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_FirstAndLastName, Employees_FirstAndLastName.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Our final transformer looks like this:
+
+<TabItem value="transformers_7" label="transformers_7">
+<CodeBlock language="csharp">
+{`public class Employees_FirstAndLastName : AbstractTransformerCreationTask<Employee>
+\{
+	public class Result
+	\{
+		public string FirstName \{ get; set; \}
+
+		public string LastName \{ get; set; \}
+	\}
+
+	public Employees_FirstAndLastName()
+	\{
+		TransformResults = employees => from employee in employees
+						select new
+						\{
+							FirstName = employee.FirstName,
+							LastName = employee.LastName
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Before moving further, please note that property values of the objects passed to the projection function (in our example we are passing `employees`) are taken from the stored index fields, if present, otherwise they are loaded from a database.   
+
+**Example** 
+
+If we would [store](../indexes/storing-data-in-index.mdx) the `FirstName` and the `LastName` in the index that was queried, then the above transformer would use the values from index directly, without loading them from a database.  
+</Admonition>
+
+## Projecting a single property
+
+You do not have to create a new objects each time: when only single property is required, all you need to do is select that property:
+
+<TabItem value="transformers_8" label="transformers_8">
+<CodeBlock language="csharp">
+{`public class Employees_FirstName : AbstractTransformerCreationTask<Employee>
+\{
+	public Employees_FirstName()
+	\{
+		TransformResults = employees => from employee in employees select employee.FirstName;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_9" label="transformers_9">
+<CodeBlock language="csharp">
+{`IList<string> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_FirstName, string>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Projecting a complex property
+
+When your documents contain nested objects and you want to return only those, then the projection can look as follows:
+
+<TabItem value="transformers_1_0" label="transformers_1_0">
+<CodeBlock language="csharp">
+{`public class Employees_Address : AbstractTransformerCreationTask<Employee>
+\{
+	public Employees_Address()
+	\{
+		TransformResults = employees => from employee in employees select employee.Address;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_1_1" label="transformers_1_1">
+<CodeBlock language="csharp">
+{`IList<Address> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_Address, Address>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

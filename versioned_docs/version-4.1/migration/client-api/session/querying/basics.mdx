@@ -1,0 +1,165 @@
+---
+title: "Migration: How to migrate Queries from 3.x?"
+hide_table_of_contents: true
+sidebar_label: Basics
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to migrate Queries from 3.x?
+
+Following changes occurred in 4.0 and need to be considered when migration is done.
+
+## Namespaces
+
+The following namespaces are no longer valid and have to be removed:
+
+- Raven.Client.Linq
+- Raven.Json.Linq
+
+
+
+## Paging
+
+There is no longer a default page size send from the client API (128 by default) and maximum page size that to which server will cut the results (1024 by default).
+
+Following query will return **all** results from the database (even when there is 1M of them):
+
+<TabItem value="basics_1_0" label="basics_1_0">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+What can be done to mitigate this?
+
+1. `DocumentConventions.ThrowIfQueryPageSizeIsNotSet` can be set to **true** so all queries will throw if their page size is not explicitly set (even when you have just a few records in the database, check is done on the client-side before request is sent to the server).
+2. Set on all queries maximum number of results that you expect using `.Take(pageSize)` method.
+
+To fix previous example we will set the convention to `true` and add `Take` to the query:
+
+<TabItem value="basics_1_2" label="basics_1_2">
+<CodeBlock language="csharp">
+{`store.Conventions.ThrowIfQueryPageSizeIsNotSet = true;
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="basics_1_1" label="basics_1_1">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Take(128)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Performance Hint" id="performance-hint" href="#performance-hint">
+
+If the number of records exceeds 2048 (default value that can be changed by `PerformanceHints.MaxNumberOfResults` configuration option) then performance hint notification will be issued and visible in the Studio. Giving you enough information to perform counter-measures if necessary.
+
+</Admonition>
+
+You can read more about paging in our [dedicated article](../../../../indexes/querying/paging.mdx).
+
+
+
+## Transformers and Projections
+
+Transformers have been removed from the RavenDB. Please read our migration article tackling this change. The article can be found [here](../../../../migration/client-api/session/querying/transformers.mdx).
+
+
+
+## Default Operator
+
+Default operator for `session.Query` was and still is `AND`, but the operator for `DocumentQuery` have changed from `OR` to `AND`. We have created a dedicated article that helps you with migration. It can be found [here](../../../../migration/client-api/session/querying/documentquery.mdx).
+
+
+
+## Waiting for Non Stale Results
+
+The following methods have been removed:
+
+- `WaitForNonStaleResultsAsOf`
+- `WaitForNonStaleResultsAsOfNow`
+
+You should use `WaitForNonStaleResults` instead. Its behavior has changed in 4.0 - it's like `WaitForNonStaleResultsAsOfNow` in 3.x. Please read a dedicated article discussing [how to deal with non stale results](../../../../indexes/stale-indexes.mdx).
+
+<TabItem value="basics_1_3" label="basics_1_3">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Customize(x => x.WaitForNonStaleResults())
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Raven/DocumentsByEntityName index
+
+`Raven/DocumentsByEntityName` is no longer necessary in RavenDB 4.0. You can perform queries directly on collections, in particular we support queries that you can run to modify the docs:
+
+| 3.x | 4.0 |
+|:---:|:---:|
+|
+<TabItem value="basics_1_5" label="basics_1_5">
+<CodeBlock language="csharp">
+{`var tagName = session
+                .Advanced
+                .DocumentStore
+                .Conventions
+                .GetTypeTagName(typeof(User));
+
+session.Advanced.DocumentStore.DatabaseCommands
+    .DeleteByIndex(Constants.DocumentsByEntityNameIndex, 
+        new IndexQuery()
+        \{
+            Query = $"Tag:\{ tagName \}"
+        \});
+`}
+</CodeBlock>
+</TabItem>
+|
+<TabItem value="basics_1_6" label="basics_1_6">
+<CodeBlock language="csharp">
+{`var operation = store.Operations.Send(
+    new DeleteByQueryOperation(new IndexQuery()
+    \{
+        Query = session.Query<User>().ToString() // "from Users"
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+|
+
+
+
+## RavenQueryStatistics
+
+`RavenQueryStatistics` has been renamed to `QueryStatistics`.
+
+
+
+## As
+
+`As` has been removed in favor to built-in LINQ method `OfType`.
+
+
+
+## ProjectFromIndexFieldsInto
+
+`ProjectFromIndexFieldsInto` has been renamed to `ProjectInto`.
+
+

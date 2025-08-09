@@ -1,0 +1,41 @@
+---
+title: "Bundle: Authorization"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Authorization - Studio
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Authorization
+
+When creating a database, if you want to use the versioning bundle you need to select it in the database creation window:  
+
+![Tasks Fig 1](./assets/studio_authorization_1.PNG)  
+
+After pressing "Next" your database will be created and authorization bundle enabled. To configure authorization bundle, please access bundle configuration view through database settings.    
+
+![Tasks Fig 6](./assets/studio_authorization_6.PNG)  
+
+## Authorization Roles
+
+After you add an Authorization Role the following box will be added:  
+![Tasks Fig 3](./assets/studio_authorization_3.PNG)  
+In here you name the role and set permissions for it:  
+![Tasks Fig 4](./assets/studio_authorization_4.PNG)  
+With the "+" button you can add additional permissions.
+
+## Authorization Users
+
+After you add an Authorization User the following box will be added:  
+![Tasks Fig 5](./assets/studio_authorization_5.PNG)  
+In here you can edit all the permissions for the user as well as add roles to the user
+
+<Admonition type="info" title="Info">
+You can read more about the Authorization Bundle in [here](../../server/extending/bundles/authorization.mdx).
+</Admonition>

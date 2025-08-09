@@ -1,0 +1,166 @@
+---
+title: "Querying: Filtering Time Series"
+hide_table_of_contents: true
+sidebar_label: Filtering
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Filtering Time Series
+<Admonition type="note" title="Note">
+
+* Time series entries can be filtered by their **value** (e.g. to 
+  retrieve a "Thermometer" time series entries whose measurement exceeds 
+  32 Celsius degrees) or **tag** (e.g. to retrieve all the entries whose 
+  tag is "Thermometer No. 3").  
+
+* Entries can also be filtered by the **contents of a document they refer to**.  
+  A time series entry's tag can contain the **ID of a document**. 
+  A query can **load the document** that the entry refers to, check 
+  its properties and filter time series entries by them.  
+
+* In this page:  
+  * [Filtering Results](../../../document-extensions/timeseries/querying/filtering.mdx#filtering)  
+     * [Using Tags as References](../../../document-extensions/timeseries/querying/filtering.mdx#using-tags-as-references---)  
+  * [Client Usage Samples](../../../document-extensions/timeseries/querying/filtering.mdx#client-usage-samples)  
+
+</Admonition>
+## Filtering
+
+In an RQL query, use the `where` keyword to filter time series entries 
+by their **tags** or **values**.  
+
+* Filter entries by tag using `where Tag`.  
+  E.g. -  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Users as u where Age < 30
+select timeseries(
+    from HeartRate 
+       between '2020-05-27T00:00:00.0000000Z' 
+            and '2020-06-23T00:00:00.0000000Z'
+       // Where this is the tag
+       where Tag == 'watches/fitbit'
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Users as u where Age < 30
+select timeseries(
+    from HeartRate 
+       between '2020-05-27T00:00:00.0000000Z' 
+            and '2020-06-23T00:00:00.0000000Z'
+       // Where the tag is one of several options
+       where Tag in ('watches/Letsfit', 'watches/Willful', 'watches/Lintelek')
+)
+`}
+</CodeBlock>
+</TabItem>
+  
+* Filter entries by value using `where Value`.  
+  E.g. -  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Users as u where Age < 30
+select timeseries(
+    from HeartRate 
+       between '2020-05-27T00:00:00.0000000Z' 
+            and '2020-06-23T00:00:00.0000000Z'
+       where Value < 80
+)
+`}
+</CodeBlock>
+</TabItem>
+#### Using Tags as References - `load tag`
+
+Use the `load Tag ` expression to **load a document** whose ID is stored in 
+a time series entry's tag.  
+Use `load Tag ` with `where` to **filter your results by properties of the 
+loaded document**, as we do in the following example.  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Companies as Company where Company.Address.Country = "USA"
+select timeseries(
+    from StockPrice
+       load Tag as Broker
+       where Broker.Title == "Sales Representative"
+    )
+`}
+</CodeBlock>
+</TabItem>
+
+* `load Tag as Broker`  
+   Load the document each entry's tag refers to.  
+   Here, we load profiles of potential stock brokers.  
+* `where Broker.Title == "Sales Representative"`  
+   Filter time series entries so we remain with those 
+   referring to sales representatives.  
+
+
+
+## Client Usage Samples
+
+<Admonition type="info" title="Info">
+You can run queries from your client using raw RQL and LINQ.  
+
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#client-raw-rql-queries).  
+
+</Admonition>
+
+To filter results, use `Where()` in a LINQ query or `where` in a raw RQL query.  
+To filter results by a tag reference to a document, 
+use `LoadByTag()` in a LINQ query or `load tag` in a raw RQL query.  
+
+* In this sample, we send the query we 
+  [presented above](../../../document-extensions/timeseries/querying/filtering.mdx#using-tags-as-references---) 
+  to the server in raw RQL and in LINQ format.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TimeSeriesRawResult> query =
+    (IRavenQueryable<TimeSeriesRawResult>)session.Query<Company>()
+
+        // Choose user profiles of users under the age of 30
+        .Where(c => c.Address.Country == "USA")
+        .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
+
+        .LoadByTag<Employee>()
+        .Where((ts, src) => src.Title == "Sales Representative")
+
+        .ToList());
+
+var result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL" label="Raw-RQL">
+<CodeBlock language="csharp">
+{`// Raw query with no aggregation - Select syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        from Companies as c where c.Address.Country = 'USA'
+        select timeseries(
+            from StockPrices
+               load Tag as emp
+               where emp.Title == 'Sales Representative'
+        )");
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+
+

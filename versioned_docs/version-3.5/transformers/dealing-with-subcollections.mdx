@@ -1,0 +1,112 @@
+---
+title: "Dealing with subcollections"
+hide_table_of_contents: true
+sidebar_label: Dealing with subcollections
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Dealing with subcollections
+
+By default, each document found in an index is passed to the transformer once. In most cases this is a valid assumption, but there are cases when this behavior needs to be changed.
+
+The best example is when one document produces multiple index entries which are stored and we want to extract them from an index and pass to the transformer. Default behavior would filter-out duplicates (by duplicates we mean index entries that originate from the same document) so only one result would be transformed. To address this situation the `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` configuration option has been introduced.
+
+## Example
+
+Let us assume that we want to get all `Product` names for specific `Order`. Our index will look like this:
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Orders_ByOrderIdCompanyAndProductName : AbstractIndexCreationTask<Order>
+\{
+	public class Result
+	\{
+		public string OrderId \{ get; set; \}
+
+		public string Company \{ get; set; \}
+
+		public string ProductName \{ get; set; \}
+	\}
+
+	public Orders_ByOrderIdCompanyAndProductName()
+	\{
+		Map = orders => from order in orders
+				from line in order.Lines
+				select new
+				\{
+					OrderId = order.Id,
+					order.Company,
+					line.ProductName
+				\};
+
+		StoreAllFields(FieldStorage.Yes);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and transformer will look like this:
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`public class OrderIdCompanyAndProductName_ToOrderIdAndProductName : AbstractTransformerCreationTask<Orders_ByOrderIdCompanyAndProductName.Result>
+\{
+	public class Result
+	\{
+		public string OrderId \{ get; set; \}
+
+		public string ProductName \{ get; set; \}
+	\}
+
+	public OrderIdCompanyAndProductName_ToOrderIdAndProductName()
+	\{
+		TransformResults = results => from result in results
+							select new
+							\{
+								OrderId = result.OrderId,
+								ProductName = result.ProductName
+							\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Default behavior will return 6 out of 12 results:
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`// this query will return only 6 results
+// because only 1 entry per document will be processed by transformer
+IList<OrderIdCompanyAndProductName_ToOrderIdAndProductName.Result> results = session
+	.Query<Orders_ByOrderIdCompanyAndProductName.Result, Orders_ByOrderIdCompanyAndProductName>()
+	.Where(x => x.Company == "companies/1")
+	.TransformWith<OrderIdCompanyAndProductName_ToOrderIdAndProductName, OrderIdCompanyAndProductName_ToOrderIdAndProductName.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+However, when `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` is used, we get all results that we want:
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`// this query will return only all 12 results
+IList<OrderIdCompanyAndProductName_ToOrderIdAndProductName.Result> results = session
+	.Query<Orders_ByOrderIdCompanyAndProductName.Result, Orders_ByOrderIdCompanyAndProductName>()
+	.Customize(x => x.SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer(true))
+	.Where(x => x.Company == "companies/1")
+	.TransformWith<OrderIdCompanyAndProductName_ToOrderIdAndProductName, OrderIdCompanyAndProductName_ToOrderIdAndProductName.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

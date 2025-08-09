@@ -1,0 +1,127 @@
+---
+title: "Commands: GetMetadataForAsync"
+hide_table_of_contents: true
+sidebar_label: GetMetadata
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: GetMetadataForAsync
+
+**GetMetadataForAsync** is used to retrieve the file's metadata.
+
+
+
+<TabItem value="get_metadata_1" label="get_metadata_1">
+<CodeBlock language="csharp">
+{`Task<RavenJObject> GetMetadataForAsync(string filename);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of a file |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;RavenJObject&gt;** |  A task that represents the asynchronous metadata download operation. The task result is the file's metadata. |
+
+## Example
+
+<TabItem value="get_metadata_2" label="get_metadata_2">
+<CodeBlock language="csharp">
+{`var metadata = await store
+	.AsyncFilesCommands
+	.GetMetadataForAsync("/movies/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: GetMetadata
+
+The **HEAD** method is used to retrieve the file's metadata.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/files/\{name\}  \\
+	-X HEAD 
+    -I
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The name of a file|
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+| `404` | The file was not found |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Headers** | The metadata are returned in the response's headers |
+
+---
+
+## Example
+
+Download metadata of the `/movies/intro.avi` file:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X HEAD http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi  \\
+	-I
+
+HTTP/1.1 200 OK
+Content-Length: 0
+Content-MD5: 3501b7763d91fa9239f2ba64ff850a03
+Last-Modified: Fri, 10 Apr 2015 11:56:22 GMT
+ETag: "00000000-0000-0004-0000-000000000006"
+Server: Microsoft-HTTPAPI/2.0
+Raven-Creation-Date: 2015-04-10T11:56:17.7601842+00:00
+Raven-Last-Modified: 2015-04-10T11:56:22.157373+00:00
+Creation-Date: 2015-04-10T11:56:17.7601842Z
+Raven-Synchronization-History: [\{"Version":16385,"ServerId":"d7bfdb4c-a463-4f75-93fb-cb60e4d3a08f"\},\{"Version":16386,"ServerId":"d7bfdb4c-a463-4f75-93fb-cb60e4d
+3a08f"\}]
+Raven-Synchronization-Version: 49153
+Raven-Synchronization-Source: d7bfdb4c-a463-4f75-93fb-cb60e4d3a08f
+Raven-Server-Build: 13
+Temp-Request-Time: 1
+Date: Fri, 10 Apr 2015 11:58:10 GMT
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

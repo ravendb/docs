@@ -1,0 +1,208 @@
+---
+title: "Delete Index Errors Operation"
+hide_table_of_contents: true
+sidebar_label: Delete Index Errors
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Delete Index Errors Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexErrorsOperation` to delete indexing errors.  
+
+* The operation will be executed only on the server node that is defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+
+* Deleting the errors will only __clear the index errors__.  
+  An index with an 'Error state' will Not be set back to 'Normal state'.  
+
+* To just get index errors see [get index errors](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx). 
+
+* In this page:
+    * [Delete errors from all indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-all-indexes)
+    * [Delete errors from specific indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#syntax)
+
+</Admonition>
+## Delete errors from all indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the delete index errors operation
+var deleteIndexErrorsOp = new DeleteIndexErrorsOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(deleteIndexErrorsOp);
+
+// All errors from ALL indexes are deleted
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the delete index errors operation
+var deleteIndexErrorsOp = new DeleteIndexErrorsOperation();
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(deleteIndexErrorsOp);
+
+// All errors from ALL indexes are deleted
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Delete errors from specific indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the delete index errors operation from specific indexes
+var deleteIndexErrorsOp = new DeleteIndexErrorsOperation(new[] { "Orders/Totals" });
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+store.Maintenance.Send(deleteIndexErrorsOp);
+
+// Only errors from index "Orders/Totals" are deleted
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the delete index errors operation from specific indexes
+var deleteIndexErrorsOp = new DeleteIndexErrorsOperation(new[] { "Orders/Totals" });
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if any of the specified indexes do not exist
+await store.Maintenance.SendAsync(deleteIndexErrorsOp);
+
+// Only errors from index "Orders/Totals" are deleted
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public DeleteIndexErrorsOperation()                    // Delete errors from all indexes
+public DeleteIndexErrorsOperation(string[] indexNames) // Delete errors from specific indexes
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| __indexNames__ | string[] | List of index names from which to delete errors.<br/>An exception is thrown if any of the specified indexes do not exist. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexErrorsOperation` to delete indexing errors.  
+
+* The operation will be executed only on the server node that is defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+
+* Deleting the errors will only __clear the index errors__.  
+  An index with an 'Error state' will Not be set back to 'Normal state'.  
+
+* To just get index errors see [get index errors](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx). 
+
+* In this page:
+    * [Delete errors from all indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-all-indexes)
+    * [Delete errors from specific indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#syntax)
+
+</Admonition>
+## Delete errors from all indexes
+
+<TabItem value="delete_errors_all" label="delete_errors_all">
+<CodeBlock language="js">
+{`// Define the delete index errors operation
+const deleteIndexErrorsOp = new DeleteIndexErrorsOperation();
+
+// Execute the operation by passing it to maintenance.send
+await store.maintenance.send(deleteIndexErrorsOp);
+
+// All errors from ALL indexes are deleted
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Delete errors from specific indexes
+
+<TabItem value="delete_errors_specific" label="delete_errors_specific">
+<CodeBlock language="js">
+{`// Define the delete index errors operation from specific indexes
+const deleteIndexErrorsOp = new DeleteIndexErrorsOperation(["Orders/Totals"]);
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if any of the specified indexes do not exist
+await store.maintenance.send(deleteIndexErrorsOp);
+
+// Only errors from index "Orders/Totals" are deleted
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+const deleteIndexErrorsOp = new DeleteIndexErrorsOperation();           // Delete errors from all indexes 
+const deleteIndexErrorsOp = new DeleteIndexErrorsOperation(indexNames); // Delete errors from specific indexes
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| __indexNames__ | string[] | List of index names from which to delete errors.<br/>An exception is thrown if any of the specified indexes do not exist. |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+- [Get index errors](../../../../client-api/operations/maintenance/indexes/get-index-errors)
+
+
+-->

@@ -1,0 +1,43 @@
+---
+title: "Plugins: Database configuration"
+hide_table_of_contents: true
+sidebar_label: Database Configuration
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Plugins: Database configuration
+
+To alter database configuration you can edit the configuration document (more about how it can be done and what configuration options are available can be found [here](../../server/configuration/configuration-options.mdx)) but sometimes it might be better to change configuration programmatically e.g. imagine a situation, where you have 100 databases and you want to change one setting in each of them. This is why the `IAlterConfiguration` interface was created.
+
+<TabItem value="plugins_5_0" label="plugins_5_0">
+<CodeBlock language="csharp">
+{`public interface IAlterConfiguration
+\{
+	void AlterConfiguration(InMemoryRavenConfiguration configuration);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Disable compression
+
+<TabItem value="plugins_5_1" label="plugins_5_1">
+<CodeBlock language="csharp">
+{`public class CommonConfiguration : IAlterConfiguration
+\{
+	public void AlterConfiguration(InMemoryRavenConfiguration configuration)
+	\{
+		configuration.HttpCompression = false;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+

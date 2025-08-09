@@ -1,0 +1,59 @@
+---
+title: "What's new in 2.5?"
+hide_table_of_contents: true
+sidebar_label: What's new in 2.5?
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+
+# What's new in 2.5?
+
+## Features
+
+* [Dynamic Aggregations](../client-api/querying/dynamic-aggregation.mdx)
+* [SSL support for a windows service](../server/deployment/enabling-ssl.mdx)
+* [Result Transformers](../client-api/querying/results-transformation/result-transformers.mdx)
+* [Scripted Index Results](../server/extending/bundles/scripted-index-results.mdx)
+* [Unbounded Results API](../client-api/advanced/unbounded-results.mdx)
+* [New Functions for Scripted Patching API](../client-api/partial-document-updates.mdx#performing-complex-updates) (creating new doc, debugging)
+* [More notifications in Changes API](../client-api/changes-api.mdx) (replication conflicts, bulk inserts, index priorities)
+* [Spatial Enhancements](../client-api/querying/static-indexes/spatial-search.mdx)
+* [NoTracking and NoCaching query customizations](../client-api/querying/query-customizations.mdx)
+* [Excel integration](../http-api/excel-integration.mdx) - CSV endpoint
+* [MSI Installer](../server/deployment/installer.mdx)
+* [Write Assurance](../server/scaling-out/replication/write-assurance.mdx)
+* [Usage Northwind for sample data](https://ayende.com/blog/162338/ravendb-sample-data-hello-northwind)
+
+## Indexing
+
+* [Index locking](../server/administration/index-administration.mdx#index-locking)
+* [Index priorities](../server/administration/index-administration.mdx#index-prioritization)
+* [Index directly to memory](https://ayende.com/blog/161282/robs-sprint-faster-index-creation)
+* [Query optimizer can expand indexes](https://ayende.com/blog/161283/robs-sprint-query-optimizer-jumped-a-grade)
+
+## Improvements
+
+* [Better Aggressive Cache with notifications usage](../client-api/advanced/aggressive-caching.mdx)
+* [Better pre fetching algorithms for reducing IO](https://ayende.com/blog/160291/ravendb-indexing-optimizations-step-iii-skipping-the-disk-altogether)
+* [More robust and better pefromance of SQL Replication](../server/extending/bundler/sql-replication.mdx)
+* DTC performance improvement
+* [Better adherence to the DTC protocol](../client-api/advanced/transaction-support.mdx)
+* Will refresh the index writer every now and then, avoiding high memory costs for active indexes
+* Faster error reporting by bulk inserts
+* Removed db write lock and enabled completely concurrent writes
+
+## Studio
+
+* [Dynamic Reporting](../studio/dynamic-reporting.mdx)
+* Consolidated Documents & Collections screen
+* Easier settings management
+* Streamlined the UI
+* Validate replication information from the studio
+* Can now look at a sample document while editing an index

@@ -1,0 +1,228 @@
+---
+title: "Full RavenDB query syntax"
+hide_table_of_contents: true
+sidebar_label: Full query syntax
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Full RavenDB query syntax
+
+A full query syntax is a combination of a [Lucene syntax](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html) and RavenDB-specific extensions. This section describes all Raven flavored options which a user can use to
+construct index queries. The syntax that is presented here can by used to query by using either HTTP API or Client API 
+(*IDatabaseCommands.Query* and *IDocumentSession.Advanced.LuceneQuery* methods).
+
+## Tokenized values
+
+If you want to execute a query by using a fields that was marked as *NotAnalyzed* in the index definition and your intention is to do an *exact match*, you have to tokenize it by using
+
+	FieldName:[[Value]]
+
+syntax. It will cause that on the server side such field will be treated as not analyzed by a Lucene analyzer and will look for exact match of the query.
+
+<TabItem value="tokenized_field" label="tokenized_field">
+<CodeBlock language="csharp">
+{`QueryResult users = store.DatabaseCommands.Query(
+	"Raven/DocumentsByEntityName",
+	new IndexQuery
+		\{
+			Query = "Tag:[[Users]]"
+		\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+There are also two reserved tokenized values `[[NULL_VALUE]]` and `[[EMPTY_STRING]]` that denotes respectively *null* and *string.Empty* values.
+In order to get users that have null or empty name perform the query:
+
+<TabItem value="name_null_or_empty" label="name_null_or_empty">
+<CodeBlock language="csharp">
+{`QueryResult usersWithNullOrEmptyName = store.DatabaseCommands.Query(
+	"Users/ByName",
+	new IndexQuery
+		\{
+			Query = "(Name:[[NULL_VALUE]] OR Name:[[EMPTY_STRING]])"
+		\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+## Querying nested properties
+
+If a document stored in database contains another nested object you need to use a *. (dot)* operator to ask for nested value. The usage of this operator is shown below:
+
+<TabItem value="nested_properties" label="nested_properties">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+	session.Store(new User()
+	\{
+		FullName = new FullName()
+		\{
+			FirstName = "John",
+			LastName = "Smith"
+		\}
+	\});
+
+	session.SaveChanges();
+\}
+
+var usersByNameJohn = store.DatabaseCommands.Query("dynamic", new IndexQuery()
+\{
+	Query = "FullName.FirstName:John"
+\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+Note that we provided a word *dynamic* as an index name what tells to the RavenDB that a dynamic index should be used.
+
+## Quering collections
+
+For querying into collections, we use a *, (comma)* operator. This time let's use dynamic `LuceneQuery`:
+
+<TabItem value="users_by_tag_sportsman" label="users_by_tag_sportsman">
+<CodeBlock language="csharp">
+{`session.Store(new User()
+\{
+	Tags = new List<Tag>()
+	                     \{
+		                     new Tag()
+		                     \{
+			                     Name = "sportsman"
+		                     \}
+	                     \}
+\});
+
+session.SaveChanges();
+
+var usersTagggedAsSportsman = session.Advanced.LuceneQuery<User>()
+								.Where("Tags,Name:sportsman")
+								.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Numeric values
+
+If an indexed value is numeric then RavenDB will create two fields in the Lucene index. In the first one the numeric value will be stored as a not analyzed string while
+the second one will have a &lt;em&gt;_Range&lt;/em&gt; suffix and be in a numeric form that will allow to do range queries. 
+
+If you want to query by the exact value just create the query as usual:
+
+<TabItem value="age_exact" label="age_exact">
+<CodeBlock language="csharp">
+{`QueryResult usersByExactAge = store.DatabaseCommands.Query(
+	"Users/ByAge",
+	new IndexQuery
+	\{
+		Query = "Age:20"
+	\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+The query above will return all users that are 20 years old.
+
+If you need to look for numeric value range, add the mentioned prefix to the property name that you are interested in. 
+For example to ask for users whose age is greater than 20 we need to create the following query:
+
+<TabItem value="age_range" label="age_range">
+<CodeBlock language="csharp">
+{`QueryResult usersByAgeRange = store.DatabaseCommands.Query(
+	"Users/ByAge",
+	new IndexQuery
+	\{
+		Query = "Age_Range:\{20 TO NULL\}"
+	\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+The syntax for range queries is the same like in Lucene. Inclusive range queries are denoted by square brackets. Exclusive range queries are denoted by curly brackets.
+</Admonition>
+
+## ISO dates parsing
+
+RavenDB supports parsing dates in ISO standard. For example to get users that was born between 1/1/1980 and 12/31/1999 use the following query:
+
+<TabItem value="users_by_dob" label="users_by_dob">
+<CodeBlock language="csharp">
+{`var usersbyDoB = session.Advanced.LuceneQuery<User>()
+					.Where("DateOfBirth:[1980-01-01 TO 1999-12-31T00:00:00.0000000]")
+					.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Note that we can use date only (*1980-01-01*) as well as pass it together with time (*1999-12-31T00:00:00.0000000*).
+
+## Suggestions over multiple words
+
+By default RavenDB support suggestions by using single search term. However if you need to find suggestions by using multiple words you have to use extended suggestion query syntax:
+
+`<<word1 word2>>` or `(word1 word2)`
+
+You can provide any number of the words, the expected term separators are: '&nbsp;&nbsp;' (space), '\t', '\r', '\n'.
+
+<TabItem value="suggestion_syntax" label="suggestion_syntax">
+<CodeBlock language="csharp">
+{`SuggestionQueryResult result = store.DatabaseCommands.Suggest(
+	"Users/ByFullName",
+	new SuggestionQuery()
+		\{
+			Field = "FullName",
+			Term = "<<johne davi>>"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Query methods
+
+### `@in`
+
+In order to specify multiple values in `Where` clause an operator `@in` was introduced. Its syntax is the following:
+
+`@in<FieldName>:(value1, value2)`
+
+You can specify any number of paramters that you are looking for. The *, (comma)* character is a separator of the values.
+
+<TabItem value="in_method" label="in_method">
+<CodeBlock language="csharp">
+{`var usersByInMethod = store.DatabaseCommands.Query("Users/ByAge", new IndexQuery()
+\{
+	Query = "@in<Age>:(20, 25)"
+\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+The result of the query above will be users that are 20 or 25 years old.
+
+In order to specify a phrase (i.e. when search term contains whitespaces) wrap it by using \\". 
+If you need to escape a comma character, wrap it by using grave accent (\`) character.  e.g.:
+
+<TabItem value="in_method_comma" label="in_method_comma">
+<CodeBlock language="csharp">
+{`var usersWithComma = store.DatabaseCommands.Query("Users/ByVisitedCountries", new IndexQuery()
+\{
+	Query = "@in<VisitedCountries>:(\\"Australia\`,\` Canada\\", Israel)"
+\}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+This will cause the exact search for string values *"Australia, Canada"* or *"Israel"*.
+
+<Admonition type="info" title="Info">
+The operator `@in` is used internally by `WhereIn` method. If the specified list of values is empty then instead of `@in` the following syntax is created `@emptyIn&lt;FieldName&gt;:(no-results)` to handle such cases.
+</Admonition>
+

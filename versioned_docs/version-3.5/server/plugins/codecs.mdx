@@ -1,0 +1,102 @@
+---
+title: "Plugins: Codecs"
+hide_table_of_contents: true
+sidebar_label: Codecs
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Plugins: Codecs
+
+The `AbstractDocumentCodec` and `AbstractIndexCodec` classes have been introduced as an entry point to custom compression methods.
+
+<TabItem value="plugins_3_0" label="plugins_3_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractDocumentCodec
+\{
+	public DocumentDatabase Database \{ get; set; \}
+
+	public virtual void Initialize(DocumentDatabase database) \{ \}
+
+	public virtual void Initialize() \{ \}
+
+	public virtual void SecondStageInit() \{ \}
+
+	public abstract Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream);
+
+	public abstract Stream Decode(string key, RavenJObject metadata, Stream dataStream);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_3_1" label="plugins_3_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractIndexCodec
+\{
+	public virtual void Initialize(DocumentDatabase database) \{ \}
+
+	public virtual void SecondStageInit() \{ \}
+
+	public abstract Stream Encode(string key, Stream dataStream);
+
+	public abstract Stream Decode(string key, Stream dataStream);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **Encode** is executed when the given document/index is written.   
+* **Decode** is executed when the provided document/index is read.    
+* **Initialize** and **SecondStageInit** are used to trigger initialization process.   
+
+## Example - Compression
+
+<TabItem value="plugins_3_2" label="plugins_3_2">
+<CodeBlock language="csharp">
+{`public class SimpleCompressionCodec : AbstractDocumentCodec
+\{
+	private readonly SimpleCompressor compressor = new SimpleCompressor();
+
+	public override Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream)
+	\{
+		return compressor.Compress(key, data, metadata, dataStream);
+	\}
+
+	public override Stream Decode(string key, RavenJObject metadata, Stream dataStream)
+	\{
+		return compressor.Decompress(key, metadata, dataStream);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Encryption
+
+<TabItem value="plugins_3_3" label="plugins_3_3">
+<CodeBlock language="csharp">
+{`public class SimpleEncryptionCodec : AbstractDocumentCodec
+\{
+	private readonly SimpleEncryptor encryptor = new SimpleEncryptor();
+
+	public override Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream)
+	\{
+		return encryptor.Encrypt(key, data, metadata, dataStream);
+	\}
+
+	public override Stream Decode(string key, RavenJObject metadata, Stream dataStream)
+	\{
+		return encryptor.Decrypt(key, metadata, dataStream);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

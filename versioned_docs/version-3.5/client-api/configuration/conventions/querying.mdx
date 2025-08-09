@@ -1,0 +1,176 @@
+---
+title: "Conventions related to querying"
+hide_table_of_contents: true
+sidebar_label: Querying
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Conventions related to querying
+
+
+
+These two conventions specify functions that are used to find the indexed property name for a static index or a dynamic one. This can be useful when you are indexing nested properties 
+of complex types. Their default implementations are:
+
+<TabItem value="find_prop_name" label="find_prop_name">
+<CodeBlock language="csharp">
+{`Conventions.FindPropertyNameForIndex = (indexedType, indexName, path, prop) => (path + prop).Replace(",", "_").Replace(".", "_");
+Conventions.FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path + prop;
+`}
+</CodeBlock>
+</TabItem>
+
+The arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
+
+### DefaultQueryingConsistency
+
+The consistency options used when querying a database. Its default value is: 
+
+<TabItem value="querying_consistency" label="querying_consistency">
+<CodeBlock language="csharp">
+{`Conventions.DefaultQueryingConsistency = ConsistencyOptions.None;
+`}
+</CodeBlock>
+</TabItem>
+
+This option ensures that after querying an index at time T, you will never see the results of the index at a time prior to T. This is ensured by the server and 
+require no action from the client. Note that because of the indexing process done by the server in the background you might get [stale](../../../indexes/stale-indexes.mdx) index results. 
+
+If you really need your query results to include documents you have just changed or added, you can use the option:
+
+<TabItem value="querying_consistency_2" label="querying_consistency_2">
+<CodeBlock language="csharp">
+{`Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
+`}
+</CodeBlock>
+</TabItem>
+
+Then the client will wait 15 seconds for non-stale results, using an etag of a last written document within a session as a cut-off point. If after that time the results are still stale, then `TimeoutException` will be thrown. 
+
+<Admonition type="danger" title="Beware of `AlwaysWaitForNonStaleResultsAsOfLastWrite` overuse" id="beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse" href="#beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse">
+The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support.mdx#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
+
+The usage of [`WaitForNonStaleResultsAsOfLastWrite` at a query level](../../session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite) is usually reasonable on only very rare occassions. The need of taking advantage of `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
+</Admonition>
+
+### ApplyReduceFunction
+
+If you work in [a sharded environment](../../../server/scaling-out/sharding/how-to-setup-sharding.mdx) then `ShardedDocumentStore` needs to merge results of a map-reduce index that come
+from different shards. So they need to be reduced on the client side. The behavior of the client side reduction can by overwritten by the following 
+convention:
+
+<TabItem value="apply_reduce_func" label="apply_reduce_func">
+<CodeBlock language="csharp">
+{`Conventions.ApplyReduceFunction = (type, resultType, results, transformResults) => 
+	// carry out the reduction over results from different shards
+`}
+</CodeBlock>
+</TabItem>
+
+
+### AllowQueriesOnId 
+
+It determines whether queries on document id are allowed. By default, queries on id are disabled, because it is far more efficient to do a `Load()` than a `Query()` if you already know the id.
+
+<TabItem value="allow_queries_on_id" label="allow_queries_on_id">
+<CodeBlock language="csharp">
+{`Conventions.AllowQueriesOnId = false;
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="danger" title="Backward compatibility only" id="backward-compatibility-only" href="#backward-compatibility-only">
+This convention is provided for backward compatibility purposes only. It is NOT recommended to set its value to `true`.
+</Admonition>
+</LanguageContent>
+<LanguageContent language="java">
+#Conventions related to querying
+
+
+
+These two conventions specify functions that are used to find the indexed property name for a static index or a dynamic one. This can be useful when you are indexing nested properties 
+of complex types. Their default implementations are:
+
+<TabItem value="find_prop_name" label="find_prop_name">
+<CodeBlock language="java">
+{`conventions.setFindPropertyNameForIndex(new PropertyNameFinder() \{
+  @Override
+  public String find(Class<?> indexedType, String indexedName, String path, String prop) \{
+    return (path + prop).replace(",", "_").replace(".", "_");
+  \}
+\});
+conventions.setFindPropertyNameForDynamicIndex(new PropertyNameFinder() \{
+  @Override
+  public String find(Class<?> indexedType, String indexedName, String path, String prop) \{
+    return path + prop;
+  \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+The arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
+
+### DefaultQueryingConsistency
+
+The consistency options used when querying a database. Its default value is: 
+
+<TabItem value="querying_consistency" label="querying_consistency">
+<CodeBlock language="java">
+{`conventions.setDefaultQueryingConsistency(ConsistencyOptions.NONE);
+`}
+</CodeBlock>
+</TabItem>
+
+This option ensures that after querying an index at time T, you will never see the results of the index at a time prior to T. This is ensured by the server and 
+require no action from the client. Note that because of the indexing process done by the server in the background you might get [stale](../../../indexes/stale-indexes.mdx) index results. 
+
+If you really need your query results to include documents you have just changed or added, you can use the option:
+
+<TabItem value="querying_consistency_2" label="querying_consistency_2">
+<CodeBlock language="java">
+{`conventions.setDefaultQueryingConsistency(ConsistencyOptions.ALWAYS_WAIT_FOR_NON_STALE_RESULTS_AS_OF_LAST_WRITE);
+`}
+</CodeBlock>
+</TabItem>
+
+Then the client will wait 15 seconds for non-stale results, using an etag of a last written document within a session as a cut-off point. If after that time the results are still stale, then `TimeoutException` will be thrown. 
+
+<Admonition type="danger" title="Beware of `AlwaysWaitForNonStaleResultsAsOfLastWrite` overuse" id="beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse" href="#beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse">
+The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support.mdx#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
+
+The usage of [`WaitForNonStaleResultsAsOfLastWrite` at a query level](../../session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite) is usually reasonable on only very rare occassions. The need of taking advantage of `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
+</Admonition>
+
+### AllowQueriesOnId 
+
+It determines whether queries on document id are allowed. By default, queries on id are disabled, because it is far more efficient to do a `load()` than a `query()` if you already know the id.
+
+<TabItem value="allow_queries_on_id" label="allow_queries_on_id">
+<CodeBlock language="java">
+{`conventions.setAllowQueriesOnId(false);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="danger" title="Backward compatibility only" id="backward-compatibility-only" href="#backward-compatibility-only">
+This convention is provided for backward compatibility purposes only. It is NOT recommended to set its value to `true`.
+</Admonition>
+</LanguageContent>
+
+<!---
+
+-->

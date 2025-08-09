@@ -1,0 +1,43 @@
+---
+title: "Bundle: Expiration"
+hide_table_of_contents: true
+sidebar_label: Expiration
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Expiration
+
+The expiration bundle serves a very simple purpose: it deletes the documents whose time has passed. Usage scenarios for the Expiration Bundle include storing user sessions in RavenDB or using RavenDB as a cache.
+
+## Usage
+You can set the expiration date for a document using the following code:
+
+<TabItem value="expiration1" label="expiration1">
+<CodeBlock language="csharp">
+{`DateTime expiry = DateTime.UtcNow.AddMinutes(5);
+using (IDocumentSession session = store.OpenSession())
+\{
+	session.Store(user);
+	session.Advanced.GetMetadataFor(user)["Raven-Expiration-Date"] = new RavenJValue(expiry);
+	session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+As you can see, all we need to do is to set the `Raven-Expiration-Date` property in the metadata for the appropriate date, and, at the specified time, the document will be automatically deleted.
+
+<Admonition type="note" title="Note">
+The date must be UTC, not local time.
+</Admonition>
+
+<Admonition type="warning" title="Warning">
+When master-master [replication](../../server/scaling-out/replication/how-replication-works.mdx) is set between servers, the Expiration bundle should be turned on **ONLY** on **one** server, otherwise conflicts will occur.
+</Admonition>

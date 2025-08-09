@@ -1,0 +1,59 @@
+---
+title: "Installation: Manual Setup"
+hide_table_of_contents: true
+sidebar_label: Manual Setup
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Installation: Manual Setup
+
+By default, when Server is started using `run.ps1` (or `run.sh`) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard.mdx) which will guide you through the Server configuration process.
+
+The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) used in the RavenDB Server package looks like this:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "ServerUrl": "http://127.0.0.1:0",
+    "Setup.Mode": "Initial",
+    "DataDir": "RavenData"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Which means that the Server will run:
+
+- In `Setup Wizard` mode
+- On `localhost` with a `random port`
+- Store the data in `RavenData` directory.
+
+## Disabling 'Setup Wizard'
+
+To disable the 'Setup Wizard' please change the `Setup.Mode` configuration to `None` or remove it completely.
+
+## Server Url and Port
+
+Setting the `ServerUrl` to `http://127.0.0.1:0` will bind the server to a `localhost` with a `random port`. For manual setup we suggest changing the port to a non-random value e.g. **8080**.
+
+<Admonition type="warning" title="Port in Use" id="port-in-use" href="#port-in-use">
+
+In some cases the port might be in use, this will prevent the Server from starting with "address in use" error (`EADDRINUSE`).
+
+</Admonition>
+
+## Security
+
+Read the [Manual Certificate Configuration](../../server/security/authentication/certificate-configuration.mdx) section to learn how to setup security manually.
+
+## Configuration
+
+Read the [Configuration Section](../../server/configuration/configuration-options.mdx) to learn more about using [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) and see a list of configuration options.
+

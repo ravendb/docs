@@ -1,0 +1,89 @@
+---
+title: "What are transformers?"
+hide_table_of_contents: true
+sidebar_label: What are transformers?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# What are transformers?
+
+The easiest explanation of Transformers is that they are  **LINQ-based server-side projection functions** with the ability to load external documents, including additional results, and even to make decisions based on passed parameters, and much more.
+
+<Admonition type="info" title="Transformers and the session" id="transformers-and-the-session" href="#transformers-and-the-session">
+Because you are working with projections, and not directly with documents, 
+they are _not_ tracked by the session and won't be saved in the database if you call `SaveChanges`.
+</Admonition>
+
+## Basic example
+
+If we want to transform our query or load results, we need to perform the following steps:
+
+- first we need to create a transformer. One way to create it is to use `AbstractTransformerCreationTask`, but there are other ways that you can read about [here](../transformers/creating-and-deploying.mdx).
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Employees_NameAndPhone : AbstractTransformerCreationTask<Employee>
+\{
+	public class Result
+	\{
+		public string FirstName \{ get; set; \}
+
+		public double LastName \{ get; set; \}
+
+		public double HomePhone \{ get; set; \}
+	\}
+
+	public Employees_NameAndPhone()
+	\{
+		TransformResults = employees => from employee in employees 
+						select new
+						\{
+							employee.FirstName, 
+							employee.LastName, 
+							employee.HomePhone
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- since transformers work server-side, next logical step would be to send it to the server. More information about how to deploy transformers can be found [here](../transformers/creating-and-deploying.mdx).
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`// save transformer on server
+new Employees_NameAndPhone().Execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+- now, while querying or even loading, we can project our results using appropriate transformer.
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`Employees_NameAndPhone.Result result = session
+	.Load<Employees_NameAndPhone, Employees_NameAndPhone.Result>("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`IList<Employees_NameAndPhone.Result> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_NameAndPhone, Employees_NameAndPhone.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+More examples with detailed descriptions can be found [here](../transformers/basic-transformations.mdx).
+

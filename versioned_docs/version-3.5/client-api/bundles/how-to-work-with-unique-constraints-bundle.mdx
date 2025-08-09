@@ -1,0 +1,94 @@
+---
+title: "Unique Constraints: How to work with unique constraints bundle?"
+hide_table_of_contents: true
+sidebar_label: How to work with unique constraints bundle?
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Unique Constraints: How to work with unique constraints bundle?
+
+In order to use this bundle first activate it on the server. The description can be found in [server section](../../server/bundles/unique-constraints.mdx).
+
+To use the Unique Constraint features on the client side you need to reference `Raven.Client.UniqueConstraints` assembly.
+
+<TabItem value="using" label="using">
+<CodeBlock language="csharp">
+{`using Raven.Client.UniqueConstraints;
+`}
+</CodeBlock>
+</TabItem>
+
+When creating the DocumentStore, you'll need to register the `UniqueConstraintsStoreListener` in the store, as follows:
+
+<TabItem value="unique_constraints_1" label="unique_constraints_1">
+<CodeBlock language="csharp">
+{`store.RegisterListener(new UniqueConstraintsStoreListener());
+`}
+</CodeBlock>
+</TabItem>
+
+To define a unique constraint on a property use the `UniqueConstraint` attribute as shown below:
+
+<TabItem value="unique_constraints_4" label="unique_constraints_4">
+<CodeBlock language="csharp">
+{`private class User
+\{
+	[UniqueConstraint]
+	public string Name \{ get; set; \}
+
+	[UniqueConstraint]
+	public string Email \{ get; set; \}
+
+	public string FirstName \{ get; set; \}
+
+	public string LastName \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Extension methods
+
+The bundle provides two extension methods for `IDocumentSession`.
+
+#### LoadByUniqueConstraint
+
+Allows loading a document by its UniqueConstraint, returning null if the document doesn't exists.
+
+<TabItem value="unique_constraints_2" label="unique_constraints_2">
+<CodeBlock language="csharp">
+{`User existingUser = session
+	.LoadByUniqueConstraint<User>(x => x.Email, "john@gmail.com");
+`}
+</CodeBlock>
+</TabItem>
+
+#### CheckForUniqueConstraints
+
+Checks a document to see if its constraints are available on the server. It returns a `UniqueConstraintCheckResult` containing the loaded docs and properties they are responsible for.
+
+<TabItem value="unique_constraints_3" label="unique_constraints_3">
+<CodeBlock language="csharp">
+{`User user = new User \{ Name = "John", Email = "john@gmail.com" \};
+UniqueConstraintCheckResult<User> checkResult = session.CheckForUniqueConstraints(user);
+
+// returns whether its constraints are available
+if (checkResult.ConstraintsAreFree())
+\{
+	session.Store(user);
+\}
+else
+\{
+	User existingUser = checkResult.DocumentForProperty(x => x.Email);
+\}
+`}
+</CodeBlock>
+</TabItem>
+

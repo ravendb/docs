@@ -1,0 +1,45 @@
+---
+title: "Immutable entities with Raven DB"
+hide_table_of_contents: true
+sidebar_label: Immutable entities with Raven DB
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Immutable entities with Raven DB
+
+Whenever you are trying to use a non-default constructor for your entity, do the following to avoid falling into serialization problems with JSON.Net and raven:
+
+* add a private constructor ... even if it is empty
+* Ensure every readonly property has a "Private setter" on it ... else it won't get populated
+* Use a custom Json resolver like this one:
+
+<TabItem value="immutable_entities_1" label="immutable_entities_1">
+<CodeBlock language="csharp">
+{`public class PrivatePropertySetterResolver : DefaultContractResolver
+\{
+	protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+	\{
+		var prop = base.CreateProperty(member, memberSerialization);
+		if (!prop.Writable)
+		\{
+			var property = member as PropertyInfo;
+			if (property != null)
+			\{
+				var hasPrivateSetter = property.GetSetMethod(true) != null;
+				prop.Writable = hasPrivateSetter;
+			\}
+		\}
+
+		return prop;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

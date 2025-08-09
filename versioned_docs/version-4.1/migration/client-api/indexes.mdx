@@ -1,0 +1,129 @@
+---
+title: "Migration: Indexes defined using client API"
+hide_table_of_contents: true
+sidebar_label: Indexes
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Indexes defined using client API
+
+Below there is list of changes to `AbstractIndexCreationTask`, `AbstractMultiMapIndexCreationTask` and `IndexDefinition`.
+
+## Namespace
+
+Change `Raven.Abstractions.Indexing` and `Raven.Client.Indexes` namespaces to `Raven.Client.Documents.Indexes`.   
+
+&lt;br /&gt;
+
+## AbstractIndexCreationTask and AbstractMultiMapIndexCreationTask
+
+### MaxIndexOutputsPerDocument
+
+`MaxIndexOutputsPerDocument` property was removed. A warning is issued instead. Read dedicated about performance hints if you use when [fanout indexes](../../indexes/fanout-indexes.mdx#performance-hints)
+
+### Sort
+
+There is no need to explicitly define sorting in definitions of static indexes anymore. RavenDB automatically determines sorting capabilities based on types of indexed values. You can remove `Sort` method usages from your index classes, such as:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`Sort(x => x.Month, SortOptions.Int);
+`}
+</CodeBlock>
+</TabItem> 
+
+### Constants.AllFields
+
+`Constants.AllFields` constant has been moved to `Constants.Documents.Indexing.Fields.AllFields`
+
+### FieldIndexing.Analyzed
+
+`FieldIndexing.Analyzed` has been renamed to `FieldIndexing.Search`
+
+### FieldIndexing.NotAnalyzed
+
+`FieldIndexing.NotAnalyzed` has been renamed to `FieldIndexing.Exact`
+
+
+
+## IndexDefinition
+
+### Map
+
+`Map` property has been removed. Use `Maps` property instead.
+
+### Field options
+
+Options as are now defined per field using `Fields` property.
+
+| 3.x | 4.0 |
+|:---:|:---:|
+|
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="csharp">
+{`public class Index : AbstractIndexCreationTask
+\{
+    public override IndexDefinition CreateIndexDefinition()
+    \{
+        return new IndexDefinition()
+        \{
+            Map = @"from item in docs.Items select new 
+                    \{
+                        Field = item.Field 
+                    \}",
+            Stores = \{ \{ "Field", FieldStorage.Yes \} \},
+            Indexes = \{ \{ "Field", FieldIndexing.NotAnalyzed \} \},
+            SuggestionsOptions = \{ "Field" \},
+            SpatialIndexes = \{ \{ "Field", new SpatialOptions() \} \},
+            TermVectors = \{ \{ "Field", FieldTermVector.WithOffsets \} \}
+        \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="csharp">
+{`public class Index : AbstractIndexCreationTask
+\{
+    public override IndexDefinition CreateIndexDefinition()
+    \{
+        return new IndexDefinition()
+        \{
+            Maps =
+            \{
+                @"from item in docs.Items select new 
+                    \{
+                        Field = item.Field 
+                    \}"
+            \},
+            Fields =
+            \{
+                \{
+                    "Field", new IndexFieldOptions
+                    \{
+                        Storage = FieldStorage.Yes,
+                        Indexing = FieldIndexing.Exact,
+                        Suggestions = true,
+                        Spatial = new SpatialOptions(),
+                        TermVector = FieldTermVector.WithOffsets
+                    \}
+                \}
+            \}
+        \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+

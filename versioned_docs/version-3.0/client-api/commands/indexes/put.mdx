@@ -1,0 +1,570 @@
+---
+title: "Commands: Indexes: Put"
+hide_table_of_contents: true
+sidebar_label: Put
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Indexes: Put
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+There are few methods that allow you to insert index into a database:   
+- [PutIndex](../../../client-api/commands/indexes/put.mdx#putindex)   
+- [PutIndex - using IndexDefinitionBuilder](../../../client-api/commands/indexes/put.mdx#putindex---using-indexdefinitionbuilder)   
+- [PutIndexes](../../../client-api/commands/indexes/put.mdx#putindexes)     
+
+## PutIndex
+
+**PutIndex** is used to insert an index into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="csharp">
+{`string PutIndex(string name, IndexDefinition indexDef);
+
+string PutIndex(string name, IndexDefinition indexDef, bool overwrite);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of an index |
+| **indexDef** | [IndexDefinition](../../../glossary/index-definition.mdx) | Definition of an index |
+| **overwrite** | bool | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Index **name** |
+
+### Example
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="csharp">
+{`string indexName = store
+	.DatabaseCommands
+	.PutIndex(
+		"Orders/Totals",
+		new IndexDefinition
+			\{
+				Map = @"from order in docs.Orders
+						select new 
+						\{
+							order.Employee,
+							order.Company,
+							Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+						\}"
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## PutIndex - using IndexDefinitionBuilder
+
+**PutIndex** is used to insert an index into a database. 
+
+To help users create their indexes, `IndexDefinitionBuilder` was created that enables users to create indexes using strongly-typed syntax.
+
+### Syntax
+
+<TabItem value="put_2_0" label="put_2_0">
+<CodeBlock language="csharp">
+{`string PutIndex<TDocument, TReduceResult>(string name, IndexDefinitionBuilder<TDocument, TReduceResult> indexDef);
+
+string PutIndex<TDocument, TReduceResult>(string name, IndexDefinitionBuilder<TDocument, TReduceResult> indexDef, bool overwrite);
+`}
+</CodeBlock>
+</TabItem>  
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of an index |
+| **indexDef** | IndexDefinitionBuilder&lt;TDocument, TReduceResult&gt; | strongly-typed index definition |
+| **overwrite** | bool | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Index **name**. |
+
+### Example
+
+<TabItem value="put_2_1" label="put_2_1">
+<CodeBlock language="csharp">
+{`string indexName = store
+	.DatabaseCommands
+	.PutIndex(
+		"Orders/Totals",
+		new IndexDefinitionBuilder<Order>
+			\{
+				Map = orders => from order in orders
+								select new
+								\{
+									order.Employee,
+									order.Company,
+									Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+								\}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
+
+<Admonition type="note" title="Note">
+By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases.
+</Admonition>
+
+## PutIndexes
+
+**PutIndexes** creates multiple indexes with specified names, using given index definitions and priorities.
+
+### Syntax
+
+<TabItem value="put_indexes_3_0" label="put_indexes_3_0">
+<CodeBlock language="csharp">
+{`string[] PutIndexes(IndexToAdd[] indexesToAdd);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexesToAdd** | IndexToAdd[] | Indexes to create |
+
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of created indexes. |
+
+### Example
+
+<TabItem value="put_indexes_3_1" label="put_indexes_3_1">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndexes(new IndexToAdd[]
+\{
+	new IndexToAdd
+	\{
+		Name = "Orders/Totals",
+		Priority = IndexingPriority.Normal,
+		Definition = new IndexDefinition
+		\{
+			Map = @"from order in docs.Orders
+						select new 
+						\{
+							order.Employee,
+							order.Company,
+							Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+						\}"
+		\}
+	\},
+	new IndexToAdd
+	\{
+		Name = "Orders/ByCompany",
+		Priority = IndexingPriority.Normal,
+		Definition = new IndexDefinition
+		\{
+			Map = @"from order in docs.Orders
+						select new 
+						\{ 
+							order.Company, 
+							Count = 1, 
+							Total = order.Lines.Sum(l = >(l.Quantity * l.PricePerUnit) *  ( 1 - l.Discount))
+						\}",
+
+			Reduce = @"from result in results
+						group result by result.Company into g
+						select new
+						\{
+							Company = g.Key,
+							Count = g.Sum(x=>x.Count),
+							Total = g.Sum(x=>x.Total)
+						\}"
+		\}
+	\}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are few methods that allow you to insert index into a database:   
+- [PutIndex](../../../client-api/commands/indexes/put.mdx#putindex)   
+- [PutIndex - using IndexDefinitionBuilder](../../../client-api/commands/indexes/put.mdx#putindex---using-indexdefinitionbuilder)   
+- [PutIndexes](../../../client-api/commands/indexes/put.mdx#putindexes)  
+
+## PutIndex
+
+**PutIndex** is used to insert an index into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="java">
+{`public String putIndex(String name, IndexDefinition definition);
+
+public String putIndex(String name, IndexDefinition definition, boolean overwrite);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of an index |
+| **indexDef** | [IndexDefinition](../../../glossary/index-definition.mdx) | Definition of an index |
+| **overwrite** | boolean | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Index **name** |
+
+### Example
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="java">
+{`String map = " from order in docs.Orders " +
+  " select new " +
+  " \{ " +
+  "    order.Employee," +
+  "    order.Company," +
+  "    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+  "\}";
+
+  IndexDefinition indexDef = new IndexDefinition();
+  indexDef.setMap(map);
+
+String indexName = store.getDatabaseCommands()
+  .putIndex("Orders/Totals", indexDef);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## PutIndex - using IndexDefinitionBuilder
+
+**PutIndex** is used to insert an index into a database. 
+
+To help users create their indexes, `IndexDefinitionBuilder` was created that enables users to create indexes using QueryDSL expressions syntax. 
+
+### Syntax
+
+<TabItem value="put_2_0" label="put_2_0">
+<CodeBlock language="java">
+{`public String putIndex(String name, IndexDefinitionBuilder indexDef);
+
+public String putIndex(String name, IndexDefinitionBuilder indexDef, boolean overwrite);
+`}
+</CodeBlock>
+</TabItem>  
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of an index |
+| **indexDef** | IndexDefinitionBuilder | index definition |
+| **overwrite** | bool | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Index **name**. |
+
+### Example
+
+<TabItem value="put_2_1" label="put_2_1">
+<CodeBlock language="java">
+{`String map = " from order in docs.Orders " +
+  " select new " +
+  " \{ " +
+  "    order.Employee," +
+  "    order.Company," +
+  "    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+  "\}";
+
+QOrder order = QOrder.order;
+IndexDefinitionBuilder indexDef = new IndexDefinitionBuilder();
+indexDef.setMap(map);
+indexDef.getStores().put(order.company, FieldStorage.YES);
+
+String indexName = store.getDatabaseCommands()
+  .putIndex("Orders/Totals", indexDef);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
+
+<Admonition type="note" title="Note">
+By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases.
+</Admonition>
+
+
+## PutIndexes
+
+**PutIndexes** creates multiple indexes with specified names, using given index definitions and priorities.
+
+### Syntax
+
+<TabItem value="put_indexes_3_0" label="put_indexes_3_0">
+<CodeBlock language="java">
+{`public String[] putIndexes(IndexToAdd[] indexesToAdd);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexesToAdd** | IndexToAdd[] | Indexes to create |
+
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of created indexes. |
+
+### Example
+
+<TabItem value="put_indexes_3_1" label="put_indexes_3_1">
+<CodeBlock language="java">
+{`IndexToAdd index1 = new IndexToAdd();
+index1.setName("Orders/Totals");
+index1.setPriority(IndexStats.IndexingPriority.NORMAL);
+index1.setDefinition(new IndexDefinition("from order in docs.Orders "
+    + " select new "
+    + "\{ "
+    + "   order.Employee,"
+    + "   order.Company,"
+    + "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))"
+    + "\}"));
+
+IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setMap("from order in docs.Orders"
+    + " select new "
+    + "\{ "
+    + "   order.Company, "
+    + "   Count = 1,"
+    + "   Total = order.Lines.Sum(l = >(l.Quantity * l.PricePerUnit) *  ( 1 - l.Discount)) "
+    + "\} ");
+
+indexDefinition.setReduce("from result in results "
+    + "group result by result.Company into g "
+    + "select new "
+    + " \{ "
+    + "    Company = g.Key,"
+    + "    Count = g.Sum(x => x.Count),"
+    + "    Total = g.Sum(x => x.Total) "
+    + "\}");
+
+
+IndexToAdd index2 = new IndexToAdd();
+index2.setName("Orders/ByCompany");
+index2.setPriority(IndexStats.IndexingPriority.NORMAL);
+index2.setDefinition(indexDefinition);
+
+store.getDatabaseCommands().putIndexes(new IndexToAdd[] \{ index1, index2\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+
+## PutIndex
+
+**PutIndex** is used to insert an index into a database.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes/\{indexName\}?definition=yes \\
+	-X PUT \\
+	-d @indexDefinition.txt
+`}
+</CodeBlock>
+</TabItem>
+
+| Payload |
+| ------- |
+| [Index Definition](../../../glossary/index-definition.mdx) |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | Name of an index |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `201` | Created |
+
+| Return Value | Description |
+| ------------- | ----- |
+| **Index** | Index **name** |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?definition=yes" \\
+ -d " \{\\"MaxIndexOutputsPerDocument\\":null, \\
+	\\"IndexId\\":0, \\
+	\\"Name\\":null, \\
+	\\"LockMode\\":\\"Unlock\\", \\
+	\\"Maps\\":[\\" from order in docs.Orders  select new  \{     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))\}\\"], \\
+	\\"Reduce\\":null, \\
+	\\"Stores\\":\{\}, \\
+	\\"Indexes\\":\{\}, \\
+	\\"SortOptions\\":\{\}, \\
+	\\"Analyzers\\":\{\}, \\
+	\\"Fields\\":[], \\
+	\\"Suggestions\\":\{\}, \\
+	\\"TermVectors\\":\{\}, \\
+	\\"SpatialIndexes\\":\{\}, \\
+	\\"DisableInMemoryIndexing\\":false, \\
+	\\"Type\\":\\"Map\\", \\
+	\\"Map\\":\\" from order in docs.Orders  select new  \{     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))\}\\", \\
+	\\"IsCompiled\\":false, \\
+	\\"IsMapReduce\\":false\} "
+< HTTP/1.1 201 Created
+\{"Index":"Orders/Totals"\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## PutIndexes
+
+**PutIndexes** creates multiple indexes with specified names, using given index definitions and priorities.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes \\
+	-X PUT \\
+	-d @indexesToAdd.txt
+`}
+</CodeBlock>
+</TabItem>
+
+| Payload |
+| ------- |
+| Array of [IndexToAdd](../../../glossary/index-to-add.mdx) objects |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `201` | Created |
+
+| Return Value | Description |
+| ------------- | ----- |
+| **Indexes[]** | Array of names of created indexes |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/databases/NorthWind/indexes" \\
+ -d "[\{'Name':'Orders/Totals', \\
+    'Definition':\{ \\
+    'MaxIndexOutputsPerDocument':null, \\
+    'IndexId':0, \\
+    'Name':null, \\
+    'LockMode':'Unlock', \\
+    'Maps':['from order in docs.Orders  select new  \{     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))\}'], \\
+    'Reduce':null, \\
+    'Stores':\{\}, \\
+    'Indexes':\{\}, \\
+    'SortOptions':\{\}, \\
+    'Analyzers':\{\}, \\
+    'Fields':[], \\
+    'Suggestions':\{\}, \\
+    'TermVectors':\{\}, \\
+    'SpatialIndexes':\{\}, \\
+    'DisableInMemoryIndexing':false, \\
+    'Type':'Map', \\
+    'Map':' from order in docs.Orders  select new  \{     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))\}', \\
+    'IsCompiled':false, \\
+    'IsMapReduce':false \\
+    \}, \\
+'Priority':'Normal'\}, \\
+\{'Name':'Product/Sales', \\
+    'Definition':\{ \\
+    'MaxIndexOutputsPerDocument':null, \\
+    'IndexId':0, \\
+    'Name':null, \\
+    'LockMode':'Unlock', \\
+    'Maps':['from order in docs.Orders from line in order.Lines select new \{ Product = line.Product, Count = 1, Total = ((line.Quantity * line.PricePerUnit) *  ( 1 - line.Discount)) \}'], \\
+    'Reduce':null, \\
+    'Stores':\{\}, \\
+    'Indexes':\{\}, \\
+    'SortOptions':\{\}, \\
+    'Analyzers':\{\}, \\
+    'Fields':[], \\
+    'Suggestions':\{\}, \\
+    'TermVectors':\{\}, \\
+    'SpatialIndexes':\{\}, \\
+    'DisableInMemoryIndexing':false, \\
+    'Type':'MapReduce', \\
+    'Map':'from order in docs.Orders from line in order.Lines select new \{ Product = line.Product, Count = 1, Total = ((line.Quantity * line.PricePerUnit) *  ( 1 - line.Discount)) \}', \\
+    'IsCompiled':false, \\
+    'IsMapReduce':false \\
+    \}, \\
+'Priority':'Normal'\}]"
+< HTTP/1.1 201 Created
+\{"Indexes":["Orders/Totals", "Product/Sales"]\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+- [How to reset index?](../../../client-api/commands/indexes/how-to/reset-index)
+- [GetIndex](../../../client-api/commands/indexes/get)
+- [DeleteIndex](../../../client-api/commands/indexes/delete)
+
+-->

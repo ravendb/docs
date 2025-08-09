@@ -1,0 +1,79 @@
+---
+title: "How to release a data subscription?"
+hide_table_of_contents: true
+sidebar_label: How to release a data subscription?
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#How to release a data subscription?
+
+Because just a single client can keep the subscription open the API exposes a method that allows to release a subscription by forcing a connected client to drop:
+
+<TabItem value="release_1" label="release_1">
+<CodeBlock language="csharp">
+{`//	void Release(long id, string database = null);
+//
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Subscription identifier. |
+| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+
+
+
+<TabItem value="release_2" label="release_2">
+<CodeBlock language="csharp">
+{`//	store.Subscriptions.Release(id);
+//
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+<LanguageContent language="java">
+#How to release a data subscription?
+
+Because just a single client can keep the subscription open the API exposes a method that allows to release a subscription by forcing a connected client to drop:
+
+<TabItem value="release_1" label="release_1">
+<CodeBlock language="java">
+{`void release(long id);
+
+void release(long id, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Subscription identifier. |
+| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+
+
+
+<TabItem value="release_2" label="release_2">
+<CodeBlock language="java">
+{`store.subscriptions().release(id);
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

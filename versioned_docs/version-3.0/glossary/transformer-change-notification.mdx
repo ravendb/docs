@@ -1,0 +1,38 @@
+---
+title: "Glossary: TransformerChangeNotification"
+hide_table_of_contents: true
+sidebar_label: TransformerChangeNotification
+sidebar_position: 60
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: TransformerChangeNotification
+
+### General
+
+This class extends `EventArgs`.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [TransformerChangeTypes](../glossary/transformer-change-notification.mdx#transformerchangetypes-enum) | Change type |
+| **Name** | string | Transformer name |
+
+---
+
+# TransformerChangeTypes (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** |  `0` |
+| **TransformerAdded** | `1` |
+| **TransformerRemoved** | `2` |

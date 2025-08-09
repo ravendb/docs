@@ -1,0 +1,271 @@
+---
+title: "Operations: Server: How to Restore a Database from the Backup"
+hide_table_of_contents: true
+sidebar_label: Restore Backup
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Operations: Server: How to Restore a Database from the Backup
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To restore a database from its backup, use **RestoreBackupOperation**. 
+
+<Admonition type="note" title="Note">
+This article describes restoring a database using a C# client. You can also restore a database using [RavenDB Studio](../../../studio/server/databases/create-new-database/from-backup.mdx).
+</Admonition>
+
+## Syntax
+
+<TabItem value="restore_1" label="restore_1">
+<CodeBlock language="csharp">
+{`public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="restore_2" label="restore_2">
+<CodeBlock language="csharp">
+{`public class RestoreBackupConfiguration
+\{
+    public string DatabaseName \{ get; set; \}
+
+    public string BackupLocation \{ get; set; \}
+
+    public string LastFileNameToRestore \{ get; set; \}
+
+    public string DataDirectory \{ get; set; \}
+
+    public string EncryptionKey \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | string | Database name to create during the restore operation |
+| **BackupLocation** | string | Directory containing backup files |
+| **LastFileNameToRestore** | string | Used for partial restore |
+| **DataDirectory** | string | Optional: Database data directory |
+| **EncryptionKey** | string | Encryption key used for restore |
+
+## Example
+
+<TabItem value="restore_3" label="restore_3">
+<CodeBlock language="csharp">
+{`RestoreBackupConfiguration config = new RestoreBackupConfiguration()
+\{
+    BackupLocation = @"C:\\backups\\Northwind",
+    DatabaseName = "Northwind"
+\};
+RestoreBackupOperation restoreOperation = new RestoreBackupOperation(config);
+store.Maintenance.Server.Send(restoreOperation)
+    .WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To restore a database from its backup, use **RestoreBackupOperation**. 
+
+<Admonition type="note" title="Note">
+This article describes restoring a database using a java client. You can also restore a database using [RavenDB Studio](../../../studio/server/databases/create-new-database/from-backup.mdx).
+</Admonition>
+
+## Syntax
+
+<TabItem value="constructor" label="constructor">
+<CodeBlock language="java">
+{`public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration);
+
+public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration, String nodeTag);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_set" label="get_set">
+<CodeBlock language="java">
+{`public abstract class RestoreBackupConfigurationBase \{
+
+
+    public String getDatabaseName() \{
+        return databaseName;
+    \}
+
+    public void setDatabaseName(String databaseName) \{
+        this.databaseName = databaseName;
+    \}
+
+    public String getLastFileNameToRestore() \{
+        return lastFileNameToRestore;
+    \}
+
+    public void setLastFileNameToRestore(String lastFileNameToRestore) \{
+        this.lastFileNameToRestore = lastFileNameToRestore;
+    \}
+
+    public String getDataDirectory() \{
+        return dataDirectory;
+    \}
+
+    public void setDataDirectory(String dataDirectory) \{
+        this.dataDirectory = dataDirectory;
+    \}
+
+    public String getEncryptionKey() \{
+        return encryptionKey;
+    \}
+
+    public void setEncryptionKey(String encryptionKey) \{
+        this.encryptionKey = encryptionKey;
+    \}
+
+    public boolean isDisableOngoingTasks() \{
+        return disableOngoingTasks;
+    \}
+
+    public void setDisableOngoingTasks(boolean disableOngoingTasks) \{
+        this.disableOngoingTasks = disableOngoingTasks;
+    \}
+
+    public boolean isSkipIndexes() \{
+        return skipIndexes;
+    \}
+
+    public void setSkipIndexes(boolean skipIndexes) \{
+        this.skipIndexes = skipIndexes;
+    \}
+
+    public BackupEncryptionSettings getBackupEncryptionSettings() \{
+        return backupEncryptionSettings;
+    \}
+
+    public void setBackupEncryptionSettings(BackupEncryptionSettings backupEncryptionSettings) \{
+        this.backupEncryptionSettings = backupEncryptionSettings;
+    \}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Database name to create during the restore operation |
+| **lastFileNameToRestore** | String | Used for partial restore |
+| **dataDirectory** | String | Optional: Database data directory |
+| **encryptionKey** | String | Encryption key used for restore |
+| **disableOngoingTasks** | boolean | Disable on doing tasks |
+| **skipIndexes** | boolean | Skip the indexes|
+
+## Example
+
+<TabItem value="example_java" label="example_java">
+<CodeBlock language="java">
+{`RestoreBackupConfiguration config = new RestoreBackupConfiguration();
+config.setBackupLocation("C:\\\\backups\\\\Northwind");
+config.setDatabaseName("Northwind");
+RestoreBackupOperation restoreOperation = new RestoreBackupOperation(config);
+store.maintenance().server().send(restoreOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+To restore a database from its backup, use **RestoreBackupOperation**. 
+
+<Admonition type="note" title="Note">
+This article describes restoring a database using a C# client. You can also restore a database using [RavenDB Studio](../../../studio/server/databases/create-new-database/from-backup.mdx).
+</Admonition>
+
+## Syntax
+
+<TabItem value="restore_1" label="restore_1">
+<CodeBlock language="js">
+{`const restoreBackupOperation = new RestoreBackupOperation(restoreConfiguration, "nodeTag");
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="restore_2" label="restore_2">
+<CodeBlock language="js">
+{`export interface RestoreBackupConfigurationBase \{
+    databaseName,
+    lastFileNameToRestore,
+    dataDirectory,
+    encryptionKey,
+    disableOngoingTasks,
+    skipIndexes,
+    type,
+    backupEncryptionSettings
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Database name to create during the restore operation |
+| **lastFileNameToRestore** | string | Used for partial restore |
+| **dataDirectory** | string | Optional: Database data directory |
+| **encryptionKey** | string | Encryption key used for restore |
+| **disableOngoingTasks** | boolean | true/false to disable/enable Ongoing Tasks|
+| **skipIndexes** | boolean | true/false to disable/enable indexes import|
+| **type** | RestoreType | Encryption key used for restore |
+| **backupEncryptionSettings** | BackupEncryptionSettings | Backup encryption settings |
+
+## Example
+
+<TabItem value="restore_3" label="restore_3">
+<CodeBlock language="js">
+{`restoreConfiguration = \{
+    databaseName: "Northwind",
+    skipIndexes: false
+\}
+const restoreBackupOperation = RestoreBackupOperation(restoreConfiguration, "A");
+const restoreResult = await store.maintenance.server.send(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Studio Articles
+- [Create a Database : From Backup](../../../studio/server/databases/create-new-database/from-backup)
+- [Create a Database : General Flow](../../../studio/server/databases/create-new-database/general-flow)
+- [Create a Database : Encrypted](../../../studio/server/databases/create-new-database/encrypted)
+- [The Backup Task](../../../studio/database/tasks/backup-task)
+
+### Client Articles
+- [Restore](../../../client-api/operations/maintenance/backup/restore)
+- [What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)
+- [Backup](../../../client-api/operations/maintenance/backup/backup)
+
+### Server Articles
+- [Backup Overview](../../../server/ongoing-tasks/backup-overview)
+
+### Migration Articles
+- [Migration](../../../migration/server/data-migration)
+
+
+-->

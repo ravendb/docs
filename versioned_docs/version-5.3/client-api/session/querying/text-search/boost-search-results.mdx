@@ -1,0 +1,413 @@
+---
+title: "Boost Search Results"
+hide_table_of_contents: true
+sidebar_label: Boost Search Results
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Boost Search Results
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* In order to prioritize results,  
+  you can provide a __boost value__ to the searched terms which will be integrated with the basic score.
+
+* Usually, the higher the boost value, the more relevant the term will be,  
+  resulting in a higher ranking of its matching document in the results.
+
+* In this page:
+
+  * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-querying-with-where-clause)  
+  * [Get resulting score](../../../../client-api/session/querying/text-search/boost-search-results.mdx#get-resulting-score)
+
+</Admonition>
+## Boost results - when making a full-text search
+
+* When making a full-text search with the `Search()` method then boosting can be applied  
+  to both `Query` and `DocumentQuery`.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Make a dynamic full-text search Query on 'Employees' collection
+    .Query<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // * Pass the boost value using the 'boost' parameter
+     // * This search predicate will use a boost value of 10
+    .Search(x => x.Notes, "Italian", boost: 10)
+    .ToList();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field.
+//
+// * Matching documents with 'Italian' will be listed FIRST in the results,
+//   before those with 'English'.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Make a dynamic full-text search Query on 'Employees' collection
+    .Query<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // * Pass the boost value using the 'boost' parameter
+     // * This search predicate will use a boost value of 10
+    .Search(x => x.Notes, "Italian", boost: 10)
+    .ToListAsync();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field.
+//
+// * Matching documents with 'Italian' will be listed FIRST in the results,
+//   before those with 'English'.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Make a dynamic full-text search DocumentQuery on 'Employees' collection
+    .DocumentQuery<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // This search predicate will use a boost value of 10 
+    .Search(x => x.Notes, "Italian")
+     // Call 'Boost' to set the boost value of the previous 'Search' call
+    .Boost(10)
+    .ToList();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field.
+//
+// * Matching documents with 'Italian' will be listed FIRST in the results,
+//   before those with 'English'.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Boost results - when querying with where clause
+
+* When querying with `Where` clauses (using an OR condition in between) then boosting can be applied  
+  only with `DocuemtQuery`.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+     // Make a dynamic DocumentQuery on 'Companies' collection
+    .DocumentQuery<Company>()
+     // Define a 'Where' condition
+    .WhereStartsWith(x => x.Name, "O")
+     // Call 'Boost' to set the boost value of the previous 'Where' predicate
+    .Boost(10)
+     // Call 'OrElse' so that OR operator will be used between statements
+    .OrElse()
+    .WhereStartsWith(x => x.Name, "P")
+    .Boost(50)
+    .OrElse()
+    .WhereEndsWith(x => x.Name, "OP")
+    .Boost(90)
+    .ToList();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
+//
+// * Matching documents the end-with 'OP' will be listed FIRST.
+//   Matching documents that start-with 'P' will then be listed.
+//   Matching documents that start-with 'O' will be listed LAST.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession.Advanced
+     // Make a dynamic DocumentQuery on 'Companies' collection
+    .AsyncDocumentQuery<Company>()
+     // Define a 'Where' condition
+    .WhereStartsWith(x => x.Name, "O")
+     // Call 'Boost' to set the boost value of the previous 'Where' predicate
+    .Boost(10)
+     // Call 'OrElse' so that OR operator will be used between statements
+    .OrElse()
+    .WhereStartsWith(x => x.Name, "P")
+    .Boost(50)
+    .OrElse()
+    .WhereEndsWith(x => x.Name, "OP")
+    .Boost(90)
+    .ToListAsync();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
+//
+// * Matching documents the end-with 'OP' will be listed FIRST.
+//   Matching documents that start-with 'P' will then be listed.
+//   Matching documents that start-with 'O' will be listed LAST.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" where
+boost(startsWith(Name, "O"), 10) or
+boost(startsWith(Name, "P"), 50) or
+boost(endsWith(Name, "OP"), 90)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get resulting score
+
+* The score can be retrieved by either:
+
+   * Request to __include explanations__ when making the query.  
+     See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
+
+   * __Get the metadata__ of the resulting entities that were loaded to the session.  
+     See example below.  
+
+<Admonition type="note" title="Note">
+
+<TabItem value="boost_6" label="boost_6">
+<CodeBlock language="csharp">
+{`// Make a query:
+// =============
+
+List<Employee> employees = session
+    .Query<Employee>()
+    .Search(x => x.Notes, "English")
+    .Search(x => x.Notes, "Italian", boost: 10)
+    .ToList();
+
+// Get the score:
+// ==============
+
+// Call 'GetMetadataFor', pass an entity from the resulting employees list
+var metadata = session.Advanced.GetMetadataFor(employees[0]);
+
+// Score is available in the '@index-score' metadata property
+var score = metadata[Constants.Documents.Metadata.IndexScore];
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* In order to prioritize results,  
+  you can provide a __boost value__ to the searched terms which will be integrated with the basic score.
+
+* Usually, the higher the boost value, the more relevant the term will be,  
+  resulting in a higher ranking of its matching document in the results.
+
+* In this page:
+
+  * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-querying-with-where-clause)  
+  * [Get resulting score](../../../../client-api/session/querying/text-search/boost-search-results.mdx#get-resulting-score)
+
+</Admonition>
+## Boost results - when making a full-text search
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+     // Make a dynamic full-text search Query on 'Employees' collection
+    .query({ collection: "Employees"})
+     // This search predicate will use the default boost value of 1
+    .search('Notes', 'English')
+     // This search predicate will use a boost value of 10 
+    .search('Notes', 'Italian')
+     // Call 'boost' to set the boost value of the previous 'search' call
+    .boost(10)
+    .all();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field.
+//
+// * Matching documents with 'Italian' will be listed FIRST in the results,
+//   before those with 'English'.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+{"p0":"English","p1":"Italian"}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Boost results - when querying with where clause
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const companies = await session
+     // Make a dynamic DocumentQuery on 'Companies' collection
+    .query({ collection: "Companies"})
+     // Define a 'where' condition
+    .whereStartsWith("Name", "O")
+     // Call 'boost' to set the boost value of the previous 'where' predicate
+    .boost(10)
+     // Call 'orElse' so that OR operator will be used between statements
+    .orElse()
+    .whereStartsWith("Name", "P")
+    .boost(50)
+    .orElse()
+    .whereEndsWith("Name", "OP")
+    .boost(90)
+    .all();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
+//
+// * Matching documents the end-with 'OP' will be listed FIRST.
+//   Matching documents that start-with 'P' will then be listed.
+//   Matching documents that start-with 'O' will be listed LAST.
+// 
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" where
+boost(startsWith(Name, "O"), 10) or
+boost(startsWith(Name, "P"), 50) or
+boost(endsWith(Name, "OP"), 90)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get resulting score
+
+* The score can be retrieved by either:
+
+    * Request to __include explanations__ when making the query.  
+      See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
+
+    * __Get the metadata__ of the resulting entities that were loaded to the session.  
+      See example below.
+
+<Admonition type="note" title="Note">
+
+<TabItem value="boost_3" label="boost_3">
+<CodeBlock language="js">
+{`// Make a query:
+// =============
+
+const employees = await session
+    .query(\{ collection: "Employees"\})
+    .search('Notes', 'English')
+    .search('Notes', 'Italian')
+    .boost(10)
+    .all();
+
+// Get the score:
+// ==============
+
+// Call 'getMetadataFor', pass an entity from the resulting employees list
+const metadata = session.advanced.getMetadataFor(employees[0]);
+
+// Score is available in the '@index-score' metadata property
+const score = metadata[CONSTANTS.Documents.Metadata.INDEX_SCORE];
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
+
+### Indexes
+- [Full-text search with index](../../../../indexes/querying/searching)
+
+
+-->

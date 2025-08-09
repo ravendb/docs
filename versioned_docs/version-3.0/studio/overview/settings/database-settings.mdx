@@ -1,0 +1,29 @@
+---
+title: "Settings: Database Settings"
+hide_table_of_contents: true
+sidebar_label: Database Settings
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Settings: Database Settings
+
+Here you can edit settings for the current database.
+
+![Figure 1. Settings. Database Settings.](./assets/settings-database_settings-1.png)
+
+<Admonition type="danger" title="Danger">
+Direct edition of the database settings is possible, yet it is not recommended nor supported. Meddling with the database settings document could cause irreversible damage. Any attempts to introduce changes are made at your own risk.
+</Admonition>
+
+### Active bundles protection
+
+There is one exception in possibility to change the database settings (even if you do on your own risk). The setting `Raven/ActiveBundles` is especially protected and cannot be changed
+just by editing the database settings document. An attempt to do that will result in throwing `OperationVetoedException`. However if you really need to change the active bundles you must
+explicitly mark that by adding `Raven-Temp-Allow-Bundles-Change : true` to the metadata.

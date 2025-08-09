@@ -1,0 +1,80 @@
+---
+title: "Ongoing Tasks - General Info"
+hide_table_of_contents: true
+sidebar_label: General Info
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Ongoing Tasks - General Info
+<Admonition type="note" title="Note">
+
+* Ongoing tasks are ***work tasks*** defined for the database.  
+* Once defined, these tasks are ***ongoing***, meaning that they will do the defined work for any data change in the database.  
+* Each task has a responsible node from the Database Group nodes, this node will actually perform the defined task work.  
+* The available ongoing tasks are:  
+  * [External Replication](../../server/ongoing-tasks/external-replication.mdx)  
+      * Replicate the database documents to another RavenDB database that is not on this Database Group  
+      * A live copy of the data, on the local cluster or another cluster  
+  * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx)  
+      * Write all database documents, or just part of it, to another RavenDB database  
+      * Data can be filtered and modified with transformation scripts  
+  * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx)  
+      * Write the database data to a relational database  
+      * Data can be mutated with transformation scripts  
+  * [Backup](../../server/ongoing-tasks/backup-overview.mdx)  
+      * Schedule a backup or a snapshot of the database at a specified point in time  
+  * [Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+      * Sending batches of documents that match a pre-defined query for processing on a client  
+      * Data can be mutated with transformation scripts  
+</Admonition>
+
+## Ongoing Tasks - General Maintenance Operation
+
+### Delete Ongoing Task Operation
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public DeleteOngoingTaskOperation(long taskId, OngoingTaskType taskType)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **taskId** | long | task id |
+| **taskType** | OngoingTaskType | Task type :  Replication, RavenEtl, SqlEtl, Backup, Subscription|
+
+### Get Ongoing Task Info Operation
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public GetOngoingTaskInfoOperation(long taskId, OngoingTaskType type)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **taskId** | long | task id |
+| **taskType** | OngoingTaskType | Task type :  Replication, RavenEtl, SqlEtl, Backup, Subscription|
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public GetOngoingTaskInfoOperation(string taskName, OngoingTaskType type)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **taskName** | string | task name |
+| **taskType** | OngoingTaskType | Task type :  Replication, RavenEtl, SqlEtl, Backup, Subscription|
+
+

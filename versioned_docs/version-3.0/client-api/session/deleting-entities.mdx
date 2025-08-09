@@ -1,0 +1,165 @@
+---
+title: "Session: Deleting entities"
+hide_table_of_contents: true
+sidebar_label: Deleting Entities
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Deleting entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Entities can be marked for deletion by using `Delete` method, but will not be removed from server until `SaveChanges` is called.
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="csharp">
+{`void Delete<T>(T entity);
+
+void Delete(string id);
+
+void Delete(string id, string expectedChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** or **id** | T, ValueType or string | instance of entity to delete or entity Id |
+
+## Example 1
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+
+session.Delete(employee);
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new DeleteCommandData("employees/1", changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Entities can be marked for deletion by using `delete` method, but will not be removed from server until `saveChanges` is called.
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="java">
+{`<T> void delete(T entity);
+
+void delete(String id);
+
+void delete(String id, String expectedChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** or **id** | T, number, UUID or string | instance of entity to delete or entity Id |
+
+## Example 1
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+
+session.delete(employee);
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="java">
+{`session.delete("employees/1");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="java">
+{`session.delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="java">
+{`session.advanced().defer(new DeleteCommandData("employees/1", null));
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Opening a session](./opening-a-session)
+- [Loading entities](./loading-entities)
+
+-->

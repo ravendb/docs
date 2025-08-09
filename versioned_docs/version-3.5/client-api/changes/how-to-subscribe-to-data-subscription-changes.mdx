@@ -1,0 +1,222 @@
+---
+title: "Changes API: How to subscribe to data subscription changes?"
+hide_table_of_contents: true
+sidebar_label: How to subscribe to data subscription changes?
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Changes API: How to subscribe to data subscription changes?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+All subscription changes can be tracked by using `ForAllDataSubscriptions` and `ForDataSubscription` methods.
+
+## Syntax
+
+## ForAllDataSubscriptions
+<TabItem value="data_subscription_changes_1" label="data_subscription_changes_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<DataSubscriptionChangeNotification>
+	ForAllDataSubscriptions();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all data subscription changes. |
+
+
+
+## ForDataSubscription
+
+<TabItem value="data_subscription_changes_3" label="data_subscription_changes_3">
+<CodeBlock language="csharp">
+{`IObservableWithTask<DataSubscriptionChangeNotification> 
+	ForDataSubscription(long id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Id of a data subscription for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for a specified data subscription changes. |
+
+
+
+## Example I
+
+<TabItem value="data_subscription_changes_2" label="data_subscription_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+	.Changes()
+	.ForAllDataSubscriptions()
+	.Subscribe(
+		change =>
+		\{
+			var subscriptionId = change.Id;
+
+			switch (change.Type)
+			\{
+				case DataSubscriptionChangeTypes.SubscriptionOpened:
+					// do something
+					break;
+				case DataSubscriptionChangeTypes.SubscriptionReleased:
+					// do something
+					break;
+			\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="data_subscription_changes_4" label="data_subscription_changes_4">
+<CodeBlock language="csharp">
+{`var subscriptionId = 3;
+
+IDisposable subscription = store
+	.Changes()
+	.ForDataSubscription(subscriptionId)
+	.Subscribe(
+		change =>
+		\{
+			switch (change.Type)
+			\{
+				case DataSubscriptionChangeTypes.SubscriptionOpened:
+					// do something
+					break;
+				case DataSubscriptionChangeTypes.SubscriptionReleased:
+					// do something
+					break;
+			\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+All subscription changes can be tracked by using `forAllDataSubscriptions` and `forDataSubscription` methods.
+
+## Syntax
+
+## ForAllDataSubscriptions
+<TabItem value="data_subscription_changes_1" label="data_subscription_changes_1">
+<CodeBlock language="java">
+{`IObservable<DataSubscriptionChangeNotification> forAllDataSubscriptions();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all data subscription changes. |
+
+
+
+## ForDataSubscription
+
+<TabItem value="data_subscription_changes_3" label="data_subscription_changes_3">
+<CodeBlock language="java">
+{`IObservable<DataSubscriptionChangeNotification> forDataSubscription(long id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Id of a data subscription for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for a specified data subscription changes. |
+
+
+
+## Example I
+
+<TabItem value="data_subscription_changes_2" label="data_subscription_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store.
+        changes()
+        .forAllDataSubscriptions()
+        .subscribe(Observers.create(new Action1<DataSubscriptionChangeNotification>() \{
+            @Override
+            public void apply(DataSubscriptionChangeNotification change) \{
+                long subscriptionId = change.getId();
+
+                switch (change.getType()) \{
+                    case SUBSCRIPTION_OPENED:
+                        // do something
+                        break;
+                    case SUBSCRIPTION_RELEASED:
+                        // do something
+                        break;
+                \}
+            \}
+        \}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="data_subscription_changes_4" label="data_subscription_changes_4">
+<CodeBlock language="java">
+{`int subscriptionId = 3;
+
+CleanCloseable subscription2 = store.
+        changes()
+        .forDataSubscription(3)
+        .subscribe(Observers.create(new Action1<DataSubscriptionChangeNotification>() \{
+            @Override
+            public void apply(DataSubscriptionChangeNotification change) \{
+                long subscriptionId = change.getId();
+
+                switch (change.getType()) \{
+                    case SUBSCRIPTION_OPENED:
+                        // do something
+                        break;
+                    case SUBSCRIPTION_RELEASED:
+                        // do something
+                        break;
+                \}
+            \}
+        \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to create a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)
+
+-->

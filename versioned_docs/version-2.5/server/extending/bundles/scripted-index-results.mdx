@@ -1,0 +1,133 @@
+---
+title: "Bundle: Scripted Index Results"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Scripted Index Results
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Scripted Index Results
+
+Scripted Index Results bundle allows you to attach scripts to indexes. Those scripts can operate on the results of the indexing. It opens a lot of opportunities like a modification
+of documents by index calculated values or recursive map/reduce indexes.
+
+In order to enable this bundle you need to add `ScriptedIndexResults` to `Raven/ActiveBundles` setting of a database document when a database is created (or via the studio):
+
+<TabItem value="activate_bundle" label="activate_bundle">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.CreateDatabase(new DatabaseDocument
+\{
+ Id = "Northwind",
+ Settings =
+		 \{
+			 \{"Raven/ActiveBundles", "ScriptedIndexResults"\}
+		 \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+The activation of the bundle adds a database index update trigger which is run when an index entry is created or deleted. In order to take advantage of this feature for a selected index
+you need to put a special setup document under key `Raven/ScriptedIndexResults/[IndexName]` that will contain the appropriate scripts to apply:
+
+<TabItem value="setup_doc" label="setup_doc">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+ session.Store(new ScriptedIndexResults
+ \{
+	 Id = ScriptedIndexResults.IdPrefix + "IndexName",
+	 IndexScript = @"", // index script
+	 DeleteScript = @"" // delete script body
+ \});
+
+ session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+Let us assume that we have the following index:
+
+<TabItem value="index_def" label="index_def">
+<CodeBlock language="csharp">
+{`public class OrdersByCompany : AbstractIndexCreationTask<Order, OrderResult>
+\{
+	public OrdersByCompany()
+	\{
+		Map = orders => from order in orders
+		                select new
+			                \{
+				                order.Company, 
+								Count = 1, 
+								Total = order.Lines.Sum(l => (l.Quantity * l.Price))
+			                \};
+
+		Reduce = results => from result in results
+		                    group result by result.Company
+		                    into g
+		                    select new
+			                    \{
+				                    Company = g.Key,
+				                    Count = g.Sum(x => x.Count),
+				                    Total = g.Sum(x => x.Total)
+			                    \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we want to embed the reduced values inside the company document, so let's create the setup document:
+
+<TabItem value="sample_setup_doc" label="sample_setup_doc">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+session.Store(new ScriptedIndexResults
+\{
+	Id = ScriptedIndexResults.IdPrefix + new OrdersByCompany().IndexName,
+	IndexScript = @"
+		var company = LoadDocument(this.Company);
+		if(company == null)
+				return;
+		company.Orders = \{ Count: this.Count, Total: this.Total \};
+		PutDocument(this.Company, company);
+	",
+	DeleteScript = @"
+		var company = LoadDocument(key);
+		if(company == null)
+				return;
+		delete company.Orders;
+		PutDocument(key, company);
+	"
+               \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Since this document is stored in the database every time when _Orders/ByCompany_ index creates a new index entry then _IndexScript_ will be applied to reduce result. Under
+`this` keyword in the _IndexScript_ script you have an access to the _Company_ , _Count_ and _Total_ values.  As you can see the script uses the built-in `LoadDocument` and `PutDocument` functions
+in order to modify a company document. Note that we need to ensure that if the index entry is deleted we will revert the changes by using the _DeleteScript_ script. Notice that we no longer have access under _this_ to our calculated values, the only available variable is 'key' which is a document key.
+
+Now if you take a look at the documents from the companies collection after orders indexation then you will see the added values. For example:
+
+```json 
+	{ 
+		"Id" : "companies/1", 
+		...
+		"Orders" : {
+			"Count" : 7,
+			"Total" : 1234
+		}
+	}
+```

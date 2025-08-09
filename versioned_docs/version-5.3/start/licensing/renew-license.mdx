@@ -1,0 +1,89 @@
+---
+title: "Renew License"
+hide_table_of_contents: true
+sidebar_label: Renew License
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Renew License
+<Admonition type="note" title="Note">
+
+* When your license **expires** Studio is blocked.  
+  Client API operations and other RavenDB features will continue to work.  
+  However, any usage of expired RavenDB licenses is outside the license agreement  
+  and doesn't comply with the [EULA terms](https://ravendb.net/terms).  
+
+* **Renew your license** as described below.  
+
+* In this page:
+    * [Renew commercial licenses](../../start/licensing/renew-license.mdx#renew-commercial-licenses)
+    * [Renew Developer & Community licenses](../../start/licensing/renew-license.mdx#renew-developer-&-community-licenses)
+
+</Admonition>
+## Renew commercial licenses
+
+* This section relates to all commercial licenses: **Professional**, **Enterprise**, and all **ISV licenses**.  
+
+<Admonition type="note" title="Note">
+**Automatic renewal**:  
+If your server has an active connection to RavenDB's [License Server](../../start/licensing/licensing-overview.mdx#license-server),  
+and if the [DisableAutoUpdate](../../server/configuration/license-configuration.mdx#licensedisableautoupdate) configuration is Not set to true,  
+then these commercial licenses will be automatically renewed.  
+</Admonition>
+
+<Admonition type="note" title="Note">
+**Manual (offline) renewal**:  
+If the connection to the License Server is unavailable, contact [customer service](https://ravendb.net/contact) to extend your license.  
+A license renewal email will be sent to you (the license ID will stay the **same**).  
+Copy the new license key from the mail and proceed with one of the following options.  
+
+**Either**:  
+
+* Replace the existing license key with the new one from Studio, as described [here](../../start/licensing/replace-license.mdx#replace-license-from-studio).
+
+**Or**:  
+
+* Set [DisableAutoUpdateFromApi](../../server/configuration/license-configuration.mdx#licensedisableautoupdatefromapi) to true.
+
+* Activate the new license key using the [configuration keys](../../start/licensing/activate-license.mdx#activate-license-with-configuration-keys).
+
+* Restart your server (needed only if any configuration key was changed).  
+</Admonition>
+
+
+
+## Renew Developer & Community licenses
+
+* The **Developer** and **Community** licenses are renewed from Studio,  
+  the 'Renew' button is available only for those license types.  
+
+* They can be renewed when there are less than 30 days remaining on your current license.
+
+![Renew License](./assets/renew-1.png)
+
+1. **About**  
+   Navigate to the _About_ page in Studio  
+
+2. **Renew**  
+   Click the _RENEW LICENSE_ button  
+
+
+   * ![Renew License](./assets/renew-2.png)  
+   
+
+3. **Renew**  
+  Click to renew the current license.  
+  The renewed license will be sent to you by mail.  
+
+4. **Submit**  
+   Paste the renewed license key and click Submit.
+
+
+

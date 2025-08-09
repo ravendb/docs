@@ -1,0 +1,247 @@
+---
+title: "Get Identities Operation"
+hide_table_of_contents: true
+sidebar_label: Get Identities
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Get Identities Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Upon document creation, providing a collection name with a pipe symbol (`|`)  
+  will cause the server to generate an ID for the new document called an __identity__.
+ 
+* The identity document ID is unique across the entire cluster within the database scope.  
+  It is composed  of the collection name provided and an integer value that is continuously incremented.
+
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
+
+* Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
+
+* Learn more about identities in:
+
+    * [Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
+
+* In this page:
+
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
+
+</Admonition>
+## Get identities operation 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var session = store.OpenSession())
+{
+    // Request the server to generate an identity ID for the new document. Pass:
+    //   * The entity to store
+    //   * The collection name with a pipe (|) postfix 
+    session.Store(new Company { Name = "RavenDB" }, "companies|");
+    
+    // If this is the first identity created for this collection,
+    // and if the identity value was not customized
+    // then a document with an identity ID "companies/1" will be created
+    session.SaveChanges();
+}
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+var getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+Dictionary<string, long> identities = store.Maintenance.Send(getIdentitiesOp);
+
+// Results
+var latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Request the server to generate an identity ID for the new document. Pass:
+    //   * The entity to store
+    //   * The collection name with a pipe (|) postfix 
+    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+    
+    // If this is the first identity created for this collection,
+    // and if the identity value was not customized
+    // then a document with an identity ID "companies/1" will be created
+    asyncSession.SaveChangesAsync();
+}
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+var getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to Maintenance.SendAsync
+Dictionary<string, long> identities = await store.Maintenance.SendAsync(getIdentitiesOp);
+
+// Results
+var latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public GetIdentitiesOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetIdentitiesOperation** is used to return a dictionary which maps from the collection name to the identity value.
+
+## Syntax
+
+<TabItem value="sample_1" label="sample_1">
+<CodeBlock language="java">
+{`public GetIdentitiesOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="sample_2" label="sample_2">
+<CodeBlock language="java">
+{`Map<String, Long> identities
+    = store.maintenance().send(new GetIdentitiesOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Upon document creation, providing a collection name with a pipe symbol (`|`)  
+  will cause the server to generate an ID for the new document called an __identity__.
+ 
+* The identity document ID is unique across the entire cluster within the database scope.  
+  It is composed  of the collection name provided and an integer value that is continuously incremented.
+
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
+
+* Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
+
+* Learn more about identities in:
+
+    * [Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+
+* In this page:
+
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
+
+</Admonition>
+## Get identities operation 
+
+<TabItem value="get_identities" label="get_identities">
+<CodeBlock language="js">
+{`// Create a document with an identity ID:
+// ======================================
+
+const session = documentStore.openSession();
+const company = new Company();
+company.name = "RavenDB";
+
+// Request the server to generate an identity ID for the new document. Pass:
+//   * The entity to store
+//   * The collection name with a pipe (|) postfix 
+await session.store(company, "companies|");
+
+// If this is the first identity created for this collection,
+// and if the identity value was not customized
+// then a document with an identity ID "companies/1" will be created
+await session.saveChanges();
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+const getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to maintenance.send
+const identities = await store.maintenance.send(getIdentitiesOp);
+
+// Results
+const latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const getIdentitiesOp = new GetIdentitiesOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation#strategy--3)
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Seed identity](../../../../client-api/operations/maintenance/identities/seed-identity)
+- [Increment next identity](../../../../client-api/operations/maintenance/identities/increment-next-identity)
+
+
+-->

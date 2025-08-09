@@ -1,0 +1,94 @@
+---
+title: "Migration: How to migrate DocumentQuery from 3.x"
+hide_table_of_contents: true
+sidebar_label: DocumentQuery
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to migrate DocumentQuery from 3.x
+
+There were many changes to `DocumentQuery` regarding specific functionalities. We encourage you to read about them in their respective articles, but the biggest change that this particular article wants to address is the **default operator change**.
+
+In the previous version of RavenDB, there was a discrepancy between `Query` and `DocumentQuery` in regards to the default operator. The `Query` was using `AND` and `DocumentQuery` was using `OR`. Now both of those types of query are using the same operator `AND`.
+
+## Example I
+
+Retrieve all employees which `FirstName` is `John` or `Bob` by using the `UsingDefaultOperator` method.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="document_query_1" label="document_query_1">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "John")
+    .WhereEquals(x => x.FirstName, "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="document_query_2" label="document_query_2">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .UsingDefaultOperator(QueryOperator.Or)
+    .WhereEquals(x => x.FirstName, "John")
+    .WhereEquals(x => x.FirstName, "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example II
+
+Retrieve all employees which `FirstName` is `John` or `Bob` using `OrElse` method.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="document_query_1" label="document_query_1">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "John")
+    .WhereEquals(x => x.FirstName, "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="document_query_3" label="document_query_3">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "John")
+    .OrElse()
+    .WhereEquals(x => x.FirstName, "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+

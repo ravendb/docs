@@ -1,0 +1,139 @@
+---
+title: "Databases List View"
+hide_table_of_contents: true
+sidebar_label: List View
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Databases List View
+<Admonition type="note" title="Note">
+
+* All your databases are listed in this view  
+  * Database stats can be viewed  
+  * Actions can be performed on each database  
+
+* In this page:  
+  * [Database Stats](../../../studio/server/databases/databases-list-view.mdx#database-stats)  
+  * [Database Actions](../../../studio/server/databases/databases-list-view.mdx#database-actions)  
+  * [Creating New Database Options](../../../studio/server/databases/databases-list-view.mdx#creating-new-database-options)  
+  * [More Actions](../../../studio/server/databases/databases-list-view.mdx#more-actions)  
+  * [Remote Database](../../../studio/server/databases/databases-list-view.mdx#remote-database)  
+</Admonition>
+## Database Stats
+
+![Figure 1. Database Stats](./assets/database-stats.png)
+
+1. **Database state**    
+   A database can be: _Online_ , _Offline_ or _Disabled_        
+
+   * ***Online***   - the database is active and ready to use. Read and write actions can be performed.  
+   * ***Offline***  - the database has not been used recently, and will become online upon access.  
+   * ***Disabled*** - the database has been disabled.  
+  
+   * Note:  
+     If the database is contained in a cluster's node that is different than the node that is currently viewed in this Studio instance, then 'Remote' will be indicated - see more [below](../../../studio/server/databases/databases-list-view.mdx#remote-database).
+
+2. **Containing nodes**   
+   These are the nodes that contain a copy of the database. 
+
+3. **Database size**    
+   The total size of the database, including both documents and indexes.
+
+4. **Up time**        
+   The time that has passed since database last came online. 
+
+5. **Number of documents**      
+   The number of documents in the database.
+
+6. **Latest backup time**      
+   The time of the latest database backup.
+      
+7. **Number of indexes**    
+   The number of index errors will show if relevant.
+
+8. **Alerts**    
+   The number of alerts on this database if there are any.
+
+9. **Performance hints**    
+   The number of performance hints on this database if there are any.
+   
+
+
+## Database Actions
+
+![Figure 2. Database Actions](./assets/database-actions-1.png)
+
+1. **Create new database**  
+   A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more [below](databases-list-view#creating-new-database-options).
+
+2. **Manage group**  
+   Click to manage the nodes that contain this database - see more about [The Database Group](../../../studio/database/settings/manage-database-group.mdx).
+
+3. **Disable/Enable the database**  
+   A disabled database cannot be accessed. 
+
+4. **More actions**  
+   Pause indexing, Disable indexing, Compact database - see more [below](../../../studio/server/databases/databases-list-view.mdx#more-actions). 
+
+5. **Refresh data**  
+   Refresh the database stats data in this view from the server.
+
+6. **Delete the database**  
+
+
+## Creating New Database Options
+
+![Figure 3. Creating New Database](./assets/database-actions-2.png)
+
+1. **Create new database from scratch**   
+   See detailed flow [here](../../../studio/server/databases/create-new-database/general-flow.mdx)  
+
+2. **Create new database from an existing backup copy**   
+   See detailed flow [here](../../../studio/server/databases/create-new-database/from-backup.mdx)  
+
+3. **Create new database from legacy data files**      
+   Create a new database from a 3.x RavenDB version database    
+   See detailed flow [here](../../../studio/server/databases/create-new-database/from-legacy-files.mdx)
+
+
+## More Actions
+
+![Figure 4. More Actions](./assets/database-actions-3.png)
+
+1. **Pause indexing**      
+   All indexes on this database will stop indexing.
+   Indexing will resume upon a restart to the server.  
+
+2. **Disable indexing**     
+   All indexes on this database will stop indexing.  
+   Indexing will **not** resume upon a restart to the server.  
+
+3. **Compact database**   
+   Physically [compact](../../../client-api/operations/server-wide/compact-database.mdx) 
+   the database on disk.
+   <Admonition type="warning" title="Warning">
+   The compacting operation is executed **asynchronously**, 
+   and during this operation **the database will be offline**.
+   </Admonition>
+
+
+
+## Remote Database
+
+![Figure 5. Remote Database](./assets/database-actions-4.png)
+
+* If the database is contained in one of the cluster's other nodes, but not in the node you are currently viewing in this instance of the studio,  
+  the database state will be ***'Remote'***
+
+* For example, in the above figure, DB2 is contained in nodes A & B. 
+  DB2 is labeled ***'Remote'*** because we are currently viewing node C.  
+
+* **Note:** Clicking on a remote database will navigate to the documents view for this database on one of its containing nodes.  
+

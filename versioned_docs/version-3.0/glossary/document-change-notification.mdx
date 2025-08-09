@@ -1,0 +1,47 @@
+---
+title: "Glossary: DocumentChangeNotification"
+hide_table_of_contents: true
+sidebar_label: DocumentChangeNotification
+sidebar_position: 18
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: DocumentChangeNotification
+
+### General
+
+This class extends `EventArgs`.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [DocumentChangeTypes](../glossary/document-change-notification.mdx#documentchangetypes-enum-flags) | Document change type enum |
+| **Id** | string | Document identifier |
+| **CollectionName** | string | Document's collection name |
+| **TypeName** | string | Type name |
+| **Etag** | Etag | Etag |
+| **Message** | string | Notification payload |
+
+---
+
+# DocumentChangeTypes (enum flags)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **Put** | `1` |
+| **Delete** | `2` |
+| **BulkInsertStarted** | `4` |
+| **BulkInsertEnded** | `8` |
+| **BulkInsertError** | `16` |
+| **Common** | `Put & Delete` |
+

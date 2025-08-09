@@ -1,0 +1,57 @@
+---
+title: "Loading documents"
+hide_table_of_contents: true
+sidebar_label: Loading documents
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Loading documents
+
+Sometimes, in our results set, we want to include data from referenced documents. To do so, the ability to load external documents was introduced. To use it just invoke the `LoadDocument` method with appropriate parameters. This method contains various overloads that can be used to load a single document by its Id or to load multiple documents from an array containing Ids:
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Products_ProductAndCategoryName : AbstractTransformerCreationTask<Product>
+\{
+	public class Result
+	\{
+		public string ProductName \{ get; set; \}
+
+		public string CategoryName \{ get; set; \}
+	\}
+
+	public Products_ProductAndCategoryName()
+	\{
+		TransformResults =
+			products =>
+			from product in products
+			let category = LoadDocument<Category>(product.Category)
+			select new
+			\{
+				ProductName = product.Name,
+				CategoryName = category.Name
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`IList<Products_ProductAndCategoryName.Result> results = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Products_ProductAndCategoryName, Products_ProductAndCategoryName.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,1204 @@
+---
+title: "Paging"
+hide_table_of_contents: true
+sidebar_label: Paging
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Paging
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic, optimizing hardware usage, or just because no user can handle huge amounts of data at once anyway.
+
+<Admonition type="note" title="Note">
+If not specified, page size **on client side** is set to **128**.
+</Admonition>
+
+<Admonition type="note" title="Note">
+If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here](../../server/configuration/configuration-options.mdx)).
+</Admonition>
+
+## Example I - safe by default
+
+All of the bellow queries will return up to **128** results due to the client default page size value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Product, Products_ByUnitsInStock>()
+	.Where(x => x.UnitsInStock > 10)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByUnitsInStock>()
+	.WhereGreaterThan(x => x.UnitsInStock, 10)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Products/ByUnitsInStock",
+		new IndexQuery
+		{
+			Query = "UnitsInStock_Range:{Ix10 TO NULL}"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+						  {
+							  UnitsInStock = product.UnitsInStock
+						  };
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+All of the bellow queries will return up to **1024** results due to the server default max page size value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Product, Products_ByUnitsInStock>()
+	.Where(x => x.UnitsInStock > 10)
+	.Take(9999)	// server will decrease this value to 1024
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByUnitsInStock>()
+	.WhereGreaterThan(x => x.UnitsInStock, 10)
+	.Take(9999)	// server will decrease this value to 1024
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Products/ByUnitsInStock",
+		new IndexQuery
+		{
+			Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+			PageSize = 9999
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+						  {
+							  UnitsInStock = product.UnitsInStock
+						  };
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II - basic paging
+
+Let's assume that our page size is `10` and we want to retrieve 3rd page. To do this we need to issue following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Product, Products_ByUnitsInStock>()
+	.Where(x => x.UnitsInStock > 10)
+	.Skip(20)	// skip 2 pages worth of products
+	.Take(10)	// take up to 10 products
+	.ToList();	// execute query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByUnitsInStock>()
+	.WhereGreaterThan(x => x.UnitsInStock, 10)
+	.Skip(20)	// skip 2 pages worth of products
+	.Take(10)	// take up to 10 products
+	.ToList();	// execute query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Products/ByUnitsInStock",
+		new IndexQuery
+		{
+			Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+			Start = 20,	// skip 2 pages worth of products
+			PageSize = 10	// take up to 10 products
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+						  {
+							  UnitsInStock = product.UnitsInStock
+						  };
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Finding the total results count when paging
+
+While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Product> results = session
+	.Query<Product, Products_ByUnitsInStock>()
+	.Statistics(out stats)				// fill query statistics
+	.Where(x => x.UnitsInStock > 10)
+	.Skip(20)
+	.Take(10)
+	.ToList();
+
+int totalResults = stats.TotalResults;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByUnitsInStock>()
+	.Statistics(out stats)					// fill query statistics
+	.WhereGreaterThan(x => x.UnitsInStock, 10)
+	.Skip(20)
+	.Take(10)
+	.ToList();
+
+int totalResults = stats.TotalResults;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Products/ByUnitsInStock",
+		new IndexQuery
+		{
+			Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+			Start = 20,
+			PageSize = 10
+		});
+
+int totalResults = result.TotalResults;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+						  {
+							  UnitsInStock = product.UnitsInStock
+						  };
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
+
+## Paging through tampered results
+
+For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value e.g. when executing a Distinct query or index produces multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+
+Whenever `SkippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
+    
+In order to do proper paging in those scenarios, you should use the `SkippedResults` when telling RavenDB how many documents to skip. In other words, for each page the starting point should be `.Skip((currentPage * pageSize) + SkippedResults)`.
+
+For example, let's page through all the results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Product> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	results = session
+		.Query<Product, Products_ByUnitsInStock>()
+		.Statistics(out stats)
+		.Skip((pageNumber * pageSize) + skippedResults)
+		.Take(pageSize)
+		.Where(x => x.UnitsInStock > 10)
+		.Distinct()
+		.ToList();
+
+	skippedResults += stats.SkippedResults;
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Product> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	results = session
+		.Advanced
+		.DocumentQuery<Product, Products_ByUnitsInStock>()
+		.Statistics(out stats)
+		.Skip((pageNumber * pageSize) + skippedResults)
+		.Take(pageSize)
+		.WhereGreaterThan(x => x.UnitsInStock, 10)
+		.Distinct()
+		.ToList();
+
+	skippedResults += stats.SkippedResults;
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	result = store
+		.DatabaseCommands
+		.Query(
+			"Products/ByUnitsInStock",
+			new IndexQuery
+			{
+				Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+				Start = (pageNumber * pageSize) + skippedResults,
+				PageSize = pageSize,
+				IsDistinct = true
+			});
+
+	skippedResults += result.SkippedResults;
+	pageNumber++;
+}
+while (result.Results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+						  {
+							  UnitsInStock = product.UnitsInStock
+						  };
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Order> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	results = session
+		.Query<Order, Orders_ByOrderLines_ProductName>()
+		.Statistics(out stats)
+		.Skip((pageNumber * pageSize) + skippedResults)
+		.Take(pageSize)
+		.ToList();
+
+	skippedResults += stats.SkippedResults;
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`RavenQueryStatistics stats;
+IList<Order> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	results = session
+		.Advanced
+		.DocumentQuery<Order, Orders_ByOrderLines_ProductName>()
+		.Statistics(out stats)
+		.Skip((pageNumber * pageSize) + skippedResults)
+		.Take(pageSize)
+		.ToList();
+
+	skippedResults += stats.SkippedResults;
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do
+{
+	result = store
+		.DatabaseCommands
+		.Query(
+			"Orders/ByOrderLines/ProductName",
+			new IndexQuery
+			{
+				Start = (pageNumber * pageSize) + skippedResults,
+				PageSize = pageSize
+			});
+
+	skippedResults += result.SkippedResults;
+	pageNumber++;
+}
+while (result.Results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByOrderLines_ProductName : AbstractIndexCreationTask<Order>
+{
+	public Orders_ByOrderLines_ProductName()
+	{
+		Map = orders => from order in orders
+						from line in order.Lines
+						select new
+						{
+							Product = line.ProductName
+						};
+
+		MaxIndexOutputsPerDocument = 1024;
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The situation would be different if a `Distinct` query and a projection applied to stored fields only. Then to get correct results you shouldn't include `SkippedResults`
+into the paging formula. Let's take a look at the example (note the usage of `Store` method in the index definition):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<string> results;
+int pageNumber = 0;
+const int pageSize = 10;
+
+do
+{
+	results = session
+		.Query<Orders_ByStoredProductName.Result, Orders_ByStoredProductName>()
+		.Select(x => x.Product)
+		.Skip((pageNumber * pageSize))
+		.Take(pageSize)
+		.Distinct()
+		.ToList();
+
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Orders_ByStoredProductName.Result> results;
+int pageNumber = 0;
+const int pageSize = 10;
+
+do
+{
+	results = session
+		.Advanced
+		.DocumentQuery<Order, Orders_ByStoredProductName>()
+		.SelectFields<Orders_ByStoredProductName.Result>("Product")
+		.Skip((pageNumber * pageSize))
+		.Take(pageSize)
+		.Distinct()
+		.ToList();
+
+	pageNumber++;
+}
+while (results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result;
+int pageNumber = 0;
+const int pageSize = 10;
+
+do
+{
+	result = store
+		.DatabaseCommands
+		.Query(
+			"Orders/ByStoredProductName",
+			new IndexQuery
+			{
+				Start = (pageNumber*pageSize),
+				PageSize = pageSize,
+				IsDistinct = true,
+				FieldsToFetch = new[]
+				{
+					"Product"
+				}
+			});
+
+	pageNumber++;
+} while (result.Results.Count > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByStoredProductName : AbstractIndexCreationTask<Order>
+{
+	public class Result
+	{
+		public string Product { get; set; } 
+	}
+
+	public Orders_ByStoredProductName()
+	{
+		Map = orders => from order in orders
+						from line in order.Lines
+						select new Result
+						{
+							Product = line.ProductName
+						};
+
+		MaxIndexOutputsPerDocument = 1024;
+
+		Store("Product", FieldStorage.Yes);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Increasing StartsWith performance
+
+All `StartsWith` operations (e.g. [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith) and [Stream](../../client-api/session/querying/how-to-stream-query-results.mdx) from advanced session operations or [StartsWith](../../client-api/commands/documents/get.mdx#startswith) and [Stream](../../client-api/commands/documents/stream.mdx) from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
+
+To do this we need to pass same instance of `RavenPagingInformation` to the identical operation. The client will use information contained in this object to increase the performance (only if next page is requested).
+
+<TabItem value="paging_5_1" label="paging_5_1">
+<CodeBlock language="csharp">
+{`var pagingInformation = new RavenPagingInformation();
+IList<Product> results = session
+	.Advanced
+	.LoadStartingWith<Product>(
+		"products/",				// all documents starting with 'products/'
+		"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
+		0 * 25,					// skip 0 records (page 1)
+		25,					// take up to 25
+		pagingInformation: pagingInformation);	// fill \`RavenPagingInformation\` with operation data
+
+results = session
+	.Advanced
+	.LoadStartingWith<Product>(
+		"products/",				// all documents starting with 'products/'
+		"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
+		1 * 25,					// skip 25 records (page 2)
+		25,					// take up to 25
+		pagingInformation: pagingInformation);	// since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic, optimizing hardware usage, or just because no user can handle huge amounts of data at once anyway.
+
+<Admonition type="note" title="Note">
+If not specified, page size **on client side** is set to **128**.
+</Admonition>
+
+<Admonition type="note" title="Note">
+If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here](../../server/configuration/configuration-options.mdx)).
+</Admonition>
+
+## Example I - safe by default
+
+All of the bellow queries will return up to **128** results due to the client default page size value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .query(Product.class, Products_ByUnitsInStock.class)
+  .where(p.unitsInStock.gt(10))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .advanced()
+  .documentQuery(Product.class, Products_ByUnitsInStock.class)
+  .whereGreaterThan(p.unitsInStock, 10)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Products/ByUnitsInStock",
+    new IndexQuery("UnitsInStock_Range:{Ix10 TO NULL}"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products            " +
+     " select new                               " +
+     " {                                        " +
+     "     UnitsInStock = product.UnitsInStock  " +
+     " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+All of the bellow queries will return up to **1024** results due to the server default max page size value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .query(Product.class, Products_ByUnitsInStock.class)
+  .where(p.unitsInStock.gt(10))
+  .take(9999) // server will decrease this value to 1024
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .advanced()
+  .documentQuery(Product.class, Products_ByUnitsInStock.class)
+  .whereGreaterThan(p.unitsInStock, 10)
+  .take(9999) // server will decrease this value to 1024
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`IndexQuery query = new IndexQuery();
+query.setQuery("UnitsInStock_Range:{Ix10 TO NULL}");
+query.setPageSize(9999);
+QueryResult result = store
+  .getDatabaseCommands()
+  .query("Products/ByUnitsInStock", query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products            " +
+     " select new                               " +
+     " {                                        " +
+     "     UnitsInStock = product.UnitsInStock  " +
+     " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II - basic paging
+
+Let's assume that our page size is `10` and we want to retrieve 3rd page. To do this we need to issue following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .query(Product.class, Products_ByUnitsInStock.class)
+  .where(p.unitsInStock.gt(10))
+  .skip(20) // skip 2 pages worth of products
+  .take(10) // take up to 10 products
+  .toList(); // execute query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .advanced()
+  .documentQuery(Product.class, Products_ByUnitsInStock.class)
+  .whereGreaterThan(p.unitsInStock, 10)
+  .skip(20) // skip 2 pages worth of products
+  .take(10) // take up to 10 products
+  .toList(); // execute query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`IndexQuery query = new IndexQuery();
+query.setQuery("UnitsInStock_Range:{Ix10 TO NULL}");
+query.setStart(20); // skip 2 pages worth of products
+query.setPageSize(10); // take up to 10 products
+
+QueryResult result = store
+  .getDatabaseCommands()
+  .query("Products/ByUnitsInStock", query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products            " +
+     " select new                               " +
+     " {                                        " +
+     "     UnitsInStock = product.UnitsInStock  " +
+     " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Finding the total results count when paging
+
+While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Product> results = session
+  .query(Product.class, Products_ByUnitsInStock.class)
+  .statistics(statsRef) // fill query statistics
+  .where(p.unitsInStock.gt(10))
+  .skip(20)
+  .take(10)
+  .toList();
+
+int totalResults = statsRef.value.getTotalResults();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Product> results = session
+  .advanced()
+  .documentQuery(Product.class, Products_ByUnitsInStock.class)
+  .statistics(statsRef) // fill query statistics
+  .whereGreaterThan(p.unitsInStock, 10)
+  .skip(20)
+  .take(10)
+  .toList();
+
+int totalResults = statsRef.value.getTotalResults();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`IndexQuery query = new IndexQuery();
+query.setQuery("UnitsInStock_Range:{Ix10 TO NULL}");
+query.setStart(20);
+query.setPageSize(10);
+QueryResult result = store
+  .getDatabaseCommands()
+  .query("Products/ByUnitsInStock", query);
+
+int totalResults = result.getTotalResults();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products            " +
+     " select new                               " +
+     " {                                        " +
+     "     UnitsInStock = product.UnitsInStock  " +
+     " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
+
+## Paging through tampered results
+
+
+For some queries, server will skip over some results internally, and by that invalidate the `totalResults` value e.g. when executing a Distinct query or index produces multiple index entries per document (a fanout index), then `totalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `distinct` operator.
+
+Whenever `skippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
+    
+In order to do proper paging in those scenarios, you should use the `skippedResults` when telling RavenDB how many documents to skip. In other words, for each page the starting point should be `.skip((currentPage * pageSize) + skippedResults)`.
+
+For example, let's page through all the results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Product> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+QProduct p = QProduct.product;
+
+do {
+  results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .statistics(statsRef)
+    .skip((pageNumber * pageSize) + skippedResults)
+    .take(pageSize)
+    .where(p.unitsInStock.gt(10))
+    .distinct()
+    .toList();
+
+  skippedResults += statsRef.value.getSkippedResults();
+  pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Product> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+QProduct p = QProduct.product;
+
+do {
+  results = session
+    .advanced()
+    .documentQuery(Product.class, Products_ByUnitsInStock.class)
+    .statistics(statsRef)
+    .skip((pageNumber * pageSize) + skippedResults)
+    .take(pageSize)
+    .whereGreaterThan(p.unitsInStock, 10)
+    .distinct()
+    .toList();
+
+  skippedResults += statsRef.value.getSkippedResults();
+  pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do {
+  IndexQuery query = new IndexQuery();
+  query.setQuery("UnitsInStock_Range:{Ix10 TO NULL}");
+  query.setStart((pageNumber * pageSize) + skippedResults);
+  query.setPageSize(pageSize);
+  query.setDistinct(true);
+  result = store
+    .getDatabaseCommands()
+    .query("Products/ByUnitsInStock", query);
+
+  skippedResults += result.getSkippedResults();
+  pageNumber++;
+} while (result.getResults().size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products            " +
+     " select new                               " +
+     " {                                        " +
+     "     UnitsInStock = product.UnitsInStock  " +
+     " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Order> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do {
+  results = session
+    .query(Order.class, Orders_ByOrderLines_ProductName.class)
+    .statistics(statsRef)
+    .skip((pageNumber * pageSize) + skippedResults)
+    .take(pageSize)
+    .toList();
+
+  skippedResults += statsRef.value.getSkippedResults();
+  pageNumber++;
+} while  (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`Reference<RavenQueryStatistics> statsRef = new Reference<RavenQueryStatistics>();
+List<Order> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do {
+  results = session
+    .advanced()
+    .documentQuery(Order.class, Orders_ByOrderLines_ProductName.class)
+    .statistics(statsRef)
+    .skip((pageNumber * pageSize) + skippedResults)
+    .take(pageSize)
+    .toList();
+
+  skippedResults += statsRef.value.getSkippedResults();
+  pageNumber++;
+} while  (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+
+do {
+  IndexQuery query = new IndexQuery();
+  query.setStart((pageNumber * pageSize) + skippedResults);
+  query.setPageSize(pageSize);
+
+  result = store
+    .getDatabaseCommands()
+    .query("Orders/ByOrderLines/ProductName", query);
+
+  skippedResults += result.getSkippedResults();
+  pageNumber++;
+} while (result.getResults().size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByOrderLines_ProductName extends AbstractIndexCreationTask {
+  @SuppressWarnings("boxing")
+  public Orders_ByOrderLines_ProductName() {
+    map =
+     " from order in docs.Orders " +
+     " from line in order.Lines       " +
+     " select new                     " +
+     " {                              " +
+     "     Product = line.ProductName " +
+     " };";
+
+     maxIndexOutputsPerDocument = 1024L;
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+The situation would be different if a `Distinct` query and a projection applied to stored fields only. Then to get correct results you shouldn't include `SkippedResults`
+into the paging formula. Let's take a look at the example (note the usage of `Store` method in the index definition):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<String> results;
+int pageNumber = 0;
+int pageSize = 10;
+
+do {
+  results = session
+     .query(Orders_ByStoredProductName.Result.class, Orders_ByStoredProductName.class)
+     .select(String.class, "Product")
+     .skip(pageSize * pageNumber)
+     .take(pageSize)
+     .distinct()
+     .toList();
+
+  pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Orders_ByStoredProductName.Result> results;
+int pageNumber = 0;
+int pageSize = 10;
+
+do {
+  results = session
+     .advanced()
+     .documentQuery(Order.class, Orders_ByStoredProductName.class)
+     .selectFields(Orders_ByStoredProductName.Result.class, "Product")
+     .skip(pageSize * pageNumber)
+     .take(pageSize)
+     .distinct()
+     .toList();
+
+  pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result;
+int pageNumber = 0;
+int pageSize = 10;
+
+do {
+  IndexQuery query = new IndexQuery();
+  query.setStart(pageNumber * pageSize);
+  query.setPageSize(pageSize);
+  query.setDistinct(true);
+  query.setFieldsToFetch(new String[] { "product" });
+
+  result = store.getDatabaseCommands()
+     .query("Orders/ByStoredProductName", query);
+  pageNumber++;
+} while (result.getResults().size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByStoredProductName extends AbstractIndexCreationTask {
+  public static class Result {
+    private String product;
+    public String getProduct() {
+      return product;
+    }
+    public void setProduct(String product) {
+      this.product = product;
+    }
+  }
+  @SuppressWarnings("boxing")
+  public Orders_ByStoredProductName() {
+    map =
+     " from order in docs.Orders " +
+     " from line in order.Lines       " +
+     " select new                     " +
+     " {                              " +
+     "     Product = line.ProductName " +
+     " };";
+
+     maxIndexOutputsPerDocument = 1024L;
+     store("Product", FieldStorage.YES);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Increasing StartsWith performance
+
+All `startsWith` operations (e.g. [loadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith) and [stream](../../client-api/session/querying/how-to-stream-query-results.mdx) from advanced session operations or [startsWith](../../client-api/commands/documents/get.mdx#startswith) and [stream](../../client-api/commands/documents/stream.mdx) from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
+
+To do this we need to pass same instance of `RavenPagingInformation` to the identical operation. The client will use information contained in this object to increase the performance (only if next page is requested).
+
+<TabItem value="paging_5_1" label="paging_5_1">
+<CodeBlock language="csharp">
+{`var pagingInformation = new RavenPagingInformation();
+IList<Product> results = session
+	.Advanced
+	.LoadStartingWith<Product>(
+		"products/",				// all documents starting with 'products/'
+		"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
+		0 * 25,					// skip 0 records (page 1)
+		25,					// take up to 25
+		pagingInformation: pagingInformation);	// fill \`RavenPagingInformation\` with operation data
+
+results = session
+	.Advanced
+	.LoadStartingWith<Product>(
+		"products/",				// all documents starting with 'products/'
+		"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
+		1 * 25,					// skip 25 records (page 2)
+		25,					// take up to 25
+		pagingInformation: pagingInformation);	// since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Indexing : Basics](../../indexes/indexing-basics)
+- [Querying : Basics](../../indexes/querying/basics)
+- [Querying : Filtering](../../indexes/querying/filtering)
+- [Querying : Sorting](../../indexes/querying/sorting)
+
+-->

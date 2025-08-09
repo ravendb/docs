@@ -1,0 +1,128 @@
+---
+title: "Create Raven Test with RavenTestBase"
+hide_table_of_contents: true
+sidebar_label: Create Raven Test
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create Raven Test with RavenTestBase
+In case you see an issue with RavenDB and you can to report it, the bast way is to create a failing test and send it to us so we could look into it and fix it as fast as possible.
+
+## How to Create a Failing Test
+1) Create a new Console Application  
+2) Add the NuGet Package "RavenDB Test Helpers"  
+PM&gt; Install-Package RavenDB.Tests.Helpers
+
+![Add RavenDB Test Helpers NuGet Package](./assets/tests_1.PNG)  
+3) Create a test like this:  
+<TabItem value="RavenTestSample1" label="RavenTestSample1">
+<CodeBlock language="csharp">
+{`class RavenTestSample : RavenTestBase
+\{
+	[Fact]
+	public void ThisIsMyTest()
+	\{
+		//Write you test here
+		//Don't forget to use Asserts
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+When you inherit from the class "RavenTestBase" you get the following methods to help you create your test:  
+<TabItem value="RavenTestBaseMethods" label="RavenTestBaseMethods">
+<CodeBlock language="csharp">
+{`public EmbeddableDocumentStore NewDocumentStore(bool runInMemory = true, string requestedStorage = null, ComposablePartCatalog catalog = null,
+												bool deleteDirectory = true,	bool deleteDirectoryOnDispose = true);
+//Creates an embedded document store
+
+public IDocumentStore NewRemoteDocumentStore(bool fiddler = false);
+//Creates a new document store
+
+public static void WaitForIndexing(IDocumentStore store);
+//Waits for all indexes to be non stale
+
+public static void WaitForUserToContinueTheTest(EmbeddableDocumentStore documentStore, bool debug = true);
+//Only active when debugging a test, will load the studio for the tested store
+
+protected void WaitForUserToContinueTheTest();
+//Only active when debugging a test, will load the studio for a server in port 8079
+`}
+</CodeBlock>
+</TabItem>
+
+In addtion you have several virtual method you could use:  
+<TabItem value="RavenTestBaseViruals" label="RavenTestBaseViruals">
+<CodeBlock language="csharp">
+{`protected virtual void ModifyStore(DocumentStore documentStore);
+
+protected virtual void ModifyStore(EmbeddableDocumentStore documentStore);
+
+protected virtual void ModifyConfiguration(RavenConfiguration configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+Here is an example of a full test:  
+<TabItem value="RavenTestSample2" label="RavenTestSample2">
+<CodeBlock language="csharp">
+{`public class IndexTest : RavenTestBase
+\{
+	[Fact]
+	public void CanIndexAndQuery()
+	\{
+		using (var store = NewDocumentStore())
+		\{
+			new SampleData_Index().Execute(store);
+
+			using (var session = store.OpenSession())
+			\{
+				session.Store(new SampleData
+				\{
+					Name = "RavenDB"
+				\});
+
+				session.SaveChanges();
+			\}
+
+			using (var session = store.OpenSession())
+			\{
+				var result = session.Query<SampleData, SampleData_Index>()
+					.Customize(customization => customization.WaitForNonStaleResultsAsOfNow())
+					.FirstOrDefault();
+
+				Assert.Equal(result.Name, "RavenDB");
+			\}
+		\}
+	\}
+\}
+
+public class SampleData
+\{
+	public string Name \{ get; set; \}
+\}
+
+public class SampleData_Index : AbstractIndexCreationTask<SampleData>
+\{
+	public SampleData_Index()
+	\{
+		Map = docs => from doc in docs
+					  select new
+					  \{
+						  doc.Name
+					  \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+After you have the test finished, send the "cs" file with the failing test to [RavenDB Support](mailto:support@ravendb.net)

@@ -1,0 +1,45 @@
+---
+title: "Bundle: Scripted Index Results"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Scripted Index Results - Studio
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Scripted Index Results
+
+When creating a database, if you want to use the scripted index results bundle you need to select it in the database creation window:  
+![Tasks Fig 1](./assets/studio_scripted_index_1.PNG)  
+
+After pressing "Next" your database will be created so you will be able to configure the scripted index results. To do so, you need to enter database settings using the top navigation panel.
+![Tasks Fig 2](./assets/studio_scripted_index_2.PNG)  
+
+On the left you will notice a 'Scripted Index' tab where you be able to configure scripts for each desired index.
+![Tasks Fig 3](./assets/studio_scripted_index_3.PNG)  
+
+## Example
+
+<Admonition type="info" title="Info">
+Below walktrough is a Studio equivalent of the example described in details [here](../../server/extending/bundles/scripted-index-results.mdx#example)
+</Admonition>
+
+To attach our `Orders/ByCompany` index results within company itself we must add two scripts:
+
+1. _IndexScript_ that will be applied to reduce result.     
+2. _DeleteScript_ that will be applied when index entry will be deleted.   
+
+![Tasks Fig 4](./assets/studio_scripted_index_4.PNG) 
+
+As a result of our script all our companies will have additional property `Orders` with `Total` and `Count` attached.
+
+![Tasks Fig 5](./assets/studio_scripted_index_5.PNG) 
+
+<Admonition type="info" title="Info">
+You can read more about the Scripted Index Results Bundle in [here](../../server/extending/bundles/scripted-index-results.mdx).
+</Admonition>

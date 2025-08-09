@@ -1,0 +1,918 @@
+---
+title: "Get Revisions"
+hide_table_of_contents: true
+sidebar_label: Get Revisions
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Revisions
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+* Use `GetFor` to retrieve all of the revisions currently kept for the specified document.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+List<Order> orderRevisions = session
+    .Advanced
+    .Revisions
+    .GetFor<Order>(id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+List<Order> orderRevisions = await asyncSession
+    .Advanced
+    .Revisions
+    .GetForAsync<Order>(id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`List<T> GetFor<T>(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions |
+| **start** | `int` | First revision to retrieve, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+* Use `GetMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions' metadata for document 'orders/1-A'
+List<MetadataAsDictionary> orderRevisionsMetadata = session
+    .Advanced
+    .Revisions
+    .GetMetadataFor(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+var metadata = orderRevisionsMetadata[0];
+var flagsValue = metadata.GetString(Constants.Documents.Metadata.Flags);
+
+Assert.Contains("Revision", flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions' metadata for document 'orders/1-A'
+List<MetadataAsDictionary> orderRevisionsMetadata = await asyncSession
+    .Advanced
+    .Revisions
+    .GetMetadataForAsync(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+var metadata = orderRevisionsMetadata[0];
+var flagsValue = metadata.GetString(Constants.Documents.Metadata.Flags);
+
+Assert.Contains("Revision", flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> GetMetadataFor(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions' metadata |
+| **start** | `int` | First revision to retrieve metadata for, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+* Use `Get` to retrieve a revision by its **creation time**.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get a revision by its creation time
+Order revisionFromLastYear = session
+    .Advanced
+    .Revisions
+     // If no revision was created at the specified time,
+     // then the first revision that precedes it will be returned
+    .Get<Order>("orders/1-A", DateTime.Now.AddYears(-1));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get a revision by its creation time
+Order revisionFromLastYear = await asyncSession
+    .Advanced
+    .Revisions
+    // If no revision was created at the specified time,
+    // then the first revision that precedes it will be returned
+    .GetAsync<Order>("orders/1-A", DateTime.Now.AddYears(-1));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Syntax**:
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`T Get<T>(string id, DateTime date);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | Document ID for which to retrieve the revision by creation time |
+| **date** | `DateTime ` | The revision's creation time |
+
+
+
+## Get revisions by change vector
+
+* Use `Get` to retrieve a revision or multiple revisions by their **change vectors**.  
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions metadata 
+List<MetadataAsDictionary> revisionsMetadata = session
+    .Advanced
+    .Revisions
+    .GetMetadataFor("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+
+// Get the revision by its change-vector
+Order revision = session
+    .Advanced
+    .Revisions
+    .Get<Order>(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions metadata 
+List<MetadataAsDictionary> revisionsMetadata = await asyncSession
+    .Advanced
+    .Revisions
+    .GetMetadataForAsync("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+
+// Get the revision by its change-vector
+Order revision = await asyncSession
+    .Advanced
+    .Revisions
+    .GetAsync<Order>(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="csharp">
+{`// Get a revision by its change vector
+T Get<T>(string changeVector);
+
+// Get multiple revisions by their change vectors
+Dictionary<string, T> Get<T>(IEnumerable<string> changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | `string` | The revision's change vector |
+| **changeVectors** | `IEnumerable<string>` | Change vectors of multiple revisions |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are a few methods that allow you to retrieve revisions from a database:   
+
+- **session.advanced().revisions().getFor** 
+    - can be used to return all previous revisions for a specified document   
+- **session.advanced().revisions().getMetadataFor**
+    - can be used to return metadata of all previous revisions for a specified document  
+- **session.advanced().revisions().get**
+    - can be used to retrieve a revision(s) using a change vector(s)  
+
+## getFor
+
+### Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="java">
+{`<T> List<T> getFor(Class<T> clazz, String id);
+
+<T> List<T> getFor(Class<T> clazz, String id, int start);
+
+<T> List<T> getFor(Class<T> clazz, String id, int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | String | document ID for which the revisions will be returned for |
+| **start** | int | used for paging |
+| **pageSize** | int | used for paging |
+
+### Example
+
+<TabItem value="example_1_sync" label="example_1_sync">
+<CodeBlock language="java">
+{`List<Order> orderRevisions = session
+    .advanced()
+    .revisions()
+    .getFor(Order.class, "orders/1-A", 0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## getMetadataFor
+
+### Syntax
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="java">
+{`List<MetadataAsDictionary> getMetadataFor(String id);
+
+List<MetadataAsDictionary> getMetadataFor(String id, int start);
+
+List<MetadataAsDictionary> getMetadataFor(String id, int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | String | document ID for which the revisions will be returned for |
+| **start** | int | used for paging |
+| **pageSize** | int | used for paging |
+
+### Example
+
+<TabItem value="example_2_sync" label="example_2_sync">
+<CodeBlock language="java">
+{`List<MetadataAsDictionary> orderRevisionsMetadata = session
+    .advanced()
+    .revisions()
+    .getMetadataFor("orders/1-A", 0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## get
+
+### Syntax
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="java">
+{`<T> T get(Class<T> clazz, String changeVector);
+
+<T> Map<String, T> get(Class<T> clazz, String[] changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **changeVector** or **changeVectors**| `String` or `String[]` | one or many revision change vectors |
+
+### Example
+
+<TabItem value="example_3_sync" label="example_3_sync">
+<CodeBlock language="java">
+{`Order orderRevision = session
+    .advanced()
+    .revisions()
+    .get(Order.class, orderRevisionChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+Use `get_for` to retrieve all of the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_1_sync" label="example_1_sync">
+<CodeBlock language="python">
+{`# Get revisions for document 'orders/1-A'
+# Revisions will be ordered by most recent revision first
+order_revisions = session.advanced.revisions.get_for("orders/1-A", Order, 0, 10)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`def get_for(self, id_: str, object_type: Type[_T] = None, start: int = 0, page_size: int = 25) -> List[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id_** | `str` | Document ID for which to retrieve revisions |
+     | **object_type** | `Type[_T]` | The type of the object whose revisions we want to retrieve |
+     | **start** | `int` | First revision to retrieve, used for paging |
+     | **page_size** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+Use `get_metadata_for` to retrieve the metadata for all the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_2_sync" label="example_2_sync">
+<CodeBlock language="python">
+{`# Get 'revisions' metadata for document 'orders/1-A'
+order_revisions_metadata = session.advanced.revisions.get_metadata_for("orders/1-A", 0, 10)
+
+# Each item returned is a revision's metadata, as can be verified in the @flags key
+metadata = order_revisions_metadata[0]
+flags_value = metadata[constants.Documents.Metadata.FLAGS]
+
+self.assertIn("Revision", flags_value)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`def get_metadata_for(self, id_: str, start: int = 0, page_size: int = 25) -> List["MetadataAsDictionary"]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id_** | `str` | Document ID for which to retrieve revisions' metadata |
+     | **start** | `int` | First revision to retrieve metadata for, used for paging |
+     | **page_size** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+Use `get_by_before_date` to retrieve a revision by its **creation time**.
+
+* **Example**:
+<TabItem value="example_3_sync" label="example_3_sync">
+<CodeBlock language="python">
+{`# Get a revision by its creation time
+revision_from_last_year = (
+    session.advanced.revisions
+    # If no revision was created at the specified time,
+    # then the first revision that precedes it will be returned
+    .get_by_before_date("orders/1-A", datetime.datetime.utcnow() - datetime.timedelta(days=365))
+)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`def get_by_before_date(self, id_: str, before_date: datetime.datetime, object_type: Type[_T] = None) -> _T: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **id_** | `str` | The ID of the document whose revisions we want to retrieve by creation time |
+     | **before_date** | `datetime.datetime` | Revision creation time |
+     | **object_type** | `Type[_T]` | The type of the object whose revisions we want to retrieve |
+
+
+
+
+## Get revisions by change vector
+
+To retrieve a revision or multiple revisions by **change vectors**, get the 
+change vector using `get_metadata_for` and the revisions using `get_by_change_vector`.  
+
+* **Example**:
+<TabItem value="example_4_sync" label="example_4_sync">
+<CodeBlock language="python">
+{`# Get revisions metadata
+revisions_metadata = session.advanced.revisions.get_metadata_for("orders/1-A", 0, 25)
+
+# Get the change-vector from the metadata
+change_vector = revisions_metadata[0][constants.Documents.Metadata.CHANGE_VECTOR]
+
+# Get the revision by its change-vector
+revision = session.advanced.revisions.get_by_change_vector(change_vector, Order)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="python">
+{`# Get a revision by its change vector
+def get_by_change_vector(self, change_vector: str, object_type: Type[_T] = None) -> _T: ...
+
+# Get multiple revisions by their change vectors
+def get_by_change_vectors(self, change_vectors: List[str], object_type: Type[_T] = None) -> Dict[str, _T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **change_vectors** | `List[str]` | A list of change vector strings |
+     | **object_type** | `Type[_T]` | The types of the objects whose revisions we want to retrieve |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+Use `getFor` to retrieve all of the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_1_sync" label="example_1_sync">
+<CodeBlock language="php">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+/** @var array<Order>  $orderRevisions */
+$orderRevisions = $session
+    ->advanced()
+    ->revisions()
+    ->getFor(Order::class, id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`public function getFor(?string $className, ?string $id, int $start = 0, int $pageSize = 25): array;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id** | `string` | Document ID for which to retrieve revisions |
+     | **className** | `string` | The type of the object whose revisions we want to retrieve |
+     | **start** | `int` | First revision to retrieve, used for paging |
+     | **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+Use `getMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_2_sync" label="example_2_sync">
+<CodeBlock language="php">
+{`// Get revisions' metadata for document 'orders/1-A'
+/** @var array<MetadataAsDictionary> $orderRevisionsMetadata */
+$orderRevisionsMetadata = $session
+    ->advanced()
+    ->revisions()
+    ->getMetadataFor(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+$metadata = $orderRevisionsMetadata[0];
+$flagsValue = $metadata[DocumentsMetadata::FLAGS];
+
+$this->assertContains("Revision", $flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`public function getMetadataFor(?string $id, int $start = 0, int $pageSize = 25): array;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id** | `string` | Document ID for which to retrieve revisions' metadata |
+     | **start** | `int` | First revision to retrieve metadata for, used for paging |
+     | **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+Use `getBeforeDate` to retrieve a revision by its **creation time**.
+
+* **Example**:
+<TabItem value="example_3_sync" label="example_3_sync">
+<CodeBlock language="php">
+{`// Get a revision by its creation time
+$revisionFromLastYear = $session
+    ->advanced()
+    ->revisions()
+     // If no revision was created at the specified time,
+     // then the first revision that precedes it will be returned
+    ->getBeforeDate(Order::class, "orders/1-A", (new DateTime())->sub(new DateInterval("P1Y")));
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="php">
+{`function getBeforeDate(?string $className, ?string $id, DateTime $date): ?object;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **id** | `string` | The ID of the document whose revisions we want to retrieve by creation time |
+     | **date** | `DateTime` | Revision creation time |
+     | **className** | `string` | The type of the object whose revisions we want to retrieve |
+
+
+
+
+## Get revisions by change vector
+
+To retrieve a revision or multiple revisions by **change vectors** use `getMetadataFor`, 
+extract the change vector from the metadata, and `get` the revision using the change vector.  
+
+* **Example**:
+<TabItem value="example_4_sync" label="example_4_sync">
+<CodeBlock language="php">
+{`// Get revisions metadata
+/** @var array<MetadataAsDictionary> $revisionsMetadata */
+$revisionsMetadata = $session
+    ->advanced()
+    ->revisions()
+    ->getMetadataFor("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+$changeVector = $revisionsMetadata[0][DocumentsMetadata::CHANGE_VECTOR];
+
+// Get the revision by its change-vector
+$revision = $session
+    ->advanced()
+    ->revisions()
+    ->get(Order::class, $changeVector);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="php">
+{`// Get a revision(s) by its change vector(s)
+public function get(?string $className, null|string|array|StringArray $changeVectors): mixed;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **changeVectors** | `null` or `string` or `array` or `StringArray` | A list of change vector strings |
+     | **className** | `className` | The types of the objects whose revisions we want to retrieve |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).
+
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+* Use `getFor` to retrieve all of the revisions currently kept for the specified document.
+**Example**:
+
+<TabItem value="example_1" label="example_1">
+<CodeBlock language="js">
+{`// Get revisions for document 'orders/1-A'
+const orderRevisions = await session.advanced.revisions
+    .getFor("orders/1-A", \{
+        start: 0,
+        pageSize: 10
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.getFor(id);
+await session.advanced.revisions.getFor(id, options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions |
+| **options** | options object | Used for paging |
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// options object
+\{
+    start,   // The first revision to retrieve, used for paging. Default is 0.
+    pageSize // Number of revisions to retrieve per results page. Default is 25.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the document's revisions. <br/>Revisions will be ordered by most recent revision first. |
+
+
+
+## Get revisions metadata
+
+* Use `getMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+**Example**:
+
+<TabItem value="example_2" label="example_2">
+<CodeBlock language="js">
+{`// Get revisions' metadata for document 'orders/1-A'
+const orderRevisionsMetadata = await session.advanced.revisions
+    .getMetadataFor("orders/1-A", \{
+        start: 0,
+        pageSize: 10
+    \});
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+const metadata = orderRevisionsMetadata[0];
+const flagsValue = metadata[CONSTANTS.Documents.Metadata.FLAGS];
+
+assertThat(flagsValue).contains("Revision");
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.getMetadataFor(id);
+await session.advanced.revisions.getMetadataFor(id, options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions' metadata |
+| **options** | options object | Used for paging |
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// options object
+\{
+    start,   // The first revision to retrieve, used for paging. Default is 0.
+    pageSize // Number of revisions to retrieve per results page. Default is 25.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to a list of the revisions metadata. |
+
+
+
+## Get revisions by creation time
+
+* Use `get` to retrieve a revision by its **creation time**.
+**Example**:
+
+<TabItem value="example_3" label="example_3">
+<CodeBlock language="js">
+{`// Creation time to use, e.g. last year: 
+const creationTime = new Date();
+creationTime.setFullYear(creationTime.getFullYear() - 1);
+
+// Get a revision by its creation time
+// If no revision was created at the specified time,
+// then the first revision that precedes it will be returned
+const orderRevision = await session.advanced.revisions
+    .get("orders/1-A", creationTime.toLocaleDateString());
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`await session.advanced.revisions.get(id, date);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which to retrieve the revision by creation time |
+| **date** | string | The revision's creation time |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the revision.<br/>If no revision was created at the specified time, then the first revision that precedes it will be returned. |
+
+
+
+## Get revisions by change vector
+
+* Use `get` to retrieve a revision or multiple revisions by their **change vectors**.
+**Example**:
+
+<TabItem value="example_4" label="example_4">
+<CodeBlock language="js">
+{`// Get revisions metadata 
+const revisionsMetadata = await session.advanced.revisions
+    .getMetadataFor("orders/1-A", \{
+        start: 0,
+        pageSize: 25
+    \});
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0][CONSTANTS.Documents.Metadata.CHANGE_VECTOR];
+
+// Get the revision by its change-vector
+const orderRevision = await session.advanced.revisions
+    .get(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.get(changeVector);
+await session.advanced.revisions.get(changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | string | The revision's change vector |
+| **changeVectors** | string[] | Change vectors of multiple revisions |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the matching revision(s). |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+- [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+- [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
+
+### Client API
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+- [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)
+
+### Studio
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+
+
+-->

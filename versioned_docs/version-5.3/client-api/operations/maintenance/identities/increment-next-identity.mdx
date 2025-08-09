@@ -1,0 +1,223 @@
+---
+title: "Increment Next Identity Operation"
+hide_table_of_contents: true
+sidebar_label: Increment Next Identity
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Increment Next Identity Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `NextIdentityForOperation` to increment the latest identity value set on the server for the specified collection in the database.
+
+* The next document that will be created using an identity for the collection will receive the consecutive integer value.
+
+* In this page:
+
+  * [Increment the next identity value](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#increment-the-next-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#syntax)
+
+</Admonition>
+## Increment the next identity value 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var session = store.OpenSession())
+{ 
+    // Pass a collection name that ends with a pipe '|' to create an identity ID
+    session.Store(new Company { Name = "RavenDB" }, "companies|");
+    session.SaveChanges();
+    // => Document "companies/1" will be created 
+}
+
+// Increment the identity value on the server:
+// ===========================================
+
+// Define the next identity operation
+// Pass the collection name (can be with or without a pipe)
+var nextIdentityOp = new NextIdentityForOperation("companies|");
+
+// Execute the operation by passing it to Maintenance.Send
+// The latest value will be incremented to "2"
+// and the next document created with an identity will be assigned "3"
+long incrementedValue = store.Maintenance.Send(nextIdentityOp);
+
+// Create another document with an identity ID:
+// ============================================
+
+using (var session = store.OpenSession())
+{ 
+    session.Store(new Company { Name = "RavenDB" }, "companies|");
+    session.SaveChanges();
+    // => Document "companies/3" will be created
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var asyncSession = store.OpenAsyncSession())
+{ 
+    // Pass a collection name that ends with a pipe '|' to create an identity ID
+    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+    asyncSession.SaveChangesAsync(); 
+    // => Document "companies/1" will be created 
+}
+
+// Increment the identity value on the server:
+// ===========================================
+
+// Define the next identity operation
+// Pass the collection name (can be with or without a pipe)
+var nextIdentityOp = new NextIdentityForOperation("companies|");
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// The latest value will be incremented to "2"
+// and the next document created with an identity will be assigned "3"
+long incrementedValue = await store.Maintenance.SendAsync(nextIdentityOp);
+
+// Create another document with an identity ID:
+// ============================================
+
+using (var asyncSession = store.OpenAsyncSession())
+{ 
+    asyncSession.StoreAsync(new Company { Name = "AnotherCompany" }, "companies|");
+    asyncSession.SaveChangesAsync();
+    // => Document "companies/3" will be created
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public NextIdentityForOperation(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type   | Description                                                                                                                                    |
+|-----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| __name__  | string | The collection name for which to increment the identity value.<br/>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `NextIdentityForOperation` to increment the latest identity value set on the server for the specified collection in the database.
+
+* The next document that will be created using an identity for the collection will receive the consecutive integer value.
+
+* In this page:
+
+  * [Increment the next identity value](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#increment-the-next-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#syntax)
+
+</Admonition>
+## Increment the next identity value 
+
+<TabItem value="increment_identity" label="increment_identity">
+<CodeBlock language="js">
+{`// Create a document with an identity ID:
+// ======================================
+
+const session = documentStore.openSession();
+const company = new Company();
+company.name = "RavenDB";
+
+// Pass a collection name that ends with a pipe '|' to create an identity ID
+await session.store(company, "companies|");
+
+await session.saveChanges();
+// => Document "companies/1" will be created 
+
+// Increment the identity value on the server:
+// ===========================================
+
+// Define the next identity operation
+// Pass the collection name (can be with or without a pipe)
+const nextIdentityOp = new NextIdentityForOperation("companies|");
+
+// Execute the operation by passing it to maintenance.send
+// The latest value will be incremented to "2"
+// and the next document created with an identity will be assigned "3"
+const incrementedValue = await store.maintenance.send(nextIdentityOp);
+
+// Create another document with an identity ID:
+// ============================================
+
+const company = new Company();
+company.name = "AnotherComapany";
+
+await session.store(company, "companies|");
+await session.saveChanges();
+// => Document "companies/3" will be created
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const nextIdentityOp = new NextIdentityForOperation(name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type   | Description                                                                                                                                    |
+|-----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| __name__  | string | The collection name for which to increment the identity value.<br/>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [Get identities](../../../../client-api/operations/maintenance/identities/get-identities)
+- [Seed identity](../../../../client-api/operations/maintenance/identities/seed-identity)
+
+
+-->

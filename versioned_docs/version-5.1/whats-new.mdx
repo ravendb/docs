@@ -1,0 +1,633 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 5.1.13 (51043) - 2021/12/21 {#51043}
+
+### Server
+
+- `[Cluster]` idle indexes should not be taken into account when calculating promotable state
+- `[Compare Exchange]` fixed possible NRE when 'AddOrUpdateCompareExchangeCommand' is executed due to possibility of early context release
+- `[Configuration]` added 'Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin' configuration option
+- `[Configuration]` added 'Indexing.IndexStartupBehavior' configuration option
+- `[Backup]` fixed issue with testing AWS credentials when custom URL is used
+- `[Backup]` fixed issue with rescheduling backup when during processing it is being moved to another node
+- `[Backup]` added 'ForcePathStyle' option to S3 settings
+- `[ETL]` fixed possibility of infinite loop in ETL (backported from 5.2)
+- `[ETL]` fixed issue with removing node from database to early when deletion status is still set to 'no'
+- `[Indexing]` early stop reference processing if server is under memory pressure
+- `[Indexing]` fixed issue with retrying 'OutputReduceToCollectionCommand' in transaction merger which could result in not deleting relevant documents
+- `[Querying]` fixed issue with calculating total number of results when using collection query on a non-existent property
+- `[Replication]` fixed issue with calculating properly HasRevisions flag when replicating document delete
+- `[Replication]` revision configuration should create revision bin for documents deleted by replication
+- `[Transactions]` fixed issue with re-running some of the commands when merging fails and they need to be executed once again one by one
+- `[Voron]` using 'mmap' instead of 'posix_memalign' when allocating 4KB aligned memory for encryption buffers to avoid memory fragmentation
+- `[.NET]` updated to .NET 5.0.13
+
+<hr />
+
+### Client API
+
+- `[Querying]` caching index metadata to increase query building process performance
+- `[Querying]` caching query parameter names to increase query build process performance
+
+<hr />
+
+### Other
+
+- `[Docker]` added the ability to override server URL via RAVEN_ServerUrl environment variable
+
+## 5.1.12 (51042) - 2021/11/15 {#51042}
+
+### Server
+
+- `[Backup]` do not cancel running backup even if task was moved to another node
+- `[Cluster]` fixed issue with Cluster might accepting commands from higher version than the current one when doing mixed version clusters
+- `[Cluster]` properly snapshot compare exchange with expiration
+- `[Counters]` remove leading whitespace from Counter Values Change Vector
+- `[Counters]` prevent from generating invalid Change Vector that starts with comma
+- `[ETL]` properly validate if number of transform scripts is greater than 0
+- `[ETL]` properly handling casing mismatch between table name and table definition
+- `[ETL]` state should be tracked per database ID instead of node tag to avoid progress miscalculations when node is being removed and re-added
+- `[Import]` handle compare exchange values incrementally when doing an import from v4.x
+- `[Import]` properly handle revisions when doing an import with time series
+- `[Indexes]` validate if index was created using our database and not copied from a different one
+- `[Indexes]` properly handle cancellation when doing flush and sync to avoid generating index error
+- `[Monitoring]` exposed MemInfo (linux) to SNMP
+- `[Monitoring]` exposed number of faulted databases to SNMP
+- `[Querying]` fixed issue with collection size limitation when using 'Not In' clause and the possibility to return invalid results
+- `[Replication]` do not stop replication when replicating a document with a changed collection and there is a conflict already
+- `[Replication]` properly handling Tombstones for legacy 3.x replication
+- `[Replication]` properly setting HasAttachment, HasCounters flag in reverted revision documents
+- `[Transactions]` properly handling Change Vector when TxMerger executes transactions one by one to avoid returning invalid Change Vector
+- `[Voron]` fixed invalid handling of journals created based on recyclable ones during the storage recovery on startup
+- `[Voron]` fixed 'Collection was modified; enumeration operation may not execute.' when generating a storage report
+- `[.NET]` updated to .NET Core 5.0.12
+
+<hr />
+
+### Client API
+
+- `[Session]` support for selecting metadata in single call expressions
+- `[Operations]` fixed issue with using TypeNameHandling.None by user and deserialization of Operations
+- `[Operations]` fixed issue with contacting server when using server-wide operations and node is a watcher
+
+<hr />
+
+### Studio
+
+- `[Licenses]` display connectivity to api.ravendb.net
+- `[Licenses]` show force update license on all license types
+- `[Notifications]` added total documents size for page size is too big performance hint
+- `[Threads]` added the ability to view a stack trace of a single thread
+
+## 5.1.11 (51040) - 2021/09/29 {#51040}
+
+### Server
+
+- `[Backups]` fixed issue with restoring snapshots that were 2GB+ because of limitations of ZipArchive in .NET
+- `[Backups]` fixed issue with Azure client having issues with staging large blocks
+- `[Backups]` fixed progress update in AWS S3 and AWS Glacier clients
+- `[Backups]` fixed issue with restoring snapshot backups containing compression recovery files
+- `[Cluster]` decrease the amount of locks taken by cluster to avoid contention
+- `[Cluster]` check for topology changes also on server-wide requests resulting in faster topology change discovery by Client APIs
+- `[Configuration]` added 'Backup.UploadTimeoutInMin'
+- `[Indexes]` fixed possible storage corruption in indexes that are using Suggestions
+- `[Indexes]` fixed issue when modyfying 'PatternReferencesCollectionName' in map-reduce indexes could create conflicts during replication
+- `[Indexes]` fixed issue with using 'IfEntityIs'
+- `[Indexes]` fixed NRE when database compaction is executed - could happen if auto indexes were merged
+- `[Indexes]` prevent database from unloading because of idleness during index compaction
+- `[Linux]` set 'TasksMax' to infinity in 'ravendb.service' file
+- `[Memory]` fixed memory leak that could occur in Databases cache when a lot of databases is being added and deleted
+- `[Monitoring]` exposed writes and data written per second in SNMP for server and per database
+- `[Monitoring]` exposed average request duration for server
+- `[Querying]` better exception when page size is negative
+- `[Querying]` fixed issue with 'Not In' not support more than 128 items
+- `[Replication]` fixed issue that could cause replication problem if a revision of a conflict between document and document deletion occurs
+- `[Subscriptions]` do not send includes in every subscription batch when the list of them is empty
+- `[Revisions]` properly set etag when revision bin entry is created to avoid issues with ordering and therefore retrieving the revisions bin entries
+- `[Voron]` immediate process exit on catastrophic failure in server store to avoid running with invalid state
+
+<hr />
+
+### Client API
+
+- `[Session]` using 'Evict' method should release memory immediately to release memory pressure as soon as possible
+- `[Operations]` fixed issue with deserialization of 'IOperationResult' when 'TypeNameHandling.None' is set in conventions
+- `[Operations]` fixed possible NRE when waiting for smuggler operation if it was completed before the wait was called
+
+<hr />
+
+### Embedded
+
+- added support for `+` in `ServerOptions.FrameworkVersion` for Patch number with default set to `5.0.10+`
+
+<hr />
+
+### Tools
+
+- `[rvn]` proper 'CTRL+D' and 'EOF' handling
+
+<hr />
+
+### Docker
+
+- added support for `$RAVEN_DATABASE` parameter which creates given database on a first run
+- added support for 'arm64' docker image
+
+## 5.1.10 (51038) - 2021/08/16 {#51038}
+
+### Server
+
+- `[Backups]` moved to official Azure, AWS S3 and AWS Glacier clients
+- `[Concurrency]` fixed possibility of loosing a document tombstone when optimistic concurrency 'put' is done after 'delete'
+- `[Configuration]` added 'Storage.DiscardVirtualMemory' option
+- `[Encryption]` fixed issue with removing encrypted node with wrong key
+- `[Indexing]` decreased CPU pressure by scheduling indexing cleanup only when it is needed
+- `[Indexing]` avoid creating index writer if no results were generated
+- `[Indexing]` handle properly OperationCancelledException and ObjectDisposedException when querying an index that is being replaced at the same time
+- `[Indexing]` handle 'SelectMany' in nested dictionary properly in indexing functions
+- `[Indexing]` fixed select value from collection in indexing function while using 'FirstOrDefault' method
+- `[JavaScript]` releasing memory earlier in Jint engine to reduce the memory footprint
+- `[Monitoring]` added endpoints to monitor number of indexes, stale indexes and indexing performance in all loaded databases
+- `[Querying]` when projecting from a document that does not exist already, we should skip that document
+- `[Replication]` when replication failovers it should check destination change vector and start from there, not from scratch
+- `[Revisions]` enforcing revision configuration should also take into account document tombstones
+- `[Revisions]` added 'MaximumRevisionsToDeleteUponDocumentUpdate' option
+- `[Voron]` fixed issue with recursive write lock acquisitions when removing inactive scratches
+- `[Voron]` fixed possibility of accessing disposed pager of 'compression.buffers'
+- `[Voron]` fixed int.MaxValue overflow in 'AdjustPagesRequiredFor32Bits' when running on 32-bits
+- `[.NET]` updated to 5.0.8
+
+<hr />
+
+### Client API
+
+- `[Querying]` fixed issue with using 'Group' as a property name in includes
+- `[Operations]` added 'GetDatabaseSettingsOperation' and 'PutDatabaseSettingsOperation'
+- `[Session]` method `Attachmnts.GetNames` should return correct number of attachments after deletion
+- `[Session]` properly detect changes in documents containing Unicode characters
+- `[Session]` fixed cache issue when using MultiGet
+- `[Subscriptions]` added 'Disabled' to 'SubscriptionCreationOptions'
+
+<hr />
+
+### Studio
+
+- `[Performance Hints]` added Total Documents Size to paging performance hint
+- `[Replication]` added number of replicated counters to Replication Stats Graph
+- `[Storage]` added grouping of the data in the graph if number of items is excessive
+
+<hr />
+
+### Tools
+
+- `[Debug]` added ability to save traffic watch
+
+## 5.1.9 (51035) - 2021/07/01 {#51035}
+
+### Server
+
+- `[Backups]` restore of compare exchange should consider compare exchange tombstones and clean them
+- `[Certificates]` consider all of the certificates that match pinning hash to allow the connections after replacement
+- `[Cluster]` fixed issue with huge Raft commands impacting stability of the cluster
+- `[Cluster]` fixed issue with cluster transaction processing hang when server is restarted immediately after such a transaction occurs
+- `[Cluster]` added compare exchange statistics to detailed database stats endpoint
+- `[Configuration]` added 'Storage.MaxNumberOfRecyclableJournals' 
+- `[Indexes]` added support for ThenBy and ThenByDescending
+- `[Indexes]` fixed possibility of a deadlock when max number of concurrent indexing processes is set
+- `[Indexes]` fixed index instance leak when database record change is being handled but database is being unloaded at the same time
+- `[Indexes]` fixed issue with GroupBy not returning appropriate results in Time Series indexes
+- `[Indexes]` fixed possible 'ArgumentOutOfRangeException' in index storage
+- `[Indexes]` added support for ISO-8601 datetime format
+- `[Licensing]` try to activate license from environment variable or path when we fail to do it online
+- `[Memory]` try to reuse large segments from the memory allocator (possible memory leak when doing long operations like backups or export)
+- `[Monitoring]` added ability to define secondary user for SNMP v3
+- `[Replication]` fixed possibility of replication killing server when database is being deleted at the same time
+- `[Replication]` fixed possibility of replication with missing attachments went into endless loop state
+- `[Replication]` fixed possible endless loop caused by not handling attachment stream files properly when destination database in encrypted
+- `[Replication]` fixed possible NRE when Documents DeleteRevision flag was not stripped properly
+- `[Replication]` fixed possible NRE when disposing connections of a disposed database
+- `[Queries]` fixed issue with delete or patch by query timing out when a lot of document IDs needs to be gathered
+- `[TCP]` added support for cancellation tokens to abort the connections immediately if needed
+- `[Time Series]` added tombstone statistics to detailed database stats endpoint
+- `[Time Series]` properly process tombstones if all documents collection is present
+- `[Voron]` limiting number of recyclable journals to 32 by default
+- `[Voron]` fixed case where a newly created read transaction could get an already disposed pager state of a scratch file
+- `[Utils]` fixed issue with DisposeAsync not preventing double dispose in certain situations
+- `[.NET]` updated to .NET 5.0.7
+
+<hr />
+
+### Client API
+
+- `[Bulk Insert]` fixed possible hang and avoid multi-threaded access to context
+- `[JSON]` properly clearing internal JsonReader state to avoid hitting MaxDepth exception
+
+<hr />
+
+### Studio
+
+- `[Certificates]` show single entry in the Certificates view when client is using Server certificate to connect
+- `[Migration]` fixed issue with Advanced menu not opening
+- `[Querying]` added support for enclosing the previous statments in clauses
+- `[Setup]` display unsupported browser warning if needed
+- `[Subscriptions]` fixed possibility of Studio hanging in the Edit Subscriptiion View
+- `[Traffic Watch]` properly display type for Bulk Docs
+
+## 5.1.8 (51027) - 2021/05/26 {#51027}
+
+### Server
+
+- `[Backups]` fixed issue with executing Backup Retention policies on Azure
+- `[Backups]` allow to restore a document when collection was changed in the same incremental backup
+- `[Backups]` fixed possible memory leak during import when a lot of compare exchange values are being imported
+- `[Backups]` fixed issue with editing server-wide backup tasks that could cause those tasks to hang
+- `[Databases]` before deleting a database a database path intersection is checked with other databases
+- `[Debug]` fixed issue with capturing stacktraces for entire cluster
+- `[Debug]` fixed start date of a cloned transaction in /admin/debug/txinfo endpoint
+- `[Databases]` fixed NRE that could happen if database was created with Client Configuration set
+- `[Indexes]` release temporary files on low memory to reduce the memory pressure further
+- `[Indexes]` fixed a race between creating a new auto index and deleting the superseded one
+- `[Indexes]` fixed usage of concurrent indexes semaphore to avoid NRE
+- `[Indexes]` fixed issue with using `ThenBy` and `ThenByDescending` in indexes
+- `[Indexes]` fixed issue with using `Enumerable.Range` in indexes
+- `[Indexes]` added support for `FindIndex` and `FindLastIndex` methods in indexes
+- `[Indexes]` when updating NuGet package in index to a newer version no longer restart of server is required
+- `[Indexes]` support for native DLLs from NuGet
+- `[Indexes]` fixed null string concatenation behavior in indexing - now it matched C# one
+- `[Querying]` fixed possibility of sending an invalid JSON when returning facet results
+- `[Querying]` fixed possibility of NRE when projecting same document multiple times during streaming
+- `[Querying]` decreased memory usage when executing `Distinct` queries
+- `[Replication]` fixed memory allocation when handling tombstones as a conflicts resolutions
+- `[Replication]` fixed NRE on refresh of document that was added in cluster transaction
+- `[Voron]` making sure that we will not remove currently used scratch buffer file from the list of active scratches during transaction rollback
+- `[Voron]` making the acquirement and usage of a pager state more robust to avoid accessing already disposed pager which could result in AVE
+- `[Voron]` preventing a racy access and dispose of a scratch file between the storage cleanup and creation of a new transaction
+- `[Voron]` fixing the case that after the import of a database we didn't flush all journals if there was no activity on a database what resulted in large number of scratch files
+- `[Voron]`	using a correct pager state when prefetching segments
+- `[.NET]` updated to .NET 5.0.6
+
+<hr />
+
+### Client API
+
+- `[Events]` added `OnSessionDisposing` event
+- `[Events]` fixed issue with `OnBeforeQuery` event not being invoked when streaming
+- `[JSON]` internal enumerable converters need to take into account that a custom converter could have been supplied by the user
+- `[Session]` fixed caching when Lazy is used
+- `[Session]` properly incrementing number of requests when attachments and revisions are used
+- `[Session]` added load revisions lazily implementation
+- `[Session]` added `AddOrPatch` and `AddOrIncrement` methods
+- `[Subscriptions]` fixed possibility of context leak when processing subscriptions and error has occurred
+- `[Smuggler]` fixed possibility to context leaking during Import
+- `[Querying]` added support for aggregation queries when raw query is used
+
+<hr />
+
+### Studio
+
+- `[Indexes]` expose index wait time on performance graph when max number of concurrent indexes is set
+- `[Indexes]` fixed issue with indexes getting unselected when progress is being updated
+- `[Indexes]` fixed issue with displaying tooltips on performance graph
+- `[IO Stats]` fixed issue with importing I/O stats from the debug package
+- `[Refresh]` fixed issue with updating the refresh frequency
+- `[Traffic Watch]` display also seconds in request time
+- `[Traffic Watch]` added TCP connections
+
+## 5.1.7 (51024) - 2021/04/23 {#51024}
+
+### Server
+
+- `[Indexes]` fixed issue where index replacement, therefore index update, could cause index to become paused
+- `[Indexes]` fixed possible deadlock in indexing that could occur when 'Indexing.MaxNumberOfConcurrentlyRunningIndexes' is used
+- `[TCP]` gently closing TCP TestConnection and TCP Ping to avoid moving into CLOSE_WAIT state
+
+## 5.1.6 (51023) - 2021/04/13 {#51023}
+
+### Server
+
+* `[Backup]`  Fixed the restore of tombstones from a backup
+* `[Cluster]` Added endpoint to remove entry from Raft log
+* `[Configuration]` Added `Indexing.MaxNumberOfConcurrentlyRunningIndexes` configuration option (default: null - no limit)
+* `[Configuration]` Increased dafault value for `Indexing.Encrypted.TransactionSizeLimitInMb` configuration option depending on the amount of available memory:
+	* &lt;= 1GB of RAM or running in 32bits - 96MB
+	* &lt;= 4GB of RAM - 128MB
+	* &lt;= 16GB of RAM - 256MB
+	* &lt;= 64GB of RAM - 512MB
+	* &gt; 64GB of RAM - 1024MB
+* `[Configuration]` Added `Http.AllowSynchronousIO` configuration option (default: false)
+* `[Indexing]` Fixed the behavior of recreating indexing writer upon every commit
+* `[Indexing]` Fixed handling for ERROR_COMMITMENT_LIMIT to treat is as OutOfMemory
+* `[Indexing]` Reduce amount of IO needed to deal with temporary files
+* `[Indexing]` Added ability to limit number of concurrently running indexes to reduce the memory and IO usage (`Indexing.MaxNumberOfConcurrentlyRunningIndexes`)
+* `[Indexing]` Fixed invalid memory allocation in Lucene
+* `[Indexing]` Added cluster-wide disable index
+* `[Indexing]` Reduced logging lever of errors related to using Nuget DLLs in indexes
+* `[Indexing]` Normalize new line characters when comparing additional sources 
+* `[Fixed]` Fixed the issue that we skip documents without checking if we need to check for `CanContinueBatch` which resulted in OutOfMemory error
+* `[Querying]` Better exception on invalid JS Date
+* `[Querying]` Ensured that query execution is stopped if a HTTP request is aborted
+* `[Querying]` Streaming on index that does not exist should throw proper exception instead of NRE 
+* `[Querying]` Fixed NRE when using a search query with `Boost` on term containing only quotes
+* `[SNMP]` Exposed number of disabled, encrypted and current node databases 
+* `[SNMP]` Exposed GC memory info
+* `[Server]` Disabling Kestrel's `AllowSynchronousIO` and making the handling of requests fully async. Added `Http.AllowSynchronousIO` to allow user to control it explicitly.
+* `[SQL ETL]` Added handling for conversion of GUID to UUID when loading records to PostgreSQL
+* `[Time Series]` Fixed append of an entry with DateTime.MinValue 
+* `[Time Series]` Avoid throwing an exception when timeseries name isn't a string 
+* `[Time Series]` Added support for quering time series with quoted name
+* `[Tombstones]` Added endpoints allowing to force cleanup of tombstones and check the cleanup state
+* `[Voron]` Fixed unhandled case in page splitting of compressed pages. This applies to map-reduce indexes and could result in "Encountered empty page which isn't a root" error.
+* `[Voron]` Ensured that we report an alert if an error happened during the flush of data and we recreate the backgroud task
+* `[Voron]` Fixed unreleased allocations in scratch buffers which made that scratch files were never cleaned up
+* `[.NET Core]` Updated to 5.0.5
+
+<hr/>
+
+### Client
+
+* `[Changes API]` Fixed detection for database creation/deletion while already suscribed
+* `[Session]` Consider the index referenced collections on `WaitForIndexesAfterSaveChanges`
+* `[Conventions]` Added `WaitForIndexesAfterSaveChangesTimeout`, `WaitForReplicationAfterSaveChangesTimeout` and `WaitForNonStaleResultsTimeout` conventions (default: 15 seconds)
+* `[Performance]` Optimized `TryGetServerVersion`
+* Fixed NRE in `CachingJsonConverter`
+* Added Lazy version of `ConditionalLoad` 
+* `IAsyncDocumentSession.StreamAsync` method forcedly cast `IAsyncDocumentQuery<T>` to concreate `AsyncDocumentQuery<T>` class implementation 
+
+<hr/>
+
+### Embedded
+
+* Added support for wildcards (x) in the `ServerOptions.FrameworkVersion` 
+
+
+<hr/>
+
+### Studio
+
+* `[Querying]` Added `id()` field to the list of index terms 
+
+## 5.1.5 (51018) - 2021/03/01 {#51018}
+
+### Server
+
+- `[Backups]` fixed issue with deleting multiple blobs on Azure when retention policy is executed
+- `[Backups]` fixed issue with executing retention policy on Azure when remote folder name is empty
+- `[Backups]` fixed the ability to test credentials on server-wide backups
+- `[Certificates]` set DisableCertificateDownloads to true when building a certificate chain
+- `[Cluster]` fixed issue with excessive topology updates from the Client API
+- `[Cluster]` do not move loading idle database to rehab
+- `[Compression]` fixed issue with compressed flag not being added when number of overflow pages is exactly the same after compression
+- `[Debug]` fixed issue with retrieving thread names in Threads View for some of the threads
+- `[Encryption]` fixed 'unable to decrypt page' error
+- `[Encryption]` fixed recovery process on encrypted storage which could cause data corruption
+- `[Graph API]` do not return duplicate edges for Graph Visualizer
+- `[Indexes]` memory optimizations in Lucene
+- `[Indexes]` fixed race condition between removing or replacing an index and starting or stopping all of the indexes
+- `[Indexes]` changing additional sources should affect index etag which is used to calculate query results caching etag
+- `[Indexes]` expected exceptions should not generate an index error
+- `[Indexes]` decreased the cost of retrieving the data from index stats endpoint
+- `[Indexes]` fixed issue with disposing cached field items immediately - some of the readers could be already in use
+- `[Indexes]` when document collection does not match the specified collection in LoadDocument then null should be returned
+- `[Indexes]` index definition comparison should be newline-insensitive
+- `[Monitoring]` exposed SWAP usage on Windows in SNMP
+- `[Monitoring]` added managed memory, unmanaged memory, encryption buffers memory in use and encryption buffers memory in pool to SNMP
+- `[Patching]` fixed issue with delete script not deleting all of the documents in some cases
+- `[Patching]` fixed memory leak when patching a large collection on a compressed database
+- `[Querying]` fixed possible NRE when projecting with streaming full documents
+- `[Replication]` fixed NRE that could happen if there are 2 tombstones with identical ID but different collection
+- `[Replication]` fixed NRE that could happen if we are deleting the database
+- `[Replication]` properly clone replication items to avoid using memory not owned by the replication process which could result in AccessViolationException
+- `[Revisions]` fixed issue with creating a revision when only Resolved flag was present in deleted document
+- `[Revisions]` properly set flags during putting deleted revision from a cluster transaction
+- `[Subscriptions]` fixed NRE in subscriptions when including counters that do not exist in the document
+- `[.NET]` updated to 5.0.3
+
+<hr />
+
+### Client API
+
+- `[Operations]` added 'GetRevisionsOperation'
+- `[Querying]` wrap next binary expression after negation in sub clauses
+- `[Session]` fixed issue with lazily load documents not using aggressive cache properly
+- `[Subscriptions]` fixed ObjectDisposedException that could occur when disposing subscription worker multiple times
+- `[Subscriptions]` fixed JavaScript translation for Id property and Load, allow to use member init
+- `[Subscriptions]` do not redirect to node with failures
+
+<hr />
+
+### Studio
+
+- `[Backup]` added 'Content-Type' header so browsers like Firefox can then recognize file name properly of exported database
+- `[Databases]` do not show document and index counts on databases that do not belong to the current node (remote)
+- `[Indexes]` fixed issue with Indexing performance view not loading correctly when cmpxchg are used in index
+
+## 5.1.4 (51016) - 2021/02/01 {#51016}
+
+### Server
+
+* `[Encryption]` Fixing the recovery process on storage startup which could cause overwrite of valid data and result in "Unable to decrypt page" error
+* `[Encryption]` Fixing potential segmentation fault error on Linux on attempt to encrypt empty page that effectively was not in use 
+* `[Indexing]` Fixing internals in Lucene to prevent from killing the server by an unhandled exception
+
+## 5.1.3 (51013) - 2021/01/25 {#51013}
+
+### Server
+
+* `[ARM]` Fixing PAL copying on Raspberry PI build
+* `[Alerts]` Using standard deviation for Low swap size warning
+* `[Backups]` Fixing ocasionally happening problem that backups were not triggered
+* `[Backups]` Fixing error handling for backups to S3
+* `[Backups]` Added `Backup.TempPath` configuration option
+* `[Cloud]`Retry CPU credits sync on startup
+* `[Cluster]` Prevent concurrent bootstrap
+* `[Cluster]` Cluster observer will move node to rehab upon large gap from the other nodes 
+* `[Cluster]` Fixing missing revisions from cluster transactions
+* `[Cluster]` Limiting cluster log truncation by time 
+* `[Cluster]` Promote from rehab with indexes that were explicitly disabled
+* `[Cluster]` Stay in rehab with index error
+* `[Configuration]` Adding `Indexing.MaximumSizePerSegmentInMb`, `Indexing.MergeFactor`, `Indexing.LargeSegmentSizeToMergeInMb`, `Indexing.NumberOfLargeSegmentsToMergeInSingleBatch`, `Indexing.MaxTimeForMergesToKeepRunningInSec`
+* `[Debug]` Adding `/admin/stats` end point to Debug Package 
+* `[Debug]` Adding `/admin/debug/databases/idle` endpoint
+* `[Docker]` Updating docker base image 
+* `[Docker]` Allow to ignore file lock error when using docker shared volume from Windows
+* `[Encryption]` Introducing global stack to EncryptionBuffersPool for better memory management
+* `[ETL]` Fixing IndexOutOfRangeException while iterating the ETL processes what could result in process crash
+* `[Indexing]` Fixing partitioning in Bloom Filters 
+* `[Indexing]` Fixing JS map-reduce indexes when grouping by nested object
+* `[Indexing]` Adding support for complex reduce keys in JS map-reduce indexes
+* `[Indexing]` Fixing the index replacement behavior if any error happened meanwhile
+* `[Indexing]` Improving memory management in Lucene to reduce GC cost
+* `[Indexing]` De-referencing index resources under low memory
+* `[Indexing]` Better management of Lucene's merges to reduce the size of transaction
+* `[Indexing]` Fixing `CreateField` returning a single result when passing the same field name
+* `[Indexing]` Fixing progress calculation of indexes processing counter or time series
+* `[Indexing]` Improve the performance of LoadDocument when referencing very large number of documents
+* `[Indexing]` Improve the performance of initial index run 
+* `[Indexing]` Adding support for return block statements in group by + allow arrow functions which return objects (w/o explicit return) in JS indexes map
+* `[Indexing]` Restricting number of items in fields cache of LuceneDocumentConverter 
+* `[Indexing]` Taking into account Indexing option from the default field options
+* `[Indexing]` Registering Additional Assemblies by name and full name
+* `[Indexing]` Support for boosting in JS indexes 
+* `[Indexing]` Increasing default value of `Indexing.Encrypted.TransactionSizeLimitInMb` configuration option to 96 MB
+* `[Linux]` Fixing SWAP detection on HDD over SSD in Posix systems when NVMe SSD drives are available
+* `[MacOS]` Fixing issue with copying PAL and friends to MacOS package
+* `[Memory]` Fixing posible momory leak when using stream query 
+* `[Operations]` Fixing `WaitForCompletion` throwing InvalidOperationException for `RevertRevisionsOperation`
+* `[Patching]` Fixing regression issue with pathing large number of documents
+* `[Querying]` Fixing metadata projection returning LastModified in incorrect format 
+* `[Querying]` Allow to include on the output of facets 
+* `[Querying]` Converting &gt;= and &lt;= queries to between queries automatically
+* `[Querying]` Fixing potential issues with float comparison
+* `[Querying]` Fixing wrong query results or exception when querying for quotes or/and slashes 
+* `[Replication]` Avoiding the update of sibling etag on new connections
+* `[Replication]` Fixing the issue with change vector is not updated after replication 
+* `[Replication]` Fixing issue that resolving document conflict in Studio removed the attachment  
+* `[Replication]` Fixing issue with missing attachment breaking the replication
+* `[Replication]` Fixing duplicate attachments problem in conflicted documents
+* `[Replication]` Checking conflict status for attachment and deleted attachment which caused infinite loop
+* `[Replication/Smuggler]`Adding unused database Ids to import/export for preventing "conflict" in import destination cluster replication
+* `[Revisions]` Fixing issue that deleting a document with Resolved flag created a revision 
+* `[Revisions]` Fixing unhandled cases of conflicts in revisions 
+* `[Subscriptions]` Fixing the subscription behavior on SubscriptionDoesNotBelongToNodeException
+* `[Subscriptions]` Fixing calculation of redirect node in case of failover
+* `[Time Series]` Fixing optimistic concurrency violation error when patching multiple types
+* `[Time Series]` Fixing parsing issue when querying with the usage of time series names containing spaces
+* `[Time Series]` Throwing better error message on attempt to group by tag only when querying
+* `[Time Series]` Adding Last and Next InterpolationTypes for TimeSeries Gap Filling feature
+* `[Voron]` Fixing the validation of overflow pages during the storage recovery process on startup
+* `[Voron]` Fixing possible AccessViolationException in when deleting entries from fixed size trees
+* `[Voron]` Fixing NRE on attempt to get temp page from DecompressionBuffersPool 
+* `[Voron]` Deleting large journals instead of adding them to recycle pool to speed up the startup time
+* `[Voron]` Adding cleanup of Temp directory on storage startup 
+* `[Voron]` Fixing seeking to a record when using startAfter parameter 
+* `[.NET]` Updated to .NET 5.0.2
+*  Improved error handling in timer threads
+
+<hr/>
+
+### Client API
+
+* `[Conventions]`added DisableTopologyCache convention
+* `[Changes API]` Fixing changes API interal operation so it should use the same node as the operation
+* `[Changes API]` Marking Changes API connection state as faulted if failed to initialize
+* `[Querying]` Adding option to project the last modified date from queries
+* `[Querying]` Fixing calculation the hash of complex objects when querying that caused query hangs
+* `[Querying]` Support TimeSpan in projections
+* `[Querying]` Making HashCalculator use DateTime.GetDefaultRavenFormat
+* `[Querying]` Fixing time series queries using the string interpolation of call expression in GroupBy
+* `[Serialization]` Optimize client side JSON serialization
+* `[Time Series]` Typed API for time-series bulk insert 
+* Fixing backward compatibility of the health check endpoint
+* Fixing issue when using lazy query + aggressive caching returned `Index does not exists` exception
+* Better exception for actions that require database but none was specified via parameter or there is no default one
+* Properly detecting changes in HasChanged when we have deletes
+* Suggest X509KeyStorageFlags.MachineKeySet when passing invalid certificate to document store
+
+<hr/>
+
+### Studio
+
+* Adding navigation when clicking the backup alert
+* Fixing hight CPU usage on the dashboard
+* Auto-reconnect to web socket in Admin Logs & Traffic Watch
+* When node is passive and license is not activated, stating so explicitly on the License View 
+* Giving better error message if trying to run update in query window
+* Adding more details from Lucene do Idexing Performance view
+* Fixing issue that setting value to zero in Database Record saved it as null 
+* Fixing broken failed Enforce Revision Configuration message
+* Support for compare exchange metadata
+* Clear error on Discovery URLs  when list is empty and added warning icon when test failed
+* Display TS value names for a new TS entry
+* Improving the help for Additional Assemblies 
+* Add support to save documents/indexes using Ctrl+S.
+* Showing the full analyzer name for custom analyzer
+* Fixing issue with analyzer input box being not disabled disabled when indexing is 'Search(implied)'
+* Fixing Admin logs filtering 
+
+
+## 5.1.2 (51010) - 2020/12/11 {#51010}
+
+### Server
+
+- `[Encryption]` fixed possible AVE when encryption is being used
+- `[Indexing]` fixed issues with custom assebly resolution when custom analyzers are used
+
+<hr />
+
+### Studio
+
+- `[Certificates]` fixed issues with displaying when client certificate is not provided
+
+## 5.1.1 (51007) - 2020/12/01 {#51007}
+
+### Server
+
+- `[Compression]` fixed possible data corruption that could manifest when compression is used
+- `[Encryption]` fixed memory leak that occurred when encryption was used
+- `[Indexing]` fixed possible NRE when using NuGet additional source and it failed to download it
+- `[Querying]` increased performance and decreased memory usage of collection queries with where clauses for operations (e.g. patching by collection or deleting by collection)
+- `[Replication]` fixed issue with filtered replication using AllowedSinkToHubPaths instead of AllowedSinkToHubPaths
+- `[Replication]` fixed possible endless loop in replication tombstone cleanup mechanism
+
+<hr />
+
+### Client API
+
+- `[Querying]` fixed that could occur during streaming of query results
+
+<hr />
+
+### Studio
+
+- `[Time Series]` fixed issues with Time Series visualization caused by JS error
+
+## 5.1.0 (51000) - 2020/11/18 {#51000}
+
+### Features
+- `[Filtered Replication]` added feature. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/server/ongoing-tasks/hub-sink-replication)
+- `[Indexes]` added `Additional Assemblies from NuGet` feature. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/indexes/additional-assemblies)
+- `[Indexes]` added `Attachment Content Indexing` support. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/attachments/indexing)
+- `[Indexes]` added [Counters](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/counters/indexing) and [Time Series](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/timeseries/indexing) support to JavaScript indexes.
+- `[Pull Replication]` revamped feature, added the ability not only to pull the data but also to push it. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/server/ongoing-tasks/hub-sink-replication)
+- `[Replication]` added server-wide external replication feature
+- `[Time Series]` added gap filling support. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/timeseries/querying/gap-filling)
+- `[Time Series]` added scale support. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)
+<hr />
+### Out of Experimental
+- `[Documents Compression]` removed experimental flag
+<hr />
+### Other
+- `[Backups]` added the ability to exclude databases from server-wide backups
+- `[Backups]` added `Backup Now` functionality
+- `[Indexes]` optimized how reduce result is constructed
+- `[Indexes]` aligned list of available methods (e.g. counterNamesFor) in JavaScript indexes with C# ones
+- `[Time Series]` added streaming support
+- `[Time Series]` added `percentile`, `slope` and `stddev` support
+- `[Time Series]` added ETL support
+- `[Time Series]` added the ability to group by tag
+- `[.NET]` migrated to .NET 5.0
+- `[.NET]` decreased number of files in the distribution package
+<hr />
+### Client API
+- `[Conventions]` added `ShouldIgnoreEntityChanges` convention. [Documentation](https://ravendb.net/docs/article-page/5.1/Csharp/client-api/session/configuration/how-to-disable-tracking#shouldignoreentitychanges-method)
+- `[Events]` event `OnBeforeDelete` will be invoked when `Delete(id)` is executed from now on
+- `[Querying]` support for explicitly stating the origin of a value in projection. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/client-api/session/querying/how-to-customize-query#projectionbehavior)
+- `[Querying]` added support for `RavenQuery.Cmpxchg` in single projection queries
+- `[Serialization]` added support for C# 9 records
+- `[Session]` support for includes in Time Series. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/timeseries/client-api/session/include/overview)
+- `[Session]` implemented `ConditionalLoad`. [Documentation](https://ravendb.net/docs/article-page/5.1/csharp/client-api/session/loading-entities#conditionalload)
+- `[Subscriptions]` added `OnUnexpectedSubscriptionError` event
+<hr />
+### Studio
+- `[Backups]` added dedicated view
+- `[Configuration]` added the ability to collapse document properties by default
+- `[Document]` added the ability to collapse the properties panel
+- `[Menu]` added the ability to collapse it
+- `[Quality of Life]` polished a lot of views and made considerable amount of UX enhancements
+- `[Setup]` added the notification to download the admin certificate at the end of the setup

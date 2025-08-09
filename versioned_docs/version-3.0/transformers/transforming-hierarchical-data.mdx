@@ -1,0 +1,147 @@
+---
+title: "Transforming hierarchical data"
+hide_table_of_contents: true
+sidebar_label: Transforming hierarchical data
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Transforming hierarchical data
+
+When our data is structured hierarchically and we want to extract data from e.g. our parent records, we can use `Recurse` method within our transformer projection function.
+
+<Admonition type="info" title="Info">
+`Recurse` requires us to have a single document or a collection of documents under specified property, but when we have only an Id or array of Ids available, we can mix `Recurse` with `LoadDocument` (check Example II).
+</Admonition>
+
+## Example I
+
+Let's assume that we have a following structure:
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`public class BlogPost
+\{
+	public string Author \{ get; set; \}
+
+	public string Title \{ get; set; \}
+
+	public string Text \{ get; set; \}
+
+	public List<BlogPostComment> Comments \{ get; set; \}
+\}
+
+public class BlogPostComment
+\{
+	public string Author \{ get; set; \}
+
+	public string Text \{ get; set; \}
+
+	public List<BlogPostComment> Comments \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+All comment authors for each `BlogPost` can be extracted using `Recurse` in the following way:
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="csharp">
+{`public class BlogPosts_Comments_Authors : AbstractTransformerCreationTask<BlogPost>
+\{
+	public class Result
+	\{
+		public string Title \{ get; set; \}
+
+		public List<string> Authors \{ get; set; \}
+	\}
+
+	public BlogPosts_Comments_Authors()
+	\{
+		TransformResults =
+			posts => from post in posts
+					 let comments = Recurse(post, x => x.Comments)
+					 select new
+						\{
+							post.Title,
+							Authors = comments.Select(x => x.Author)
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_6" label="transformers_6">
+<CodeBlock language="csharp">
+{`IList<BlogPosts_Comments_Authors.Result> results = session
+	.Query<BlogPost>()
+	.TransformWith<BlogPosts_Comments_Authors, BlogPosts_Comments_Authors.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Let's assume that we have a following `Category` where we store Id of a parent record:
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Category
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public string ParentId \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now, to extract category name, names of all parent categories, and names of all parent categories for those parents, and so on, we can mix our `Recurse` method with `LoadDocument`.
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`public class Categories_WithParents : AbstractTransformerCreationTask<Category>
+\{
+	public class Result
+	\{
+		public string Name \{ get; set; \}
+
+		public List<string> Parents \{ get; set; \}
+	\}
+
+	public Categories_WithParents()
+	\{
+		TransformResults =
+			categories => from category in categories
+						  let parentCategories = Recurse(category, c => LoadDocument<Category>(c.ParentId))
+						  select new
+							\{
+								category.Name,
+								Parents = parentCategories.Select(parent => parent.Name)
+							\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`IList<Categories_WithParents.Result> results = session
+	.Query<Category>()
+	.TransformWith<Categories_WithParents, Categories_WithParents.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

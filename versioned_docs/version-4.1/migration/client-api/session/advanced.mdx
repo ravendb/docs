@@ -1,0 +1,46 @@
+---
+title: "Migration: Changes Related to IAdvancedDocumentSessionOperations"
+hide_table_of_contents: true
+sidebar_label: Advanced
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Changes Related to IAdvancedDocumentSessionOperations
+
+Changes in advanced session operations are accessible by `session.Advanced`.
+
+## GetEtagFor
+
+[Documents don't have etags any longer](../../../migration/client-api/introduction.mdx#etags) but they use change vectors instead the method `GetEtagFor`. It has been replaced by `GetChangeVectorFor`.
+
+
+
+
+## MarkReadOnly
+
+Marking documents as read-only isn't supported. 
+
+
+
+
+## ExplicitlyVersion
+
+The method has been removed. Document revisions configuration doesn't use the `ExcludeUnlessExplicit` option anymore.
+
+
+
+## Dealing with Non Authoritative Information
+
+DTC support has been dropped.
+
+
+
+
+

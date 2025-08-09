@@ -1,0 +1,59 @@
+---
+title: "Replication: Write Assurance"
+hide_table_of_contents: true
+sidebar_label: Write assurance
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Replication: Write Assurance
+
+RavenDB handles the replication in an asynchronous manner. Saving an entity on a server will cause that an async task which will replicate the newly added document to configured destination servers will be run.
+From the code perspective it means that when you call `session.SaveChanges()`, the document is stored on the primary node and it does not wait for the replication to the other ones.
+
+In order to handle write assurance, the client API allows you to wait until replication is completed. Here is the code:
+
+<TabItem value="write_assurance_1" label="write_assurance_1">
+<CodeBlock language="csharp">
+{`await session.StoreAsync(user);
+await session.SaveChangesAsync();
+
+Etag userEtag = session
+	.Advanced
+	.GetEtagFor(user);
+
+await store
+	.Replication
+	.WaitAsync(etag: userEtag, timeout: TimeSpan.FromMinutes(1), replicas: 1);
+`}
+</CodeBlock>
+</TabItem>
+
+The Raven client will ping all of the replicas, waiting to see if the replication matches or exceeds the ETag that we just wrote. 
+You can specify the number of replicas that are required to consider the document write as "safe". Optionally, you can also provide a timeout, and if the nodes aren't reachable, 
+you will get an error concerning this. As the result, the `WaitAsync` method returns the number of nodes that caught up to the specified ETag.
+
+You can also use parameterless version of the `WaitAsync` method:
+
+<TabItem value="write_assurance_2" label="write_assurance_2">
+<CodeBlock language="csharp">
+{`await store
+	.Replication
+	.WaitAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+Then the default parameters that will be used are as follows:
+
+* *etag* - last written ETag in the document store (`DocumentStore.LastEtagHolder.GetLastWrittenEtag()`),
+* *timeout* - no timeout,
+* *database* - default database of the document store,
+* *replicas* - 2 destination servers.
+

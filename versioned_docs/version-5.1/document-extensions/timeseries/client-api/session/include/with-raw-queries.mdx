@@ -1,0 +1,105 @@
+---
+title: "Session: Include Time Series With Raw Queries"
+hide_table_of_contents: true
+sidebar_label: With Raw Queries
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Include Time Series With Raw Queries
+<Admonition type="note" title="Note">
+
+You can include time series data while running a raw RQL query 
+via [session.Advanced.RawQuery](../../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery).  
+
+* [Include Time Series Data with `Advanced.RawQuery`](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#include-time-series-data-with-advancedrawquery)  
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#syntax)  
+   * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#usage-flow)  
+   * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#usage-sample)  
+
+</Admonition>
+## Include Time Series Data with `Advanced.RawQuery`
+
+To include time series data while querying via `Advanced.RawQuery`, 
+use the `include timeseries` expression in your RQL query.  
+
+
+
+## Syntax
+
+* **`Advanced.RawQuery`**  
+   * **Definition**  
+<TabItem value="RawQuery-definition" label="RawQuery-definition">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<T> RawQuery<T>(string query);
+`}
+</CodeBlock>
+</TabItem>
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `query` | string | Raw RQL Query |
+
+
+
+## Usage Flow
+
+* Open a session  
+* Call `session.Advanced.RawQuery`  
+  Use `include timeseries` in your query  
+* Pass `include timeseries` its arguments:  
+   * **Time series name**  
+   * **Range start**  
+   * **Range end**  
+
+
+
+## Usage Sample
+
+In this sample, we use a raw query to retrieve a document 
+and include entries from the document's "Heartrate" time series.  
+
+<TabItem value="timeseries_region_Raw-Query-Document-And-Include-TimeSeries" label="timeseries_region_Raw-Query-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    var baseTime = DateTime.Today;
+
+    var from = baseTime;
+    var to = baseTime.AddMinutes(5);
+
+    // Define the Raw Query:
+    IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
+             // Use 'include timeseries' in the RQL
+            ("from Users include timeseries('HeartRates', $from, $to)")
+             // Pass optional parameters
+            .AddParameter("from", from)
+            .AddParameter("to", to);
+
+    // Execute the query:
+    // For each document in the query results,
+    // the time series entries will be 'loaded' to the session along with the document
+    var users = query.ToList();
+
+    // The following call to 'Get' will Not trigger a server request,
+    // the entries will be retrieved from the session's cache.
+    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor(users[0], "HeartRates")
+        .Get(from, to);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The entries we Get after the query, are retrieved 
+**from the session's cache**.  
+
+
+

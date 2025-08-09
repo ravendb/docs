@@ -1,0 +1,349 @@
+---
+title: "Session: Querying: How to use Lucene in queries?"
+hide_table_of_contents: true
+sidebar_label: How to use Lucene in queries?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to use Lucene in queries?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Lucene can be used directly by using `DocumentQuery` method from advanced session operations. It allows us to acquire low-level access to query structure which gives more flexibility.
+
+## Syntax
+
+<TabItem value="document_query_1" label="document_query_1">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() 
+	where TIndexCreator : AbstractIndexCreationTask, new();
+
+IDocumentQuery<T> DocumentQuery<T>(
+	string indexName,
+	bool isMapReduce = false);
+
+IDocumentQuery<T> DocumentQuery<T>();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index to perform query on |
+| **isMapReduce** | bool | Indicates if queried index is a map/reduce index (modifies how we treat identifier properties). |
+
+| Return Value | |
+| ------------- | ----- |
+| **IDocumentQuery** | Instance implementing IDocumentQuery interface containing additional query methods and extensions. |
+
+## Example I - Basic
+
+<TabItem value="document_query_2" label="document_query_2">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="document_query_3" label="document_query_3">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee>()
+	.WhereEquals(x => x.FirstName, "Robert")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II - Querying specified index
+
+<TabItem value="document_query_4" label="document_query_4">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+// using 'My/Custom/Index'
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee>("My/Custom/Index")
+	.WhereEquals(x => x.FirstName, "Robert")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="document_query_5" label="document_query_5">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+// using 'My/Custom/Index'
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee, MyCustomIndex>()
+	.WhereEquals("FirstName", "Robert")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Custom methods and extensions
+
+<Admonition type="note" title="Note">
+Functionality of most of the methods matches functionality of their `Query` counterparts and therefore will not be described again. Please refer to appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles.
+</Admonition>
+
+Available custom methods and extensions:   
+
+- AddOrder
+- AfterQueryExecuted
+- AndAlso
+- BeforeQueryExecution
+- Boost
+- CloseSubclause
+- ContainsAll
+- ContainsAny
+- CountLazily
+- Distinct
+- ExplainScores
+- Fuzzy
+- [Query] [GetFacets](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- GetIndexQuery
+- [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting.mdx)
+- Include
+- Intersect
+- InvokeAfterQueryExecuted
+- [Query] [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- NegateNext
+- [Query] [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [Query] [NoTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [Not](../../../../client-api/session/querying/lucene/how-to-use-not-operator.mdx)
+- OpenSubclause
+- OrElse
+- OrderBy
+- OrderByDescending
+- OrderByScore
+- OrderByScoreDescending
+- Proximity
+- RandomOrdering
+- [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- Search
+- SelectFields
+- [Query] [SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../../client-api/session/querying/how-to-customize-query.mdx#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
+- [Query] [SetHighlighterTags](../../../../client-api/session/querying/how-to-use-highlighting.mdx)
+- [Query] [SetResultTransformer](../../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+- [Query] [SetTransformerParameters](../../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+- [Query] [ShowTimings](../../../../client-api/session/querying/how-to-customize-query.mdx#showtimings)
+- [Query] [SortByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- [Query] [Spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- Statistics
+- UsingDefaultField
+- UsingDefaultOperator
+- [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [Query] [WaitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasof)
+- [Query] [WaitForNonStaleResultsAsOfLastWrite](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite)
+- [Query] [WaitForNonStaleResultsAsOfNow](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasofnow)
+- Where
+- WhereBetween
+- WhereBetweenOrEqual
+- WhereEndsWith
+- WhereEquals
+- WhereGreaterThan
+- WhereGreaterThanOrEqual
+- WhereIn
+- WhereLessThan
+- WhereLessThanOrEqual
+- WhereStartsWith
+- [Query] [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+
+## Remarks
+
+By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Lucene can be used directly by using `documentQuery` method from advanced session operations. It allows us to acquire low-level access to query structure which gives more flexibility.
+
+## Syntax
+
+<TabItem value="document_query_1" label="document_query_1">
+<CodeBlock language="java">
+{`public <T, S extends AbstractIndexCreationTask> IDocumentQuery<T> documentQuery(Class<T> clazz, Class<S> indexClass);
+
+public <T> IDocumentQuery<T> documentQuery(Class<T> clazz, String indexName);
+
+public <T> IDocumentQuery<T> documentQuery(Class<T> clazz, String indexName, boolean isMapReduce);
+
+public <T> IDocumentQuery<T> documentQuery(Class<T> clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index to perform query on |
+| **isMapReduce** | boolean | Indicates if queried index is a map/reduce index (modifies how we treat identifier properties). |
+
+| Return Value | |
+| ------------- | ----- |
+| **IDocumentQuery** | Instance implementing IDocumentQuery interface containing additional query methods and extensions. |
+
+## Example I - Basic
+
+<TabItem value="document_query_2" label="document_query_2">
+<CodeBlock language="java">
+{`// load up to 128 entities from 'Employees' collection
+List<Employee> employees = session.advanced().documentQuery(Employee.class).toList();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="document_query_3" label="document_query_3">
+<CodeBlock language="java">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+QEmployee e = QEmployee.employee;
+List<Employee> employees = session
+  .advanced()
+  .documentQuery(Employee.class)
+  .whereEquals(e.firstName, "Robert")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II - Querying specified index
+
+<TabItem value="document_query_4" label="document_query_4">
+<CodeBlock language="java">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+// using 'My/Custom/Index'
+QEmployee e = QEmployee.employee;
+List<Employee> employees = session
+  .advanced()
+  .documentQuery(Employee.class, "My/Custom/Index")
+  .whereEquals(e.firstName, "Robert")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="document_query_5" label="document_query_5">
+<CodeBlock language="java">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName equals 'Robert'
+// using 'My/Custom/Index'
+QEmployee e = QEmployee.employee;
+List<Employee> employees = session
+  .advanced()
+  .documentQuery(Employee.class, MyCustomIndex.class)
+  .whereEquals(e.firstName, "Robert")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Custom methods and extensions
+
+<Admonition type="note" title="Note">
+Functionality of most of the methods matches functionality of their `query` counterparts and therefore will not be described again. Please refer to appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles.
+</Admonition>
+
+Available custom methods and extensions:
+
+- addOrder
+- afterQueryExecuted
+- andAlso
+- beforeQueryExecution
+- boost
+- closeSubclause
+- containsAll
+- containsAny
+- countLazily
+- distinct
+- explainScores
+- fuzzy
+- [query] [getFacets](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- getIndexQuery
+- [query] [highlight](../../../../client-api/session/querying/how-to-use-highlighting.mdx)
+- include
+- intersect
+- invokeAfterQueryExecuted
+- [query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- negateNext
+- [query] [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [query] [noTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- not
+- openSubclause
+- orElse
+- orderBy
+- orderByDescending
+- orderByScore
+- orderByScoreDescending
+- proximity
+- randomOrdering
+- [query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- search
+- selectFields
+- [query] [setAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../../client-api/session/querying/how-to-customize-query.mdx#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
+- [query] [setHighlighterTags](../../../../client-api/session/querying/how-to-use-highlighting.mdx)
+- [query] [setResultTransformer](../../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+- [query] [setTransformerParameters](../../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+- [query] [showTimings](../../../../client-api/session/querying/how-to-customize-query.mdx#showtimings)
+- [query] [sortByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- [query] [spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+- statistics
+- usingDefaultField
+- usingDefaultOperator
+- [query] [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [query] [waitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasof)
+- [query] [waitForNonStaleResultsAsOfLastWrite](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite)
+- [query] [waitForNonStaleResultsAsOfNow](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasofnow)
+- where
+- whereBetween
+- whereBetweenOrEqual
+- whereEndsWith
+- whereEquals
+- whereGreaterThan
+- whereGreaterThanOrEqual
+- whereIn
+- whereLessThan
+- whereLessThanOrEqual
+- whereStartsWith
+- [query] [withinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx)
+
+## Remarks
+
+By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
+
+
+</LanguageContent>
+
+<!---
+- [Query vs DocumentQuery](../../../../indexes/querying/query-vs-document-query)
+
+-->

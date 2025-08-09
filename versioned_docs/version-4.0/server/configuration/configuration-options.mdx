@@ -1,0 +1,98 @@
+---
+title: "Configuration Options"
+hide_table_of_contents: true
+sidebar_label: Configuration Overview
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration Options
+<Admonition type="note" title="Note">
+RavenDB is **Safe by Default**, which means its default settings are configured for best safety.  
+You can change these settings, however, to divert from the default behavior.  
+
+* In this Page:  
+   * [Environment Variables](../../server/configuration/configuration-options.mdx#environment-variables)  
+   * [settings.json](../../server/configuration/configuration-options.mdx#settingsjson)  
+   * [Command Line Arguments](../../server/configuration/configuration-options.mdx#command-line-arguments)  
+
+</Admonition>
+
+## Environment Variables
+
+RavenDB's configuration can be adjusted using environment variables.  
+The server will retrieve all the environment variables that start with `RAVEN_` 
+and apply their values to the specified configuration keys.  
+
+<Admonition type="note" title="Note">
+All the period (`.`) characters in configuration keys must be replaced with an 
+underscore character (`_`) when used in environment variables.  
+</Admonition>
+
+### Example
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`RAVEN_Setup_Mode=None
+RAVEN_DataDir=RavenData
+RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## `settings.json`
+
+Use the `settings.json` file to change the server configuration.  
+
+The file is created when running the server for the first time, duplicating the `settings.default.json` file.  
+Find it at the same directory as the server executable.  
+
+The file is read and applied only on server startup.  
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "ServerUrl": "http://127.0.0.1:8080",
+    "Setup.Mode": "None"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+`settings.json` configuration options **override** [environment variables](../../server/configuration/configuration-options.mdx#environment-variables) settings. 
+</Admonition>
+
+
+
+## Command Line Arguments
+
+The server can be configured using command line arguments that can be passed to the console application (or while running as a deamon).
+
+### Example:
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`./Raven.Server --Setup.Mode=None
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Command line arguments **override** [environment variables](../../server/configuration/configuration-options.mdx#environment-variables) 
+and [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) settings.  
+Find additional details about Command Line Arguments [here](../../server/configuration/command-line-arguments.mdx). 
+</Admonition>
+
+
+

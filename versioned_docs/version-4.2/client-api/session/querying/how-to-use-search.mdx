@@ -1,0 +1,168 @@
+---
+title: "Session: Querying: How to Use Search"
+hide_table_of_contents: true
+sidebar_label: How to Use Search
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Session: Querying: How to Use Search
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Use the `Search()` extension method to perform a full-text search on a particular field. `Search()` accepts a string containing 
+the desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
+
+As of v4.2 you can also pass an array of the search terms.  
+
+An index's terms are derived from the values of the documents' fields. These values were each converted into one or more terms 
+depending on which [Lucene analyzer](../../../indexes/using-analyzers.mdx) the index used.  
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Search<T>(
+        Expression<Func<T, object>> fieldSelector,
+        string searchTerms,
+        decimal boost = 1,
+        SearchOptions options = SearchOptions.Guess,
+        SearchOperator @operator = SearchOperator.Or)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **fieldSelector** | Expression&lt;Func&lt;TResult&gt;&gt; | Points index field that should be used for querying. |
+| **searchTerms** | string 
+(or `IEnumerable<string>`) | A string of the desired search terms separated by spaces (i.e. to search for "john" or "jack", pass the string "john&nbsp;jack"). 
+Alternatively, you can pass an array (or other `IEnumerable`) of search terms. 
+Wildcards can be used: `?` for any single character, `*` for any substring. |
+| **boost** | decimal | Boost value. Default: `1`. |
+| **options** | [SearchOptions](../../../indexes/querying/searching.mdx#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **@operator** | [SearchOperator](../../../indexes/querying/searching.mdx#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
+
+## Example I - Dynamic Query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User>()
+    .Search(u => u.Name, "a*")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<User> users = await asyncSession
+    .Query<User>()
+    .Search(u => u.Name, "a*")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users 
+where search(Name, 'a*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II - Query Using Static Index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User, Users_ByNameAndHobbies>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<User> users = await asyncSession
+    .Query<User, Users_ByNameAndHobbies>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByNameAndHobbies' 
+where search(Name, 'Steve') or search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III - Boosting Usage
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User>("Users/ByHobbies")
+    .Search(x => x.Hobbies, "I love sport", boost: 10)
+    .Search(x => x.Hobbies, "but also like reading books", boost: 5)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<User> users = await asyncSession
+    .Query<User>("Users/ByHobbies")
+    .Search(x => x.Hobbies, "I love sport", boost: 10)
+    .Search(x => x.Hobbies, "but also like reading books", boost: 5)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByHobbies' 
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Use Regex](../../../client-api/session/querying/how-to-use-regex)
+- [How to Query With Exact Match](../../../client-api/session/querying/how-to-query-with-exact-match)
+
+### Indexes
+- [Analyzers](../../../indexes/using-analyzers)
+- [Querying: Searching](../../../indexes/querying/searching)
+
+
+-->

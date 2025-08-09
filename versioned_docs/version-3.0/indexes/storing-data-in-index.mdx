@@ -1,0 +1,80 @@
+---
+title: "Storing data in index"
+hide_table_of_contents: true
+sidebar_label: Storing Data in Index
+sidebar_position: 26
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Storing data in index
+
+After the [tokenization and analysis](../indexes/using-analyzers.mdx) process is complete, the resulting tokens are stored in an index, which is now ready to be search with. Only fields in the final index projection could be used for searches, and the actual tokens stored for each depend on how the selected Analyzer processed the original text.
+
+Lucene allows storing the original token text for fields, and RavenDB exposes this feature in the index definition object via `Stores`.
+
+By default, tokens are saved to the index as _Indexed and Analyzed_ but not _Stored_ - that is: they can be searched on using a specific Analyzer (or the default one), but their original value is unavailable after indexing. Enabling field storage causes values to be available for retrieval via the [ProjectFromIndexFieldsInto](../client-api/session/querying/how-to-perform-projection.mdx#projectfromindexfieldsinto), [transformers](../transformers/what-are-transformers.mdx), or [other](../client-api/session/querying/how-to-perform-projection.mdx) projection functions. It is done like this:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastName()
+	{
+		Map = employees => from employee in employees
+					select new
+					{
+						employee.FirstName,
+						employee.LastName
+					};
+
+		Stores.Add(x => x.FirstName, FieldStorage.Yes);
+		Stores.Add(x => x.LastName, FieldStorage.Yes);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.PutIndex(
+		"Employees_ByFirstAndLastName",
+		new IndexDefinition
+		{
+			Map = @"from employee in docs.Employees
+					select new
+					{
+						employee.FirstName,
+						employee.LastName
+					}",
+			Stores = new Dictionary<string, FieldStorage>
+			{
+				{ "FirstName", FieldStorage.Yes }, 
+				{ "LastName", FieldStorage.Yes }
+			}
+		});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Default value in `Stores` for each field is `FieldStorage.No`. Keep in mind that storing fields will increase disk space required by an index.
+</Admonition>
+
+<Admonition type="info" title="Info" id="info" href="#info">
+If the **projection function requires only the fields that are stored**, then the document will not be loaded from storage and all data will come directly from the index. This can increase query performance (at the cost of disk space used) in the frequent situations when the whole document is not needed.
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../server/configuration/configuration-options.mdx#index-settings).
+</Admonition>
+

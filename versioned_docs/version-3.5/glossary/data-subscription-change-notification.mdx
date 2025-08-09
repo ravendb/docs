@@ -1,0 +1,38 @@
+---
+title: "Glossary: DataSubscriptionChangeNotification"
+hide_table_of_contents: true
+sidebar_label: DataSubscriptionChangeNotification
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: DataSubscriptionChangeNotification
+
+### General
+
+This class extends `EventArgs`.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [DataSubscriptionChangeTypes](../glossary/data-subscription-change-notification.mdx#datasubscriptionchangetypes-enum) | Change type |
+| **Id** | long | Data subscription identifier |
+
+---
+
+# DataSubscriptionChangeTypes (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** |  `0` |
+| **SubscriptionOpened** | `1` |
+| **SubscriptionReleased** | `2` |

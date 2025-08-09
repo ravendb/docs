@@ -1,0 +1,229 @@
+---
+title: "Session: Querying: How to perform projection?"
+hide_table_of_contents: true
+sidebar_label: How to perform projection?
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to perform projection?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+There are a couple types of projections:
+
+- using [Select](../../../client-api/session/querying/how-to-perform-projection.mdx#select)
+- using [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection.mdx#projectfromindexfieldsinto)
+- using [OfType (As)](../../../client-api/session/querying/how-to-perform-projection.mdx#oftype-(as)---simple-projection)
+- using transformer [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+
+## Select
+
+The most common projection is done by using LINQ `Select` method.
+
+### Example I
+
+<TabItem value="projection_1" label="projection_1">
+<CodeBlock language="csharp">
+{`// request 'FirstName' and 'LastName' from server
+// and project it to anonymous class
+var results = session
+	.Query<Employee>()
+	.Select(x => new
+	\{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	\})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="projection_2" label="projection_2">
+<CodeBlock language="csharp">
+{`// request 'FirstName' and 'LastName' from server
+// and project it to 'EmployeeFirstAndLastName'
+List<EmployeeFirstAndLastName> results = session
+	.Query<Employee>()
+	.Select(x => new EmployeeFirstAndLastName
+	\{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	\})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## TransformWith
+
+Detailed article about using transformers with queries can be found [here](../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx).
+
+
+
+## ProjectFromIndexFieldsInto
+
+This extension method uses reflection to extract all public fields and properties to fetch and perform projection to the requested type.
+
+### Example
+
+<TabItem value="projection_3" label="projection_3">
+<CodeBlock language="csharp">
+{`// request all public fields/properties available 
+// in 'EmployeeFirstAndLastName' ('FirstName' and 'LastName')
+// and project it to instance of this class
+List<EmployeeFirstAndLastName> results = session
+	.Query<Employee>()
+	.ProjectFromIndexFieldsInto<EmployeeFirstAndLastName>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## OfType (As) - simple projection
+
+`OfType` or `As` is a client-side projection. The easiest explanation of how it works is: take results that server returned and map them to given type. This may become useful when querying index that contains fields that are not available in mapped type.
+
+### Example
+
+<TabItem value="projection_4" label="projection_4">
+<CodeBlock language="csharp">
+{`public class Products_BySupplierName : AbstractIndexCreationTask<Product>
+\{
+	public class Result
+	\{
+		public string Name \{ get; set; \}
+	\}
+
+	public Products_BySupplierName()
+	\{
+		Map =
+			products =>
+			from product in products
+			let supplier = LoadDocument<Supplier>(product.Supplier)
+			select new
+				       \{
+					       Name = supplier.Name
+				       \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="projection_5" label="projection_5">
+<CodeBlock language="csharp">
+{`// query index 'Products_BySupplierName' 
+// return documents from collection 'Products' that have a supplier 'Norske Meierier'
+// project them to 'Products'
+List<Product> results = session
+	.Query<Products_BySupplierName.Result, Products_BySupplierName>()
+	.Where(x => x.Name == "Norske Meierier")
+	.OfType<Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="note" title="Note" id="note" href="#note">
+Projections request from server an array of fields to download, if index contains those fields (stores them) they will come directly from index, if not values from document will be used. You can read more about storing fields [here](../../../indexes/storing-data-in-index.mdx).
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../../../server/configuration/configuration-options.mdx#index-settings).
+</Admonition>
+
+<Admonition type="note" title="Note">
+Projected entities (even named types) are not being tracked by session.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are a couple types of projections:
+
+- using [Select](../../../client-api/session/querying/how-to-perform-projection.mdx#select)
+- using transformer [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+
+## Select
+
+The most common projection is done by using `select` method.
+
+### Example I
+
+<TabItem value="projection_1" label="projection_1">
+<CodeBlock language="java">
+{`// request 'FirstName' and 'LastName' from server
+// and project it to 'EmployeeFirstAndLastName'
+session
+  .query(Employee.class)
+  .select(EmployeeFirstAndLastName.class, "firstName", "lastName")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="projection_2" label="projection_2">
+<CodeBlock language="java">
+{`// request 'FirstName' and 'LastName' from server
+// and project it to 'EmployeeFirstAndLastName'
+QHowToPerformProjection_EmployeeFirstAndLastName e =
+  QHowToPerformProjection_EmployeeFirstAndLastName.employeeFirstAndLastName;
+session
+  .query(Employee.class)
+  .select(EmployeeFirstAndLastName.class, e.firstName, e.lastName)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## TransformWith
+
+Detailed article about using transformers with queries can be found [here](../../../client-api/session/querying/how-to-use-transformers-in-queries.mdx).
+
+
+
+## Remarks
+
+<Admonition type="note" title="Note" id="note" href="#note">
+Projections request from server an array of fields to download, if index contains those fields (stores them) they will come directly from index, if not values from document will be used. You can read more about storing fields [here](../../../indexes/storing-data-in-index.mdx).
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../../../server/configuration/configuration-options.mdx#index-settings).
+</Admonition>
+
+
+<Admonition type="note" title="Note">
+Projected entities (even named types) are not being tracked by session.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Querying : Projections](../../../indexes/querying/projections)
+
+-->

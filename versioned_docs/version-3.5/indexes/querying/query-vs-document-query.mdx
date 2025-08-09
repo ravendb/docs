@@ -1,0 +1,192 @@
+---
+title: "Query vs DocumentQuery"
+hide_table_of_contents: true
+sidebar_label: Query vs DocumentQuery
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Query vs DocumentQuery
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+You might be wondering why does the RavenDB client offer two ways of querying by exposing `Query` as well as `DocumentQuery` methods and what are
+differences between them.
+
+`DocumentQuery` is the lower level API that we use to query RavenDB but it does not support LINQ - the mandatory data access solution in .NET. Therefore we have created `Query` that that is the LINQ endpoint for RavenDB. 
+
+The entire LINQ API is a wrapper of `DocumentQuery` and is built on top on that. 
+So when you use `Query` it always is translated to `DocumentQuery` object, which then builds a Lucene-syntax query that is sent to the server.
+However we still expose `DocumentQuery` in advanced options to allow the users to have the full power of Lucene available to them. 
+
+## Immutability
+
+`DocumentQuery` is mutable while `Query` is immutable. It means that you might get different results if you try to *reuse* a query. The usage of `Query` method like in the following example:
+
+<TabItem value="immutable_query" label="immutable_query">
+<CodeBlock language="csharp">
+{`IRavenQueryable<User> query = session
+    .Query<User>()
+    .Where(x => x.Name.StartsWith("A"));
+
+IRavenQueryable<User> ageQuery = query
+    .Where(x => x.Age > 21);
+
+IRavenQueryable<User> eyeQuery = query
+    .Where(x => x.EyeColor == "blue");
+`}
+</CodeBlock>
+</TabItem>
+
+will cause that the queries will be translated into following Lucene-syntax queries:
+
+`query - Name:A*`
+
+`ageQuery - (Name:A*) AND (Age_Range:{Ix21 TO NULL})`
+
+`eyeQuery - (Name:A*) AND (EyeColor:blue)`
+
+The similar usage of `DocumentQuery`:
+
+<TabItem value="mutable_lucene_query" label="mutable_lucene_query">
+<CodeBlock language="csharp">
+{`IDocumentQuery<User> documentQuery = session
+    .Advanced
+    .DocumentQuery<User>()
+    .WhereStartsWith(x => x.Name, "A");
+
+IDocumentQuery<User> ageDocumentQuery = documentQuery
+    .WhereGreaterThan(x => x.Age, 21);
+
+IDocumentQuery<User> eyeDocumentQuery = documentQuery
+    .WhereEquals(x => x.EyeColor, "blue");
+
+// here all of the DocumentQuery variables are the same references
+`}
+</CodeBlock>
+</TabItem>
+
+`documentQuery - Name:A*` (before creating `ageQuery`)
+
+`ageLuceneQuery - Name:A* Age_Range:{Ix21 TO NULL}` (before creating `eyeDocumentQuery`)
+
+`eyeLuceneQuery - Name:A* Age_Range:{Ix21 TO NULL} EyeColor:blue`
+
+In result all created Lucene queries are the same query (actually the same instance). This is important hint that you should be aware if you are going to reuse `DocumentQuery`.
+
+## Default query operator
+
+The example above shows an another difference between querying methods. Note that the usage of `Where` statement resulted in `AND` operator 
+in the final Lucene query when using `Query` method. In case of `DocumentQuery` usage the Lucene query has no operator between query conditions what means
+that `OR` will be used. This is the default operator of Lucene engine. You are able to change that by using `UsingDefaultOperator`:
+
+<TabItem value="default_operator" label="default_operator">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<User>()
+    .UsingDefaultOperator(QueryOperator.Or);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+You might be wondering why does the RavenDB client offer two ways of querying by exposing `query` as well as `documentQuery` methods and what are
+differences between them.
+
+`documentQuery` is the lower level API that we use to query RavenDB. Therefore we have created `query`.
+
+`query` is just a wrapper of `documentQuery`, so when you use `query` it always is translated to `documentQuery` object, which then builds a Lucene-syntax query that is sent to the server.
+However we still expose `documentQuery` in advanced options to allow the users to have the full power of Lucene available to them. 
+
+## Immutability
+
+`documentQuery` is mutable while `query` is immutable. It means that you might get different results if you try to *reuse* a query. The usage of `query` method like in the following example:
+
+<TabItem value="immutable_query" label="immutable_query">
+<CodeBlock language="java">
+{`QQueryAndLuceneQuery_User u = QQueryAndLuceneQuery_User.user;
+IRavenQueryable<User> query = session
+  .query(User.class)
+  .where(u.name.startsWith("A"));
+
+IRavenQueryable<User> ageQuery = query.where(u.age.gt(21));
+
+IRavenQueryable<User> eyeColor = query.where(u.eyeColor.eq("blue"));
+`}
+</CodeBlock>
+</TabItem>
+
+will cause that the queries will be translated into following Lucene-syntax queries:
+
+`query - Name:A*`
+
+`ageQuery - (Name:A*) AND (Age_Range:{Ix21 TO NULL})`
+
+`eyeQuery - (Name:A*) AND (EyeColor:blue)`
+
+The similar usage of `documentQuery`:
+
+<TabItem value="mutable_lucene_query" label="mutable_lucene_query">
+<CodeBlock language="java">
+{`IDocumentQuery<User> documentQuery = session
+  .advanced()
+  .documentQuery(User.class)
+  .whereStartsWith(u.name, "A");
+
+IDocumentQuery<User> ageDocumentQuery = documentQuery.whereGreaterThan(u.age, (byte)21);
+
+IDocumentQuery<User> eyeDocumentQuery = documentQuery.whereEquals(u.eyeColor, "blue");
+
+// here all of the DocumentQuery variables are the same references
+`}
+</CodeBlock>
+</TabItem>
+
+`documentQuery - Name:A*` (before creating `ageQuery`)
+
+`ageLuceneQuery - Name:A* Age_Range:{Ix21 TO NULL}` (before creating `eyeDocumentQuery`)
+
+`eyeLuceneQuery - Name:A* Age_Range:{Ix21 TO NULL} EyeColor:blue`
+
+In result all created Lucene queries are the same query (actually the same instance). This is important hint that you should be aware if you are going to reuse `documentQuery`.
+
+## Default query operator
+
+The example above shows an another difference between querying methods. Note that the usage of `where` statement resulted in `AND` operator 
+in the final Lucene query when using `query` method. In case of `documentQuery` usage the Lucene query has no operator between query conditions what means
+that `OR` will be used. This is the default operator of Lucene engine. You are able to change that by using `usingDefaultOperator`:
+
+<TabItem value="default_operator" label="default_operator">
+<CodeBlock language="java">
+{`session
+  .advanced()
+  .documentQuery(User.class)
+  .usingDefaultOperator(QueryOperator.AND);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Querying : Basics](../../indexes/querying/basics)
+- [Client API : Session : How to query?](../../client-api/session/querying/how-to-query)
+- [Client API : Session : How to use lucene in queries?](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries)
+
+-->

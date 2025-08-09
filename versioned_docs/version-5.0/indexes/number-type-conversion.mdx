@@ -1,0 +1,159 @@
+---
+title: "Indexing: Numerical Type Conversion"
+hide_table_of_contents: true
+sidebar_label: Numerical Type Conversion
+sidebar_position: 31
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Indexing: Numerical Type Conversion
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The `TryConvert()` method can be used to safely convert values to numerical types.  
+
+* Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb.mdx).  
+
+* In this page:  
+  * [Syntax](..\indexes\number-type-conversion.mdx#syntax)  
+  * [Examples](..\indexes\number-type-conversion.mdx#examples)  
+
+</Admonition>
+## Syntax
+
+`TryConvert<T>()` is used to convert values into one of the common primitive numerical 
+types - `int`, `long`, `float`, or `double`. It is called from within the 
+[Map](../indexes/map-indexes.mdx) or [Reduce](../indexes/map-reduce-indexes.mdx) functions of the 
+index. If the submitted value cannot be converted to the specified type, this method returns 
+`null`.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`protected T? TryConvert<T>(object value)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **T** | Generic type parameter | The numerical type to which you want to convert your value. Possible values:
+- `int`
+- `long`
+- `float`
+- `double` |
+| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
+
+
+
+## Examples
+
+The class `Item` has fields of type `int`, `long`, `float`, `double`, `string`, and an object 
+field of type [Company](../start/about-examples.mdx). The following index takes an `Item` 
+entity and attempts to convert each of its fields into the corresponding type. In case of 
+failure, the field is indexed with value `-1` instead.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`public class TryConvertIndexLINQ : AbstractIndexCreationTask<Item>
+{
+    public TryConvertIndexLINQ()
+    {
+        Map = items => from item in items
+                       select new
+                       {
+                           DoubleValue = TryConvert<double>(item.DoubleValue) ?? -1,
+                           FloatValue = TryConvert<float>(item.FloatValue) ?? -1,
+                           LongValue = TryConvert<long>(item.LongValue) ?? -1,
+                           IntValue = TryConvert<int>(item.IntValue) ?? -1,
+                           StringValue = TryConvert<double>(item.StringValue) ?? -1,
+                           ObjectValue = TryConvert<long>(item.ObjectValue) ?? -1
+                       };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="csharp">
+{`public class Item
+{
+    public double DoubleValue { get; set; }
+    public float FloatValue { get; set; }
+    public long LongValue { get; set; }
+    public int IntValue { get; set; }
+    public string StringValue { get; set; }
+    public Company ObjectValue { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+This next index takes the [`string` field `Employee.Address.PostalCode`](../start/about-examples.mdx) 
+and attempts to convert it to `long`.  
+
+The query below it finds all employees that do not have a valid `PostalCode` field - whether 
+because the employee does not have a postal code or because the value could not be converted to 
+a valid `long`.  
+
+<TabItem value="tryconvert_postal" label="tryconvert_postal">
+<CodeBlock language="csharp">
+{`public class Employees_ByPostalCode : AbstractIndexCreationTask<Employee>
+\{
+    public class Result \{
+        public long PostalCode \{ get; set; \}
+    \}
+
+    public Employees_ByPostalCode()
+    \{
+        Map = employees => from employee in employees
+                           select new Result
+                           \{
+                               PostalCode = TryConvert<long>(employee.Address.PostalCode) ?? -1
+                           \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+Query:  
+
+<TabItem value="query" label="query">
+<CodeBlock language="csharp">
+{`List<Employee> employeesWithoutPostalCode = session
+    .Query<Employees_ByPostalCode.Result, Employees_ByPostalCode>()
+    .Where(x => x.PostalCode == -1)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [Conventions: Serialization](../client-api/configuration/serialization)
+
+### Indexes
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Server
+- [Knowledge Base: Numbers in RavenDB](../server/kb/numbers-in-ravendb)
+
+
+-->

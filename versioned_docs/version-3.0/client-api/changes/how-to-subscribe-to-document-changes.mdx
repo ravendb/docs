@@ -1,0 +1,518 @@
+---
+title: "Changes API: How to subscribe to document changes?"
+hide_table_of_contents: true
+sidebar_label: How to Subscribe to Document Changes
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Changes API: How to subscribe to document changes?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Following methods allow you to subscribe to document changes:
+
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+
+## ForDocument
+
+Single document changes can be observed using `ForDocument` method.
+
+### Syntax
+
+<TabItem value="document_changes_1" label="document_changes_1">
+<CodeBlock language="csharp">
+{`IChangesObservable<DocumentChange> ForDocument(string docId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | Id of a document for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+
+### Example
+
+<TabItem value="document_changes_2" label="document_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForDocument("employees/1")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case DocumentChangeTypes.Put:
+                    // do something
+                    break;
+                case DocumentChangeTypes.Delete:
+                    // do something
+                    break;
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsInCollection
+
+To observe all document changes in particular collection use `ForDocumentInCollection` method. This method filters documents by `Raven-Entity-Name` metadata property value.
+
+### Syntax
+
+<TabItem value="document_changes_3" label="document_changes_3">
+<CodeBlock language="csharp">
+{`IChangesObservable<DocumentChange> ForDocumentsInCollection(string collectionName);
+
+IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **collectionName** | string | Name of document collection for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+
+<Admonition type="info" title="Info">
+Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name.
+</Admonition>
+
+### Example
+
+<TabItem value="document_changes_4" label="document_changes_4">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForDocumentsInCollection<Employee>()
+    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="document_changes_5" label="document_changes_5">
+<CodeBlock language="csharp">
+{`string collectionName = store.Conventions.FindCollectionName(typeof(Employee));
+IDisposable subscription = store
+    .Changes()
+    .ForDocumentsInCollection(collectionName)
+    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsOfType
+
+To observe all document changes for given type use `ForDocumentsOfType` method. This method filters documents by `Raven-Clr-Type` metadata property value.
+
+## Syntax
+
+<TabItem value="document_changes_6" label="document_changes_6">
+<CodeBlock language="csharp">
+{`IObservableWithTask<DocumentChangeNotification>
+	ForDocumentsOfType(string typeName);
+
+IObservableWithTask<DocumentChangeNotification>
+	ForDocumentsOfType(Type type);
+
+IObservableWithTask<DocumentChangeNotification>
+	ForDocumentsOfType<TEntity>();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used, the full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
+
+<Admonition type="info" title="Info">
+Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name.
+</Admonition>
+
+## Example
+
+<TabItem value="document_changes_7" label="document_changes_7">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+	.Changes()
+	.ForDocumentsOfType<Employee>()
+	.Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+or 
+
+<TabItem value="document_changes_8" label="document_changes_8">
+<CodeBlock language="csharp">
+{`string typeName = store.Conventions.FindClrTypeName(typeof(Employee));
+IDisposable subscription = store
+	.Changes()
+	.ForDocumentsOfType(typeName)
+	.Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsStartingWith
+
+To observe all document changes for documents with Id that contains given prefix use `ForDocumentsStartingWith` method.
+
+## Syntax
+
+<TabItem value="document_changes_9" label="document_changes_9">
+<CodeBlock language="csharp">
+{`IChangesObservable<DocumentChange> ForDocumentsStartingWith(string docIdPrefix);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docIdPrefix** | string | Document Id prefix for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
+
+## Example
+
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
+    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllDocuments
+
+To observe all document changes use `ForAllDocuments` method.
+
+## Syntax
+
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
+<CodeBlock language="csharp">
+{`IChangesObservable<DocumentChange> ForAllDocuments();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+
+## Example
+
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForAllDocuments() // employees/1, orders/1, customers/1, etc.
+    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Following methods allow you to subscribe to document changes:
+
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+
+## ForDocument
+
+Single document changes can be observed using `forDocument` method.
+
+### Syntax
+
+<TabItem value="document_changes_1" label="document_changes_1">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocument(String docId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | String | Id of a document for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+
+### Example
+
+<TabItem value="document_changes_2" label="document_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store.changes()
+    .forDocument("employees/1")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case PUT:
+                // do something
+                break;
+            case DELETE:
+                // do something
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsInCollection
+
+To observe all document changes in particular collection use `forDocumentInCollection` method. This method filters documents by `Raven-Entity-Name` metadata property value.
+
+### Syntax
+
+<TabItem value="document_changes_3" label="document_changes_3">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocumentsInCollection(String collectionName);
+
+IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **collectionName** | String | Name of document collection for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+
+<Admonition type="info" title="Info">
+Overload with `Class` uses `Conventions.getTypeTagName` to get collection name.
+</Admonition>
+
+### Example
+
+<TabItem value="document_changes_4" label="document_changes_4">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forDocumentsInCollection(Employee.class)
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="document_changes_5" label="document_changes_5">
+<CodeBlock language="java">
+{`String collectionName = store.getConventions().getFindCollectionName().apply(Employee.class);
+CleanCloseable subscription = store
+    .changes()
+    .forDocumentsInCollection(collectionName)
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsOfType
+
+To observe all document changes for given type use `forDocumentsOfType` method. This method filters documents by `Raven-Clr-Type` metadata property value.
+
+## Syntax
+
+<TabItem value="document_changes_6" label="document_changes_6">
+<CodeBlock language="java">
+{`public IObservable<DocumentChangeNotification> forDocumentsOfType(String typeName);
+
+public IObservable<DocumentChangeNotification> forDocumentsOfType(Class<?> clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** or **clazz** | String or Class | Name of class or class for which notifications will be processed. If default conventions are used then full type name without version information should be passed.
+
+| Return Value | |
+| ------------- | ----- |
+| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
+
+<Admonition type="info" title="Info">
+Overload with `Class` uses `Conventions.findClrTypeName` to get type name.
+</Admonition>
+
+## Example
+
+<TabItem value="document_changes_7" label="document_changes_7">
+<CodeBlock language="java">
+{`Closeable subscription = store
+  .changes()
+  .forDocumentsOfType(Employee.class)
+  .subscribe(Observers.create(new Action1<DocumentChangeNotification>() \{
+    @Override
+    public void apply(DocumentChangeNotification change) \{
+      System.out.println(change.getType() + " on document " + change.getId());
+    \}
+  \}));
+`}
+</CodeBlock>
+</TabItem>
+
+or 
+
+<TabItem value="document_changes_8" label="document_changes_8">
+<CodeBlock language="java">
+{`String typeName = store.getConventions().getFindJavaClassName().find(Employee.class);
+Closeable subscription = store
+  .changes()
+  .forDocumentsOfType(typeName)
+  .subscribe(Observers.create(new Action1<DocumentChangeNotification>() \{
+    @Override
+    public void apply(DocumentChangeNotification change) \{
+      System.out.println(change.getType() + " on document " + change.getId());
+    \}
+  \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForDocumentsStartingWith
+
+To observe all document changes for documents with Id that contains given prefix use `forDocumentsStartingWith` method.
+
+## Syntax
+
+<TabItem value="document_changes_9" label="document_changes_9">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocumentsStartingWith(String docIdPrefix);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docIdPrefix** | String | Document Id prefix for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
+
+## Example
+
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllDocuments
+
+To observe all document changes use `forAllDocuments` method.
+
+## Syntax
+
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forAllDocuments();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+
+## Example
+
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forAllDocuments()
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+
+</LanguageContent>
+
+<!---
+
+-->

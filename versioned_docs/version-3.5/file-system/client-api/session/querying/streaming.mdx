@@ -1,0 +1,73 @@
+---
+title: "Session: Querying: StreamQueryAsync"
+hide_table_of_contents: true
+sidebar_label: Streaming
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Session: Querying: StreamQueryAsync
+
+Query results can be streamed using **StreamQueryAsync** method from Advanced session operations.
+
+
+
+<TabItem value="streaming_1" label="streaming_1">
+<CodeBlock language="csharp">
+{`Task<IAsyncEnumerator<FileHeader>> StreamQueryAsync(IAsyncFilesQuery<FileHeader> query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | IAsyncFilesQuery&lt;FileHeader&gt; | Query to stream results for |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumerator of [`FileHeaders`](../../../../../glossary/file-header.mdx) objects. |
+
+## Example
+
+<TabItem value="streaming_2" label="streaming_2">
+<CodeBlock language="csharp">
+{`var allFilesMatchingCriteria = new List<FileHeader>();
+
+var query = session.Query().WhereStartsWith("Name","Fa" );
+
+using (var reader = await session.Advanced.StreamQueryAsync(query))
+\{
+    while (await reader.MoveNextAsync())
+    \{
+        allFilesMatchingCriteria.Add(reader.Current);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>   
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Entities loaded using Stream will be transient (not attached to session).
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Commands : StreamQueryAsync](../../commands/files/browse/stream-query)
+
+-->

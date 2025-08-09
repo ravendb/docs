@@ -1,0 +1,43 @@
+---
+title: "What are commands?"
+hide_table_of_contents: true
+sidebar_label: What are commands?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#What are commands?
+
+Commands are a set of low level operations that can be used to manipulate data on the RavenFS instance.
+
+They are accessible from the `IFilesStore` object by using `AsyncFilesCommands` property:
+
+<TabItem value="commands_access" label="commands_access">
+<CodeBlock language="csharp">
+{`IAsyncFilesCommands commands = store.AsyncFilesCommands;
+`}
+</CodeBlock>
+</TabItem>
+
+Note that in contrast to [RavenDB commands](../../../client-api/commands/what-are-commands.mdx), RavenFS client exposes only the async methods.
+
+## Working with multiple file systems
+
+By default file commands are executed against the `DefaultFileSystem` configured in the `FilesStore`. However, you can perform the command actions on another existing file system. Note that this file system may require different credentials. Take a look at the example:
+
+<TabItem value="commands_different_fs" label="commands_different_fs">
+<CodeBlock language="csharp">
+{`IAsyncFilesCommands southwindCommands = store
+	.AsyncFilesCommands
+	.ForFileSystem("SouthwindFS")
+	.With(new NetworkCredential("user", "pass"));
+`}
+</CodeBlock>
+</TabItem>
+

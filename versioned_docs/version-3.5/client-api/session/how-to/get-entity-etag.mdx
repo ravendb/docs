@@ -1,0 +1,89 @@
+---
+title: "Session: How to get entity etag?"
+hide_table_of_contents: true
+sidebar_label: ...get entity etag
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: How to get entity etag?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When document is downloaded from server it contains various metadata information e.g. Id or current etag. Current etag is stored within metadata in session and available for each entity using `GetEtagFor` method from `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_etag_1" label="get_etag_1">
+<CodeBlock language="csharp">
+{`Etag GetEtagFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which etag will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| ETag | Returns current etag for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
+
+## Example
+
+<TabItem value="get_etag_2" label="get_etag_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+Etag etag = session.Advanced.GetEtagFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+When document is downloaded from server it contains various metadata information e.g. Id or current etag. Current etag is stored within metadata in session and available for each entity using `getEtagFor` method from `advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_etag_1" label="get_etag_1">
+<CodeBlock language="java">
+{`public <T> Etag getEtagFor(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which etag will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| ETag | Returns current etag for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
+
+## Example
+
+<TabItem value="get_etag_2" label="get_etag_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+Etag etag = session.advanced().getEtagFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

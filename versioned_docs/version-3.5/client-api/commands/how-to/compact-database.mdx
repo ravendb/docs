@@ -1,0 +1,149 @@
+---
+title: "Commands: How to compact database?"
+hide_table_of_contents: true
+sidebar_label: ...compact database
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: How to compact database?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To compact a database, please use `CompactDatabase` command available in `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="csharp">
+{`Operation CompactDatabase(string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of a database to compact |
+
+## Example
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="csharp">
+{`Operation operation = store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CompactDatabase("Northwind");
+
+operation.WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To compact a database, please use `compactDatabase` command available in `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="java">
+{`public Operation compactDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database to compact |
+
+## Example
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="java">
+{`Operation operation = store.getDatabaseCommands().getGlobalAdmin().compactDatabase("Northwind");
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+To compact a database, please use compact endpoint.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/compact?database=\{databaseName\} \\
+	-X POST
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **databaseName** | Yes | Name of a database to compact |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **OperationId** | Operation id |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/admin/compact?database=NorthWind"
+< HTTP/1.1 200 OK
+\{"OperationId":1\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+
+</LanguageContent>
+
+<!---
+- [How to create or delete database?](../../../client-api/commands/how-to/create-delete-database)
+- [How to get database and server statistics?](../../../client-api/commands/how-to/get-database-and-server-statistics)
+- [How to start backup or restore operations?](../../../client-api/commands/how-to/start-backup-restore-operations)
+
+-->

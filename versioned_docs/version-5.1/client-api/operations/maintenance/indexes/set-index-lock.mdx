@@ -1,0 +1,191 @@
+---
+title: "Operations: How to Change the Index Lock Mode"
+hide_table_of_contents: true
+sidebar_label: Set Index Lock Mode
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Change the Index Lock Mode
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
+
+## Syntax
+
+<TabItem value="set_lock_mode_1" label="set_lock_mode_1">
+<CodeBlock language="csharp">
+{`public SetIndexesLockOperation(string indexName, IndexLockMode lockMode);
+public SetIndexesLockOperation(Parameters parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_2" label="set_lock_mode_2">
+<CodeBlock language="csharp">
+{`public enum IndexLockMode
+\{
+    Unlock = 0,
+    LockedIgnore = 1,
+    LockedError = 2
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_3" label="set_lock_mode_3">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    public string[] IndexNames \{ get; set; \}
+    public IndexLockMode Mode \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+| **parameters** | SetIndexesLockOperation.Parameters | list of indexes + new index lock mode |
+
+## Example I
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesLockOperation(new SetIndexesLockOperation.Parameters
+\{
+    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
+    Mode = IndexLockMode.LockedIgnore
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesLockOperation(new SetIndexesLockOperation.Parameters
+\{
+    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
+    Mode = IndexLockMode.LockedIgnore
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
+
+## Syntax
+
+<TabItem value="set_lock_mode_1" label="set_lock_mode_1">
+<CodeBlock language="java">
+{`public SetIndexesLockOperation(String indexName, IndexLockMode mode)
+public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_2" label="set_lock_mode_2">
+<CodeBlock language="java">
+{`public enum IndexLockMode \{
+    UNLOCK,
+    LOCKED_IGNORE,
+    LOCKED_ERROR
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_3" label="set_lock_mode_3">
+<CodeBlock language="java">
+{`public static class Parameters \{
+    private String[] indexNames;
+    private IndexLockMode mode;
+
+    public String[] getIndexNames() \{
+        return indexNames;
+    \}
+
+    public void setIndexNames(String[] indexNames) \{
+        this.indexNames = indexNames;
+    \}
+
+    public IndexLockMode getMode() \{
+        return mode;
+    \}
+
+    public void setMode(IndexLockMode mode) \{
+        this.mode = mode;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+| **parameters** | SetIndexesLockOperation.Parameters | list of indexes + new index lock mode |
+
+## Example I
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="java">
+{`SetIndexesLockOperation.Parameters parameters = new SetIndexesLockOperation.Parameters();
+parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
+parameters.setMode(IndexLockMode.LOCKED_IGNORE);
+
+store.maintenance().send(new SetIndexesLockOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="java">
+{`SetIndexesLockOperation.Parameters parameters = new SetIndexesLockOperation.Parameters();
+parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
+parameters.setMode(IndexLockMode.LOCKED_IGNORE);
+
+store.maintenance().send(new SetIndexesLockOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-index-priority)
+
+
+-->

@@ -1,0 +1,365 @@
+---
+title: "Put Client Configuration Operation  (for database)"
+hide_table_of_contents: true
+sidebar_label: Put Client Configuration
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Put Client Configuration Operation  (for database)
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* __What is the Client-Configuration__:  
+  The Client-Configuration is a set of configuration options that apply to the client when communicating with the database.
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
+
+* __Initializing the Client-Configuration__ (on the client):  
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
+  
+* __Overriding the initial Client-Configuration for the database__ (on the server):  
+
+    * From the client code:  
+      Use `PutClientConfigurationOperation` to set the client-configuration options on the server.  
+      See the example below.
+    
+    * From the Studio:  
+      Set the Client-Configuration from the [Client-Configuration view](../../../../studio/database/settings/client-configuration-per-database.mdx).
+
+* __Updating the running client__:  
+
+  * Once the Client-Configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
+    the next time it makes a request to the database.  
+
+  * Setting the Client-Configuration on the server enables administrators to dynamically control the client behavior after it has started running.  
+    e.g. manage load balancing of client requests on the fly in response to changing system demands.
+
+* The client-configuration set for the database level __overrides__ the [server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
+* In this page:
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client-configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
+
+</Admonition>
+## What can be configured
+
+The following client-configuration options are available:  
+
+* __Identity parts separator__:  
+  Set the separator used with automatically generated document identity IDs (default separator is `/`).  
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
+
+* __Maximum number of requests per session__:  
+  Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
+
+* __Read balance behavior__:  
+  Set the Read balance method the client will use when accessing a node with Read requests.  
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
+  
+* __Load balance behavior__:  
+  Set the Load balance method for Read & Write requests.  
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
+
+
+
+## Put client-configuration (for database)
+
+<TabItem value="put_config_1" label="put_config_1">
+<CodeBlock language="csharp">
+{`// You can customize the client-configuration options in the client
+// when creating the Document Store (this is optional):
+// =================================================================
+
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "ServerURL_1", "ServerURL_2", "..." \},
+    Database = "DefaultDB",
+    Conventions = new DocumentConventions
+    \{
+        // Initialize some client-configuration options:
+        MaxNumberOfRequestsPerSession = 100,
+        IdentityPartsSeparator = '$'
+        // ...
+    \}
+\}.Initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Override the initial client-configuration in the server using the put operation:
+// ================================================================================
+
+using (documentStore)
+{
+    // Define the client-configuration object
+    ClientConfiguration clientConfiguration = new ClientConfiguration
+    {
+        MaxNumberOfRequestsPerSession = 200,
+        ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+        // ...
+    };
+        
+    // Define the put client-configuration operation, pass the configuration 
+    var putClientConfigOp = new PutClientConfigurationOperation(clientConfiguration);
+    
+    // Execute the operation by passing it to Maintenance.Send
+    documentStore.Maintenance.Send(putClientConfigOp);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Override the initial client-configuration using the put operation:
+using (documentStore)
+{
+    // Define the client-configuration object
+    ClientConfiguration clientConfiguration = new ClientConfiguration
+    {
+        MaxNumberOfRequestsPerSession = 200,
+        ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+        // ...
+    };
+        
+    // Define the put client-configuration operation, pass the configuration 
+    var putClientConfigOp = new PutClientConfigurationOperation(clientConfiguration);
+    
+    // Execute the operation by passing it to Maintenance.SendAsync
+    await documentStore.Maintenance.SendAsync(putClientConfigOp);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`public PutClientConfigurationOperation(ClientConfiguration configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                  | Description                                                            |
+|-------------------|-----------------------|------------------------------------------------------------------------|
+| __configuration__ | `ClientConfiguration` | Client configuration that will be set on the server (for the database) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class ClientConfiguration
+\{
+    public long Etag \{ get; set; \}
+    public bool Disabled \{ get; set; \}
+    public int? MaxNumberOfRequestsPerSession \{ get; set; \}
+    public ReadBalanceBehavior? ReadBalanceBehavior \{ get; set; \}
+    public LoadBalanceBehavior? LoadBalanceBehavior \{ get; set; \}
+    public int? LoadBalancerContextSeed \{ get; set; \}
+    public char? IdentityPartsSeparator;  // can be any character except '|'
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**PutClientConfigurationOperation** is used to save a client configuration on the server. It allows you to override client's settings remotely. 
+
+## Syntax
+
+<TabItem value="config_2_0" label="config_2_0">
+<CodeBlock language="java">
+{`PutClientConfigurationCommand(ClientConfiguration configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ----- | ---- |
+| **configuration** | `ClientConfiguration` | configuration which will be used by client API |
+
+## Example
+
+<TabItem value="config_2_2" label="config_2_2">
+<CodeBlock language="java">
+{`ClientConfiguration clientConfiguration = new ClientConfiguration();
+clientConfiguration.setMaxNumberOfRequestsPerSession(100);
+clientConfiguration.setReadBalanceBehavior(ReadBalanceBehavior.FASTEST_NODE);
+
+store.maintenance().send(
+    new PutClientConfigurationOperation(clientConfiguration));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* __What is the Client-Configuration__:  
+  The Client-Configuration is a set of configuration options that apply to the client when communicating with the database.
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.
+
+* __Initializing the Client-Configuration__ (on the client):  
+  This configuration can be initially customized from the client code when creating the Document Store via the Conventions.
+  
+* __Overriding the initial Client-Configuration for the database__ (on the server):
+
+    * From the client code:  
+      Use `PutClientConfigurationOperation` to set the client-configuration options on the server.  
+      See the example below.
+
+    * From the Studio:  
+      Set the Client-Configuration from the [Client-Configuration view](../../../../studio/database/settings/client-configuration-per-database.mdx).
+
+* __Updating the running client__:
+
+    * Once the Client-Configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
+      the next time it makes a request to the database.
+
+    * Setting the Client-Configuration on the server enables administrators to dynamically control the client behavior after it has started running.  
+      e.g. manage load balancing of client requests on the fly in response to changing system demands.
+
+* The client-configuration set for the database level __overrides__ the [server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
+* In this page:
+    * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+    * [Put client-configuration (for-database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
+
+</Admonition>
+## What can be configured
+
+The following client-configuration options are available:
+
+* __Identity parts separator__:  
+  Set the separator used with automatically generated document identity IDs (default separator is `/`).  
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
+
+* __Maximum number of requests per session__:  
+  Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
+
+* __Read balance behavior__:  
+  Set the Read balance method the client will use when accessing a node with Read requests.  
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
+
+* __Load balance behavior__:  
+  Set the Load balance method for Read & Write requests.  
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
+
+
+
+## Put client-configuration (for-database)
+
+<TabItem value="put_config_1" label="put_config_1">
+<CodeBlock language="js">
+{`// You can customize the client-configuration options in the client
+// when creating the Document Store (this is optional):
+// =================================================================
+
+const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
+
+documentStore.conventions.maxNumberOfRequestsPerSession = 100;
+documentStore.conventions.identityPartsSeparator = '$';
+// ...
+
+documentStore.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="put_config_2" label="put_config_2">
+<CodeBlock language="js">
+{`// Override the initial client-configuration in the server using the put operation:
+// ================================================================================
+
+// Define the client-configuration object
+const clientConfiguration = \{
+    maxNumberOfRequestsPerSession: 200,
+    readBalanceBehavior: "FastestNode",
+    // ...
+\};
+
+// Define the put client-configuration operation, pass the configuration 
+const putClientConfigOp = new PutClientConfigurationOperation(clientConfiguration);
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putClientConfigOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const putClientConfigOp = new PutClientConfigurationOperation(configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type     | Description                                                            |
+|-------------------|----------|------------------------------------------------------------------------|
+| __configuration__ | `object` | Client configuration that will be set on the server (for the database) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The client-configuration object
+\{
+    identityPartsSeparator,
+    etag,
+    disabled,
+    maxNumberOfRequestsPerSession,
+    readBalanceBehavior,
+    loadBalanceBehavior,
+    loadBalancerContextSeed
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Studio
+- [Client Configuration View](../../../../studio/database/settings/client-configuration-per-database)
+- [Client Configuration](../../../../studio/server/client-configuration)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Get client-configuration (for database)](../../../../client-api/operations/maintenance/configuration/get-client-configuration)
+- [Get client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+- [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+
+### Load balancing
+- [Load balancing client requests](../../../../client-api/configuration/load-balance/overview)
+
+
+-->

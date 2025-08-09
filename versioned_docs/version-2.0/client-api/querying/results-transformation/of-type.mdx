@@ -1,0 +1,95 @@
+---
+title: "OfType (As)"
+hide_table_of_contents: true
+sidebar_label: OfType (As)
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#OfType (As)
+
+RavenDB provides a feature called [Live Projections](../static-indexes/live-projections.mdx) that offers the ability to transform results of a query on a server side. 
+In order to use it in the Client API you have to use `OfType<T>` (`As<T>`) extension method accessible from `Raven.Client` namespace.
+
+<Admonition type="info" title="Info">
+RavenDB supports both methods `OfType<T>` and `As<T>` but the recommended usage is `OfType<T>`.
+</Admonition>
+
+This method lets RavenDB know that you want to get the transformed results of the index according to its transform definition.
+This way you are able to construct queries where the query model is the same type as the Map/Reduce result but the final query result will be changed to the specified type (its properties must match the TransformResult ones).
+
+The `OfType<T>` method is to transform the type of the `IQueryable` on the client side. For example when we have the simple index as follow:
+
+<TabItem value="linq_extensions_of_type_product_by_quantity_index" label="linq_extensions_of_type_product_by_quantity_index">
+<CodeBlock language="csharp">
+{`public class Product_ByQuantity : AbstractIndexCreationTask<Product>
+\{
+	public Product_ByQuantity()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  QuantityInWarehouse = product.QuantityInWarehouse
+						  \};
+
+		TransformResults = (database, results) => from r in results
+												  select new
+												  \{
+													  Name = r.Name,
+													  Description = r.Description
+												  \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+which indexes `Products` by quantity and transform the results into much simpler object that only consists of `Name` and `Description`.
+
+<TabItem value="product_class" label="product_class">
+<CodeBlock language="csharp">
+{`public class Product
+\{
+	public string Id \{ get; set; \}
+	public string ArticleNumber \{ get; set; \}
+	public string Name \{ get; set; \}
+	public string Manufacturer \{ get; set; \}
+	public string Description \{ get; set; \}
+	public int QuantityInWarehouse \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="product_view_model_class" label="product_view_model_class">
+<CodeBlock language="csharp">
+{`public class ProductViewModel
+\{
+	public string Name \{ get; set; \}
+	public string Description \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The results of the index can be converted to `ProjectViewModel` type. Now you are able to execute the query:
+
+<TabItem value="linq_extensions_of_type_of_type_query" label="linq_extensions_of_type_of_type_query">
+<CodeBlock language="csharp">
+{`List<ProductViewModel> products = session.Query<Product, Product_ByQuantity>()
+                                         .Where(x => x.QuantityInWarehouse > 100)
+                                         .OfType<ProductViewModel>()
+                                         .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+There are two important points to mention. Firstly note that the type of the query model is `Product`, the `Where` statement contains the predicate against indexed `QuantityInWarehouse` field. However the usage of `OfType<ProductViewModel>()` makes that the query result becomes the collection of `ProductViewModel` items.
+
+By default indexes return entire documents. Here we use the live projections hence the data that we will get will contain only indicated fields. 
+Those fields internally are grabbed from the document. It means that in the database server the entire document is pulled and it transformed according to transformation definition. In result only those fields are sent to the client what results in lower data transfer.

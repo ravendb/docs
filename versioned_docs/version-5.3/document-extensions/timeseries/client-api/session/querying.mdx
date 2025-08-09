@@ -1,0 +1,502 @@
+---
+title: "Session: Time Series Querying"
+hide_table_of_contents: true
+sidebar_label: Querying
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Time Series Querying 
+<Admonition type="note" title="Note">
+
+   <Admonition type="info" title="Info">
+   Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+   </Admonition>
+
+* **LINQ Queries**  
+  To query time series using LINQ expressions, use `session.Query`.  
+  RavenDB will translate a LINQ query to RQL before transmitting 
+  it to the server for execution.  
+* **RQL Queries**  
+  Clients can express time series queries in RQL and send them to the server 
+  for execution using the `session.Advanced.RawQuery` method.  
+
+* In this page:  
+    * [Time Series LINQ Queries](../../../../document-extensions/timeseries/client-api/session/querying.mdx#time-series-linq-queries)  
+        * [Syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#syntax)  
+        * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying.mdx#usage-flow)  
+        * [Examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#examples)  
+            * [Session.Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#section-1)  
+            * [Session.Advanced.DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#document-query-1)  
+    * [Client Raw RQL Queries](../../../../document-extensions/timeseries/client-api/session/querying.mdx#client-raw-rql-queries)  
+        * [RQL Queries Syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rql-queries-syntax)  
+        * [RQL Queries Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rql-queries-usage-flow)  
+        * [RQL Queries Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rql-queries-usage-samples)  
+
+</Admonition>
+## Time Series LINQ Queries
+
+To build a time series LINQ query, start with `session.Query` or `session.Advanced.DocumentQuery` 
+and extend it using LINQ expressions.  
+Here is a simple LINQ query that chooses users by their age and retrieves their HeartRates time 
+series, and the RQL equivalent for this query.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`// Query - LINQ format
+using (var session = store.OpenSession())
+{
+    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+    IRavenQueryable<TimeSeriesRawResult> query =
+        (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
+            .Where(u => u.Age < 30)
+            .Select(q => RavenQuery.TimeSeries(q, "HeartRates")
+            .Where(ts => ts.Tag == "watches/fitbit")
+            .ToList());
+
+    var result = query.ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="csharp">
+{`// May 17 2020, 00:00:00
+var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+// Raw query with no aggregation - Select syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        from Users as u where Age < 30                            
+        select timeseries (
+            from HeartRates
+        )");
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+### `Session.Query`
+
+`session.Query` Definition:  
+<TabItem value="Query-definition" label="Query-definition">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Query<T>(string indexName = null,
+        string collectionName = null, bool isMapReduce = false);
+`}
+</CodeBlock>
+</TabItem>
+
+Learn more about `session.Query` [here](../../../../client-api/session/querying/how-to-query.mdx#sessionquery).  
+
+### Document Query
+
+The session [Document Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) accessible 
+at `session.Advanced` can be extended with several useful time series methods. To access these 
+methods, begin with the LINQ method `SelectTimeSeries()`:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`IDocumentQuery SelectTimeSeries(Func<ITimeSeriesQueryBuilder, TTimeSeries> timeSeriesQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+`SelectTimeSeries()` takes an `ITimeSeriesQueryBuilder`. The builder has the following methods:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`From(string name);
+Between(DateTime start, DateTime end);
+FromLast(Action<ITimePeriodBuilder> timePeriod);
+FromFirst(Action<ITimePeriodBuilder> timePeriod);
+LoadByTag<TTag>();
+//LoadByTag is extended by a special version of Where():
+Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **name** | `string` | The name of the time series (in one or more documents) to query |
+| **start** | `DateTime` | First parameter for `Between()`; the beginning of the time series range to filter. |
+| **end** | `DateTime` | Second parameter for `Between()`; the end of the time series range to filter. |
+| **timePeriod** | `Action<ITimePeriodBuilder>` | Expression returning a number of time units representing a time series range either at the beginning or end of the queried time series. |
+| `LoadByTag` type parameter | `TTag` | Time series entry tags can be just strings, but they can also be document IDs, representing a reference to an entity. `LoadByTag` takes the type of the entity. |
+| **predicate** | `Expression<Func<TimeSeriesEntry, TTag, bool>>` |
+
+`FromLast()` and `FromFirst()` take an `ITimePeriodBuilder`, which is used to represent 
+a range of time from milliseconds to years:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public interface ITimePeriodBuilder
+\{
+    Milliseconds(int duration);
+    Seconds(int duration);
+    Minutes(int duration);
+    Hours(int duration);
+    Days(int duration);
+    Months(int duration);
+    Quarters(int duration);
+    Years(int duration);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value:  
+
+* **`IRavenQueryable<TimeSeriesAggregationResult>`**  for aggregated data.  
+  When the query 
+  [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx), 
+  the results are returned in an aggregated array.  
+* **`IRavenQueryable<TimeSeriesRawResult>`** for non-aggregated data.  
+  When the query **doesn't aggregate** time series entries, 
+  the results are returned in a list of time series results.  
+
+
+
+## Usage Flow
+
+* Open a session  
+* Call `session.Query` or `session.Advanced.DocumentQuery`.  
+   - Run a document query to locate documents whose time series you want to query.  
+   - Extend the query using LINQ expressions to find and project time series data.  
+     Start with `Select` to choose a time series.  
+* Retrieve the results using -  
+  `TimeSeriesAggregationResult` for aggregated data  
+   -or-  
+  `TimeSeriesRawResult` for non-aggregated data  
+
+
+## Examples
+
+### `Session.Query`
+
+* In this sample, we select a three-day range from the HeartRates time series.  
+<TabItem value="ts_region_LINQ-3-Range-Selection" label="ts_region_LINQ-3-Range-Selection">
+<CodeBlock language="csharp">
+{`var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+
+var query = session.Query<User>()
+    .Select(q => RavenQuery
+        .TimeSeries(q, "HeartRates", baseTime, baseTime.AddDays(3))
+        .ToList());
+
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+* The first occurance of `Where` in the following example, filters documents.  
+  The second occurance of `Where` filters entries.
+<TabItem value="ts_region_LINQ-4-Where" label="ts_region_LINQ-4-Where">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TimeSeriesRawResult> query =
+    (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
+
+        // Choose user profiles of users under the age of 30
+        .Where(u => u.Age < 30)
+
+        .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(3))
+
+        // Filter entries by tag.  
+        .Where(ts => ts.Tag == "watches/fitbit")
+
+        .ToList());
+
+var result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+* Here, we retrieve a company's stock trade data.  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="csharp">
+{`// Same query, only unnamed
+using (var session = store.OpenSession())
+{
+    IRavenQueryable<TimeSeriesRawResult> query =
+        session.Query<Company>()
+        .Where(c => c.Address.City == "New York")
+        .Select(q => RavenQuery.TimeSeries(q, "StockPrices", baseline, baseline.AddDays(3))
+            .Where(ts => ts.Tag == "companies/kitchenAppliances")
+            .ToList());
+
+    var result = query.ToList()[0];
+
+    day1Volume = result.Results[0].Values[4];
+    day2Volume = result.Results[1].Values[4];
+    day3Volume = result.Results[2].Values[4];
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Named" label="Named">
+<CodeBlock language="csharp">
+{`// Named Values Query
+using (var session = store.OpenSession())
+{
+    IRavenQueryable<TimeSeriesRawResult<StockPrice>> query =
+        session.Query<Company>()
+        .Where(c => c.Address.City == "New York")
+        .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseline, baseline.AddDays(3))
+            .Where(ts => ts.Tag == "companies/kitchenAppliances")
+            .ToList());
+
+    var result = query.ToList()[0];
+
+    day1Volume = result.Results[0].Value.Volume;
+    day2Volume = result.Results[1].Value.Volume;
+    day3Volume = result.Results[2].Value.Volume;
+}
+`}
+</CodeBlock>
+</TabItem>
+   </Tabs>
+
+* Here, we group heart-rate data of people above the age of 72 
+  into 1-day groups, and retrieve each group's average heart rate and number of measurements.  
+  The aggregated results are retrieved into an `IRavenQueryable<TimeSeriesAggregationResult>` array.  
+<TabItem value="ts_region_LINQ-6-Aggregation" label="ts_region_LINQ-6-Aggregation">
+<CodeBlock language="csharp">
+{`var query = session.Query<User>()
+    .Where(u => u.Age > 72)
+    .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(10))
+        .Where(ts => ts.Tag == "watches/fitbit")
+        .GroupBy(g => g.Days(1))
+        .Select(g => new
+        \{
+            Avg = g.Average(),
+            Cnt = g.Count()
+        \})
+        .ToList());
+
+List<TimeSeriesAggregationResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+### Document Query
+
+* A Document Query using only the `From()` method.  
+<TabItem value="TS_DocQuery_1" label="TS_DocQuery_1">
+<CodeBlock language="csharp">
+{`// Define the query:
+var query = session.Advanced.DocumentQuery<User>()
+    .SelectTimeSeries(builder => builder
+        .From("HeartRates")
+         // 'ToList' must be applied here to the inner time series query definition
+         // This will not trigger query execution at this point
+        .ToList());
+
+    
+// Execute the query:
+// The following call to 'ToList' will trigger query execution
+List<TimeSeriesRawResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>  
+
+* A Document Query using `Between()`.  
+<TabItem value="TS_DocQuery_2" label="TS_DocQuery_2">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.DocumentQuery<User>()
+    .SelectTimeSeries(builder => builder
+        .From("HeartRates")
+        .Between(DateTime.Now, DateTime.Now.AddDays(1))
+        .ToList());
+
+List<TimeSeriesRawResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>  
+
+* Two Document Queries using `FromFirst()` and `FromLast()`. These return the first three 
+  days of the 'HeartRates' time series, and the last three days, respectively.  
+<TabItem value="TS_DocQuery_3" label="TS_DocQuery_3">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.DocumentQuery<User>()
+    .SelectTimeSeries(builder => builder
+        .From("HeartRates")
+        .FromFirst(x => x.Days(3))
+        .ToList());
+
+List<TimeSeriesRawResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>  
+
+* A Document Query that filters time series entries by tags of the type `Monitor`. That is, the 
+  tags are document IDs of entities of type `Monitor`.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.DocumentQuery<User>()
+    .SelectTimeSeries(builder => builder
+        .From("Heartrate")
+        .LoadByTag<Monitor>()
+        .Where((entry, monitor) => entry.Value <= monitor.Accuracy)
+        .ToList());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="csharp">
+{`public class Monitor
+{
+    public double Accuracy { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+  </Tabs>
+
+
+## Client Raw RQL Queries
+
+To send a raw RQL query to the server, use `session.Advanced.RawQuery`.  
+`RawQuery` transmits queries to the server without checking or altering 
+their contents, time series contents or otherwise  
+
+
+
+## RQL Queries Syntax
+
+* **`session.Advanced.RawQuery`**  
+   * **Definition**  
+<TabItem value="RawQuery-definition" label="RawQuery-definition">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<T> RawQuery<T>(string query);
+`}
+</CodeBlock>
+</TabItem>
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `query` | string | Raw RQL Query |
+
+   * **Return Value**:  
+      * **`IRawDocumentQuery<TimeSeriesAggregationResult>`**  for aggregated data.  
+        When the query 
+        [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx), 
+        the results are returned in an aggregated array.  
+      * **`IRawDocumentQuery<TimeSeriesRawResult>`** for non-aggregated data.  
+        When the query **doesn't aggregate** time series entries, 
+        the results are returned in a list of time series results.  
+
+
+
+## RQL Queries Usage Flow
+
+* Open a session  
+* Call `session.Advanced.RawQuery`  
+  Pass it your query  
+* Retrieve the results into  
+   `TimeSeriesAggregationResult` for aggregated data  
+    -or-  
+   `TimeSeriesRawResult` for non-aggregated data  
+
+
+## RQL Queries Usage Samples
+
+* In this sample, a raw RQL query retrieves 24 hours of HeartRate data from users under the age of 30.  
+  The query does not aggregate data, so we retrieve its results using a `TimeSeriesRawResult` list.  
+  We define an **offset**, to adjust retrieved results to the client's local time-zone.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Declare-Syntax" label="Declare-Syntax">
+<CodeBlock language="csharp">
+{`// May 17 2020, 00:00:00
+var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+// Raw query with no aggregation - Declare syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        declare timeseries getHeartRates(user) 
+        {
+            from user.HeartRates 
+                between $start and $end
+                offset '02:00'
+        }
+        from Users as u where Age < 30
+        select getHeartRates(u)
+        ")
+    .AddParameter("start", baseline)
+    .AddParameter("end", baseline.AddHours(24));
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Select-Syntax" label="Select-Syntax">
+<CodeBlock language="csharp">
+{`// May 17 2020, 00:00:00
+var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+// Raw query with no aggregation - Select syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        from Users as u where Age < 30                            
+        select timeseries (
+            from HeartRates 
+                between $start and $end
+                offset '02:00'
+        )")
+    .AddParameter("start", baseline)
+    .AddParameter("end", baseline.AddHours(24));
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+* In this sample, the query aggregates 7 days of HeartRate entries into 1-day groups.  
+  From each group, two values are selected and projected to the client: the **min** 
+  and **max** hourly HeartRate values.  
+  The aggregated results are retrieved using a `TimeSeriesAggregationResult` array.
+<TabItem value="ts_region_Raw-Query-Aggregated" label="ts_region_Raw-Query-Aggregated">
+<CodeBlock language="csharp">
+{`var baseline = new DateTime(2020, 5, 17, 00, 00, 00); // May 17 2020, 00:00:00
+
+// Raw Query with aggregation
+var query =
+    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+        from Users as u
+        select timeseries(
+            from HeartRates 
+                between $start and $end
+            group by '1 days'
+            select min(), max()
+            offset '03:00')
+        ")
+        .AddParameter("start", baseline)
+        .AddParameter("end", baseline.AddDays(7));
+
+List<TimeSeriesAggregationResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+

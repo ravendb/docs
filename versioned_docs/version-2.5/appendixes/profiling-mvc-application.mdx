@@ -1,0 +1,173 @@
+---
+title: "Profiling ASP.NET MVC application using RavenProfiler"
+hide_table_of_contents: true
+sidebar_label: Profiling ASP.NET MVC application using RavenProfiler
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Profiling ASP.NET MVC application using RavenProfiler
+
+To set up profiling in RavenDB using the `RavenProfiler` you must follow a few simple steps which are defined below:   
+1\.	First, add `Raven.Client.MvcIntegration` assembly to MVC project. An alternative way is to install NuGet package that can be found [here](https://www.nuget.org/packages/RavenDB.Client.MvcIntegration).   
+2\.	The next step is to initialize the profiler on your document store. This can be achieved by adding the following code in `Global.asax.cs` file.   
+
+<TabItem value="profiling_mvc_application_1" label="profiling_mvc_application_1">
+<CodeBlock language="csharp">
+{`protected void Application_Start()
+\{
+	// Code omitted for simplicity
+
+	InitializeRavenProfiler();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="profiling_mvc_application_2" label="profiling_mvc_application_2">
+<CodeBlock language="csharp">
+{`private void InitializeRavenProfiler()
+\{
+	Raven.Client.MvcIntegration.RavenProfiler.InitializeFor(DocumentStoreHolder.Store);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+3\.	Finally add `@Raven.Client.MvcIntegration.RavenProfiler.CurrentRequestSessions()` to `_Layout.cshtml`.   
+
+## Viewing profiling results
+
+To demonstrate the capabilities of the profiler, let's create a simple ASP.NET MVC 4 application and set up profiling in it.
+
+1\.	Instructions on how to set up ASP.NET MVC 4 application to use RavenDB can be found [here](../samples/mvc/createaspnetmvc4project.mdx).   
+2\.	Set up profiling using the steps from the section above.   
+3\.	Add the following code to `HomeController`:   
+
+<TabItem value="profiling_mvc_application_5" label="profiling_mvc_application_5">
+<CodeBlock language="csharp">
+{`public class HomeController : RavenController
+\{
+	public ActionResult Index()
+	\{
+		var items = RavenSession
+			.Query<User>()
+			.Customize(x => x.WaitForNonStaleResults())
+			.ToList();
+
+		return View("Index", items);
+	\}
+
+	public ActionResult Create()
+	\{
+		return View("Create");
+	\}
+
+	[HttpPost]
+	public ActionResult Create(User user)
+	\{
+		if (!ModelState.IsValid)
+		\{
+			return View("Create", user);
+		\}
+
+		RavenSession.Store(user);
+
+		return RedirectToAction("Index");
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+4\. Create `Index` view that will list all users.   
+5\. Create `Create` view that will be used to add new user.   
+6\. Add following `User` model:   
+
+<TabItem value="profiling_mvc_application_6" label="profiling_mvc_application_6">
+<CodeBlock language="csharp">
+{`public class User
+\{
+	public string Id \{ get; set; \}
+
+	[Required]
+	public string Name \{ get; set; \}
+
+	[Required]
+	public string Password \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+7\. Create new user e.g. `Ayende` with password `Rahien`.  
+8\. View profiling results in `RavenProfiler`, that can be found in upper left corner of the page.   
+
+![Figure 1: `RavenProfiler` window](./assets/profiling_mvc_application_1.PNG)
+
+![Figure 2 Request Details in `RavenProfiler`](./assets/profiling_mvc_application_3.PNG)
+
+Various information can be pulled from the profiler, starting from request duration, method, url and ending with exact request response results.
+
+### Excluding sensitive information
+
+There are vast number of situations, where user does not want to include all the data in profiling information. For such scenarios we have included an option to filter out specific field values from results from provided list of fields.
+
+In our previous results you may have noticed that user password has been displayed in profiling results. To filter it out, just pass array of fields that you want to filter as a second parameter of `RavenProfiler.InitializerFor` method.
+
+<TabItem value="profiling_mvc_application_7" label="profiling_mvc_application_7">
+<CodeBlock language="csharp">
+{`private readonly string[] fieldsToFilter = new[] \{ "Password" \};
+
+private void InitializeRavenProfiler()
+\{
+	Raven.Client.MvcIntegration.RavenProfiler.InitializeFor(DocumentStoreHolder.Store, fieldsToFilter);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+As a result of this setting, our profiling results will now hide data from all fields with name `Password`.
+
+![Figure 3: Request Details in `RavenProfiler` with filter out `Password`](./assets/profiling_mvc_application_2.PNG)
+
+## Profiling only in debug mode
+
+To enable profiling only in debug mode one can use [Preprocessor Directives](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/index) or [ConditionalAttribute](https://msdn.microsoft.com/en-us/library/system.diagnostics.conditionalattribute.aspx).
+
+To use `Preprocessor Directives` simply wrap `InitializeRavenProfiler` method execution with `#if` directive:
+
+<TabItem value="profiling_mvc_application_3" label="profiling_mvc_application_3">
+<CodeBlock language="csharp">
+{`protected void Application_Start()
+\{
+	// Code omitted for simplicity
+
+#if DEBUG
+	InitializeRavenProfiler();
+#endif
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+If you want to use `ConditionalAttribute` then do as follows:
+
+<TabItem value="profiling_mvc_application_4" label="profiling_mvc_application_4">
+<CodeBlock language="csharp">
+{`[Conditional("DEBUG")]
+private void InitializeRavenProfiler()
+\{
+	Raven.Client.MvcIntegration.RavenProfiler.InitializeFor(DocumentStoreHolder.Store);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The `InitializeRavenProfiler` method will not be executed unless `DEBUG` constant is specified.

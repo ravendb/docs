@@ -1,0 +1,23 @@
+---
+title: "Manage Your Server: Server Smuggling"
+hide_table_of_contents: true
+sidebar_label: Server Smuggling
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Manage Your Server: Server Smuggling
+This feature is meant primarily for users that work with multiple instances of RavenDB. 
+The common scenario is in production/staging/development where you need to move data between databases. 
+Previously, you had to manually move the data using import or export.   
+To setup data migration you need to supply the destination server url and which databases to migrate. 
+By default we use incremental option, so you can run this over time and only get the new stuff.
+You can enable strip replication information and disable versioning bundle.
+
+![Figure 1. Manage Your Server. Server Smuggling.](./assets/manage_your_server-server-smuggling-1.png)

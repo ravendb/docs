@@ -1,0 +1,41 @@
+---
+title: "Commands: How to get the primary database Url?"
+hide_table_of_contents: true
+sidebar_label: ...get the primary database Url
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Commands: How to get the primary database Url?
+
+`Url` is a helper method that returns the primary database url.
+
+## Syntax
+
+<TabItem value="url_1" label="url_1">
+<CodeBlock language="csharp">
+{`string Url \{ get; \}
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | Description|
+| ------------- | --------- |
+| string | Gets the primary database Url |
+
+## Example I
+
+<TabItem value="url_2" label="url_2">
+<CodeBlock language="csharp">
+{`// http://localhost:8080/
+string url = store.DatabaseCommands.ForSystemDatabase().Url;
+`}
+</CodeBlock>
+</TabItem>

@@ -1,0 +1,214 @@
+---
+title: "Include Compare Exchange Values"
+hide_table_of_contents: true
+sidebar_label: Include Compare Exchange Values
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Include Compare Exchange Values
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Compare Exchange Values can be included in `Session.Load` calls and in queries.  
+
+* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+Compare Exchange Values, which means that after it has been included, the value can 
+be accessed and modified in that Session without requiring an additional call to 
+the server.  
+
+* The Compare Exchange include syntax is based on the [include builder](../../../client-api/how-to/handle-document-relationships.mdx#includes).  
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)  
+  * [Examples](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)  
+
+</Admonition>
+## Syntax
+
+#### Include builder
+
+Chain the method `IncludeCompareExchangeValue()` to include compare exchange values 
+along with `Session.Load()` or LINQ queries.  
+
+<TabItem value="include_builder" label="include_builder">
+<CodeBlock language="csharp">
+{`public interface ICompareExchangeValueIncludeBuilder<T, out TBuilder>
+\{
+    TBuilder IncludeCompareExchangeValue(string path);
+
+    TBuilder IncludeCompareExchangeValue(Expression<Func<T, string>> path);
+
+    TBuilder IncludeCompareExchangeValue(Expression<Func<T, IEnumerable<string>>> path);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **path** | `string`;
+`Expression<Func<T, string>>`;
+`Expression<Func<T, IEnumerable<string>>>` | The key of the compare exchange value you want to include, a path to the key, or a path to a `string[]` of keys. |
+
+#### RQL
+
+In an RQL query, you can use the [`include` keyword](../../../client-api/session/querying/what-is-rql.mdx#include) 
+followed by `cmpxchg()` to include a compare exchange value:  
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`include cmpxchg(key)
+`}
+</CodeBlock>
+</TabItem>
+
+In [javascript functions](../../../client-api/session/querying/what-is-rql.mdx#declare) within queries, 
+use `includes.cmpxchg()` (see the RawQuery example 
+[below](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)):  
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`includes.cmpxchg(key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **key** | `string`;
+path to `string` | The key of the compare exchange value you want to include, or a path to the key. |
+
+
+
+## Examples
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Load" label="Load">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = documentStore.OpenSession())
+{
+    // Load a user document, include the compare exchange value
+    // with the key equal to the user's Name field
+    var user = session.Load<User>("users/1-A", 
+                                  includes => includes.IncludeCompareExchangeValue(
+                                      x => x.Name));
+
+    // Getting the compare exchange value does not require
+    // another call to the server
+    var value = session.Advanced.ClusterTransaction
+                                .GetCompareExchangeValue<string>(user.Name);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="LoadAsync" label="LoadAsync">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession session = documentStore.OpenAsyncSession())
+{
+    // Load a user document, include the compare exchange value
+    // with the key equal to the user's Name field
+    var user = await session.LoadAsync<User>("users/1-A", 
+                                             includes => includes.IncludeCompareExchangeValue(
+                                                 x => x.Name));
+
+    // Getting the compare exchange value does not require
+    // another call to the server
+    var value = await session.Advanced.ClusterTransaction
+                                      .GetCompareExchangeValueAsync<string>(user.Name);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var users = session.Query<User>()
+    .Include(builder => builder.IncludeCompareExchangeValue(x => x.Name))
+    .ToList();
+
+List<CompareExchangeValue<string>> compareExchangeValues = null;
+
+// Getting the compare exchange values does not require
+// additional calls to the server
+foreach (User u in users){
+    compareExchangeValues.Add(session.Advanced.ClusterTransaction
+                                  .GetCompareExchangeValue<string>(u.Name));
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery(RQL)" label="RawQuery(RQL)">
+<CodeBlock language="csharp">
+{`// First method: from body of query
+var users1 = session.Advanced
+    .RawQuery<User>(@"
+        from Users as u
+        select u
+        include cmpxchg(u.Name)"
+    )
+    .ToList();
+
+List<CompareExchangeValue<string>> compareExchangeValues1 = null;
+
+// Getting the compare exchange values does not require
+// additional calls to the server
+foreach (User u in users1){
+    compareExchangeValues1.Add(session.Advanced.ClusterTransaction
+                               .GetCompareExchangeValue<string>(u.Name));
+}
+
+
+// Second method: from a JavaScript function
+var users2 = session.Advanced
+    .RawQuery<User>(@"
+        declare function includeCEV(user) {
+            includes.cmpxchg(user.Name);
+            return user;
+        }
+
+        from Users as u
+        select includeCEV(u)"
+    )
+    .ToList();
+// Note that includeCEV() returns the same User 
+// entity it received, without modifying it
+
+List<CompareExchangeValue<string>> compareExchangeValues2 = null;
+
+// Does not require calls to the server
+foreach (User u in users2){
+    compareExchangeValues2.Add(session.Advanced.ClusterTransaction
+                               .GetCompareExchangeValue<string>(u.Name));
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [Session Change Tracking](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes)
+- [How to: Handle Document Relationships](../../../client-api/how-to/handle-document-relationships)
+- [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+
+### Indexes
+- [Indexing Compare Exchange Values](../../../indexes/indexing-compare-exchange-values)
+
+
+-->

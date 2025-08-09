@@ -1,0 +1,135 @@
+---
+title: "Commands: GetSearchFieldsAsync"
+hide_table_of_contents: true
+sidebar_label: GetSearchFields
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: GetSearchFieldsAsync
+
+**GetSearchFieldsAsync** is used to retrieve the list of all available field names to build a query.
+
+
+
+<TabItem value="get_search_fields_1" label="get_search_fields_1">
+<CodeBlock language="csharp">
+{`Task<string[]> GetSearchFieldsAsync(int start = 0, int pageSize = 1024);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of results that should be skipped |
+| **pageSize** | int | The maximum number of results that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;string[]&gt;** | A task that represents the asynchronous operation. The task result is the array of indexed field names. |
+
+## Example
+
+**GetSearchFieldsAsync** method returns all the indexed fields, so all the keys of built-in metadata (e.g. `Etag`), metadata provided by a user (e.g. `Owner`) and the [default indexing fields](../../../../indexing.mdx) (e.g `__key` or `__fileName`) will be included.
+
+<TabItem value="get_search_fields_2" label="get_search_fields_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.UploadAsync("intro.txt", stream, new RavenJObject() \{ \{ "Owner", "James" \} \});
+
+var terms = await store.AsyncFilesCommands.GetSearchFieldsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: GetSearchFields
+
+The **GET** method is used to retrieve the list of all available field names to build a query. 
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/search/terms?start=\{start\}&pageSize=\{pageSize\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **start** | No | The number of results that should be skipped |
+| **pageSize** | No | The maximum number of results that will be returned |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Array** | JSON formatted array of indexed terms |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/search/terms
+< HTTP/1.1 200 OK
+[
+    "__key",
+    "__fileName",
+    "__rfileName",
+    "__directory",
+    "__rdirectory",
+    "__directoryName",
+    "__rdirectoryName",
+    "__modified",
+    "__level",
+    "RavenFS-Size",
+    "Raven-Creation-Date",
+    "Last-Modified",
+    "Raven-Last-Modified",
+    "Creation-Date",
+    "Raven-Synchronization-Version",
+    "Raven-Synchronization-Source",
+    "ETag",
+    "__size",
+    "__size_numeric",
+    "Content-MD5",
+    "Content-Length"
+]
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+- [Indexing](../../../../indexing)
+
+-->

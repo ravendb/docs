@@ -1,0 +1,232 @@
+---
+title: "Configuration: Core"
+hide_table_of_contents: true
+sidebar_label: Core Configuration
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Core
+
+## ServerUrl
+
+The URLs which the server should listen to.
+
+- **Type**: `string`
+- **Default**: `http://localhost:8080`
+- **Scope**: Server-wide only
+
+Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use `0.0.0.0` to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (`http://` or `https://`) must be included with each URL.
+
+Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *HTTPS* protocol.
+
+<Admonition type="note" title="Note">
+Setting to a non loopback address using the ***HTTP*** protocol will expose the server to the network and requires security measurements (using HTTPS, certificates). When set, RavenDB will prevent a startup unless **UnsecuredAccessAllowed** is set to **PublicNetwork** manually.
+</Admonition>
+
+### Examples
+
+* The server will listen to incoming requests in all the network devices available on the machine on the specific port
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`http://0.0.0.0:8080
+`}
+</CodeBlock>
+</TabItem>
+
+* The server will listen to loopback device only:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`http://localhost:8080
+`}
+</CodeBlock>
+</TabItem>
+
+* Server using IPV6 loopback only address
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`http://[0:0:0:0:0:0:0:1]:8080
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ServerUrl.Tcp
+
+The TCP URLs which the server should listen to.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, are used for inter-node communication.
+Valid IP addresses can be localhost, domains, IPv4 or IPv6 addresses. Ports **must be specified** after the address using ':' as separator or just as number without address. 
+
+If no URL is set, the ServerUrl will be used along with random port
+If just a number is set, the ServerUrl will be used with the specified number as port
+If the address and port are set, RavenDB will listen to the address and port specified
+
+<Admonition type="note" title="Note">
+Same security consideration as in ***ServerUrl*** option should be applied (see above)
+</Admonition>
+
+### Examples
+
+* The server will listen to TCP connections in all the network devices available on the machine
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`tcp://0.0.0.0:38888
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## PublicServerUrl
+
+The URL under which server is publicly available.
+
+- **Type**: `string`
+- **Default**: `null` (local Server URL)
+- **Scope**: Server-wide only
+
+Set the URL to be accessible by clients and other nodes, regardless of which IP is used to access the server internally. This is useful when using a secured connection via https URL, or behind a proxy server. 
+
+### Examples
+
+* Use LAN proxy server address 10.0.0.1
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`http://10.0.0.1:80
+`}
+</CodeBlock>
+</TabItem>
+
+* Use a specific https domain
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`https://example.com:8080
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+In the above example, `example.com` is the external domain/ip provided by the ISP, and `ServerUrl` must be specified when the server is behind a firewall, proxy, or router
+</Admonition>
+
+
+
+## PublicServerUrl.Tcp
+
+The TCP URL under which server is publicly listened to.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+Set the public TCP address of the server. Used for inter-node communication and access from behind a firewall, proxy, etc.
+
+### Examples
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`tcp://example.com:38888
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ExternalIp
+
+External IP address.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## RunInMemory
+
+Set whether the database should run purely in memory.
+
+- **Type**: `bool`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+When running in memory, RavenDB does not write to the disk. If the server is restarted, all data will be lost. This is mostly useful for testing.
+
+
+
+## DataDir
+
+Path to the data directory of RavenDB
+
+- **Type**: `string`
+- **Default**: `Databases/{name}`
+- **Scope**: Server-wide or per database
+
+Relative paths will be based from the application base directory (where the Raven.Server executable is located).
+
+### Examples
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`/home/user/databases
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Setup.Mode
+
+Determines what kind of security was chosen during setup, or not to use setup on startup at all (`None`).
+
+- **Type**: `enum`
+- **Default**: `None`
+- **Scope**: Server-wide only
+
+Possible values:
+
+- `None` : No setup process on RavenDB server startup
+- `Initial` : Start the wizard process to setup RavenDB on the first server startup
+- `LetsEncrypt` : Let RavenDB know that it needs to take care of refreshing certificates on the fly via LE
+- `Secured` : This value will be set internally by RavenDB
+- `Unsecured` : Run the server in unsecured mode
+
+
+
+## AcmeUrl
+
+The URLs which the server should contact when requesting certificates from using the ACME protocol.
+
+- **Type**: `string`
+- **Default**: `https://acme-v01.api.letsencrypt.org/directory`
+- **Scope**: Server-wide only
+
+
+
+## ThrowIfAnyIndexCannotBeOpened
+
+ Indicates if we should throw an exception if any index could not be opened.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+

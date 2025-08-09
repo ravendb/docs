@@ -1,0 +1,83 @@
+---
+title: "Boosting"
+hide_table_of_contents: true
+sidebar_label: Boosting
+sidebar_position: 24
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Boosting
+
+Another great feature that Lucene engine provides and RavenDB leverages is called `boosting`. This feature gives user the ability to manually tune the relevance level of matching documents when performing a query. 
+
+From the index perspective we can associate with an index entry a boosting factor and the higher value it has, the more relevant term will be. To do this we must use `Boost` extension method from `Raven.Client.Linq.Indexing` namespace.
+
+To illustrate it better, let's jump straight into the example. To perform a query that will return employees that either `FirstName` or `LastName` is equal to **Bob** and to promote employees (move them to the top of the results) that `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastName()
+	{
+		Map =
+			employees =>
+			from employee in employees
+			select new
+			{
+				FirstName = employee.FirstName.Boost(10),
+				LastName = employee.LastName
+			};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.PutIndex(
+		"Employees/ByFirstAndLastName",
+		new IndexDefinition
+		{
+			Map = @"from employee in docs.Employees
+				select new
+				{
+					FirstName = employee.FirstName.Boost(10),
+					LastName = employee.LastName
+				}"
+		});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="csharp">
+{`// employees with 'FirstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'LastName' match
+IList<Employee> results = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Where(x => x.FirstName == "Bob" || x.LastName == "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Boosting is also available when using `Search` method. You can read more about it [here](../indexes/querying/searching.mdx#boosting).
+</Admonition>
+

@@ -1,0 +1,49 @@
+---
+title: "Differences between backup and export"
+hide_table_of_contents: true
+sidebar_label: Differences between backup and export
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Differences between backup and export
+
+There are two ways to extract data from RavenDB database. You can either [backup your database](./backup-and-restore) by `Raven.Backup.exe` tool or
+[export it](exporting-and-importing-data) by using `Raven.Smuggler.exe` or the Studio. You need to select the appropriate option which 
+will satisfy your requirements. This article describes differences between Backup / Restore and Export / Import options.
+
+- Indexes:
+    - Backup contains complete indexes - definitions and data
+    - Export doesn't include index data, indexes will be rebuilt after importing based on exported definitions
+   
+- Data state:
+    - Backup is a snapshot of database data at the point when the backup was started
+    - Export includes documents created during the export
+   
+- Restored database state:
+    - Restore requires an empty database (unless we restore from an incremental backup)
+    - Import can be run on an existing database
+  
+- Portability: 
+    - Backup / Restore only works on the same architecture / Esent version
+    - Import / Export works between different architectures and Esent versions
+
+- Speed: 
+    - Backup is usually much faster than an export
+
+- Size:
+    - Export is much smaller than backup
+
+<Admonition type="info" title="As an administrator, should I do backups, exports or both to be on the safe site?" id="as-an-administrator-should-i-do-backups-exports-or-both-to-be-on-the-safe-site" href="#as-an-administrator-should-i-do-backups-exports-or-both-to-be-on-the-safe-site">
+You should perform backups which allow quickly restore from a failure on the same system.
+Note that also incremental backups are supported.
+</Admonition>
+
+
+

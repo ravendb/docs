@@ -1,0 +1,66 @@
+---
+title: "Bundle: Unique Constraints"
+hide_table_of_contents: true
+sidebar_label: Unique Constraints
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Unique Constraints
+
+
+
+This bundle allows the user to impose unique constraints on the objects (useful for properties such as email or social security number).
+
+
+
+## **How it works?**
+
+The bundle works both on the server (using a PutTrigger and a DeleteTrigger) and on the client (using the `DocumentStoreListener` and providing extension methods on `IDocumentSession`).
+
+When a document is stored in a database, it generates "dummy" documents with following key format: "UniqueConstraints/" + entityName + "/" + propertyName + "/" + propertyValue. This way you don't need indexes (which would have to be **not** stale to check for uniqueness).
+
+### UniqueConstraintsStoreListener
+
+The listener works by using reflection when the document is stored in the database and generating metadata regarding its unique constraints. The reflection result is cached in the `ConcurrentDictionary` to help with performance.
+
+---
+
+### UniqueConstraintsPutTrigger
+
+The put trigger acts whenever it finds a document being inserted with metadata constraints. It checks for existing documents in the constraints. If any existing document is found, it returns a VetoResult.Deny, informing the conflicting fields. This has to be checked on the client-side, using a try block for the OperationVetoedException.
+
+If a document is being updated, the trigger updates the generated constraint document.
+
+---
+
+### UniqueConstraintsDeleteTrigger
+
+The delete trigger acts whenever it finds a document being deleted with constraints metadata . It deletes the referenced constraint documents.
+
+
+
+## Installation
+
+Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
+
+To activate unique constraints server-wide, simply add `Unique Constraints` to `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with the unique constraints bundle turned on using API or the Studio
+
+<Admonition type="note" title="Important" id="important" href="#important">
+Any bundle which is not added to ActiveBundles list, will not be active, even if the relevant assembly is in the `Plugins` directory.
+</Admonition>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Thanks to Felipe Leusin for contributing the code and Matt Warren for helping in setting up and testing.
+</Admonition>
+

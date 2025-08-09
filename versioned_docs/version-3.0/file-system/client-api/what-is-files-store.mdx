@@ -1,0 +1,29 @@
+---
+title: "What is a files store?"
+hide_table_of_contents: true
+sidebar_label: What is a files store?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#What is a files store?
+
+The files store is the main file system client API object that ensures an access to the RavenFS instance. It is an equivalent of [a document store](../../client-api/what-is-a-document-store.mdx) for a file system.
+
+The files store is designated to work with a single RavenDB server where there can be multiple file systems. By default it performs actions against a default file system that has to be provided during initialization, but it is also able to work with any existing file system on  an associated server.
+
+The basic interface is the `IFilesStore`. Currently its only implementation is the `FilesStore`, which communicates with the server by sending HTTP requests.
+
+The files store ensures the access to the following client API features:
+
+* Session
+* Commands
+* Changes API
+* Listeners
+

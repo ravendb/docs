@@ -1,0 +1,133 @@
+---
+title: "Commands: Transformers: How to change transformer lock mode?"
+hide_table_of_contents: true
+sidebar_label: ...change transformer lock mode
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Transformers: How to change transformer lock mode?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+## Syntax
+
+<TabItem value="change_transformer_lock_1" label="change_transformer_lock_1">
+<CodeBlock language="csharp">
+{`void SetTransformerLock(string name, TransformerLockMode lockMode);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of a transformer to change lock mode for |
+| **lockMode** | TransformerLockMode | new transformer lock mode |
+
+## Example
+
+<TabItem value="change_transformer_lock_2" label="change_transformer_lock_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.SetTransformerLock("Orders/Company", TransformerLockMode.LockedIgnore);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+## Syntax
+
+<TabItem value="change_transformer_lock_1" label="change_transformer_lock_1">
+<CodeBlock language="java">
+{`public void setTransformerLock(String name, TransformerLockMode lockMode);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of a transformer to change lock mode for |
+| **lockMode** | TransformerLockMode | new transformer lock mode |
+
+## Example
+
+<TabItem value="change_transformer_lock_2" label="change_transformer_lock_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().setTransformerLock("Orders/Company", TransformerLockMode.LOCKED_IGNORE);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/transformers/\{transformerName\}?op=lockModeChange&mode=\{lockMode\} \\
+	-X POST \\
+	-d ""
+`}
+</CodeBlock>
+</TabItem>
+
+| Payload |
+| ------- |
+| Empty |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **transformerName** | Yes | Name of an transformer |
+| **lockMode** | Yes | Transformer lock mode: Unlock or LockedIgnore |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+| `404` | Transformer not found |
+
+| Return Value | Description |
+| ------------- | ----- |
+| None | - |
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/Northwind/transformers/Orders/Company?op=lockModeChange&mode=LockedIgnore" -d ""
+< HTTP/1.1 201 Created
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to change index lock mode?](../../../../client-api/commands/indexes/how-to/change-index-lock-mode)
+
+-->

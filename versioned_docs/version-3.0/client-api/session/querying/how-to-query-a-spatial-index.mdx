@@ -1,0 +1,593 @@
+---
+title: "Session: Querying: How to query a spatial index?"
+hide_table_of_contents: true
+sidebar_label: How to Query a Spatial Index
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to query a spatial index?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Spatial indexes can be queried using `Spatial` method which contains full spectrum of spatial methods, certain shortcuts have been created for easier access and are available in `Customize` as a part of query customizations. Following article will cover those methods:
+
+- [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
+- [RelatesToShape](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#relatestoshape)
+- [SortByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#sortbydistance)
+- [WithinRadiusOf](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#withinradiusof)
+
+## Spatial
+
+<TabItem value="spatial_1" label="spatial_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Spatial<T>(
+    Expression<Func<T, object>> path,
+    Func<SpatialCriteriaFactory, SpatialCriteria> clause);
+
+IRavenQueryable<T> Spatial<T>(
+    string fieldName,
+    Func<SpatialCriteriaFactory, SpatialCriteria> clause);
+
+IRavenQueryable<T> Spatial<T>(
+    Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
+    Func<SpatialCriteriaFactory, SpatialCriteria> clause);
+
+IRavenQueryable<T> Spatial<T>(
+    DynamicSpatialField field,
+    Func<SpatialCriteriaFactory, SpatialCriteria> clause);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | Expression&lt;Func&lt;TResult, object&gt;&gt; | Path to spatial field. |
+| **clause** | Func&lt;[SpatialCriteriaFactory](../../../glossary/spatial-criteria-factory.mdx), SpatialCriteria&gt; | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Object instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+### Example
+
+<TabItem value="spatial_2" label="spatial_2">
+<CodeBlock language="csharp">
+{`PointField Point(
+    Expression<Func<T, object>> latitudePath,
+    Expression<Func<T, object>> longitudePath);
+
+WktField Wkt(Expression<Func<T, object>> wktPath);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RelatesToShape
+
+`RelatesToShape` is low-level method available for spatial searches. You can pass any valid [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) shape with any relation.  All other methods sooner or later are using it to define a shape.
+
+<TabItem value="spatial_3" label="spatial_3">
+<CodeBlock language="csharp">
+{`SpatialCriteria RelatesToShape(
+    string shapeWkt,
+    SpatialRelation relation,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria RelatesToShape(
+    string shapeWkt,
+    SpatialRelation relation,
+    SpatialUnits units,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Intersects(
+    string shapeWkt,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Intersects(
+    string shapeWkt,
+    SpatialUnits units,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Contains(
+    string shapeWkt,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Contains(
+    string shapeWkt,
+    SpatialUnits units,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Disjoint(
+    string shapeWkt,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Disjoint(
+    string shapeWkt,
+    SpatialUnits units,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Within(
+    string shapeWkt,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria Within(
+    string shapeWkt,
+    SpatialUnits units,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+SpatialCriteria WithinRadius(
+    double radius,
+    double latitude,
+    double longitude,
+    SpatialUnits? radiusUnits = null,
+    double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Spatial field name. |
+| **shapeWKT** | string | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) formatted shape. |
+| **rel** | [SpatialRelation](../../../glossary/spatial-relation.mdx) | Spatial relation to check. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_4" label="spatial_4">
+<CodeBlock language="csharp">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+List<House> results = session
+    .Query<House>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## SortByDistance
+
+To sort by distance from origin point use `SortByDistance` method.
+
+<TabItem value="spatial_5" label="spatial_5">
+<CodeBlock language="csharp">
+{`// return all matching entities
+// within 10 miles radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// this equals to WithinRadius(10, 32.1234, 23.4321)
+List<House> results = session
+    .Query<House>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.RelatesToShape(
+            "Circle(32.1234 23.4321 d=10.0000)",
+            SpatialRelation.Within,
+            SpatialUnits.Miles))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_6" label="spatial_6">
+<CodeBlock language="csharp">
+{`// From point
+IOrderedQueryable<T> OrderByDistance<T>(
+    Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    DynamicSpatialField field,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    Expression<Func<T, object>> path,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    string fieldName,
+    double latitude,
+    double longitude);
+
+// From center of WKT shape
+IOrderedQueryable<T> OrderByDistance<T>(
+    Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    DynamicSpatialField field,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    Expression<Func<T, object>> path,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    string fieldName,
+    string shapeWkt);
+
+// Rounding
+IOrderedQueryable<T> OrderByDistance<T>(
+    Expression<Func<T, object>> path,
+    double latitude,
+    double longitude,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    string fieldName,
+    double latitude,
+    double longitude,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    Expression<Func<T, object>> path,
+    string shapeWkt,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistance<T>(
+    string fieldName,
+    string shapeWkt,
+    double roundFactor);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WithinRadiusOf
+
+`WithinRadiusOf` filter matches to be inside specified radius. Internally it creates a circle with passed latitude and longitude as a center point with given distance (radius) and `SpatialRelation` set to `Within`.
+
+<TabItem value="spatial_7" label="spatial_7">
+<CodeBlock language="csharp">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+List<House> results = session
+    .Query<House>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
+    .OrderByDistance(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Spatial field name. In overloads without this parameter default field name is assumed (`__spatial`). |
+| **radius** | double | Circle radius. | 
+| **latitude** | double | Latitude pointing to circle center. |
+| **longitude** | double | Longitude pointing to circle center. |
+| **spatialUnits** | SpatialUnits | Units that will be used to measure distance (`Kilometers` or `Miles`). |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_8" label="spatial_8">
+<CodeBlock language="csharp">
+{`// From point
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    DynamicSpatialField field,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Expression<Func<T, object>> path,
+    double latitude,
+    double longitude);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    string fieldName,
+    double latitude,
+    double longitude);
+
+// From center of WKT shape
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    DynamicSpatialField field,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Expression<Func<T, object>> path,
+    string shapeWkt);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    string fieldName,
+    string shapeWkt);
+
+// Rounding
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Expression<Func<T, object>> path,
+    double latitude,
+    double longitude,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    string fieldName,
+    double latitude,
+    double longitude,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    Expression<Func<T, object>> path,
+    string shapeWkt,
+    double roundFactor);
+
+IOrderedQueryable<T> OrderByDistanceDescending<T>(
+    string fieldName,
+    string shapeWkt,
+    double roundFactor);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="note" title="Note">
+By default, distances are measured in **kilometers**.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Spatial indexes can be queried using `spatial` method which contains full spectrum of spatial methods, certain shortcuts have been created for easier access and are available in `customize` as a part of query customizations. Following article will cover those methods:
+
+- [spatial](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
+- [relatesToShape](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#relatestoshape)
+- [sortByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#sortbydistance)
+- [withinRadiusOf](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#withinradiusof)
+
+## Spatial
+
+<TabItem value="spatial_1" label="spatial_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> spatial(String fieldName, Function<SpatialCriteriaFactory, SpatialCriteria> clause);
+
+IDocumentQuery<T> spatial(DynamicSpatialField field, Function<SpatialCriteriaFactory, SpatialCriteria> clause);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | Path&lt;?&gt; | Path to spatial field. |
+| **clause** | [SpatialCriteria](../../../glossary/spatial-criteria-factory.mdx) | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Object instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+### Example
+
+<TabItem value="spatial_2" label="spatial_2">
+<CodeBlock language="java">
+{`public PointField(String latitude, String longitude)
+
+public WktField(String wkt)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RelatesToShape
+
+`relatesToShape` is low-level method available for spatial searches. You can pass any valid [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) shape with any relation.  All other methods sooner or later are using it to define a shape.
+
+<TabItem value="spatial_3" label="spatial_3">
+<CodeBlock language="java">
+{`SpatialCriteria relatesToShape(String shapeWkt, SpatialRelation relation);
+
+SpatialCriteria relatesToShape(String shapeWkt, SpatialRelation relation, double distErrorPercent);
+
+SpatialCriteria intersects(String shapeWkt);
+
+SpatialCriteria intersects(String shapeWkt, double distErrorPercent) ;
+
+SpatialCriteria contains(String shapeWkt);
+
+SpatialCriteria contains(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria disjoint(String shapeWkt);
+
+SpatialCriteria disjoint(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria within(String shapeWkt);
+
+SpatialCriteria within(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude, SpatialUnits radiusUnits);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude, SpatialUnits radiusUnits, double distErrorPercent);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Spatial field name. |
+| **shapeWKT** | String | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) formatted shape. |
+| **rel** | [SpatialRelation](../../../glossary/spatial-relation.mdx) | Spatial relation to check. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_4" label="spatial_4">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.withinRadius(10, 32.1234, 23.4321))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## SortByDistance
+
+To sort by distance from origin point use `sortByDistance` method.
+
+<TabItem value="spatial_5" label="spatial_5">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// this equals to WithinRadius(10, 32.1234, 23.4321)
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.relatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.WITHIN)
+    )
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_6" label="spatial_6">
+<CodeBlock language="java">
+{`IDocumentQuery<T> orderByDistance(DynamicSpatialField field, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistance(DynamicSpatialField field, String shapeWkt);
+
+IDocumentQuery<T> orderByDistance(String fieldName, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistance(String fieldName, String shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WithinRadiusOf
+
+`WithinRadiusOf` filter matches to be inside specified radius. Internally it creates a circle with passed latitude and longitude as a center point with given distance (radius) and `SpatialRelation` set to `Within`.
+
+<TabItem value="spatial_7" label="spatial_7">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.withinRadius(10, 32.1234, 23.4321)
+    )
+    .orderByDistance(
+        new PointField("latitude", "longtude"),
+        32.12324, 23.4321)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Spatial field name. In overloads without this parameter default field name is assumed (`__spatial`). |
+| **radius** | double | Circle radius. | 
+| **latitude** | double | Latitude pointing to circle center. |
+| **longitude** | double | Longitude pointing to circle center. |
+| **spatialUnits** | SpatialUnits | Units that will be used to measure distance (`Kilometers` or `Miles`). |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="spatial_8" label="spatial_8">
+<CodeBlock language="java">
+{`IDocumentQuery<T> orderByDistanceDescending(DynamicSpatialField field, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistanceDescending(DynamicSpatialField field, String shapeWkt);
+
+IDocumentQuery<T> orderByDistanceDescending(String fieldName, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistanceDescending(String fieldName, String shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="note" title="Note">
+By default, distances are measured in **kilometers**.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Indexing spatial data](../../../indexes/indexing-spatial-data)
+- [Indexes : Querying : Spatial](../../../indexes/querying/spatial)
+
+-->

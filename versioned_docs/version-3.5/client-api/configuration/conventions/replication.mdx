@@ -1,0 +1,129 @@
+---
+title: "Replication Conventions"
+hide_table_of_contents: true
+sidebar_label: Replication
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Replication Conventions
+
+
+
+This convention tells the client how it should behave in a replicated environment when the primary node is unreachable and needs a failover to a secondary node or nodes.  
+
+<TabItem value="failover_behavior" label="failover_behavior">
+<CodeBlock language="csharp">
+{`Conventions.FailoverBehavior = FailoverBehavior.AllowReadsFromSecondaries;
+`}
+</CodeBlock>
+</TabItem>
+
+In a cluster environment, this convention lets the client know how to behave when a request is made.  
+
+<TabItem value="cluster_failover_behavior" label="cluster_failover_behavior">
+<CodeBlock language="csharp">
+{`Conventions.FailoverBehavior = FailoverBehavior.ReadFromAllWriteToLeader;
+`}
+</CodeBlock>
+</TabItem>
+
+You will find a detailed description [here](../../bundles/how-client-integrates-with-replication-bundle.mdx).  
+
+### ReplicationInformerFactory
+
+This convention determines replication behavior for the client. You can customize this to inject your own replication / failover logic by implementing `IDocumentStoreReplicationInformer`.
+
+<TabItem value="replication_informer" label="replication_informer">
+<CodeBlock language="csharp">
+{`Conventions.ReplicationInformerFactory = (url, jsonRequestFactory, requestTimeMetricGetter) =>
+icationInformer(Conventions, jsonRequestFactory, requestTimeMetricGetter);
+`}
+</CodeBlock>
+</TabItem>
+
+### IndexAndTransformerReplicationMode
+
+This convention allows you to change the replication mode for index and transformer definitions when they are created (or changed) by the client code (`AbstractIndexCreationTask.Execute` / `AbstractTransformerCreationTask.Execute`). It is an enum type with `[Flags]` attributes applied. The possible values are:
+
+* `None` - Neither indexes nor transformers are updated to replicated instances.
+* `Indexes` - All created indexes are replicated.
+* `Transformers` - All transformers are replicated.
+
+By default, both indexes and transformers are uploaded to the replication nodes:
+
+<TabItem value="index_and_transformer_replication_mode" label="index_and_transformer_replication_mode">
+<CodeBlock language="csharp">
+{`Conventions.IndexAndTransformerReplicationMode = IndexAndTransformerReplicationMode.Indexes |
+                                                 IndexAndTransformerReplicationMode.Transformers;
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+#Replication conventions
+
+
+
+This conventions tells the client how it should behave in a replicated environment when the primary node is unreachable and need to failover to secondary node(s). Detailed description you will
+find [here](../../bundles/how-client-integrates-with-replication-bundle.mdx).
+
+<TabItem value="failover_behavior" label="failover_behavior">
+<CodeBlock language="java">
+{`conventions.setFailoverBehavior(FailoverBehaviorSet.of(FailoverBehavior.ALLOW_READS_FROM_SECONDARIES));
+`}
+</CodeBlock>
+</TabItem>
+
+### ReplicationInformerFactory
+
+This is called to provide replication behavior for the client. You can customize this to inject your own replication / failover logic by implementing `IDocumentStoreReplicationInformer`.
+
+<TabItem value="replication_informer" label="replication_informer">
+<CodeBlock language="java">
+{`conventions.setReplicationInformerFactory(new ReplicationInformerFactory() \{
+  @Override
+  public IDocumentStoreReplicationInformer create(String url, HttpJsonRequestFactory jsonRequestFactory) \{
+    return new ReplicationInformer(conventions, jsonRequestFactory);
+  \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+### IndexAndTransformerReplicationMode
+
+It allows to change the replication mode for index and transformer definitions when they are created (or changed) by the client code (`AbstractIndexCreationTask.execute` / `AbstractTransformerCreationTask.execute`). The possible values are:
+
+* `None` - neither indexes nor transformers are updated to replicated instances,
+* `Indexes` - all created indexes are replicated.
+* `Transformers` - all transformers are replicated.
+
+By default both indexes and transformers are uploaded to the replication nodes:
+
+<TabItem value="index_and_transformer_replication_mode" label="index_and_transformer_replication_mode">
+<CodeBlock language="java">
+{`conventions.setIndexAndTransformerReplicationMode(EnumSet.of(IndexAndTransformerReplicationMode.INDEXES,
+        IndexAndTransformerReplicationMode.TRANSFORMERS));
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,219 @@
+---
+title: "Operations: Attachments: How to Get an Attachment"
+hide_table_of_contents: true
+sidebar_label: Get Attachment
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: Attachments: How to Get an Attachment
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This operation is used to get an attachment from a document. 
+
+## Syntax
+
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
+<CodeBlock language="csharp">
+{`public GetAttachmentOperation(string documentId, string name, AttachmentType type, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
+<CodeBlock language="csharp">
+{`public class AttachmentResult
+\{
+    public Stream Stream;
+    public AttachmentDetails Details;
+\}
+
+public class AttachmentDetails : AttachmentName
+\{
+    public string ChangeVector;
+    public string DocumentId;
+\}
+
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | string | ID of a document which will contain an attachment |
+| **name** | name | Name of an attachment |
+| **type** | AttachmentType | **Document** or **Revision** |
+| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | Stream containing an attachment |
+| **ChangeVector** | Change vector of an attachment |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new GetAttachmentOperation("orders/1-A",
+    "invoice.pdf",
+    AttachmentType.Document,
+    changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This operation is used to get an attachment from a document. 
+
+## Syntax
+
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
+<CodeBlock language="java">
+{`GetAttachmentOperation(String documentId, String name, AttachmentType type, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
+<CodeBlock language="java">
+{`public class CloseableAttachmentResult implements AutoCloseable \{
+    private AttachmentDetails details;
+    private CloseableHttpResponse response;
+
+    public InputStream getData() throws IOException \{
+        return response.getEntity().getContent();
+    \}
+
+    public AttachmentDetails getDetails() \{
+        return details;
+    \}
+\}
+
+public class AttachmentDetails extends Foo.AttachmentName \{
+    private String changeVector;
+    private String documentId;
+
+    public String getChangeVector() \{
+        return changeVector;
+    \}
+
+    public void setChangeVector(String changeVector) \{
+        this.changeVector = changeVector;
+    \}
+
+    public String getDocumentId() \{
+        return documentId;
+    \}
+
+    public void setDocumentId(String documentId) \{
+        this.documentId = documentId;
+    \}
+\}
+
+public class AttachmentName \{
+    private String name;
+    private String hash;
+    private String contentType;
+    private long size;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public String getHash() \{
+        return hash;
+    \}
+
+    public void setHash(String hash) \{
+        this.hash = hash;
+    \}
+
+    public String getContentType() \{
+        return contentType;
+    \}
+
+    public void setContentType(String contentType) \{
+        this.contentType = contentType;
+    \}
+
+    public long getSize() \{
+        return size;
+    \}
+
+    public void setSize(long size) \{
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | String | ID of a document which will contain an attachment |
+| **name** | String | Name of an attachment |
+| **type** | AttachmentType | **DOCUMENT** or **REVISION** |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | InputStream containing an attachment |
+| **ChangeVector** | Change vector of an attachment |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="java">
+{`store.operations().send(
+    new GetAttachmentOperation("orders/1-A", "invoice.pdf", AttachmentType.DOCUMENT, null));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Put Attachment](../../../client-api/operations/attachments/put-attachment)
+- [Delete Attachment](../../../client-api/operations/attachments/delete-attachment)
+
+
+-->

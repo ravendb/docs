@@ -1,0 +1,162 @@
+---
+title: "Attachments: Put"
+hide_table_of_contents: true
+sidebar_label: Put
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Attachments: Put
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**PutAttachment** is used to insert or update an attachment in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`void PutAttachment(string key, Etag etag, Stream data, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | unique key under which attachment will be stored |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check)  |
+| **data** | Stream | attachment data |
+| **metadata** | RavenJObject | attachment metadata |
+
+## Example
+
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="csharp">
+{`using (var file = File.Open("sea.png", FileMode.Open))
+\{
+	store
+		.DatabaseCommands
+		.PutAttachment("albums/holidays/sea.jpg", null, file, new RavenJObject
+			                                           \{
+				                                           \{ "Description", "Holidays 2014" \}
+			                                           \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**PutAttachment** is used to insert or update an attachment in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="java">
+{`@Deprecated
+public void putAttachment(String key, Etag etag, InputStream data, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | unique key under which attachment will be stored |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check)  |
+| **data** | InputStream | attachment data |
+| **metadata** | RavenJObject | attachment metadata |
+
+## Example
+
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="java">
+{`try (FileInputStream fis = new FileInputStream("sea.png")) \{
+  RavenJObject metadata = new RavenJObject();
+  metadata.add("Description", "Holidays 2014");
+  store
+  .getDatabaseCommands()
+  .putAttachment("albums/holidays/sea.jpg", null, fis, metadata);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**PutAttachment** is used to insert or update an attachment in a database.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/static/\{attachmentName\} \\
+	-X PUT
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| Attachment data |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No | current attachment etag, used for concurrency checks |
+| any header | No |  Metadata |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `201` | Created |
+
+| Header | Description |
+| -------- | - |
+| **ETag** | Attachment ETag |
+
+---
+
+### Example I
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/databases/NorthWind/static/albums/holidays/sea.jpg"  \\
+	--header "Description: Holidays 2014" \\
+	-d @sea.jpg
+
+< HTTP/1.1 201 Created
+< ETag: "02000000-0000-0004-0000-000000000002"
+< Location: /static/albums/holidays/sea.jpg
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to update attachment metadata only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)
+- [GetAttachment](../../../client-api/commands/attachments/get)
+- [DeleteAttachment](../../../client-api/commands/attachments/delete)
+
+-->

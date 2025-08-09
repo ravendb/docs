@@ -1,0 +1,51 @@
+---
+title: "What are conventions?"
+hide_table_of_contents: true
+sidebar_label: What are conventions?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#What are conventions?
+
+Conventions give you an ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
+
+<TabItem value="conventions_1" label="conventions_1">
+<CodeBlock language="csharp">
+{`DocumentConvention conventions = store.Conventions;
+`}
+</CodeBlock>
+</TabItem>
+
+Here you will find plenty of settings to overwrite, in order to adjust the client according to your needs. The conventions apply to many different client behaviors, so they are grouped and described in the separate articles in this section.
+</LanguageContent>
+<LanguageContent language="java">
+#What are conventions?
+
+Conventions give you an ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
+
+<TabItem value="conventions_1" label="conventions_1">
+<CodeBlock language="java">
+{`DocumentConvention conventions = store.getConventions();
+`}
+</CodeBlock>
+</TabItem>
+
+Here you will find plenty of settings to overwrite, in order to adjust the client according to your needs. The conventions apply to many different client behaviors, so they are grouped and described in the separate articles in this section.
+</LanguageContent>
+
+<!---
+
+-->

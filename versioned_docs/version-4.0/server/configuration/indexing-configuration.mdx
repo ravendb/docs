@@ -1,0 +1,165 @@
+---
+title: "Configuration: Indexing"
+hide_table_of_contents: true
+sidebar_label: Indexing Configuration
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Indexing
+
+## Indexing.RunInMemory
+
+Set if indexes should run purely in memory.
+
+- **Type**: `bool`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing or faster non-persistant indexing.
+ 
+If not set or set to **null** - indexing will run in memory if core settings *RunInMemory* is set to true.
+
+ Values:
+ 
+ * `null` - use the value set in core configuration *RunInMemory*
+ * `true` - run indexing in memory
+ * `false` - store information on the disk
+
+
+
+## Indexing.Disable
+
+Disable indexing.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+
+
+## Indexing.TempPath
+
+Use this setting to specify a different path for the indexes' temporary files.  
+By default, temporary files are created under the `Temp` directory inside the index data directory.  
+Learn more about RavenDB directory structure [here](../../server/storage/directory-structure.mdx).
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+
+
+## Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec
+
+Set how many seconds indexing will keep document transaction open when indexing.
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide or per database
+
+When triggered, transaction will be closed and a new one will be opened
+
+
+
+## Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec
+
+Set how many seconds to keep a superseded auto index.
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide or per database
+
+
+
+## Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin
+
+Set how many minutes to wait before marking auto index as idle.
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide or per database
+
+
+
+## Indexing.DisableQueryOptimizerGeneratedIndexes
+
+Disable query optimizer generated indexes (Auto Indexes).
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+<Admonition type="warning" title="Warning">
+Use with caution.
+</Admonition>
+
+
+
+## Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs
+
+Set how many hours the database should wait before deleting an auto index with the idle flag.
+
+- **Type**: `int`
+- **Default**: `72`
+- **Scope**: Server-wide or per database
+
+
+
+## Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory
+
+Set minimum number of map attempts after which batch will be canceled if running low on memory.
+
+- **Type**: `int`
+- **Default**: `512`
+- **Scope**: Server-wide or per database
+
+<Admonition type="warning" title="Warning">
+Use with caution.
+</Admonition>
+
+
+
+## Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory
+
+Number of concurrent stopped batches if running low on memory.
+
+- **Type**: `int`
+- **Default**: `3`
+- **Scope**: Server-wide or per database
+
+<Admonition type="warning" title="Warning">
+Use with caution.
+</Admonition>
+
+
+
+## Indexing.MapTimeoutInSec
+
+Number of seconds after which mapping will end even if there is more to map.
+
+- **Type**: `int`
+- **Default**: `-1`
+- **Scope**: Server-wide or per database
+
+Value of *-1* for map as much as possible in single batch.
+
+
+
+## Indexing.MapTimeoutAfterEtagReachedInMin
+
+Number of minutes after which mapping will end even if there is more to map. This will only be applied if we pass the last etag in collection that we saw when batch was started.
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide or per database
+
+This will only be applied if we pass the last etag in collection that we saw when batch was started.
+
+

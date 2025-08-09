@@ -1,0 +1,57 @@
+---
+title: "Live Projections"
+hide_table_of_contents: true
+sidebar_label: Live Projections
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Live Projections
+
+Usually, RavenDB can tell what types you want to return based on the query type and the CLR type encoded in a document, but there are some cases where you want to query on one thing, but the result is completely different. This is usually the case when you are using live projections.
+
+For example, let us take a look at the following index:
+
+    
+```
+public class PurchaseHistoryIndex : AbstractIndexCreationTask&lt;Order, Order&gt;
+    {
+        public PurchaseHistoryIndex()
+        {
+            Map = orders =&gt; from order in orders
+                            from product in order.Items
+                            select new
+                                       {
+                                           UserId = order.UserId,
+                                           ProductId = product.Id
+                                       };
+            TransformResults = (database, orders) =&gt;
+                               from order in orders
+                               from item in order.Items
+                               let product = database.Load&lt;Product&gt;(item.Id)
+                               where product != null
+                               select new
+                                          {
+                                              ProductId = item.Id,
+                                              ProductName = product.Name
+                                          };
+
+        }
+    }
+```
+
+
+Note that when we query this index, we can query based on UserId or ProductId, but the result that we get back aren't of the same type that we query on. For that reason, we have the As&lt;T&gt;() extension method. We can use it to change the result type of the query:
+
+    documentSession.Query&lt;Shipment, PurchaseHistoryIndex&gt;()
+       .Where(x =&gt; x.UserId == userId)
+       .As&lt;PurchaseHistoryViewItem&gt;()
+       .ToArray(),
+
+In the code above, we query the `PurchaseHistoryIndex` using `Shipment` as the entity type to search on, but we get the results as `PurchaseHistoryViewItem`.

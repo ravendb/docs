@@ -1,0 +1,211 @@
+---
+title: "Session: Querying: How to stream query results?"
+hide_table_of_contents: true
+sidebar_label: Stream Query Results
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to stream query results?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Query results can be streamed using `Stream` method from `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="csharp">
+{`// Define a query on a collection
+IRavenQueryable<Employee> query = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert");
+
+// Call 'Stream' to execute the query
+// Optionally, pass an 'out param' for getting the query stats
+IEnumerator<StreamResult<Employee>> streamResults = 
+    session.Advanced.Stream(query, out StreamQueryStatistics streamQueryStats);
+
+// Read from the stream
+while (streamResults.MoveNext())
+\{
+    // Process the received result
+    StreamResult<Employee> currentResult = streamResults.Current;
+    
+    // Get the document from the result
+    // This entity will Not be tracked by the session
+    Employee employee = currentResult.Document;
+    
+    // The currentResult item also provides the following:
+    var employeeId  = currentResult.Id;
+    var documentMetadata = currentResult.Metadata;
+    var documentChangeVector = currentResult.ChangeVector;
+
+    // Can get info from the stats, i.e. get number of total results
+    int totalResults = streamQueryStats.TotalResults;
+    // Get the Auto-Index that was used/created with this dynamic query
+    string indexUsed = streamQueryStats.IndexName;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx) or [IDocumentQuery](../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) | Query to stream results for. |
+| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+| Return Value | |
+| ------------- | ----- |
+| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
+| [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+## Example I
+
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="csharp">
+{`// Define a document query on a collection
+IDocumentQuery<Employee> query = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert");
+
+// Call 'Stream' to execute the query
+// Optionally, add an out param for getting the query stats
+IEnumerator<StreamResult<Employee>> streamResults = 
+    session.Advanced.Stream(query, out StreamQueryStatistics streamQueryStats);
+
+// Read from the stream
+while (streamResults.MoveNext())
+\{
+    // Process the received result
+    StreamResult<Employee> currentResult = streamResults.Current;
+    
+    // Get the document from the result
+    // This entity will Not be tracked by the session
+    Employee employee = currentResult.Document;
+        
+    // The currentResult item also provides the following:
+    var employeeId  = currentResult.Id;
+    var documentMetadata = currentResult.Metadata;
+    var documentChangeVector = currentResult.ChangeVector;
+    
+    // Can get info from the stats, i.e. get number of total results
+    int totalResults = streamQueryStats.TotalResults;
+    // Get the Auto-Index that was used/created with this dynamic query
+    string indexUsed = streamQueryStats.IndexName;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="stream_3" label="stream_3">
+<CodeBlock language="csharp">
+{`// Define a raw query using RQL
+IRawDocumentQuery<Employee> query = session
+    .Advanced
+    .RawQuery<Employee>("from Employees where FirstName = 'Robert'");
+
+// Call 'Stream' to execute the query
+IEnumerator<StreamResult<Employee>> streamResults = session.Advanced.Stream(query);
+
+while (streamResults.MoveNext())
+\{
+    StreamResult<Employee> currentResult = streamResults.Current;
+    Employee employee = streamResults.Current.Document;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Streaming results only works for queries that were made against a (predefined) static index.
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Query results can be streamed using `stream` method from `advanced()` session operations.
+
+## Syntax
+
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx) or [IDocumentQuery](../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) | Query to stream results for. |
+| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator&lt;StreamResult&lt;T&gt;&gt; | Iterator with entities. |
+| [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+## Example I
+
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="java">
+{`IDocumentQuery<Employee> query = session
+    .query(Employee.class, Employees_ByFirstName.class)
+    .whereEquals("FirstName", "Robert");
+
+CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
+
+while (results.hasNext()) \{
+    StreamResult<Employee> employee = results.next();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="stream_3" label="stream_3">
+<CodeBlock language="java">
+{`IDocumentQuery<Employee> query = session
+    .advanced()
+    .documentQuery(Employee.class)
+    .whereEquals("FirstName", "Robert");
+
+Reference<StreamQueryStatistics> streamQueryStatsRef = new Reference<>();
+CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query, streamQueryStatsRef);
+
+while (results.hasNext()) \{
+    StreamResult<Employee> employee = results.next();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Commands : Documents : Stream](../../commands/documents/stream)
+
+-->

@@ -1,0 +1,29 @@
+---
+title: "Querying for terms"
+hide_table_of_contents: true
+sidebar_label: Querying for terms
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying for terms
+
+RavenDB lets you retrieve all terms indexed in a Lucene index for a specific field. Fields are usually your entity properties, but depending on how you built your indexes they may contain different information.
+
+To get all unique values indexed for "MyProperty" in a specific index, with a page size of 128, use:
+
+<TabItem value="getterms1" label="getterms1">
+<CodeBlock language="csharp">
+{`var firstPage = session.Advanced.DatabaseCommands.GetTerms("indexName", "MyProperty", null, 128);
+var secondPage = session.Advanced.DatabaseCommands.GetTerms("indexName", "MyProperty", firstPage.Last(), 128);
+`}
+</CodeBlock>
+</TabItem>
+
+The third parameter is used for paging. Pass it the last term of the last page you got, and it will generate the next page for you.

@@ -1,0 +1,872 @@
+---
+title: "Commands: Documents: Get"
+hide_table_of_contents: true
+sidebar_label: Get Documents
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Documents: Get
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+There are few methods that allow you to retrieve documents from a database:   
+- [Get](../../../client-api/commands/documents/get.mdx#get)   
+- [Get - multiple documents](../../../client-api/commands/documents/get.mdx#get---multiple-documents)   
+- [GetDocuments](../../../client-api/commands/documents/get.mdx#getdocuments)   
+- [StartsWith](../../../client-api/commands/documents/get.mdx#startswith)  
+
+## Get
+
+**Get** can be used to retrieve a single document.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`JsonDocument Get(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the document you want to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing the retrieved document. |
+
+### Example
+
+<TabItem value="get_1_2" label="get_1_2">
+<CodeBlock language="csharp">
+{`JsonDocument document = store.DatabaseCommands.Get("products/1"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get - multiple documents
+
+**Get** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`MultiLoadResult Get(
+	string[] ids,
+	string[] includes,
+	string transformer = null,
+	Dictionary<string, RavenJToken> transformerParameters = null,
+	bool metadataOnly = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | string[] | array of keys of the documents you want to retrieve |
+| **includes** | string[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary&lt;string, RavenJToken&gt; | parameters that will be passed to transformer |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
+
+---
+
+<TabItem value="multiloadresult" label="multiloadresult">
+<CodeBlock language="csharp">
+{`public class MultiLoadResult
+\{
+	public List<RavenJObject> Results \{ get; set; \}
+
+	public List<RavenJObject> Includes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
+| **Includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
+
+### Example I
+
+<TabItem value="get_2_2" label="get_2_2">
+<CodeBlock language="csharp">
+{`MultiLoadResult resultsWithoutIncludes = store
+	.DatabaseCommands
+	.Get(new[] \{ "products/1", "products/2" \}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - using includes
+
+<TabItem value="get_2_3" label="get_2_3">
+<CodeBlock language="csharp">
+{`MultiLoadResult resultsWithIncludes = store
+	.DatabaseCommands
+	.Get(
+		new[] \{ "products/1", "products/2" \},
+		new[] \{ "Category" \});
+
+List<RavenJObject> results = resultsWithIncludes.Results; // products/1, products/2
+List<RavenJObject> includes = resultsWithIncludes.Includes; // categories/1
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - missing documents
+
+<TabItem value="get_2_4" label="get_2_4">
+<CodeBlock language="csharp">
+{`// assuming that 'products/9999' does not exist
+MultiLoadResult resultsWithIncludes = store
+	.DatabaseCommands
+	.Get(
+		new[] \{ "products/1", "products/9999", "products/3" \},
+		null);
+
+List<RavenJObject> results = resultsWithIncludes.Results; // products/1, null, products/3
+List<RavenJObject> includes = resultsWithIncludes.Includes; // empty
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetDocuments
+
+**GetDocuments** can be used to retrieve multiple documents.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="csharp">
+{`JsonDocument[] GetDocuments(int start, int pageSize, bool metadataOnly = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |  
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="csharp">
+{`JsonDocument[] documents = store.DatabaseCommands.GetDocuments(0, 10, metadataOnly: false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartsWith
+
+**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+
+### Syntax
+
+<TabItem value="get_4_0" label="get_4_0">
+<CodeBlock language="csharp">
+{`JsonDocument[] StartsWith(
+	string keyPrefix, 
+	string matches,
+	int start,
+	int pageSize,
+	RavenPagingInformation pagingInformation = null,
+	bool metadataOnly = false,
+	string exclude = null,
+	string transformer = null,
+	Dictionary<string, RavenJToken> transformerParameters = null,
+	string skipAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keyPrefix** | string | prefix for which documents should be returned |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side  |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
+| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary&lt;string, RavenJToken&gt; | parameters that will be passed to transformer |
+| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example I
+
+<TabItem value="get_4_1" label="get_4_1">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products'
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_4_2" label="get_4_2">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1*|2*", 0, 128); 
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_4_3" label="get_4_3">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key have length of 3, begins and ends with "1" 
+// and contains any character at 2nd position e.g. products/101, products/1B1
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1?1", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are few methods that allow you to retrieve documents from a database:   
+- [Get](../../../client-api/commands/documents/get.mdx#get)   
+- [Get - multiple documents](../../../client-api/commands/documents/get.mdx#get---multiple-documents)   
+- [GetDocuments](../../../client-api/commands/documents/get.mdx#getdocuments)   
+- [StartsWith](../../../client-api/commands/documents/get.mdx#startswith)  
+
+## Get
+
+**Get** can be used to retrieve a single document.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="java">
+{`public JsonDocument get(String key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key of the document you want to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing the retrieved document. |
+
+### Example
+
+<TabItem value="get_1_2" label="get_1_2">
+<CodeBlock language="java">
+{`JsonDocument document = store.getDatabaseCommands().get("products/1"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get - multiple documents
+
+**Get** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="java">
+{`public MultiLoadResult get(String[] ids, String[] includes);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer, Map<String, RavenJToken> transformerParameters);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer, Map<String, RavenJToken> transformerParameters, boolean metadataOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | String[] | array of keys of the documents you want to retrieve |
+| **includes** | String[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
+| **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
+| **transformerParameters** | Map&lt;string, RavenJToken&gt; | inputs (parameters) that will be used by transformer (default: `null`) |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default: `false`) |
+
+---
+
+<TabItem value="multiloadresult" label="multiloadresult">
+<CodeBlock language="java">
+{`public class MultiLoadResult
+\{
+  private List<RavenJObject> results;
+  private List<RavenJObject> includes;
+
+  public List<RavenJObject> getResults() \{
+    return results;
+  \}
+
+  public void setResults(List<RavenJObject> results) \{
+    this.results = results;
+  \}
+
+  public List<RavenJObject> getIncludes() \{
+    return includes;
+  \}
+
+  public void setIncludes(List<RavenJObject> includes) \{
+    this.includes = includes;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
+| **includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
+
+### Example I
+
+<TabItem value="get_2_2" label="get_2_2">
+<CodeBlock language="java">
+{`MultiLoadResult resultsWithoutIncludes = store.getDatabaseCommands().get(new String[] \{ "products/1", "products/2" \}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - using includes
+
+<TabItem value="get_2_3" label="get_2_3">
+<CodeBlock language="java">
+{`MultiLoadResult resultsWithIncludes = store.getDatabaseCommands().get(
+  new String[] \{ "products/1", "products/2" \},
+  new String[] \{ "Category" \});
+
+List<RavenJObject> results = resultsWithIncludes.getResults(); // products/1, products/2
+List<RavenJObject> includes = resultsWithIncludes.getIncludes(); // categories/1
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - missing documents
+
+<TabItem value="get_2_4" label="get_2_4">
+<CodeBlock language="java">
+{`// assuming that 'products/9999' does not exist
+MultiLoadResult resultsWithIncludes = store.getDatabaseCommands().get(
+  new String[] \{ "products/1", "products/9999", "products/3" \},
+  null
+  );
+List<RavenJObject> results = resultsWithIncludes.getResults(); // products/1, null, products/3
+List<RavenJObject> includes = resultsWithIncludes.getIncludes(); // empty
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetDocuments
+
+**GetDocuments** can be used to retrieve multiple documents.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="java">
+{`public List<JsonDocument> getDocuments(int start, int pageSize);
+
+public List<JsonDocument> getDocuments(int start, int pageSize, boolean metadataOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default: `false`) |  
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="java">
+{`List<JsonDocument> documents = store.getDatabaseCommands().getDocuments(0, 10, false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartsWith
+
+**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+
+### Syntax
+
+<TabItem value="get_4_0" label="get_4_0">
+<CodeBlock language="java">
+{`public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly, String exclude);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly, String exclude, RavenPagingInformation pagingInformation);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly,
+  String exclude, RavenPagingInformation pagingInformation, String transformer, Map<String, RavenJToken> transformerParameters);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly,
+  String exclude, RavenPagingInformation pagingInformation, String transformer, Map<String, RavenJToken> transformerParameters, String skipAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keyPrefix** | String | prefix for which documents should be returned |
+| **matches** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side (default: `null`) |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default : `false`) |
+| **exclude** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) (default: `null`) |
+| **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
+| **transformerParameters** | Map&lt;String, RavenJToken&gt; | inputs (parameters) that will be used by transformer (default: `null`) |
+| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example I
+
+<TabItem value="get_4_1" label="get_4_1">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products'
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_4_2" label="get_4_2">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products/", "1*|2*", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_4_3" label="get_4_3">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key have length of 3, begins and ends with "1"
+// and contains any character at 2nd position e.g. products/101, products/1B1
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products/", "1?1", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+There are few methods that allow you to retrieve documents from a database:   
+- [Get](../../../client-api/commands/documents/get.mdx#get)   
+- [Get - multiple documents](../../../client-api/commands/documents/get.mdx#get---multiple-documents)   
+- [GetDocuments](../../../client-api/commands/documents/get.mdx#getdocuments)   
+- [StartsWith](../../../client-api/commands/documents/get.mdx#startswith)  
+
+## Get
+
+**Get** can be used to retrieve a single document.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/docs?id=\{key\}  \\
+	-X GET \\
+	--header "If-None-Match:\{etag\}" 
+ 
+curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/docs/\{key\}  \\
+	-X GET \\
+	--header "If-None-Match:\{etag\}" 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **key** | Yes | unique key under which document is stored |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  Used to pass document `Etag` |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+| `404` | Not found |
+| `304` | Not modified |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | json representing document |
+
+| Header | Description |
+| -------- | - |
+| **ETag** | document ETag |
+| **&#95;&#95;document_id** | Document id |
+| **Last-Modified** | Date of last modification |
+
+---
+
+### Example
+
+Get document under key `user/100`. 
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET http://localhost:8080/docs/user/100
+< HTTP/1.1 200 OK
+< Last-Modified: Thu, 06 Nov 2014 10:58:52 GMT
+< ETag: "01000000-0000-0008-0000-00000000000A"
+< __document_id: user/100
+\{ FirstName: 'Bob', LastName: 'Smith', Address: '5 Elm St' \}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get - multiple documents
+
+**Get** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/queries/? \\
+		metadata-only=\{metadataOnly\}& \\
+		include=\{includePath\}& \\
+		transformer=\{transformerName\}& \\
+		tp-\{param\}=\{value\}& \\
+		id=\{documentKey\} \\
+	-X GET
+ 
+curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/queries/? \\
+		metadata-only=\{metadataOnly\}& \\
+		include=\{includePath\}& \\
+		transformer=\{transformerName\}& \\
+		tp-\{param\}=\{value\}& \\
+		id=\{documentKey\} \\
+	-X POST
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Method | Description |
+| -------| - |
+| `GET` | document ids length &lt; 1024 |
+| `PUT` | document ids length &gt; 1024 (pass them as payload) |
+
+| Query parameter | Required | Multiple allowed | Description |
+| ------------- | -- | ---- |
+| **id** | Yes | Yes | document id to load |
+| **include** | No | Yes | include paths |
+| **transformer** | No | No | transformerName to use |
+| tp-`{param}` | No | Yes | Transformer parameter |
+| **metadata-only** | No | No | Fetch only metadata |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Results** | List of requested documents |
+| **Includes** | List of included documents |
+
+---
+
+### Example I
+
+Get documents with ids: `products/1` and `products/2`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/http/queries/?id=products%2F1&id=products%2F2" 
+< HTTP/1.1 200 OK
+\{
+	"Results":
+	[
+		\{"Name":"orange","Price":0.0,"@metadata":...\},
+		\{"Name":"apple","Price":0.0, "@metadata":...\}
+	],
+	"Includes":
+	[]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+### Example II - using includes
+
+Get documents with ids: `products/1` and `products/2`. Include `Category`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/queries/?include=Category&id=products%2F1&id=products%2F2" 
+< HTTP/1.1 200 OK
+\{"Results":[
+		\{"Name":"Chai","Category":"categories/1", ... \},
+		\{"Name":"Chang","Category":"categories/1", ... \}
+	],
+ "Includes":[
+		\{"Name":"Beverages",...\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+### Example III - missing documents
+
+Assuming that `products/9999` does not exist. 
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/queries/?&include=Category&id=products%2F1&id=products%2F9999&id=products%2F2" 
+< HTTP/1.1 200 OK
+\{"Results":[
+		\{"Name":"Chai","Category":"categories/1", ... \},
+		null,
+		\{"Name":"Chang","Category":"categories/1", ... \}
+	],
+ "Includes":[]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetDocuments
+
+**GetDocuments** can be used to retrieve multiple documents.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/docs? \\
+		start=\{start\}&  \\
+		pageSize=\{pageSize\}& \\
+		metadata-only=\{metadataOnly\}
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **start** | No | number of documents that should be skipped |
+| **pageSize** | No | maximum number of documents that will be retrieved |
+| **metadata-only** | No | specifies if only document metadata should be returned |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | List of json documents |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/docs?start=0&pageSize=32" 
+< HTTP/1.1 200 OK
+[ json, json, ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartsWith
+
+**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl  \\
+	http://\{serverName\}/databases/\{databaseName\}/docs? \\
+		startsWith=\{startsWith\}& \\
+		matches=\{matches\}& \\
+		exclude=\{exclude\}& \\
+		start=\{start\}& \\
+		pageSize=\{pageSize\}& \\
+		metadata-only=\{metadata\}& \\
+		skipAfter=\{skipAfter\}& \\
+		transformer=\{transformer\}& \\
+		tp-\{param\}=\{value\} \\
+	-X GET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Multiple allowed | Description |
+| ------------- | -- | ---- |
+| **startsWith** | Yes | No | prefix for which documents should be returned |
+| **matches** | No | No | separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **exclude** | No | No | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **start** | No | No | number of documents that should be skipped |
+| **pageSize** | No | No | maximum number of documents that will be retrieved |
+| **metadataOnly** | No | No | specifies if only document metadata should be returned |
+| **skipAfter** | No | No | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **transformer** | No | No |name of a transformer that should be used to transform the results |
+| tp-`{param}` | No | Yes | parameters that will be passed to transformer |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+| `409` | Conflict |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | List of json documents |
+
+---
+
+### Example I
+
+Return up to 128 documents with key that starts with 'products'. 
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/docs?startsWith=products%2F&matches=&exclude=&start=0&pageSize=128" 
+< HTTP/1.1 200 OK
+[ jsonDocument, jsonDocument, ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+Return up to 128 documents with key that starts with 'products/' and rest of the key begins with "1" or "2" e.g. `products/10`, `products/25`
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/docs?startsWith=products%2F&matches=1*%7C2*&exclude=&start=0&pageSize=128" 
+< HTTP/1.1 200 OK
+[ jsonDocument, jsonDocument, ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+Return up to 128 documents with key that starts with 'products/' and rest of the key have length of 3, begins and ends with "1" and contains any character at 2nd position e.g. `products/101`, `products/1B1`. 
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/docs?startsWith=products%2F&matches=1%3F1&exclude=&start=0&pageSize=128" 
+< HTTP/1.1 200 OK
+[ jsonDocument, jsonDocument, ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+- [How to get document metadata only?](../../../client-api/commands/documents/how-to/get-document-metadata-only)
+- [Put](../../../client-api/commands/documents/put)
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to stream documents?](../../../client-api/commands/documents/stream)
+
+-->

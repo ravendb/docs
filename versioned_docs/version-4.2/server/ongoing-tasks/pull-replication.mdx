@@ -1,0 +1,71 @@
+---
+title: "Pull Replication"
+hide_table_of_contents: true
+sidebar_label: Pull Replication
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Pull Replication
+
+The pull replication feature allow an inter-cluster database replication to be initiated from the *destination*.
+
+There are two roles:
+
+1. The **Hub**, a database from which the data will be pulled from.
+2. The **Sink**, a database that will initiate the connection and receive the data from the Hub.
+
+## Why Pull Replication
+
+Creating a Hub-Sink definition pair only once and pass the Sink definition to RavenDB instances that have to be synced by the Hub, will simplify deployment scenarios where RavenDB instances work independently but have to be in sync with the main server.  
+
+For example 
+- Ships at sea that need to sync with the head quarters when docked.
+- Clinics in health care providers that need to communicate with the central database.
+
+<Admonition type="info" title="Configure the Pull Replication via the Studio" id="configure-the-pull-replication-via-the-studio" href="#configure-the-pull-replication-via-the-studio">
+
+Checkout the studio [walk-through](../../studio/database/tasks/ongoing-tasks/pull-replication.mdx) for configuring the pull replication.
+
+</Admonition>
+
+## Pull Replication Work-flow 
+
+1. Define Hub on the _source_ database group.
+2. Define or import Sink definition to the _destination_ database group.
+3. The Sink will fetch the source topology and initiate the request to the Hub.
+4. The Hub will accept the connection and start sending the data just like a usual [Replication](../../server/ongoing-tasks/external-replication.mdx).
+5. On a connection breakdown the Sink will be responsible to reconnect. 
+
+## Using Certificates
+
+In a secured environment, an unsecured pull replication isn't allowed.
+
+The certificate is defined on the Hub and shard with the Sink. 
+It is used for both authorization and authentication, but allow access only to this feature and only for the specified database.
+Although it is defined on the Hub it must include the _private_ key when imported into the Sink, since the Sink initiate the connection.  
+
+The certificate could be a self-signed or signed by any other (even untrusted) CA, since RavenDB trusts the pull replication certificate based on its thumbprint.
+
+<Admonition type="warning" title="Don't expose you database record" id="don-t-expose-you-database-record" href="#don-t-expose-you-database-record">
+
+The entire certificate with its private key is kept on the Sink database record.
+
+</Admonition>
+
+## Failover
+
+Since the destination (Sink) initiate the replication, it is also the Sink's responsibility to reconnect on network failure. 
+
+### Failure on the Hub
+As a part of the connection handshake the Sink will fetch an ordered list of nodes from the Hub cluster (if defined, the preferred node will be at the top of it). It will try to connect to the first node and if failure occurred on the Hub side, the Sink will try to re-establish the connection to the next node in the list, if all fail, the Sink will request to fetch the list again. 
+
+### Failure in the Sink
+If the failure occurred on the Sink node, the Sink cluster will select a different node to perform the job.
+

@@ -1,0 +1,788 @@
+---
+title: "Delete by Query Operation"
+hide_table_of_contents: true
+sidebar_label: Delete by Query
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Delete by Query Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
+
+* __Dynamic behavior__:   
+  The deletion of documents matching the specified query is run in batches of size 1024.  
+  During the deletion process, documents that are added/modified __after__ the delete operation has started  
+  may also be deleted if they match the query criteria.
+
+* __Background operation__:  
+  This operation is performed in the background on the server.  
+  If needed, you can __wait__ for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+
+* In this page:  
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query.mdx#syntax)
+
+</Admonition>
+
+## Delete by dynamic query
+
+<Admonition type="note" title="Note">
+
+__Delete all documents in collection__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation_Sync" label="DeleteOperation_Sync">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation, pass an RQL querying a collection
+var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// All documents in collection 'Orders' will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DeleteOperation_Async" label="DeleteOperation_Async">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation, pass an RQL querying a collection
+var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
+
+// Execute the operation by passing it to Operations.SendAsync
+var result = await store.Operations.SendAsync(deleteByQueryOp);
+
+// All documents in collection 'Orders' will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete with filtering__:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation_Sync" label="DeleteOperation_Sync">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation, pass an RQL querying a collection
+var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// * All documents matching the specified RQL will be deleted from the server.
+
+// * Since the dynamic query was made with a filtering condition,
+//   an auto-index is generated (if no other matching auto-index already exists).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DeleteOperation_Async" label="DeleteOperation_Async">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation, pass an RQL querying a collection
+var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
+
+// Execute the operation by passing it to Operations.SendAsync
+var result = await store.Operations.SendAsync(deleteByQueryOp);
+
+// * All documents matching the provided RQL will be deleted from the server.
+
+// * Since a dynamic query was made with a filtering condition,
+//   an auto-index is generated (if no other matching auto-index already exists).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" where Freight > 30
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Delete by index query
+
+* `DeleteByQueryOperation` can only be performed on a __Map-index__.  
+  An exception is thrown when executing the operation on a Map-Reduce index.  
+
+* A few overloads are available, see the following examples:
+<Admonition type="note" title="Note">
+
+__A sample Map-index__:
+
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="csharp">
+{`// The index definition:
+// =====================
+
+public class Products_ByPrice : AbstractIndexCreationTask<Product>
+\{
+    public class IndexEntry
+    \{
+        public decimal Price \{ get; set; \}  
+    \}
+    
+    public Products_ByPrice()
+    \{
+        Map = products => from product in products
+            select new IndexEntry
+            \{
+                Price = product.PricePerUnit 
+            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete documents via an index query__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation, pass an RQL querying the index
+var deleteByQueryOp = new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Overload_1" label="Overload_1">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation
+var deleteByQueryOp = new DeleteByQueryOperation(new IndexQuery
+{
+    // Provide an RQL querying the index
+    Query = "from index 'Products/ByPrice' where Price > 10"
+});
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Overload_2" label="Overload_2">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation
+var deleteByQueryOp =
+    // Pass parameters:
+    // * The index name
+    // * A filtering expression on the index-field
+    new DeleteByQueryOperation<Products_ByPrice.IndexEntry>("Products/ByPrice", x => x.Price > 10);
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Overload_3" label="Overload_3">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation
+var deleteByQueryOp =
+    // Pass param:
+    // * A filtering expression on the index-field
+    new DeleteByQueryOperation<Products_ByPrice.IndexEntry, Products_ByPrice>(x => x.Price > 10);
+
+// Execute the operation by passing it to Operations.Send
+var operation = store.Operations.Send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete with options__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation
+var deleteByQueryOp = new DeleteByQueryOperation(
+    // QUERY: Specify the query
+    new IndexQuery
+    {
+        Query = "from index 'Products/ByPrice' where Price > 10"
+    },
+    // OPTIONS: Specify the options for the operation
+    // (See all other available options in the Syntax section below)
+    new QueryOperationOptions
+    {
+        // Allow the operation to operate even if index is stale
+        AllowStale = true, 
+        // Get info in the operation result about documents that were deleted
+        RetrieveDetails = true 
+    });
+
+// Execute the operation by passing it to Operations.Send
+Operation operation = store.Operations.Send(deleteByQueryOp);
+    
+// Wait for operation to complete
+var result = operation.WaitForCompletion<BulkOperationResult>(TimeSpan.FromSeconds(15));
+
+// * All documents with document-field PricePerUnit > 10 will be deleted from the server.
+
+// * Details about deleted documents are available:
+var details = result.Details;
+var documentIdThatWasDeleted = details[0].ToJson()["Id"];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DeleteOperation_async" label="DeleteOperation_async">
+<CodeBlock language="csharp">
+{`// Define the delete by query operation
+var deleteByQueryOp = new DeleteByQueryOperation(
+    // QUERY: Specify the query
+    new IndexQuery
+    {
+        Query = "from index 'Products/ByPrice' where Price > 10"
+    },
+    // OPTIONS: Specify the options for the operation
+    // (See all other available options in the Syntax section below)
+    new QueryOperationOptions
+    {
+        // Allow the operation to operate even if index is stale
+        AllowStale = true, 
+        // Get info in the operation result about documents that were deleted
+        RetrieveDetails = true 
+    });
+
+// Execute the operation by passing it to Operations.Send
+Operation operation = await store.Operations.SendAsync(deleteByQueryOp);
+
+// Wait for operation to complete
+BulkOperationResult result = 
+    await operation.WaitForCompletionAsync<BulkOperationResult>(TimeSpan.FromSeconds(15))
+        .ConfigureAwait(false);
+
+// * All documents with document-field PricePerUnit > 10 will be deleted from the server.
+
+// * Details about deleted documents are available:
+var details = result.Details;
+var documentIdThatWasDeleted = details[0].ToJson()["Id"];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Specifying `QueryOperationOptions` is also supported by the other overload methods, see the Syntax section below.
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`// Available overload:
+// ===================
+
+DeleteByQueryOperation DeleteByQueryOperation(
+    string queryToDelete);
+
+DeleteByQueryOperation DeleteByQueryOperation(
+    IndexQuery queryToDelete, 
+    QueryOperationOptions options = null);
+
+DeleteByQueryOperation DeleteByQueryOperation<TEntity>(
+    string indexName, 
+    Expression<Func<TEntity, bool>> expression,
+    QueryOperationOptions options = null);
+
+DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
+    Expression<Func<TEntity, bool>> expression,
+    QueryOperationOptions options = null)
+    where TIndexCreator : AbstractIndexCreationTask, new();
+`}
+</CodeBlock>
+</TabItem>
+&lt;br /&gt;
+
+| Parameter         | Type                        | Description                                                |
+|-------------------|-----------------------------|------------------------------------------------------------|
+| __queryToDelete__ | string                      | The RQL query to perform                                   |
+| __queryToDelete__ | `IndexQuery`                | Holds all the information required to query an index       |
+| __indexName__     | string                      | The name of the index queried                              |
+| __expression__    | `Expression<Func<T, bool>>` | The expression that defines the query criteria             |
+| __options__       | `QueryOperationOptions`     | Object holding different setting options for the operation |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class QueryOperationOptions
+\{
+    // Indicates whether operations are allowed on stale indexes.
+    // DEFAULT: false
+    public bool AllowStale \{ get; set; \}
+    
+    // If AllowStale is set to false and index is stale, 
+    // then this is the maximum timeout to wait for index to become non-stale. 
+    // If timeout is exceeded then exception is thrown.
+    // DEFAULT: null (if index is stale then exception is thrown immediately) 
+    public TimeSpan? StaleTimeout \{ get; set; \}
+    
+    // Limits the number of base operations per second allowed.
+    // DEFAULT: no limit
+    public int? MaxOpsPerSecond
+    
+    // Determines whether operation details about each document should be returned by server.
+    // DEFAULT: false
+    public bool RetrieveDetails \{ get; set; \}
+    
+    // Ignore the maximum number of statements a script can execute.
+    // Note: this is only relevant for the PatchByQueryOperation. 
+    public bool IgnoreMaxStepsForScript \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+`DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
+This operation is performed in the background on the server. 
+
+## Syntax
+
+<TabItem value="delete_by_query" label="delete_by_query">
+<CodeBlock language="java">
+{`public DeleteByQueryOperation(IndexQuery queryToDelete)
+
+public DeleteByQueryOperation(IndexQuery queryToDelete, QueryOperationOptions options)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index to perform a query on |
+| **queryToDelete** | IndexQuery | Holds all the information required to query an index |
+| **options** | QueryOperationOptions | Holds different setting options for base operations |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all documents from the server where Name == Bob using Person/ByName index
+store
+    .operations()
+    .send(new DeleteByQueryOperation(new IndexQuery("from Persons where name = 'Bob'")));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Name = 'Bob'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all documents from the server where Age > 35 using Person/ByAge index
+store
+    .operations()
+    .send(new DeleteByQueryOperation(new IndexQuery("from 'Person/ByAge' where age < 35")));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Age < 35
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// delete multiple docs with specific ids in a single run without loading them into the session
+Operation operation = store
+    .operations()
+    .sendAsync(new DeleteByQueryOperation(new IndexQuery(
+        "from People u where id(u) in ('people/1-A', 'people/3-A')"
+    )));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People u where id(u) in ('people/1-A', 'people/3-A')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="WaitForCompletion" id="waitforcompletion" href="#waitforcompletion">
+`DeleteByQueryOperation` is performed in the background on the server.    
+You have the option to **wait** for it using `waitForCompletion`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all document from server where Name == Bob and Age >= 29 using People collection
+Operation operation = store.operations()
+    .sendAsync(new DeleteByQueryOperation(new IndexQuery(
+        "from People where Name = 'Bob' and Age >= 29"
+    )));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People where Name = 'Bob' and Age >= 29
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+</Admonition>
+
+## Remarks
+
+<Admonition type="warning" title="Map only indexes" id="map-only-indexes" href="#map-only-indexes"> 
+`DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
+</Admonition>
+
+<Admonition type="warning" title="Batching and Concurrency" id="batching-and-concurrency" href="#batching-and-concurrency"> 
+
+The deletion of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
+so it can happen than a document has been updated or deleted meanwhile.
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
+
+* __Dynamic behavior__:   
+  The deletion of documents matching the specified query is run in batches of size 1024.  
+  During the deletion process, documents that are added/modified __after__ the delete operation has started  
+  may also be deleted if they match the query criteria.
+
+* __Background operation__:  
+  This operation is performed in the background on the server.  
+  If needed, you can __wait__ for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+
+* In this page:  
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query.mdx#syntax)
+
+</Admonition>
+
+## Delete by dynamic query
+
+<Admonition type="note" title="Note">
+
+__Delete all documents in collection__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="js">
+{`// Define the delete by query operation, pass an RQL querying a collection
+const deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
+
+// Execute the operation by passing it to operations.send
+const operation = await store.operations.send(deleteByQueryOp);
+
+// All documents in collection 'Orders' will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete with filtering__:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="js">
+{`// Define the delete by query operation, pass an RQL querying a collection
+const deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
+
+// Execute the operation by passing it to operations.send
+const operation = await store.operations.send(deleteByQueryOp);
+
+// * All documents matching the specified RQL will be deleted from the server.
+
+// * Since the dynamic query was made with a filtering condition,
+//   an auto-index is generated (if no other matching auto-index already exists).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" where Freight > 30
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Delete by index query
+
+* `DeleteByQueryOperation` can only be performed on a __Map-index__.  
+  An exception is thrown when executing the operation on a Map-Reduce index.  
+
+* A few overloads are available, see the following examples:
+<Admonition type="note" title="Note">
+
+__A sample Map-index__:
+
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="js">
+{`// The index definition:
+// =====================
+
+class Products_ByPrice extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        this.map("products", product => \{
+            return \{
+                Price: product.PricePerUnit
+            \};
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete documents via an index query__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="js">
+{`// Define the delete by query operation, pass an RQL querying the index
+const deleteByQueryOp = 
+    new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
+
+// Execute the operation by passing it to operations.send
+const operation = await store.operations.send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DeleteOperation_overload" label="DeleteOperation_overload">
+<CodeBlock language="js">
+{`// Define the index query, provide an RQL querying the index
+const indexQuery = new IndexQuery();
+indexQuery.query = "from index 'Products/ByPrice' where Price > 10";
+
+// Define the delete by query operation
+const deleteByQueryOp = new DeleteByQueryOperation(indexQuery);
+
+// Execute the operation by passing it to operations.send
+const operation = await store.operations.send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Delete with options__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteOperation" label="DeleteOperation">
+<CodeBlock language="js">
+{`// QUERY: Define the index query, provide an RQL querying the index
+const indexQuery = new IndexQuery();
+indexQuery.query = "from index 'Products/ByPrice' where Price > 10";
+
+// OPTIONS: Define the operations options
+// (See all available options in the Syntax section below)
+const options = {
+    // Allow the operation to operate even if index is stale
+    allowStale: true,
+    // Limit the number of base operations per second allowed.
+    maxOpsPerSecond: 500
+}
+
+// Define the delete by query operation
+const deleteByQueryOp = new DeleteByQueryOperation(indexQuery, options);
+
+// Execute the operation by passing it to operations.send
+const operation = await store.operations.send(deleteByQueryOp);
+
+// All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Specifying `options` is also supported by the other overload methods, see the Syntax section below.
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overload:
+// ===================
+const deleteByQueryOp = new DeleteByQueryOperation(indexQuery);
+const deleteByQueryOp = new DeleteByQueryOperation(indexQuery, options);
+`}
+</CodeBlock>
+</TabItem>
+&lt;br /&gt;
+
+| Parameter         | Type                        | Description                                                |
+|-------------------|-----------------------------|------------------------------------------------------------|
+| __queryToDelete__ | string                      | The RQL query to perform                                   |
+| __queryToDelete__ | `IndexQuery`                | Holds all the information required to query an index       |
+| __options__       | `object`                    | Object holding different setting options for the operation |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// options object
+\{
+    // Indicates whether operations are allowed on stale indexes.
+    // DEFAULT: false
+    allowStale, // boolean
+        
+    // If AllowStale is set to false and index is stale,
+    // then this is the maximum timeout to wait for index to become non-stale.
+    // If timeout is exceeded then exception is thrown.
+    // DEFAULT: null (if index is stale then exception is thrown immediately)
+    staleTimeout, // number 
+        
+    // Limits the number of base operations per second allowed.
+    // DEFAULT: null (no limit)
+    maxOpsPerSecond, // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+
+### Client API
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../indexes/querying/query-index)
+
+### Querying
+- [What is RQL](../../../client-api/session/querying/what-is-rql)
+- [Querying an index](../../../indexes/querying/query-index)
+
+
+-->

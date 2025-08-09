@@ -1,0 +1,104 @@
+---
+title: "Documents Compression"
+hide_table_of_contents: true
+sidebar_label: Documents Compression
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Documents Compression
+<Admonition type="note" title="Note">
+
+* The **Documents Compression** feature uses the `Zstd` compression algorithm to 
+  continuously create a more efficient data model with better compression ratios.  
+
+* RavenDB will compress documents in selected collections or in all collections when storing those documents.  
+  The compression will be applied to:  
+  * Newly created documents  
+  * Existing documents that are modified and saved  
+
+* If opened just for reading, **existing documents will not be compressed** .  
+  * If you also want to compress existing documents without editing them, 
+    after configuring the collections to compress you can use the [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database.mdx).
+    While removing empty gaps which occupy space in your database, this operation will also trigger compression on collections that were configured.  
+     * Note: Compression and compaction are two different methods. Compression reduces the amount of storage that data uses, 
+       while compaction removes empty gaps that still occupy space after deletes.  
+
+* Compression is configured in the [Database Record](../../studio/database/settings/database-record.mdx).  
+
+* In this page:  
+  * [Overview](../../server/storage/documents-compression.mdx#overview)  
+  * [Syntax](../../server/storage/documents-compression.mdx#syntax)  
+
+</Admonition>
+## Overview
+
+Despite the many benefits of the schema-less nature of document databases, one drawback 
+is that it requires us to manage the structure of our data on a per-document basis. In 
+extreme cases, the majority of the data you store is the documents' structure.  
+
+**Documents Compression** uses the top of the line [Zstd compression algorithm](https://github.com/facebook/zstd) 
+to learn your data model and create dictionaries that represent the redundant structural 
+data across documents. Compression is applied at the collection rather than the document 
+level, to eliminate these cross-document duplications. RavenDB continuously inspects your 
+documents as they change to retrain the algorithm and maintain the most efficient 
+compression model. In many datasets, this can reduce the storage space by more than 50%.  
+
+The `Zstd` algorithm is trained by each compression operation and continuously improves 
+its compression ratio.  
+
+Reading and querying compressed large datasets is usually at least as fast as reading 
+and querying their uncompressed versions because the compressed data is loaded much 
+faster. Compression and decompression is fully transparent to the user.  
+
+
+
+## Syntax
+
+Documents compression is configured using the `DocumentsCompressionConfiguration` 
+option in the `DatabaseRecord`.  
+
+<TabItem value="Syntax_0" label="Syntax_0">
+<CodeBlock language="csharp">
+{`public class DocumentsCompressionConfiguration
+\{
+    public string[] Collections \{ get; set; \}
+    public bool CompressRevisions \{ get; set; \}
+    public bool CompressAllCollections \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+In this example, we configure compression to be active on the collection `Orders` 
+and on the revisions of all collections:  
+
+<TabItem value="Example_0" label="Example_0">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // Retrieve database record
+    var record = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+
+    // Enable compression on collection Orders
+    // Enable compression of revisions on all 
+    // collections
+    record.DocumentsCompression = new DocumentsCompressionConfiguration(compressRevisions: true, "Orders");
+    
+    // Update the server
+    store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+

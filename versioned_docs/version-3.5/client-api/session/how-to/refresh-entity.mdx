@@ -1,0 +1,100 @@
+---
+title: "Session: How to refresh entity?"
+hide_table_of_contents: true
+sidebar_label: ...refresh entity
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: How to refresh entity?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To update entity with latest changes from server `Refresh` method from `Advanced` session operations can be used.
+
+## Syntax
+
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="csharp">
+{`void Refresh<T>(T entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be refreshed |
+
+## Example
+
+<TabItem value="refresh_2" label="refresh_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+Assert.Equal("Doe", employee.LastName);
+
+// LastName changed to 'Shmoe'
+
+session.Advanced.Refresh(employee);
+Assert.Equal("Shmoe", employee.LastName);
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To update entity with latest changes from server `refresh` method from `advanced()` session operations can be used.
+
+## Syntax
+
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="java">
+{`<T> void refresh(T entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be refreshed |
+
+## Example
+
+<TabItem value="refresh_2" label="refresh_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+Assert.assertEquals("Doe", employee.getLastName());
+
+// LastName changed to 'Shmoe'
+
+session.advanced().refresh(employee);
+
+Assert.assertEquals("Shmoe", employee.getLastName());
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
+
+</LanguageContent>
+
+<!---
+
+-->

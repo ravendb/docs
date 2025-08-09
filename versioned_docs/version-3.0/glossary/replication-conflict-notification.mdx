@@ -1,0 +1,53 @@
+---
+title: "Glossary: ReplicationConflictNotification"
+hide_table_of_contents: true
+sidebar_label: ReplicationConflictNotification
+sidebar_position: 47
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: ReplicationConflictNotification
+
+### General
+
+This class extends `EventArgs`.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **ItemType** | [ReplicationConflictTypes](../glossary/replication-conflict-notification.mdx#replicationconflicttypes-enum-flags) | Replication conflict type (described below) |
+| **Id** | string | Identifier of conflicted document |
+| **Etag** | Etag | Etag of conflict |
+| **OperationType** | [ReplicationOperationTypes](../glossary/replication-conflict-notification.mdx#replicationoperationtypes-enum-flags) | Operation Type (described below) |
+| **Conflicts** | string[] | Identifier of conflicted versions |
+
+---
+
+# ReplicationConflictTypes (enum flags)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **DocumentReplicationConflict** | `1` |
+| **AttachmentReplicationConflict** | `2` |
+
+---
+
+# ReplicationOperationTypes (enum flags)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **Put** | `1` |
+| **Delete** | `2` |

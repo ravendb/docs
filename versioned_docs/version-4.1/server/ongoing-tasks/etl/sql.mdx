@@ -1,0 +1,281 @@
+---
+title: "Ongoing Tasks: SQL ETL"
+hide_table_of_contents: true
+sidebar_label: SQL ETL
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Ongoing Tasks: SQL ETL  
+<Admonition type="note" title="Note">
+
+**SQL ETL** is a task that creates an [ETL](../../../server/ongoing-tasks/etl/basics.mdx) process 
+for a given database where the destination is a relational database.
+
+* In this page:  
+  * [Creating a Task](../../../server/ongoing-tasks/etl/sql.mdx#creating-a-task)  
+  * [Supported Databases](../../../server/ongoing-tasks/etl/sql.mdx#supported-databases)  
+  * [Relational Database Setup](../../../server/ongoing-tasks/etl/sql.mdx#relational-database-setup)  
+  * [SQL Tables](../../../server/ongoing-tasks/etl/sql.mdx#sql-tables)  
+  * [Transformation Scripts](../../../server/ongoing-tasks/etl/sql.mdx#transformation-scripts)  
+     * [`loadTo` Method](../../../server/ongoing-tasks/etl/sql.mdx#method)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/sql.mdx#alternative-syntax)  
+     * [Filtering](../../../server/ongoing-tasks/etl/sql.mdx#filtering)  
+     * [Loading Other Documents](../../../server/ongoing-tasks/etl/sql.mdx#loading-other-documents)  
+     * [Accessing Metadata](../../../server/ongoing-tasks/etl/sql.mdx#accessing-metadata)  
+     * [Loading to Multiple Tables](../../../server/ongoing-tasks/etl/sql.mdx#loading-to-multiple-tables)  
+     * [Loading Attachments](../../../server/ongoing-tasks/etl/sql.mdx#loading-attachments)  
+     * [Counters](../../../server/ongoing-tasks/etl/sql.mdx#counters)  
+     * [Transforming to VARCHAR and NVARCHAR](../../../server/ongoing-tasks/etl/sql.mdx#transforming-to-varchar-and-nvarchar)  
+  * [Transaction Processing](../../../server/ongoing-tasks/etl/sql.mdx#advanced-options)  
+
+</Admonition>
+## Creating a Task
+To create an SQL ETL task using the Studio open `Settings -> Manage Ongoing Tasks`.
+
+![Figure 1. Configure SQL ETL task](./assets/sql-etl-setup.png)
+
+
+
+## Supported Databases
+
+RavenDB can ETL to the following relational databases:
+
+- Microsoft SQL Server
+- MySQL
+- PostgreSQL 
+- Oracle
+
+You need to choose the provider type when defining a connection string.
+
+
+
+## Relational Database Setup
+
+Before you start with SQL ETL you need to create tables in a relational database. Those will be the destinations for records produced by ETL scripts.
+
+
+
+## SQL Tables
+
+The SQL ETL configuration starts from defining which tables are going to be used in the ETL process. Each table needs to have a column specified that
+is going to be used as the document ID column. RavenDB will put source document IDs there that will be used to handle updates and deletes of documents. 
+The column doesn't have to be the primary key of a table.
+
+![Figure 1. Define SQL tables](./assets/sql-etl-tables.png)
+
+<Admonition type="info" title="Insert only" id="insert-only" href="#insert-only">
+
+SQL ETL process performs updates of documents via DELETE and INSERT statements issued to the relational database. If your system is _append-only_ you can tell RavenDB to
+insert the data directly without running a set of DELETE statements first. It can be a nice performance boost when dealing with those kind of systems.
+
+</Admonition>
+
+<Admonition type="warning" title="Indexes" id="indexes" href="#indexes">
+Due to performance reasons you should define indexes in SQL tables on at least the column used to hold the document ID.
+</Admonition>
+
+
+
+## Transformation Scripts
+
+A task can have multiple transformations dealing with relational tables. The script is defined per collection. It cannot be empty.
+
+### `loadTo` Method
+
+The script is executed per document once it is created or modified. In order to load data to the destination table you need to call `loadTo<TableName>()` method and pass JS object.
+It is a convention that a table name of the relational database that a document will be inserted is indicated in the load method name. 
+
+For example, if you want to write data to `OrderLines` table you need to call the following method in the script body:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`loadToOrderLines(\{ ... \});
+`}
+</CodeBlock>
+</TabItem>
+
+The method parameter must be a JS object. You can create it as follows:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`loadToOrderLines(\{
+        OrderId: id(this),
+        Qty: line.Quantity,
+        Product: line.Product,
+        Cost: line.PricePerUnit
+\});
+`}
+</CodeBlock>
+</TabItem>
+<Admonition type="note" title="Note">
+### Alternative Syntax
+
+The target table name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+<Admonition type="info" title="Info">
+
+ * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToEmployees` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+</Admonition>
+</Admonition>
+### Filtering
+
+If you want to filter some documents out from the ETL you simply omit `loadTo` call:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`if (this.ShipTo.Country === 'USA') \{
+    // load only orders shipped to USA
+    loadToOrders(\{ ... \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Loading Other Documents
+
+The `load` method loads a document with a specified ID during script execution.
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var company = load(this.Company);
+`}
+</CodeBlock>
+</TabItem>
+
+### Accessing Metadata
+
+You can access metadata in the following way:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var value = this['@metadata']['custom-metadata-key'];
+`}
+</CodeBlock>
+</TabItem>
+
+### Loading to Multiple Tables
+
+The `loadTo` method can be called multiple times in a single script. That allows you to split a single `Order` document having `Lines` collection into two tables and insert multiple rows:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var orderData = \{
+    Id: id(this),
+    OrderLinesCount: this.Lines.length,
+    TotalCost: 0
+\};
+
+for (var i = 0; i < this.Lines.length; i++) \{
+    var line = this.Lines[i];
+    orderData.TotalCost += line.PricePerUnit * line.Quantity;
+    loadToOrderLines(\{
+        OrderId: id(this),
+        Qty: line.Quantity,
+        Product: line.Product,
+        Cost: line.PricePerUnit
+    \});
+\}
+orderData.TotalCost = Math.round(orderData.TotalCost  * 100) / 100;
+
+loadToOrders(orderData);
+`}
+</CodeBlock>
+</TabItem>
+
+### Loading Attachments
+
+You can store binary data that are kept as attachments in RavenDB using `loadAttachment()` method. For example, if you have the following _Attachments_ table:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE [dbo].[Attachments]
+(
+    [Id] int identity primary key,
+    [OrderId] [nvarchar](50) NOT NULL,
+    [AttachmentName] [nvarchar](50) NULL,
+    [Data] [varbinary](max) NULL
+)
+`}
+</CodeBlock>
+</TabItem>
+
+then you can define the script to load document's attachments:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var attachments = this['@metadata']['@attachments'];
+
+for (var i = 0; i < attachments.length; i++) \{
+    var attachment = \{
+        OrderId: id(this),
+        AttachmentName: attachments[i].Name,
+        Data: loadAttachment(attachments[i].Name)
+    \};
+    loadToAttachments(attachment);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Attachments can be also accessed by using `getAttachments()` helper function (instead of grabbing them from metadata). The existence of an attachment can be checked by
+`hasAttachment(name)` function.
+
+### Counters
+
+Counters aren't supported by SQL ETL.
+
+### Transforming to VARCHAR and NVARCHAR
+
+There also two additional functions created specifically for dealing with VARCHAR and NVARCHAR types:
+
+| ------ |:------:| ------ |
+| `varchar(value, size = 50)` | function | Defines parameter type as varchar with ability to specify its size (50 if not specified). |
+| `nvarchar(value, size = 50)` | function | Defines parameter type as nvarchar with ability to specify its size (50 if not specified). |
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var names = this.Name.split(' ');
+
+loadToUsers(
+\{
+    FirstName: varchar(names[0], 30),
+    LastName: nvarchar(names[1]),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Transaction Processing
+
+All records created in a single ETL run, one per each `loadTo` call, will be sent in a single batch and processed under the same transaction.
+
+
+
+## Advanced Options
+
+- Command timeout - number of seconds after which SQL command will timeout. It overrides value defined in [`ETL.SQL.CommandTimeoutInSec`](../../../server/configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec) setting. Default: null (use provider default).
+- Parameterized deletes - toggles the parameterization of DELETE statements
+- Force recompile query - forces statement recompilation on SQL Server (`OPTION(RECOMPILE)`)
+- Table quotation - toggles table name quotation
+
+
+

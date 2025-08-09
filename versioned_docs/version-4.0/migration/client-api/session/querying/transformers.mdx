@@ -1,0 +1,76 @@
+---
+title: "Migration: How to Migrate Transformers from 3.x"
+hide_table_of_contents: true
+sidebar_label: Transformers
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate Transformers from 3.x
+
+Transformers were removed and substituted by a server-side projection support. Methods like `TransformWith` are no longer available and simple `Select` should be used instead. 
+
+We encourage you to read our article that covers the projection functionality which can be found [here](../../../../client-api/session/querying/how-to-project-query-results.mdx).
+
+## Example
+
+| 3.x |
+|:---:|
+|
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Orders_Total : AbstractTransformerCreationTask<Order>
+\{
+    public class Result
+    \{
+        public double Total \{ get; set; \}
+    \}
+
+    public Orders_Total()
+    \{
+        TransformResults = orders => 
+            from o in orders
+            select new
+            \{
+                Total = o.Lines.Sum(l => l.PricePerUnit * l.Quantity)
+            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+|
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`List<Orders_Total.Result> results = session
+    .Query<Order>()
+    .TransformWith<Orders_Total, Orders_Total.Result>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Order>()
+    .Select(x => new
+    \{
+        Total = x.Lines.Sum(l => l.PricePerUnit * l.Quantity),
+    \})
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|

@@ -1,0 +1,182 @@
+---
+title: "Bundle: Periodic Export"
+hide_table_of_contents: true
+sidebar_label: Periodic Export
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Periodic Export
+
+RavenDB innately supports periodic exports of the documents and attachments (including deletions) to a file system folder, [Amazon AWS](https://aws.amazon.com/) services, or [Microsoft Azure](https://azure.microsoft.com/) storage.  
+
+## How it works
+
+Periodic exports leverage the concept of incremental exports available in RavenDB. To take advantage of that, we are storing information about last successful ETag of the documents and attachments that were sent to the backup destination.
+
+## Activating bundle
+
+To activate bundle globally, simply add `PeriodicExport` to the `Raven/ActiveBundles` in  an appropriate configuration file. More about configuration's setup can be found [here](../../server/configuration/configuration-options.mdx).
+
+If you wish to set up periodic export per database, then add `PeriodicExport` to the list of database's active bundles or use the [Studio](../../studio/overview/settings/periodic-export.mdx).
+
+Bundle can also be activated during a database creation process.
+
+<TabItem value="periodic_backups_1" label="periodic_backups_1">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(
+		new DatabaseDocument
+			\{
+				Id = "Northwind", 
+				Settings =
+					\{
+						\{ "Raven/ActiveBundles", "PeriodicExport" \}
+					\}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Configuring file system folder
+
+In order to export a database to a specified folder available locally, you need to create a `Raven/Backup/Periodic/Setup` with the `LocalFolderName` property filled with the designated path.
+
+<TabItem value="periodic_backups_4" label="periodic_backups_4">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.Put(
+		"Raven/Backup/Periodic/Setup",
+		null,
+		RavenJObject.FromObject(
+			new PeriodicExportSetup
+			\{
+				LocalFolderName = @"full_path_to_backup_folder"
+			\}),
+		new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+## Configuring Amazon AWS
+
+Two steps need to be taken to set up export destination properly.
+
+First, we need to add our AWS access and secret key to the database settings. For example, if we want to create new database with a bundle already activated and keys set up, we can execute the following code:
+
+<TabItem value="periodic_backups_2" label="periodic_backups_2">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(
+		new DatabaseDocument
+			\{
+				Id = "Northwind",
+				Settings =
+					\{
+						\{ "Raven/ActiveBundles", "PeriodicExport" \}, 
+						\{ "Raven/AWSAccessKey", "<key_here>" \}
+					\},
+				SecuredSettings =
+					\{
+						\{ "Raven/AWSSecretKey", "<key_here>" \}
+					\}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+Next, we need to create a backup setup document under the `Raven/Backup/Periodic/Setup`, where our backup destination configuration will be stored. This document will be created automatically when you use the Studio to set up a periodic export, yet it can be created almost as easily using the API.
+
+<TabItem value="periodic_backups_3" label="periodic_backups_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.Put(
+		"Raven/Backup/Periodic/Setup",
+		null,
+		RavenJObject.FromObject(
+			new PeriodicExportSetup
+				\{
+					AwsRegionEndpoint = "eu-west-1", // if not specified default is 'us-east-1'
+					GlacierVaultName = "your_glacier_vault_name",
+					IntervalMilliseconds = 60 * 60 * 1000, // 60 minutes
+					S3BucketName = "your_s3_bucket_name",
+					S3RemoteFolderName = "your_s3_remote_folder_name" // if not specified, then root folder will be assumed
+				\}),
+		new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+`GlacierVaultName` and `S3BucketName` values **exclude** each other in favor of the `GlacierVaultName`, so if you specify both, RavenDB will only use `GlacierVaultName`. 
+
+<Admonition type="info" title="Info">
+More information about Amazon Simple Storage Service (Amazon S3) can be found [here](https://aws.amazon.com/s3/). If you are interested in Amazon Glacier, visit [this](https://aws.amazon.com/glacier/) page.
+</Admonition>
+
+## Configuring Azure Storage
+
+Configuring Azure is almost identical to Amazon AWS process. First, you need to store your account name and access key in a database configuration. For example, if we want to create a new database with bundle already activated and keys setup, we can execute the following code:
+
+<TabItem value="periodic_backups_5" label="periodic_backups_5">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(
+		new DatabaseDocument
+		\{
+			Id = "Northwind",
+			Settings =
+					\{
+						\{ "Raven/ActiveBundles", "PeriodicExport" \}, 
+						\{ "Raven/AzureStorageAccount", "<name_here>" \}
+					\},
+			SecuredSettings =
+				\{
+					\{ "Raven/AzureStorageKey", "<key_here>" \}
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+Next, we need to create a backup setup document under the `Raven/Backup/Periodic/Setup`, where our backup destination configuration will be stored. This document will be created automatically when you use the Studio to set up a periodic export, yet it can be created almost as easily using the API.
+
+<TabItem value="periodic_backups_6" label="periodic_backups_6">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.Put(
+		"Raven/Backup/Periodic/Setup",
+		null,
+		RavenJObject.FromObject(
+			new PeriodicExportSetup
+			\{
+				AzureStorageContainer = "your_container_name",
+				AzureRemoteFolderName = "your_azure_remote_folder_name", // if not specified, then root folder will be assumed
+				IntervalMilliseconds = 60 * 60 * 1000, // 60 minutes
+			\}),
+		new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+More information about Microsoft Azure Storage can be found [here](https://azure.microsoft.com/en-us/services/storage/)
+</Admonition>
+
+## Remarks
+
+Amazon AWS and Azure Storage related properties in the `PeriodicExportSetup` document **exclude** each other. Server will always upload export to **only** one location, and the location will be picked in the following order: `GlacierVaultName`, `S3BucketName`, `AzureStorageContainer`.

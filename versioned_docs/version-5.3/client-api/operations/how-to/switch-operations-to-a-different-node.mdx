@@ -1,0 +1,154 @@
+---
+title: "Switch Operations to a Different Node"
+hide_table_of_contents: true
+sidebar_label: Switch operations to different node
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Switch Operations to a Different Node
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* By default, when working with multiple nodes,  
+  all client requests will access the server node that is defined by the client configuration.  
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx)).
+
+* However, __server maintenance operations__ can be executed on a specific node by using the `ForNode` method.  
+  (An exception is thrown if that node is not available).
+
+* In this page:
+    * [Server-maintenance operations - ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx#server-maintenance-operations---fornode)
+</Admonition>
+## Server maintenance operations - ForNode
+
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).
+
+<TabItem value="for_node_1" label="for_node_1">
+<CodeBlock language="csharp">
+{`// Default node access can be defined on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "ServerURL_1", "ServerURL_2", "..." \},
+    Database = "DefaultDB",
+    Conventions = new DocumentConventions
+    \{
+        // For example:
+        // With ReadBalanceBehavior set to: 'FastestNode':
+        // Client READ requests will address the fastest node
+        // Client WRITE requests will address the preferred node
+        ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+    \}
+\}.Initialize();
+
+using (documentStore)
+\{
+    // Use 'ForNode' to override the default node configuration
+    // The Maintenance.Server operation will be executed on the specified node
+    var dbNames = documentStore.Maintenance.Server.ForNode("C")
+        .Send(new GetDatabaseNamesOperation(0, 25));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`ServerOperationExecutor ForNode(string nodeTag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **nodeTag** | string | The tag of the node to operate on |
+
+| Return Value | |
+| - | - |
+| `ServerOperationExecutor` | New instance of Server Operation Executor that is scoped to the requested node |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* By default, when working with multiple nodes,  
+  all client requests will access the server node that is defined by the client configuration.  
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx)).
+
+* However, __server maintenance operations__ can be executed on a specific node by using the `forNode` method.  
+  (An exception is thrown if that node is not available).
+
+* In this page:
+    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx#server-maintenance-operations---fornode)
+</Admonition>
+## Server maintenance operations - forNode
+
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).
+
+<TabItem value="for_node_1" label="for_node_1">
+<CodeBlock language="js">
+{`// Default node access can be defined on the store        
+const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
+
+// For example:
+// With readBalanceBehavior set to: 'FastestNode':
+// Client READ requests will address the fastest node
+// Client WRITE requests will address the preferred node
+documentStore.conventions.readBalanceBehavior = "FastestNode";
+documentStore.initialize();
+
+// Use 'forNode' to override the default node configuration 
+// Get a server operation executor for a specific node
+const serverOpExecutor = await documentStore.maintenance.server.forNode("C");
+
+// The maintenance.server operation will be executed on the specified node 'C'
+const dbNames = await serverOpExecutor.send(new GetDatabaseNamesOperation(0, 25));
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`await store.maintenance.server.forNode(nodeTag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **nodeTag** | string | The tag of the node to operate on |
+
+| Return Value | |
+| - | - |
+| `Promise<ServerOperationExecutor>` | A promise that returns a new instance of Server Operation Executor<br/>scoped to the requested node |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+
+
+-->

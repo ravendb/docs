@@ -1,0 +1,93 @@
+---
+title: "Converting to JSON and accessing metadata"
+hide_table_of_contents: true
+sidebar_label: Converting to JSON and accessing Metadata
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Converting to JSON and accessing metadata
+
+Entities passed to a transformer can be converted to JSON using the `AsDocument` method; there is also a possibility to access metadata for a specified object using `MetadataFor` method.
+
+## AsDocument - converting to JSON
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Products_AsDocument : AbstractTransformerCreationTask<Product>
+\{
+	public class Result
+	\{
+		public RavenJObject RawDocument \{ get; set; \}
+	\}
+
+	public Products_AsDocument()
+	\{
+		TransformResults = products => from product in products
+						select new
+						\{
+							RawDocument = AsDocument(product)
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`IList<Products_AsDocument.Result> results = session
+	.Query<Product>()
+	.TransformWith<Products_AsDocument, Products_AsDocument.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## MetadataFor - accessing metadata
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`public class Products_WithMetadata : AbstractTransformerCreationTask<Product>
+\{
+	public class Result
+	\{
+		public Product Product \{ get; set; \}
+
+		public string EntityName \{ get; set; \}
+
+		public string ClrType \{ get; set; \}
+	\}
+
+	public Products_WithMetadata()
+	\{
+		TransformResults = products => from product in products
+						let metadata = MetadataFor(product)
+						select new
+						\{
+							Product = product,
+							EntityName = metadata.Value<string>("Raven-Entity-Name"),
+							ClrType = metadata.Value<string>("Raven-Clr-Type")
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`IList<Products_WithMetadata.Result> results = session
+	.Query<Product>()
+	.TransformWith<Products_WithMetadata, Products_WithMetadata.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,47 @@
+---
+title: "Authorization: How to work with authorization bundle?"
+hide_table_of_contents: true
+sidebar_label: How to work with authorization bundle?
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Authorization: How to work with authorization bundle?
+
+In order to use this bundle first activate it on the server. The description can be found in [server section](../../server/bundles/authorization.mdx).
+
+To work with a database where authorization is configured you need to reference `Raven.Client.Authorization` on the client side.
+
+<TabItem value="using" label="using">
+<CodeBlock language="csharp">
+{`using Raven.Client.Authorization;
+`}
+</CodeBlock>
+</TabItem>
+
+The Authorization Bundle usage on the client side is limited to three methods:
+
+* SetAuthorizationFor - which sets up permissions and tags for a specific document.
+* GetAuthorizationFor - which allows you to read what permission and tags were set on a specific document.
+* SecureFor - setup which user and operation are being performed.
+
+For example, here is the code for authorization hospitalization:
+
+<TabItem value="secure_for" label="secure_for">
+<CodeBlock language="csharp">
+{`session.SecureFor("Authorization/Users/DrHowser", "Hospitalization/Authorize");
+Authorization.Patient mary = session.Load<Authorization.Patient>("Patients/MaryMallon");
+mary.AuthorizeHospitalization();
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+If the user doesn't have the permissions to authorize hospitalization, an error will be raised when the change to the database in the SaveChanges call is persistent.
+

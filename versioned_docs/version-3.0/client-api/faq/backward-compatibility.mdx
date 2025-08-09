@@ -1,0 +1,36 @@
+---
+title: "Backward compatibility"
+hide_table_of_contents: true
+sidebar_label: Backward Compatibility
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Backward compatibility
+
+When it comes to client server compatibility in RavenDB there are two valid rules. Either:
+
+ * The server version is within the same Major and Minor range as the client version
+
+**OR**
+
+ * The server version is greater than the client version
+
+Some examples:
+
+ * `2.5` client will work with `3.0` server since server is greater than client
+ * `2.5` client will work with `2.5` server since client and server are in the same Major and Minor range
+ * `3.0.3785` client will work with `3.0.3528` server since client and server are in the same Major and Minor range
+ * `2.5` client will **NOT** work with `2.0` server since client is greater than server
+ * `3.0` client will **NOT** work with `2.5` server since client is greater than server
+
+## Upgrading
+
+To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients. This way your applications will keep working as before, and you can update them one-by-one if needed.
+

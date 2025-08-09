@@ -1,0 +1,86 @@
+---
+title: "Knowledge Base: JavaScript Engine"
+hide_table_of_contents: true
+sidebar_label: JavaScript Engine
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Knowledge Base: JavaScript Engine
+<Admonition type="note" title="Note">
+
+* Several RavenDB mechanisms incorporate JavaScript scripts:  
+   * [RQL projections](../../indexes/querying/projections.mdx)  
+   * [Subscriptions](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-filtering-and-projection)  
+   * [ETL](../../server/ongoing-tasks/etl/basics.mdx)  
+   * [Smuggler (data import/export)](../../client-api/smuggler/what-is-smuggler.mdx#transformscript)  
+   * [Single](../../client-api/operations/patching/single-document.mdx) or [Set based](../../client-api/operations/patching/set-based.mdx) document patches  
+   * [Time Series](../../document-extensions/timeseries/client-api/javascript-support.mdx)  
+
+* In order to execute JavaScript code, RavenDB uses [Jint](https://github.com/sebastienros/jint), an open source JavaScript interpreter supporting ECMAScript 5.1.  
+
+* In this page:  
+   * [How RavenDB uses Jint](../../server/kb/javascript-engine.mdx#how-ravendb-uses-jint)  
+   * [Predefined JavaScript functions](../../server/kb/javascript-engine.mdx#predefined-javascript-functions)  
+
+
+</Admonition>
+## How RavenDB uses Jint
+As mentioned before, RavenDB uses [Jint](https://github.com/sebastienros/jint) to execute JavaScript code in a variety of operations.  
+In order to perform an operation, Jint receives a function to run and a single document to process. Therefore, the processing context of Jint is a single document and there is no "long-term" execution context, even when it may look like it in patch operations.  
+Jint engine initialization is an expansive operation. Therefore, RavenDB caches Jint instances according to the user defined scripts and reuses them.  
+
+
+<Admonition type="info" title="Execution limitations" id="execution-limitations" href="#execution-limitations">
+RavenDB limits the amount of statements that can be performed for each document processing. It's default value is 10,000 and it can be set using the [Patching.MaxStepsForScript](../../server/configuration/patching-configuration.mdx#patchingmaxstepsforscript) configuration.  
+RavenDB limits the amount of cached Jint engines. It's default value is 2048 and it can be set using [Patching.MaxNumberOfCachedScripts](../../server/configuration/patching-configuration.mdx#patchingmaxstepsforscript).  
+RavenDB limits the depth of recursive calls to 64. This value is a constant.  
+</Admonition>
+
+
+## Predefined JavaScript functions
+RavenDB introduced a set of predefined functions in addition to Jint's ECMAScript.1 implementation.
+
+| Method Signature| Return type | Description |
+|--------|:---|-------------| 
+| **id(document)** | `string` | Returns document's ID. |
+| **load(documentId)** | `object` | Returns the document with the given ID. |
+| **loadPath(document, pathString)** | `Task` | Returns the document(s) according to the IDs that can be found in the given `document`, in the path `pathString`. The `pathString` can be of a simple Foo.Bar form, in that case, a single document will be returned. It also be of the form Foo.Bars[].Buzz, in that case it will return an array of documents, answering the path. |
+| **cmpxchg(compareExchangeKey)** | `object` | Returns stored  [Compare Exchange](../../client-api/operations/compare-exchange/overview.mdx) value for the received key. |
+| **getMetadata(document)** | `object` | Returns document's metadata, along with it's `ChangeVector`, `ID` and `LastModified`. |
+| **lastModified(document)** | `long` | Returns document's last modified metadata value as total miliseconds of UTC. |
+| **include(documentId)** | `Task<string>` | Used for RQL [queries](../../indexes/querying/what-is-rql.mdx) in order to include the document with the given ID with the results. |
+| **del(documentId)** | `void` | Used in patches, deletes the document with the given ID. |
+| **put(documentId, document, [optional]changeVectorString)** | `Task` | Used in patches, creates or updates a document with the given ID. In order to generate a new document ID it's possible to use "[collectionPrefix]/" [Server-Side ID](../../server/kb/document-identifier-generation.mdx#strategy--2) notation&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#add-document)&lt;/sup&gt;. 
+This function can also be used to clone an existing document (Note: Attachments & counters will not be added to the clone)&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#clone-document)&lt;/sup&gt;.  |
+| **String.prototype.startsWith(searchString, position)** | `bool` | Returns true if at `position` the string starts with `searchString`. |
+| **String.prototype.endsWith(searchString, position)** | `bool` | Returns true if at `position` the string end with `searchString`. |
+| **String.prototype.padStart(targetLength, padString)** | `string` | Returns a new string that padded from it's start by the string `padString`(or white-space by default) until it reaches the length `targetlength`. The function will repeat `padString` if needed. |
+| **String.prototype.padEnd(targetLength, padString)** | `string` | Returns a new string that padded from it's end by the string `padString`(or white-space by default), until it reaches the length `targetlength`. The function will repeat `padString` if needed. |
+| **String.prototype.format(arg1, arg2, arg3 ...)** | string | Returns "formatted" string that replaces all occurrences of `{[number]}` with an argument in the `number`s place (using a zero based index). |
+| **startsWith(inputString, prefix)** | `bool` | Returns true if inputString`` starts with prefix``. |
+| **endsWith(inputString, suffix)** | `bool` | Returns true if `inputString` ends with `suffix`. |
+| **regex(inputString, regex)** | `bool` | Returns true if `inputString` matches `regex` regular expression. |
+| **Array.prototype.find(function callback)** | Array's element | Returns the first array element for which the `callback` function returns `true`. |
+| **Object.map(input, function mapFunction, context)** | `Array` | Returns an array containing result of mapFunction process result of all `input`'s properties (items, if it's an array). The `mapFunction`'s signature is `function(itemValue, itemKey)`.  |
+| **Raven_Min(num1, num2)** | `bool` | Find minimum out of num1 and num2. Parameters can be numbers or strings, but there is no raw number support (see `scalarToRawString` below). Strings will be parsed to double upon processing. |
+| **Raven_Max(num1, num2)** | `bool` | Find maximum out of num1 and num2. Parameters can be numbers or strings, but there is no raw number support (see `scalarToRawString` below). Strings will be parsed to double upon processing. |
+| **convertJsTimeToTimeSpanString(ticksNumber)** | `bool` | Returns human readable TimeSpan of the received `ticksNumber`. |
+| **scalarToRawString(document, lambdaToField)** | Raw field value (`LazyStringValue` for strings, `LazyNumberValue` for floating point numbers). | Returns raw representation of a field. Useful when working with numbers that exceeds `double`'s numeric or accuracy range. See [Numbers in Jint](../../server/kb/numbers-in-ravendb.mdx). Also usefull for better memory consumption when projecting big string values. Note: returned value is immutable |
+| **output(message)** or **console.log(message)** | `void` | Used for [single document patches](../../client-api/operations/patching/single-document.mdx) debug. |
+| **incrementCounter(documentId, counterName, value)** | `void` | Increment the counter. If the chosen counter doesn't exists, it is implicitly created and its value is set to the &lt;code&gt;incrementCounter&lt;/code&gt;'s &lt;code&gt;value&lt;/code&gt;. A counter value can also be negative, so as the increment value&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#increment-counter)&lt;/sup&gt;. |
+| **incrementCounter(document, counterName, value)** | `void` | Increment the counter. If the chosen counter doesn't exists, it is implicitly created and its value is set to the &lt;code&gt;incrementCounter&lt;/code&gt;'s &lt;code&gt;value&lt;/code&gt;. A counter value can also be negative, so as the increment value&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#increment-counter)&lt;/sup&gt;. |
+| **deleteCounter(documentId, counterName)** | `void` | Delete the counter&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#delete-counter)&lt;/sup&gt;. |
+| **deleteCounter(document, counterName)** | `void` | Delete the counter&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#delete-counter)&lt;/sup&gt;. |
+| **counter(documentId, counterName)** | `long` | Get the counter value&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#get-counter)&lt;/sup&gt;. |
+| **counter(document, counterName)** | `long` | Get the counter value&lt;sup&gt;[[ex]](../../client-api/operations/patching/single-document.mdx#get-counter)&lt;/sup&gt;. |
+| **counterRaw(documentId, counterName)** | `long` | Return a dictionary of counter value per database node (The overall value is a summary of all database node values). |
+| **counterRaw(document, counterName)** | `long` | Return a dictionary of counter value per database node (The overall value is a summary of all database node values). |
+
+

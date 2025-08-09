@@ -1,0 +1,28 @@
+---
+title: "HTTP API - Security for Anonymous Access"
+hide_table_of_contents: true
+sidebar_label: Security for Anonymous Access
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#HTTP API - Security for Anonymous Access
+With any document accessible by a URL on the server, some measure of security is necessary to secure access to these documents.
+
+Any method that would normally be used to authenticate and secure access to a given URL can be used, but RavenDB also provides security options to control anonymous access.
+
+By default such anonymous users can GET any documents they want, but not modify or add any documents or indexes. This option is called "Get". The other options are to grant anonymous users all privileges on the database ("All") or no access at all ("None"). You can set which option you prefer in the app.config as follows: 
+
+    &lt;appSettings&gt;  
+         &lt;add key="Raven/AnonymousAccess" value="All"/&gt;  
+    &lt;/appSettings&gt;
+
+By default, while running the server in debug mode, anonymous users are granted Get access.
+
+    Raven.Server.exe /debug

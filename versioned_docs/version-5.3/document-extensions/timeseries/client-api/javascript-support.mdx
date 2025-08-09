@@ -1,0 +1,187 @@
+---
+title: "Time Series: JavaScript Support"
+hide_table_of_contents: true
+sidebar_label: JavaScript Support
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Time Series: JavaScript Support
+
+<Admonition type="note" title="Note">
+
+With the introduction of time series, RavenDB's support for the execution 
+of [JavaScript-based operations](../../../server/kb/javascript-engine.mdx) 
+over [single](../../../client-api/operations/patching/single-document.mdx#patching-how-to-perform-single-document-patch-operations) 
+and [multiple](../../../client-api/operations/patching/set-based.mdx) 
+documents has been extended to allow manipulations involving time series.  
+
+* Methods that gain time series functionality this way are:  
+  * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch.mdx) - 
+    `session` patching method  
+  * [PatchOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchoperation) - 
+    `store` patching operation  
+  * [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation) - 
+    `store` patch-by-query operation  
+
+* In this page:  
+  * [JavaScript API methods](../../../document-extensions/timeseries/client-api/javascript-support.mdx#javascript-api-methods)  
+     * [timeseries - Choose a Time Series](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section)  
+     * [timeseries.append - Append an Entry](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-1)  
+     * [timeseries.delete - Delete Entries Range](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
+     * [timeseries.get - Get Entries Range](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
+  * [Usage Samples](../../../document-extensions/timeseries/client-api/javascript-support.mdx#usage-samples)  
+
+</Admonition>
+## JavaScript API methods
+
+The JavaScript time series API includes these methods:  
+#### `timeseries (doc, name)`  
+
+Choose a time series by the ID of its owner document and by the series name.  
+
+       | Parameter | Type | Explanation 
+       |:---:|:---:| --- |
+       | doc | `string` <br/> or <br/> `document instance` | Document ID, e.g. `timeseries('users/1-A', 'StockPrice')` <br/> <br/> e.g. `timeseries(this, 'StockPrice')`  
+       | name | `string` | Time Series Name  
+#### `timeseries.append`  
+
+* You can use two overloads, to append **tagged** or **untagged** time series entries.  
+   * `timeseries.append (timestamp, values)`  
+   * `timeseries.append (timestamp, values, tag)`
+
+* Parameters:  
+
+      | Parameter | Type | Explanation
+      |:---:|:---:| --- |
+      | timestamp | `DateTime` | Timestamp 
+      | values | `double[]` | Values 
+      | tag | `string` | Tag 
+#### `timeseries.delete (from, to)`  
+
+Use this method to delete a range of entries from a document.  
+
+| Parameter | Type | Explanation 
+|:---:|:---:| --- |
+| from (optional) | `DateTime` | Range Start <br/> Default: `DateTime.Min` 
+| to (optional) | `DateTime` | Range End <br/> Default: `DateTime.Max` 
+#### `timeseries.get (from, to)`  
+
+Use this method to retrieve a range of time series entries.  
+
+* Parameters:  
+
+      | Parameter | Type | Explanation 
+      |:---:|:---:| --- |
+      | from (optional) | `DateTime` | Range Start <br/> Default: `DateTime.Min` 
+      | to (optional) | `DateTime` | Range End <br/> Default: `DateTime.Max` 
+
+* Return Type:  
+  Values are returned in an array of time series entries, i.e. -
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`[
+{
+"Timestamp" : ...
+"Tag": ...
+"Values": ...
+"IsRollup": ...
+},
+{
+"Timestamp" : ...
+"Tag": ...
+"Values": ...
+"IsRollup": ...
+}
+..
+]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Usage Samples
+
+* In this sample, we pass [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch.mdx) 
+  a script that appends a document 100 time series entries.  
+<TabItem value="TS_region-Session_Patch-Append-TS-Entries" label="TS_region-Session_Patch-Append-TS-Entries">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.UtcNow;
+
+// Create arrays of timestamps and random values to patch
+var values = new List<double>();
+var timeStamps = new List<DateTime>();
+
+for (var i = 0; i < 100; i++)
+\{
+    values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+    timeStamps.Add(baseTime.AddMinutes(i));
+\}
+
+session.Advanced.Defer(new PatchCommandData("users/john", null,
+    new PatchRequest
+    \{
+        Script = @"
+            var i = 0;
+            for(i = 0; i < $values.length; i++)
+            \{
+                timeseries(id(this), $timeseries)
+                .append (
+                    new Date($timeStamps[i]), 
+                    $values[i], 
+                    $tag);
+            \}",
+
+        Values =
+        \{
+            \{ "timeseries", "HeartRates" \},
+            \{ "timeStamps", timeStamps \},
+            \{ "values", values \},
+            \{ "tag", "watches/fitbit" \}
+        \}
+    \}, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+* In this sample, we pass [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation) 
+  a script that runs a document query and deletes the HeartRate time series from matching documents.  
+<TabItem value="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs" label="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs">
+<CodeBlock language="csharp">
+{`PatchByQueryOperation deleteByQueryOp = new PatchByQueryOperation(new IndexQuery
+\{
+    Query = @"from Users as u
+              where u.Age < 30
+              update
+              \{
+                  timeseries(u, $name).delete($from, $to)
+              \}",
+    
+    QueryParameters = new Parameters
+    \{
+        \{ "name", "HeartRates" \},
+        \{ "from", DateTime.MinValue \},
+        \{ "to", DateTime.MaxValue \}
+    \}
+\});
+
+// Execute the operation: 
+// Time series "HeartRates" will be deleted for all users with age < 30
+store.Operations.Send(deleteByQueryOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

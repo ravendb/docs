@@ -1,0 +1,159 @@
+---
+title: "Commands: Indexes: How to get index terms?"
+hide_table_of_contents: true
+sidebar_label: ...get index terms
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Indexes: How to get index terms?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**GetTerms** will retrieve all stored terms for a field of an index.
+
+## Syntax
+
+<TabItem value="get_terms_1" label="get_terms_1">
+<CodeBlock language="csharp">
+{`IEnumerable<string> GetTerms(
+	string index,
+	string field,
+	string fromValue,
+	int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | Name of an index |
+| **field** | string | Index field |
+| **fromValue** | string | Starting point for a query, used for paging |
+| **pageSize** | int | Maximum number of terms that will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Array of index terms. |
+
+## Example
+
+<TabItem value="get_terms_2" label="get_terms_2">
+<CodeBlock language="csharp">
+{`IEnumerable<string> terms = store
+	.DatabaseCommands
+	.GetTerms("Orders/Totals", "Company", null, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetTerms** will retrieve all stored terms for a field of an index.
+
+## Syntax
+
+<TabItem value="get_terms_1" label="get_terms_1">
+<CodeBlock language="java">
+{`public List<String> getTerms(String index, String field, String fromValue, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | Name of an index |
+| **field** | String | Index field |
+| **fromValue** | String | Starting point for a query, used for paging |
+| **pageSize** | int | Maximum number of terms that will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | Array of index terms. |
+
+## Example
+
+<TabItem value="get_terms_2" label="get_terms_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getTerms("Orders/Totals", "Company", null, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**GetTerms** will retrieve all stored terms for a field of an index.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/terms/\{indexName\}? \\
+		field=\{field\} \\
+		&pageSize=\{pageSize\} \\
+		&start=\{start\} \\
+		&fromValue=\{fromValue\} \\
+	-X GET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required |  Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | Name of an index |
+| **field** | Yes | Index field |
+| **fromValue** | No | Starting point for a query, used for paging |
+| **pageSize** | No | Maximum number of terms that will be returned |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | array of strings |
+
+---
+
+### Example I
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/terms/Orders/Totals?field=Company&pageSize=128&fromValue=" 
+
+< HTTP/1.1 200 OK
+["companies/1","companies/10", ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+
+<!---
+- [How to reset index?](../../../../client-api/commands/indexes/how-to/reset-index)
+- [How to get index merge suggestions?](../../../../client-api/commands/indexes/how-to/get-index-merge-suggestions)
+
+-->

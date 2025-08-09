@@ -1,0 +1,119 @@
+---
+title: "Changes API: How to subscribe to replication conflicts?"
+hide_table_of_contents: true
+sidebar_label: How to subscribe to replication conflicts?
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Changes API: How to subscribe to replication conflicts?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Replication conflicts, for both documents and attachments, can be tracked using `ForAllReplicationConflicts` method available in changes API.
+
+## Syntax
+
+<TabItem value="replication_conflicts_changes_1" label="replication_conflicts_changes_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<ReplicationConflictNotification>
+	ForAllReplicationConflicts();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[ReplicationConflictNotification](../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
+
+## Example
+
+<TabItem value="replication_conflicts_changes_2" label="replication_conflicts_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store.Changes()
+	.ForAllReplicationConflicts()
+	.Subscribe(conflict =>
+	\{
+		if (conflict.ItemType == ReplicationConflictTypes.DocumentReplicationConflict)
+		\{
+			Console.WriteLine("Conflict detected for \{0\}. Ids of conflicted docs: \{1\}. " +
+							  "Type of replication operation: \{2\}",
+							  conflict.Id,
+							  string.Join(", ", conflict.Conflicts),
+							  conflict.OperationType);
+		\}
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Automatic document conflict resolution
+
+In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered, the client will automatically resolve the conflict right after the arrival of the notification.
+
+## Remarks
+
+<Admonition type="info" title="Info">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Replication conflicts, for both documents and attachments, can be tracked by using `forAllReplicationConflicts` method available in changes API.
+
+## Syntax
+
+<TabItem value="replication_conflicts_changes_1" label="replication_conflicts_changes_1">
+<CodeBlock language="java">
+{`public IObservable<ReplicationConflictNotification> forAllReplicationConflicts();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[ReplicationConflictNotification](../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
+
+## Example
+
+<TabItem value="replication_conflicts_changes_2" label="replication_conflicts_changes_2">
+<CodeBlock language="java">
+{`Closeable subscription = store
+  .changes()
+  .forAllReplicationConflicts()
+  .subscribe(Observers.create(new Action1<ReplicationConflictNotification>() \{
+    @Override
+    public void apply(ReplicationConflictNotification conflict) \{
+      if (ReplicationConflictTypes.DOCUMENT_REPLICATION_CONFLICT.equals(conflict.getItemType())) \{
+        System.out.println("Conflict detected for " + conflict.getId());
+      \}
+    \}
+  \}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Automatic document conflict resolution
+
+In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered then the client will automatically resolve the conflict right after the arrival of the notification.
+
+
+</LanguageContent>
+
+<!---
+- [Server : Replication : Conflicts](../../server/scaling-out/replication/replication-conflicts)
+
+-->

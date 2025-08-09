@@ -1,0 +1,114 @@
+---
+title: "Session: Include Time Series With Load"
+hide_table_of_contents: true
+sidebar_label: With Load
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Include Time Series With `Load`
+<Admonition type="note" title="Note">
+
+You can include a time series or a part of it while loading a document 
+via `session.Load`.  
+
+* [`session.Load` and `IncludeTimeSeries`](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#sessionload-and-includetimeseries)  
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#syntax)  
+   * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#usage-flow)  
+   * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#usage-sample)  
+
+
+</Admonition>
+## `session.Load` and `IncludeTimeSeries`
+
+To include time series data while retrieving documents via `session.Load`, 
+pass `session.Load` the `IncludeTimeSeries` method of the `IIncludeBuilder` 
+interface as an argument.  
+
+
+
+## Syntax
+
+* **`session.Load`**  
+   * **Definition**  
+<TabItem value="Load-definition" label="Load-definition">
+<CodeBlock language="csharp">
+{`T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
+`}
+</CodeBlock>
+</TabItem>
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `string` | Document ID |
+        | `includes` | `Action<IIncludeBuilder<T>>` | Include Object |
+
+* **`IncludeTimeSeries`**  
+   * **Definition**  
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `name` | `string` | Time series Name |
+        | `from` | `DateTime?` | Time series range start <br/> when null, `from` will default to `DateTime.MinValue`. |
+        | `to` | `DateTime?` | Time series range end <br/>  <br/> when null, `to` will default to `DateTime.MaxValue`. |
+
+
+
+## Usage Flow
+
+* Open a session  
+* Call `session.Load` and pass it -  
+   * The **Document ID**  
+   * The **`IncludeTimeSeries`** method with its arguments:  
+     **Time series name**  
+     **Range start**  
+     **Range end**  
+
+
+
+## Usage Sample
+
+In this sample, we load a document using `session.Load` and include 
+a selected range of entries from a time series named "Heartrate".  
+<TabItem value="timeseries_region_Load-Document-And-Include-TimeSeries" label="timeseries_region_Load-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    var baseline = DateTime.Today;
+
+    // Load a document
+    User user = session.Load<User>("users/john", includeBuilder =>
+        // Call 'IncludeTimeSeries' to include time series entries, pass:
+        // * The time series name
+        // * Start and end timestamps indicating the range of entries to include
+        includeBuilder.IncludeTimeSeries("HeartRates", baseline.AddMinutes(3), baseline.AddMinutes(8)));
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor("users/john", "HeartRates")
+        .Get(baseline.AddMinutes(3), baseline.AddMinutes(8));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The entries we Get after including the time series, are retrieved 
+**from the session's cache**.  
+
+
+

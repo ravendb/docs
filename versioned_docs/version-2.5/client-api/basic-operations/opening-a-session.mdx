@@ -1,0 +1,41 @@
+---
+title: "Opening a session"
+hide_table_of_contents: true
+sidebar_label: Opening a session
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Opening a session
+
+Once a document store has been created, the next step is to create a session against that document store that will allow us to perform basic CRUD operations within a Unit of Work. It is important to note that when invoking any operations against this store no changes will be made to the underlying document database until the `SaveChanges` method has been called:
+
+<TabItem value="open_the_session" label="open_the_session">
+<CodeBlock language="csharp">
+{`// Saving changes using the session API
+using (IDocumentSession session = store.OpenSession())
+\{
+	// Operations against session
+
+	// Flush those changes
+	session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In this context, the session can be thought of as managing all changes internally, and `SaveChanges` can be thought of as committing all those changes to the RavenDB server. Any operations submitted in a ``SaveChanges`` call will be committed atomically (that is to say, either they all succeed, or they all fail).
+
+It will be assumed in the following examples that a valid store has been created, and that the calls are being made within the context of a valid session, and that ``SaveChanges`` is being called safely at the end of that session lifetime.
+
+<Admonition type="warning" title="Warning">
+If you don't call `SaveChanges`, all the changes made in that session will be discarded!
+</Admonition>
+
+Whenever database access is needed, we are going to open a new session, and dispose of it right after we are done using it (and called `SaveChanges`).

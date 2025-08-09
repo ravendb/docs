@@ -1,0 +1,140 @@
+---
+title: "Explicit and Implicit Syntax"
+hide_table_of_contents: true
+sidebar_label: Explicit and Implicit Syntax
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Explicit and Implicit Syntax  
+<Admonition type="note" title="Note">
+
+* You can declare your data nodes and edges explicitly, or let RavenDB do it for you by simply 
+  including nodes and edges in your search pattern as if they have already been declared.  
+  Using explicit or implicit syntax is a **readability preference** with no performance implications.  
+* The **explicit syntax** may be preferable when you need to **express non-trivial logic**.    
+* The **implicit syntax** may be preferable when you want to **be simple or more concise**.  
+* Querying indexes is currently available only when you use the explicit syntax.    
+
+<Admonition type="info" title="Info">
+Sample queries included in this article use only data that is available in the 
+[Northwind sample database](../../../studio/database/tasks/create-sample-data.mdx#creating-sample-data), 
+so you may easily try them out.  
+</Admonition>
+
+* In this page:  
+   * [Implicit and Explicit Queries](../../../indexes/querying/graph/graph-queries-explicit-and-implicit.mdx#implicit-and-explicit-queries)  
+   * [Explicitly Declaring Data Elements](../../../indexes/querying/graph/graph-queries-explicit-and-implicit.mdx#explicitly-declaring-data-elements)  
+   * [Mixing Explicit and Implicit Declarations](../../../indexes/querying/graph/graph-queries-explicit-and-implicit.mdx#mixing-explicit-and-implicit-declarations)  
+</Admonition>
+## Implicit and Explicit Queries  
+
+Here is a simple query that retrieves all documents from the **Orders** collection.  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Declare a data node
+with \{from Orders\} as orders
+    
+//Create the search pattern
+match 
+    (orders)
+`}
+</CodeBlock>
+</TabItem>
+
+It uses an `explicit syntax`: nodes and edges are explicitly declared using a `with` clause before including them in the 
+search pattern.  
+
+<Admonition type="info" title="Info">
+`with` clauses allow you to define arbitrary restrictions on matches for selected data nodes or edges.  
+</Admonition>
+
+And here is a second query, exactly equivalent to the first, that uses an `implicit syntax`.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Create the search pattern
+match
+    (Orders as orders)  
+`}
+</CodeBlock>
+</TabItem>
+
+Implicit queries allow you to include nodes and edges in your search pattern without explicitly declaring them first, 
+inviting RavenDB to declare them automatically.  
+
+The two queries produce the exact same results:  
+![Retrieve All Orders](./assets/BasicQuery_GraphicalView1.png)  
+#### Explicitly Declaring Data Elements
+
+* **Declaring Data Nodes**  
+  Declare a data node using a `with` clause with curly brackets.  
+  Provide each node with a **unique alias**.  
+
+    The following query retrieves all documents from the **Products** collection.  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Declare a data node
+with \{from Products\} as products
+    
+match 
+    (products)
+`}
+</CodeBlock>
+</TabItem>
+
+    ![Data Nodes: Products](./assets/explicitQuery_GraphicalView1.png)
+
+* **Declaring Edges**  
+  Declare an edge using a `with edges` clause with parentheses.  
+  Provide each edge with a **unique alias**.  
+
+    The following query shows the relations between products and their suppliers.  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Declare data nodes
+with \{from Products\} as products
+with \{from Suppliers\} as suppliers
+
+//Declare an edge
+with edges (Supplier) as supplier
+
+match 
+     (products)-
+     [supplier]->
+     (suppliers)
+`}
+</CodeBlock>
+</TabItem>
+    Documents are retrieved from the Products collection, and each product is related to its supplier's profile 
+    by the edge: an ID string in the product's Supplier property.  
+
+    ![Edges between Products and Suppliers](./assets/explicitQuery_GraphicalView2.png)
+#### Mixing Explicit and Implicit Declarations  
+
+You can freely mix and match the explicit and implicit syntaxes.  
+E.g. -  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Declare a data node
+with \{from Products\} as products
+    
+//Create the search pattern with declared and undeclared elements
+match 
+     (products)-
+     [Supplier as supplier]->
+     (Suppliers as suppliers)
+`}
+</CodeBlock>
+</TabItem>
+
+
+

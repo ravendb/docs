@@ -1,0 +1,95 @@
+---
+title: "Migration: How to Migrate Suggestions from 3.x"
+hide_table_of_contents: true
+sidebar_label: Suggestions
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate Suggestions from 3.x
+
+Suggestion functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql.mdx). To reflect this change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query`, the most common and recommended way of interaction with querying capabilities on RavenDB.
+
+## Namespaces
+
+| 3.x |
+|:---:|
+|
+<TabItem value="suggestions_3" label="suggestions_3">
+<CodeBlock language="csharp">
+{`using Raven.Abstractions.Data;
+using Raven.Client;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="suggestions_4" label="suggestions_4">
+<CodeBlock language="csharp">
+{`using Raven.Client.Documents;
+using Raven.Client.Documents.Queries.Suggestions;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example
+
+| 3.x |
+|:---:|
+|
+<TabItem value="suggestions_1" label="suggestions_1">
+<CodeBlock language="csharp">
+{`SuggestionQueryResult suggestions = session
+    .Query<Employee, Employees_ByFullName>()
+    .Suggest(
+        new SuggestionQuery
+        \{
+            Field = "FullName",
+            Term = "johne",
+            Accuracy = 0.4f,
+            MaxSuggestions = 5,
+            Distance = StringDistanceTypes.JaroWinkler,
+            Popularity = true,
+        \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="suggestions_2" label="suggestions_2">
+<CodeBlock language="csharp">
+{`Dictionary<string, SuggestionResult> suggestions = session
+    .Query<Employee, Employees_ByFullName>()
+    .SuggestUsing(builder => builder
+        .ByField("FullName", "johne")
+        .WithOptions(new SuggestionOptions
+        \{
+            Accuracy = 0.4f,
+            PageSize = 5,
+            Distance = StringDistanceTypes.JaroWinkler,
+            SortMode = SuggestionSortMode.Popularity
+        \}))
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Remarks
+
+<Admonition type="info" title="Info">
+You can read more about Suggestions in a dedicated Client API article that can be found [here](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
+</Admonition>

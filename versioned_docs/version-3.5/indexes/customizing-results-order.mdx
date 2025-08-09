@@ -1,0 +1,100 @@
+---
+title: "Customizing results order using SortOptions"
+hide_table_of_contents: true
+sidebar_label: Customizing results order
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Customizing results order using SortOptions
+
+Indexes in RavenDB are lexicographically sorted by default, so all queries return results which are ordered lexicographically. When putting a static index in RavenDB, you can specify custom sorting requirements, to ensure results are sorted the way you want them to.
+
+## Native types
+
+Dates are written to the index in a form which preserves lexicography order, and is readable by both human and machine (like so: `2011-04-04T11:28:46.0404749+03:00`), so this requires no user intervention, too.
+
+Numerical values, on the other hand, are stored as text and therefore require the user to specify explicitly what is the number type used so a correct sorting mechanism is enforced. This is quite easily done, by declaring the required sorting setup in `SortOptions` in the index definition:
+
+<TabItem value="static_sorting1" label="static_sorting1">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+\{
+	public Products_ByUnitsInStock()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  product.UnitsInStock
+						  \};
+
+		Sort(x => x.UnitsInStock, SortOptions.Int);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The index outlined above will allow sorting by value on the number of units in stock (1, 2, 3, 11, etc) for each `Product`. If we would specify SortOptions.String, then values would have been sorted lexically (1, 11, 2, 3, etc).
+
+The default `SortOptions` value is `String`. Appropriate values available for all numeric types (`Byte`, `Double`, `Float`, `Int`, `Long` and `Short`).
+
+<Admonition type="note" title="Note">
+When index is deployed using `AbstractIndexCreationTask` then all numerical fields in generated index definition will contain appropriate sorting options set.
+</Admonition>
+
+<Admonition type="note" title="Note">
+Specifying the `Sort` in the index definition won't make results from this index be ordered unless you call `OrderBy` on the query itself.
+</Admonition>
+
+### Example
+
+In the following query we are using the `OrderBy` method in order to indicate that we want to sort on `UnitsInStock`:
+
+<TabItem value="static_sorting3" label="static_sorting3">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Product>()
+	.OrderBy(product => product.UnitsInStock)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+So, by default it will sort on `UnitsInStock` as it was a string. By specifying `Sort(x => x.UnitsInStock, SortOptions.Int)` in the index definition, we indicate that the sort order should be in a numerical order. 
+
+## Collation support
+
+RavenDB supports using collations for documents sorting and indexing. You can setup a specific collation for an index field, so you can sort based of culture specific rules.
+
+The following is an example of an index definition which allows sorting based on the Swedish lexical sorting rules:
+
+<TabItem value="static_sorting2" label="static_sorting2">
+<CodeBlock language="csharp">
+{`public class Products_ByName : AbstractIndexCreationTask<Product>
+\{
+	public Products_ByName()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  product.Name
+						  \};
+
+		Sort(x => x.Name, SortOptions.String);
+
+		Analyzers.Add(x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database");
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In general, you can sort using `Raven.Database.Indexing.Collation.Cultures.<two-letters-culture-name>CollationAnalyzer`, and _all_ the cultures supported by the .NET framework are supported.
+

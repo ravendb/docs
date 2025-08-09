@@ -1,0 +1,83 @@
+---
+title: "Operations: Server: How to Enable or Disable a Database"
+hide_table_of_contents: true
+sidebar_label: Toggle Databases State
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: Server: How to Enable or Disable a Database
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To enable or disable a database, use the `ToggleDatabasesStateOperation`.
+
+## Syntax
+
+<TabItem value="toggle_1" label="toggle_1">
+<CodeBlock language="csharp">
+{`public ToggleDatabasesStateOperation(string databaseName, bool disable)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="toggle_2" label="toggle_2">
+<CodeBlock language="csharp">
+{`public ToggleDatabasesStateOperation(string[] databaseNames, bool disable) 
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of database to toggle state |
+| **disable** | bool | `True`, if database should be disabled, `False` is database should be enabled |
+
+| Return Value | | |
+| ------------- | -- | ----- |
+| **Disabled** | bool | If database was disabled |
+| **Name** | string | Name of the database |
+| **Success** | bool | If request succeed |
+| **Reason** | string | The reason for success or failure. |
+
+## Example I
+
+<TabItem value="toggle_1_0" label="toggle_1_0">
+<CodeBlock language="csharp">
+{`// disable Northwind database
+ToggleDatabasesStateOperation toggleOperation = 
+    new ToggleDatabasesStateOperation("Northwind", 
+        disable: true);
+store.Maintenance.Server.Send(toggleOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="toggle_2_0" label="toggle_2_0">
+<CodeBlock language="csharp">
+{`// enable Foo and Bar databases
+ToggleDatabasesStateOperation toggleOperation = 
+    new ToggleDatabasesStateOperation(new [] \{ "Foo", "Bar" \}, 
+        disable: false);
+store.Maintenance.Server.Send(toggleOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

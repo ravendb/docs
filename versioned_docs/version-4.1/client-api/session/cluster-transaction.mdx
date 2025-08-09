@@ -1,0 +1,221 @@
+---
+title: "Cluster Transaction - Overview"
+hide_table_of_contents: true
+sidebar_label: Cluster Transaction
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Cluster Transaction - Overview
+
+## Open Cluster-Wide Session
+
+To open cluster transaction session you have to set the `TransactionMode` to `TransactionMode.ClusterWide`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenAsyncSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+You can store, delete and edit document and the session will track them as usual.
+
+## Working with Compare Exchange
+
+
+### Get Compare Exchange
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.GetCompareExchangeValue<T>(key);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<T>(key);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The key to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| `CompareExchangeValue<T>`| If the key doesn't exists it will return `null` |
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.GetCompareExchangeValues<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await session.Advanced.ClusterTransaction.GetCompareExchangeValuesAsync<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | string[] | Array of keys to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
+
+### Create Compare Exchange
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key, value);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key, value);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The key to save with the associate value. This string can be up to 512 bytes. |
+| **value** | `T` | The value to store |
+
+If the value is already exists `SaveChanges()` will throw a `ConcurrencyException`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// occupy "Best NoSQL Transactional Database" to be "RavenDB"
+session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key: "Best NoSQL Transactional Database", value: "RavenDB");
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// occupy "Best NoSQL Transactional Database" to be "RavenDB"
+session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key: "Best NoSQL Transactional Database", value: "RavenDB");
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Update Compare Exchange
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **item** | `CompareExchangeValue<T>` | The item to update |
+
+If the value was changed by someone else the `SaveChanges()` will throw a `ConcurrencyException`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`_async
+                    // load the existing dns record of ravendb.net
+                    CompareExchangeValue<DNS> result = await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<DNS>(key: "ravendb.net");
+
+                    // change the ip
+                    result.Value.IpAddress = "52.32.173.150";
+                    session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
+                    
+                    // save the changes
+                    await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// load the existing dns record of ravendb.net
+CompareExchangeValue<DNS> result = await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<DNS>(key: "ravendb.net");
+
+// change the ip
+result.Value.IpAddress = "52.32.173.150";
+session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
+
+// save the changes
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Delete Compare Exchange
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The key to save with the associate value |
+| **index** | long | Index for concurrency control |
+
+#### CompareExchangeValue
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | Key of the item to store. This string can be up to 512 bytes. |
+| **index** | long | Index for concurrency control |
+| **value** | `T` | The actual value to keep |

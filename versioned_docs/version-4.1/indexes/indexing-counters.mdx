@@ -1,0 +1,168 @@
+---
+title: "Indexes: Indexing Counters"
+hide_table_of_contents: true
+sidebar_label: Indexing Counters
+sidebar_position: 17
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Indexes: Indexing Counters
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Counter names can be indexed using `CounterNamesFor`. 
+
+<Admonition type="warning" title="Indexing and Counters" id="indexing-and-counters" href="#indexing-and-counters">
+
+Please note that **re-indexation will only happen** when counter is **added** or **deleted** from the document. The counter increments will not trigger the process.
+
+</Admonition>
+
+## Creating Indexes
+
+The `CounterNamesFor` method available in `AbstractIndexCreationTask` returns all of the counter names for a document passed as the first argument.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="CounterNamesFor" label="CounterNamesFor">
+<CodeBlock language="csharp">
+{`IEnumerable<string> CounterNamesFor(object doc);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByCounterNames : AbstractIndexCreationTask<Company>
+{
+    public class Result
+    {
+        public string[] CounterNames { get; set; }
+    }
+
+    public Companies_ByCounterNames()
+    {
+        Map = employees => from e in employees
+                           let counterNames = CounterNamesFor(e)
+                           select new Result
+                           {
+                               CounterNames = counterNames.ToArray()
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// return all companies that have 'Likes' counter
+List<Company> companies = session
+    .Query<Companies_ByCounterNames.Result, Companies_ByCounterNames>()
+    .Where(x => x.CounterNames.Contains("Likes"))
+    .OfType<Company>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// return all companies that have 'Likes' counter
+List<Company> companies = await asyncSession
+    .Query<Companies_ByCounterNames.Result, Companies_ByCounterNames>()
+    .Where(x => x.CounterNames.Contains("Likes"))
+    .OfType<Company>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// return all companies that have 'Likes' counter
+List<Company> companies = session
+    .Advanced
+    .DocumentQuery<Company, Companies_ByCounterNames>()
+    .ContainsAny("CounterNames", new[] { "Likes" })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Counter names can be indexed using `CounterNamesFor`. 
+
+<Admonition type="warning" title="Indexing and Counters" id="indexing-and-counters" href="#indexing-and-counters">
+
+Please note that **re-indexation will only happen** when counter is **added** or **deleted** from the document. The counter increments will not trigger the process.
+
+</Admonition>
+
+## Creating Indexes
+
+The `CounterNamesFor` method returns all of the counter names for a document passed as the first argument.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="CounterNamesFor" label="CounterNamesFor">
+<CodeBlock language="java">
+{`List<String> CounterNamesFor(Object doc);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Companies_ByCounterNames extends AbstractIndexCreationTask {
+    public Companies_ByCounterNames() {
+        map = "from e in docs.Employees\\n" +
+            "let counterNames = CounterNamesFor(e)\\n" +
+            "select new\\n" +
+            "{\\n" +
+            "   counterNames = counterNames.ToArray()\\n" +
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example
+
+<TabItem value="query1" label="query1">
+<CodeBlock language="java">
+{`// return all companies that have 'Likes' counter
+List<Company> companies = session
+    .query(Company.class, Companies_ByCounterNames.class)
+    .containsAny("counterNames",  Arrays.asList("companies_likes"))
+    .selectFields(Company.class, "likes")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

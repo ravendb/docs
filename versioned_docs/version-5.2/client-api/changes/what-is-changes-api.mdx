@@ -1,0 +1,537 @@
+---
+title: "What Is the Changes API"
+hide_table_of_contents: true
+sidebar_label: What is Changes API
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# What Is the Changes API
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The Changes API is a Push Notifications service, that allows a RavenDB Client to 
+  receive messages from a RavenDB Server regarding events that occurred on the server.  
+* A client can subscribe to events related to documents, indexes, operations, counters, or time series.  
+* The Changes API enables you to notify users of various changes, without requiring 
+  any expensive polling.  
+
+* In this page:  
+  * [Accessing Changes API](../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api)  
+  * [Connection interface](../../client-api/changes/what-is-changes-api.mdx#connection-interface)  
+  * [Subscribing](../../client-api/changes/what-is-changes-api.mdx#subscribing)  
+  * [Unsubscribing](../../client-api/changes/what-is-changes-api.mdx#unsubscribing)  
+  * [FAQ](../../client-api/changes/what-is-changes-api.mdx#faq)  
+     * [Changes API and Database Timeout](../../client-api/changes/what-is-changes-api.mdx#changes-api-and-database-timeout)  
+     * [Changes API and Method Overloads](../../client-api/changes/what-is-changes-api.mdx#changes-api-and-method-overloads)  
+  * [Changes API -vs- Data Subscriptions](../../client-api/changes/what-is-changes-api.mdx#changes-api--vs--data-subscriptions)  
+</Admonition>
+## Accessing Changes API
+
+The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.
+
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="csharp">
+{`IDatabaseChanges Changes(string database = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of database to open changes API for. If `null`, the `Database` configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| IDatabaseChanges | Instance implementing IDatabaseChanges interface. |
+
+
+
+## Connection interface
+
+`IDatabaseChanges` inherits from `IConnectableChanges<TChanges>` interface that represent the connection.
+
+<TabItem value="connectable_changes" label="connectable_changes">
+<CodeBlock language="csharp">
+{`public interface IConnectableChanges<TChanges> : IDisposable
+    where TChanges : IDatabaseChanges
+\{
+    // returns state of the connection
+    bool Connected \{ get; \}
+
+    // A task that ensures that the connection to the server was established.
+    Task<TChanges> EnsureConnectedNow();
+
+    //An event handler to detect changed to the connection status
+    event EventHandler ConnectionStatusChanged;
+
+    //An action to take if an error occured in the connection to the server
+    event Action<Exception> OnError;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Subscribing
+
+To receive notifications regarding server-side events, subscribe using one of the following methods.  
+
+* **For Document Changes:**  
+   - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)  
+     Track changes for all document  
+   - [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)  
+     Track changes for a given document (by Doc ID)  
+   - [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)  
+     Track changes for all documents in a given collection  
+   - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)  
+     Track changes for documents whose ID contains a given prefix  
+
+* **For Index Changes:**
+   - [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)  
+     Track changes for all indexes  
+   - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)  
+     Track changes for a given index (by Index Name)   
+
+* **For Operation Changes:**
+   - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)  
+     Track changes for all operation  
+   - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)  
+     Track changes for a given operation (by Operation ID)  
+
+* **For Counter Changes:**
+   - [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forallcounters)  
+     Track changes for all counters  
+   - [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounter)  
+     Track changes for a given counter (by Counter Name)  
+   - [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounterofdocument)  
+     Track changes for a specific counter of a chosen document (by Doc ID and Counter Name)  
+   - [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcountersofdocument)  
+     Track changes for all counters of a chosen document (by Doc ID)  
+
+* **For Time Series Changes:**
+   - [ForAllTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#foralltimeseries)  
+     Track changes for all time series  
+   - [ForTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseries)  
+     Track changes for all time series with a given name  
+   - [ForTimeSeriesOfDocument](../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseriesofdocument)  
+     Track changes for -  
+      * a **specific time series** of a given document (by Doc ID and Time Series Name)  
+      * **any time series** of a given document (by Doc ID)  
+
+
+
+## Unsubscribing
+
+To end a subscription (stop listening for particular notifications) you must 
+`Dispose` of the subscription.  
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="csharp">
+{`IDatabaseChanges changes = store.Changes();
+await changes.EnsureConnectedNow();
+var subscription = changes
+        .ForAllDocuments()
+        .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+try
+\{
+    // application code here
+\}
+finally
+\{
+    if (subscription != null)
+        subscription.Dispose();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## FAQ
+
+#### Changes API and Database Timeout
+
+One or more open Changes API connections will prevent a database from becoming 
+idle and unloaded, regardless of [the configuration value for database idle timeout](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec).  
+#### Changes API and Method Overloads
+
+<Admonition type="warning" title="Warning">
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+</Admonition>
+
+
+
+## Changes API -vs- Data Subscriptions
+
+**Changes API** and [Data Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+are services that a RavenDB Server provides subscribing clients.  
+Both services respond to events that take place on the server, by sending updates 
+to their subscribers.  
+
+* **Changes API is a Push Notifications Service**.  
+   * Changes API subscribers receive **notifications** regarding events that 
+     took place on the server, without receiving the actual data entities 
+     affected by these events.  
+     For the modification of a document, for example, the client will receive 
+     a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange) 
+     object with details like the document's ID and collection name.  
+
+   * The server does **not** keep track of sent notifications or 
+     checks clients' usage of them. It is a client's responsibility 
+     to manage its reactions to such notifications.  
+
+* **Data Subscription is a Data Consumption Service**.  
+   * A Data Subscription task keeps track of document modifications in the 
+     database and delivers the documents in an orderly fashion when subscribers 
+     indicate they are ready to receive them. 
+   * The process is fully managed by the server, leaving very little for 
+     the subscribers to do besides consuming the delivered documents.  
+|    | Data Subscriptions | Changes API 
+| -- | -- | 
+| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> [Revisions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) <br/> [Counters](../../client-api/data-subscriptions/creation/examples.mdx#including-counters) <br/> Time Series | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) <br/> [Counters](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx) <br/> [Time Series](../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx) 
+| What can the server Deliver | Documents <br/> Revisions <br/> Counters <br/> Time Series | Notifications 
+| Management | Managed by the Server | Managed by the Client 
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* The Changes API is a Push Notifications service, that allows a RavenDB Client to 
+  receive messages from a RavenDB Server regarding events that occurred on the server.  
+* A client can subscribe to events related to documents, indexes, operations, counters, or time series.  
+* The Changes API enables you to notify users of various changes, without requiring 
+  any expensive polling.  
+
+* In this page:  
+  * [Accessing Changes API](../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api)  
+  * [Connection interface](../../client-api/changes/what-is-changes-api.mdx#connection-interface)  
+  * [Subscribing](../../client-api/changes/what-is-changes-api.mdx#subscribing)  
+  * [Unsubscribing](../../client-api/changes/what-is-changes-api.mdx#unsubscribing)  
+  * [Note](../../client-api/changes/what-is-changes-api.mdx#note)  
+  * [Changes API -vs- Data Subscriptions](../../client-api/changes/what-is-changes-api.mdx#changes-api--vs--data-subscriptions)  
+</Admonition>
+## Accessing Changes API
+
+The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.
+
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="java">
+{`IDatabaseChanges changes();
+
+IDatabaseChanges changes(String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | String | Name of database to open changes API for. If `null`, the `Database` configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| IDatabaseChanges | Instance implementing IDatabaseChanges interface. |
+
+
+
+## Connection interface
+
+`IDatabaseChanges` inherits from `IConnectableChanges<TChanges>` interface that represent the connection.
+
+<TabItem value="connectable_changes" label="connectable_changes">
+<CodeBlock language="java">
+{`public interface IConnectableChanges<TChanges extends IDatabaseChanges> extends CleanCloseable \{
+
+    boolean isConnected();
+
+    void ensureConnectedNow();
+
+    void addConnectionStatusChanged(EventHandler<VoidArgs> handler);
+
+    void removeConnectionStatusChanged(EventHandler<VoidArgs> handler);
+
+    void addOnError(Consumer<Exception> handler);
+
+    void removeOnError(Consumer<Exception> handler);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Subscribing
+
+To receive notifications regarding server-side events, subscribe using one of the following methods.  
+
+- [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [forAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+- [forAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
+- [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)
+
+
+
+## Unsubscribing
+
+To end a subscription (stop listening for particular notifications) you must 
+`close` the subscription.  
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="java">
+{`IDatabaseChanges subscription = store.changes();
+
+subscription.ensureConnectedNow();
+
+subscription.forAllDocuments().subscribe(Observers.create(change -> \{
+    System.out.println(change.getType() + " on document " + change.getId());
+\}));
+
+try \{
+    // application code here
+\} finally \{
+    if (subscription != null) \{
+        subscription.close();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Note
+
+<Admonition type="note" title="Note">
+One or more open Changes API connections will prevent a database from becoming 
+idle and unloaded, regardless of [the configuration value for database idle timeout](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec).  
+</Admonition>
+
+
+
+## Changes API -vs- Data Subscriptions
+
+**Changes API** and [Data Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+are services that a RavenDB Server provides subscribing clients.  
+Both services respond to events that take place on the server, by sending updates 
+to their subscribers.  
+
+* **Changes API is a Push Notifications Service**.  
+   * Changes API subscribers receive **notifications** regarding events that 
+     took place on the server, without receiving the actual data entities 
+     affected by these events.  
+     For the modification of a document, for example, the client will receive 
+     a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange) 
+     object with details like the document's ID and collection name.  
+
+   * The server does **not** keep track of sent notifications or 
+     checks clients' usage of them. It is a client's responsibility 
+     to manage its reactions to such notifications.  
+
+* **Data Subscription is a Data Consumption Service**.  
+   * A Data Subscription task keeps track of document modifications in the 
+     database and delivers the documents in an orderly fashion when subscribers 
+     indicate they are ready to receive them. 
+   * The process is fully managed by the server, leaving very little for 
+     the subscribers to do besides consuming the delivered documents.  
+|    | Data Subscriptions | Changes API 
+| -- | -- | 
+| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> [Revisions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) <br/> [Counters](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx) <br/> Time Series 
+| What can the server Deliver | Documents <br/> Revisions | Notifications 
+| Management | Managed by the Server | Managed by the Client 
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The Changes API is a Push Notifications service, that allows a RavenDB Client to 
+  receive messages from a RavenDB Server regarding events that occurred on the server.  
+* A client can subscribe to events related to documents, indexes, operations, counters, or time series.  
+* The Changes API enables you to notify users of various changes, without requiring 
+  any expensive polling.  
+
+* In this page:  
+  * [Accessing Changes API](../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api)  
+  * [Connection interface](../../client-api/changes/what-is-changes-api.mdx#connection-interface)  
+  * [Subscribing](../../client-api/changes/what-is-changes-api.mdx#subscribing)  
+  * [Unsubscribing](../../client-api/changes/what-is-changes-api.mdx#unsubscribing)  
+  * [FAQ](../../client-api/changes/what-is-changes-api.mdx#faq)  
+     * [Changes API and Database Timeout](../../client-api/changes/what-is-changes-api.mdx#changes-api-and-database-timeout)  
+     * [Changes API and Method Overloads](../../client-api/changes/what-is-changes-api.mdx#changes-api-and-method-overloads)  
+  * [Changes API -vs- Data Subscriptions](../../client-api/changes/what-is-changes-api.mdx#changes-api--vs--data-subscriptions)  
+</Admonition>
+## Accessing Changes API
+
+The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.
+
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="js">
+{`store.changes([database]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of database to open changes API for. If `null`, the `database` configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| `IDatabaseChanges` object | Instance implementing IDatabaseChanges interface. |
+
+
+
+## Connection interface
+
+Changes object interface extends `IConnectableChanges` interface that represents the connection. It exposes the following properties, methods and events.
+
+| Properties and methods | | |
+| ------------- | ------------- | ----- |
+| **connected** | boolean | Indicates whether it's connected or not |
+| **on("connectionStatus")** | method | Adds a listener for 'connectionStatus' event |
+| **on("error")** | method | Adds a listener for 'error' event | 
+| **ensureConnectedNow()** | method | Returns a `Promise` resolved once connection to the server is established. | 
+
+
+
+## Subscribing
+
+To receive notifications regarding server-side events, subscribe using one of the following methods.  
+
+- [forAllDocuments()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+- [forAllOperations()](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
+- [forDocument()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forOperationId()](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)
+
+
+
+## Unsubscribing
+
+To end a subscription (stop listening for particular notifications) use `dispose`.  
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="js">
+{`const changes = store.changes();
+
+await changes.ensureConnectedNow();
+
+const allDocsChanges = changes.forAllDocuments()
+    .on("data", change => \{
+        console.log(change.type + " on document " + change.id);
+    \})
+    .on("error", err => \{
+        // handle error
+    \});
+
+// ...
+
+try \{
+    // application code here
+\} finally \{
+    // dispose changes after use
+    if (changes != null) \{
+        changes.dispose();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## FAQ
+
+#### Changes API and Database Timeout
+
+One or more open Changes API connections will prevent a database from becoming 
+idle and unloaded, regardless of [the configuration value for database idle timeout](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec).  
+#### Changes API and Method Overloads
+
+<Admonition type="warning" title="Warning">
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+</Admonition>
+
+
+
+## Changes API -vs- Data Subscriptions
+
+**Changes API** and [Data Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+are services that a RavenDB Server provides subscribing clients.  
+Both services respond to events that take place on the server, by sending updates 
+to their subscribers.  
+
+* **Changes API is a Push Notifications Service**.  
+   * Changes API subscribers receive **notifications** regarding events that 
+     took place on the server, without receiving the actual data entities 
+     affected by these events.  
+     For the modification of a document, for example, the client will receive 
+     a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange) 
+     object with details like the document's ID and collection name.  
+
+   * The server does **not** keep track of sent notifications or 
+     checks clients' usage of them. It is a client's responsibility 
+     to manage its reactions to such notifications.  
+
+* **Data Subscription is a Data Consumption Service**.  
+   * A Data Subscription task keeps track of document modifications in the 
+     database and delivers the documents in an orderly fashion when subscribers 
+     indicate they are ready to receive them. 
+   * The process is fully managed by the server, leaving very little for 
+     the subscribers to do besides consuming the delivered documents.  
+|    | Data Subscriptions | Changes API 
+| -- | -- | 
+| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> Revisions | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) <br/> Counters <br/> Time Series 
+| What can the server Deliver | Documents <br/> Revisions | Notifications 
+| Management | Managed by the Server | Managed by the Client 
+
+
+
+
+
+</LanguageContent>
+
+<!---
+### Changes API
+- [How to Subscribe to Document Changes](../../client-api/changes/how-to-subscribe-to-document-changes)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
+- [How to Subscribe to Counter Changes](../../client-api/changes/how-to-subscribe-to-counter-changes)
+- [How to Subscribe to Time Series Changes](../../client-api/changes/how-to-subscribe-to-time-series-changes)
+- [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+
+### Data Subscriptions
+- [What Are Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
+
+
+-->

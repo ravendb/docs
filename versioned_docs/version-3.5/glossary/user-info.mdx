@@ -1,0 +1,32 @@
+---
+title: "Glossary: UserInfo"
+hide_table_of_contents: true
+sidebar_label: UserInfo
+sidebar_position: 62
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: UserInfo
+
+Holds the user info for the database.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Remark** | string | Inforamtion about the type of user |
+| **User** | string | The specific Name of the user |
+| **IsAdminGlobal** | bool | Server administrator privileges(global) |
+| **IsAdminCurrentDb** | bool | If using current admin db |
+| **Databases** | List&lt;DatabaseInfo&gt; | Return a list of all the database on the server |
+| **Principal** | IPrincipal | |
+| **AdminDatabases** | HashSet&lt;string&gt; | Return a HashSet of all the admin database on the server |
+| **ReadOnlyDatabases** | HashSet&lt;string&gt; |Return a HashSet of all the ReadOnly database on the server |
+| **ReadWriteDatabases** | HashSet&lt;string&gt; | Return a HashSet of all the ReadWrite database on the server |
+| **AccessTokenBody** | AccessTokenBody | Return the access token body |

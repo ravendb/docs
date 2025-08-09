@@ -1,0 +1,69 @@
+---
+title: "Passing parameters"
+hide_table_of_contents: true
+sidebar_label: Passing parameters
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Passing parameters
+
+Parameters can be passed to alter transformations by:
+
+- using `AddTransformerParameter` in session [Query](../client-api/session/querying/how-to-use-transformers-in-queries.mdx)
+- using `SetTransformerParameters` in session [DocumentQuery](../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx)
+- filling `TransformerParameters` in `IndexQuery` that can be used in commands [Query](../client-api/commands/transformers/how-to/transform-query-results.mdx)
+- passing parameters directly in various [Get](../client-api/commands/documents/get.mdx) methods from commands
+
+To access passed parameters from within a transformer, use one of the two available methods: `Parameter` or `ParameterOrDefault`. 
+The difference between those two methods is that `Parameter` will throw if the parameter is not supplied, and `ParameterOrDefault` will use the default value.
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Employees_BirthDay : AbstractTransformerCreationTask<Employee>
+\{
+	public class Result
+	\{
+		public string FirstName \{ get; set; \}
+
+		public string LastName \{ get; set; \}
+
+		public string BirthDay \{ get; set; \}
+	\}
+
+	public Employees_BirthDay()
+	\{
+		TransformResults =
+			employees =>
+			from employee in employees
+			// if no parameter is passed use 't' format
+			let dateFormat = ParameterOrDefault("DateFormat", "t").Value<string>()
+			select new
+			\{
+				FirstName = employee.FirstName,
+				LastName = employee.LastName,
+				BirthDay = employee.Birthday.ToString(dateFormat)
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`IList<Employees_BirthDay.Result> results = session
+	.Query<Employee>()
+	.TransformWith<Employees_BirthDay, Employees_BirthDay.Result>()
+	.AddTransformerParameter("DateFormat", "D")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

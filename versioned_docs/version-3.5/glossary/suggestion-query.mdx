@@ -1,0 +1,40 @@
+---
+title: "Glossary: SuggestionQuery"
+hide_table_of_contents: true
+sidebar_label: SuggestionQuery
+sidebar_position: 54
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: SuggestionQuery
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Term** | string | The term is what the user likely entered, and will used as the basis of the suggestions |
+| **Field** | string | The field to be used in conjunction with the index |
+| **MaxSuggestions** | int | The number of suggestions to return |
+| **Distance** | [StringDistanceTypes](../glossary/suggestion-query.mdx#stringdistancetypes-enum)? | The string distance algorithm |
+| **Accuracy** | float? | The accuracy |
+| **Popularity** | bool | Whatever to return the terms in order of popularity |
+
+---
+
+# StringDistanceTypes (enum)
+
+### Members
+
+| Name | Description |
+| ---- | ----- |
+| **None** |  Default, suggestion is not active |
+| **Default** | Default, equivalent to Levenshtein |
+| **Levenshtein** | Levenshtein distance algorithm (default) |
+| **JaroWinkler** | JaroWinkler distance algorithm |
+| **NGram** | NGram distance algorithm |

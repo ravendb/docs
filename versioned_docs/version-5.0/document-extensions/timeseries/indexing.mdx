@@ -1,0 +1,315 @@
+---
+title: "Indexing: Time Series"
+hide_table_of_contents: true
+sidebar_label: Indexing Time Series
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Indexing: Time Series
+<Admonition type="note" title="Note">
+
+Time series indexes process time series [segments](../../document-extensions/timeseries/design.mdx#segmentation), 
+rather than document fields.  
+The API for creating time series indexes is very similar to (and it inherits 
+from) the API for [creating document indexes](../../indexes/creating-and-deploying.mdx).  
+
+<Admonition type="info" title="Info">
+Unlike document indexes, time series indexes currently support only LINQ syntax. 
+JavaScript syntax is not supported.  
+
+RavenDB does not create [dynamic](../../studio/database/indexes/indexes-overview.mdx#indexes-types) 
+time series indexes in response to queries, but can be created as 
+[static](../../studio/database/indexes/indexes-overview.mdx#indexes-types) indexes from a 
+client application or from the Studio.  
+</Admonition>
+
+* In this page:  
+  * [Syntax](../../document-extensions/timeseries/indexing.mdx#syntax)  
+      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing.mdx#abstracttimeseriesindexcreationtask)  
+      * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing.mdx#abstractmultimaptimeseriesindexcreationtask)
+      * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing.mdx#timeseriesindexdefinition)
+      * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object)
+  * [Samples](../../document-extensions/timeseries/indexing.mdx#samples)  
+
+</Admonition>
+## Syntax 
+
+There are two main ways to create a time series index:  
+
+1. Create a class that inherits from   
+  * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing.mdx#abstracttimeseriesindexcreationtask) for [map](../../indexes/map-indexes.mdx) and 
+  [map-reduce](../../indexes/map-reduce-indexes.mdx) time series indexes.  
+  * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing.mdx#abstractmultimaptimeseriesindexcreationtask) for [multi-map](../../indexes/multi-map-indexes.mdx) time series indexes.  
+
+2. Create a [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing.mdx#timeseriesindexdefinition).
+### AbstractTimeSeriesIndexCreationTask  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public abstract class AbstractTimeSeriesIndexCreationTask : 
+                      AbstractIndexCreationTaskBase<TimeSeriesIndexDefinition> 
+\{
+    protected void AddMap(string timeSeries, 
+                          Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                          IEnumerable>> map);
+
+    protected void AddMapForAll(Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                                IEnumerable>> map);
+\}
+
+// Index only time series that belong to documents
+// of a specified type
+public class AbstractTimeSeriesIndexCreationTask<TDocument> \{ \}
+
+// Specify both a document type and a reduce type
+public class AbstractTimeSeriesIndexCreationTask<TDocument, TReduceResult> \{ \}
+`}
+</CodeBlock>
+</TabItem>
+
+| Method | Parameters | Description |
+| - | - | - |
+| `AddMap()` | `string timeseries`, `Expression map` | Sets a map function for all time series in the database with specified name (the first parameter) |
+| `AddMapForAll()` | `Expression map` | Sets a map function for all time series in the database |
+
+See the example [below](../../document-extensions/timeseries/indexing.mdx#abstracttimeseriesindexcreationtask-1).
+### AbstractMultiMapTimeSeriesIndexCreationTask  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public abstract class AbstractMultiMapTimeSeriesIndexCreationTask
+\{
+    protected void AddMap<TSource>(string timeSeries, 
+                          Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                          IEnumerable>> map);
+
+    protected void AddMapForAll<TBase>(
+                          Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                          IEnumerable>> map);
+\}
+
+// Specify a type for the reduce result  
+public abstract class AbstractMultiMapTimeSeriesIndexCreationTask<TReduceResult> \{ \}
+`}
+</CodeBlock>
+</TabItem>
+
+| Method | Parameters | Description |
+| - | - | - |
+| `AddMap<TSource>()` | `string timeseries`, `Expression map` | Sets a map function for all time series with the specified name (the first parameter) that belong to documents with the type `TSource` |
+| `AddMapForAll<TBase>()` | `Expression map` | Sets a map function for all time series that belong to documents with either the type `TBase` _or_ any type that inherits from `TBase` |
+
+See the example [below](../../document-extensions/timeseries/indexing.mdx#abstractmultimaptimeseriesindexcreationtask-1).
+### TimeSeriesIndexDefinition  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesIndexDefinition : IndexDefinition
+`}
+</CodeBlock>
+</TabItem>
+
+For now, `TimeSeriesIndexDefinition` is functionally equivalent to the 
+[normal `IndexDefinition`](../../indexes/creating-and-deploying.mdx#using-maintenance-operations). 
+Using it for time series indexes is recommended - it exists in case additional functionality is 
+added in future versions of RavenDB. 
+
+See the example [below](../../document-extensions/timeseries/indexing.mdx#samples).  
+### TimeSeriesSegment Object  
+
+Time series entries are indexes through the [segment](../../document-extensions/timeseries/design.mdx#segmentation) 
+they are stored in, using LINQ syntax that resembles this one:  
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from segment in timeseries
+from entry in segment
+`}
+</CodeBlock>
+</TabItem>
+
+Segment properties include the entries data, and the aggregated values that 
+RavenDB automatically updates in the segment's header.  
+
+| Property | Type | Description |
+| - | - | - |
+| DocumentId | string | The [ID](../../client-api/document-identifiers/working-with-document-identifiers.mdx) of the document this time series belongs to |
+| Name | string | The name of the time series this segment belongs to |
+| Min | double[] | The smallest values from all entries in the segment. The places in this array correspond to the  |
+| Max | double[] | The largest values from all entries in the segment |
+| Sum | double[] | The sums of values from all entries in the segment. The first `Sum` is the sum of all first values, and so on. |
+| Count | int | The number of entries in this segment |
+| Start | DateTime | The timestamp of the first entry in the segment |
+| End | DateTime | The timestamp of the last entry in the segment |
+| Entries | `TimeSeriesEntry[]` | The segment's entries themselves |
+
+These are the properties of a `TimeSeriesEntry`, which are exposed in the LINQ syntax:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesEntry
+\{
+    public DateTime Timestamp;
+    public string Tag;
+    public double[] Values;
+
+    // This is exactly equivalent to Values[0]
+    public double Value;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Samples
+
+
+Creating a time series index using `TimeSeriesIndexDefinition`:  
+<TabItem value="indexes_IndexDefinition" label="indexes_IndexDefinition">
+<CodeBlock language="csharp">
+{`documentStore.Maintenance.Send(new PutIndexesOperation(
+                          new TimeSeriesIndexDefinition
+                          \{
+                              Name = "Stocks_ByTradeVolume",
+                              Maps = \{
+                              "from ts in timeSeries.Companies.StockPrice " +
+                              "from entry in ts.Entries " +
+                              "select new " +
+                              "\{ " +
+                              "    TradeVolume = entry.Values[4], " +
+                              "    entry.Timestamp.Date " +
+                              "\}"
+                              \}
+                          \}));
+`}
+</CodeBlock>
+</TabItem>
+
+#### AbstractTimeSeriesIndexCreationTask  
+<TabItem value="indexes_CreationTask" label="indexes_CreationTask">
+<CodeBlock language="csharp">
+{`public class Stocks_ByTradeVolume : AbstractTimeSeriesIndexCreationTask<Company>
+\{
+    public Stocks_ByTradeVolume()
+    \{
+        AddMap("StockPrice",
+                timeseries => from ts in timeseries
+                              from entry in ts.Entries
+                              select new
+                              \{
+                                  TradeVolume = entry.Values[4],
+                                  entry.Timestamp.Date
+                              \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### AbstractMultiMapTimeSeriesIndexCreationTask  
+<TabItem value="indexes_MultiMapCreationTask" label="indexes_MultiMapCreationTask">
+<CodeBlock language="csharp">
+{`public class Vehicles_ByLocation : AbstractMultiMapTimeSeriesIndexCreationTask
+\{
+    public Vehicles_ByLocation()
+    \{
+        AddMap<Plane>(
+            "GPS_Coordinates",
+            timeSeries => from ts in timeSeries
+                          from entry in ts.Entries
+                          select new 
+                          \{
+                              Latitude = entry.Values[0],
+                              Longitude = entry.Values[0],
+                              entry.Timestamp
+                          \});
+
+        AddMap<Ship>(
+            "GPS_Coordinates",
+            timeSeries => from ts in timeSeries
+                          from entry in ts.Entries
+                          select new
+                          \{
+                              Latitude = entry.Values[0],
+                              Longitude = entry.Values[0],
+                              entry.Timestamp
+                          \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Map-Reduce Time Series Index  
+<TabItem value="indexes_MapReduce" label="indexes_MapReduce">
+<CodeBlock language="csharp">
+{`public class TradeVolume_PerDay_ByCountry : 
+             AbstractTimeSeriesIndexCreationTask<Company, TradeVolume_PerDay_ByCountry.Result>
+\{
+    public class Result
+    \{
+        public double TradeVolume \{ get; set; \}
+        public DateTime Date \{ get; set; \}
+        public string Country \{ get; set; \}
+    \}
+
+    public TradeVolume_PerDay_ByCountry()
+    \{
+        AddMap(
+            "StockPrice",
+            timeSeries => from ts in timeSeries
+                          let company = LoadDocument<Company>(ts.DocumentId)
+                          from entry in ts.Entries
+                          select new Result
+                          \{
+                              TradeVolume = entry.Values[4],
+                              Date = entry.Timestamp.Date,
+                              Country = company.Address.Country
+                          \});
+
+            Reduce = results => 
+                          from r in results
+                          group r by new \{ r.Date, r.Country \} into g
+                          select new Result
+                          \{
+                              TradeVolume = g.Sum(x => x.TradeVolume),
+                              Date = g.Key.Date,
+                              Country = g.Key.Country
+                          \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Yet another way to create a time series index is to create a 
+`TimeSeriesIndexDefinitionBuilder`, and use it to create a 
+`TimeSeriesIndexDefinition`.  
+<TabItem value="indexes_IndexDefinitionBuilder" label="indexes_IndexDefinitionBuilder">
+<CodeBlock language="csharp">
+{`var TSIndexDefBuilder = 
+    new TimeSeriesIndexDefinitionBuilder<Company>("Stocks_ByTradeVolume");
+
+TSIndexDefBuilder.AddMap("StockPrice",
+            timeseries => from ts in timeseries
+                            from entry in ts.Entries
+                            select new
+                            \{
+                                TradeVolume = entry.Values[4],
+                                entry.Timestamp.Date
+                            \});
+
+documentStore.Maintenance.Send(new PutIndexesOperation(
+                TSIndexDefBuilder.ToIndexDefinition(documentStore.Conventions)));
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,404 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 4.0.11 (40059) - 2019/02/28 {#40059}
+
+### Server
+
+- `[Indexing]` Fixed possible deadlock during replacement 
+- `[Indexing]` Fixed deletion of artificial documents by map-reduce indexes
+- `[Encryption]` Fixed possible journal data corruption on x86
+
+
+## 4.0.10 (40058) - 2019/02/13 {#40058}
+
+### Server
+- `[Compaction]` Fixing compaction on 32 bits
+- `[.NET Core]` Updated to .NET Core 2.1.8
+
+## 4.0.9 (40055) - 2018/11/19 {#40055}
+
+### Server
+
+- `[Cluster]` Fixed unexpected ConcurrencyException when using optimistic concurrency with deletions
+- `[Debug]` Added more details to Debug Package
+- `[Indexing]` Fixed indexing of large terms when using collation analyzer
+- `[Indexing]` Fixed index replacement handling
+- `[Indexing]` Better handling of EarlyOutOfMemoryException in indexing process
+- `[Logging]` Disabled logging warning when reducing the size of compression buffers file when db is idle
+- `[Querying]` Fixed not contains queries on empty collections 
+- `[Querying]` Fixed in and between queries to take into account if index does not have 'exact' set on field 
+- `[Querying]` Fixed loading of empty stored fields in projections 
+- `[Voron]` Fixed cleanup of recycled scratch buffers only when there is no open read transaction that is still using it 
+- `[.NET Core]` updated to .NET Core 2.1.6
+
+<hr />
+
+### Client
+
+- `[Cache]` Fixed aggressive caching for POST requests
+
+## 4.0.8 (40051) - 2018/10/15 {#40051}
+
+### Server
+
+- `[Backups]` support for creation of database from legacy 'ravendb-incremental-dump' files
+- `[Certificates]` fixed cluster connection issues that could occur after automatic certificate replacement
+- `[Certificates]` better certificate handling
+- `[Changes API]` more graceful shutdown procedure
+- `[ETL]` optimized SQL ETL deletions, will now reduce the amount of deletions that needs to be send and processed
+- `[ETL]` properly handling multiple ETL scripts
+- `[Indexing]` fixed possible IndexOutOfRange in 'LastIndexOf' and 'LastIndexOfAny' string extensions in indexing functions
+- `[Indexing]` support for grouping by nested field values
+- `[Indexing]` fixed possible map-reduce error due to unhandled case in the reduce phase
+- `[Indexing]` fixed the possibility of skipping documents during indexing when in low memory condition and references are changed in meanwhile
+- `[Linux]` retry on EINVAL pwrite fail if cifs/nfs mount
+- `[Memory]` adjustments in memory utilization and management
+- `[Patching]` fixed issues with the possibility to not preserve modified properties
+- `[Patching]` fixed issue with parsing and patching stored indexes values
+- `[Patching]` fixed null propagation on array methods
+- `[Voron Recovery]` fixed issues with using the recovery tool an an empty database
+- `[Voron Recovery]` fixed issues with loading the database after recovery was done
+- `[.NET Core]` updated to 2.1.5
+
+<hr />
+
+### Client
+
+- `[Bulk Insert]` fixed issues with escaping ' and " characters in document Id
+- `[Operations]` not setting 'DocumentStore.Database' will no longer cause DeleteByQueryOperation&lt;TEntity&gt; to throw
+- `[Operations]` 'ConfigureExpirationOperation' will now return proper result
+- `[Patching]` 'session.Advanced.Increment' will generate a patch that checks if the original value is 'null' before concatenating the string
+- `[Projections]` support for a predicate in LINQ Count
+- `[Projections]` fixed Min/Max behavior on filtered empty collections
+- `[Projections]` ensure 'null' coalescing has parenthesis
+- `[Store]` storing 'new object()' should not set any collection, it should go to '@empty' one
+
+<hr />
+
+### Studio
+
+- various performance and stability fixes
+- layout fixes
+
+## 4.0.7 (40049) - 2018/08/31 {#40049}
+
+### Server
+
+- `[Cluster]` stability and performance improvements
+- `[Encryption]` fixed issues with encryption when 32 bit pager is used
+- `[Encryption]` updated libsodium to 1.0.16
+- `[Indexing]` fixed issue with grouping by multiple fields when a collection property is empty in Auto Map-Reduce indexes
+- `[Indexing]` fixed staleness detection for indexes that use LoadDocument
+- `[Indexing]` fixed staleness calculation when specific order of documents mixed with tombstones is in place
+- `[Indexing]` fixed issues with indexing references under low memory
+- `[Indexing]` fixed hash calculation for reduce key which could sometimes result in invalid Map-Reduce results
+- `[Indexing]` fixed issues with deploying Map-Reduce index with OutputReduceToCollection
+- `[Indexing]` Map-Reduce index  with 'OutputReduceToCollection' will handle hash collisions properly
+- `[Linux]` fixed issue with supporting 4GB+ writes on 32-bit ARM
+- `[macOS]` fixed issues with database creation
+- `[Patching]` fixed issues with modified property not being preserved in certain situations
+- `[Revisions]` fixed possible issue with cleaning in-memory state of Revisions after transaction is rolled back
+- `[.NET Core]` bumped to 2.1.3
+
+<hr />
+
+### Client
+
+- `[Conventions]` new convention 'TopologyCacheLocation'
+- `[Patching]` fixed issues with adding items to collection when method with 'params' is used
+- `[Projections]` not supported methods (e.g. Single or SingleOrDefault) will throw instead of silently failing
+- `[Projections]` fixed issues with projecting property named 'Group'
+- `[Projections]` support for formatting using `.ToString(format)` and `.ToString(format, culture)`
+- `[Subscriptions]` filter conversion should not be culture specific
+
+<hr />
+
+### Studio
+
+- various performance and stability fixes
+- layout fixes
+
+## 4.0.6 (40048) - 2018/08/03 {#40048}
+
+### Server
+
+- `[Backups]` database will no longer be unloaded when there is a backup task scheduled
+- `[Backups]` fixed restore backup operation to use default db location if not provided
+- `[Certificates]` various fixed and improvements in handling certificates
+- `[Cluster]` stability improvements
+- `[CSV Export]` add `@id` column to export file when no fields are provided 
+- `[Documents]` throwing better exception if cannot delete a document due to recent change of its collection
+- `[ETL]` fixed handling of attachment deletions in Raven ETL by tracking attachment tombstones and sending 'AttachmentDELETE' command
+- `[Indexing]` fixed the issue with resetting index that had 'Output reduce to the collection' set
+- `[Indexing]` fixed possible index compilation errors caused by usage of 'SelectMany'
+- `[Indexing]` give indexing some time to finalize the batch on database unload
+- `[Indexing]` fixed possible issue when having two the same indexes using `CreateField()`
+- `[Licensing]` fixed issue with updating expired license when license service is temporary unavailable
+- `[Linux]` fixed pipes
+- `[Querying]` fixed possible ODE when querying during index replacement
+- `[Querying]` sorting by score by default if there are boosted fields and no ordering is specified
+- `[Querying]` when 'RQL load' is used, properly detect that value should be taken from index and not from document
+- `[Replication]` added the support for sending missing attachments
+- `[Replication]` fixed issue with preserving document ID casing after resolving a conflict
+- `[Replication]` fixed revisions replication issue
+- `[Replication & Smuggler]` fixed deletion of documents with  attachments after import or replication
+- `[Revisions]` properly creating an attachment revision on revision put
+- `[Setup]` fixed PlatformNotSupported when registering a certificate on OSX 
+- `[Subscriptions]` preventing race condition between one subscription finishing work and the other starting it
+- `[TCP]` fixed TCP protocol version negotiation
+- `[.NET Core]` updated to .NET Core 2.1.2
+
+<hr />
+
+### Client
+
+- `[Conventions]` added convention `OperationStatusFetchMode`
+- `[HTTP]` switched to SocketsHttpHandler
+- `[HTTP]` exposed 'RemoteCertificateValidationCallback' and marked 'ServerCertificateCustomValidationCallback' as obsolete
+- `[Indexes]` fixed various indexing function bugs caused by LINQ conversion
+- `[LINQ]` fixed handling of a query with multiple nested lets 
+- `[LINQ]` fixed query generation when simple member projection is used
+- `[Patching]` support for patching 'uint', 'ulong', 'short' and 'byte'
+- `[Querying]` fixed caching issue for queries having LOAD or INCLUDE
+- `[Session]` `session.Advanced.Exists` should check already deleted ID in a given session
+
+<hr />
+
+### Studio
+
+- various performance and stability fixes
+- layout fixes
+
+## 4.0.5 (40045) - 2018/06/12 {#40045}
+
+### Server
+
+- `[Cluster]` stability improvements
+- `[Cluster]` compatibility with 4.1
+- `[Cluster]` fixed a possible high CPU issue on follower nodes caused by to WebSocket bug in .NET Core
+- `[Cluster]` fixed creation of a database directory on not relevant nodes
+- `[Debug Package]` server-wide package will filter-out disabled databases
+- `[Indexing]` fixed Auto-Index name when group by array is used
+- `[Indexing]` fixed a bug when we would not extend the GroupBy fields properly 
+- `[Indexing]` fixed detection of idle indexes when running in cluster
+- `[Indexing]` fixed indexing of null values in arrays 
+- `[Indexing]` fixed creation and matching of auto map-reduce indexes with different array grouping strategies
+- `[Indexing]` fixed changing the state of an idle index if starts to answer to queries
+- `[Indexing]` fixed edge case for detection of idle indexes
+- `[JSON]` fixed JSON parsing when string property size is exactly 32766
+- `[Logging]` fixed a race condition in the logging 
+- `[Memory]` memory utilization improvements
+- `[Querying]` collection queries will handle distinct properly
+- `[Querying]` collection queries will no longer handle order by random, query will go to Lucene
+- `[Querying]` order by random queries will not be cached on the client
+- `[Querying]` properly caching parameterless queries
+- `[Querying]` improved Auto-Index matching on dynamic queries, avoiding a situation when empty index can be taken instead of a better one when querying by ID
+- `[Querying]` fixed NRE that could happen when `cmpxchg` was used without putting any values prior
+- `[RQL]` Handling NOT as a unary expression - fixes 'in' restriction for empty list when not operators present 
+- `[SQL ETL]` fixed fallback and error notification dismiss
+- Preventing from unloading idle db if there are any active operations on a database
+- Ensuring an unique name of a temp export file for the offline migration
+- Fixed issues with running a server when custom temporary path is specified
+- Server will throw a better exception when there is a 'major' version mismatch between Client API and Server
+
+<hr />
+
+### Client
+
+- `[Changes API]` ForDocumentsOfType is marked as obsolete and not working
+- `[Changes API]` Fixed event leak in DatabaseConnectionState 
+- `[Conventions]` added `PropertyNameConverter`
+- `[Conventions]` added RegisterQueryValueConverter that returns `objects` instead of `string`, marked `string` converter as obsolete
+- `[Headers]` will send major.minor.patch.build in `Raven-Client-Version` header from now on
+- `[Includes]` `Include` with two generics will create prefixed includes
+- `[Indexes]` fixed issues with creating indexes that contain nullable enums and `SaveEnumsAsIntegers` is turned on
+- `[Operations]` fixed issues on Linux to receive the status of the operation
+- `[Projections]` fixed single field  projections
+- `[Querying]` queries using greater than / less than for value types will exclude nulls 
+- `[Subscriptions]` will assert if store is initialized before subscription is opened
+- `[Subscriptions]` support for using constant fields in subscription typed definition
+- fixed serialization / deserialization of entities if using CamelCasePropertyNamesContractResolver
+- fixed possible deadlock when disposing document store if using Changes API
+
+<hr />
+
+### Studio
+
+- `[About]` new design
+- various performance and stability fixes
+- layout fixes
+
+## 4.0.3 (40036) - 2018/04/23 {#40036}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 4.0.2 (40029) in addition with:
+
+### Server
+
+- `[Backup]` Smuggler and Restore operation should take into account the file extension when determining the order of files
+- `[Backup]` unfinished backup files will be marked with '.in-progress' extension
+- `[Backup]` preventing from saving more than one full or snapshot backup in the same folder
+- `[Certificates]` will not longer throw on startup if certificate is expired
+- `[Cluster]` stability improvements
+- `[Configuration]` added 'Storage.MaxScratchBufferSizeInMb'
+- `[Compaction]` more robust
+- `[Indexes]` better error handling on catastrophic failures
+- `[Indexes]` preventing a deadlock that could occur when index was being stopped and side-by-side replacement is in progress
+- `[Indexes]` fixed encryption for large indexes
+- `[Indexes]` fixed possible overflow when AlphaNumeric sorting is being used
+- `[Indexes]` editing side-by-side index now works properly and does not create an invalid index
+- `[Indexes]` preventing from creating an excessive indexing thread after replacing an index
+- `[JSON]` fixed LazyCompressedStringValue conversion
+- `[JSON]` fixed writing large strings
+- `[Linux]` optimized number of fsync calls
+- `[Memory]` fixed memory leak when encrypted database is being used
+- `[Restore]` added ability to disable ongoing tasks after restore
+- `[Settings]` the deployment package now contains `settings.default.json` instead of `settings.json` to prevent accidental overrides when updating the Server
+- `[Setup]` added UNIX file permissions to cluster deployment package
+- `[Setup]` fixed issues with updating expired licenses
+- `[Voron]` stability improvements
+- fixed big floating point numbers handling
+- databases will no longer unload when Changes API connection is opened
+- working directory is set automatically to executable directory on startup
+- updated to .NET Core 2.0.7
+
+<hr />
+
+### Client API
+
+- `[Bulk Insert]` checking if the background task state is not faulty on 'Store' operation to error early
+- `[Caching]` aggressive caching could not work when being mixed with non-aggressive loads
+- `[Conventions]` added UseCompression
+- `[Operations]` fixed missing disposal of Changes API when 'WaitForCompletion' throws timeout exception
+- `[NuGet]` added 'System.Runtime.InteropServices.RuntimeInformation' dependency
+
+<hr />
+
+### Studio
+
+- various performance and stability fixes
+- layout fixes
+
+## 4.0.2 (40029) - 2018/02/26 {#40029}
+
+### Server
+- `[Backup]` fixed S3 integration
+- `[Backup]` during restore database will be disabled to avoid unnecessary loads
+- `[Certificates]` fixed CN extraction
+- `[Cluster]` stability improvements
+- `[Compare Exchange]` fixed compare exchange operation that could cause a server crash
+- `[Indexing]` support for indexing 'short' and 'byte' types
+- `[Indexing]` added System.Globalization using to indexes
+- `[JSON]` better handling for decimals
+- `[JSON]` support for ulong
+- `[macOS]` fixed an issue with starting new threads
+- `[Memory]` fixed 'ArgumentOutOfRangeException' in 'ArenaMemoryAllocator.GrowArena'
+- `[Memory]` better memory management
+- `[Querying]` startsWith queries on Identity property (by default 'Id') only will now be ran directly on storage skipping Lucene and index creation
+- `[RQL]` proper handling for negative numbers
+- `[Setup Wizard]` do not allow multiple '*'
+- `[SNMP]` properly handling the global well-known up-time OID
+- `[SNMP]` the endpoint returning available OIDs for all databases now builds a proper JSON
+- `[SQL ETL]` added 'varchar' and 'nVarchar' methods
+- `[Tombstones]` proper handling of tombstones when document collection is being changed
+- `[Voron]` better recycled journal handling
+- `[Voron]` moved 'Journals' to 'Journals' directory
+- `setup-as-service.ps1` now sets correct access rights to the server folder
+- scripts included in the deployment package are now signed
+<hr />
+### Docker
+- added the ability to pass settings via 'RAVEN_SETTINGS' environment variable
+<hr />
+### Client
+- `[Facets]` support binary operations between T and Nullable&lt;T&gt;, where the non-nullable operand is a nested binary expression in Range Facets
+- `[Indexes]` proper handling for 'int', 'short' and 'byte' types in mapping and reduction functions
+- `[Projections]` cannot use List\\\\Array parameters in projection if the query generates an output function
+- `[Projections]` support loading via 'let' when the load-argument is also defined in a previous 'let' statement
+- `[Projections]` fixed identity property (by default 'Id') projections
+- `[Projections]` fixed identity property (by default 'Id') projections when DocumentQuery.SelectFiels is used
+- `[Querying]` fixed issue with querying using an alias on properties of nested-object arrays
+- `[Querying]` added 'IDocumentQuery' and 'IRawDocumentQuery' extensions that override the 'System.Linq.Enumerables' ones with obsolete attribute explaining that using those methods will materialize query before method is executed and that the execution of the extension method will take place in-memory
+- `[Querying]` implemented 'IDocumentQuery.Any' and 'IAsyncDocumentQuery.AnyAsync'
+- `[Session]` Setting custom metadata on the object should retain it after SaveChanges call
+- `[Session]` fixed the ability to modify a document and delete an attachments for that document in the same session
+- `[Smuggler]` is now exposed in 'IDocumentStore' interface via 'Smuggler' property
+- `[Patching]` fixed 'Enum' handling
+- method `WaitForIndexesAfterSaveChanges` should honor 'throwOnTimeout' flag when set to false
+<hr />
+### Studio 
+- `[Server Dashboard]` fixed total physical memory calculation
+- `[Server Dashboard]` fixed free disk space calculation on Linux
+- `[Server Dashboard]` fixed high memory usage when dashboard is opened for few hours
+- creating documents without '|' or '/' will set '@empty' collection now
+- fixed various CSS/JS bugs
+<hr />
+### Licensing
+- `[Developer]` introduced a developer license
+
+## 4.0.0 (40026) - 2018/02/06 {#40026}
+
+### RavenDB Can be Used on the Following Platforms:
+- Windows x64
+- Windows x86
+- Ubuntu 16.04 x64
+- Raspberry Pi
+- Docker (Ubuntu 16.04 and Windows Nano Server)
+
+### Performance
+- Over 10X improves performance from a massive code rewrite
+- A redesigned indexing process
+- More efficient document processing
+- Optimized memory management
+- A blittable JSON format
+
+### Clustering
+- Intelligent clustering with dynamic node distribution 
+- Automatic master-master setup between nodes
+- Cluster-wide tasks capability (External Replication, RavenDB ETL, SQL ETL, Backups, Subscriptions)
+
+### Security
+- Easy to configure Setup Wizard and Studio
+- Authentication and authorization based on X.509 certificates
+- Secured connectivity using TLS 1.2
+
+### Encryption
+- RavenDB 4.0 uses a modern 'ChaCha20-Poly1305' algorithm from a well-known battle-tested encryption library called 'libsodium'
+
+### Querying & Indexing
+- A new and improved SQL-like Raven Query Language (RQL)
+- Improved query optimizer
+- Extended functionalities for Auto-Indexes
+
+### Attachments
+- Attachments are now integrated into RavenDB and are bound to documents. They can be processed transactionally with other documents
+
+### Storage
+- We removed Esent and replaced it with our in-house storage engine, Voron
+- Voron was developed specifically to meet the unique needs of RavenDB
+
+<hr />
+
+### Studio
+- A redesigned User Interface (UI)
+- A new Setup Wizard for convenient configuration
+- A server dashboard
+- Index performance graphs
+
+<hr />
+
+### Clients
+- .NET
+- Java
+- Node.js
+- Ruby
+
+<hr />
+
+### Licensing
+- A new FREE Community License eligible for commercial production use
+

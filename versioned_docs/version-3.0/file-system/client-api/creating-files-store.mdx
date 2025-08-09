@@ -1,0 +1,69 @@
+---
+title: "Creating a files store"
+hide_table_of_contents: true
+sidebar_label: Creating a files store
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Creating a files store
+
+When you create a files store object, you have to provide a server URL and a default file system name (RavenFS does not have `<system>` file system):
+
+<TabItem value="create_fs_1" label="create_fs_1">
+<CodeBlock language="csharp">
+{`using (IFilesStore fsStore = new FilesStore()
+\{
+	Url = "http://localhost:8080",
+	DefaultFileSystem = "NorthwindFS"
+\}.Initialize())
+\{
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+By default, the file system will be created if it doesn't exist. If you want to overwrite that behavior, look at the optional parameters of the `Initialize` method.
+
+## Initialization and disposal
+
+Note that just as the `DocumentStore` object, the created `FilesStore` instance needs to be explicitly initialized by calling the `Initialize` method.
+It returns the `IFilesStore` object which ensures full access to the manage files. Note that the whole code is placed inside the `using` statement because the returned instance implements the `IDisposable`. In a real case scenario the files store should be disposed when an application shuts down. 
+
+## Singleton
+
+There should be only one instance of the `IFilesStore` created per application (singleton). The files store is a thread safe object and its typical initialization looks as follows:
+
+<TabItem value="create_fs_2" label="create_fs_2">
+<CodeBlock language="csharp">
+{`public class FilesStoreHolder
+\{
+	private static readonly Lazy<IFilesStore> store = new Lazy<IFilesStore>(CreateStore);
+
+	public static IFilesStore Store
+	\{
+		get \{ return store.Value; \}
+	\}
+
+	private static IFilesStore CreateStore()
+	\{
+		IFilesStore fsStore = new FilesStore()
+		\{
+			Url = "http://localhost:8080",
+			DefaultFileSystem = "NorthwindFS"
+		\}.Initialize();
+
+		return fsStore;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+

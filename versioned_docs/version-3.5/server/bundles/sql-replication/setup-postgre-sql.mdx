@@ -1,0 +1,39 @@
+---
+title: "Bundle: SQL Replication: PostgreSQL"
+hide_table_of_contents: true
+sidebar_label: PostgreSQL
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: SQL Replication: PostgreSQL
+
+To setup a replication to PostgreSQL following steps need to be done:
+
+- Download Npgsql from [here](https://github.com/npgsql/npgsql/releases).
+- Copy `Npgsql.dll` to _Plugins_ directory.
+- Add following configuration to your **server** configuration file (`Raven.Server.exe.config` or `Web.config`)
+
+<TabItem value="xml" label="xml">
+<CodeBlock language="xml">
+{`<system.data>
+	<DbProviderFactories>
+		<add name="Npgsql Data Provider" invariant="Npgsql" support="FF" description=".Net Framework Data Provider for Postgresql Server" type="Npgsql.NpgsqlFactory, Npgsql, Version=3.0.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7" />
+	</DbProviderFactories>
+</system.data>
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Remember that the version in provided factory must match the DLL version that you downloaded. Please change the `3.0.3.0` to the appropriate version if needed.
+</Admonition>
+
+- Restart the server and setup replication according to your needs. Basic setup can be found [here](../../../server/bundles/sql-replication/basics.mdx#example).
+

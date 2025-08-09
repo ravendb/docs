@@ -1,0 +1,92 @@
+---
+title: "Lucene Score"
+hide_table_of_contents: true
+sidebar_label: Lucene Score
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Lucene Score
+
+Every indexed RavenDB document has an associated score value that has been calculated by Lucene. This value is really important part of the Lucene engine
+because it has the influence on the search results relevancy. The basic idea is that the greater score value is the more relevant document is to a query. The entire mechanism is managed
+by Lucene so a user does not need to care and even know about. However if you want to get more info about Lucene scoring, please follow [this link](http://lucene.apache.org/core/3_6_0/scoring.html).
+
+As the RavenDB user you are able to retrieve the calculated score by asking about document metadata and using this value to order by. Let's define an index and store some items:
+
+<TabItem value="index_def_and_storing_items" label="index_def_and_storing_items">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("Articles/ByText", new IndexDefinitionBuilder<Article, Article>
+\{
+	Map = articles => from article in articles select new \{ article.Text \},
+	Indexes =
+	\{
+		\{ x => x.Text, FieldIndexing.Analyzed \}
+	\}
+\});
+
+using (var s = store.OpenSession())
+\{
+	s.Store(new Article() \{Text = "Lorem ipsum is simply text."\}); // articles/1
+	s.Store(new Article() \{Text = "Ipsum lorem ipsum is simply text. Lorem Ipsum."\}); // articles/2
+	s.Store(new Article() \{Text = "Lorem ipsum. Ipsum is simply text."\}); // articles/3
+	s.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In order to sort by Lucene score value use `OrderByScore` extension method (import `Raven.Client` namespace). To see the score calculated by Lucene 
+get the document metadata *in the same session scope* as the executed query and take *Temp-Index-Score* key. 
+
+<TabItem value="order_by_and_get_score" label="order_by_and_get_score">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+	var articles = session.Query<Article>("Articles/ByText")
+						  .Customize(x => x.WaitForNonStaleResults())
+						  .Where(x => x.Text == "ipsum")
+						  .OrderByScore()
+						  .ToList();
+
+	var articlesWithLuceneScore = articles.Select(x =>
+		new
+		\{
+			x.Id,
+			x.Text,
+			Score = session.Advanced.GetMetadataFor(x).Value<double>("Temp-Index-Score"),
+		\}).ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The articles in the sample code above will be returned in the following order:
+
+```json 
+{ 
+	Id = "articles/2", 
+	Text = "Ipsum lorem ipsum is simply text. Lorem Ipsum.", 
+	Score = 1.2337708473205566 
+}
+ 
+{ 
+	Id = "articles/3",
+	Text = "Lorem ipsum. Ipsum is simply text.", 
+	Score = 1.0073696374893188 
+}
+ 
+{ 
+	Id = "articles/1", 
+	Text = "Lorem ipsum is simply text.", 
+	Score = 0.712317943572998 
+}
+```
+
+Note that the more times the word *ipsum* appears in the article the higher *Score* factor the document has.

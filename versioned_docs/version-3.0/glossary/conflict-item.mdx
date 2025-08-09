@@ -1,0 +1,26 @@
+---
+title: "Glossary: ConflictItem"
+hide_table_of_contents: true
+sidebar_label: ConflictItem
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: ConflictItem
+
+RavenFS client API class that represents a synchronization conflict.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **FileName** | string | The file name |
+| **RemoteServerUrl** | string | The remote (source) file system URL |
+| **CurrentHistory** | IList&lt;HistoryItem&gt;  | The history of conflicted file on the destination side |
+| **RemoteHistory** | IList&lt;HistoryItem&gt; |  The history of file on the source side that was attempted to be synchronized |

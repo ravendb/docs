@@ -1,0 +1,59 @@
+---
+title: "Create Multi-Map Index"
+hide_table_of_contents: true
+sidebar_label: Create Multi Map Index
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create Multi-Map Index
+<Admonition type="note" title="Note">
+
+* A **Multi-Map index** allows to index data from _multiple_ different collections.  
+
+* RavenDB will generate a _single_ Multi-Map index.  
+  The results of querying the Multi-Map index will include data from _all_ these collections.  
+
+* Multi-Map indexes require that all the Map functions defined have the _same_ output structure.  
+
+* In this page:  
+  * [Creating Multi-Map index](../../../studio/database/indexes/create-map-index.mdx#edit-index-view)  
+</Admonition>
+## Creating Multi-Map index
+
+**Define a Map Function:**  
+![Figure 1. Initial Map Function](./assets/create-multi-map-index-1.png)  
+
+<Admonition type="note" title="Note">
+
+The `Collection` field indexed in the above example is not mandatory but can be useful upon querying.
+</Admonition>
+
+
+
+**Add another Map Function:**  
+![Figure 2. Add Another Map Function](./assets/create-multi-map-index-2.png)  
+
+<Admonition type="note" title="Note">
+
+* Any number of additional Map functions can be added.  
+
+* Each added Map should have the **same** output fields.  
+  i.e. In the above example, the common indexed fields are: `Name` & `Collection`.  
+
+* So when querying on this Multi-Map index, results will come from **both** Employees collection and Companies collection.  
+
+* [Index field options](../../../studio/database/indexes/create-map-index.mdx#index-field-options), 
+  [Configuration](../../../studio/database/indexes/create-map-index.mdx#configuration) & 
+  [Additional Sources](../../../studio/database/indexes/create-map-index.mdx#additional-sources) 
+  can be defined for the Multi-Map index in the same way as done for a [Simple Map Index](../../../studio/database/indexes/create-map-index.mdx#create-multi-map-index).  
+</Admonition>
+
+
+

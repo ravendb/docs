@@ -1,0 +1,450 @@
+---
+title: "Indexes: Indexing Related Documents"
+hide_table_of_contents: true
+sidebar_label: Indexing Related Documents
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Indexes: Indexing Related Documents
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To extend indexing capabilities and simplify many scenarios, we have introduced the possibility for indexing related documents.
+
+## Example I
+
+Let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
+
+Without this feature, you would have to create a fairly complex multiple map-reduce index. This is why the `LoadDocument` function was introduced.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Products_ByCategoryName : AbstractIndexCreationTask<Product>
+{
+    public class Result
+    {
+        public string CategoryName { get; set; }
+    }
+
+    public Products_ByCategoryName()
+    {
+        Map = products => from product in products
+                          select new Result
+                          {
+                              CategoryName = LoadDocument<Category>(product.Category).Name
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutIndexesOperation
+(
+    new IndexDefinition
+    {
+        Name = "Products/ByCategoryName",
+        Maps =
+        {
+            @"from product in products
+            select new
+            {
+                CategoryName = LoadDocument(product.Category, ""Categories"").Name
+            }"
+        }
+    }
+));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="csharp">
+{`public class Products_ByCategoryName : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string CategoryName { get; set; }
+    }
+
+    public Products_ByCategoryName()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('products', function(product ){
+                return {
+                    CategoryName : load(product .Category, 'Categories').Name,
+                }
+            })"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we will be able to search for products using the `CategoryName` as a parameter:
+
+<TabItem value="indexing_related_documents_7" label="indexing_related_documents_7">
+<CodeBlock language="csharp">
+{`IList<Product> matchingProducts = session
+    .Query<Products_ByCategoryName_NoTracking.IndexEntry, Products_ByCategoryName_NoTracking>()
+    .Where(x => x.CategoryName == "Beverages")
+    .OfType<Product>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Our next scenario will show us how indexing of more complex relationships is also trivial. Let's consider the following case:
+
+<TabItem value="indexing_related_documents_4" label="indexing_related_documents_4">
+<CodeBlock language="csharp">
+{`public class Authors_ByBooks : AbstractIndexCreationTask<Author>
+\{
+    public class IndexEntry
+    \{
+        public IEnumerable<string> BookNames \{ get; set; \}
+    \}
+
+    public Authors_ByBooks()
+    \{
+        Map = authors => from author in authors
+            select new IndexEntry
+            \{
+                // For each Book ID, call LoadDocument and index the book's name
+                BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+            \};
+        
+        // Since NoTracking was Not specified,
+        // then any change to either Authors or Books will trigger reindexing 
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To create an index with `Author Name` and list of `Book Names`, we need do the following:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Authors_ByNameAndBooks : AbstractIndexCreationTask<Author>
+{
+    public class Result
+    {
+        public string Name { get; set; }
+
+        public IEnumerable<string> Books { get; set; }
+    }
+
+    public Authors_ByNameAndBooks()
+    {
+        Map = authors => from author in authors
+                         select new Result
+                         {
+                             Name = author.Name,
+                             Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+                         };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutIndexesOperation
+(
+    new IndexDefinition
+    {
+        Name = "Authors/ByNameAndBooks",
+        Maps =
+        {
+            @"from author in docs.Authors
+            select new
+            {
+                Name = author.Name,
+                Books = author.BookIds.Select(x => LoadDocument(x, ""Books"").Id)
+            }"
+        }
+    }
+));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="csharp">
+{`public class Authors_ByNameAndBookNames : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string Name { get; set; }
+
+        public IList<string> Books { get; set; }
+    }
+
+    public Authors_ByNameAndBookNames()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('Author', function(a){
+                return {
+                    Name: a.Name,
+                    Books: a.BooksIds.forEach(x => load(x, 'Book').Name)
+                }
+            })"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="indexing_related_documents_8" label="indexing_related_documents_8">
+<CodeBlock language="csharp">
+{`IList<Author> results = session
+    .Query<Authors_ByNameAndBooks.Result, Authors_ByNameAndBooks>()
+    .Where(x => x.Name == "Andrzej Sapkowski" || x.Books.Contains("The Witcher"))
+    .OfType<Author>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Indexes are updated automatically when related documents change.
+</Admonition>
+
+<Admonition type="warning" title="Warning">
+Using the `LoadDocument` adds a loaded document to the tracking list. This may cause very expensive calculations to occur, especially when multiple documents are tracking the same document.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To extend indexing capabilities and simplify many scenarios, we have introduced the possibility for indexing related documents.
+
+## Example I
+
+Let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
+
+Without this feature, you would have to create a fairly complex multiple map-reduce index. This is why the `LoadDocument` function was introduced.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public static class Products_ByCategoryName extends AbstractIndexCreationTask {
+    public Products_ByCategoryName() {
+        map = "docs.Products.Select(product => new { " +
+            "    CategoryName = (this.LoadDocument(product.Category, \\"Categories\\")).Name " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Products/ByCategoryName");
+indexDefinition.setMaps(Collections.singleton("from product in products " +
+    "   select new " +
+    "   { " +
+    "       CategoryName = LoadDocument(product.Category, \\"\\"Categories\\"\\").Name " +
+    "   }"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="java">
+{`public static class Products_ByCategoryName extends AbstractJavaScriptIndexCreationTask {
+    public Products_ByCategoryName() {
+        setMaps(Sets.newHashSet("map('products', function(product ){\\n" +
+            "            return {\\n" +
+            "                CategoryName : load(product .Category, 'Categories').Name,\\n" +
+            "            }\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we will be able to search for products using the `CategoryName` as a parameter:
+
+<TabItem value="indexing_related_documents_7" label="indexing_related_documents_7">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByCategoryName.class)
+    .whereEquals("CategoryName", "Beverages")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Our next scenario will show us how indexing of more complex relationships is also trivial. Let's consider the following case:
+
+<TabItem value="indexing_related_documents_4" label="indexing_related_documents_4">
+<CodeBlock language="java">
+{`public static class Book \{
+    private String id;
+    private String name;
+
+    public String getId() \{
+        return id;
+    \}
+
+    public void setId(String id) \{
+        this.id = id;
+    \}
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+\}
+
+public static class Author \{
+    private String id;
+    private String name;
+    private List<String> bookIds;
+
+    public String getId() \{
+        return id;
+    \}
+
+    public void setId(String id) \{
+        this.id = id;
+    \}
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public List<String> getBookIds() \{
+        return bookIds;
+    \}
+
+    public void setBookIds(List<String> bookIds) \{
+        this.bookIds = bookIds;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To create an index with `Author Name` and list of `Book Names`, we need do the following:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public static class Authors_ByNameAndBooks extends AbstractIndexCreationTask {
+    public Authors_ByNameAndBooks() {
+        map = "docs.Authors.Select(author => new { " +
+            "    name = author.name, " +
+            "    books = author.bookIds.Select(x => (this.LoadDocument(x, \\"Books\\")).name) " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Authors/ByNameAndBooks");
+indexDefinition.setMaps(Collections.singleton("from author in docs.Authors " +
+    "     select new " +
+    "     { " +
+    "         name = author.name, " +
+    "         books = author.bookIds.Select(x => LoadDocument(x, \\"\\"Books\\"\\").id) " +
+    "     }"));
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="java">
+{`public static class Authors_ByNameAndBookNames extends AbstractJavaScriptIndexCreationTask {
+    public Authors_ByNameAndBookNames() {
+        setMaps(Sets.newHashSet("map('author', function(a){\\n" +
+            "            return {\\n" +
+            "                name: a.name,\\n" +
+            "                books: a.booksIds.forEach(x => load(x, 'Book').name)\\n" +
+            "            }\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="indexing_related_documents_8" label="indexing_related_documents_8">
+<CodeBlock language="java">
+{`List<Author> results = session
+    .query(Author.class, Authors_ByNameAndBooks.class)
+    .whereEquals("name", "Andrzej Sapkowski")
+    .whereEquals("books", "The Witcher")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Indexes are updated automatically when related documents change.
+</Admonition>
+
+<Admonition type="warning" title="Warning">
+Using the `LoadDocument` adds a loaded document to the tracking list. This may cause very expensive calculations to occur, especially when multiple documents are tracking the same document.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Hierarchical Data](../indexes/indexing-hierarchical-data)
+- [Indexing Spatial Data](../indexes/indexing-spatial-data)
+- [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
+
+### Querying
+- [Basics](../indexes/querying/basics)
+
+
+-->

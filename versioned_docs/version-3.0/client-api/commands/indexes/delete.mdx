@@ -1,0 +1,128 @@
+---
+title: "Commands: Indexes: Delete"
+hide_table_of_contents: true
+sidebar_label: Delete
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Indexes: Delete
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**DeleteIndex** is used to remove an index from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`void DeleteIndex(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to delete |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.DeleteIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**DeleteIndex** is used to remove an index from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`public void deleteIndex(final String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to delete |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().deleteIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**DeleteIndex** is used to remove an index from a database.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes/\{indexName\} \\
+	-X DELETE 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description  |
+| ------------- | -- | ---- |
+| **indexName** | Yes | name of an index to delete |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No content |
+
+---
+
+### Example I
+
+Delete index `Orders/Totals`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+
+<!---
+- [GetIndex](../../../client-api/commands/indexes/get)
+- [PutIndex](../../../client-api/commands/indexes/put)
+
+-->

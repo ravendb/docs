@@ -1,0 +1,89 @@
+---
+title: "How to get all subscriptions?"
+hide_table_of_contents: true
+sidebar_label: How to get all subscriptions?
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#How to get all subscriptions?
+
+In order to get info about all existing subscriptions we exposed the following method:
+
+<TabItem value="get_subscriptions_1" label="get_subscriptions_1">
+<CodeBlock language="csharp">
+{`//	List<SubscriptionConfig> GetSubscriptions(int start, int take, string database = null);
+//
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Indicates how many data subscriptions should be skipped. |
+| **take** | int | Indicates how many data subscriptions should be taken. |
+| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| List&lt;SubscriptionConfig&gt; | Configurations of existing subscriptions providing such information as: id, criteria, last acknowledged Etag, times of sending last batch and client activity.|
+
+
+<TabItem value="get_subscriptions_2" label="get_subscriptions_2">
+<CodeBlock language="csharp">
+{`//	var configs = store.Subscriptions.GetSubscriptions(0, 10);
+//
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+#How to get all subscriptions?
+
+In order to get info about all existing subscriptions we exposed the following method:
+
+<TabItem value="get_subscriptions_1" label="get_subscriptions_1">
+<CodeBlock language="java">
+{`List<SubscriptionConfig> getSubscriptions(int start, int take);
+
+List<SubscriptionConfig> getSubscriptions(int start, int take, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Indicates how many data subscriptions should be skipped. |
+| **take** | int | Indicates how many data subscriptions should be taken. |
+| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| List&lt;SubscriptionConfig&gt; | Configurations of existing subscriptions providing such information as: id, criteria, last acknowledged Etag, times of sending last batch and client activity.|
+
+
+<TabItem value="get_subscriptions_2" label="get_subscriptions_2">
+<CodeBlock language="java">
+{`List<SubscriptionConfig> configs = store.subscriptions().getSubscriptions(0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

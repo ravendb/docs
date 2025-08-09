@@ -1,0 +1,368 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 4.1.10 (41024) - 2019/11/25 {#41024}
+
+### Server
+
+- `[Indexing / Voron]` Fixed unhandled case of leafs compression which resulted in map-reduce indexing error
+- `[Replication]` Fixed replication looping when having faulty replication configuration with two replication channels from the same source to the same destination
+
+## 4.1.9 (41023) - 2019/10/14 {#41023}
+
+Marking last Patch build (4.1.9-patch-41022) as Stable
+
+## 4.1.8 (41021) - 2019/08/26 {#41021}
+
+### Server
+- `[Cluster]` stability improvements
+- `[Cluster]` promoting and demoting node should be a ClusterAdmin, not Operator operation
+- `[Indexing]` fixed the possibility to encounter stale indexes when node was added to a cluster database group
+- `[Indexing]` output of map-reduce indexing functions should not use the same property accessor cache, because it might not contain necessary group by fields needed 
+- `[RQL]` detecting properly artificial projection e.g. 'from Orders as o select o'
+- `[Voron]` fixed "attempted to delete value but it wasn't in index" bug
+- `[Voron]` fixed "tried to released page X but couldn't find it in the allocation section" bug that could occur on 32-bit systems
+<hr />
+### Client API
+- `[Indexes]` added 'System.Text.RegularExpressions' to a list of well-known server-side assemblies, so parameters from methods like 'Regex.IsMatch' will not be converted to strings
+- `[Patching]` proper handling when `session.Advanced.Patch` is used on a collection, will not duplicate records in collection after `SaveChanges`
+- `[Subscriptions]` opening a session will skip tracking revisions if this is a subscription that retrieves revisions
+
+## 4.1.7 (41016) - 2019/06/27 {#41016}
+
+### Server
+
+- `[Compare Exchange]` Added ability to store `null` as compare exchange value
+- `[Cluster]` Stability improvements
+- `[CSV]` Fixed missing Raven-Clr-Type in Export/Import CSV 
+- `[Debugging]` Added `/cluster/topology` to the debug package info
+- `[Indexing]` Fixed cleanup on idle index
+- `[Indexing]` Recreating index writer on EarlyOutOfMemoryException 
+- `[Patching]` Fixed memory leak 
+- `[Replication]` Fixed conflict creation of HiLo documents
+- `[Suggestions]` Fixed index writer recreation after indexing batch
+- `[Setup Wizard]` Fixed port issue when setting up cluster
+- `[Voron]` Fixed error handling in async transactions 
+- Fixed possible race condition during server initialization when using HTTPS
+
+
+<hr />
+
+### Client
+
+- `[Configuration]` Preventing multiple calls to configuration/client endpoint
+- `[Projections]` Fixed calculations on integers
+- `[RQL]` Marking 'limit' and 'offset' as reserved keywords 
+- `[Querying]` Fixed custom converters usage when serializing query parameters
+- `[Session]` Fixed changes detection of `session.Advanced.WhatChanged()` 
+- `[Session]` Fixed session clearing
+
+<hr />
+
+###Studio 
+
+- `[Licensing]` Added Renew option if license is expired
+- `[Cluster]` Fixed displayed version after server update on Cluster view
+- `[Cluster]` Fixed Cluster view constantly showing Voting in Progress
+
+## 4.1.6 (41014) - 2019/05/21 {#41014}
+
+### Server
+
+- `[Attachments]` preventing the insertion of a document with attachment if those do not exist
+- `[Cluster]` fixed possible loop that could occur during database deletion when database was removed immediately after it was created
+- `[Cluster]` stability improvements
+- `[Encryption]` better memory management when database is being encrypted
+- `[Indexing]` proper change detection when additional sources are changing
+- `[Migration]` fixed RavenFS NRE and context misuse
+- `[Patching]` fixed issue with rounding when overwriting ints with decimals
+- `[Patching]` fixed possibility of endless loop when no modifications are being applied by the patch
+- `[Patching]` patching by index query should properly delay the cancellation token
+- `[Querying]` fixed 'TotalResults' value when streaming using collection query
+- `[Querying]` optimized Lucene query generation, by removing redundant parathesis, which reduces the computation power needed by the Lucene to process the query
+- `[Replication]` fixed 'item with the same key has already been added' issue
+- `[Subscriptions]` added the ability to disable subscription w/o a name
+- `[Voron]` fixing syncing issue due to missing handling of empty journal
+- `[.NET Core]` updated to 2.1.11
+
+<hr />
+
+### Embedded
+
+- 'WaitForUserToContinueTheTest' will only trigger when debugger is attached
+
+<hr />
+
+### Client
+
+- `[Caching]` aggressive cache now has an option to 'do not track changes' via Changes API (passive mode)
+- `[Caching]` properly update the cache generation if the document wasn't modified
+- `[Conventions]` added `AggresiveCache` conventions for 'Duration' and 'Mode'
+- `[Memory]` fixed possible memory leaks when Changes API is used or change detection is executed
+- `[Patching]` patching a field with 'null' value should not throw 'NullReferenceException'
+- `[Projections]` using 'id()' in map-reduce indexes, instead of 'Id' to let decide the server-side from where the identifier should be retrieved
+- `[Querying]` added 'SearchOperator' parameter to 'Search' method
+- `[Querying]` parameters should not use the convention serializer
+- `[Session]` using read balance behavior from request executor, so it can be properly injected by the server-side
+
+## 4.1.5 (41013) - 2019/04/15 {#41013}
+
+### Server
+- `[Backups]` fixed calculation if incremental backup should have been started when only Compare Exchange and/or Identities were changed
+- `[Cluster]` stability improvements
+- `[Cluster]` fixed possibility of database hanging in 'pending for deletion' progress
+- `[Cluster]` prevent adding node to a cluster when leader is initialized with port 0 (random)
+- `[Documents]` better validation for document ID, counter & attachment name sizes
+- `[ETL]` fixed failover in ETL that could occur when node was no relevant for this operation
+- `[ETL]` fixed the possibility of ETL hanging when too many counters were replicated at once
+- `[Indexing]` fixed possible NRE when defining Output Collection in JavaScript indexes
+- `[Indexing]` better index name validation
+- `[Indexing]` added support for `Count()` method, previously only `Count` property was supported
+- `[Indexing]` optimize querying, by reusing and refreshing the IndexReader, not opening a new one after each indexing batch
+- `[Indexing]` filtering-out terms that do not have any matching documents anymore
+- `[Indexing]` fixed issue with switching back index to normal operation from low-memory mode
+- `[JavaScript]` fixed possibility of non-disposing the blittable JSON objects, when patching script was throwing an exception
+- `[Subscriptions]` limited the maximum send batch size to 32MB on x64 and 4MB on x86 machines
+- `[Subscriptions]` fixed the possibility of an invalid Subscription state in non-leader nodes
+- `[Replication]` fixed Counter replication discrepancies
+- `[Replication]` fixed missing Attachment handling in Replication that could case endless repeats of replicationbatches in certain cases
+- `[RQL]` support for 'exact' in 'startsWith' and 'endsWith'
+- `[Voron]` fixed possible 'UnauthorizedAccessException' that could happen during disposal or deletion of a database of an index
+- `[.NET Core]` updated to .NET Core 2.1.10
+<hr />
+### Client API
+- `[Compare Exchange]` correctly escape characters in URLs
+- `[LINQ]` taking into account 'PropertyNameAttribute' from JSON.NET when converting LINQ to RQL
+- `[Projections]` fixed issue with projecting array length to custom projection class
+- `[Projections]` fixed issue with projecting identity of sub-collection object
+- `[Projections]` properly handling counter names with spaces
+- `[Projections]` fixed issue with projections failing when there are multiple loads with nested sibling lists
+- `[Querying]` support for 'exact' in 'StartsWith' and 'EndsWith'
+- `[Session]` state of Session will be cleared only after successful `SaveChanges` operation
+- `[Subscriptions]` fixed issue with retrieving subscription information via 'GetOngoingTaskInfoOperation'
+- fixed possible StackOverflowException that could occur rarely during Database deletion when Client tried to switch to a different node
+<hr />
+### Studio
+- `[Indexing]` added 'LowerCaseWhitespaceAnalyzer' to the list of analyzers
+- `[Storage]` added Storage Report for Server Store
+- reduced CPU usage needed for 'Server Dashboard View'
+- fixed memory leak in 'Server Dashboard View'
+- fixed caching issue with Studio files
+
+## 4.1.4 (41010) - 2019/02/13 {#41010}
+
+### Server
+- `[Cluster]` Fixed logging of exceptions
+- `[Compaction]` Fixed compaction on 32 bits
+- `[Compare Exchange]` Deleting compare exchange entries on a database deletion
+- `[Indexing]` Fixed edge case in data compression of map-reduce indexes
+- `[Indexing]` Added support for the usage of `Normalize()` method on string values
+- `[Indexing]` Fixed indexing of deleted documents
+- `[Replication]` Fixed database change vector update if there are conflicts
+- `[Replication]` Fixed handling of conflicted revisions
+- `[Replication]` Fixed possible AccessViolationException when replicating huge batch
+- `[Replication]` Fixed replication of revisions
+- `[Setup Wizard]` Fixed continuation of cluster setup from a ZIP file
+- `[Smuggler]` Fixed possible NRE during import of tombstones
+- `[Smuggler]`] Fixed import if only revisions are loaded
+- `[.NET Core]` Updated to .NET Core 2.1.8
+<hr />
+### Tools
+- `[Voron Recovery]` Disabled data file syncing during the recovery
+<hr />
+### Studio
+- Added view for Transaction Record / Replay feature
+
+## 4.1.3 (41007) - 2018/11/19 {#41007}
+
+### Server
+
+- `[Cluster]` Fixed unexpected ConcurrencyException when using optimistic concurrency with deletions
+- `[Cluster]` Fixed possible high CPU issue when cluster loses the leader
+- `[Configuration]` Renamed Storage.OnCreateDirectory options to Storage.OnDirectoryInitialize
+- `[Debug]` Added more details to Debug Package
+- `[ETL]` Improved validation of added ETL tasks
+- `[Indexing]` Fixed indexing of large terms when using collation analyzer
+- `[Indexing]` Fixed index replacement handling
+- `[Indexing]` Better handling of EarlyOutOfMemoryException in indexing process
+- `[Indexing]` Improved memory allocation detection in indexing process
+- `[Indexing]` Fixed disposal of temp files created during indexing
+- `[Logging]` Disabled logging warning when reducing the size of compression buffers file when db is idle
+- `[Patching]` Clearing script runners cache when running in low memory
+- `[Querying]` Fixed not contains queries on empty collections 
+- `[Querying]` Fixed in and between queries to take into account if index does not have 'exact' set on field 
+- `[Querying]` Fixed loading of empty stored fields in projections 
+- `[Querying]` Removed optimization of sort only queries
+- `[Subscriptions]` Protocol version detection to properly work against 4.0 version of the client
+- `[Traffic Watch]` Better tracking of failed queries
+- `[Smuggler]` Fixed @flags metadata when migrating from another database but skipping revisions or counters
+- `[Smuggler]` Fixed export of large counter values
+- `[Voron]` Fixed condition allowing to flushing when we a database is idle
+- `[Voron]` Fixed cleanup of recycled scratch buffers only when there is no open read transaction that is still using it 
+- `[Smuggler]` Added the ability to filter out attachments or counters when doing smuggler import or export
+- `[.NET Core]` Updated to .NET Core 2.1.6
+
+<hr />
+
+### Client
+
+- `[Cache]` Fixed aggressive caching for POST requests
+- `[Patching]` Added `BatchPatchCommandData` command 
+- `[Projections]` Fixed JS projections with dates
+- `[Smuggler]` Fixed returning progress of operations
+
+<hr />
+
+### Studio
+
+- `[Connection Strings]` Fixed detection of connection string can be removed
+- `[Notifications]` Delete by collection will display details in notification panel
+- `[Setup Wizard]` Setup Wizard was failing when we were not creating a new cluster but Studio Environment was set 
+
+## 4.1.2 (41004) - 2018/10/15 {#41004}
+
+### Server
+
+- `[Backups]` added the ability to skip indexes importing during creation database from backup 
+- `[Certificates]` better certificate handling
+- `[Configuration]` new 'Storage.PrefetchBatchSizeInKb' and 'Storage.PrefetchResetThresholdInGb' configuration option
+- `[Cluster]` stability improvements
+- `[CPU]` fixed high CPU usage during idle state
+- `[Embedded]` on start command line arguments are cloned to avoid adding internal arguments to user defined options
+- `[Embedded]` in ASP.NET the 'AppContext.BaseDirectory' is not poiting to 'bin' folder, because of that if server file is not found in that location, also 'bin' will be checked
+- `[ETL]` properly handling multiple ETL scripts
+- `[ETL]` better detection for empty transformations
+- `[ETL]` better SQL ETL database connection handling
+- `[ETL]` added 'deleteDocumentsBehavior' method for generic deletion handling
+- `[Indexing]` added 'CreateField' that contains all variety of options for advanced usage
+- `[Indexing]` when 'default field options' are defined then 'default field values' will not be removed per each field for proper inheritance handling
+- `[Indexing]` fixed possible IndexOutOfRange in 'LastIndexOf' and 'LastIndexOfAny' string extensions in indexing functions
+- `[Indexing]` support for grouping by nested field values
+- `[Indexing]` fixed possible map-reduce error due to unhandled case in the reduce phase
+- `[Indexing]` fixed the possibility of skipping documents during indexing when in low memory condition and references are changed in meanwhile
+- `[Linux]` retry on EINVAL pwrite fail if cifs/nfs mount
+- `[Memory]` adjustments in memory utilization and management
+- `[Patching]` fixed issue with parsing and patching stored indexes values
+- `[Patching]` fixed null propagation on array methods
+- `[Querying]` fixed issues with sort-only queries not returning proper number of results or returning duplicates
+- `[Querying]` using 'group by' on an index query will result in an error
+- `[Querying]` support for 'fuzzy'
+- `[Querying]` support for 'proximity'
+- `[Storage]` better prefetching behavior
+- `[Traffic Watch]` added request body content
+- `[Transactions]` support for transaction recording
+- `[.NET Core]` updated to 2.1.5
+
+<hr />
+
+### Experimental
+
+- `[Cluster Transactions]` fixed issue with executing transaction on a database that was created in version 4.0.x
+- `[JavaScript Indexes]` added 'CreateField' that contains all variety of options for advanced usage
+
+<hr />
+
+### Client
+
+- `[JSON]` fixed change detection when original value was an array and new one is an object with '$type' property
+- `[Operations]` not setting 'DocumentStore.Database' will no longer cause DeleteByQueryOperation&lt;TEntity&gt; to throw
+- `[Patching]` 'session.Advanced.Increment' will generate a patch that checks if the original value is 'null' before concatenating the string
+- `[Projections]` support for a predicate in LINQ Count
+- `[Projections]` fixed Min/Max behavior on filtered empty collections
+- `[Projections]` ensure 'null' coalescing has parenthesis
+- `[Smuggler]` fixed issues in smuggler when no default database is set in 'DocumentStore'
+- `[Store]` storing 'new object()' should not set any collection, it should go to '@empty' one
+
+<hr />
+
+### Studio
+
+- various performance and stability fixes
+- layout fixes
+
+## 4.1.1 (41003) - 2018/09/14 {#41003}
+
+### Server
+
+- `[Backups]` support for creation of database from legacy 'ravendb-incremental-dump' files
+- `[Certificates]` fixed cluster connection issues that could occur after automatic certificate replacement 
+- `[Changes API]` more graceful shutdown procedure
+- `[Embedded]` fixed issues with accessing Studio when embedding in an ASP.NET Core application
+- `[ETL]` optimized SQL ETL deletions, will now reduce the amount of deletions that needs to be send and processed
+- `[Indexing]` fixed Map-Reduce performance degradation 
+- `[Indexing]` added 'AttachmentsFor' and 'CounterNamesFor' methods to static indexes
+- `[Linux]` added 'PrivateClean' smap memory type to available memory calculations
+- `[Memory]` fixed low memory handling in 'ByteStringContext'
+- `[Memory]` better memory management
+- `[Querying]` fixed issues with optimized sort-only queries returning duplicate results
+- `[Querying]` added support for using `@metadata.@last-modified` in RQL for dynamic queries
+- `[Voron Recovery]` fixed issues with using the recovery tool an an empty database
+- `[Voron Recovery]` fixed issues with loading the database after recovery was done
+- `[.NET Core]` updated to 2.1.4
+
+<hr />
+
+### Experimental
+
+- `[Counters]` fixed issues with counter replication
+- `[Counters]` fixed issues with not cleaning up JavaScript patching engine from added counters, which would result in unwanted additions for next patching operations when engine would come from cache
+
+<hr />
+
+### Client
+
+- `[BulkInsert]` fixed issues with escaping ' and " characters in document Id
+- `[Indexing]` added 'AttachmentsFor' and 'CounterNamesFor' methods to `AbstractIndexCreationTask`
+- `[Operations]` not setting 'DocumentStore.Database' will no longer cause `DeleteByQueryOperation&lt;TEntity&gt;` to throw
+
+<hr />
+
+### Studio
+
+- support for downloading 'Additional Sources' in Index Edit View
+- better validation message for when disallowed characters are used in database name during database creation
+- hovering over database name on storage pie chart will highlight relevant record in the table
+- various performance and stability fixes
+- layout fixes
+
+## 4.1.0 (41001) - 2018/08/31 {#41001}
+
+### Features:
+- `[Indexing]` Highlighting support. [Blog](https://ayende.com/blog/182946-C/ravendb-4-1-features-highlighting)
+- `[Embedded]` Embedded package. [Blog](https://ayende.com/blog/183555-A/ravendb-4-1-features-running-ravendb-embedded) & [Documentation](https://ravendb.net/docs/article-page/4.1/csharp/server/embedded)
+- `[Migration]` SQL Migration. [Blog](https://ayende.com/blog/182756-C/ravendb-4-1-features-sql-migration-wizard)
+- `[Migration]` NoSQL Migration. [Blog](https://ayende.com/blog/184193-A/ravendb-4-1-features-mongodb-cosmosdb-migration-wizards)
+- `[Querying]` Dynamic query optimization explanations. [Blog](https://ayende.com/blog/183425-C/ravendb-4-1-features-explain-that-choice)
+- `[Querying]` Lucene explanations. [Blog](https://ayende.com/blog/183522-C/ravendb-4-1-features-can-you-explain-that-choice)
+- `[Querying]` Detailed query timings. [Blog](https://ayende.com/blog/183585-C/ravendb-4-1-features-detailed-query-timing-details)
+- `[Subscriptions]` Support for includes. [Blog](https://ayende.com/blog/183617-A/ravendb-4-1-features-this-document-is-included-in-your-subscription)
+<hr />
+### Experimental:
+- `[Counters]` Distributed counters support. [Blog](https://ayende.com/blog/182850-A/ravendb-4-1-features-counting-my-counters)
+- `[Cluster Transactions]` Cluster-Wide Transaction support. [Blog](https://ayende.com/blog/183426-C/ravendb-4-1-features-cluster-wide-acid-transactions)
+- `[Indexing]` JavaScript indexes support. [Blog](https://ayende.com/blog/182849-A/ravendb-4-1-features-javascript-indexes) & [Documentation](https://ravendb.net/docs/article-page/4.1/csharp/indexes/javascript-indexes)
+<hr />
+### Other
+- `[JavaScript]` improved performance
+- `[Monitoring]` SNMP entry for performance hints and HTTP endpoint for retrieving SNMP values
+- `[Monitoring]` SNMP entries exposed via HTTP endpoint
+<hr />
+### Client
+- `[Attachments]` added `session.Advanced.Attachments.Copy`
+- `[Attachments]` added `session.Advanced.Attachments.Move`
+- `[Attachments]` added `session.Advanced.Attachments.Rename`
+- `[Changes API]` added counters
+- `[Cluster Transactions]` added `session.Advanced.ClusterTransaction`
+- `[Counters]` added `session.GetCountersFor`
+- `[Document Query]` added 'ToQueryable'
+- `[Indexes]` added 'AbstractJavaScriptIndexCreationTask'
+- `[Session]` added `SessionOptions.NoTracking`
+- `[Session]` added `SessionOptions.NoCaching`
+- `[Session]` deferred commands will update the session state
+- `[Session]` new include syntax with IncludeBuilder (e.g. `session.Load<T>(string id, Action<IIncludeBuilder<T>> includes)`)
+- dropped `netstandard1.3` target

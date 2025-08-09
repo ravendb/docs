@@ -1,0 +1,251 @@
+---
+title: "Lazy Operations"
+hide_table_of_contents: true
+sidebar_label: Lazy Operations
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Lazy Operations
+
+Some of the operations in RavenDB can be evaluated lazily (performed only when needed).
+
+This section will describe each of the available lazy operations:   
+* **Querying**  
+* **Loading**  
+* **Faceted searching**   
+* **Suggesting**    
+
+## Querying
+
+To perform query below
+
+<TabItem value="lazy_operations_querying_1" label="lazy_operations_querying_1">
+<CodeBlock language="csharp">
+{`IEnumerable<User> users = session
+	.Query<User>()
+	.Where(x => x.Name == "john");
+`}
+</CodeBlock>
+</TabItem>
+
+as a lazy operation we have introduced `Lazily()` extension method that will mark any type of queries as a lazy operation, so to perform above query as such an operation just mark it with this extension method like in example below.
+
+<TabItem value="lazy_operations_querying_2" label="lazy_operations_querying_2">
+<CodeBlock language="csharp">
+{`Lazy<IEnumerable<User>> lazyUsers = session
+	.Query<User>()
+	.Where(x => x.Name == "John")
+	.Lazily();
+`}
+</CodeBlock>
+</TabItem>
+
+To evaluate our `lazyUsers` just access `Value` property.
+
+<TabItem value="lazy_operations_querying_3" label="lazy_operations_querying_3">
+<CodeBlock language="csharp">
+{`IEnumerable<User> users = lazyUsers.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+An action that will be executed when value gets evaluated can be passed to `Lazily`. It is very handy in scenarios when you want to perform additional actions when value gets evaluated or when you want to execute all pending lazy operations at once.
+
+<TabItem value="lazy_operations_querying_4" label="lazy_operations_querying_4">
+<CodeBlock language="csharp">
+{`IEnumerable<User> users = null;
+IEnumerable<City> cities = null;
+
+session
+	.Query<User>()
+	.Where(x => x.Name == "John")
+	.Lazily(x => users = x);
+
+session
+	.Query<City>()
+	.Where(x => x.Name == "New York")
+	.Lazily(x => cities = x);
+
+session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
+`}
+</CodeBlock>
+</TabItem>
+
+`Lazily` is a part of `LinqExtensions` available in `Raven.Client` namespace, so
+
+<TabItem value="using" label="using">
+<CodeBlock language="csharp">
+{`using Raven.Client;
+`}
+</CodeBlock>
+</TabItem>
+
+is mandatory.
+
+Lazy Lucene queries are also possible.
+
+<TabItem value="lazy_operations_querying_5" label="lazy_operations_querying_5">
+<CodeBlock language="csharp">
+{`Lazy<IEnumerable<User>> users = session.Advanced
+	.LuceneQuery<User>()
+	.WhereEquals("Name", "John")
+	.Lazily();
+`}
+</CodeBlock>
+</TabItem>
+
+## Loading
+
+Loading lazily is done in a bit different manner, it can be achieved by using one of the methods available in `session.Advanced.Lazily` property, so to perform below query
+
+<TabItem value="lazy_operations_loading_1" label="lazy_operations_loading_1">
+<CodeBlock language="csharp">
+{`User user = session.Load<User>("users/1");
+`}
+</CodeBlock>
+</TabItem>
+
+as a lazy operation just use one of the methods from `session.Advanced.Lazily` like in example below
+
+<TabItem value="lazy_operations_loading_2" label="lazy_operations_loading_2">
+<CodeBlock language="csharp">
+{`Lazy<User> lazyUser = session.Advanced.Lazily.Load<User>("users/1");
+`}
+</CodeBlock>
+</TabItem>
+
+Value can be evaluated in same way as when Querying and Action that will be performed when value gets evaluated can also be passed.
+
+<TabItem value="lazy_operations_loading_3" label="lazy_operations_loading_3">
+<CodeBlock language="csharp">
+{`User user = lazyUser.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="lazy_operations_loading_4" label="lazy_operations_loading_4">
+<CodeBlock language="csharp">
+{`User user = null;
+
+session.Advanced.Lazily.Load<User>("users/1", x => user = x);
+session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
+`}
+</CodeBlock>
+</TabItem>
+
+Other available lazy loading methods are:   
+1\. **LoadStartingWith** where you can load all users with given key prefix.   
+
+<TabItem value="lazy_operations_loading_5" label="lazy_operations_loading_5">
+<CodeBlock language="csharp">
+{`var users = session.Advanced.Lazily.LoadStartingWith<User>("users/1");
+`}
+</CodeBlock>
+</TabItem>
+
+2\. **Includes** where additional documents will be loaded by given path.   
+
+If we consider having `User` and `City` classes as defined below
+
+<TabItem value="lazy_operations_loading_6" label="lazy_operations_loading_6">
+<CodeBlock language="csharp">
+{`private class User
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public string CityId \{ get; set; \}
+\}
+
+private class City
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and store one `User` and `City`
+
+<TabItem value="lazy_operations_loading_7" label="lazy_operations_loading_7">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+	var user = new User
+				   \{
+					   Id = "users/1",
+					   Name = "John",
+					   CityId = "cities/1"
+				   \};
+
+	var city = new City
+				   \{
+					   Id = "cities/1",
+					   Name = "New York"
+				   \};
+
+	session.Store(user);
+	session.Store(city);
+	session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+then we will be able to perform code such as
+
+<TabItem value="lazy_operations_loading_8" label="lazy_operations_loading_8">
+<CodeBlock language="csharp">
+{`var lazyUser = session.Advanced.Lazily
+	.Include("CityId")
+	.Load<User>("users/1");
+
+var user = lazyUser.Value;
+var isCityLoaded = session.Advanced.IsLoaded("cities/1"); // will be true
+`}
+</CodeBlock>
+</TabItem>
+
+## Faceted search
+
+To take advantage of lazy Faceted search use `ToFacetsLazy()` extension method from `LinqExtensions` found in `Raven.Client` namespace.
+
+To change Faceted search from last step described [here](../faceted-search.mdx#step-3) to lazy operation just substitute `ToFacets` with `ToFacetsLazy`.
+
+<TabItem value="lazy_operations_facets_1" label="lazy_operations_facets_1">
+<CodeBlock language="csharp">
+{`Lazy<FacetResults> lazyFacetResults = session
+	.Query<Camera>("CameraCost")
+	.Where(x => x.Cost >= 100 && x.Cost <= 300)
+	.ToFacetsLazy("facets/CameraFacets");
+
+FacetResults facetResults = lazyFacetResults.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+## Suggesting
+
+Similar practice as in Faceted search has been used in lazy suggestions. The `SuggestLazy()` extension method is available in `LinqExtensions` and can be used as a substitution to `Suggest()` to mark operation as a lazy one.
+
+<TabItem value="lazy_operations_suggest_1" label="lazy_operations_suggest_1">
+<CodeBlock language="csharp">
+{`Lazy<SuggestionQueryResult> lazySuggestionResult = session
+	.Query<User>()
+	.Where(x => x.Name == "John")
+	.SuggestLazy();
+
+SuggestionQueryResult suggestionResult = lazySuggestionResult.Value;
+`}
+</CodeBlock>
+</TabItem>

@@ -1,0 +1,148 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 2.5.25043 (25043) - 2020/01/13 {#25043}
+
+### Server
+
+* Fix skipped index batches after a database shutdown
+
+
+
+
+## 2.5.25042 (25042) - 2019/10/03 {#25042}
+
+### Server
+
+- `[Replication]` improved next ID generation for 'Raven-Replication-Version'
+
+## 2.5.25041 (25041) - 2019/05/16 {#25041}
+
+### Server
+
+* Added Raven/Esent/MaxSessions configuration option
+* `[Replication]` - Log the actual exception that caused the replication to fail
+<hr/>
+
+### Tools
+
+* Migrate the index cleaner to 2.5
+
+
+## 2.5.25040 (25040) - 2018/10/17 {#25040}
+
+### Server
+
+* Allow to have more than 256 SQL replication configurations
+
+
+
+
+## 2.5.25039 (25039) - 2018/10/02 {#25039}
+
+### Server
+
+* `[Replication]` Fixed automatic purging of replication tombstones according to retention time configuration
+
+
+## 2.5.25038 (25038) - 2018/09/17 {#25038}
+
+### Server
+
+- `[Memory]` Better memory utilization when reading an array from the stream
+
+## 2.5.25037 (25037) - 2018/09/13 {#25037}
+
+### Server
+
+- `[Debug]` add debug logs to the `bulk_docs` endpoint
+
+## 2.5.25034 (25034) - 2018/09/06 {#25034}
+
+### Server
+
+- fixed issue with high CPU when executing large transactions
+
+## 2.5.25033 (25033) - 2018/08/17 {#25033}
+
+### Server
+
+- fixed possible 100% CPU usage during license update
+
+## 2.5.25032 (25032) - 2018/05/08 {#25032}
+
+### Server
+
+* Fixed replication prefetchers that were never cleaned and were holding up memory
+
+
+
+
+## 2.5.25031 (25031) - 2018/05/03 {#25031}
+
+### Server
+
+* If an index is located on disk but not in the storage, add it
+
+
+
+
+## 2.5.25030 (25030) - 2018/05/01 {#25030}
+
+### Server
+
+* Add the attchments count to the /stats endpoint
+
+
+
+
+## 2.5.25029 (25029) - 2018/02/22 {#25029}
+
+### Server
+
+* Fix concurrency exceptions to the Raven/Sources/... document on machines with slow I/O (cannot process incoming replication with the default replication timeout: 60 seconds).
+
+## 2.5.25028 (25028) - 2018/01/16 {#25028}
+
+### Server
+
+* add the last modified field to tombstones
+
+
+## 2.5.25027 (25027) - 2017/12/04 {#25027}
+
+### Server
+
+* fix possible issue with purging tombstones
+
+## 2.5.25023 (25023) - 2017/05/12 {#25023}
+
+### Server
+
+* Fix skipping documents in replication and SQL replication when there are indexes which use LoadDocument
+
+
+## 2.5.25020 (25020) - 2016/12/22 {#25020}
+
+**This is an aggregated build for various fixes since the last stable**
+
+### Server
+
+- `[Prefetching]` stability improvements,
+- `[Replication]` stability improvements and fixes,
+- `[Indexing]` compiled indexes will not longer be removed from compiled index cache,
+- `[Configuration]` added `Raven/MinThreadPoolWorkerThreads`,
+- `[Configuration]` added `Raven/MinThreadPoolCompletionThreads`,
+- `[Configuration]` added `Raven/SqlReplication/CommandTimeoutInSec`,
+- fixed performance when loading huge amount of databases at once
+
+### Client
+
+- `[Indexes]` enhanced deployment for indexes with empty arrays or byte enums,
+- fixed a race condition when both the Changes API and the Load API are trying to resolve a conflict,
+- fixed conflict resolution for Query API and StartsWith API is used

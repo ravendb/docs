@@ -1,0 +1,90 @@
+---
+title: "Session: Get Time Series Names"
+hide_table_of_contents: true
+sidebar_label: Get Names
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Get Time Series Names
+<Admonition type="note" title="Note">
+
+Get the names of a document's time series using 
+`Advanced.GetTimeSeriesFor`.  
+
+* In this page:  
+   * [`Advanced.GetTimeSeriesFor`](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#advancedgettimeseriesfor)  
+      * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#syntax)  
+      * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#usage-flow)  
+      * [Usage Sample](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#usage-sample)  
+
+</Admonition>
+## `Advanced.GetTimeSeriesFor`
+
+Use this method to get all the names of a document's time series.  
+
+
+
+## Syntax
+
+* **Definition**  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`List<string> GetTimeSeriesFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Description |
+    |:-------------|:-------------|
+    | `instance` | The document whose time series names you want to get |
+
+* **Return Value**  
+     
+     **`List<string>`**  
+     An array of the loaded document's time series names.  
+
+* **Exceptions**  
+  If the instance is not tracked by the session, an `ArgumentException` exception is thrown.  
+
+
+
+## Usage Flow
+
+* Open a session.  
+* Load a document.  
+* Pass `Advanced.GetTimeSeriesFor` the loaded document.  
+
+
+
+## Usage Sample
+
+In this sample, we load a user document and use `Advanced.GetTimeSeriesFor` 
+to get a list of its time series' names.  
+<TabItem value="timeseries_region_Retrieve-TimeSeries-Names" label="timeseries_region_Retrieve-TimeSeries-Names">
+<CodeBlock language="csharp">
+{`// Open a session
+using (var session = store.OpenSession())
+\{
+    // Load a document entity to the session
+    User user = session.Load<User>("users/john");
+    
+    // Call GetTimeSeriesFor, pass the entity
+    List<string> tsNames = session.Advanced.GetTimeSeriesFor(user);
+    
+    // Results will include the names of all time series associated with document 'users/john'
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

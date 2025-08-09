@@ -1,0 +1,41 @@
+---
+title: "Search view"
+hide_table_of_contents: true
+sidebar_label: Search view
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Search view
+
+This view allows running queries according to Lucene syntax and browse files that match specified criteria.
+
+![Figure 1. Studio. Search view](./assets/search-view.png)  
+
+## Built-in filters
+
+The text box is used to define filtering criteria. The criteria has to be a valid Lucene query. You can search by 
+user defined metadata or built-in one set by RavenFS. To get full list of default metadata records read [indexing](../indexing.mdx) article.
+
+The studio has a few, built-in filters in order to help you to create the query that contains common conditions:
+
+![Figure 2. Studio. Search view. Filters](./assets/search-view-filters.png)
+
+## Reset index
+
+Reset index will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+![Figure 3. Studio. Search view. Reset Index](./assets/search-view-reset-index.png)
+
+## Example
+
+Lets find all files in `pdfs` directory which names start with `nosql`:
+
+![Figure 4. Studio. Search view. Example](./assets/search-view-example.png)
+

@@ -1,0 +1,94 @@
+---
+title: "Opening a session"
+hide_table_of_contents: true
+sidebar_label: Opening a session
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Opening a session
+
+The `OpenAsyncSession` method is the only way to retrieve the `IAsyncFilesSession` object from  the `FilesStore`.
+
+
+
+There are three overloads of the `OpenAsyncSession` method:
+
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="csharp">
+{`// Open a session for a 'default' file system configured in 'FilesStore'
+IAsyncFilesSession OpenAsyncSession();
+
+// Open a session for a specified file system
+IAsyncFilesSession OpenAsyncSession(string filesystem);
+
+// Open a session for a specified file system with custom API Key / Credentials
+IAsyncFilesSession OpenAsyncSession(OpenFilesSessionOptions sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+The first method is an equivalent of:
+
+<TabItem value="open_session_2" label="open_session_2">
+<CodeBlock language="csharp">
+{`store.OpenAsyncSession(new OpenFilesSessionOptions()
+\{
+	FileSystem = store.DefaultFileSystem
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+The second overload is an equivalent of:
+
+<TabItem value="open_session_3" label="open_session_3">
+<CodeBlock language="csharp">
+{`store.OpenAsyncSession(new OpenFilesSessionOptions()
+\{
+	FileSystem = filesystem
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **sessionOptions** | OpenFilesSessionOptions | Options containing information such as the name of a file system on which the session will work and the credentials to use. |
+
+| Return Value | |
+| ------------- | ------------- |
+| **IAsyncFilesSession** | The session object that implements the `IAsyncFilesSession` interface. |
+
+## Example
+
+<TabItem value="open_session_4" label="open_session_4">
+<CodeBlock language="csharp">
+{`using (IAsyncFilesSession session = store.OpenAsyncSession())
+\{
+	// code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Always dispose the session" id="always-dispose-the-session" href="#always-dispose-the-session">
+The session needs to allocate additional resources internally. You need to invoke the `Dispose` method on it or wrap the session object into the `using` statement.
+</Admonition>
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,69 @@
+---
+title: "Glossary: Facet"
+hide_table_of_contents: true
+sidebar_label: Facet
+sidebar_position: 20
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: Facet
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Mode** | [FacetMode](../glossary/facet.mdx#facetmode-enum) | The facet mode |
+| **Aggregation** | [FacetAggregation](../glossary/facet.mdx#facetaggregation-enum-flags) | The aggregation mode |
+| **AggregationField** | string | Aggregation field |
+| **AggregationType** | string | Aggregation type (i.e type of decimal, int, float, etc) |
+| **Name** | string | The aggregation name |
+| **DisplayName** | string | The display name |
+| **Ranges** | List&lt;string&gt; | Facet ranges |
+| **MaxResults** | int? | Maximum results |
+| **TermSortMode** | [FacetTermSortMode](../glossary/facet.mdx#facettermsortmode-enum) | The facet term sorting mode |
+| **IncludeRemainingTerms** | bool | whether to include remaining terms |
+
+---
+
+# FacetMode (enum)
+
+### Members
+
+| Name | Description |
+| ---- | ----- |
+| **Default** |  Default facet mode |
+| **Ranges** | Create facets using supplied ranges |
+
+---
+
+# FacetAggregation (enum flags)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **Count** | `1` |
+| **Max** | `2` |
+| **Min** | `4` |
+| **Average** | `8` |
+| **Sum** | `16` |
+
+---
+
+# FacetTermSortMode (enum)
+
+### Members
+
+| Name | Description |
+| ---- | ----- |
+| **ValueAsc** | Sort by value ascending |
+| **ValueDesc** | Sort by value descending |
+| **HitsAsc** | Sort by hits ascending |
+| **HitsDesc** | Sort by hits descending |

@@ -1,0 +1,91 @@
+---
+title: "Loading files"
+hide_table_of_contents: true
+sidebar_label: Loading files
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Loading files
+
+There are two overloads of the `LoadFileAsync` method used to load a single or multiple files in a single call.
+
+
+
+<TabItem value="load_file_0" label="load_file_0">
+<CodeBlock language="csharp">
+{`Task<FileHeader> LoadFileAsync(string path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | The full file path to load |
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;FileHeader&gt;** | The file instance represented by the [`FileHeader`](../../../glossary/file-header.mdx) object or `null` if a file does not exist. |
+
+&lt;br /&gt;
+
+<TabItem value="load_file_1" label="load_file_1">
+<CodeBlock language="csharp">
+{`Task<FileHeader[]> LoadFileAsync(IEnumerable<string> paths);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **paths** | IEnumerable&lt;string&gt; | The collection of the file paths to load |
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by the[`FileHeader`](../../../glossary/file-header.mdx) object or `null` if a file does not exist. |
+
+<Admonition type="info" title="File headers" id="file-headers" href="#file-headers">
+Note that the load method does not download file content. It fetches only the header, which is a basic session entity object.
+</Admonition>
+
+
+## Example I
+
+<TabItem value="load_file_2" label="load_file_2">
+<CodeBlock language="csharp">
+{`FileHeader file = await session.LoadFileAsync("/movies/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+If you pass multiple paths, the returned array contains headers in exactly the same order as  the given paths. 
+If a file does not exist, the value at the appropriate position in the array will be null.
+
+<TabItem value="load_file_3" label="load_file_3">
+<CodeBlock language="csharp">
+{`FileHeader[] files = await session.LoadFileAsync(new[]
+\{
+	"non-existing-file", "/movies/intro.avi"
+\}); // will return [null, FileHeader] array
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

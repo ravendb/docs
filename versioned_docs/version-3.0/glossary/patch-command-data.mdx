@@ -1,0 +1,34 @@
+---
+title: "Glossary: PatchCommandData"
+hide_table_of_contents: true
+sidebar_label: PatchCommandData
+sidebar_position: 16
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: PatchCommandData
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Patches** | [PatchRequest](../client-api/commands/patches/how-to-work-with-patch-requests.mdx)[] | Patches to apply |
+| **PatchesIfMissing** | [PatchRequest](../client-api/commands/patches/how-to-work-with-patch-requests.mdx)[] | Patches to apply if document is missing |
+| **Key** | string | Document key |
+| **Method** | string | The HTTP method (`PATCH`) |
+| **Etag** | Etag | Document etag (used for concurrency checking) |
+| **TransactionInformation** | TransactionInformation | Transactional information |
+| **Metadata** | RavenJObject | Document metadata |
+| **AdditionalData** | RavenJObject | Additional metadata |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **RavenJObject ToJson()** | Translate this instance to a Json object. |

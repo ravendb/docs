@@ -1,0 +1,135 @@
+---
+title: "Count Revisions"
+hide_table_of_contents: true
+sidebar_label: Count Revisions
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Count Revisions
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* You can get the number of revisions a document has by using the advance session method `GetCountFor`.
+
+* In this page:  
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
+
+</Admonition>
+## Get revisions count
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get the number of revisions for document 'companies/1-A"
+var revisionsCount = session.Advanced.Revisions.GetCountFor("companies/1-A");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get the number of revisions for document 'companies/1-A"
+var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync("companies/1-A");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`long GetCountFor(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which revisions are counted |
+
+| Return value | |
+| - | - |
+| `long` | The number of revisions for the specified document |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* You can get the number of revisions a document has by using the advance session method `getCountFor`.
+
+* In this page:  
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
+
+</Admonition>
+## Get revisions count
+
+<TabItem value="getCount" label="getCount">
+<CodeBlock language="js">
+{`// Get the number of revisions for document 'companies/1-A"
+const revisionsCount = await session.advanced.revisions.getCountFor("companies/1-A");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`await session.advanced.revisions.getCountFor(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which revisions are counted |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the number of revisions for the specified document |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+- [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+- [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
+
+### Client API
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+- [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+
+### Studio
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+
+
+-->

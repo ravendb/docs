@@ -1,0 +1,59 @@
+---
+title: "Session: Querying: StreamFileHeadersAsync"
+hide_table_of_contents: true
+sidebar_label: StreamFileHeaders
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Session: Querying: StreamFileHeadersAsync
+
+File Header can be streamed With **StreamFileHeadersAsync** method from Advanced session operations  .
+
+## Syntax
+
+<TabItem value="streaming_files_1" label="streaming_files_1">
+<CodeBlock language="csharp">
+{`Task<IAsyncEnumerator<FileHeader>> StreamFileHeadersAsync(Etag fromEtag, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fromEtag** | Etag | ETag of a file from which stream should start |
+| **pageSize** | int | Maximum number of file headers that will be retrieved |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumerator of [`FileHeaders`](../../../../../glossary/file-header.mdx) objects. |
+
+## Example
+
+<TabItem value="streaming_files_2" label="streaming_files_2">
+<CodeBlock language="csharp">
+{`var allFilesMatchingCriteria = new List<FileHeader>();
+
+using (var reader = await session.Advanced.StreamFileHeadersAsync(fromEtag: fromEtag, pageSize: 10))
+\{
+    while (await reader.MoveNextAsync())
+    \{
+        allFilesMatchingCriteria.Add(reader.Current);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>   
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Entities loaded using Stream will be transient (not attached to session).
+</Admonition>
+

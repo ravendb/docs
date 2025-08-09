@@ -1,0 +1,49 @@
+---
+title: "Commands: How to retrieve user permission for a specified database?"
+hide_table_of_contents: true
+sidebar_label: ...How to retrieve user permission for a specified database
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Commands: How to retrieve user permission for a specified database?
+
+`GetUserPermission` used to retrieve user permissions for a specified database
+
+## Syntax
+
+<TabItem value="get_user_permission_1" label="get_user_permission_1">
+<CodeBlock language="csharp">
+{`UserPermission GetUserPermission(string database, bool readOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | name of the database we want to retrive the permissions |
+| **readOnly** | bool | the type of the operations allowed, read only , or read-write |
+
+
+| Return Value | |
+| ------------- | ----- |
+| [UserPermission](../../../glossary/user-permission.mdx) | Retrieves user permissions for a specified database. |
+
+## Example I
+
+<TabItem value="get_user_permission_2" label="get_user_permission_2">
+<CodeBlock language="csharp">
+{`var per = store.DatabaseCommands.GetUserPermission("Foo", false);
+var isGrant = per.IsGranted;
+var res = per.Reason;
+`}
+</CodeBlock>
+</TabItem>
+

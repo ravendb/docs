@@ -1,0 +1,33 @@
+---
+title: "Glossary: PutCommandData"
+hide_table_of_contents: true
+sidebar_label: PutCommandData
+sidebar_position: 17
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: PutCommandData
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Key** | string | Document key |
+| **Method** | string | The HTTP method (`PUT`) |
+| **Etag** | Etag | Document etag (used for concurrency checking) |
+| **Document** | RavenJObject | Document to put |
+| **TransactionInformation** | TransactionInformation | Transactional information |
+| **Metadata** | RavenJObject | Document metadata |
+| **AdditionalData** | RavenJObject | Additional metadata |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **RavenJObject ToJson()** | Translate this instance to a Json object. |

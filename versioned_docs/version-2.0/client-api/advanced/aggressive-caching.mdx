@@ -1,0 +1,66 @@
+---
+title: "Aggressive Caching"
+hide_table_of_contents: true
+sidebar_label: Aggressive Caching
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Aggressive Caching
+
+The RavenDB client provides a caching feature out of the box. You can determine whether Raven should cache a request or not for a particular URL. By default all requests are cached:
+
+<TabItem value="should_cache_delegate" label="should_cache_delegate">
+<CodeBlock language="csharp">
+{`documentStore.Conventions.ShouldCacheRequest = url => true;
+`}
+</CodeBlock>
+</TabItem>
+
+The second cache option is the number of cached requests. The default value is 2048:
+
+<TabItem value="max_number_of_requests" label="max_number_of_requests">
+<CodeBlock language="csharp">
+{`documentStore.MaxNumberOfCachedRequests = 2048;
+`}
+</CodeBlock>
+</TabItem>
+
+The client utilizes the notion of the `304 Not Modified` RavenDB server's response and will serve the data from the cache if available. 
+
+The aggressive caching feature goes even further. If you enable it RavenDB will not even ask the server whether anything has changed,
+it will simply return the reply directly from the local cache if it is there. Note that it means that you might get stale data, but it also means that you will get it fast.
+
+To activate this mode use the following code:
+
+<TabItem value="aggressive_cache_load" label="aggressive_cache_load">
+<CodeBlock language="csharp">
+{`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+\{
+	var user = session.Load<User>("users/1");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now, if there is a value in the cache for `users/1` that is at most 5 minutes old, we can directly use that. The same mechanism works on queries as well:
+
+<TabItem value="aggressive_cache_query" label="aggressive_cache_query">
+<CodeBlock language="csharp">
+{`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+\{
+	var users = session.Query<User>().ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+The Silverlight version of the RavenDB client doesn't have own implementation of the aggressive caching because Silverlight already has the built-in and actively working cache.
+</Admonition>

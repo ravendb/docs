@@ -1,0 +1,132 @@
+---
+title: "Session: Delete Time Series"
+hide_table_of_contents: true
+sidebar_label: Delete
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Delete Time Series
+<Admonition type="note" title="Note">
+
+Delete a range of time series entries using `TimeSeriesFor.Delete`.  
+
+* You can delete a **single time series entry** or a **range of entries**.  
+
+* In this page:  
+      * [`TimeSeriesFor.Delete`](../../../../document-extensions/timeseries/client-api/session/delete.mdx#timeseriesfordelete)  
+       * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntx)  
+       * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/delete.mdx#usage-flow)  
+       * [Usage Samples](../../../../document-extensions/timeseries/client-api/session/delete.mdx#usage-samples)  
+</Admonition>
+## `TimeSeriesFor.Delete`
+
+`TimeSeriesFor.Delete` is used for the removal of time series and 
+time series entries.  
+
+* There is no need to explicitly delete a time series; 
+  the series is deleted when all its entries are deleted.  
+* Attempting to delete nonexistent entries results in a no-op, 
+  generating no exception.  
+
+
+
+
+## Syntax
+
+* There are two `TimeSeriesFor.Delete` methods:  
+   * Delete a single time series entry.
+<TabItem value="TimeSeriesFor-Delete-definition-single-timepoint" label="TimeSeriesFor-Delete-definition-single-timepoint">
+<CodeBlock language="csharp">
+{`// Delete a single time-series entry
+void Delete(DateTime at);
+`}
+</CodeBlock>
+</TabItem>
+   * Delete a range of time series entries.
+<TabItem value="TimeSeriesFor-Delete-definition-range-of-timepoints" label="TimeSeriesFor-Delete-definition-range-of-timepoints">
+<CodeBlock language="csharp">
+{`// Delete a range of time-series entries
+void Delete(DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `at` | `DateTime` | Timestamp of the time series entry you want to delete. |
+    | `from` (optional) | `DateTime?` | Delete the range of time series entries starting at this timestamp. <br/> Default: `DateTime.Min` |
+    | `to` (optional) | `DateTime?` | Delete the range of time series entries ending at this timestamp. <br/> Default: `DateTime.Max` |
+
+
+| from | `DateTime` | Range Start (optional) <br/>
+| to | `DateTime` | Range End (optional) <br/> Default: `DateTime.Max` 
+
+
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+   * `DocumentDoesNotExistException` is thrown If the document doesn't exist.  
+   * Attempting to delete nonexistent entries results in a no-op and does not generate an exception.  
+
+
+
+## Usage Flow
+
+* Open a session.  
+* Create an instance of `TimeSeriesFor`.  
+    * Either pass `TimeSeriesFor` an explicit document ID,  
+      -or-  
+      Pass it an [entity tracked by the session](../../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).  
+    * Pass `TimeSeriesFor` the time series name.  
+* Call `TimeSeriesFor.Delete`.  
+* Call `session.SaveChanges` for the action to take effect on the server.  
+
+
+
+## Usage Samples
+
+* Delete a single entry:  
+<TabItem value="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point" label="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point">
+<CodeBlock language="csharp">
+{`// Delete a single entry
+using (var session = store.OpenSession())
+\{
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Delete(baseline.AddMinutes(1));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Delete a range of entries:  
+<TabItem value="timeseries_region_TimeSeriesFor-Delete-Time-Points-Range" label="timeseries_region_TimeSeriesFor-Delete-Time-Points-Range">
+<CodeBlock language="csharp">
+{`// Delete a range of entries from the time series
+using (var session = store.OpenSession())
+\{
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Delete(baseline.AddSeconds(0), baseline.AddSeconds(9));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

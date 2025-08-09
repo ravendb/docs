@@ -1,0 +1,228 @@
+---
+title: "Commands: Delete"
+hide_table_of_contents: true
+sidebar_label: Delete
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: Delete
+
+There are two methods that allow to delete a single file or multiple files at once.
+
+
+
+The **DeleteAsync** method is used to delete a file.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`Task DeleteAsync(string filename, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of a file to be deleted |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` skips check) |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous delete operation. |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.DeleteAsync("/movies/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## DeleteByQueryAsync
+
+The **DeleteByQueryAsync** is used to delete files that match the specified query.
+
+## Syntax
+
+<TabItem value="delete_by_query_1" label="delete_by_query_1">
+<CodeBlock language="csharp">
+{`Task DeleteByQueryAsync(string query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | string | The Lucene query |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous delete operation. |
+
+## Example
+
+In order to delete files located in `/temp` folder except from ones in its subdirectories, run the following code:
+
+<TabItem value="delete_by_query_2" label="delete_by_query_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.DeleteByQueryAsync("__directoryName:/temp AND __level:2");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+<Admonition type="info" title="Delete on the server side" id="delete-on-the-server-side" href="#delete-on-the-server-side">
+To delete a file, RavenFS needs to remove a lot of information related to this file. In order to respond to the user quickly, the file is just renamed and a delete marker is added to its metadata. The actual delete is performed by [a periodic task](../../../server/background-tasks.mdx), which ensures that all the requested deletes will be accomplished even in the presence of a server restarts in the middle.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: Delete
+
+The **DELETE** methods allow to remove a single file or multiple files at once from the file system.
+
+
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/files/\{name\}  \\
+	-X DELETE \\
+    --header "If-None-Match:\{etag\}"
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The name of a file to be deleted |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  Used to pass the file `Etag` |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content status means that the file has been deleted successfully |
+| `405` | The concurrency exception occurred |
+| `420` | The synchronization exception occurred |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **None** | The request does not return any message |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Multiple files deletion
+
+In order to delete multiple files you need to send the **DELETE** request to the search endpoint that specifies a query.
+All files matching that query will be deleted. The actual delete operation is implemented as the background operation which identifier
+is returned in the response. Later you use it to ask about the delete operation status.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/search?query=\{query\}  \\
+	-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **query** | Yes | The Lucene query used to find files to delete |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK means that delete by query operation has been scheduled |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **OperationId** | The identifier of the background delete by query operation |
+
+---
+
+## Example
+
+In order to start delete operation of all files located in the `/temp` folder and its subdirectories, run the following command:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE http://localhost:8080/fs/NorthwindFS/search?query=__directoryName:/temp
+< HTTP/1.1 200 OK
+\{
+    "OperationId":1
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Check the operation status by using the following endpoint:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET http://localhost:8080/fs/NorthwindFS/operation/status
+`}
+</CodeBlock>
+</TabItem>
+
+You will either get `OK` response with a state message or `NotFound` if the task completed successfully and was deleted.
+
+
+
+</LanguageContent>
+
+<!---
+- [Indexing](../../../indexing)
+
+-->

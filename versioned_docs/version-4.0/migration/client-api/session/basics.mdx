@@ -1,0 +1,190 @@
+---
+title: "Migration: Changes related to IDocumentSession"
+hide_table_of_contents: true
+sidebar_label: Basics
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Changes related to IDocumentSession
+
+## Namespace
+
+`IDocumentSession` can be referenced using `Raven.Client.Documents.Session` (previously `Raven.Client`).
+
+
+
+## Load
+
+### Loading by value type ID
+
+Since an entity identifier can be only `string` in RavenDB 4.0 the `Load<T>(ValueType id)` method overload accepting value types (`int`, `Guid` etc.) is no longer available. 
+In order to load an entity having value type identifier you need to use a document identifier, that is a collection name concatenated with the value type ID.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="load_1_0" label="load_1_0">
+<CodeBlock language="csharp">
+{`User user = session.Load<User>(id);
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="load_1_1" label="load_1_1">
+<CodeBlock language="csharp">
+{`User user = session.Load<User>("users/" + id);
+`}
+</CodeBlock>
+</TabItem>
+|
+
+Also `User.Id` property should be `string`.
+
+### Loading multiple documents
+
+The signature of `T[] Load<T>(IEnumerable<string> ids)` method has been changed to `Dictionary<string, T> Load<T>(IEnumerable<string> ids)`. The keys in the returned dictionary are identifiers
+of documents requested to be loaded. If a document with was not found then `null` is set in the dictionary under a given ID.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="load_2_0" label="load_2_0">
+<CodeBlock language="csharp">
+{`User[] users = session.Load<User>(new[] 
+                    \{
+                        "users/1", "users/2" 
+                    \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="load_2_1" label="load_2_1">
+<CodeBlock language="csharp">
+{`Dictionary<string, User> users = session.Load<User>(new[]
+                                    \{
+                                        "users/1", "users/2"
+                                    \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### Loading with transformer
+
+The `Load` method overloads accepting transformer name parameter and transformer types as generic have been removed since transformers was completely replaced by projections in RavenDB 4.0.
+You need to perform a query and specify a projection instead. The query will be handled very efficiently, directly by a collection storage index, it won't create regular RavenDB index.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="load_3_0" label="load_3_0">
+<CodeBlock language="csharp">
+{`var users = session.Load<Transformer, ProjectedUser>("users/1");
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="load_3_1" label="load_3_1">
+<CodeBlock language="csharp">
+{`var users = session.Query<User>().Where(x => x.Id == "users/1")
+                                 .Select(x => new ProjectedUser
+                                 \{
+                                     FullName = x.Name,
+                                 \}).First();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+
+
+## Delete
+
+### Delete by value type ID 
+
+Also the `Delete` method no longer have the following overload `Delete<T>(ValueType id)`. Please pass entity instance that you want to delete or the document identifier including collection name.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="delete_1_0" label="delete_1_0">
+<CodeBlock language="csharp">
+{`session.Delete<User>(id);
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="delete_2_0" label="delete_2_0">
+<CodeBlock language="csharp">
+{`session.Delete(user);
+session.Delete("users/" + id);
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### Delete by index
+
+The method `session.Advanced.DeleteByIndex` has been removed. Use `DeleteByQueryOperation` operation instead.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="delete_by_index_1_7" label="delete_by_index_1_7">
+<CodeBlock language="csharp">
+{`Operation operation = 
+    session
+        .Advanced
+        .DeleteByIndex<Person, Person_ByAge>(x => x.Age < 35);
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="delete_by_index_1_8" label="delete_by_index_1_8">
+<CodeBlock language="csharp">
+{`Operation operation =
+    store
+        .Operations
+        .Send(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+`}
+</CodeBlock>
+</TabItem>
+|
+
+
+
+## Streaming
+
+The document streaming method accepting the document etag as the first parameter `session.Advanced.Stream<T>(Etag fromEtag)` no longer exists. As the streaming request can be processed 
+by any node available in the cluster, the solution is to use [Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) in order to guarantee reliable processing of documents in the cluster environment.
+
+
+
+

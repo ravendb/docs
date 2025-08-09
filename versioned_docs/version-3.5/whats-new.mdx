@@ -1,0 +1,283 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 3.5.9 (35281) - 2019/04/10 {#35281}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.8 (35279) in addition with:
+
+### Server
+
+- `[Indexing]` Document ID is not shown in indexing exception, if it is thrown during `Recurse`
+
+## 3.5.8 (35279) - 2019/01/03 {#35279}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.7 (35274) in addition with:
+
+### Server
+
+- `[Replication]` fixed 'Topology-Id' header validation that could prevent attachment replication to other nodes
+
+## 3.5.7 (35274) - 2018/09/06 {#35274}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.6 (35262) in addition with:
+
+### Server
+
+* `[Replication]` Fixed an issue that deletes of documents with long identifiers could not get replicated if they have similar prefix and database uses Esent storage
+* `[Streaming]` Fixed concurrency issue when using streaming API and Esent storage ("Esent transaction been accessed from multiple threads" error)
+* `[RavenFS]` Fixed synchronization issue that it could skip bunch of files when replicating to a new file system and there are updates to files meanwhile
+
+## 3.5.6 (35262) - 2018/04/27 {#35262}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.5 (35247) in addition with:
+
+### Server
+
+- `[Attachments]` fixed issue with concurrent writes on the same attachment
+
+## 3.5.5 (35247) - 2018/01/18 {#35247}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.4 (35215) in addition with:
+
+### Server
+
+- `[Clustering]` stability improvements
+- `[Voron]` stability improvements
+
+## 3.5.4 (35215) - 2017/07/21 {#35215}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.3 (35191) in addition with: 
+### Database
+- `[Replication]` stability improvements,
+- `[ETL]` added support for attachments,
+- `[Cluster]` stability improvements,
+- `[Cluster]` remove node kidnap from the cluster
+- `[Querying]` fixed various bugs when queries are parsed,
+- `[Indexing]` adjustments to index compilation mechanism,
+- `[Indexing]` fixed issue with map-reduce calculating `__reduce_key` incorrectly if group contains `Last-Modified` field from @metadata,
+- `[Indexing]` fixed possible high-memory and CPU consumption by Lucene,
+- `[Prefetching]` stability improvements,
+- `[Monitoring]` SNMP now properly retrieved CPU usage,
+- `[Debug Info Package]` Windows OS compatibility improvements,
+- debug endpoints are no longer throttled
+### Client
+- fixed possible race-condition in topology fetch mechanism,
+- added `SuggestLazyAsync` LINQ extension,
+- `[Authorization]` fixed issue with `IsAllowed` and `IsAllowedAsync` considering an operation as sub-operation in certain cases,
+- `[.NET Core]` client no longer contains custom SerializableAttribute, it is using the official one
+### Smuggler
+- added support for TransformScript when `Between` operation is used,
+- added support for using * in filters (e.g. for starts with matching),
+- added `start-document-etag`, `start-document-delete-etag`, `start-attachment-etag` and `start-attachment-delete-etag` command-line parameters,
+- stability improvements
+### FileSystem
+- `[Synchronization]` stability improvements
+
+
+## 3.5.3 (35191) - 2017/03/08 {#35191}
+
+This is an aggregated build containing fixes released in patch versions since the previous stable build - 3.5.2 (35183)
+
+## 3.5.2 (35183) - 2017/01/02 {#35183}
+
+### Server
+
+- **[Major]** `[Clustering]` various stability and performance improvements,
+- `[Querying]` fixed boolean query parsing issue,
+- `[Querying]` fixed issue when using Boost with parenthesis queries,
+- `[Indexing]` fixed issues with disposing and resetting indexes,
+- `[Indexing]` fixed issues with index recovery,
+- `[Prefetching]` stability improvements,
+- `[SQL Replication]` fixed execution time calculation for Delete operations,
+- `[Voron]` stability improvements,
+- fixed issues with server throwing exceptions on startup,
+- fixed /admin/stats json deserialization issue,
+- various other stability improvements
+
+<hr />
+
+### Client
+
+- conflicts will now be resolved properly when Query or StartsWith is used,
+- fixed index creation for VB.NET,
+- fixed Field handling for Includes in `session.Include().Load()` and `session.Include().LoadAsync()`,
+- fixed possible NRE in WhatChanged,
+- aggressively cached requests will update their last cached value on 304 from server,
+- when subscription will be closed then it will be properly removed from the set of subscription available
+
+<hr />
+
+### FileSystem
+
+- `[Smuggler]` will continue to export files even if one of the files failed to export,
+- `[Versioning]` properly handle page usage when new versioned file is created,
+- `[Versioning]` when downloading a versioned file the original name will be returned,
+- fixed issue with deleting FileSystem that could occur in certain situations
+
+<hr />
+
+### Studio
+
+- Studio can now display more than 1024 databases in the resources page,
+- improved suggestions when 'null' value is used,
+- turning on replication on a database with no replication will work properly,
+- `Gather Debug Info` will now work on Windows 10 Anniversary Update,
+- improved sufficient disk space checks when doing import
+
+## 3.5.1 (35180) - 2016/11/14 {#35180}
+
+### Server
+
+- `[Querying]` Fixed a bug where you could not query for comma,
+- `[Logging]` Now issuing a warning on using HDD drive only when DEBUG logs are enabled,
+- `[Tests]` Changed Raven.Tests.Helpers platform target to AnyCPU,
+- `[Querying]` Fixed an issue where '!' would not translate to NOT operator in Lucene queries,
+- `[Voron]` Fixed an issue where upgrading 3.0 Voron storage would not properly migrate all trees
+
+<hr />
+
+### Client
+
+- `[Subscription]` Added SubscriptionConnectionInterrupted event to be raised when the subscription connection is interrupted,
+- `[Bulk Insert]` Fixed an issue where bulk insert would not generate ids when the given id ends with '/' (e.g. "users/"),
+- `[Bulk Insert]` Now forcing bulk insert to flush every 10 seconds so not to cause timeouts on rare cases,
+- `[Querying]` Fixed an issue where the client would not show the correct error when using too many boolean clauses in a query
+- `[Querying]` QueryListeners are now executed also when doing Faceted Search
+- `[Querying]` Fixed a bug where TransformerParameters would not be Url escaped,
+
+<hr />
+
+### RavenFS
+
+- `[Embedded]` Now properly initializing embedded FS on first use
+
+<hr />
+
+### Smuggler
+
+- Added support for importing v4.0 smuggler files (documents only),
+- Improved performance for file exporting and importing (3.5.1+),
+- Changed operation and store to protected so it could be override in derived classes
+
+<hr />
+
+### Studio
+
+- `[Periodic Export]` Added missing AWS region endpoints to periodic export setup
+
+## 3.5.0 (35179) - 2016/10/27 {#35179}
+
+### Server
+
+- `[Licensing]` [HotSpare](..\server\configuration\configuration-hot-spare-license) license support,
+- `[Global Configuration]` Added feature, read [here](..\studio\management\global-configuration) for more information,
+- `[Clustering]` Added feature, read [here](..\server\scaling-out\clustering\clustering-overview) for more information,
+- `[ETL]` Added feature, read [here](..\server\scaling-out\etl) for more information,
+- `[Indexing]` Implemented a custom ThreadPool for better indexing thread management,
+- `[Indexing]` Added support for AlphaNumeric sorting,
+- `[Indexing]` Enhanced index recovery,
+- `[Querying]` Increased Lucene Query parsing performance,
+- `[Monitoring]` Added [SNMP Monitoring](..\server\administration\monitoring\SNMP\snmp) support,
+- `[Replication]` 'Raven/ConflictDocuments' and 'Raven/ConflictDocumentsTransformer' are now automatically deployed when replication is turned on,
+- `[SQL Replication]` Better support for complex data types when replicating to PgSQL
+- `[Transformer]` Added support for more than two SelectMany
+- `[JavaScript]` Updated Jint to 2.8,
+- `[JavaScript]` Updated LoDash to 4.13.1,
+- `[Configuration]` Exposed `Raven/TempPath` setting,
+- `[Configuration]` Exposed `Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements` setting,
+- `[Configuration]` Alert when a value is out of the expected range,
+- `[Endpoint]` Moved `/debug/indexing-perf-stats` to `/debug/indexing-perf-stats-with-timings`
+- `[Endpoint]` Changed `/debug/indexing-perf-stats`, gives a new output
+- `[Endpoint]` Added `/admin/detailed-storage-breakdown`,
+- `[Endpoint]` Added `/admin/activate-hotspare`,
+- `[Endpoint]` Added `/admin/test-hotspare`,
+- `[Endpoint]` Added `/admin/get-hotspare-information`,
+- `[Endpoint]` Added `/admin/dump`,
+- `[Periodic Export]` Support export over 64MB when using Azure Storage Containers,
+- `[Data Subscription]` Deleting a subscription will kill the connection if it is active,
+- `[Logging]` server metrics will be written to log periodically,
+- `[Voron]` Performance improvements,
+- `[NuGet]` Semantic versioning for NuGet packages,
+- General performance improvements and bug fixes
+
+<hr />
+
+### Client
+
+- `[Bulk Insert]` Can change format to BSON or JSON,
+- `[Bulk Insert]` Can change compression to GZIP or None,
+- Added SLA request time guarantees,
+- Added new FailoverBehavior for handling Clustering scenarios, read [here](..\client-api\bundles\how-client-integrates-with-replication-bundle) for more information,
+- Added `PotentialShardsFor` overload to DefaultShardResolutionStrategy for easier configuration,
+- Added `GetUserInfo` and `GetUserPermission` commands,
+- Support for `SkipDuplicateChecking` in IndexQuery,
+- Support for artificial documents on MoreLikeThis,
+- `DeleteByIndex` now supports LINQ statement,
+- `StreamDocs` now supports transformers,
+- `[Save Changes]` Can wait for indexes to finish, read [here](..\client-api\session\saving-changes) for more information,
+- `[Save Changes]` Can wait for replication to finish, read [here](..\server\scaling-out\replication\write-assurance) for more information
+
+<hr />
+
+### RavenFS
+
+- `[Client]` Added `CopyAsync` and `RetryCopyingAsync` for server-side copy operation support,
+- `[Client]` Added support for getting `FileQueryStatistics` when using `QueryAsync`,
+- `[Client]` Unified FS creation method, now it matches the DB one,
+- `[Client]` Added support for query streaming,
+- `[Client]` Exposed file streaming under session.Advanced,
+- `[Client]` Added support for uploads using non seekable streams
+
+<hr />
+
+## Smuggler
+
+- Added `no-compression-on-import` option,
+- Added `max-split-export-file-size` to enable splitting export to multiple files
+
+<hr />
+
+### Studio
+
+- `[RavenFS]` Allow to configure synchronization settings,
+- `[RavenFS]` Added the ability to Strip synchronization information from files metadata,
+- `[RavenFS]` Added better search capabilities,
+- `[Export/Import]` Added server-wide smuggling feature,
+- `[Export/Import]` Added disk space verification before importing data (DB and FS),
+- `[Export/Import]` When exporting database the equivalent Smuggler parameters will be shown,
+- `[Export/Import]` Changed export file extensions (ravendbdump, ravenfsdump),
+- `[Export/Import]` Added the ability to disable versioning bundle during import (DB and FS),
+- `[Backup/Restore]` Better errors when backup operation have failed,
+- `[Replication]` Added the ability to resolve all conflicts at once, read [here](..\studio\overview\settings\replication) for more information,
+- `[Replication]` Added the ability to enable replication on an existing database, read [here](..\studio\overview\settings\replication) for more information,
+- `[Replication]` Added server-wide replication topology view, read [here](..\studio\overview\status\replication-stats) for more information,
+- `[Patching]` Patching now shows progress bar,
+- `[Patching]` Added recent patches to Patching view,
+- `[Patching]` Added ongoing patches to Patching view,
+- `[Indexing]` Added the ability to change lock mode for all indexes at once,
+- `[Indexing]` Added the ability to toggle reduction process,
+- `[Indexing]` Added the ability to rename an index without re-running it,
+- `[Indexing]` Indexing performance graph now contains prefetching time and deletions,
+- Added a LINQ-based Data Exploration feature,
+- Enhancements in CSV export (custom columns),
+- Tasks in Tasks View now contain more descriptive errors,
+- Added [AdministratorJS Console](..\studio\management\administrator-js-console),
+- Added I/O performance statistics report (requires to run external tool - Raven.Monitor),
+- Added [debug view](..\studio\overview\status\debug\overview) that allows to turn on Query Timing globally,
+- Data Subscriptions debug view now contains more detailed information,
+- Added license and support coverage information, read [here](..\studio\accessing-studio) for more information,
+- Unified L&F,
+- General performance improvements and bug fixes
+
+<hr />
+
+### Tools
+
+- `[Raven.Monitor]` Added I/O performance statistics support,
+- `[Raven.ApiToken]` Added tool to generate API Tokens,
+- `[IndexCleaner]` Added tool that allows to reset all index related data at once during offline mode

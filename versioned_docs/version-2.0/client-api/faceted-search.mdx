@@ -1,0 +1,191 @@
+---
+title: "Faceted Search"
+hide_table_of_contents: true
+sidebar_label: Faceted search
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Faceted Search
+
+When displaying a large amount of data, often paging is used to make viewing the data manageable. However it's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is across the top.
+
+![Facets](./assets/CNET_faceted_search_2.jpg)
+
+To achieve this in RavenDB, let's say you have a document like this:
+
+```json 
+{ 
+    DateOfListing: "2000-09-01T00:00:00.0000000+01:00" 
+    Manufacturer: "Jessops" 
+    Model: "blah" 
+    Cost: 717.502206059872 
+    Zoom: 9 
+    Megapixels: 10.4508949012733 
+    ImageStabiliser: false 
+}
+```
+
+## Step 1
+
+You need to setup your facet definitions and store them in RavenDB as a document, like so:
+
+<TabItem value="step_1" label="step_1">
+<CodeBlock language="csharp">
+{`_facets = new List<Facet>
+	          \{
+		          new Facet
+			          \{
+				          Name = "Manufacturer"
+			          \},
+		          new Facet
+			          \{
+				          Name = "Cost_Range",
+				          Mode = FacetMode.Ranges,
+				          Ranges =
+					          \{
+						          "[NULL TO Dx200.0]",
+								  "[Dx200.0 TO Dx400.0]",
+								  "[Dx400.0 TO Dx600.0]",
+								  "[Dx600.0 TO Dx800.0]",
+								  "[Dx800.0 TO NULL]",
+					          \}
+			          \},
+		          new Facet
+			          \{
+				          Name = "Megapixels_Range", 
+						  Mode = FacetMode.Ranges, 
+						  Ranges =
+							  \{
+								  "[NULL TO Dx3.0]",
+								  "[Dx3.0 TO Dx7.0]",
+								  "[Dx7.0 TO Dx10.0]",
+								  "[Dx10.0 TO NULL]",
+							  \}
+			          \}
+	          \};
+
+session.Store(new FacetSetup \{ Id = "facets/CameraFacets", Facets = _facets \});
+`}
+</CodeBlock>
+</TabItem>
+
+This tells RavenDB that you would like to get the following facets.
+
+* For the **Manufacturer** field look at the documents and return a count for each unique Term found
+* For the **Cost** field, return the count of the following ranges:
+ * Cost &lt;= 200.0
+ * 200.0 &lt;= Cost &lt;= 400.0
+ * 400.0 &lt;= Cost &lt;= 600.0
+ * 600.0 &lt;= Cost &lt;= 800.0
+ * Cost &gt;= 800.0
+* For the **Megapixels** field, return the count of the following ranges:
+ * Megapixels &lt;= 3.0
+ * 3.0 &lt;= Megapixels &lt;= 7.0
+ * 7.0 &lt;= Megapixels &lt;= 10.0
+ * Megapixels &gt;= 10.0
+
+## Step 2
+
+Next you need to create an index to work against, this can be setup like so:
+
+<TabItem value="step_2" label="step_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("CameraCost",
+			new IndexDefinition
+			\{
+				Map = @"from camera in docs 
+                                select new 
+                                \{ 
+                                    camera.Manufacturer, 
+                                    camera.Model, 
+                                    camera.Cost,
+                                    camera.DateOfListing,
+                                    camera.Megapixels
+                                \}"
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Step 3
+
+Finally you can write the following code and you get back the data below.
+
+<TabItem value="step_3" label="step_3">
+<CodeBlock language="csharp">
+{`var facetResults = session.Query<Camera>("CameraCost")
+	.Where(x => x.Cost >= 100 && x.Cost <= 300)
+	.ToFacets("facets/CameraFacets");
+`}
+</CodeBlock>
+</TabItem>
+
+This is equivalent to hitting the following Url:
+
+    http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
+
+<Admonition type="note" title="Note">
+The data returned represents the count of the faceted data that satisfies the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )`
+</Admonition>
+
+```json 
+{
+   Manufacturer: [
+      {
+         Range: 'canon',
+         Count: 42
+      },
+      {
+         Range: 'jessops',
+         Count: 50
+      },
+      {
+         Range: 'nikon',
+         Count: 46
+      },
+      {
+         Range: 'phillips',
+         Count: 44
+      },
+      {
+         Range: 'sony',
+         Count: 35
+      }
+   ],
+   Cost_Range: [
+      {
+         Range: '[NULL TO Dx200.0]',
+         Count: 115
+      },
+      {
+         Range: '[Dx200.0 TO Dx400.0]',
+         Count: 102
+      }
+   ],
+   Megapixels_Range: [
+      {
+         Range: '[NULL TO Dx3.0]',
+         Count: 42
+      },
+      {
+         Range: '[Dx3.0 TO Dx7.0]',
+         Count: 79
+      },
+      {
+         Range: '[Dx7.0 TO Dx10.0]',
+         Count: 82
+      },
+      {
+         Range: '[Dx10.0 TO NULL]',
+         Count: 14
+      }
+   ]
+}
+```

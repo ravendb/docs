@@ -1,0 +1,90 @@
+---
+title: "Commands: Documents: Delete"
+hide_table_of_contents: true
+sidebar_label: Delete Document
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Commands: Documents: Delete
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="csharp">
+{`public DeleteDocumentCommand(string id, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | ID of a document to be deleted |
+| **changeVector** | string | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_sample" label="delete_sample">
+<CodeBlock language="csharp">
+{`var command = new DeleteDocumentCommand("employees/1-A", null);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="java">
+{`public DeleteDocumentCommand(String id, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | String | ID of a document to be deleted |
+| **changeVector** | String | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_sample" label="delete_sample">
+<CodeBlock language="java">
+{`DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
+session.advanced().getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Commands
+- [Get](../../../client-api/commands/documents/get)
+- [Put](../../../client-api/commands/documents/put)
+- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+
+-->

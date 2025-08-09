@@ -1,0 +1,28 @@
+---
+title: "Glossary: FieldHighlightings"
+hide_table_of_contents: true
+sidebar_label: FieldHighlightings
+sidebar_position: 24
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: FieldHighlightings
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **FieldName** | string | Field name |
+| **ResultIndents** | IEnumerable&lt;string&gt; | Document Ids of available highlights. |
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **string[] GetFragments(string documentId)** | Returns the list of document's field highlighting fragments. |

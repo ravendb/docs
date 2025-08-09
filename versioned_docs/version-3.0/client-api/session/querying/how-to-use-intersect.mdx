@@ -1,0 +1,104 @@
+---
+title: "Session: Querying: How to use intersect?"
+hide_table_of_contents: true
+sidebar_label: Using Intersect
+sidebar_position: 14
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to use intersect?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To return only documents that match **all** provided sub-queries we have introduced `Intersect` extension that enables us to do server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Intersect<T>();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example
+
+<TabItem value="intersect_2" label="intersect_2">
+<CodeBlock language="csharp">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+IList<TShirt> tshirts = session.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+    .Where(x => x.Manufacturer == "Raven")
+    .Intersect()
+    .Where(x => x.Color == "Blue" && x.Size == "Small")
+    .Intersect()
+    .Where(x => x.Color == "Gray" && x.Size == "Large")
+    .OfType<TShirt>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To return only documents that match **all** provided sub-queries we have introduced `intersect` extension that enables us to do server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> intersect();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods. |
+
+## Example
+
+<TabItem value="intersect_2" label="intersect_2">
+<CodeBlock language="java">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+List<TShirt> tShirts = session
+    .query(TShirt.class, TShirts_ByManufacturerColorSizeAndReleaseYear.class)
+    .whereEquals("manufacturer", "Raven")
+    .intersect()
+    .whereEquals("color", "Blue")
+    .andAlso()
+    .whereEquals("size", "Small")
+    .intersect()
+    .whereEquals("color", "Gray")
+    .andAlso()
+    .whereEquals("size", "Large")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Querying : Intersection](../../../indexes/querying/intersection)
+
+-->

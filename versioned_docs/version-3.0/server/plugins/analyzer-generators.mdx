@@ -1,0 +1,66 @@
+---
+title: "Plugins: Analyzer Generators"
+hide_table_of_contents: true
+sidebar_label: Analyzer Generators
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Plugins: Analyzer Generators
+
+To add a custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
+
+<TabItem value="plugins_7_0" label="plugins_7_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractAnalyzerGenerator
+\{
+	public abstract Analyzer GenerateAnalyzerForIndexing(string indexName, Document document, Analyzer previousAnalyzer);
+
+	public abstract Analyzer GenerateAnalyzerForQuerying(string indexName, string query, Analyzer previousAnalyzer);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **GenerateAnalyzerForIndexing** returns an analyzer that will be used while performing indexing operation.   
+* **GenerateAnalyzerForQuerying** returns an analyzer that will be used while performing querying.    
+
+## Example - Using different analyzer for specific index
+
+<TabItem value="plugins_7_1" label="plugins_7_1">
+<CodeBlock language="csharp">
+{`public class CustomAnalyzerGenerator : AbstractAnalyzerGenerator
+\{
+	private const string SpecificIndexName = "Specific/Index";
+
+	public override Analyzer GenerateAnalyzerForIndexing(string indexName, Document document, Analyzer previousAnalyzer)
+	\{
+		if (indexName == SpecificIndexName)
+		\{
+			return new WhitespaceAnalyzer();
+		\}
+
+		return previousAnalyzer;
+	\}
+
+	public override Analyzer GenerateAnalyzerForQuerying(string indexName, string query, Analyzer previousAnalyzer)
+	\{
+		if (indexName == SpecificIndexName)
+		\{
+			return new WhitespaceAnalyzer();
+		\}
+
+		return previousAnalyzer;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+

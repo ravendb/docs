@@ -1,0 +1,117 @@
+---
+title: "Commands: GetActiveAsync"
+hide_table_of_contents: true
+sidebar_label: GetActive
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: GetActiveAsync
+
+The **GetActiveAsync** method returns the information about the active outgoing synchronizations.
+
+
+
+<TabItem value="get_active_1" label="get_active_1">
+<CodeBlock language="csharp">
+{`Task<ItemsPage<SynchronizationDetails>> GetActiveAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of items to skip |
+| **pageSize** | int | The maximum number of items to get |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ItemsPage&lt;SynchronizationDetails&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object that contains the number of total results and the list of the [`SynchronizationDetails`](../../../../../glossary/synchronization-details.mdx) objects, which contains info about synchronizations being in progress. |
+
+
+## Example
+
+<TabItem value="get_active_2" label="get_active_2">
+<CodeBlock language="csharp">
+{`ItemsPage<SynchronizationDetails> page = await store.AsyncFilesCommands.Synchronization
+												.GetActiveAsync(0, 128);
+
+page.Items.ForEach(x => 
+	Console.WriteLine("Synchronization of \{0\} to \{1\} (type: \{2\}) is in progress", 
+							x.FileName, x.DestinationUrl, x.Type));
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: GetActive
+
+The **GET** method returns the information about the active outgoing synchronizations.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/synchronization/active?start=\{start\}&pageSize=\{pageSize\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **start** | No | The number of results that should be skipped |
+| **pageSize** | No | The maximum number of results that will be returned |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **JSON** | The `ItemsPage` object that contains the number of total results and the list of the [`SynchronizationDetails`](../../../../../glossary/synchronization-details.mdx) objects, which contains info about synchronizations being in progress. |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8081/fs/SlaveNorthwindFS/synchronization/active  \\
+< HTTP/1.1 200 OK
+
+\{
+    "TotalCount":0,
+    "Items":[]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,17 @@
+---
+title: "Session: How to customize identity property lookup for entities?"
+hide_table_of_contents: true
+sidebar_label: How to Customize Identity Property Lookup For Entities
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: How to customize identity property lookup for entities?
+
+The client must know which property of your entity is considered as an identity. By default it always look for `Id` property. However is configurable by using [`FindIdentityProperty` convention](../../configuration/conventions/identifier-generation/global.mdx#findidentityproperty).

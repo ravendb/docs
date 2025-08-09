@@ -1,0 +1,238 @@
+---
+title: "Operations: Server: How to Compact a Database"
+hide_table_of_contents: true
+sidebar_label: Compact Database
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: Server: How to Compact a Database
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="csharp">
+{`// Define the compact settings
+CompactSettings settings = new CompactSettings
+\{
+    // Database to compact
+    DatabaseName = "Northwind",
+    
+    // Setting 'Documents' to false will compact only the specified indexes
+    Documents = false,
+    
+    // Specify which indexes to compact
+    Indexes = new[] \{ "Orders/Totals", "Orders/ByCompany" \}, 
+    
+    // Optimize indexes is Lucene's feature to gain disk space and efficiency
+    // Set whether to skip this optimization when compacting the indexes
+    SkipOptimizeIndexes = false
+\};
+
+// Define the compact operation, pass the settings
+IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+
+// Execute compaction by passing the operation to Maintenance.Server.Send
+Operation operation = documentStore.Maintenance.Server.Send(compactOp);
+// Wait for operation to complete
+operation.WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="csharp">
+{`// Get all indexes names in the database using the 'GetIndexNamesOperation' operation
+// Use 'ForDatabase' if the target database is different than the default database defined on the store
+string[] allIndexNames =
+    documentStore.Maintenance.ForDatabase("Northwind")
+        .Send(new GetIndexNamesOperation(0, int.MaxValue));
+
+// Define the compact settings
+CompactSettings settings = new CompactSettings
+\{
+    DatabaseName = "Northwind", // Database to compact
+    
+    Documents = true,           // Compact all documents
+
+    Indexes = allIndexNames,    // All indexes will be compacted
+    
+    SkipOptimizeIndexes = true  // Skip Lucene's indexes optimization
+\};
+
+// Define the compact operation, pass the settings
+IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+
+// Execute compaction by passing the operation to Maintenance.Server.Send
+Operation operation = documentStore.Maintenance.Server.Send(compactOp);
+// Wait for operation to complete
+operation.WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | string | Name of a database to compact |
+| **Documents** | bool | Indicates if documents should be compacted |
+| **Indexes** | string[] | List of index names to compact |
+
+## Example I
+
+<TabItem value="compact_3" label="compact_3">
+<CodeBlock language="csharp">
+{`// Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
+List<string> allMemberNodes =
+    documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind"))
+        .Topology.Members;
+
+// Define the compact settings as needed
+CompactSettings settings = new CompactSettings
+\{
+    // Database to compact
+    DatabaseName = "Northwind",
+    
+    //Compact all documents in database
+    Documents = true
+\};
+
+// Execute the compact operation on each member node
+foreach (string nodeTag in allMemberNodes)
+\{
+    // Define the compact operation, pass the settings
+    IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+    
+    // Execute the operation on a specific node
+    // Use \`ForNode\` to specify the node to operate on
+    Operation operation = documentStore.Maintenance.Server.ForNode(nodeTag).Send(compactOp);
+    // Wait for operation to complete
+    operation.WaitForCompletion();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II
+
+<TabItem value="compact_4" label="compact_4">
+<CodeBlock language="csharp">
+{`// get all index names
+string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
+
+CompactSettings settings = new CompactSettings
+\{
+    DatabaseName = "Northwind",
+    Documents = true,
+    Indexes = indexNames
+\};
+// compact entire database: documents + all indexes
+Operation operation = store.Maintenance.Server.Send(new CompactDatabaseOperation(settings));
+operation.WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Remarks
+
+The compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="java">
+{`public CompactDatabaseOperation(CompactSettings compactSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="java">
+{`public class CompactSettings \{
+    private String databaseName;
+    private boolean documents;
+    private String[] indexes;
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | String | Name of a database to compact |
+| **Documents** | boolean | Indicates if documents should be compacted |
+| **Indexes** | String[] | List of index names to compact |
+
+## Example I
+
+<TabItem value="compact_3" label="compact_3">
+<CodeBlock language="java">
+{`CompactSettings settings = new CompactSettings();
+settings.setDatabaseName("Northwind");
+settings.setDocuments(true);
+settings.setIndexes(new String[] \{ "Orders/Totals", "Orders/ByCompany" \});
+
+Operation operation = store.maintenance().server().sendAsync(new CompactDatabaseOperation(settings));
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II
+
+<TabItem value="compact_4" label="compact_4">
+<CodeBlock language="java">
+{`// get all index names
+String[] indexNames = store.maintenance().send(new GetIndexNamesOperation(0, Integer.MAX_VALUE));
+
+CompactSettings settings = new CompactSettings();
+settings.setDatabaseName("Northwind");
+settings.setDocuments(true);
+settings.setIndexes(indexNames);
+
+// compact entire database: documents + all indexes
+Operation operation = store.maintenance().server().sendAsync(new CompactDatabaseOperation(settings));
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Remarks
+
+The compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+
+</LanguageContent>
+
+<!---
+- [How to create database?](../../../client-api/operations/server-wide/create-database)
+- [How to get database statistics?](../../../client-api/operations/maintenance/get-statistics)
+- [How to start restore operation?](../../../client-api/operations/server-wide/restore-backup)
+
+-->

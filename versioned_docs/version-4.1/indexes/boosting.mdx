@@ -1,0 +1,233 @@
+---
+title: "Indexes: Boosting"
+hide_table_of_contents: true
+sidebar_label: Boosting
+sidebar_position: 24
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Indexes: Boosting
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
+
+From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` extension method from the `Raven.Client.Documents.Linq.Indexing` namespace.
+
+Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map =
+            employees =>
+            from employee in employees
+            select new
+            {
+                FirstName = employee.FirstName.Boost(10),
+                LastName = employee.LastName
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store
+    .Maintenance
+    .Send(new PutIndexesOperation(new IndexDefinition
+    {
+        Name = "Employees/ByFirstAndLastName",
+        Maps =
+        {
+            @"from employee in docs.Employees
+              select new
+              {
+                  FirstName = employee.FirstName.Boost(10),
+                  LastName = employee.LastName
+              }"
+        }
+    }));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="csharp">
+{`// employees with 'FirstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'LastName' match
+IList<Employee> results = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Where(x => x.FirstName == "Bob" || x.LastName == "Bob")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Boosting is also available at the query level. You can read more about it [here](../indexes/querying/boosting.mdx).
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
+
+From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
+
+Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName.Boost(10)," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Employees/ByFirstAndLastName");
+indexDefinition.setMaps(Collections.singleton(
+    "docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName.Boost(10)," +
+    "    LastName = employee.LastName" +
+    "})"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="java">
+{`// employees with 'firstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'lastName' match
+List<Employee> results = session.query(Employee.class, Employees_ByFirstAndLastName.class)
+    .whereEquals("FirstName", "Bob")
+    .whereEquals("LastName", "Bob")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Boosting is also available at the query level. You can read more about it [here](../indexes/querying/boosting.mdx).
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
+
+From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
+
+Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+        this.map = "docs.Employees.Select(employee => new {" +
+            "    firstName = employee.FirstName.Boost(10)," +
+            "    lastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="js">
+{`const indexDefinition = new IndexDefinition();
+indexDefinition.name = "Employees/ByFirstAndLastName";
+indexDefinition.maps = new Set([ 
+    "docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName.Boost(10)," +
+    "    LastName = employee.LastName" +
+    "})" 
+]);
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="js">
+{`// employees with 'FirstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'LastName' match
+const results = await session.query(\{ indexName: "Employees/ByFirstAndLastName" \})
+    .whereEquals("FirstName", "Bob")
+    .whereEquals("LastName", "Bob")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Boosting is also available at the query level. You can read more about it [here](../indexes/querying/boosting.mdx).
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Querying
+- [Searching](../indexes/querying/searching)
+- [Boosting](../indexes/querying/boosting)
+
+### Indexes
+- [Analyzers](../indexes/using-analyzers)
+- [Storing Data in Index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)
+
+
+-->

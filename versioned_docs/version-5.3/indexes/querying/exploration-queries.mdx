@@ -1,0 +1,358 @@
+---
+title: "Exploration Queries"
+hide_table_of_contents: true
+sidebar_label: Exploration Queries
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Exploration Queries
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* **Exploration Queries** form an additional layer of filtering that can be applied 
+  to a dataset after its retrieval by [Query](../../client-api/session/querying/how-to-query.mdx#sessionquery), 
+  [DocumentQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery), 
+  or [Raw RQL](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery), 
+  while the dataset is still held by the server.  
+
+* The **entire retrieved dataset** is scanned and filtered **without requiring or creating an 
+  index**, providing a way to conduct one-time explorations without creating an index that would 
+  have to be maintained by the cluster.  
+
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
+
+* Exploration queries need to be used 
+  [with caution](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
+  since scanning and filtering all the data retrieved by a query cost substantial 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
+  when large datasets are handled.  
+    <Admonition type="warning" title="Warning">
+
+    We recommend that you -  
+
+    * **Limit** the number of records that an exploration query filters.  
+    * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
+
+    </Admonition>
+
+* In this page:  
+   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
+   * [When Should Exploration Queries Be Used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
+   * [Usage](../../indexes/querying/exploration-queries.mdx#usage)
+      * [With Collection Queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With Queries that Use an Index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With Projections](../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With User-Defined Javascript Functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
+
+</Admonition>
+
+## `filter`
+
+Exploration queries can be applied using -  
+
+* `Query.Filter`  
+* `DocumentQuery.Filter`  
+* RQL's `filter` keyword  
+
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
+
+The provided filtering operations resemble those implemented by 
+[where](../../indexes/querying/filtering.mdx) and can be further enhanced 
+by Javascript functions of your own.  
+Read [here](../../indexes/querying/exploration-queries.mdx#with-a-javascript-function:-declare) 
+about creating and using your own Javascript function in your filters.  
+
+
+
+## When Should Exploration Queries Be Used
+
+`filter` can be applied to a Collection query, like in:  
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+it can also be applied to queries handled by an index, e.g. -  
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// in a dynamic query via an auto-index  
+from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// in a query that uses an index explicitly  
+from index 'Orders/ByCompany' 
+filter Count > 10
+`}
+</CodeBlock>
+</TabItem>
+
+Both in a collection query and in a query handled by an index, the entire retrieved 
+dataset is scanned and filtered.  
+This helps understand when exploration queries should be used, why a Limit 
+should be set for the number of filtered records, and when `where` should 
+be preferred:  
+
+<Admonition type="info" title="Info">
+#### When to use
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+no existing index and is not expected to be repeated much.  
+
+* You gain the ability to filter post-query results on the server side, for 
+  both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster 
+  would continue updating from now on.  
+</Admonition>
+<Admonition type="warning" title="Warning">
+#### Limit the query, and prefer `where` for recurring queries 
+Be aware that when a large dataset is retrieved, like the whole collection in 
+the case of a collection query, exploring it all using `filter` would tax the server 
+in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore -  
+
+* **Limit** the number of records that an exploration query filters, e.g.:  
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`from Employees as e 
+lter e.Address.Country = 'USA'
+lter_limit 500 // limit the number of filtered records
+`}
+</CodeBlock>
+</TabItem>
+* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
+  `where` will use an index, creating it if necessary, to accelerate the filtering 
+  in subsequent queries.  
+</Admonition>
+
+
+
+## Syntax
+
+* `Query.Filter`  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Filter<T>(this IRavenQueryable<T> source, 
+                           Expression<Func<T, bool>> predicate, 
+                           int limit = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>  
+
+    | Parameters | Type | Description |
+    | ---------- | ---- | ----------- |
+    | **source** | `IRavenQueryable<T>` | `Filter`, defined as an `IRavenQueryable` extension method |
+    | **predicate** | `Expression<Func<T, bool>>` | The condition by which retrieved records are filtered |
+    | **limit** | `int ` | Limits the number of filtered records (Recommended) <br/> Default: all retrieved records |
+
+* `DocumentQuery.Filter`  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Filter(Action<IFilterFactory<T>> builder, 
+                       int limit = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>  
+
+    | Parameters | Type | Description |
+    | ---------- | ---- | ----------- |
+    | **builder** | `Action<IFilterFactory<T>>` | Your filter |
+    | **limit** | `int ` | Limits the number of filtered records (Recommended) <br/> Default: all retrieved records |
+
+* **RQL**  
+   * In an RQL query, use:  
+     The `filter` keyword, followed by the filtering condition.  
+     The `filter_limit` option, followed by the max number of records to filter.  
+   * E.g. -  
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`from Employees as e 
+ e.Title = 'Sales Representative'  
+r e.Address.Country = 'USA' // filter the retrieved dataset
+r_limit 500 // limit the number of filter records
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Usage
+
+### With Collection Queries
+
+Use `filter` with a collection query to scan and filter the entire collection.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var result = session.Query<Employee>()
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`result = session.Advanced.DocumentQuery<Employee>()
+    .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`result = session.Advanced.RawQuery<Employee>
+    ("from Employees as e " +
+       "filter e.Address.Country = 'USA' " +
+       "filter_limit 500").SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+Filtering a sizable collection will burden the server and prolong user waiting time.  
+Set a `filter_limit` to restrict the number of filtered records.  
+</Admonition>
+### With Queries that Use an Index
+
+Use `filter` after a `where` clause to filter the results retrieved by an index query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var emp = session.Query<Employee>()
+    .Where(w => w.Title == "Sales Representative")
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`emp = session.Advanced.DocumentQuery<Employee>()
+      .WhereEquals(w => w.Title, "Sales Representative")
+      .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+      .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`emp = session.Advanced.RawQuery<Employee>
+    ("from Employees as e" +
+     "where e.Title = $title" +
+     "filter e.Address.Country = $country" +
+     "filter_limit $limit")
+    .AddParameter("title", "Sales Representative")
+    .AddParameter("country", "USA")
+    .AddParameter("limit", 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### With Projections
+
+The filtered results can be projected using `select`, like those of any other query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var emp1 = session
+    .Query<Employee>()
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .Select(x => new
+     {
+        FullName = x.FirstName + " " + x.LastName
+     })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var fullName = new string[]{
+    "FirstName",
+    "LastName"
+};
+
+var emp2 = session.Advanced.DocumentQuery<Employee>()
+      .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+      .SelectFields<Employee>(fullName)
+      .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`var emp3 = session.Advanced.RawQuery<Employee>
+    ("from Employees as e" +
+        "filter startsWith(e.FirstName, 'A')" +
+        "select { FullName: e.FirstName + ' ' + e.LastName }");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### With User-Defined Javascript Functions (`declare`)
+
+You can define a Javascript function as part of your query using the 
+[declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
+use it as part of your `filter` condition to freely adapt the filtering 
+to your needs.  
+
+Here is a simple example:  
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// declare a Javascript function
+declare function titlePrefix(r, prefix) 
+\{ 
+    // Add whatever filtering capabilities you like
+    return r.Title.startsWith(prefix)
+\} 
+
+from Employees as e 
+
+// Filter using the function you've declared
+filter titlePrefix(e, $prefix)
+filter_limit 100
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+### Querying
+
+- [What is RQL](../../client-api/session/querying/what-is-rql.mdx)  
+- [Query](../../client-api/session/querying/how-to-query.mdx#sessionquery)  
+- [DocumentQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery)  
+- [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery)  
+- [Where](../../indexes/querying/filtering.mdx)  
+- [Querying an Index](../../indexes/querying/query-index.mdx)  
+- [Sorting](../../indexes/querying/sorting.mdx)  
+- [declare](../../client-api/session/querying/what-is-rql.mdx#declare)  
+
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,165 @@
+---
+title: "Session: How to defer operations?"
+hide_table_of_contents: true
+sidebar_label: ...defer commands
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: How to defer operations?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Operations can be deferred till `SaveChanges` is called by using `Defer` method in `Advanced` session operations. There are four types of commands that can be deferred:
+
+- [PutCommandData](../../../glossary/put-command-data.mdx)
+- [DeleteCommandData](../../../glossary/delete-command-data.mdx)
+- [PatchCommandData](../../../glossary/patch-command-data.mdx)
+- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx)
+
+## Syntax
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="csharp">
+{`// Defer is available in the session's Advanced methods 
+session.Advanced.Defer(
+    
+    // Define commands to be executed:
+    // i.e. Put a new document
+    new PutCommandData("products/999-A", null, new DynamicJsonValue
+        \{
+            ["Name"] = "My Product",
+            ["Supplier"] = "suppliers/1-A",
+            ["@metadata"] = new DynamicJsonValue
+            \{
+                ["@collection"] = "Products"
+            \}
+        \}),
+    
+    // Patch document
+    new PatchCommandData("products/999-A", null, new PatchRequest
+            \{
+                Script = "this.Supplier = 'suppliers/2-A';"
+            \},
+            null),
+    
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+    
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| ICommandData[] | Array of commands implementing `ICommandData` interface. |
+
+## Example
+
+<TabItem value="defer_2" label="defer_2">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .Defer(
+        new PutCommandData("products/999-A", null, new DynamicJsonValue
+        \{
+            ["Name"] = "My Product",
+            ["Supplier"] = "suppliers/999-A",
+            ["@metadata"] = new DynamicJsonValue
+            \{
+                ["@collection"] = "Users"
+            \}
+        \}),
+        new PutCommandData("suppliers/999-A", null, new DynamicJsonValue
+        \{
+            ["Name"] = "My Product",
+            ["Supplier"] = "suppliers/999-A",
+            ["@metadata"] = new DynamicJsonValue
+            \{
+                ["@collection"] = "Suppliers"
+            \}
+        \}),
+        new DeleteCommandData("products/1-A", null)
+    );
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Operations can be deferred till `saveChanges` is called by using `defer` method in `advanced()` session operations. There are four types of commands that can be deferred:
+
+- [PutCommandData](../../../glossary/put-command-data.mdx)
+- [DeleteCommandData](../../../glossary/delete-command-data.mdx)
+- [PatchCommandData](../../../glossary/patch-command-data.mdx)
+- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx)
+
+## Syntax
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="java">
+{`void defer(ICommandData command, ICommandData... commands);
+
+void defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| ICommandData[] | Array of commands implementing `ICommandData` interface. |
+
+## Example
+
+<TabItem value="defer_2" label="defer_2">
+<CodeBlock language="java">
+{`Map<String, Object> value1 = new HashMap<>();
+value1.put("Name", "My Product");
+value1.put("Supplier", "suppliers/999-A");
+value1.put("@metadata", Collections.singletonMap("@collection", "Users"));
+
+PutCommandDataWithJson putCommand1 =
+    new PutCommandDataWithJson("products/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value1));
+
+HashMap<String, Object> value2 = new HashMap<>();
+value2.put("Name", "My Product");
+value2.put("Supplier", "suppliers/999-A");
+value2.put("@metadata", Collections.singletonMap("@collection", "Suppliers"));
+
+PutCommandDataWithJson putCommand2 =
+    new PutCommandDataWithJson("suppliers/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value2));
+
+DeleteCommandData command3 = new DeleteCommandData("products/1-A", null);
+
+session.advanced().defer(putCommand1, putCommand2, command3);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

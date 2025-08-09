@@ -1,0 +1,187 @@
+---
+title: "Get Index Names Operation"
+hide_table_of_contents: true
+sidebar_label: Get Index Names
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Get Index Names Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexNamesOperation` to retrieve multiple __index names__ from the database.
+
+* In this page:
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
+
+</Admonition>
+## Get index names example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get index names operation
+// Pass number of indexes to skip & number of indexes to retrieve
+var getIndexNamesOp = new GetIndexNamesOperation(0, 10);
+
+// Execute the operation by passing it to Maintenance.Send
+string[] indexNames = store.Maintenance.Send(getIndexNamesOp);
+
+// indexNames will contain the first 10 indexes, alphabetically ordered
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get index names operation
+// Pass number of indexes to skip & number of indexes to retrieve
+var getIndexNamesOp = new GetIndexNamesOperation(0, 10);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
+
+// indexNames will contain the first 10 indexes, alphabetically ordered
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
+<CodeBlock language="csharp">
+{`public GetIndexNamesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |- | - |
+| __start__ | int | Number of index names to skip |
+| __pageSize__ | int   | Number of index names to retrieve |
+
+| Return Value of `store.Maintenance.Send(getIndexNamesOp)` | |
+| - | - |
+| `string[]` | A list of index names alphabetically ordered |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetIndexNamesOperation** is used to retrieve multiple index names from a database.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="java">
+{`public GetIndexNamesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Number of index names that should be skipped |
+| **pageSize** | int | Maximum number of index names that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | This method returns an array of index **name** as a result. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="java">
+{`String[] indexNames
+    = store.maintenance()
+        .send(new GetIndexNamesOperation(0, 10));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexNamesOperation` to retrieve multiple __index names__ from the database.
+
+* In this page:
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
+
+</Admonition>
+## Get index names example
+
+<TabItem value="get_index_names" label="get_index_names">
+<CodeBlock language="js">
+{`// Define the get index names operation
+// Pass number of indexes to skip & number of indexes to retrieve
+const getIndexNamesOp = new GetIndexNamesOperation(0, 10);
+
+// Execute the operation by passing it to maintenance.send
+const indexNames = await store.maintenance.send(getIndexNamesOp);
+
+// indexNames will contain the first 10 indexes, alphabetically ordered
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
+<CodeBlock language="js">
+{`const getIndexNamesOp = new GetIndexNamesOperation(start, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |- | - |
+| __start__ | number | Number of index names to skip |
+| __pageSize__ | number   | Number of index names to retrieve |
+
+| Return Value of `store.maintenance.send(getIndexNamesOp)` | |
+| - | - |
+| `string[]` | A list of index names alphabetically ordered |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

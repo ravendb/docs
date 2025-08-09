@@ -1,0 +1,146 @@
+---
+title: "Bulk Insert: How to Append Time Series"
+hide_table_of_contents: true
+sidebar_label: Append In Bulk
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bulk Insert: How to Append Time Series
+<Admonition type="note" title="Note">
+
+* `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
+  Using its `TimeSeriesFor` interface's `Append` method resembles using 
+  [session.TimeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append.mdx), 
+  but `session` liabilities are omitted so a much greater speed is gained.  
+
+* You can bulk-insert **a single time series** at a time.  
+
+* To bulk-insert an additional time series concurrently, open an additional **BulkInsertOperation** 
+  instance.  
+
+* In this page:  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#syntax)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage-samples)  
+
+</Admonition>
+
+## Syntax
+
+*   `BulkInsert.TimeSeriesFor`
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public TimeSeriesBulkInsert TimeSeriesFor(string id, string name)
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     |:-------------|:-------------|:-------------|
+     | `id` | `string` | Document ID |
+     | `name` | `string` | Time Series Name |
+* There are two `TimeSeriesFor.Append` overloads:  
+<TabItem value="Append-Operation-Definition-1" label="Append-Operation-Definition-1">
+<CodeBlock language="csharp">
+{`// Append a single value
+public void Append(DateTime timestamp, double value, string tag = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Append-Operation-Definition-2" label="Append-Operation-Definition-2">
+<CodeBlock language="csharp">
+{`// Append multiple values
+public void Append(DateTime timestamp, ICollection<double> values, string tag = null)
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     |:-------------|:-------------|:-------------|
+     | `timestamp` | `DateTime` | TS-entry's timestamp |
+     | `value` | `double` | A single value |
+     | `values` | `ICollection<double>` | Multiple values |
+     | `tag` | `string` | TS-entry's tag (optional) |
+
+
+
+## Usage Flow
+
+* Create a `store.BulkInsert` instance.  
+* Pass the instance's `TimeSeriesFor` -  
+   * Document ID  
+   * Time series name  
+* Call `Append` as many times as you like. Pass it -  
+   * The entry's Timestamp  
+   * The entry's Value or Values  
+   * The entry's Tag (optional)  
+
+
+
+## Usage Samples
+
+* In this sample, we append two entries to a time series.  
+<TabItem value="timeseries_region_Use-BulkInsert-To-Append-2-Entries" label="timeseries_region_Use-BulkInsert-To-Append-2-Entries">
+<CodeBlock language="csharp">
+{`// Use BulkInsert to append 2 time-series entries
+using (BulkInsertOperation bulkInsert = store.BulkInsert())
+\{
+    using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
+    \{
+        timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
+        timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+* In this sample, we append a hundred entries to a time series.  
+<TabItem value="timeseries_region_Use-BulkInsert-To-Append-100-Entries" label="timeseries_region_Use-BulkInsert-To-Append-100-Entries">
+<CodeBlock language="csharp">
+{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
+\{
+    using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+           bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
+    \{
+        Random rand = new Random();
+        
+        for (int i = 0; i < 100; i++)
+        \{
+            double randomValue = rand.Next(60, 91); 
+            timeSeriesBulkInsert.Append(baseTime.AddMinutes(i), randomValue, "watches/fitbit");
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+* In this sample, we append two sets of values to a time series.  
+<TabItem value="BulkInsert-overload-2-Two-HeartRate-Sets" label="BulkInsert-overload-2-Two-HeartRate-Sets">
+<CodeBlock language="csharp">
+{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
+\{
+    using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+           bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
+    \{
+        var exerciseHeartRates = new List<double> \{ 89d, 82d, 85d \};
+        timeSeriesBulkInsert.Append(baseline.AddMinutes(1), exerciseHeartRates, "watches/fitbit");
+        
+        var restingHeartRates = new List<double> \{ 59d, 63d, 61d, 64d, 65d \};
+        timeSeriesBulkInsert.Append(baseline.AddMinutes(2), restingHeartRates, "watches/apple-watch");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

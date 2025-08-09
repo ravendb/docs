@@ -1,0 +1,244 @@
+---
+title: "Querying: Aggregating and Projecting Time Series"
+hide_table_of_contents: true
+sidebar_label: Aggregating Values
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Aggregating and Projecting Time Series
+<Admonition type="note" title="Note">
+
+* **Aggregation**  
+  Queries can easily create powerful statistics by aggregating time series 
+  into groups by chosen time frames like an hour or a week, and retrieving 
+  values from each group by criteria like `Min` for the lowest value, 
+  `Count` for the number of values in the group, etc.  
+  
+* **Projection** by criteria  
+  Queries can explicitly select the criteria by which values would be retrieved 
+  and projected to the client.  
+  When a query does **not** select specific criteria, RavenDB will consider it 
+  an implicit selection of **all** criteria and project to the client the values 
+  from each group, that match each criterion.  
+
+    <Admonition type="info" title="Projecting values from Aggregated and Non-Aggregated result-sets" id="projecting-values-from-aggregated-and-non-aggregated-result-sets" href="#projecting-values-from-aggregated-and-non-aggregated-result-sets">
+
+    * When values are selected from a time series (or a range of time series 
+     entries) that **has** been aggregated, they are selected per-group.  
+    * When values are selected from a series or a range that **hasn't** 
+      been aggregated, they are selected from the entire result-set.  
+
+    </Admonition>
+
+* In this page:  
+  * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregation-and-projections)  
+  * [Query Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#query-examples)  
+  * [Client Usage Samples](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#client-usage-samples)  
+
+</Admonition>
+## Aggregation and Projection
+
+In an RQL query, use the `group by` expression to aggregate 
+time series (or ranges of time series entries) in groups by 
+a chosen resolution, and the `select` keyword to choose and 
+project entries by a chosen criteria.    
+
+<Admonition type="info" title="You can aggregate entries by these time units:" id="you-can-aggregate-entries-by-these-time-units" href="#you-can-aggregate-entries-by-these-time-units">  
+
+* **Milliseconds**  
+* **Seconds**  
+* **Minutes**  
+* **Hours**  
+* **Days**  
+* **Months**  
+* **Quarters**  
+* **Years**  
+
+</Admonition>
+
+<Admonition type="info" title="You can `select` values for projection by these criteria:" id="you-can-select-values-for-projection-by-these-criteria" href="#you-can-select-values-for-projection-by-these-criteria">
+
+* **Min()** - the lowest value  
+* **Max()** - the highest value  
+* **Sum()** - sum of all values  
+* **Average()** - average value  
+* **First()** - values of the first series entry  
+* **Last()** - values of the last series entry  
+* **Count()** - overall number of values in series entries  
+
+</Admonition>
+
+
+
+## Query Examples
+
+* In this sample, we group entries of users' HeartRates time series 
+  and project the lowest and highest values of each group.  
+  Each HeartRates entry holds a single value.
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Employees as e
+select timeseries(
+    from HeartRates between 
+        '2020-05-17T00:00:00.0000000Z' 
+        and '2020-05-23T00:00:00.0000000Z'
+    where Tag == 'watches/fitbit'
+    group by '1 days'
+    select min(), max()
+)
+`}
+</CodeBlock>
+</TabItem>
+   * **group by '1 days'**  
+     We group each user's HeartRates time series entries in consecutive 1-day groups.  
+   * **select min(), max()**  
+     We select the lowest and highest values of each group and project them to the client.  
+
+* In this sample, we group entries of companies' StockPrice time series 
+  in consecutive 7-day groups and project the highest and lowest values 
+  of each group.  
+  Each StockPrice entry holds five values, the query returns the `Max` 
+  and `Min` values of each:  
+  Values[0] - **Open** - stock price when the trade opens  
+  Values[1] - **Close** - stock price when the trade ends  
+  Values[2] - **High** - highest stock price during trade time  
+  Values[3] - **Low** - lowest stock price during trade time  
+  Values[4] - **Volume** - overall trade volume  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`declare timeseries SP(c) 
+\{
+    from c.StockPrice 
+    where Values[4] > 500000
+        group by '7 day'
+        select max(), min()
+\}
+from Companies as c
+where c.Address.Country = 'USA'
+select c.Name, SP(c)
+`}
+</CodeBlock>
+</TabItem>
+   * **where Values[4] &gt; 500000**  
+     Query stock price behavior when the trade volume is high.  
+   * **group by '7 day'**  
+     Group each company's StockPrice entries in consecutive 7-day groups.  
+   * **select max(), min()**  
+     Select the highest (`Max`) and lowest (`Min`) 
+     values of each group and project them to the client.  
+     Since each entry holds 5 values, the query will project 
+     5 `Max` values for each group (the highest Values[0], highest 
+     Values[1], etc.) and 5 `Min` values for each group (the lowest 
+     Values[0], lowest Values[1], etc.).  
+   * **select c.Name, SP(c)**  
+     Project the company's name along with the time series query 
+     results to make the results easier to read and understand.  
+
+* This sample is similar to the one above it, except that time series 
+  entries are **not aggregated**, so the highest and lowest values are 
+  collected not from each group but from the entire result-set.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`declare timeseries SP(c) 
+\{
+    from c.StockPrice 
+    where Values[4] > 500000
+        select max(), min()
+\}
+from Companies as c
+where c.Address.Country = 'USA'
+select c.Name, SP(c)
+`}
+</CodeBlock>
+</TabItem>
+   * **select max(), min()**  
+     Since there is no aggregation, the entire result-set is queried 
+     and the results include only the all-time highest and lowest Open, 
+     Close, High, Low and Volume values.  
+
+
+
+## Client Usage Samples
+
+<Admonition type="info" title="Info">
+You can run queries from your client using raw RQL and LINQ.  
+
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#client-raw-rql-queries).  
+
+</Admonition>
+
+To aggregate time series entries, use `GroupBy()` in a LINQ query 
+or `group by` in a raw RQL query.  
+To select time series values for projection, use `Select()` in a LINQ query 
+or `select` in a raw RQL query.  
+
+* Here we express the query we've discussed above using 
+  LINQ and both RQL syntaxes.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<Company>()
+    .Where(c => c.Address.Country == "USA")
+    .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
+        .Where(ts => ts.Values[4] > 500000)
+        .GroupBy(g => g.Days(7))
+        .Select(g => new
+        {
+            Min = g.Min(),
+            Max = g.Max()
+        })
+        .ToList());
+
+var result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL-Select-Syntax" label="Raw-RQL-Select-Syntax">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+        from Companies as c
+            where c.Address.Country = 'USA'
+            select timeseries ( 
+                from StockPrices 
+                where Values[4] > 500000
+                    group by '7 day'
+                    select max(), min()
+            )
+        ");
+
+var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL-Declare-Syntax" label="Raw-RQL-Declare-Syntax">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+        declare timeseries SP(c) {
+            from c.StockPrices
+            where Values[4] > 500000
+            group by '7 day'
+            select max(), min()
+        }
+        from Companies as c
+        where c.Address.Country = 'USA'
+        select c.Name, SP(c)"
+        );
+
+var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+
+

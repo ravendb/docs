@@ -1,0 +1,242 @@
+---
+title: "Operations: How to Add ETL"
+hide_table_of_contents: true
+sidebar_label: Add ETL
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: How to Add ETL
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This API article demonstrates how to create various ETL tasks and the connection strings required.  
+
+* You can add an ETL task by using the [**AddEtlOperation** method](../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation).  
+
+* ETL tasks are ongoing tasks that:
+  1. Extract selected data from your source database when changes are made or new data is added.
+  2. Apply a transform script on the data.
+  3. Load the transformed data to a destination that you designate.  
+
+* To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
+
+* To learn how to manage ETL tasks using the Studio see: [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).  
+In this page:
+
+* [AddEtlOperation](../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation)  
+* [Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-raven-etl)  
+    * [Creating a Connection String for Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-raven-etl)  
+    * [Code Sample to Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-raven-etl)  
+
+* [Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-sql-etl)  
+    * [Creating a Connection String for Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-sql-etl)  
+    * [Code Sample to Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-sql-etl)  
+
+
+
+You can add ETL task by using the **AddEtlOperation** method.
+
+## AddEtlOperation
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="csharp">
+{`public AddEtlOperation(EtlConfiguration<T> configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+## Add Raven ETL
+
+[Raven ETL](../../../../server/ongoing-tasks/etl/raven.mdx) tasks enable ongoing Extract, Transform, Load functionality from a RavenDB source database to a RavenDB destination.  
+
+### Creating a Connection String for Raven ETL
+
+* **Secure clusters**  
+  In addition to defining a connection string, to connect secure RavenDB clusters you must export the server certificate 
+  from the source cluster and install it into the destination cluster.  
+
+* After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
+  or with the following API.  
+  
+<TabItem value="raven_etl_connection_string" label="raven_etl_connection_string">
+<CodeBlock language="csharp">
+{`\{
+    //define connection string
+    var ravenConnectionString = new RavenConnectionString()
+    \{
+        //name connection string
+        Name = "raven-connection-string-name",
+
+        //define appropriate node
+        //Be sure that the node definition in the connection string has the "s" in https
+        TopologyDiscoveryUrls = new[] \{ "https://127.0.0.1:8080" \},
+
+        //define database to connect with on the node
+        Database = "Northwind",
+
+    \};
+    //create the connection string
+    var resultRavenString = store.Maintenance.Send(
+        new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Code Sample to Add Raven ETL
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="csharp">
+{`AddEtlOperation<RavenConnectionString> operation = new AddEtlOperation<RavenConnectionString>(
+    new RavenEtlConfiguration
+    \{
+        ConnectionStringName = "raven-connection-string-name",
+        Name = "Employees ETL",
+        Transforms =
+        \{
+            new Transformation
+            \{
+                Name = "Script #1",
+                Collections =
+                \{
+                    "Employees"
+                \},
+                Script = @"loadToEmployees (\{
+                        Name: this.FirstName + ' ' + this.LastName,
+                        Title: this.Title
+                \});"
+            \}
+        \},
+
+        // Do not prevent task failover to another node
+        PinToMentorNode = false
+
+    \});
+
+AddEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Add Sql ETL
+
+[SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx) tasks enable ongoing Extract, Transform, Load functionality from RavenDB to SQL servers. 
+
+
+### Creating a Connection String for Sql ETL
+
+<TabItem value="sql_etl_connection_string" label="sql_etl_connection_string">
+<CodeBlock language="csharp">
+{`\{
+    // define new connection string
+    PutConnectionStringOperation<SqlConnectionString> operation
+    = new PutConnectionStringOperation<SqlConnectionString>(
+        new SqlConnectionString
+        \{
+            // name connection string
+            Name = "local_mysql",
+
+            // define FactoryName
+            FactoryName = "MySql.Data.MySqlClient",
+
+            // define database - may also need to define authentication and encryption parameters
+            // by default, encrypted databases are sent over encrypted channels
+            ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+
+        \});
+
+    // create connection string
+    PutConnectionStringResult connectionStringResult
+    = store.Maintenance.Send(operation);
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Code Sample to Add Sql ETL
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="csharp">
+{`AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<SqlConnectionString>(
+    new SqlEtlConfiguration
+    \{
+        ConnectionStringName = "sql-connection-string-name",
+        Name = "Orders to SQL",
+        SqlTables = \{
+            new SqlEtlTable \{TableName = "Orders", DocumentIdColumn = "Id", InsertOnlyMode = false\},
+            new SqlEtlTable \{TableName = "OrderLines", DocumentIdColumn = "OrderId", InsertOnlyMode = false\},
+        \},
+        Transforms =
+        \{
+            new Transformation
+            \{
+                Name = "Script #1",
+                Collections =
+                \{
+                    "Orders"
+                \},
+                Script = @"var orderData = \{
+                                Id: id(this),
+                                OrderLinesCount: this.Lines.length,
+                                TotalCost: 0
+                            \};
+
+                            for (var i = 0; i < this.Lines.length; i++) \{
+                                var line = this.Lines[i];
+                                orderData.TotalCost += line.PricePerUnit;
+                                
+                                // Load to SQL table 'OrderLines'
+                                loadToOrderLines(\{
+                                    OrderId: id(this),
+                                    Qty: line.Quantity,
+                                    Product: line.Product,
+                                    Cost: line.PricePerUnit
+                                \});
+                            \}
+                            orderData.TotalCost = Math.round(orderData.TotalCost  * 100) / 100;
+
+                            // Load to SQL table 'Orders'
+                            loadToOrders(orderData)"
+            \}
+        \},
+
+        // Do not prevent task failover to another node
+        PinToMentorNode = false
+
+    \});
+
+AddEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### ETL
+- [Basics](../../../../server/ongoing-tasks/etl/basics)
+- [RavenDB ETL](../../../../server/ongoing-tasks/etl/raven)
+- [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
+
+### Studio
+- [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+
+
+-->

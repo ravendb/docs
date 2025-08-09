@@ -1,0 +1,140 @@
+---
+title: "Indexing Related Documents"
+hide_table_of_contents: true
+sidebar_label: Indexing Related Documents
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Indexing Related Documents
+
+To extend indexing capabilities and simplify many scenarios, we have introduced the possibility to index related documents. 
+For start, let's consider a simple `Customer - Invoice` scenario where you want to lookup for an `Invoice` by `Customer Name`.
+
+<TabItem value="indexing_related_documents_1" label="indexing_related_documents_1">
+<CodeBlock language="csharp">
+{`public class Invoice
+\{
+	public string Id \{ get; set; \}
+
+	public string CustomerId \{ get; set; \}
+\}
+
+public class Customer
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Without this feature, the index that had to be created would be a fairly complex multiple map-reduce index and this is why the `LoadDocument` function was introduced.
+
+<TabItem value="indexing_related_documents_2" label="indexing_related_documents_2">
+<CodeBlock language="csharp">
+{`public class SampleIndex : AbstractIndexCreationTask<Invoice>
+\{
+	public SampleIndex()
+	\{
+		Map = invoices => from invoice in invoices
+						  select new
+						  \{
+							  CustomerId = invoice.CustomerId,
+							  CustomerName = LoadDocument<Customer>(invoice.CustomerId).Name
+						  \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Alternative way is to use `PutIndex` command:
+
+<TabItem value="indexing_related_documents_3" label="indexing_related_documents_3">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("SampleIndex", new IndexDefinition
+\{
+	Map = @"from invoice in docs.Invoices
+			select new
+			\{
+				CustomerId = invoice.CustomerId,
+				CustomerName = LoadDocument(invoice.CustomerId).Name
+			\}"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Now we will be able to search for invoices using `Customer Name` as a parameter.
+
+Our next scenario will show us that indexing more complex relationships is also trivial. Lets consider a case:
+
+<TabItem value="indexing_related_documents_4" label="indexing_related_documents_4">
+<CodeBlock language="csharp">
+{`public class Book
+\{
+	public string Id \{ get; set; \}
+	
+	public string Name \{ get; set; \}
+\}
+
+public class Author
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public IList<string> BookIds \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now to create an index with `Author Name` and list of `Book Names` we need to create it as follows:
+
+<TabItem value="indexing_related_documents_5" label="indexing_related_documents_5">
+<CodeBlock language="csharp">
+{`public class AnotherIndex : AbstractIndexCreationTask<Author>
+\{
+	public AnotherIndex()
+	\{
+		Map = authors => from author in authors
+						 select new
+							 \{
+								 Name = author.Name,
+								 Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+							 \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="indexing_related_documents_6" label="indexing_related_documents_6">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("AnotherIndex", new IndexDefinition
+\{
+	Map = @"from author in docs.Authors
+			select new
+			\{
+				Name = author.Name,
+				Books = author.BookIds.Select(x => LoadDocument(x).Id)
+			\}"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Indexes will be updated automatically when related documents will change.
+</Admonition>

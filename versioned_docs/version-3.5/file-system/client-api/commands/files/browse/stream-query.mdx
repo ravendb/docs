@@ -1,0 +1,82 @@
+---
+title: "Commands: StreamQueryAsync"
+hide_table_of_contents: true
+sidebar_label: StreamQuery
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: StreamQueryAsync
+
+**StreamQueryAsync** is used to Stream the query results to the client.
+
+
+
+<TabItem value="stream_query_1" label="stream_query_1">
+<CodeBlock language="csharp">
+{`Task<IAsyncEnumerator<FileHeader>> StreamQueryAsync(string query, string[] sortFields = null, int start = 0, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | string | The Lucene query |
+| **sortFields** | string[] | The fields to sort by |
+| **start** | int | The number of files that should be skipped |
+| **pageSize** | int | The maximum number of file headers that will be retrieved |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumerator of [`FileHeaders`](../../../../../glossary/file-header.mdx) objects. |
+
+
+## Example
+
+<TabItem value="stream_query_3" label="stream_query_3">
+<CodeBlock language="csharp">
+{`using (var reader = await store.AsyncFilesCommands.StreamQueryAsync("Number:2", start: 10, pageSize: 20))
+\{
+    while (await reader.MoveNextAsync())
+    \{
+        allFilesMatchingCriteria.Add(reader.Current);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>   
+
+By using the following code **StreamQueryAsync** can sort the result for the query:
+<TabItem value="stream_query_2" label="stream_query_2">
+<CodeBlock language="csharp">
+{`var allFilesMatchingCriteria = new List<FileHeader>();
+using (var reader = await store.AsyncFilesCommands.StreamQueryAsync("", sortFields: new string[] \{ "-__key" \}))
+\{  
+    while (await reader.MoveNextAsync())
+    \{
+        allFilesMatchingCriteria.Add(reader.Current);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

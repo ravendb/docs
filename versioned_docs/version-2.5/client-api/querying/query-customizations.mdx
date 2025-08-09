@@ -1,0 +1,55 @@
+---
+title: "Query customizations"
+hide_table_of_contents: true
+sidebar_label: Query customization
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Query customizations
+
+Raven's `Query` has a bunch of customizations which you can set by using `Customize()` method. Example:
+
+<TabItem value="customize_usage" label="customize_usage">
+<CodeBlock language="csharp">
+{`session.Query<User>().Customize(x => x.WaitForNonStaleResultsAsOfLastWrite());
+`}
+</CodeBlock>
+</TabItem>
+
+Below there are presented available query customization options. All of them have equivalents for `LuceneQuery`. In example the Lucene version of the query above would be:
+
+<TabItem value="customize_usage_lucene" label="customize_usage_lucene">
+<CodeBlock language="csharp">
+{`session.Advanced.LuceneQuery<User>().WaitForNonStaleResultsAsOfLastWrite();
+`}
+</CodeBlock>
+</TabItem>
+
+## NoCaching
+
+It disables the caching for query results. It means that a response of a request send to get results of a specified query will not be keep in the cache.
+
+<TabItem value="no_cache" label="no_cache">
+<CodeBlock language="csharp">
+{`session.Query<User>().Customize(x => x.NoCaching());
+`}
+</CodeBlock>
+</TabItem>
+
+## NoTracking
+
+It disables the tracking mechanism for queried entities by Raven's [Unit of Work](../basic-operations/understanding-session-object.mdx#unit-of-work). The usage of this option will prevent holding query results in memory.
+
+<TabItem value="no_tracking" label="no_tracking">
+<CodeBlock language="csharp">
+{`session.Query<User>().Customize(x => x.NoTracking());
+`}
+</CodeBlock>
+</TabItem>

@@ -1,0 +1,261 @@
+---
+title: "Querying: Choosing Time Series Range"
+hide_table_of_contents: true
+sidebar_label: Choosing Query Range
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Choosing Time Series Range
+<Admonition type="note" title="Note">
+
+* Queries can be performed over whole time series or over a chosen range 
+  of time series entries, e.g. only entries collected during the last 7 days.  
+    
+* In this page:  
+  * [Choosing Query Range](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choosing-query-range)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and-)
+  * [Client Usage Examples](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#client-usage-examples)
+      * [Choosing a Range Using LINQ](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choosing-a-range-using-linq)
+      * [Choosing a Range Using Raw RQL](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choosing-a-range-using-raw-rql)
+
+</Admonition>
+## Choosing Query Range
+
+In an RQL query, use `between` and `and` to specify a range of time series 
+entries to query. The entries are chosen by their timestamps, in UTC format.  
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from Users as jog where Age < 30
+select timeseries(
+   from HeartRate 
+   between 
+      '2020-05-27T00:00:00.0000000Z'
+     and 
+      '2020-06-23T00:00:00.0000000Z'
+`}
+</CodeBlock>
+</TabItem>
+  
+  * `between '2020-05-27T00:00:00.0000000Z' and '2020-06-23T00:00:00.0000000Z'`  
+    Retrieve all entries between these two timestamps.  
+      
+<Admonition type="info" title="Info">
+      You can use the Studio to try these queries.  
+      Using the studio, you can use parameters for a clearer query.  
+      E.g. -  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`$from = '2020-05-27T00:00:00.0000000Z'
+'2020-06-23T00:00:00.0000000Z'
+
+sers as jog where Age < 30
+ timeseries(
+m HeartRate 
+ween $from and $to
+)
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+#### `first` and `last`
+
+You can use the keywords `first` and `last` to specify a range of entries at the 
+beginning or end of the time series. The range is specified using a whole 
+number of one of these units:  
+
+* **Seconds**  
+* **Minutes**  
+* **Hours**  
+* **Days**  
+* **Months**  
+* **Quarters**  
+* **Years**  
+
+Within the `select timeseries` clause of the query, write e.g. `first 1 second` or 
+`last 3 quarters`.
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from Users
+select timeseries(
+   from HeartRates 
+   last 1 day
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Client Usage Examples
+
+<Admonition type="info" title="Info">
+You can run queries from your client using raw RQL and LINQ.  
+
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#client-raw-rql-queries).  
+
+</Admonition>
+### Choosing a Range Using LINQ
+
+To choose a range as part of a LINQ query, pass `RavenQuery.TimeSeries` 
+a `from` and a `to` DateTime values.  
+Omitting these values will load the entire series.  
+
+* **`RavenQuery.TimeSeries` Definitions**  
+<TabItem value="RavenQuery-TimeSeries-Definition-Without-Range" label="RavenQuery-TimeSeries-Definition-Without-Range">
+<CodeBlock language="csharp">
+{`public static ITimeSeriesQueryable TimeSeries(object documentInstance,
+    string name)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RavenQuery-TimeSeries-Definition-With-Range" label="RavenQuery-TimeSeries-Definition-With-Range">
+<CodeBlock language="csharp">
+{`public static ITimeSeriesQueryable TimeSeries(object documentInstance,
+    string name, DateTime from, DateTime to)
+`}
+</CodeBlock>
+</TabItem>
+            
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `documentInstance` | `object` | Document Instance |
+    | `name` | `string` | Time Series Name |
+    | `from` (optional) | `DateTime` | Range Start <br/> Default: `DateTime.Min` |
+    | `to` (optional) | `DateTime` | Range End <br/> Default: `DateTime.Max` |
+  
+* In this example, we select a three-days range from the HeartRate time series.
+<TabItem value="ts_region_LINQ-3-Range-Selection" label="ts_region_LINQ-3-Range-Selection">
+<CodeBlock language="csharp">
+{`var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+
+var query = session.Query<User>()
+    .Select(q => RavenQuery
+        .TimeSeries(q, "HeartRates", baseTime, baseTime.AddDays(3))
+        .ToList());
+
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+#### `FromFirst()` and `FromLast()`
+
+To select only the first or last entries, use the methods `FromFirst()` or `FromLast()` 
+(only one of them can be used at a time).  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`ITimeSeriesQueryable FromLast(Action<ITimePeriodBuilder> timePeriod);
+
+ITimeSeriesQueryable FromFirst(Action<ITimePeriodBuilder> timePeriod);
+`}
+</CodeBlock>
+</TabItem>
+
+In this example, we select only the entries in the last 30 minutes of the time series 
+"HeartRates".  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var result = session.Query<Person>()
+    .Select(p => 
+    RavenQuery.TimeSeries(p, "HeartRates")
+        .FromLast(g => g.minutes(30))
+        .ToList());
+`}
+</CodeBlock>
+</TabItem>
+### Choosing a Range Using Raw RQL
+
+To choose a range as part of a raw RQL query, use the `between` and `and` keywords.  
+
+In this example, a raw RQL query chooses the profiles of users under the age of 30 and 
+retrieves a 24-hours range from each.  
+An **offset** is defined, adding two hours to retrieved timestamps to adjust them 
+to the client's local time zone.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Declare-Syntax" label="Declare-Syntax">
+<CodeBlock language="csharp">
+{`// May 17 2020, 00:00:00
+var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+// Raw query with no aggregation - Declare syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        declare timeseries getHeartRates(user) 
+        {
+            from user.HeartRates 
+                between $start and $end
+                offset '02:00'
+        }
+        from Users as u where Age < 30
+        select getHeartRates(u)
+        ")
+    .AddParameter("start", baseline)
+    .AddParameter("end", baseline.AddHours(24));
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Select-Syntax" label="Select-Syntax">
+<CodeBlock language="csharp">
+{`// May 17 2020, 00:00:00
+var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+// Raw query with no aggregation - Select syntax
+IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+        from Users as u where Age < 30                            
+        select timeseries (
+            from HeartRates 
+                between $start and $end
+                offset '02:00'
+        )")
+    .AddParameter("start", baseline)
+    .AddParameter("end", baseline.AddHours(24));
+
+var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+ </Tabs>
+
+#### `first` and `last`
+
+To select only the first or last entries, use the keywords `first` or `last` 
+(only one of them can be used at a time). Within the `select timeseries` 
+clause of the query, write e.g. `first 1 second` or `last 3 quarters`.  
+
+In this example, we select only the entries in the last 12 hours of the time series 
+"HeartRates".  
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from People as doc
+select timeseries(
+    from doc.HeartRates 
+    last 12h
+    group by 1h
+    select min(), max(), avg()
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+

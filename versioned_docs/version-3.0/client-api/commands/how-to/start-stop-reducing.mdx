@@ -1,0 +1,109 @@
+---
+title: "Commands: How to start or stop indexing and get indexing status?"
+hide_table_of_contents: true
+sidebar_label: ...start or stop reducing
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["http"];
+
+
+# Commands: How to start or stop indexing and get indexing status?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="http">
+
+
+Following endpoints have been created to enable user to toggle reducing:   
+- [StartReducing](../../../client-api/commands/how-to/start-stop-reducing.mdx#startreducing)   
+- [StopReducing](../../../client-api/commands/how-to/start-stop-reducing.mdx#stopreducing)   
+
+## StartReducing
+
+Starts reducing, if it was previously stopped.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/admin/startReducing \\
+	-X POST \\
+    -d ""
+`}
+</CodeBlock>
+</TabItem>
+
+| Payload |
+| ------- |
+| Empty |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/NorthWind/admin/StartReducing" -d ""
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StopReducing
+
+Stops reducing, if it was running.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/admin/StopReducing \\
+	-X POST 
+    -d ""
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/NorthWind/admin/StopReducing" -d ""
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+- [How to create or delete database?](../../../client-api/commands/how-to/create-delete-database)
+
+-->

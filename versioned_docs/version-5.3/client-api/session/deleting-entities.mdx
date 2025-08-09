@@ -1,0 +1,309 @@
+---
+title: "Session: Deleting Entities"
+hide_table_of_contents: true
+sidebar_label: Deleting Entities
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: Deleting Entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Entities can be marked for deletion by using the `Delete` method, but will not be removed from the server until `SaveChanges` is called.  
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="csharp">
+{`void Delete<T>(T entity);
+
+void Delete(string id);
+
+void Delete(string id, string expectedChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | `T` | instance of the entity to delete |
+| **id** | `string` | ID of the entity to delete |
+| **expectedChangeVector** | `string` | a change vector to use for concurrency checks |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+
+session.Delete(employee);
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Employee employee = await session.LoadAsync<Employee>("employees/1");
+
+session.Delete(employee);
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.  
+</Admonition>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+In this overload, the Delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.  
+</Admonition>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing:  
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing:  
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new DeleteCommandData("employees/1", changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Change Vector in DeleteCommandData" id="change-vector-in-deletecommanddata" href="#change-vector-in-deletecommanddata">
+In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check.  
+</Admonition>
+
+You can read more about defer operations [here](../../client-api/session/how-to/defer-operations.mdx).  
+
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Entities can be marked for deletion by using the `delete` method, but will not be removed from the server until `saveChanges` is called.
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="java">
+{`<T> void delete(T entity);
+
+void delete(String id);
+
+void delete(String id, String expectedChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | `T` | instance of the entity to delete |
+| **id** | `String` | ID of the entity to delete |
+| **expectedChangeVector** | `String` | a change vector to use for concurrency checks |
+
+## Example I
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+
+session.delete(employee);
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+If useOptimisticConcurrency is set to 'true' (default 'false'), the delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.
+</Admonition>
+
+## Example II
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="java">
+{`session.delete("employees/1");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+In this overload, the delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.
+</Admonition>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="java">
+{`session.delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="java">
+{`session.advanced().defer(new DeleteCommandData("employees/1", null));
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Change Vector in DeleteCommandData" id="change-vector-in-deletecommanddata" href="#change-vector-in-deletecommanddata">
+In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check. 
+</Admonition>
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Entities can be marked for deletion by using the `delete()` method, but will *not* be removed from the server until `saveChanges()` is called.
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="js">
+{`await session.delete(entity);
+
+await session.delete(id);
+
+await session.delete(id, [changeVector]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | `object` | Instance of the entity to delete |
+|  **id** | `string` | The entity ID |
+| **changeVector** | `string` | a change vector to use for concurrency checks |
+
+## Example I
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="js">
+{`const employee = await session.load("employees/1");
+
+await session.delete(employee);
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+If `useOptimisticConcurrency` is set to *true* (default *false*), the `delete()` method will use loaded *employees/1* change vector for concurrency check and might throw `ConcurrencyException`.
+</Admonition>
+
+## Example II
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="js">
+{`await session.delete("employees/1");
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+In this example, the `delete()` method will not do any change vector based concurrency checks because the change vector for *employees/1* is unknown.
+</Admonition>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="js">
+{`await session.delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="js">
+{`await session.advanced.defer(new DeleteCommandData("employees/1", null));
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Change Vector in DeleteCommandData" id="change-vector-in-deletecommanddata" href="#change-vector-in-deletecommanddata">
+In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check. 
+</Admonition>
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+- [How To: Enable Optimistic Concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Basics](../../indexes/querying/query-index)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

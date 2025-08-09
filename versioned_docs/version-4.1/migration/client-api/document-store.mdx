@@ -1,0 +1,153 @@
+---
+title: "Migration: Changes in DocumentStore"
+hide_table_of_contents: true
+sidebar_label: Document Store
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Changes in DocumentStore
+
+This article describes the changes in public API of `DocumentStore`.
+
+## Namespace
+
+`IDocumentStore` can be referenced using `Raven.Client.Documents` (previously `Raven.Client`).
+
+
+
+## DefaultDatabase
+
+The `DefaultDatabase` property has been renamed to `Database`.
+
+
+
+## Credentials and ApiKey
+
+The support for WindowsAuth and OAuth has been dropped. RavenDB 4.0 uses X.509 certificate-based authentication.
+
+
+
+## Url and FailoverServers
+
+When initializing `DocumentStore`, you can provide multiple URLs to RavenDB servers holding your database in the cluster. It will grab the cluster topology from the first accessible server. 
+
+<TabItem value="urls_1" label="urls_1">
+<CodeBlock language="csharp">
+{`new DocumentStore
+\{
+    Urls = new[]
+    \{
+        "http://ravendb-1:8080",
+        "http://ravendb-2:8080",
+        "http://ravendb-3:8080"
+    \}
+\}.Initialize();
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## ConnectionStringName
+
+As the configuration system has been changed in .NET Core, we removed the `ConnectionStringName` property. Instead you can use the .NET core configuration mechanism, retrieve the connection string entry from `appsettings.json`, convert it, and manually set `Urls` and `Database` properties.
+
+
+
+## Listeners
+
+All listeners have been removed in favor of events.
+
+- Usage of the events:   
+
+<TabItem value="events_1" label="events_1">
+<CodeBlock language="csharp">
+{`store.OnBeforeStore += (s, e) => \{ \};
+store.OnAfterSaveChanges += (s, e) => \{ \};
+store.OnBeforeDelete += (s, e) => \{ \};
+store.OnBeforeQuery += (s, e) => \{ \};
+`}
+</CodeBlock>
+</TabItem>   
+
+- Document conflicts are solved only on the server side using conflict resolution scripts defined in a database.
+
+
+
+## JsonRequestFactory
+
+Instead of `JsonRequestFactory`, the `IDocumentStore` instance has `RequestExecutor`. Using it you can:
+
+  - send any command:
+
+<TabItem value="request_executor_1" label="request_executor_1">
+<CodeBlock language="csharp">
+{`RequestExecutor requestExecutor = store.GetRequestExecutor();
+
+using (requestExecutor.ContextPool.AllocateOperationContext(out JsonOperationContext context))
+\{
+    var command = new GetDocumentsCommand(start: 0, pageSize: 10);
+    requestExecutor.Execute(command, context);
+
+    GetDocumentsResult result = command.Result;
+\}
+`}
+</CodeBlock>
+</TabItem>   
+
+  - check the number of cached items or clear the cache (cache size capacity can be configured via `MaxHttpCacheSize` convention):
+
+<TabItem value="request_executor_2" label="request_executor_2">
+<CodeBlock language="csharp">
+{`int numberOfCachedItems = requestExecutor.Cache.NumberOfItems;
+
+requestExecutor.Cache.Clear();
+`}
+</CodeBlock>
+</TabItem>   
+
+  - check the number of sent requests:
+
+<TabItem value="request_executor_3" label="request_executor_3">
+<CodeBlock language="csharp">
+{`var numberOfSentRequests = requestExecutor.NumberOfServerRequests;
+`}
+</CodeBlock>
+</TabItem>   
+
+- change default request timeout:
+
+<TabItem value="request_executor_4" label="request_executor_4">
+<CodeBlock language="csharp">
+{`requestExecutor.DefaultTimeout = TimeSpan.FromSeconds(180);
+`}
+</CodeBlock>
+</TabItem>  
+
+The timeout change can be also scoped with the usage of:
+
+<TabItem value="request_executor_5" label="request_executor_5">
+<CodeBlock language="csharp">
+{`using (store.SetRequestTimeout(TimeSpan.FromMilliseconds(180)))
+\{
+\}
+`}
+</CodeBlock>
+</TabItem> 
+
+
+
+## Conventions
+
+All conventions needs to be set before `DocumentStore.Initialize` is called. Otherwise, an `InvalidOperationException` will be thrown.
+
+Read more about changes in document conventions in [dedicated article](../../migration/client-api/conventions.mdx).
+
+

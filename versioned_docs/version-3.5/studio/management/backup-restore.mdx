@@ -1,0 +1,28 @@
+---
+title: "Manage Your Server: Backup & Restore"
+hide_table_of_contents: true
+sidebar_label: Backup & Restore
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Manage Your Server: Backup & Restore
+
+`Backup` is used to create a backup of a database or a file system. All you need to do is give the name of a resource you want to backup, backup's location, and determine whether the backup should be incremental or not.
+
+![Figure 1. Manage Your Server. Backup Database.](./assets/manage_your_server-backup_database-1.png)
+
+---
+
+`Restore` is used to restore a backup. You need to provide a backup location and new database or file system name. 
+Additionally, you may give a path to a place where the data,indexes and logs should end up 
+(if you choose not to, a default path will be used), carry out defragmentation and decide to disable replication
+destinations after the successful restore.
+
+![Figure 2. Manage Your Server. Restore Database.](./assets/manage_your_server-restore_database-2.png)

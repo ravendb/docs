@@ -1,0 +1,76 @@
+---
+title: "Configuration: Logs Options"
+hide_table_of_contents: true
+sidebar_label: Logs Configuration
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Logs Options
+
+## Logs.Path
+
+The path to the directory where logs will be placed. By default it is placed in the 'Logs' directory in the same folder as the server.
+
+- **Type**: `string`
+- **Default**: `Logs`
+- **Scope**: Server-wide only
+
+
+
+## Logs.Mode
+
+The level of logs that should be written to the log files. The available options are:
+
+- `None` (logging disabled)
+- `Operations` (high level info for operational users)
+- `Information` (low level debug info)
+
+&lt;br /&gt;
+
+- **Type**: `string`
+- **Default**: `Operations`
+- **Scope**: Server-wide only
+
+
+
+## Logs.UseUtcTime
+
+This indicates if logs should be written with UTC or server-local time.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+<Admonition type="info" title="Info">
+Writing logs in UTC is more performant than using server-local time.
+</Admonition>
+
+
+
+## Logs.MaxFileSizeInMb
+
+The maximum size of the logs file in megabytes.
+
+- **Type**: `int`
+- **Default**: `128`
+- **Minimum**: `16`
+- **Scope**: Server-wide only
+
+
+
+## Logs.RetentionTimeInHrs
+
+How far back we should retain log entries, in hours.
+
+- **Type**: `int`
+- **Default**: `72`
+- **Scope**: Server-wide only
+
+

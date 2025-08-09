@@ -1,0 +1,43 @@
+---
+title: "Configuration: How to enable FIPS compliant encryption algorithms?"
+hide_table_of_contents: true
+sidebar_label: Enabling FIPS compliant encryption
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: How to enable FIPS compliant encryption algorithms?
+
+<Admonition type="info" title="Info">
+This feature requires a valid **enterprise** license.
+</Admonition>
+
+By default, RavenDB server and client are not using [FIPS compliant](http://technet.microsoft.com/en-us/library/cc180745.aspx) encryption algorithms. In order to turn it on, please refer to the appropriate sections below.
+
+## Enabling FIPS encryption algorithms on server
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+
+- `Raven/Encryption/FIPS` is a **global setting** and it **applies to all databases** on a server.
+- `Raven/Encryption/FIPS` **must** be set before any database creation (including `<system>`).
+- Databases created with `Raven/Encryption/FIPS` turned off (default) will not work on other servers with 'FIPS' turned on (and vice versa). They must be exported and imported.
+
+</Admonition>
+
+FIPS compliant encryption algorithms can be turned on by setting `Raven/Encryption/FIPS` configuration to `true` in [server configuration file](../../server/configuration/configuration-options.mdx).
+
+## Enabling FIPS encryption algorithms on client
+
+FIPS compliant encryption algorithms on client can be turned on by setting `Raven/Encryption/FIPS` appSetting to `true` in application configuration file (`app.config` or `web.config`). 
+
+## Remarks
+
+<Admonition type="note" title="Note">
+Encryption algorithms used by server and client must match.
+</Admonition>

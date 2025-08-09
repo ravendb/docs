@@ -1,0 +1,24 @@
+---
+title: "Reducing RavenDB memory footprint"
+hide_table_of_contents: true
+sidebar_label: Reducing RavenDB memory footprint
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Reducing RavenDB memory footprint
+
+By default, RavenDB will trade-off higher memory usage for better performance, you can limit the amount of memory RavenDB will use when running on memory constrained hardware.
+
+The following configuration options instruct RavenDB to use much less memory:
+
+    &lt;add key="Raven/Esent/CacheSizeMax" value="256"/&gt;
+    &lt;add key="Raven/Esent/MaxVerPages" value="32"/&gt;
+
+The first value is the maximum size of the cache, limited to 256 megabytes. The second is the maximum number of version pages to keep in memory, limited to 32 bytes.

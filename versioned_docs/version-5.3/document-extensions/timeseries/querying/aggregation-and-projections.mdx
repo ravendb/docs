@@ -1,0 +1,429 @@
+---
+title: "Querying: Aggregating and Projecting Time Series"
+hide_table_of_contents: true
+sidebar_label: Aggregating Values
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Aggregating and Projecting Time Series
+<Admonition type="note" title="Note">
+
+* **Aggregation**  
+  Queries can easily create powerful statistics by aggregating time series entries 
+  into groups by chosen time frames like an hour or a week, and retrieving 
+  values from each group by criteria like `Min` for the lowest value, 
+  `Count` for the number of values in the group, etc.  
+  
+* **Projection** by criteria  
+  Queries can explicitly select the criteria by which values would be retrieved 
+  and projected to the client.  
+  When a query does **not** select specific criteria, RavenDB will consider it 
+  an implicit selection of **all** criteria and project to the client the values 
+  from each group, that match each criterion.  
+
+    <Admonition type="info" title="Projecting values from Aggregated and Non-Aggregated result-sets" id="projecting-values-from-aggregated-and-non-aggregated-result-sets" href="#projecting-values-from-aggregated-and-non-aggregated-result-sets">
+
+    * When values are selected from a time series (or a range of time series 
+     entries) that **has** been aggregated, they are selected per-group.  
+    * When values are selected from a series or a range that **hasn't** 
+      been aggregated, they are selected from the entire result-set.  
+
+    </Admonition>
+
+* In this page:  
+  * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregation-and-projection)  
+  * [The LINQ GroupBy Method](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#the-linq-groupby-method)
+  * [Query Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#query-examples)  
+  * [Client Usage Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#client-usage-examples)  
+
+</Admonition>
+## Aggregation and Projection
+
+In an RQL query, use the `group by` expression to aggregate 
+time series (or ranges of time series entries) in groups by 
+a chosen resolution. Use the `select` keyword to choose and 
+project entries by a chosen criterion.  
+
+<Admonition type="info" title="You can aggregate entries by these time units:" id="you-can-aggregate-entries-by-these-time-units" href="#you-can-aggregate-entries-by-these-time-units">  
+
+* **Seconds**  
+* **Minutes**  
+* **Hours**  
+* **Days**  
+* **Months**  
+* **Quarters**  
+* **Years**  
+
+After aggregating by time units, You can also perform a 
+_secondary_ aggregation by the [time series `tag`](../../../document-extensions/timeseries/overview.mdx#tags).
+</Admonition>
+
+<Admonition type="info" title="You can `select` values for projection by these criteria:" id="you-can-select-values-for-projection-by-these-criteria" href="#you-can-select-values-for-projection-by-these-criteria">
+
+* **Min()** - the lowest value  
+* **Max()** - the highest value  
+* **Sum()** - sum of all values  
+* **Average()** - average value  
+* **First()** - values of the first series entry  
+* **Last()** - values of the last series entry  
+* **Count()** - overall number of values in series entries  
+* **Percentile(&lt;number between 1 and 100&gt;)** - the value that divides the other 
+values in the series by the given ratio.  
+* **Slope()** - the difference in value divided by the difference in time between 
+the first and last entries.  
+* **StandardDeviation()** - the _standard deviation_ of all the values.  
+
+</Admonition>
+
+
+
+## The LINQ GroupBy Method
+
+In LINQ, aggregations are performed using the `GroupBy()` method. It takes 
+the time period over which to aggregate, either in the form of a `string`, or 
+as an `Action<ITimePeriodBuilder>`.  
+
+<TabItem value="GroupBy_Switch" label="GroupBy_Switch">
+<CodeBlock language="csharp">
+{`var groupingAction = input switch //input is a string that represents some client input
+\{
+    "year" => (Action<ITimePeriodBuilder>)(builder => builder.Years(1)),
+    "month" => (Action<ITimePeriodBuilder>)(builder => builder.Months(1)),
+    "day" => (Action<ITimePeriodBuilder>)(builder => builder.Days(1))
+\};
+
+var stocks = session.Query<Company>()
+    .Select(c => RavenQuery.TimeSeries(c, "StockPrices")
+        .GroupBy(groupingAction)
+        .Select(g => new
+        \{
+            Min = g.Min(),
+            Max = g.Max()
+        \})
+        .ToList());
+`}
+</CodeBlock>
+</TabItem>
+
+The `ITimePeriodBuilder` class just contains one property for each of the time 
+period units from milliseconds to years.  
+
+<TabItem value="Builder" label="Builder">
+<CodeBlock language="csharp">
+{`public interface ITimePeriodBuilder
+\{
+    ITimeSeriesAggregationOperations Milliseconds(int duration);
+    ITimeSeriesAggregationOperations Seconds(int duration);
+    ITimeSeriesAggregationOperations Minutes(int duration);
+    ITimeSeriesAggregationOperations Hours(int duration);
+    ITimeSeriesAggregationOperations Days(int duration);
+    ITimeSeriesAggregationOperations Months(int duration);
+    ITimeSeriesAggregationOperations Quarters(int duration);
+    ITimeSeriesAggregationOperations Years(int duration);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+See examples [below](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#function-evaluation).  
+
+
+
+## Query Examples
+
+* In this example, we group entries of users' HeartRates time series 
+  and project the lowest and highest values of each group.  
+  Each HeartRates entry holds a single value.
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e
+select timeseries(
+    from HeartRates
+    group by '1 day'
+    select min(), max()
+)
+`}
+</CodeBlock>
+</TabItem>
+   * **group by '1 day'**  
+     We group each user's HeartRates time series entries in consecutive 1-day groups.  
+   * **select min(), max()**  
+     We project the lowest and highest values of each group.  
+
+* In this example, we group entries of companies' StockPrices time series 
+  in consecutive 7-day groups and project the highest and lowest values 
+  of each group.  
+  Each StockPrices entry holds five values, the query returns the `Max` 
+  and `Min` values of each:  
+  Values[0] - **Open** - stock price when the trade opens  
+  Values[1] - **Close** - stock price when the trade ends  
+  Values[2] - **High** - highest stock price during trade time  
+  Values[3] - **Low** - lowest stock price during trade time  
+  Values[4] - **Volume** - overall trade volume  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`declare timeseries SP(c) 
+\{
+    from c.StockPrices 
+    where Values[4] > 500000
+        group by '7 days'
+        select max(), min()
+\}
+from Companies as c
+where c.Address.Country = 'USA'
+select c.Name, SP(c)
+`}
+</CodeBlock>
+</TabItem>
+   * **where Values[4] &gt; 500000**  
+     Query stock price behavior when the trade volume is high.  
+   * **group by '7 days'**  
+     Group each company's StockPrice entries in consecutive 7-day groups.  
+   * **select max(), min()**  
+     Select the highest (`Max`) and lowest (`Min`) 
+     values of each group and project them to the client.  
+     Since each entry holds 5 values, the query will project 
+     5 `Max` values for each group (the highest Values[0], highest 
+     Values[1], etc.) and 5 `Min` values for each group (the lowest 
+     Values[0], lowest Values[1], etc.).  
+   * **select c.Name, SP(c)**  
+     Project the company's name along with the time series query 
+     results to make the results easier to read and understand.  
+
+* This example is similar to the one above it, except that time series 
+  entries are **not aggregated**, so the highest and lowest values are 
+  collected not from each group but from the entire result-set.  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`declare timeseries SP(c) 
+\{
+    from c.StockPrices 
+    where Values[4] > 500000
+        select max(), min()
+\}
+from Companies as c
+where c.Address.Country = 'USA'
+select c.Name, SP(c)
+`}
+</CodeBlock>
+</TabItem>
+    * **select max(), min()**  
+      Since there is no aggregation, the entire result-set is queried 
+      and the results include only the all-time highest and lowest Open, 
+      Close, High, Low and Volume values.  
+
+* In the next two examples we group time series data by the entry tags in addition 
+  to the time unit aggregation.  
+
+* In this query we group stock prices by 1 month and then by the tags of the 
+entries within each month.  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from Companies 
+select timeseries(
+    from StockPrices
+    group by '1 month', tag
+    select min(), max()
+)
+`}
+</CodeBlock>
+</TabItem>
+    * **group by '1 month', tag**  
+      We group each company's StockPrices time series entries by their month, and within 
+      each month we group by tag.  
+    * **select min(), max()**  
+      We project the lowest and highest values of each group.  
+
+* In this query, we first access the entry tags using `load` into a variable called 
+  `employee`. Because the tags in the StockPrices time series are the document IDs of 
+  actual [employee entries](../../../start/about-examples.mdx#northwind-classes), we can 
+  access the properties of the documents and filter according to their values. Then 
+  we group the results by 1 month, and finally we group by the tags:  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from Companies as c
+select timeseries(
+    from StockPrices
+    load Tag as employee
+    where employee.Title == 'Sales Representative'
+    group by '1 month', tag
+    select min(), max()
+)
+`}
+</CodeBlock>
+</TabItem>
+    * **load Tag as employee**
+      The tags contain document IDs. This command loads the referenced documents 
+      into `employee`.  
+    * **where employee.Title == 'Sales Representative'**
+      Filter the time series data according to the employee documents' `Title` field.  
+    * **group by '1 month', tag**  
+      We group each company's StockPrices time series entries by their month, and within 
+      each month we group by tag.  
+    * **select min(), max()**  
+      We project the lowest and highest values of each group.  
+
+* In this example we perform a LINQ query and group by 1 hour and by tag: 
+<TabItem value="LINQ_GroupBy_Tag" label="LINQ_GroupBy_Tag">
+<CodeBlock language="csharp">
+{`var query = session.Query<User>()
+    .Select(u => RavenQuery.TimeSeries(u, "HeartRates")
+        .GroupBy(g => g
+                .Hours(1)
+                .ByTag()
+               )
+        .Select(g => new
+        \{
+            Max = g.Max(),
+            Min = g.Min()
+        \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Client Usage Examples
+
+<Admonition type="info" title="Info">
+You can run queries from your client using raw RQL and LINQ.  
+
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying.mdx#client-raw-rql-queries).  
+
+</Admonition>
+
+To aggregate time series entries, use `GroupBy()` in a LINQ query 
+or `group by` in a raw RQL query.  
+To select time series values for projection, use `Select()` in a LINQ query 
+or `select` in a raw RQL query.  
+
+* Here we express the query we've discussed above using 
+  LINQ and both RQL syntaxes.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<Company>()
+    .Where(c => c.Address.Country == "USA")
+    .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+        .Where(ts => ts.Values[4] > 500000)
+        .GroupBy(g => g.Days(7))
+        .Select(g => new
+        {
+            Min = g.Min(),
+            Max = g.Max()
+        })
+        .ToList());
+
+var result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL-Select-Syntax" label="Raw-RQL-Select-Syntax">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+        from Companies as c
+            where c.Address.Country = 'USA'
+            select timeseries ( 
+                from StockPrices 
+                where Values[4] > 500000
+                    group by '7 day'
+                    select max(), min()
+            )
+        ");
+
+var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL-Declare-Syntax" label="Raw-RQL-Declare-Syntax">
+<CodeBlock language="csharp">
+{`IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+        declare timeseries SP(c) {
+            from c.StockPrices
+            where Values[4] > 500000
+            group by '7 day'
+            select max(), min()
+        }
+        from Companies as c
+        where c.Address.Country = 'USA'
+        select c.Name, SP(c)"
+        );
+
+var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+### `GroupBy()` Function Evaluation
+
+Starting in version 5.2, the LINQ method `GroupBy()` can take a switch statement 
+or a method as an argument.  
+
+* In this example, we pass `GroupBy()` a switch statement.  
+<TabItem value="GroupBy_Switch" label="GroupBy_Switch">
+<CodeBlock language="csharp">
+{`var groupingAction = input switch //input is a string that represents some client input
+\{
+    "year" => (Action<ITimePeriodBuilder>)(builder => builder.Years(1)),
+    "month" => (Action<ITimePeriodBuilder>)(builder => builder.Months(1)),
+    "day" => (Action<ITimePeriodBuilder>)(builder => builder.Days(1))
+\};
+
+var stocks = session.Query<Company>()
+    .Select(c => RavenQuery.TimeSeries(c, "StockPrices")
+        .GroupBy(groupingAction)
+        .Select(g => new
+        \{
+            Min = g.Min(),
+            Max = g.Max()
+        \})
+        .ToList());
+`}
+</CodeBlock>
+</TabItem>
+
+* In this example, we pass `GroupBy()` the method `groupingFunction()` 
+<TabItem value="GroupBy_Function" label="GroupBy_Function">
+<CodeBlock language="csharp">
+{`var stocks = session.Query<Company>()
+    .Select(c => RavenQuery.TimeSeries(c, "StockPrices")
+        .GroupBy(g => GroupingFunction(g, input)) // input is a string that represents some client input
+        .Select(g => new
+        \{
+            Min = g.Min(),
+            Max = g.Max()
+        \})
+        .ToList());
+
+private static ITimeSeriesAggregationOperations GroupingFunction(ITimePeriodBuilder builder, string input)
+\{
+    if (input == "year")
+    \{
+        return builder.Years(1);
+    \}
+    else if (input == "month")
+    \{
+        return builder.Months(1);
+    \}
+    else
+    \{
+        return builder.Days(1);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

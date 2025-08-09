@@ -1,0 +1,190 @@
+---
+title: "Migration: How to Migrate Facets and Dynamic Aggregation from 3.x"
+hide_table_of_contents: true
+sidebar_label: Facets and Dynamic Aggregation
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate Facets and Dynamic Aggregation from 3.x
+
+Facets and Dynamic Aggregation have been merged into a single feature and are now a part of [RQL](../../../../indexes/querying/what-is-rql.mdx).
+
+## Facets
+
+Facets are now divided into two types:
+
+- `Facet` where the whole spectrum of results will generate a single outcome
+- `RangeFacet` gives you the ability to split the whole spectrum of results into smaller ranges
+
+The `FacetSetup` document also now splits the facets into two properties. One containing `Facets`, the other containing `RangeFacets`.
+
+### Example
+
+| 3.x |
+|:---:|
+|
+<TabItem value="facets_1_0" label="facets_1_0">
+<CodeBlock language="csharp">
+{`List<Facet> facets = new List<Facet>
+\{
+    new Facet
+    \{
+        Name = "Manufacturer"
+    \},
+    new Facet<Camera>
+    \{
+        Name = x => x.Cost,
+        Ranges =
+        \{
+            x => x.Cost < 200m,
+            x => x.Cost > 200m && x.Cost < 400m,
+            x => x.Cost > 400m && x.Cost < 600m,
+            x => x.Cost > 600m && x.Cost < 800m,
+            x => x.Cost > 800m
+        \}
+    \},
+    new Facet<Camera>
+    \{
+        Name = x => x.Megapixels,
+        Ranges =
+        \{
+            x => x.Megapixels < 3.0,
+            x => x.Megapixels > 3.0 && x.Megapixels < 7.0,
+            x => x.Megapixels > 7.0 && x.Megapixels < 10.0,
+            x => x.Megapixels > 10.0
+        \}
+    \}
+\};
+
+session.Store(new FacetSetup \{ Id = "facets/CameraFacets", Facets = facets \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="facets_1_1" label="facets_1_1">
+<CodeBlock language="csharp">
+{`List<Facet> facets = new List<Facet>
+\{
+    new Facet
+    \{
+        FieldName = "Manufacturer"
+    \}
+\};
+
+List<RangeFacet> rangeFacets = new List<RangeFacet>
+\{
+    new RangeFacet<Camera>
+    \{
+        Ranges =
+        \{
+            x => x.Cost < 200m,
+            x => x.Cost > 200m && x.Cost < 400m,
+            x => x.Cost > 400m && x.Cost < 600m,
+            x => x.Cost > 600m && x.Cost < 800m,
+            x => x.Cost > 800m
+        \}
+    \},
+    new RangeFacet<Camera>
+    \{
+        Ranges =
+        \{
+            x => x.Megapixels < 3.0,
+            x => x.Megapixels > 3.0 && x.Megapixels < 7.0,
+            x => x.Megapixels > 7.0 && x.Megapixels < 10.0,
+            x => x.Megapixels > 10.0
+        \}
+    \}
+\};
+
+session.Store(new FacetSetup \{ Id = "facets/CameraFacets", Facets = facets, RangeFacets = rangeFacets \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+
+## Querying
+
+All of the method were substituted with `AggregateBy` and `AggregateUsing`.
+
+### Example I
+
+| 3.x |
+|:---:|
+|
+<TabItem value="facets_2_0" label="facets_2_0">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facetResults = session
+    .Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+    .Where(x => x.Cost >= 100 && x.Cost <= 300)
+    .AggregateBy(facets)
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="facets_2_1" label="facets_2_1">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facetResults = session
+    .Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+    .Where(x => x.Cost >= 100 && x.Cost <= 300)
+    .AggregateBy(facets)
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### Example II
+
+| 3.x |
+|:---:|
+|
+<TabItem value="facets_3_0" label="facets_3_0">
+<CodeBlock language="csharp">
+{`FacetResults facetResults = session
+    .Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+    .Where(x => x.Cost >= 100 && x.Cost <= 300)
+    .ToFacets("facets/CameraFacets");
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="facets_3_1" label="facets_3_1">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facetResults = session
+    .Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+    .Where(x => x.Cost >= 100 && x.Cost <= 300)
+    .AggregateUsing("facets/CameraFacets")
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+You can read more about Facets in our dedicated [Querying article](../../../../indexes/querying/faceted-search.mdx), our [Indexing article](../../../../indexes/querying/faceted-search.mdx) or [Client API article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+</Admonition>

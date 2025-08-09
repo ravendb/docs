@@ -1,0 +1,175 @@
+---
+title: "Session: How to Disable Entity Tracking"
+hide_table_of_contents: true
+sidebar_label: Disable Tracking
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Session: How to Disable Entity Tracking
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* By default, each session tracks changes to all entities it has either stored 
+or loaded. These changes are all persisted when `SaveChanges()` is called.  
+
+* Tracking can be disabled per session using the session options, or an ignore 
+function can be created for the entire document store using the document store 
+conventions.  
+
+* See [Session: How to Ignore Entity Changes](../../../client-api/session/how-to/ignore-entity-changes.mdx) 
+to disable tracking for an individual entity.  
+
+* In this page:  
+  * [Disable Tracking per Session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-per-session)
+  * [ShouldIgnoreEntityChanges Method](../../../client-api/session/configuration/how-to-disable-tracking.mdx#shouldignoreentitychanges-method)
+</Admonition>
+
+--
+
+## Disable Tracking per Session
+
+Tracking can be turned off by setting the `SessionOptions.NoTracking` property 
+to `true`. When turned off, the `Store()` and `SaveChanges()` methods will no 
+longer be available (an exception will be thrown if they are used). Each call 
+to one of the `Load` methods will create a new instance of the entity.  
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (IDocumentSession Session = store.OpenSession(new SessionOptions
+{
+    NoTracking = true
+}))
+{
+    Employee employee1 = Session.Load<Employee>("employees/1-A");
+    Employee employee2 = Session.Load<Employee>("employees/1-A");
+
+    // because NoTracking is set to 'true'
+    // each load will create a new Employee instance
+    Assert.NotEqual(employee1, employee2);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
+{
+    NoTracking = true
+}))
+{
+    Employee employee1 = await Session.LoadAsync<Employee>("employees/1-A");
+    Employee employee2 = await Session.LoadAsync<Employee>("employees/1-A");
+
+    // because NoTracking is set to 'true'
+    // each load will create a new Employee instance
+    Assert.NotEqual(employee1, employee2);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## ShouldIgnoreEntityChanges Method
+
+In the [Document Store conventions](../../../client-api/configuration/conventions.mdx), 
+you can configure the `ShouldIgnoreEntityChanges` method to fine-tune which 
+entities to ignore and when. The function can take several parameters including a 
+session and an entity, and returns a boolean. If the function returns `true`, 
+changes tothe given entity will not be tracked. Changes to that entity will be 
+ignored and will not be persisted on `SaveChanges()`.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public Func<InMemoryDocumentSessionOperations, object, string, bool> ShouldIgnoreEntityChanges;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter Type | Description |
+| - | - |
+| `InMemoryDocumentSessionOperations` | The session for which tracking is to be disabled |
+| `object` | The entity for which tracking is to be disabled |
+| `string` | The entity's document ID |
+
+| Return Type | Description |
+| - | - |
+| `bool` | If `true`, the entity will not be tracked.  
+
+### Example
+
+In this example the `ShouldIgnoreEntityChanges` function returns true for 
+any entity that is of type `Employee` and whose `FirstName` property is 'Bob'. 
+An employee with the first name 'Bob' is not persisted, but as soon as their 
+`FirstName` is changed to something else, their changes are tracked and will 
+be persisted.  
+
+<TabItem value="ignore_entity_function" label="ignore_entity_function">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore()
+\{
+    Conventions =
+    \{
+        ShouldIgnoreEntityChanges =
+            (session, entity, id) => (entity is Employee e) &&
+                                     (e.FirstName == "Bob")
+    \}
+\}.Initialize())
+\{
+    using (IDocumentSession Session = store.OpenSession())
+    \{
+        var employee1 = new Employee() \{ Id = "employees/1",
+                                         FirstName = "Alice" \};
+        var employee2 = new Employee() \{ Id = "employees/2",
+                                         FirstName = "Bob" \};
+
+        Session.Store(employee1); // Entity is tracked
+        Session.Store(employee2); // Entity is ignored
+
+        Session.SaveChanges(); // Only employee1 is persisted
+
+        employee1.FirstName = "Bob"; // Entity is now ignored
+        employee2.FirstName = "Alice"; // Entity is now tracked
+
+        Session.SaveChanges(); // Only employee2 is persisted
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [Document Store Conventions](../../../client-api/configuration/conventions)
+
+### Session
+- [How to Ignore Entity Changes](../../../client-api/session/how-to/ignore-entity-changes)
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../../client-api/session/opening-a-session)
+- [Storing Entities](../../../client-api/session/storing-entities)
+- [Loading Entities](../../../client-api/session/loading-entities)
+- [Saving Changes](../../../client-api/session/saving-changes)
+
+
+-->
