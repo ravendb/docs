@@ -44,6 +44,9 @@ To create an AI agent, open **AI hub > AI Agents** and click **Add new agent**.
 4. **Filter by name**  
    When multiple agents are created, you can filter them by a string you enter here.  
 
+5. **Defined agent**  
+   After defining an agent it is listed in this view, allowing you to run, edit, or remove the agent.
+
 {PANEL/}
 
 {PANEL: Configure basic settings}
@@ -77,49 +80,51 @@ To create an AI agent, open **AI hub > AI Agents** and click **Add new agent**.
       response object or a JSON schema to shape its responses by, and database tools 
       to work with.  
 
-5. **Sample response object**  
-   Provide a JSON-based **sample response object** that defines the layout of the AI model's reply.  
-   Design it so LLM responses would include the data you need and be easy to process 
-   by the client.  
+5. **Sample response object** and **Response JSON schema**  
+   Click "Sample response object" or "response JSON schema" to switch between these two tabs.  
+   
+    * Provide a JSON-based **sample response object** that defines the layout of the AI model's reply.  
+      Design it so LLM responses would include the data you need and be easy to process 
+      by the client.  
 
-      Behind the scenes, RavenDB will translate your sample object to a JSON schema format 
-      before sending it to the LLM. If you prefer it, you can skip the translation phase by 
-      defining an explicit response schema yourself (see below).  
-      If you define both a sample response object and an explicit schema, only the schema will be used.  
+         Behind the scenes, RavenDB will translate your sample object to a JSON schema format 
+         before sending it to the LLM. If you prefer it, you can skip the translation phase by 
+         defining the response JSON schema yourself (see below).  
+      
+         **If you define both a sample response object and an explicit schema, only the schema will be used.**  
 
-6. **Response JSON schema**  
-   Enter a JSON schema that defines the layout of LLM responses.  
-   Design it so LLM responses would include the data you need and be easy to process 
-   by the client.  
+    * **Response JSON schema**  
+      Enter a JSON schema that defines the layout of LLM responses.  
+            
+         If you design a sample object and then open the schema tab, you will be given the option to 
+         translate the sample object to a scheme by clicking the "View schema" button.  
 
-      If you define both a sample response object and an explicit schema, only the schema will be used.  
-
+         **If you define both a sample response object and an explicit schema, only the schema will be used.**  
+      
+         ![Configure basic settings](images/ai-agents_config-basic-settings_schema.png "Configure basic settings")
+    
 {PANEL/}
 
 {PANEL: Set agent parameters}
 
 Define **agent parameters**.  
 Values for agent parameters you define will be provided by the client when it runs the agent.  
-When the LLM runs a [query tool]() that includes an agent parameter, the parameter will be replaced 
-with the value provided by the client.  
-The additional control gained by agent parameters can be used, for example, to limit the scope 
-of a query and give the LLM access only to documents related to a specific company whose ID was 
-provided by the client.  
+When the agent runs a [query tool]() that includes an agent parameter, the value provided by 
+the client will be placed in the query instead of the parameter name.  
 
 ![Set agent parameters](images/ai-agents_set-agent-params.png "Set agent parameters")
 
-1. **Name**  
-   Define agent parameter name.  
-
-2. **Description**  
-   Optionally add a description that explains the parameter.  
-
-3. **Add parameter**  
-   Click to add the agent parameter.  
+1. **Add new parameter**  
+   Click to add an agent parameter.  
    
-      Defined parameters are listed at the lower part of this section.  
+2. **Name**  
+   Enter agent parameter name.  
 
-      ![Agent parameters list](images/ai-agents_set-agent-params_params-list.png "Agent parameters list")
+3. **Description**  
+   Explain the parameter so the LLM will understand its role.  
+
+4. **Remove parameter**  
+   Removea defined parameter from the list.
 
 {PANEL/}
 
@@ -151,66 +156,32 @@ notify the LLM when it's done.
 
 ![Add new query tool](images/ai-agents_define-agent-tools_add-query-tool.png "Add new query tool")
 
-1. **Cancel or Save**  
+
+1. **Add new query tool**  
+
+2. **Cancel**  
    Cancel your changes or Save the query tool when it is ready.  
 
-2. **Tool name**  
+3. **Expandq/Colllapse tool**
+
+4. **Tool name**  
    Give your query tool a meaningful name.  
 
-3. **Description**  
+5. **Description**  
    Write a description that will explain to the LLM in natural language what the attached query can be used for.  
    E.g.,  
    `apply this query when you need to retrieve all the companies that reside in a certain country`  
 
-4. **Query**  
-   Write the query that the agent will run when the LLM triggers it to use this query tool.  
-   E.g.,  
-   `from Companies where Address.Country = country`
+6. **Query**  
+   Write the query that the agent will run when the LLM requests it to use this tool.  
 
-5. **Sample response object**  
-   Define the layout of a JSON object that the LLM will send to the agent when it requests 
-   to run this query tool.  
-   The LLM will populate the object with values that it needs the agent to embed in the query.  
+7. **Sample response object** and **Response JSON schema**  
+   Click "Sample response object" or "response JSON schema" to switch between the two tabs.  
    
-      In the response object:  
-      Specify the query parameter you want to replace with a value sent by the LLM, as a property name.  
-      Phrase what the LLM is expected to search for in natural language, as the property's value.  
-
-      E.g., 
-      {CODE-BLOCK:json}
-{
-  "country": "the name of the country to search for"
-}
-      {CODE-BLOCK/}
-
-      Behind the scenes, RavenDB will translate your sample object to a JSON schema format 
-      before sending it to the LLM. If you prefer it, you can skip the translation phase by 
-      defining an explicit response schema yourself (see below).  
-      If you define both a sample response object and an explicit schema, only the schema will be used.  
-
-6. **Response JSON schema**  
-   Define a JSON schema that the LLM will send to the agent along with a request to run this query tool.  
-   The LLM will populate the schema with values that it needs the agent to embed in the query.  
-
-      E.g., 
-      {CODE-BLOCK:json}
-{
-  "type": "object",
-  "properties": {
-    "Country": {
-      "type": "string",
-      "description": "the name of the country to search"
-    }
-  },
-  "required": [
-    "Country"
-  ],
-  "additionalProperties": false
-}
-      {CODE-BLOCK/}
-
-      If you define both a sample response object (see above) and an explicit schema, only the schema will be used.  
-
+      Define an object that the agent will fill with the data that it retrieves from the database 
+      when this query tool is used.  
+      If you define both a sample response object and a schema, only the schema will be used.  
+    
 ---
 
 ### Add new action tool
