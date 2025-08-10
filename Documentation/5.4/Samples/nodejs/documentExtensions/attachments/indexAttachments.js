@@ -144,7 +144,7 @@ async function indexAttachments() {
         // ========
         // Results will include 'employees/1-A' and 'employees/2-A'.
         // Only these 2 documents have an attachment by name 'notes.txt'
-        // that conains either 'Colorado' or 'Dallas'.
+        // that contains either 'Colorado' or 'Dallas'.
         //endregion
     }
     {
