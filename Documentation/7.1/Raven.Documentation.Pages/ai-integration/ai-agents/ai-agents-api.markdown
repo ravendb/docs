@@ -4,7 +4,7 @@
 {NOTE: }
 
 * A RavenDB **AI Agent** can be used by a RavenDB client to invoke a chat or 
-  a continuous interaction between the client, and AI model, and a RavenDB database.  
+  a continuous conversation between the client, an AI model, and a RavenDB database.  
 
 * The AI agent can provide the AI model with a set of query and action tools that 
   the LLM can use freely to access the database or trigger the user to action.  
@@ -26,7 +26,8 @@
       * [Chats](../../ai-integration/ai-agents/ai-agents-api#chats)
       * [Continuous conversations](../../ai-integration/ai-agents/ai-agents-api#chats)
       * [Stored conversations' Prefix and IDs](../../ai-integration/ai-agents/ai-agents-api#stored-conversations-prefix-and-ids)
-      * [Set chat and run it](../../ai-integration/ai-agents/ai-agents-api#set-a-chat-session-and-run-it)
+      * [Set and start the chat](../../ai-integration/ai-agents/ai-agents-api#set-and-start-the-chat)
+      * [Chat reply](../../ai-integration/ai-agents/ai-agents-api#chat-reply)
    * [Full Example](../../ai-integration/ai-agents/ai-agents-api#full-example)
 {NOTE/}
 
@@ -34,11 +35,11 @@
 
 {PANEL: Creating a connection string}
 
-Your agent will need a connection string to connect the LLM. Create an `AiConnectionString` 
-connection string using the `PutConnectionStringOperation` operation.  
+Your agent will need a connection string to connect with the LLM. Create a connection string 
+using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
 
-You can connect a local `Ollama` application if your considerations are mainly speed, cost, 
-open-source, or security, or a remote `OpenAI` service for its additional resources and capabilities.  
+You can use a local `Ollama` model if your considerations are mainly speed, cost, open-source, or security,  
+Or you can use a remote `OpenAI` service for its additional resources and capabilities.  
 
 ---
 
@@ -64,17 +65,29 @@ open-source, or security, or a remote `OpenAI` service for its additional resour
 
 ## Define agent configuration
 
-To create an AI agent you need to prepare an agent configuration and populate it with 
+To create an AI agent you need to prepare an **agent configuration** and populate it with 
 your settings and tools.  
+
 Start by creating a new `AiAgentConfiguration` instance.  
-While creating the instance, pass its constructor the agent's Name, a reference to the 
-[connection string]() you created, and a System prompt.  
+While creating the instance, pass its constructor:  
+
+- The agent's Name  
+- The [connection string]() you created  
+- A System prompt  
+
 The agent will send the system prompt you define here to the LLM, to define the LLM's role 
 and explain it how this role should be fulfilled.  
 
-In the following example we assign the LLM the role of a simple assistant in a university 
-library that has access to a database of documents and can select and summarize for its user 
-a single document in a requested subject.
+In the following example we create a system prompt that assigns the LLM the role of a helper 
+to a human experience manager, who wants to learn which employee made the largest profit so 
+the company can reward them.  
+
+The LLM will retrieve from the Orders collection the IDs of employees and the sums they made 
+in each order, and calculate which employee has made the biggest profit. Then, the LLM will 
+find what kind of vacations or other rewards are available in the employee's region, and 
+suggest them in its reply.  
+
+We are careful not to send the LLM details about the employees or about the orders they made.  
 
 {CODE ai-agents_AiAgentConfiguration_example@AiIntegration\AiAgents\AiAgents.cs /}
 
@@ -97,13 +110,20 @@ system will recognize it by.
 ## Add agent parameters
 
 Agent parameters are optional variables, whose values are provided by the client 
-to the agent when chats are initiated. They are then passed by the agent to the LLM, 
-allowing user input to take part in the interaction. They can be big help in focusing 
-LLM querying and considerations on user input or live client data.  
+(or by a user through the client) to the agent when a chat is started.  
+The values are then embedded by the client in query tools, and used when these 
+tools are applied. Users and clients can provide their selections and preferences 
+using agent parameters when the chat starts, and focus the queries and the whole 
+interaction on their selections.  
 
-Add agent parameters using the `AiAgentParameter` method.  
-Pass it the name of the parameter you want to define, and instructions for the LLM, 
-written in natural language.  
+In the example shown below, for example, an agent parameter is used to determine 
+what are of the world a query will handle. Another example can be a student that 
+uses a librarian agent, providing the agent with a subject and having the agent 
+fetch and summarize documents related to this subject.  
+
+To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
+the parameter's **name** and **description** (explaining the LLM what the parameter 
+is for), and pass this instance to the `agent.Parameters.Add` method.  
 
 * Example:
   {CODE ai-agents_AiAgentParameter_function@AiIntegration\AiAgents\AiAgents.cs /}
@@ -113,8 +133,8 @@ written in natural language.
 
 ## Set maximum number of iterations
 
-You can limit the number of times that the LLM is allowed to request to use a tool 
-in response to a user prompt.  
+You can limit the number of times that the LLM is allowed to request the usage of 
+agent tools in response to a user prompt.  
 To change this limit use `MaxModelIterationsPerCall`.  
 
 * Example:
@@ -125,15 +145,20 @@ To change this limit use `MaxModelIterationsPerCall`.
 
 ## Set chat trimming configuration
 
-You can reduce the size of the prompt that is sent to the LLM by summarizing or truncating older messages.  
-This can be helpful when transmission costs are a concern or the context may become too large to handle efficiently.  
+Since the LLM keeps no history of previous chats, RavenDB updates it with the history 
+of the conversation when you choose to start this chat from where you left off.  
+You can reduce the size of the prompt that is sent to the LLM with the conversation history 
+by either summarizing or truncating older messages.  
+This can be helpful when transfer rate and cost are a concern or the context may become 
+too large to handle efficiently.  
 
-To summarize or truncate old messages, set the agent `ChatTrimming` property with 
-an `AiAgentChatTrimmingConfiguration` instance and use it to select your trimming strategy.  
+To summarize or truncate old messages create an `AiAgentChatTrimmingConfiguration` instance, 
+use this instance to configure your trimming strategy, and set the agent's `ChatTrimming` property 
+with the instance.  
+
 When creating the instance, pass its constructor either a `Truncate` or a `Summarize` strategy.
-
-Summarization strategy is set using a `AiAgentSummarizationByTokens` class.  
-Truncation strategy is set using a `AiAgentTruncateChat` class.  
+**Summarization strategy** is set using a `AiAgentSummarizationByTokens` class.  
+**Truncation strategy** is set using a `AiAgentTruncateChat` class.  
 Note that you need to select a single strategy, you cannot use both strategies at the same time.  
 
 A history of the original messages, before summarizing or truncating them, can optionally 
@@ -152,18 +177,19 @@ with your history settings.
 ## Add Sample object or Schema
 
 At the end of a chat, when the LLM is done with all its interactions and work, 
-it returns its reply through the agent to the client in an object that we need 
-to prepare beforehand and send the LLM when the agent is started.  
+it returns its reply through the agent to the client in an object whose layout 
+we need to prepare beforehand. The layout object we prepare is sent to the LLM 
+when the agent is started.  
 
-We can prepare this object in two different formats.  
+You can prepare this object in two different formats.  
 The first format is the formal **JSON-based schema** in which the LLM expects 
 the structure to arrive.  
 The second is a friendlier **sample object** format, that RavenDB will turn 
 to a schema behind the scenes for us.  
-Normally the simpler way is to prepare a sample object and let RavenDB do 
-the schema-preperation work for us, but both options are still available.  
+Normally the simpler way is to prepare a sample object and let RavenDB translate 
+it to a schema for you.  
 
-If we prepare both a sample object and a schema, the schema will be used.  
+If you prepare both a sample object and a schema, the schema will be used.  
 
 Example:
 {CODE-TABS}
@@ -214,24 +240,28 @@ to decide if and when to use them.
 
 ### Query tools
 
-Query tools provide the LLM the ability to acecess the database. Once defined, 
-it uses them of its own accord. They include a natural language descrition that 
-explain the LLM what they are for, and an RQL query that the agent, not the LLM, 
-will apply if the LLM request it to use a tool.  
-They also include a schema and a sample object for retrieved results. Here too, 
-these objects are applied by the agent, which runs the query, retrieves the results 
-into the schema or the sample object, and sends the results to the LLM.  
-You can choose for yourself whether to apply a schema or a sample object, but if 
-you define both only the schema will be used.  
+Query tools provide the LLM with the ability to retrieve data from the database.  
+Once defined, the LLM uses them of its own accord.  
+A query tool include a a natural-language **descrition** that explain the LLM 
+what it is for, and an **RQL query** that the agent will run when the LLM requests 
+it apply thetool. The LLM does not have access to the RQL query and cannot change 
+it, and the only way to change values in these queries is via agent parameters.  
+
+A query tool also includes a schema or a sample object that set the layout for 
+the results that it retrieves. The agent will run the query, retrieve the results 
+into the schema or the sample object, and send them to the LLM.  
+You can choose for yourself whether to apply a schema or a sample object, just 
+be aware that if you define both only the schema will be used.  
 
 
 * Example: 
-  The following query tool is used by an agent that functions as a students library assistant.  
-  The tool uses the `$subject` agent parameter, defined earlier (whose value a user typed 
-  in or a client passed to the agent), and searches a documentation database for documents 
-  whose names include this subject. The tool then loads the titles and IDs of these documents.  
-  The system prompt, defined above, will use this tool to prepare a list of documents and 
-  an action tool, defined below, to load the text of one of them.  
+  The following query tools are used by an agent that helps a human experience manager 
+  learn which employee made the largest profit. They use a `$country` agent parameter whose 
+  value the manager provides when the chat is started. If the parameter's value is "everywhere" 
+  the first tool is applied, and if it is a specific country the second tool is applied.  
+  The tools retrieve all the orders that were sent to the selected destination.  
+  As instructed in the system prompt, the LLM will then calculate which employee 
+  made the largest profit, and send its ID to the user through an action tool (explained below).  
   {CODE ai-agents_agent_query-tool-sample@AiIntegration\AiAgents\AiAgents.cs /}
 
 * Syntax:
@@ -242,18 +272,27 @@ you define both only the schema will be used.
 ### Action tools
 
 Action tools allow the LLM to trigger the client to perform actions like modifying, adding, 
-or removing documents, or whatever other operations the client is permitted to perform. 
-The LLM cannot modify the database itself, it can only request the agent to do so.  
-An action tool includes no query, but just a natural language description that informs 
-the LLM of this tool's capabilities, and a schema or a sample object that the LLM can 
-populate and send the agent as a request to apply the action.  
+or removing documents. They can also be used to make the user query the database using values 
+determined by the LLM or by query toold. Since query tools do not interact with each other, 
+and the LLM can not alter queries, an easy way to query a value that was found on the fly 
+is to apply an action tool and let the client perform whatever action is needed before resuming 
+the chat.  
 
-* The following action tool gets from the LLM an ID of a single document (retrieved by 
-  the query tool defined above), and requests the client to load the document's text to 
-  the LLM.  
-  The system prompt, defined above, combines all these operations: retrieves a selected 
-  document's ID using a query tool, retrieves the document's text using this action tool, 
-  and summarizes the document for the user.  
+Unlike a query tool, an action tool does not include a query. It includes a natural language 
+description that informs the LLM what its capable of, and a schema or a sample object that 
+the LLM will fill with values and send to the agent as a request to apply the action.  
+
+When the LLM sends the agent a request to use an action tool, the chat will halt and 
+wait for the agent's response. The agent will perform the action (or not), populate 
+the object whose layout is determined by the sample object or the schema, and reply 
+to the LLMwith the response.  
+
+* The following action tool gets from the LLM an ID of an employee and transfers an 
+  object with this ID to the client. The client will need to fetch an employee's living 
+  region and resume the chat with a prompt that includes the requested data.  
+  As defined by the system prompt, this data will be used by the LLM to find a vacation 
+  or another present for the employee based on its location, in reward for the employee's 
+  performance.  
   {CODE ai-agents_agent_action-tool-sample@AiIntegration\AiAgents\AiAgents.cs /}
 
 * Syntax:
@@ -281,8 +320,8 @@ A chat is a communication session between the client, the agent, and the LLM,
 during which the LLM may use agent tools to interact with the database and the client.  
 
 If [agent parameters]() were defined, the agent will wait for their values when the 
-chat begins. Parameter values can be provided by the client application, or a user may 
-be using the client to enter them.  
+chat begins. Parameter values can be provided directly by the client application, or 
+a user may use the client to enter them.  
 
 ### Continuous conversations
 The LLM does not record its chats, and opening a new chat means losing the chat history.  
@@ -292,22 +331,55 @@ because the agent sends the conversation history to the LLM.
 
 ### Stored conversations' Prefix and IDs
 Conversations are kept in the `@conversations` collection with a prefix (such as `chats/`) 
-that can be set when the conversation is initiated. The conversation ID after the set prefix 
-is given to the conversation automatically, similarly to the automatic IDs given to documents.  
+that can be set when the conversation is initiated. The conversation ID that follows the prefix 
+is created automatically by RavenDB, similarly to the creation of automatic IDs for documents.  
 
-## Set chat and run it
+## Set and start the chat
 
-- Set a chat session using the `Conversation` method.  
-  Pass it the **agent ID**, the **ID of the conversation** you want to continue - 
-  or just the prefix so a new conversation will be automatically created, and 
-  **agent parameters' values** in a `AiConversationCreationOptions` class.  
+- Set a chat using the `store.AI.Conversation` method.  
+  Pass `Conversation`:  
+   - The **agent ID**  
+   - The **conversaion ID**  
+     If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
+     the conversation will be retrieved from storage and continued where you left off.  
+     If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
+   - **agent parameter values** in an `AiConversationCreationOptions` instance.  
 - Set the user prompt using the `SetUserPrompt`method.  
-  The user prompt updates the agent with the user's expectations for this session.  
-- Use the value returned by `Conversation` to run the chat.
+  The user prompt informs the agent with the user's requests and expectations for this chat.  
+- Use the value returned by the `Conversation` method to run the chat.
 
-In the example below a new conversation is set by providing no conversation ID, 
-using an empty prefix, 
-without an ID and a new conversation will be stored in `@conversations`.  
+### Chat reply
+
+LLM replies are returned by the agent to the client in an `AiAnswer` object.  
+The conversation status is indicated by `AiAnswer.AiConversationResult`.   
+
+* `AiAnswer`syntax:
+  {CODE ai-agents_AiAnswer@AiIntegration\AiAgents\AiAgents.cs /}
+
+First, check the conversation status to see if this is the agent's final response 
+or whether it just requests the client to apply an action tool.  
+
+- A request for action is relayed by an `AiConversationResult.ActionRequired` status, 
+  with any additional details stored in `AiAnswer.Answer` - within the return object 
+  that you defined for the action tool.  
+  To send requested data to the agent, use `chat.SetUserPrompt` to set the data as 
+  the user prompt and use `chat.RunAsync` to resume the chat. The prompt will be sent 
+  to the LLM by the agent and the chat will continue.  
+
+- A final response from the LLM is relayed by a `AiConversationResult.Done` status, 
+  with the LLM's message stored in `AiAnswer.Answer` - within the return object that 
+  you defined for the agent.  
+
+In the example below the chat is initiated with a user prompt and an agent parameter 
+from the human experience manager, requesting the LLM to check which employee made 
+the largest profit with orders sent to the selected country (or "everywhere" for the 
+entire world).  
+The reply is then checked:  
+If this is an action request, the ID of the highest-grossing employee is retrieved 
+from the answer, additional data is retrieved from the database based on this ID, and 
+the chat is resumed with the retrieved data as a user prompt.  
+If this is the final LLM response, the LLM suggestions regarding a reward for the 
+employee are also provided in the answer and can be handled further.  
 
 * Example: 
   {CODE ai-agents_Conversation_example@AiIntegration\AiAgents\AiAgents.cs /}
@@ -320,7 +392,7 @@ without an ID and a new conversation will be stored in `@conversations`.
   
 {PANEL/}
 
-{PANEL: Example}
+{PANEL: Full example}
 
 The agent in this example is a library assistant with access to a documentation database.  
 Its users pass it a subject, and the agent searches the database for documents in this 

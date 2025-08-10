@@ -21,6 +21,7 @@ using Raven.Client.Documents.Operations.ConnectionStrings;
 using Raven.Client.Http;
 using Raven.Client.Json;
 using Raven.Client.Json.Serialization;
+using Raven.Documentation.Samples.Orders;
 using Sparrow.Json;
 using Sparrow.Json.Parsing;
 using Xunit;
@@ -107,45 +108,70 @@ public class AiAgents
 
         #region ai-agents_AiAgentConfiguration_example
         // Agent configuration
-        var agent = new AiAgentConfiguration("document-summarizing-assistant", connectionString.Name,
-            "You are an AI agent of a university library, summarizing documents from a documentation database. " +
-            "you get from a student a subject that the student wants to learn about, and do as follows: " +
-            "1.Use a query tool to retrieve from the database a list of document IDs and titles where the titles " +
-            "include the student's subject. " +
-            "2.Go through the document titles and decide which document is the most helpful for the student. " +
-            "3.Retrieve the chose article's text from the database by triggering the relevant action tool. " +
-            "4.Summarize the document and hand the student the document's title and summary.");
+        var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
+            "You work for an employees welfare manager. " +
+            "The welfare manager uses you to find which employee made the largest profit and thank this employee. " +
+            "The welfare manager can request you to pick an employee from everywhere, or from a particular country. " +
+            "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
+            "based on the employee's living area that the company can reward them with. " +
+            "You are equipped with: " +
+            "1.a query tool that allows you to retrieve all orders sent to all countries.use this tool to retrieve " +
+            "all orders sent to all countries and calculate which employee made the largest profit. " +
+            "2.A query tool that allows you to retrieve all the orders sent to a particular country.use this tool if " +
+            "the user prompt specifies a country that orders were sent to, and calculate which employee that sent products " +
+            "to this country made the largest profit. " +
+            "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
+            "When you're done. return the employee ID, the profit the employee made, and the suggested rewards."
+            );
         #endregion
 
         #region ai-agents_agent-identifier
         // Agent ID
-        agent.Identifier = "document-summarizing-assistant";
+        agent.Identifier = "congratulate-employee-with-present";
         #endregion
 
         #region ai-agents_AiAgentParameter_function
         //  Agent parametera
-        agent.Parameters.Add(new AiAgentParameter("subject", "the subject provided by the student"));
+        agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, or \"everywhere\" to look for orders shipped to all countries"));
         #endregion
 
         #region ai-agents_agent_sampleObjectString
         // Set sample object
         agent.SampleObject = "{" +
-                                "\"DocumentName\": \"The document's original title\", " +
-                                "\"DocumentSummary\": \"The summarized document\"" +
+                                "\"EmployeeID\": \"embed the employee’s ID here\"" +
+                                "\"EmployeeProfit\": \"embed the profit made by the employee here\"," +
+                                "\"Suggestions\": \"embed suggested rewards here\"" +
                              "}";
+
         #endregion
 
         #region ai-agents_agent_query-tool-sample
         agent.Queries =
-        [   // Set query tool
+        [   
+            // Set first query tool
             new AiAgentToolQuery
             {
-                Name = "retrieveDocumentTitles",
-                Description = "Use this query to load all the IDs and titles of documents whose title " +
-                              "includes the student's subject",
-                Query = "from DocumentationPages where search(Title, $subject) order by id() select id(), Title",
-                ParametersSampleObject = "{\"ID\": \"The ID of the retrieved document\", " +
-                                         "\"Title\": \"The Title of the retrieved document\"}"
+                Name = "retrieve-orders-sent-to-all-countries",
+                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+                Query = "from \"Orders\" " +
+                        "select Employee, Lines.Quantity",
+                ParametersSampleObject = "{" +
+                                            "\"Employee\": \"employee ID\"," +
+                                            "\"Lines.Quantity\": \"an array of profits made by this employee\"" +
+                                         "}"
+            },
+            
+            // Set second query tool
+            new AiAgentToolQuery
+            {
+                Name = "retrieve-orders-sent-to-a-particular-country",
+                Description = "a query tool that allows you to retrieve all orders sent to a particular country",
+                Query = "from \"Orders\" where ShipTo.Country == $country " +
+                        "select Employee, Lines.Quantity",
+                ParametersSampleObject = "{" +
+                                            "\"Employee\": \"employee ID\"," +
+                                            "\"Lines.Quantity\": \"an array of profits made by this employee\"" +
+                                         "}"
             }
         ];
         #endregion
@@ -155,9 +181,12 @@ public class AiAgents
         [   // set action tool
             new AiAgentToolAction
             {
-                Name = "retrieveDocumentText",
-                Description = "Trigger a user query that will load the text of the document you selected for the student",
-                ParametersSampleObject = "{ \"DocumentID\": \"The ID of the selected document\" }"
+                Name = "request-employee-details-by-ID",
+                Description = "an action tool that allows you to provide the user the ID of the employee that made " +
+                              "the largest profit so the user will send you a prompt with the employee’s living region",
+                ParametersSampleObject = "{" +
+                                            "\"EmployeeID\": \"embed the employee’s ID here\"" +
+                                         "}"
             }
         ];
         #endregion
@@ -169,8 +198,8 @@ public class AiAgents
             SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
             SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
             ResultPrefix = "Summary: ",
-            MaxTokensBeforeSummarization = 1000,
-            MaxTokensAfterSummarization = 200
+            MaxTokensBeforeSummarization = 10000,
+            MaxTokensAfterSummarization = 10000
         };
 
         AiAgentHistoryConfiguration history = new AiAgentHistoryConfiguration()
@@ -194,14 +223,39 @@ public class AiAgents
         // Set chat
         var chat = store.AI.Conversation(
             createResult.Identifier,
-            "summaries/",
-            new AiConversationCreationOptions().AddParameter("subject", "indexing"));
-        
-        // Set user prompt
-        chat.SetUserPrompt("Tell me about indexing of counters in RavenDB");
-        
-        // Run the chat
-        var reply = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+            "suggestions/",
+            new AiConversationCreationOptions().AddParameter("country", "France"));
+
+        // Set user prompt and run the chat
+        chat.SetUserPrompt("check which employee made the largest profit");
+        var LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+
+        Employee employee;
+        if (LLMResponse.Status == AiConversationResult.ActionRequired)
+        {
+            // Handle action required case
+
+            // The LLM response indicates that an action is required to fetch the employee's ID
+            // Extract the employee ID from the LLM response
+            var employeeId = LLMResponse.Answer.EmployeeID;
+
+            employee = (Employee)session.Advanced
+                .AsyncDocumentQuery<Employee>()
+                .WhereEquals(x => x.Id, employeeId);
+
+            // Run the chat again and send as user prompt the details requested by the LLM
+            chat.SetUserPrompt("{\"City\": " + employee.Address.City +
+                               "{\"Region\": " + employee.Address.Region +
+                               "{\"Country\": " + employee.Address.Country);
+            LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+
+            if (LLMResponse.Status == AiConversationResult.Done)
+            {
+                // The LLM has successfully processed the action and returned the final response
+                // Find it in LLMResponse.Answer.EmployeeID, LLMResponse.Answer.EmployeeProfit, 
+                // and LLMResponse.Answer.SuggestedRewards
+            }
+        }
         #endregion
     }
 
@@ -232,47 +286,75 @@ public class AiAgents
         using var session = store.OpenAsyncSession();
 
         // Agent configuration
-        var agent = new AiAgentConfiguration("document-summarizing-assistant", connectionString.Name,
-            "You are an AI agent of a university library, summarizing documents from a documentation database. " +
-            "you get from a student a subject that the student wants to learn about, and do as follows: " +
-            "1.Use a query tool to retrieve from the database a list of document IDs and titles where the titles " +
-            "include the student's subject. " +
-            "2.Go through the document titles and decide which document is the most helpful for the student. " +
-            "3.Retrieve the chose article's text from the database by triggering the relevant action tool. " +
-            "4.Summarize the document and hand the student the document's title and summary.");
+        var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
+            "You work for an employees welfare manager. " +
+            "The welfare manager uses you to find which employee made the largest profit and thank this employee. " +
+            "The welfare manager can request you to pick an employee from everywhere, or from a particular country. " +
+            "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
+            "based on the employee's living area that the company can reward them with. " +
+            "You are equipped with: " +
+            "1.a query tool that allows you to retrieve all orders sent to all countries.use this tool to retrieve " +
+            "all orders sent to all countries and calculate which employee made the largest profit. " +
+            "2.A query tool that allows you to retrieve all the orders sent to a particular country.use this tool if " +
+            "the user prompt specifies a country that orders were sent to, and calculate which employee that sent products " +
+            "to this country made the largest profit. " +
+            "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
+            "When you're done. return the employee ID, the profit the employee made, and the suggested rewards."
+            );
 
         // Agent ID
-        agent.Identifier = "document-summarizing-assistant";
+        agent.Identifier = "congratulate-employee-with-present";
 
         //  Agent parametera
-        agent.Parameters.Add(new AiAgentParameter("subject", "the subject provided by the student"));
+        agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, or \"everywhere\" to look for orders shipped to all countries"));
 
         // Set sample object
         agent.SampleObject = "{" +
-                                "\"DocumentName\": \"The document's original title\", " +
-                                "\"DocumentSummary\": \"The summarized document\"" +
+                                "\"EmployeeID\": \"embed the employee’s ID here\"" +
+                                "\"EmployeeProfit\": \"embed the profit made by the employee here\"," +
+                                "\"Suggestions\": \"embed suggested rewards here\"" +
                              "}";
 
         agent.Queries =
-        [   // Set query tool
+        [   
+            // Set first query tool
             new AiAgentToolQuery
             {
-                Name = "retrieveDocumentTitles",
-                Description = "Use this query to load all the IDs and titles of documents whose title " +
-                              "includes the student's subject",
-                Query = "from DocumentationPages where search(Title, $subject) order by id() select id(), Title",
-                ParametersSampleObject = "{\"ID\": \"The ID of the retrieved document\", " +
-                                         "\"Title\": \"The Title of the retrieved document\"}"
+                Name = "retrieve-orders-sent-to-all-countries",
+                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+                Query = "from \"Orders\" " +
+                        "select Employee, Lines.Quantity",
+                ParametersSampleObject = "{" +
+                                            "\"Employee\": \"employee ID\"," +
+                                            "\"Lines.Quantity\": \"an array of profits made by this employee\"" +
+                                         "}"
+            },
+            
+            // Set second query tool
+            new AiAgentToolQuery
+            {
+                Name = "retrieve-orders-sent-to-a-particular-country",
+                Description = "a query tool that allows you to retrieve all orders sent to a particular country",
+                Query = "from \"Orders\" where ShipTo.Country == $country " +
+                        "select Employee, Lines.Quantity",
+                ParametersSampleObject = "{" +
+                                            "\"Employee\": \"employee ID\"," +
+                                            "\"Lines.Quantity\": \"an array of profits made by this employee\"" +
+                                         "}"
             }
         ];
 
         agent.Actions =
-        [   // set action tool
+        [   
+            // set action tool
             new AiAgentToolAction
             {
-                Name = "retrieveDocumentText",
-                Description = "Trigger a user query that will load the text of the document you selected for the student",
-                ParametersSampleObject = "{ \"DocumentID\": \"The ID of the selected document\" }"
+                Name = "request-employee-details-by-ID",
+                Description = "an action tool that allows you to provide the user the ID of the employee that made " +
+                              "the largest profit so the user will send you a prompt with the employee’s living region",
+                ParametersSampleObject = "{" +
+                                            "\"EmployeeID\": \"embed the employee’s ID here\"" +
+                                         "}"
             }
         ];
 
@@ -282,8 +364,8 @@ public class AiAgents
             SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
             SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
             ResultPrefix = "Summary: ",
-            MaxTokensBeforeSummarization = 1000,
-            MaxTokensAfterSummarization = 200
+            MaxTokensBeforeSummarization = 10000,
+            MaxTokensAfterSummarization = 10000
         };
         agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
 
@@ -294,23 +376,47 @@ public class AiAgents
         // Set chat
         var chat = store.AI.Conversation(
             createResult.Identifier,
-            "summaries/",
-            new AiConversationCreationOptions().AddParameter("subject", "indexing"));
+            "suggestions/",
+            new AiConversationCreationOptions().AddParameter("country", "France"));
 
-        // Set user prompt
-        chat.SetUserPrompt("Tell me about indexing of counters in RavenDB");
+        // Set user prompt and run the chat
+        chat.SetUserPrompt("check which employee made the largest profit");
+        var LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
 
-        // Run the chat
-        var r = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+        Employee employee;
+        if (LLMResponse.Status == AiConversationResult.ActionRequired)
+        {
+            // Handle action required case
+
+            // The LLM response indicates that an action is required to fetch the employee's ID
+            // Extract the employee ID from the LLM response
+            var employeeId = LLMResponse.Answer.EmployeeID;
+
+            employee = (Employee)session.Advanced
+                .AsyncDocumentQuery<Employee>()
+                .WhereEquals(x => x.Id, employeeId);
+
+            // Run the chat again and send as user prompt the details requested by the LLM
+            chat.SetUserPrompt("{\"City\": " + employee.Address.City +
+                               "{\"Region\": " + employee.Address.Region +
+                               "{\"Country\": " + employee.Address.Country);
+            LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+
+            if (LLMResponse.Status == AiConversationResult.Done)
+            {
+                // The LLM has successfully processed the action and returned the final response
+                // Find it in LLMResponse.Answer.EmployeeID, LLMResponse.Answer.EmployeeProfit, 
+                // and LLMResponse.Answer.SuggestedRewards
+            }
+        }
     }
 
     public class OutputSchem
     {
         public static OutputSchem Instance = new();
-
-        public string DocumentName = "The document's original title";
-
-        public string DocumentSummary = "The summarized document";
+        public string EmployeeID = "The employee's ID";
+        public string EmployeeProfit = "The profit made by the employee";
+        public string SuggestedRewards = "Suggested rewards for the employee";
     }
     #endregion
 
@@ -327,16 +433,42 @@ public class AiAgents
         #region ai-agents_AiAgentConfiguration-class_definition
         public class AiAgentConfiguration
         {
+            // A unique identifier given to the AI agent configuration
             public string Identifier { get; set; }
+
+            // The name of the AI agent configuration
             public string Name { get; set; }
+
+            // Connection string name
             public string ConnectionStringName { get; set; }
+
+            // The system promnpt that defines the role and purpose of the agent and the LLM
             public string SystemPrompt { get; set; }
+
+            // An example object that sets the layout for the LLM's response to the user.
+            // The object is translated to a schema before we send it to the LLM.
             public string SampleObject { get; set; }
+
+            // A schema that sets the layout for the LLM's response to the user.
+            // If both a sample object and a schema are defined, only the schema is used.
             public string OutputSchema { get; set; }
+
+            // A list of Query tools that the LLM can use (through the agent) to access the database
             public List<AiAgentToolQuery> Queries { get; set; } = new List<AiAgentToolQuery>();
+
+            // A list of Action tools that the LLM can use to trigger the user to action
             public List<AiAgentToolAction> Actions { get; set; } = new List<AiAgentToolAction>();
+
+            // Agent parameters whose value the client passes to the LLM each time a chat is started, 
+            // for stricter control over queris initiated by the LLM and as a means for interaction 
+            // between the client and the LLM.  
             public List<AiAgentParameter> Parameters { get; set; } = new List<AiAgentParameter>();
+
+            // The trimming configuration defines if and how the chat history is compacted or truncated, 
+            // to minimize the amount of data passed to the LLM when a chat is started.  
             public AiAgentChatTrimmingConfiguration ChatTrimming { get; set; } = new AiAgentChatTrimmingConfiguration(new AiAgentSummarizationByTokens());
+            
+            // Control over the number of times that the LLMis allowed to use agent tools to handle a user prompt.  
             public int? MaxModelIterationsPerCall { get; set; }
         }
         #endregion
@@ -487,5 +619,23 @@ public class AiAgents
         #endregion
         */
 
+        #region ai-agents_AiAnswer
+        public class AiAnswer<TAnswer>
+        {
+            // The answer content produced by the AI
+            public TAnswer Answer;
+
+            // The status of the conversation
+            public AiConversationResult Status;
+        }
+
+        public enum AiConversationResult
+        {
+            // The conversation has completed and a final answer is available
+            Done,
+            // Further interaction is required, such as responding to tool requests
+            ActionRequired
+        }
+        #endregion
     }
 }
