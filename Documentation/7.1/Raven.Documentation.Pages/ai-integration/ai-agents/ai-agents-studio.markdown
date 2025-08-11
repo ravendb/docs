@@ -172,10 +172,9 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
 6. **Query**  
    Write the query that the agent will run when the LLM requests it to use this tool.  
 
-7. **Sample response object** and **Response JSON schema**  
-   Click "Sample response object" or "response JSON schema" to switch between the two tabs.  
-   Define an object that the agent will fill with the data that it retrieves from the database 
-   when this query tool is used.  
+7. **Sample parameters object** and **Parameters JSON schema**  
+   Click "Sample parameters object" or "Parameters JSON schema" to switch between the two tabs.  
+   Define an object with parameters that the LLM can set and request the agent to use in the query.  
    If you define both a sample response object and a schema, only the schema will be used.  
     
 ---
@@ -198,8 +197,8 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
    Write a description that explains to the LLM in natural language when this action tool should be applied.  
    E.g., `apply this action tool when you need to create a new summary document`  
 
-6. **Sample response object** and **Parameters JSON schema**  
-   Click "Sample response object" or "response JSON schema" to switch between the two tabs.  
+6. **Sample parameters object** and **Parameters JSON schema**  
+   Click "Sample parameters object" or "Parameters JSON schema" to switch between the two tabs.  
    Define an object that the agent will fill with data needed for the client's action.  
    
       If you define both a sample response object and a schema, only the schema will be used.  
