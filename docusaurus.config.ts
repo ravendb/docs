@@ -16,7 +16,7 @@ const config: Config = {
     experimental_faster: true
   },
 
-  url: "https://test.docs.ravendb.net/",
+  url: "https://docs.ravendb.net/",
   baseUrl: "/",
 
   onBrokenLinks: "ignore",
@@ -206,7 +206,7 @@ const config: Config = {
       // Public API key: it is safe to commit it
       apiKey: "a97a73adcd8ac27ce741f4f663e9f554",
 
-      indexName: "TestDocsCrawler",
+      indexName: "ProductionDocsCrawler",
 
       contextualSearch: true,
 
