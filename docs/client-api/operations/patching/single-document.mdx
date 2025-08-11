@@ -979,7 +979,7 @@ session.SaveChanges();
 </Tabs>
 ### Clone document
 
-In order to clone a document use put method as follows.
+To clone a document via patching, use the `put` method within the patching script as follows:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
@@ -1007,10 +1007,19 @@ session.SaveChanges();
 
 <Admonition type="info" title="Info">
 
-__Attachments, Counters, Time Series, and Revisions:__
+**Attachments, Counters, Time Series, and Revisions:**
 
-Attachments, counters, time series data, and revisions from the source document will Not be copied  
-to the new document automatically.
+  * When cloning a document via patching, only the document's fields are copied to the new document.  
+    Attachments, counters, time series data, and revisions from the source document will Not be copied automatically. 
+  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
+    [Counters methods](../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../server/kb/javascript-engine.mdx#time-series-operations).  
+  * Note: When [Cloning a document via the Studio](../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+    attachments, counters, time Series, and revisions will be copied automatically.
+
+**Archived documents:**
+
+  * If the source document is archived, the cloned document will Not be archived.  
+    To learn more about archived documents, see [Data archival overview](../../../data-archival/overview.mdx).
 
 </Admonition>
 ### Increment counter
@@ -1857,7 +1866,7 @@ store.operations().send(new PatchOperation("employees/1-A", null, patchRequest))
 
 ### Clone Document
 
-In order to clone a document use put method as follows
+To clone a document via patching, use the `put` method within the patching script as follows:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session-defer-syntax" label="Session-defer-syntax">
 <CodeBlock language="java">
@@ -1883,9 +1892,18 @@ store.operations().send(new PatchOperation("employees/1-A", null, patchRequest))
 
 <Admonition type="info" title="Info">
 
-__Attachments, Counters, Time Series, and Revisions:__
+**Attachments, Counters, Time Series, and Revisions:**
 
-Attachments, counters, time series data, and revisions from the source document will Not be copied to the new document automatically.
+  * When cloning a document via patching, only the document's fields are copied to the new document.
+    Attachments, counters, time series data, and revisions from the source document will Not be copied automatically.
+  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
+    [Counters methods](../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../server/kb/javascript-engine.mdx#time-series-operations).
+  * Note: When [Cloning a document via the Studio](../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+    attachments, counters, time Series, and revisions will be copied automatically.
+
+**Archived documents:**
+
+  * If the source document is archived, the cloned document will Not be archived.
 
 </Admonition>
 
@@ -3091,7 +3109,16 @@ await documentStore.operations.send(patchOp);
 
 **Attachments, Counters, Time Series, and Revisions:**
 
-Attachments, counters, time series data, and revisions from the source document will Not be copied to the new document automatically.
+  * When cloning a document via patching, only the document's fields are copied to the new document.
+    Attachments, counters, time series data, and revisions from the source document will Not be copied automatically.
+  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
+    [Counters methods](../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../server/kb/javascript-engine.mdx#time-series-operations).
+  * Note: When [Cloning a document via the Studio](../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+    attachments, counters, time Series, and revisions will be copied automatically.
+
+**Archived documents:**
+
+  * If the source document is archived, the cloned document will Not be archived.
 
 </Admonition>
 

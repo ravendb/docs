@@ -62,11 +62,33 @@ E.g. `chown -R 999:999 $TARGET_DATA_DIR`
 
 ## Customizing the RavenDB data directory owner user UID/GID 
 
-In order to use a custom UID/GID for the `ravendb` user please build the Ubuntu container image yourself providing desired **UID** and 
-**GID** values, using the following arguments upon build:  
-**UID**: `--build-arg "RAVEN_USER_ID=999"`  
-**GID**: `--build-arg "RAVEN_GROUP_ID=999"`  
-E.g., `docker build --build-arg "RAVEN_USER_ID=999" --build-arg "RAVEN_GROUP_ID=999" <...>`  
+To customize the **UID** and **GID** of the `ravendb` user (e.g. to match your host user or for volume permissions), you can build your own image using the official `ravendb` base image. 
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`FROM ravendb/ravendb:7.0-ubuntu-latest
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+USER root
+
+RUN groupmod -g "$\{GROUP_ID\}" "ravendb" && \\
+usermod  -u "$\{USER_ID\}" -g "$\{GROUP_ID\}" ravendb && \\
+chown root:$\{USER_ID\} /etc/ravendb/settings.json && \\
+find / -xdev -uid 0 -gid 999 -exec chown "root:$\{GROUP_ID\}" \{\} +
+
+
+USER ravendb
+`}
+</CodeBlock>
+</TabItem>
+
+### Build Instructions 
+
+1. Save the above as `dockerfile` 
+2. Open a terminal in that directory 
+3. Build the custom image with your desired UID and GID: `docker build --build-arg USER_ID=YourUserID --build-arg GROUP_ID=YourGroupID -t image-name -f dockerfile`
 
 ## Migrate files and data  
 

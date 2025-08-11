@@ -26,24 +26,27 @@ export const supportedLanguages = ["csharp", "java"];
 * In this page:  
 
   * [Overview](../server/embedded.mdx#overview)  
-  * [Prerequisites](../server/embedded.mdx#prerequisite)  
+  * [Prerequisites and Recommendations](../server/embedded.mdx#prerequisites-and-recommendations)  
   * [Installation](../server/embedded.mdx#installation)  
-  * [Starting the Server](../server/embedded.mdx#starting-the-server)  
-  * [Server Options](../server/embedded.mdx#server-options)  
-     * [Setting Server Directory](../server/embedded.mdx#setting-server-directory)  
-     * [Restarting the Server](../server/embedded.mdx#restarting-the-server)  
+  * [Starting the server](../server/embedded.mdx#starting-the-server)  
+  * [Server options](../server/embedded.mdx#server-options)  
+     * [Setting server directory](../server/embedded.mdx#setting-server-directory)  
+     * [Restarting the server](../server/embedded.mdx#restarting-the-server)  
      * [ServerProcessExited Event](../server/embedded.mdx#serverprocessexited-event)  
-     * [Licensing options](../server/embedded.mdx#licensing-options)  
-  * [.NET FrameworkVersion](../server/embedded.mdx#net-frameworkversion)  
+  * [Embedded server licensing](../server/embedded.mdx#embedded-server-licensing)  
+      * [Licensing configuration options](../server/embedded.mdx#licensing-configuration-options)  
+      * [License an embedded server using an Environment variable](../server/embedded.mdx#license-an-embedded-server-using-an-environment-variable)  
+  * [`.NET` FrameworkVersion](../server/embedded.mdx#net-frameworkversion)  
   * [Security](../server/embedded.mdx#security)  
-  * [Document Store](../server/embedded.mdx#document-store)  
-  * [Get Server URL and Process ID](../server/embedded.mdx#get-server-url-and-process-id)  
+  * [Document store](../server/embedded.mdx#document-store)  
+  * [Get server URL and process ID](../server/embedded.mdx#get-server-url-and-process-id)  
   * [Remarks](../server/embedded.mdx#remarks)  
 
 </Admonition>
 ## Overview
 
-RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with a few easy steps. 
+RavenDB can be easily embedded in your application.  
+Use the Embedded package to integrate RavenDB in just a few easy steps. 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -76,39 +79,40 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
 
 
 
-## Prerequisite
+## Prerequisites and Recommendations
 
-There is one prerequisite and one recommendation for the Embedded package:
+* **Prerequisites**  
+   * Install [`.NET` Core runtime](https://dotnet.microsoft.com/en-us/download), 
+     either manually or [along with a RavenDB full version](embedded#setting-server-directory).  
+   * Verify that the RavenDB server [FrameworkVersion](../server/embedded.mdx#net-frameworkversion) 
+     definition matches the `.NET` Core version that you install.  
 
-Prerequsite:
+* **Recommendations**  
+   * Projects targeting `.NET Framework 4.6.1+` that use the old `packages.config` 
+     for NuGet packages maintenance, should migrate to `PackageReference` package management.  
+     Find additional details [below](../server/embedded.mdx#migrating-from--to--in-old-csproj-projects).  
+### `.NET` Core Runtime:
 
-- Install [.NET Core runtime](https://dotnet.microsoft.com/en-us/download) either manually or [along with a RavenDB full version](embedded#setting-server-directory)
-  - Be sure that the RavenDB server [FrameworkVersion](../server/embedded.mdx#net-frameworkversion) definition matches the .NET Core 
-    version that you install.  
+RavenDB Embedded **does not include** the `.NET` Core runtime engine required for its operation.  
 
-Recommendation:
+By default, `ServerOptions.FrameworkVersion` is set to the `.NET` Core version that we compiled 
+the server with and `ServerOptions.DotNetPath` is set to `dotnet` - meaning it is required to have 
+it declared in PATH. 
 
-- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to 
-  `PackageReference` package management** (please refer to section below on how to achieve this)
-### .NET Core Runtime:
-
-RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
-
-By default, the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and 
-`ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
-
-We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning 
-of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
+We highly recommend using the `.NET` Core framework version defined in `ServerOptions.FrameworkVersion` 
+for proper server function.  
+You can download the `.NET` Core runtime engine [here](https://dotnet.microsoft.com/download).  
 ### Migrating from `packages.config` to `PackageReference` in old csproj projects:
 
-Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using 
-`PackageReference` instead of old `packages.config`. 
+Due to NuGet limitations, we recommend installing the Embedded package via newer package management, 
+using `PackageReference` rather than the older `packages.config`.  
 
-The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read 
-following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
+The transition between the two is made easy by the built-in Visual Studio migrator.  
+Find further guidance in this [Microsoft article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference).  
 
-Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj projects. 
-Not doing so might result in an assembly load exception e.g.
+Please note that _binding redirects_ in `App.config` are still required when 'PackageReference' 
+is used in old `csproj` projects. Failing to use _binding redirects_ might result in an assembly 
+load exception such as:  
 
 ```
 Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, 
@@ -146,8 +150,8 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
 
 ## Installation
 
-* Create a new project (.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.6.1+).
-* Grab the package from our [NuGet](https://www.nuget.org/packages/RavenDB.Embedded)
+* Create a new project (.`NET Standard 2.0+`, `.NET Core 2.0+`, `.NET Framework 4.6.1+`).
+* Grab our [NuGet package](https://www.nuget.org/packages/RavenDB.Embedded)
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`Install-Package RavenDB.Embedded -Version 4.1.0
@@ -160,7 +164,7 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
 ## Starting the Server
 
 RavenDB Embedded Server is available under `EmbeddedServer.Instance`.  
-In order to start it, call `StartServer` method.
+Start the server using the `StartServer` method.
 
 <TabItem value="start_server" label="start_server">
 <CodeBlock language="csharp">
@@ -170,14 +174,14 @@ EmbeddedServer.Instance.StartServer();
 </CodeBlock>
 </TabItem>
 
-For more control on how to start the server, pass to `StartServer` method a `ServerOptions` object.
+For more control over the server startup, pass `StartServer` a `ServerOptions` object.
 
 
 
 ## Server Options
 
-Set `ServerOptions` to change server settings such as .NET FrameworkVersion, DataDirectory, 
-and additional options:  
+Set `ServerOptions` to change server settings such as `.NET` FrameworkVersion, DataDirectory, 
+and additional options.  
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -202,12 +206,12 @@ and additional options:
 
 If `ServerOptions` is not provided, RavenDB server will start with a default value of `127.0.0.1:{Random Port}`.
 ### Setting Server Directory:
-In case you're not interested in installing the .NET run-time environment on your system, you can -  
+In case you are not interested in installing the `.NET` run-time environment on your system, you can -  
 
 * [Download](https://ravendb.net/download) a full RavenDB version.  
-  This version already includes a .NET run-time environment.  
+  This version already includes a `.NET` run-time environment.  
 * Extract the downloaded version to a local folder.  
-  E.g. `C:\RavenDB`.  
+  E.g. `C:\RavenDB`  
 * Set the `ServerDirectory` server option to the RavenDB subfolder that contains -
    * `Raven.Server.exe` in Windows  
    * `Raven.Server` in Posix  
@@ -222,7 +226,7 @@ In case you're not interested in installing the .NET run-time environment on you
 </CodeBlock>
 </TabItem>
 ### Restarting the Server:
-To restart the server, use the method `<embedded server>.RestartServerAsync()`.
+To restart the server, use the `<embedded server>.RestartServerAsync()` method.  
 
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
@@ -250,59 +254,156 @@ Use `<embedded server>.ServerProcessExited` to observe when the server has crash
 </TabItem>
 
 Event data is of type `ServerProcessExitedEventArgs`.
-### Licensing options:
-A `ServerOptions.Licensing` class gathers configuration options related to the licensing of the embedded server:  
+
+
+
+## Embedded server licensing
+
+* The **same license types** available for Standalone RavenDB servers, are available for Embedded servers.  
+* A licensed server can be managed using Studio, and is given a superior feature set to that of 
+  non-registered servers. See the full list of license types and their features [here](https://ravendb.net/buy).  
+* An embedded server can be licensed using **Configuration options** or an **Environment variable**.  
+### Licensing configuration options
+
+Embedded server licensing configuration options are gathered in the `ServerOptions.Licensing` class.  
+After acquiring a license, it can be passed to the server either as a string or as a file.  
+
+* To pass your license to the server as a string, use the `ServerOptions.LicensingOptions.License` 
+  configuration option.  
+<TabItem value="LicensingOptions_License" label="LicensingOptions_License">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer(new ServerOptions
+\{
+    Licensing = new ServerOptions.LicensingOptions
+    \{
+        License = "your license here"
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+* To keep your license file in your file system and point the server to its path, 
+  use the `ServerOptions.LicensingOptions.LicensePath` configuration option.  
+<TabItem value="LicensingOptions_LicensePath" label="LicensingOptions_LicensePath">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer(new ServerOptions
+\{
+    Licensing = new ServerOptions.LicensingOptions
+    \{
+        LicensePath = "path to license.json file"
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+#### Available LicensingOptions configuration options:
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **License** | `string` | Specifies the full license string directly in the configuration.<br/>If both `License` and `LicensePath` are defined, `License` takes precedence. |
 | **LicensePath** | `string` | Specifies a path to a license file.<br/>If both `License` and `LicensePath` are defined, `License` takes precedence.<br/>Default: `license.json` |
-| **EulaAccepted** |  `bool` | Set to `false` to present a request to accept our terms & conditions |
-| **DisableAutoUpdate** | `bool` | Disable automatic license updates (from both the `api.ravendb.net` license server **and** the `License` and `LicensePath` configuration options) |
-| **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br/>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options |
+| **EulaAccepted** |  `bool` | Set to `false` to present a request to accept our terms & conditions. |
+| **DisableAutoUpdate** | `bool` | Disable automatic license updates (from both the `api.ravendb.net` license server **and** the `License` and `LicensePath` configuration options). |
+| **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br/>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options. |
 | **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br/>`true`: disable verification<br/>`false`: enable verification |
-| **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated |
+| **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated. |
+### License an embedded server using an Environment variable
+
+You can pass the same configuration options to the embedded server using environment variables.  
+
+* To pass your license to the server as a string, define or edit the environment variable `RAVEN_License`.  
+  Provide your license as a value for this variable.  
+  **Note**, however, that you must first **reformat** the license JSON that you acquired, and 
+  turn it to a single line, eliminating new-line symbols.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Original_Format" label="Original_Format">
+<CodeBlock language="json">
+{`{
+	"Id": "bad5fe9b-fba4-459c-9220-36b438e06e36",
+	"Name": "rdb",
+	"Keys": [
+	"WBRG3G1zKd536ELfRbWw7x69J",
+	"zyFCZ+AcGLI9RgSyRq5r4KS7K",
+	"E0hMr5uzmbMBuxAI6WLBXZTSN",
+	"t+vGjgrVzqoycTPhHdQxNCK2v",
+	"7xOwXKUblAhZmHcDeY3xvF0jn",
+	"EZoZLdaeF0D8FFddNB8NrMWeQ",
+	"kwzAKfs1BMlXi9ZJsVZO9ABUE",
+	"yBSYoSQMqKywtLi8wJzEyMzQV",
+	"Fjc4OTo7PD0+nwIfIJ8CICCfA",
+	"iEgnwIjIEMkRAlieVc="
+	]
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Reformatted" label="Reformatted">
+<CodeBlock language="json">
+{`{"Id": "bad5fe9b-fba4-459c-9220-36b438e06e36","Name": "rdb","Keys": ["WBRG3G1zKd536ELfRbWw7x69J","zyFCZ+AcGLI9RgSyRq5r4KS7K","E0hMr5uzmbMBuxAI6WLBXZTSN","t+vGjgrVzqoycTPhHdQxNCK2v","7xOwXKUblAhZmHcDeY3xvF0jn","EZoZLdaeF0D8FFddNB8NrMWeQ","kwzAKfs1BMlXi9ZJsVZO9ABUE","yBSYoSQMqKywtLi8wJzEyMzQV","Fjc4OTo7PD0+nwIfIJ8CICCfA","iEgnwIjIEMkRAlieVc="]}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+     <Admonition type="info" title="Info">
+     You can reformat the license manually, or use a script to do it.  
+     E.g., find below a Bash script that specifies the name of the file from which the license 
+     will be read, and then uses the `-c` flag to compact the file's contents to a single line.  
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`INPUT_FILE="license.json"
+jq -c . "$INPUT_FILE"
+`}
+</CodeBlock>
+</TabItem>
+     </Admonition>
+
+* Or, you can keep your license file in a folder accessible to the application that embeds your server, 
+  and provide the path to the license file in the `RAVEN_LicensePath` environment variable.  
 
 
 
-## .NET FrameworkVersion
+## `.NET` FrameworkVersion
 
-The default FrameworkVersion is defined to work with any .NET version from the time of the RavenDB server release 
-and newer by using the `+` moderator.  For example, `ServerOptions.FrameworkVersion = 3.1.17+`.  
+The default FrameworkVersion is defined to work with any `.NET` version from the time of the RavenDB server release 
+and newer by using the `+` moderator.  
+E.g. `ServerOptions.FrameworkVersion = 3.1.17+`  
 
-Thus, by leaving the default FrameworkVersion definition, RavenDB embedded servers will automatically look for the .NET 
-version that is currently running on the machine, starting from the version at the time of the server release.  
+Thus, by leaving the default FrameworkVersion definition, RavenDB embedded servers will automatically look for the `
+.NET` version that is currently running on the machine, starting from the version at the time of the server release.  
 
-<Admonition type="info" title="Making Sure That You Have the Right .NET Version" id="making-sure-that-you-have-the-right-net-version" href="#making-sure-that-you-have-the-right-net-version">
+<Admonition type="info" title="Making sure that you have the right `.NET` version" id="making-sure-that-you-have-the-right-net-version" href="#making-sure-that-you-have-the-right-net-version">
 
-Remember that each RavenDB release is compiled with the .NET version that was current at the time of release.  
+Each RavenDB release is compiled with the `.NET` version that was current at the time of the release.  
 
-* To find what .NET version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
-  The correct .NET version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
-* By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
-  RavenDB will work well.  
+* To find which `.NET` version supports RavenDB 5.1, for example, open the 
+  [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.  
+  The correct `.NET` version for RavenDB 5.1, `.NET` 5.0.6., is listed at the bottom of the **Server** section.  
+* By default, your RavenDB server will look for `.NET` 5.0.6, 5.0.7, etc.  
+  So as long as you have at least one of these `.NET` versions running on your machine, RavenDB will work well.  
 
 </Admonition>
 
-To stay within a major or minor .NET release, but ensure flexibility with patch releases, 
+To stay within a major or minor `.NET` release, but ensure flexibility with patch releases, 
 use a floating integer `x`.  
 It will always use the newest version found on your machine.  
 
-For example, `ServerOptions.FrameworkVersion = 3.x` will look for the newest 3.x release.  
-`...= 3.2.x` will look for the newest 3.2 release.  
+E.g., `ServerOptions.FrameworkVersion = 3.x` will look for the newest 3.x release,  
+`ServerOptions.FrameworkVersion = 3.2.x` will look for the newest 3.2 release.  
 Neither will look for 4.x.  
 
 | ServerOption Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **FrameworkVersion** | string | The .NET Core framework version to run the server with |
+| **FrameworkVersion** | string | The `.NET` Core framework version to run the server with |
 
 | Parameter | Description |
 | --------- | ------------- |
-| null | The server will pick the newest .NET version installed on your machine. |
-| 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET patch releases that are greater than or equal to 3.1.17 |
-| 3.1.17 | The server will **only** work properly with this exact .NET release |
-| 3.1.x | The server will pick the newest .NET patch release on your machine |
-| 3.x | The server will pick the newest .NET minor releases and patch releases on your machine |
+| `null` | The server will pick the newest `.NET` version installed on your machine. |
+| `3.1.17+` | Default setting (Actual version number is set at the time of server release).<br/>In this example, the server will work properly with `.NET` patch releases that are greater than or equal to 3.1.17 |
+| `3.1.17` | The server will **only** work properly with this exact `.NET` release. |
+| `3.1.x` | The server will pick the newest `.NET` patch release on your machine. |
+| `3.x` | The server will pick the newest `.NET` minor releases and patch releases on your machine. |
 
 <TabItem value="start_server_with_FrameworkVersion_defined" label="start_server_with_FrameworkVersion_defined">
 <CodeBlock language="csharp">
@@ -332,8 +433,10 @@ serverOptions.Secured(
 </CodeBlock>
 </TabItem>
 
-The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
-server certificate. You may supply the certificate password using certPassword.  
+The first way to enable authentication is to set the 
+[certificate with the path to your .pfx](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
+server certificate.  
+You can supply the certificate password using certPassword.  
 ### Set up security using a custom script:
 
 To access the certificate via logic that is external to RavenDB, you can use the following approach: 
@@ -341,7 +444,7 @@ To access the certificate via logic that is external to RavenDB, you can use the
 <TabItem value="security2" label="security2">
 <CodeBlock language="csharp">
 {`var serverOptionsWithExec = new ServerOptions();
-var certificate = new X509Certificate2();
+var certificate = new X509Certificate2(fileName, password);
 serverOptionsWithExec.Secured(
     certLoadExec: "powershell",
     certExecArgs: "C:\\\\secrets\\\\give_me_cert.ps1",
@@ -355,17 +458,18 @@ This option is useful when you want to protect your certificate (private key) wi
 "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, 
 so you can write your own scripts / mini-programs and apply the logic that you need.
 
-It creates a clean separation between RavenDB and the secret store in use.
+This way a clean separation is kept between RavenDB and the secret store in use.
 
-RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+RavenDB expects to get the raw binary representation (byte array) of the `.pfx` certificate 
+through the standard output.
 
 
 
 ## Document Store
 
-After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
-Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `GetDocumentStore` or `GetDocumentStoreAsync` 
-with the name of the database you like to work with. 
+After starting the server you can get the `DocumentStore` from the Embedded Server and start working with RavenDB.  
+Getting the `DocumentStore` from The Embedded Server is done simply by calling `GetDocumentStore` or `GetDocumentStoreAsync` 
+with the name of the database you choose to work with.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -382,14 +486,14 @@ with the name of the database you like to work with.
 </TabItem>
 </Tabs>
 
-For more control on the process you can call the methods with `DatabaseOptions` object.
+For additional control over the process you can call the methods with a `DatabaseOptions` object.  
 
 <Admonition type="info" title="DatabaseOptions" id="databaseoptions" href="#databaseoptions">
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **DatabaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
-| **SkipCreatingDatabase** | bool | If set to true, will skip try creating the database  |
+| **DatabaseRecord** | `DatabaseRecord` | Instance of `DatabaseRecord` containing database configuration |
+| **SkipCreatingDatabase** | `bool` | If set to true, will skip try creating the database  |
 
 </Admonition>
 
@@ -422,9 +526,11 @@ await EmbeddedServer.Instance.GetDocumentStoreAsync(databaseOptions);
 
 #### Server URL:
 
-The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, 
-because it waits for the server initialization to complete.
-The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
+The `GetServerUriAsync` method can be used to retrieve the Embedded server URL.  
+It must be called after the server was started, because it waits for the server's 
+initialization to complete.  
+The URL can be used, for example, to create a custom document store, omitting the 
+`GetDocumentStore` method entirely.
 
 <TabItem value="get_server_url_async" label="get_server_url_async">
 <CodeBlock language="csharp">
@@ -432,7 +538,6 @@ The URL can be used for example for creating a custom document store, omitting t
 `}
 </CodeBlock>
 </TabItem>
-
 #### Process ID:
 
 The `GetServerProcessIdAsync` method can be used to retrieve the system-generated process ID for the 
