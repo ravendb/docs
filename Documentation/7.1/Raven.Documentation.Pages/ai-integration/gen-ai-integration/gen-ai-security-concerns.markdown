@@ -8,7 +8,7 @@ regarding the safety of data sent to an AI model through the task and the
 security of the database while running such tasks.
 
 * In this article:
-    * [Security measures](../../ai-integration/gen-ai-integration/security-concerns#security-measures)
+    * [Security measures](../../ai-integration/gen-ai-integration/gen-ai-security-concerns#security-measures)
     
 {NOTE/}
 
