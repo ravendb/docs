@@ -43,6 +43,7 @@ export default function QueryingFeaturesGrid() {
       icon: "global",
       url: `/${activeVersion.label}/indexes/querying/spatial`,
       description: "Search and sort by geographic location effortlessly",
+      minimumSupportedVersion: "5.2"
     },
   ];
 
@@ -52,9 +53,15 @@ export default function QueryingFeaturesGrid() {
         Querying
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {queryingFeatures.map((props, idx) => (
-          <FeatureItem key={idx} {...props} />
-        ))}
+        {queryingFeatures
+            .filter(
+                feature =>
+                    !feature.minimumSupportedVersion ||
+                    feature.minimumSupportedVersion <= activeVersion.label
+            )
+            .map((props, idx) => (
+              <FeatureItem key={idx} {...props} />
+            ))}
       </div>
     </>
   );

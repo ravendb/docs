@@ -19,6 +19,7 @@ export default function DocumentExtensionsFeaturesGrid() {
       icon: "timeseries",
       url: `/${activeVersion.label}/document-extensions/timeseries/overview`,
       description: "Store, query and aggregate timestamped data natively",
+      minimumSupportedVersion: "5.0"
     },
     {
       title: "Attachments",
@@ -33,6 +34,7 @@ export default function DocumentExtensionsFeaturesGrid() {
       url: `/${activeVersion.label}/server/storage/documents-compression`,
       description:
         "Automatically compress document content for storage savings",
+      minimumSupportedVersion: "5.0"
     },
     {
       title: "Counters",
@@ -48,9 +50,15 @@ export default function DocumentExtensionsFeaturesGrid() {
         Document extensions
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {documentExtensionsFeatures.map((props, idx) => (
-          <FeatureItem key={idx} {...props} />
-        ))}
+        {documentExtensionsFeatures
+            .filter(
+                feature =>
+                    !feature.minimumSupportedVersion ||
+                    feature.minimumSupportedVersion <= activeVersion.label
+            )
+            .map((props, idx) => (
+                <FeatureItem key={idx} {...props} />
+            ))}
       </div>
     </>
   );

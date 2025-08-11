@@ -27,6 +27,7 @@ export default function MonitoringFeaturesGrid() {
       url: `/${activeVersion.label}/server/administration/monitoring/telegraf`,
       description:
         "Effortlessly push RavenDB metrics into your dashboards via plugin",
+      minimumSupportedVersion: "5.2"
     },
   ];
 
@@ -36,9 +37,15 @@ export default function MonitoringFeaturesGrid() {
         Monitoring
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {monitoringFeatures.map((props, idx) => (
-          <FeatureItem key={idx} {...props} />
-        ))}
+        {monitoringFeatures
+            .filter(
+                feature =>
+                    !feature.minimumSupportedVersion ||
+                    feature.minimumSupportedVersion <= activeVersion.label
+            )
+            .map((props, idx) => (
+              <FeatureItem key={idx} {...props} />
+            ))}
       </div>
     </>
   );
