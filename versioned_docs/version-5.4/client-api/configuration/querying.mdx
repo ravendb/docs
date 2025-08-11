@@ -37,7 +37,7 @@ FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path +
 
 The arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
 
-## FindProjectionPropertyNameForIndex
+## FindProjectedPropertyNameForIndex
 
 This convention specifies a function that is used to find the projected property name for a static index.  
 This can be useful when you want to use a static index to project nested properties which are not [`Stored`](../../indexes/storing-data-in-index.mdx).
@@ -51,8 +51,8 @@ This can be useful when you want to use a static index to project nested propert
 
 Same as in the two conventions above, the arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
 
-By default `FindProjectionPropertyNameForIndex` is set to `null`.  
-When `FindProjectionPropertyNameForIndex` is `null` (or returns `null`), the `FindPropertyNameForIndex` convention is used instead.
+By default `FindProjectedPropertyNameForIndex` is set to `null`.  
+When `FindProjectedPropertyNameForIndex` is `null` (or returns `null`), the `FindPropertyNameForIndex` convention is used instead.
 
 ### Example
 Consider we have the following index, and we want to project `School.Id`:

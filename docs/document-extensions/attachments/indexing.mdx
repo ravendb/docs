@@ -23,130 +23,86 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
-* **Static indexes**:   
+* **Static indexes**:  
   Both attachments' details and content can be indexed within a static-index definition.
 
 * **Auto-indexes**:  
   Auto-indexing attachments via dynamic queries is not available at this time.
 
-
-* In this page:  
-  * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)  
-  * [Examples](../../document-extensions/attachments/indexing.mdx#examples)  
-  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)  
+* In this page:
+    * [Index attachments details](../../document-extensions/attachments/indexing.mdx#index-attachments-details)
+    * [Index details & content - by attachment name](../../document-extensions/attachments/indexing.mdx#index-details-&-content---by-attachment-name)
+    * [Index details & content - all attachments](../../document-extensions/attachments/indexing.mdx#index-details-&-content---all-attachments)
+    * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)
+    * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)
 
 </Admonition>
-## Syntax
+## Index attachments details
 
-### Using AttachmentsFor()
+**The index**:
 
-The `AttachmentsFor` method returns information about each attachment that extends 
-a specified document, including their names, sizes, and content type.  
+* To index **attachments' details**, call `AttachmentsFor()` within the index definition.
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Method" label="Method">
-<CodeBlock language="csharp">
-{`IEnumerable<AttachmentName> AttachmentsFor(object doc);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Result" label="Result">
-<CodeBlock language="csharp">
-{`public string Name;
-public string Hash;
-public string ContentType;
-public long Size;
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+* `AttachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
+  These details can then be used when defining the index-fields.
+  Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
-The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
-
-### Using LoadAttachment()/LoadAttachments()
-
-`LoadAttachment()` loads an attachment to the index by document and attachment name.  
-`LoadAttachments()` loads all the attachments of a given document.  
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="csharp">
-{`public IAttachmentObject LoadAttachment(object doc, string name);
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter | Type | Description |
-| - | - | - |
-| **doc** | A server-side document, an entity | The document whose attachments you want to load |
-| **name** | `string` | The name of the attachment you want to load |
-
-#### GetContentAs Methods
-
-To access the attachment content itself, use `GetContentAsStream()`. To 
-convert the content into a `string`, use `GetContentAsString()` with 
-the desired character encoding.  
-
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public Stream GetContentAsStream();
-
-public string GetContentAsString(Encoding encoding);
-
-public string GetContentAsString(); // Default: UTF-8
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Examples
-
-#### Indexes with `AttachmentsFor()`
+* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing.mdx#index-details-&-content---by-attachment-name).
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<TabItem value="LINQ_index" label="LINQ_index">
 <CodeBlock language="csharp">
-{`public class Employees_ByAttachmentNames : AbstractIndexCreationTask<Employee>
+{`public class Employees_ByAttachmentDetails : 
+    AbstractIndexCreationTask<Employee, Employees_ByAttachmentDetails.IndexEntry>
 {
-    public class Result
+    public class IndexEntry
     {
+        public string EmployeeName { get; set; }
+        
         public string[] AttachmentNames { get; set; }
+        public string[] AttachmentContentTypes { get; set; }
+        public long[] AttachmentSizes { get; set; }
     }
 
-    public Employees_ByAttachmentNames()
+    public Employees_ByAttachmentDetails()
     {
-        Map = employees => from e in employees
-                           let attachments = AttachmentsFor(e)
-                           select new Result
-                           {
-                               AttachmentNames = attachments.Select(x => x.Name).ToArray()
-                           };
+        Map = employees => from employee in employees
+            
+            // Call 'AttachmentsFor' to get attachments details
+            let attachments = AttachmentsFor(employee)
+            
+            select new IndexEntry()
+            {
+                // Can index info from document properties:
+                EmployeeName = employee.FirstName + " " + employee.LastName,
+                
+                // Index DETAILS of attachments:
+                AttachmentNames = attachments.Select(x => x.Name).ToArray(),
+                AttachmentContentTypes = attachments.Select(x => x.ContentType).ToArray(),
+                AttachmentSizes = attachments.Select(x => x.Size).ToArray()
+            };
     }
 }
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<TabItem value="JS_index" label="JS_index">
 <CodeBlock language="csharp">
-{`public class Employees_ByAttachmentNames_JS : AbstractJavaScriptIndexCreationTask
+{`public class Employees_ByAttachmentDetails_JS : AbstractJavaScriptIndexCreationTask
 {
-    public class Result
-    {
-        public string[] AttachmentNames { get; set; }
-    }
-
-    public Employees_ByAttachmentNames_JS()
+    public Employees_ByAttachmentDetails_JS()
     {
         Maps = new HashSet<string>
         {
-            @"map('Employees', function (e) {
-                var attachments = attachmentsFor(e);
+            @"map('Employees', function (employee) {
+                var attachments = attachmentsFor(employee);
+
                 return {
-                    AttachmentNames: attachments.map(
-                        function(attachment) {
-                            return attachment.Name;
-                        }
+                    EmployeeName: employee.FirstName + ' ' + employee.LastName,
+
+                    AttachmentNames: attachments.map(function(attachment) { return attachment.Name; }),
+                    AttachmentContentTypes: attachments.map(function(attachment) { return attachment.ContentType; }),
+                    AttachmentSizes: attachments.map(function(attachment) { return attachment.Size; })
                 };
             })"
         };
@@ -156,125 +112,37 @@ public string GetContentAsString(); // Default: UTF-8
 </CodeBlock>
 </TabItem>
 </Tabs>
+**Query the Index**:
 
-#### Indexes with `LoadAttachment()`
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="LINQ-syntax" label="LINQ-syntax">
-<CodeBlock language="csharp">
-{`private class Companies_With_Attachments : AbstractIndexCreationTask<Company>
-{
-
-    public Companies_With_Attachments()
-    {
-        Map = companies => from company in companies
-                           let attachment = LoadAttachment(company, company.ExternalId)
-                           select new
-                           {
-                               CompanyName = company.Name,
-                               AttachmentName = attachment.Name,
-                               AttachmentContentType = attachment.ContentType,
-                               AttachmentHash = attachment.Hash,
-                               AttachmentSize = attachment.Size,
-                               AttachmentContent = attachment.GetContentAsString(Encoding.UTF8),
-                           };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
-<CodeBlock language="csharp">
-{`private class Companies_With_Attachments_JavaScript : AbstractJavaScriptIndexCreationTask
-{
-    public Companies_With_Attachments_JavaScript()
-    {
-        Maps = new HashSet<string>
-        {
-            @"map('Companies', function (company) {
-                var attachment = loadAttachment(company, company.ExternalId);
-                return {
-                    CompanyName: company.Name,
-                    AttachmentName: attachment.Name,
-                    AttachmentContentType: attachment.ContentType,
-                    AttachmentHash: attachment.Hash,
-                    AttachmentSize: attachment.Size,
-                    AttachmentContent: attachment.getContentAsString('utf8')
-                };
-            })"
-        };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-#### Indexes with `LoadAttachments()`
+You can now query for Employee documents based on their attachments details.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<TabItem value="Query" label="Query">
 <CodeBlock language="csharp">
-{`private class Companies_With_All_Attachments : AbstractIndexCreationTask<Company>
-{
-    public Companies_With_All_Attachments()
-    {
-        Map = companies => from company in companies
-                           let attachments = LoadAttachments(company)
-                           from attachment in attachments
-                           select new
-                           {
-                               AttachmentName = attachment.Name,
-                               AttachmentContent = attachment.GetContentAsString(Encoding.UTF8)
-                           };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
-<CodeBlock language="csharp">
-{`private class Companies_With_All_Attachments_JS : AbstractJavaScriptIndexCreationTask
-{
-    public Companies_With_All_Attachments_JS()
-    {
-        Maps = new HashSet<string>
-        {
-            @"map('Companies', function (company) {
-                var attachments = loadAttachments(company);
-                return attachments.map(attachment => ({
-                    AttachmentName: attachment.Name,
-                    AttachmentContent: attachment.getContentAsString('utf8')
-                }));
-            })"
-        };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-#### Querying the Index
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`//return all employees that have an attachment called "cv.pdf"
-List<Employee> employees = session
-    .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
-    .Where(x => x.AttachmentNames.Contains("cv.pdf"))
+{`List<Employee> employees = session
+     // Query the index for matching employees
+    .Query<Employees_ByAttachmentDetails.IndexEntry, Employees_ByAttachmentDetails>()
+     // Filter employee results by their attachments details
+    .Where(x => x.AttachmentNames.Contains("photo.jpg"))
+    .Where(x => x.AttachmentSizes.Any(size => size > 20_000))
+     // Return matching Employee docs
     .OfType<Employee>()
     .ToList();
+
+// Results:
+// ========
+// Running this query on the Northwind sample data,
+// results will include 'employees/4-A' and 'employees/5-A'.
+// These 2 documents contain an attachment by name 'photo.jpg' with a matching size.
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="Async" label="Async">
+<TabItem value="Query_async" label="Query_async">
 <CodeBlock language="csharp">
-{`//return all employees that have an attachment called "cv.pdf"
-List<Employee> employees = await asyncSession
-    .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
-    .Where(x => x.AttachmentNames.Contains("cv.pdf"))
+{`List<Employee> employees = await asyncSession
+    .Query<Employees_ByAttachmentDetails.IndexEntry, Employees_ByAttachmentDetails>()
+    .Where(x => x.AttachmentNames.Contains("photo.jpg"))
+    .Where(x => x.AttachmentSizes.Any(size => size > 20_000))
     .OfType<Employee>()
     .ToListAsync();
 `}
@@ -282,12 +150,352 @@ List<Employee> employees = await asyncSession
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
 <CodeBlock language="csharp">
-{`//return all employees that have an attachment called "cv.pdf"
-List<Employee> employees = session
-    .Advanced
-    .DocumentQuery<Employee, Employees_ByAttachmentNames>()
-    .ContainsAny("AttachmentNames", new[] { "cv.pdf" })
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employees_ByAttachmentDetails.IndexEntry, Employees_ByAttachmentDetails>()
+    .WhereEquals("AttachmentNames", "photo.jpg")
+    .WhereGreaterThan("AttachmentSizes", 20_000)
+    .OfType<Employee>() 
     .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAttachmentDetails"
+where AttachmentNames == "photo.jpg" and AttachmentSizes > 20000
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Index details & content - by attachment name
+
+<Admonition type="note" title="Note">
+
+**Sample data**:
+
+* Each Employee document in RavenDB's sample data already includes a _photo.jpg_ attachment.
+
+* For all following examples, let's store a textual attachment (file _notes.txt_) on 3 documents in the 'Employees' collection.
+
+<TabItem value="store_attachments" label="store_attachments">
+<CodeBlock language="csharp">
+{`// Create some sample attachments:
+for (var i = 1; i <= 3; i++)
+\{
+    var id = $"employees/\{i\}-A";
+
+    // Load an employee document:
+    var employee = session.Load<Employee>($"employees/\{i\}-A");
+    if (employee?.Notes == null || employee.Notes.Count == 0)
+        continue;
+
+    // Store the employee's notes as an attachment on the document:
+    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(employee.Notes[0]);
+    using (var stream = new MemoryStream(bytes))
+    \{
+        session.Advanced.Attachments.Store(
+            $"employees/\{i\}-A",
+            "notes.txt", stream,
+            "text/plain");
+        
+        session.SaveChanges();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+**The index**:
+
+* To index the **details & content** for a specific attachment, call `LoadAttachment()` within the index definition.
+
+* In addition to accessing the attachment details, `LoadAttachment()` provides access to the attachment's content,
+  which can be used when defining the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ_index" label="LINQ_index">
+<CodeBlock language="csharp">
+{`public class Employees_ByAttachment: 
+    AbstractIndexCreationTask<Employee, Employees_ByAttachment.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string AttachmentName { get; set; }
+        public string AttachmentContentType { get; set; }
+        public long AttachmentSize { get; set; }
+        
+        public string AttachmentContent { get; set; }
+    }
+    
+    public Employees_ByAttachment()
+    {
+        Map = employees => 
+            from employee in employees
+            
+            // Call 'LoadAttachment' to get attachment's details and content
+            // pass the attachment name, e.g. "notes.txt"
+            let attachment = LoadAttachment(employee, "notes.txt")
+            
+            select new IndexEntry()
+            {
+                // Index DETAILS of attachment:
+                AttachmentName = attachment.Name,
+                AttachmentContentType = attachment.ContentType,
+                AttachmentSize = attachment.Size,
+                
+                // Index CONTENT of attachment:
+                // Call 'GetContentAsString' to access content
+                AttachmentContent = attachment.GetContentAsString()
+            };
+        
+        // It can be useful configure Full-Text search on the attachment content index-field
+        Index(x => x.AttachmentContent, FieldIndexing.Search);
+        
+        // Documents with an attachment named 'notes.txt' will be indexed,
+        // allowing you to query them by either the attachment's details or its content.
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+<CodeBlock language="csharp">
+{`public class Employees_ByAttachment_JS : AbstractJavaScriptIndexCreationTask
+{
+    public Employees_ByAttachment_JS()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee) {
+                  var attachment = loadAttachment(employee, 'notes.txt');
+                
+                  return {
+                      AttachmentName: attachment.Name,
+                      AttachmentContentType: attachment.ContentType,
+                      AttachmentSize: attachment.Size,
+                      AttachmentContent: attachment.getContentAsString()
+                  };
+              })"
+        };
+         
+        Fields = new Dictionary<string, IndexFieldOptions>
+        {
+            {
+                "AttachmentContent", new IndexFieldOptions
+                {
+                    Indexing = FieldIndexing.Search
+                }
+            }
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Query the Index**:
+
+You can now query for Employee documents based on their attachment details and/or its content.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Query the index for matching employees
+    .Query<Employees_ByAttachment.IndexEntry, Employees_ByAttachment>()
+     // Can make a full-text search
+     // Looking for employees with an attachment content that contains 'Colorado' OR 'Dallas'
+    .Search(x => x.AttachmentContent, "Colorado Dallas")
+    .OfType<Employee>()
+    .ToList();
+
+// Results:
+// ========
+// Results will include 'employees/1-A' and 'employees/2-A'.
+// Only these 2 documents have an attachment by name 'notes.txt'
+// that contains either 'Colorado' or 'Dallas'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Query the index for matching employees
+    .Query<Employees_ByAttachment.IndexEntry, Employees_ByAttachment>()
+     // Can make a full-text search
+     // Looking for employees with an attachment content that contains 'Colorado' OR 'Dallas'
+    .Search(x => x.AttachmentContent, "Colorado Dallas")
+    .OfType<Employee>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employees_ByAttachment.IndexEntry, Employees_ByAttachment>()
+    .Search(x => x.AttachmentContent, "Colorado Dallas")
+    .OfType<Employee>() 
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAttachment"
+where search(AttachmentContent, "Colorado Dallas")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Index details & content - all attachments
+
+**The index**:
+
+* Use `LoadAttachments()` to be able to index the **details & content** of ALL attachments.
+
+* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document) pattern.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ_index" label="LINQ_index">
+<CodeBlock language="csharp">
+{`public class Employees_ByAllAttachments : 
+    AbstractIndexCreationTask<Employee, Employees_ByAllAttachments.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string AttachmentName { get; set; }
+        public string AttachmentContentType { get; set; }
+        public long AttachmentSize { get; set; }
+        public string AttachmentContent { get; set; }
+    }
+
+    public Employees_ByAllAttachments()
+    {
+        Map = employees =>
+            
+            // Call 'LoadAttachments' to get details and content for ALL attachments
+            from employee in employees
+            from attachment in LoadAttachments(employee)
+            
+            // This will be a Fanout index -
+            // the index will generate an index-entry for each attachment per document
+            
+            select new IndexEntry
+            {
+                // Index DETAILS of attachment:
+                AttachmentName = attachment.Name,
+                AttachmentContentType = attachment.ContentType,
+                AttachmentSize = attachment.Size,
+                
+                // Index CONTENT of attachment:
+                // Call 'getContentAsString' to access content
+                AttachmentContent = attachment.GetContentAsString()
+            };
+
+        // It can be useful configure Full-Text search on the attachment content index-field
+        Index(x => x.AttachmentContent, FieldIndexing.Search);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+<CodeBlock language="csharp">
+{`public class Employees_ByAllAttachments_JS : AbstractJavaScriptIndexCreationTask
+{
+    public Employees_ByAllAttachments_JS()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee) {
+                  const allAttachments = loadAttachments(employee);
+             
+                  return allAttachments.map(function (attachment) {
+                      return {
+                          attachmentName: attachment.Name,
+                          attachmentContentType: attachment.ContentType,
+                          attachmentSize: attachment.Size,
+                          attachmentContent: attachment.getContentAsString()
+                      };
+                  });
+              })"
+        };
+
+        Fields = new Dictionary<string, IndexFieldOptions>
+        {
+            {
+                "attachmentContent", new IndexFieldOptions
+                {
+                    Indexing = FieldIndexing.Search
+                }
+            }
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Query the Index**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the index for matching employees
+List<Employee> employees = session
+    .Query<Employees_ByAllAttachments.IndexEntry, Employees_ByAllAttachments>()
+    // Filter employee results by their attachments details and content:
+    // Using 'SearchOptions.Or' combines the full-text search on 'AttachmentContent'
+    // with the following 'Where' condition using OR logic.
+    .Search(x => x.AttachmentContent, "Colorado Dallas", options: SearchOptions.Or)
+    .Where(x => x.AttachmentSize > 20_000)
+    .OfType<Employee>()
+    .ToList();
+
+// Results:
+// ========
+// Results will include:
+// 'employees/1-A' and 'employees/2-A' that match the content criteria 
+// 'employees/4-A' and 'employees/5-A' that match the size criteria
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employees_ByAttachment.IndexEntry, Employees_ByAttachment>()
+    .Search(x => x.AttachmentContent, "Colorado Dallas", options: SearchOptions.Or)
+    .Where(x => x.AttachmentSize > 20_000)
+    .OfType<Employee>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employees_ByAllAttachments.IndexEntry, Employees_ByAllAttachments>()
+    .Search(x => x.AttachmentContent, "Colorado Dallas")
+    .OrElse()
+    .WhereGreaterThan(x => x.AttachmentSize, 20_000)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAllAttachments"
+where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
 `}
 </CodeBlock>
 </TabItem>
@@ -300,9 +508,81 @@ List<Employee> employees = session
 * Access to the indexed attachment content opens the door to many different applications,  
   including many that can be integrated directly into RavenDB.
 
-* In this [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb),
-  Oren Eini demonstrates how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature.
+* This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates
+  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature.
   The resulting index allows filtering and querying based on image content.
+
+
+
+## Syntax
+
+#### `AttachmentsFor`
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`// Returns a list of attachment details for the specified document.
+IEnumerable<AttachmentName> AttachmentsFor(object document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                     |
+|--------------|----------|-----------------------------------------------------------------|
+| **document** | `object` | The document object whose attachments details you want to load. |
+
+<TabItem value="attachment_details" label="attachment_details">
+<CodeBlock language="csharp">
+{`// AttachmentsFor returns a list containing the following attachment details object:
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `LoadAttachment`
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public IAttachmentObject LoadAttachment(object doc, string name);
+public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter           | Type      | Description                                     |
+|---------------------|-----------|-------------------------------------------------|
+| **document**        | `object`  | The document whose attachment you want to load. |
+| **attachmentName**  | `string`  | The name of the attachment to load.             |
+
+<TabItem value="attachment_object" label="attachment_object">
+<CodeBlock language="csharp">
+{`public interface IAttachmentObject
+\{
+    public string Name \{ get; \}
+    public string Hash \{ get; \}
+    public string ContentType \{ get; \}
+    public long Size \{ get; \}
+    
+    public string GetContentAsString();
+    public string GetContentAsString(Encoding encoding);
+    public Stream GetContentAsStream();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `LoadAttachments`
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`// Returns a list of all attachments for the specified document.
+public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+`}
+</CodeBlock>
+</TabItem>
 
 
 
@@ -1070,12 +1350,13 @@ $employees = $session
 <Admonition type="note" title="Note">
 
 **The index**:
-* To index attachments' details, call `attachmentsFor()` within the index definition.  
+* To index **attachments' details**, call `attachmentsFor()` within the index definition.
 
 * `attachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
   These details can then be used when defining the index-fields.
+  Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
-* To index attachments' content, see the examples below. 
+* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing.mdx#index-details-&-content---by-attachment-name).
 
 <TabItem value="index_1" label="index_1">
 <CodeBlock language="js">
@@ -1148,7 +1429,7 @@ where attachmentNames == "photo.jpg" and attachmentSizes > 20000
 <Admonition type="note" title="Note">
 
 **Sample data**:
-* Each Employee document in the Northwind sample data already includes a _photo.jpg_ attachment.
+* Each Employee document in RavenDB's sample data already includes a _photo.jpg_ attachment.
 
 * For all following examples, let's store a textual attachment (file _notes.txt_) on 3 documents  
   in the 'Employees' collection.
@@ -1239,7 +1520,7 @@ You can now query for Employee documents based on their attachment details and/o
 // ========
 // Results will include 'employees/1-A' and 'employees/2-A'.
 // Only these 2 documents have an attachment by name 'notes.txt'
-// that conains either 'Colorado' or 'Dallas'.
+// that contains either 'Colorado' or 'Dallas'.
 `}
 </CodeBlock>
 </TabItem>

@@ -530,7 +530,7 @@ public Func<Type, string, string, string, string> FindPropertyNameForDynamicInde
 
 <TabItem value="FindPropertyNameForIndex" label="FindPropertyNameForIndex">
 <CodeBlock language="csharp">
-{`// The default function:
+{`// The DEFAULT function:
 FindPropertyNameForIndex = (Type indexedType, string indexedName, string path, string prop) => 
     (path + prop).Replace("[].", "_").Replace(".", "_")
 `}
