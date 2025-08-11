@@ -7,7 +7,7 @@
     },
     "type": "module",
     "devDependencies": {
-        "eslint": "^5.9.0",
+        "eslint": "^9.33.0",
         "eslint-plugin-import": "^2.14.0"
     }
 }
