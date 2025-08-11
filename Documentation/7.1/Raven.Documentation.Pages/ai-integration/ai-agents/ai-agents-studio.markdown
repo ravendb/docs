@@ -14,7 +14,7 @@
    * [Configure chat trimming](../../ai-integration/ai-agents/ai-agents-studio#configure-chat-trimming)
    * [Save and Run your agent](../../ai-integration/ai-agents/ai-agents-studio#save-and-run-your-agent)
    * [Test your agent](../../ai-integration/ai-agents/ai-agents-studio#test-your-agent)
-      * [Test results](../../ai-integration/ai-agents/ai-agents-studio#test-results)
+      * [Runtime view and Test results](../../ai-integration/ai-agents/ai-agents-studio#runtime-view-and-test-results)
 
 {NOTE/}
 
@@ -75,10 +75,9 @@ To create an AI agent, open **AI hub > AI Agents** and click **Add new agent**.
 
 4. **System prompt**  
    Provide a prompt that determines the LLM's role and purpose.  
-
-      When your agent connects the LLM, it will pass it your prompt, either a sample 
-      response object or a JSON schema to shape its responses by, and database tools 
-      to work with.  
+   When your agent connects the LLM it will pass it your prompt, your sample object or 
+   schema to shape its response by, your agent tools, and if you connect an existing 
+   conversation - the entire conversaion history.  
 
 5. **Sample response object** and **Response JSON schema**  
    Click "Sample response object" or "response JSON schema" to switch between these two tabs.  
@@ -137,10 +136,9 @@ data from the database or apply changes like the creation or the modification of
 
 Agent tools are **not** applied directly by the LLM, but triggered by the LLM and applied 
 by the agent or by the client.  
-When the LLM needs to apply a **query tool**, it notifies the agent which executes the query 
-and passes its results to the LLM.  
-When the LLM needs to apply an **action tool**, the client is triggered to do it and will 
-notify the LLM when it's done.  
+When the LLM needs to apply a **query tool**, it will notify the agent which will execute 
+the query and pass its results to the LLM in the sample object you define for the tool.  
+When the LLM needs to apply an **action tool**, it will request the agent to run it.  
 
 ![Define agent tools](images/ai-agents_define-agent-tools.png "Define agent tools")
 
@@ -169,18 +167,16 @@ notify the LLM when it's done.
 
 5. **Description**  
    Write a description that will explain to the LLM in natural language what the attached query can be used for.  
-   E.g.,  
-   `apply this query when you need to retrieve all the companies that reside in a certain country`  
+   E.g., `apply this query when you need to retrieve all the companies that reside in a certain country`  
 
 6. **Query**  
    Write the query that the agent will run when the LLM requests it to use this tool.  
 
 7. **Sample response object** and **Response JSON schema**  
    Click "Sample response object" or "response JSON schema" to switch between the two tabs.  
-   
-      Define an object that the agent will fill with the data that it retrieves from the database 
-      when this query tool is used.  
-      If you define both a sample response object and a schema, only the schema will be used.  
+   Define an object that the agent will fill with the data that it retrieves from the database 
+   when this query tool is used.  
+   If you define both a sample response object and a schema, only the schema will be used.  
     
 ---
 
@@ -188,144 +184,56 @@ notify the LLM when it's done.
 
 ![Add new action tool](images/ai-agents_define-agent-tools_add-action-tool.png "Add new action tool")
 
-1. **Cancel or Save**  
-   Cancel your changes or Save the query tool when it is ready.  
+1. **Add new query tool**  
 
-2. **Tool name**  
-   Give your query tool a meaningful name.  
+2. **Cancel**  
+   Cancel your changes or Save the action tool when it is ready.  
 
-3. **Description**  
+3. **Expandq/Colllapse tool**
+
+4. **Tool name**  
+   Give your action tool a meaningful name.  
+
+5. **Description**  
    Write a description that explains to the LLM in natural language when this action tool should be applied.  
-   E.g.,  
-   `apply this action tool when you need to create a new summary document`  
+   E.g., `apply this action tool when you need to create a new summary document`  
 
-4. **Sample parameters object**  
-   Define the layout of a JSON object that the LLM will send to the agent when it 
-   requests to run this action tool.  
-   The LLM may populate the properties that you define for this object according 
-   to instructions it was given by the agent and the action tool, data retrieved 
-   from the database, and the ongoing interaction.  
+6. **Sample response object** and **Parameters JSON schema**  
+   Click "Sample response object" or "response JSON schema" to switch between the two tabs.  
+   Define an object that the agent will fill with data needed for the client's action.  
    
-      The populated object can then be used by the client to apply the action tool.  
-   
-      The LLM expects a response to this message, that relays the results of the 
-      attempt to apply the action tool. The response can be phrased in natural language,   
-      and if no additional data is needed from the LLM it can also be an empty object.  
-
-      E.g., 
-      {CODE-BLOCK:json}
-{
-  "userId": "ID of the user that provided this suggestion",
-  "suggestionSummary": "Provide a summary of the user's suggestion"
-}
-{CODE-BLOCK/}
-
-      Behind the scenes, RavenDB will translate your sample object to a JSON schema format 
-      before sending it to the LLM. If you prefer it, you can skip the translation phase by 
-      defining an explicit response schema yourself (see below).  
-      If you define both a sample response object and an explicit schema, only the schema will be used.     
-
-5. **Parameters JSON schema**  
-   Define a JSON schema that the LLM will send to the agent along with a request to run this query tool.  
-   The LLM will populate the schema with values that it needs the agent to embed in the query.  
-
-      E.g., 
-      {CODE-BLOCK:json}
-{
-  "type": "object",
-  "properties": {
-    "userId": {
-      "type": "string",
-      "description": "ID of the user that provided this suggestion"
-    },
-    "suggestionSummary": {
-      "type": "string",
-      "description": "Provide a summary of the user\u0027s suggestion"
-    }
-  },
-  "required": [
-    "userId",
-    "suggestionSummary"
-  ],
-  "additionalProperties": false
-}
-      {CODE-BLOCK/}
-
-      If you define both a sample response object (see above) and an explicit schema, only the schema will be used.  
-
-{PANEL/}
-
-{PANEL: Set chat persistence}
-While interacting with the LLM, the agent automatically keeps a record of its ongoing chats in 
-a dedicated `@conversations` collection. This section includes settings related to these records.  
-
-![Set chat persistence](images/ai-agents_set-chat-persistence.png "Set chat persistence")
-
-1. **Conversation ID prefix**  
-   Set a prefix for IDs of documents stored in the `@conversations` collection.  
-
-2. **Enable document expiration**  
-   Enable this option to automatically delete documents from the `@conversations` collection 
-   after a set time period.  
-   
-      Enabling the document expiration setting will allow you to set the time period after 
-      which documents are deleted.  
-
-      ![Set expiration period](images/ai-agents_set-chat-persistence_set-expiration.png "Set expiration period")
+      If you define both a sample response object and a schema, only the schema will be used.  
 
 {PANEL/}
 
 {PANEL: Configure chat trimming}
 The LLM keeps no record of previous conversations it conducted.  
-To allow a continuous conversation, the agent resends the whole chat history to the 
-LLM each time it approaches the model, which, for longconversations, may become costly 
-in bandwidth and expenses.  
-Use these settings to reduce this cost by summarizing or truncating the chat history 
-before sending it to the LLM.  
+To allow a continuous conversation, the agent sends the LLM the entire conversation history 
+when a chat is started. To minimize these transfers, you can configure the agent to summarize 
+messages before sending the history to the LLM.  
 
 ![Configure chat trimming](images/ai-agents_config-chat-trimming.png "Configure chat trimming")
 
 1. **Summarize chat**  
-   Use this option to set a total conversation size limit.  
-   When the size of the whole conversation history exceeds the set limit, chat history will 
-   be summarized before it is sent to the LLM.  
+   Use this option to limit the size of the conversation history. If its size breaches this 
+   limit, chat history will be summarized before it is sent to the LLM.  
 
-      ![Summarization settings](images/ai-agents_config-chat-trimming_summarization-settings.png "Summarization settings")
+2. **Max tokens Before summarization**  
+   If the conversation contains a total number of tokens larger than the limit you set here, 
+   the conversation will be summarized.  
 
-      * **A.** **Max tokens Before summarization**  
-        If the conversation contains a total number of tokens larger than the set limit the conversation 
-        will be summarized.  
-      * **B.** **Max tokens After summarization**  
-        Set the maximum number of tokens that will be left in the conversation after it is summarized.  
-        Messages exceeding the set limit will be removed, starting with the oldest.  
-      * **C.** **Enable history**  
-        When history is enabled, the chat sent to the LLM is trimmed but a copy of the original 
-        chat is kept in a dedicated document in the `@conversations-history` collection.  
+3. **Max tokens After summarization**  
+   Set the maximum number of tokens that will be left in the conversation after it is summarized.  
+   Messages exceeding the set limit will be removed, starting with the oldest.  
+   
+1. **History**  
+     * **Enable history**  
+       When history is enabled the chat sent to the LLM will be summarized, but copies of the 
+       original chats will be kept in a dedicated documents in the `@conversations-history` collection.  
+     * **Set history expiration**  
+       When this option is enabled, conversations will be deleted from the `@conversations-history` collection 
+       when the their age exceeds the the period you set in the time boxes.  
         
-        To choose a time period after which history documents will be deleted, enable **Set history expiration**.  
-        
-        ![Set history expiration](images/ai-agents_config-chat-trimming_summarization-settings_history-expiration.png "Set history expiration")
-        
-
-2. **Truncate chat**  
-   Use this option to limit the number of messages.  
-   When the number of messages exceeded the set limit, older messages will be truncated 
-   and only the set number of messages will be sent to the LLM.  
-
-      ![Truncation settings](images/ai-agents_config-chat-trimming_truncation-settings.png "Truncation settings")
-
-      * **A.** **Messages length before truncate**  
-        Truncate messages when their number exceeds the set limit.  
-      * **B.** **Messages length after truncate**  
-        The number of messages to keep after older messages are truncated.  
-      * **C.** **Enable history**  
-        When history is enabled, the chat sent to the LLM is trimmed but a copy of the original 
-        chat is kept in a dedicated document in the `@conversations-history` collection.  
-        
-        To choose a time period after which history documents will be deleted, enable **Set history expiration**.  
-        
-        ![Set history expiration](images/ai-agents_config-chat-trimming_summarization-settings_history-expiration.png "Set history expiration")
-
 {PANEL/}
 
 {PANEL: Save and Run your agent}
@@ -338,58 +246,86 @@ You will find your agent in the main **AI Agents** view, where you can run or ed
 
 ![Your agent](images/ai-agents_your-agent.png "Your agent")
 
-1. **Edit agent**  
-   Click to edit the agent.  
-
-2. **Start new chat**  
+1. **Start new chat**  
    Click to run your agent.  
 
-      Starting a new chat will open the chat window, where you can provide values 
-      for the parameters you defined for this agent and enter a prompt that explains 
-      the agent what this session is about.  
+2. **Edit agent**  
+   Click to edit the agent.  
 
-      ![Run agent](images/ai-agents_run-agent.png "Run agent")
+## Start new chat
 
-      * **A.** **New Chat**  
-        Click to start a new chat  
-      * **B.** **Cancel**  
-        Click to return to the AI Agents view.  
-      * **C.** **Enter parameter value**  
-        Enter a value for each parameter defined in the agent configuration.  
-        The LLM will be able to replace these parameters with fixed values 
-        when it uses query or action tools in which these parameters are embedded.  
-      * **D.** **Agent prompt**  
-        Explain the agent in natural language what this session is about.  
-      * **E.** **Send prompt**  
-        Click to pass your agent your parameter values and prompt and run it.  
-        You can keep sending the agent prompts and getting its replies in 
-        a continuous conversation.  
+Starting a new chat will open the chat window, where you can provide values 
+for the parameters you defined for this agent and enter a user prompt that explains 
+the agent what you expect from this conversation.  
+
+![Run agent](images/ai-agents_run-agent.png "Run agent")
+
+1. **Conversation ID or prefix**  
+    - Entering a prefix (e.g. `Chats/`) will start a new conversation, with the prefix 
+      preceding an automatically-created conversation ID.  
+    - Entering the ID of a conversation that doesn't exist will start a new conversation as well.  
+    - Entering the ID of an existing conversation will send its history 
+      to the LLM and allow you to continue where you left off.  
+ 
+2. **Set expiration**  
+   Enable this option and set an expiration period to automatically delete conversations 
+   from the `@Conversations` collection when their age exceeds the set period.  
+ 
+3. **Agent parameters**  
+   Enter a value for each parameter defined in the agent configuration.  
+   The LLM will embed these values in query tools RQL queries where you 
+   included agent parameters.  
+   E.g., If you enter `France` here as the value for `Country`, 
+   a query tool's `from "Orders" where ShipTo.Country == $country` RQL query 
+   will be executed as `from "Orders" where ShipTo.Country == "France"`.  
+
+4. **User prompt**  
+   Use the user prompt to explain the agent your expectations from it in 
+   this conversation.  
+
+## Agent interaction 
         
-        The entire conversation history is kept in a document in the `@conversations` collection.  
-        
-        ![Run agent](images/ai-agents_conversations.png "Run agent")
-       
-        To start a new conversation, click **New chat** above.  
+Running the agent presents its components and interactions.  
+
+Agent parameters and their values:
+![Parameters](images/ai-agents_running_params.png "Parameters")
+
+The system prompt set for the LLM and the user prompt:
+![System and User prompts](images/ai-agents_running_prompts.png "System and User prompts")
+
+The query tools and their activity:
+![Query tool](images/ai-agents_running_query-tool.png "Query tool")
+
+You can view the raw data of the agent's activity in JSON form as well:  
+![Raw data](images/ai-agents_running_raw-data.png "Raw data")
+
+### Action tool dialog
+
+If the agent runs action tools, you will be given a dialog that shows you the 
+information provided by the LLM when it requests the action, and a dialog inviting 
+you to enter the results of the action when you finish performing it.  
+
+![Action tool waiting for client response](images/ai-agents_running_action-tool.png "Action tool waiting for client response")
+
+### Agent results
+
+And finally, when the AI model finishes its work and negotiations, you will be able to see its response.
+As with all other dialog boxes, you can expand the view to see the content or minimize it to see it in its context.
+
+![LLM answer: minimized](images/ai-agents_running_llm-response-minimized.png "LLM answer: minimized")
 
 {PANEL/}
 
 {PANEL: Test your agent}
-The **Test agent** area is a secluded environment that allows you to safely run your agent, 
-check its conduct with parameters and instructions you provide, examine its interactions with 
-the LLM and the database, and view its results.  
 
-The history of test chats is **not** logged in the `@conversations` or `@conversations-history` 
-collections.  
-
-Please be aware that fees related to your agent usage of the LLM model will still apply.  
-To avoid them, you can test your agent with a local, free LLM like Ollama.  
+You can test your agent while creating or editing it, to examine its configuration 
+and operability before you deploy it. The test interface resembles the one you see 
+when you run your agent normally via Studio, but conversationa are not kept in the 
+`@conversations` or `@conversations-history`.  
 
 To test your agent, click **Test** at the bottom of the agent configuration view.  
 
 ![Test Agent](images/ai-agents_test-agent_test-button.png "Test Agent")
-
-When The test environment opens, provide it with values for the parameters you defined 
-for this agent and enter a prompt that explains the agent what this session is about.  
 
 ![Run test](images/ai-agents_test-agent_run-test.png "Run test")
 
@@ -405,56 +341,32 @@ for this agent and enter a prompt that explains the agent what this session is a
 4. **Agent prompt**  
    Explain the agent in natural language what this session is about.  
 5. **Send prompt**  
-   Click to pass your agent your parameter values and prompt and run the test.  
+   Click to pass your agent your parameter values and user prompt and run the test.  
    You can keep sending the agent prompts and getting its replies in 
    a continuous conversation.  
    
-      A test's conversation history is **not** documented in the `@conversations` collection.  
-   
-      To start a new conversation, click **New chat** above.  
-
 ---
 
-### Test results
+### Runtime view and Test results
 
-The results returned by the test include the agent's configuration, agent patameters and the 
-values that the client provided for them, the history of the interactions between the agent 
-and the LLM, the information requested by the system prompt if it was retrieved or created, 
-and varioud other optional details like, for example, data retrieved by query tools.  
+You will see the components that take part in the agent's run and be able 
+to enter and send requested information for action tools. Each tool can be 
+minimized to see it in context or expanded to view the data it carries.  
 
-You can view the results in the test area, or expand the window foryour comfort.  
+![Runtime view](images/ai-agents_runtime-view.png "Runtime view")
+
+When the LLM finishes processing, you will see its response.  
 
 ![Test results: minimized](images/ai-agents_test-results_minimized.png "Test results: minimized")
 
-Below is an example for expanded results returned by an agent designated to retrieve 
-and summarize documents related to a subject determined by the user by an agent parameter.  
-{CODE-BLOCK:plain}
-Summary of previous conversation: **Context & Identifiers:**
-- User asked for security principles in RavenDB (parameters: subject=security).
-- All messages from the user; assistant acts as a helper with access to RavenDB documentation.
-
-**Conversation Flow:**
-- 1st message (user, subject=security, no timestamp): Request for a summary of security principles in RavenDB.
-- Assistant used internal tools to search relevant documentation, targeted titles: Security in RavenDB, Authentication and Authorization, Certificate Authentication, Enforcing Security Policies, Server Security Configuration.
-- Fetched and reviewed top 5 documentation entries, summarized as follows:
-    - "Security: Overview" page: Explains that RavenDB security is based on X.509 certificates for both authentication and authorization, enables TLS/SSL for encrypted communications, only explicitly registered client certificates are trusted, and includes database encryption at rest by default with high-grade cryptography.
-    - "Authorization: Security Clearance and Permissions": Describes how certificate-based roles (Cluster Admin, Operator, User) with fine-grained permissions are assigned per database by admins, controlling what actions are possible at server and database levels.
-- The assistant then presented two structured summaries, correlating to the most critical documents for quickly learning the underlying principles.
-
-**Decisions & Tone:**
-- Assistant chose official, high-level documentation directly relevant to the user's broad topic.
-- Tone: Factual, concise, and instructional, with no filler or unrelated commentary.
-- No changes in user intent or assistant direction.
-
-**References (titles, codes if available):**
-- "Security: Overview"
-- "Authorization: Security Clearance and Permissions"
-
-**Outcome:**
-- User received a concise, linear overview highlighting that RavenDB's security uses X.509 certificate-based authentication/authorization, strictly limits trust to registered client certificates for encrypted operations, and supports fine-grained, role-based permissions management per database.
+You can expand the dialog or copy the content to see the response in detail.
+{CODE-BLOCK:json}
+{
+  "EmployeeID": "employees/1-A",
+  "EmployeeProfit": "1760",
+  "SuggestedRewards": "The employee lives in Redmond, WA, USA. For a special reward, consider a weekend getaway to the Pacific Northwest's scenic sites such as a stay at a luxury resort in Seattle or a relaxing wine tasting tour in Woodinville. Alternatively, you could offer gift cards for outdoor excursions in the Cascade Mountains or tickets to major cultural events in the Seattle area."
+}
 {CODE-BLOCK/}
-
-
 
 {PANEL/}
 

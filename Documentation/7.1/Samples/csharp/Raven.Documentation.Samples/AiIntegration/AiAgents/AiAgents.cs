@@ -109,9 +109,12 @@ public class AiAgents
         #region ai-agents_AiAgentConfiguration_example
         // Agent configuration
         var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
-            "You work for an employees welfare manager. " +
-            "The welfare manager uses you to find which employee made the largest profit and thank this employee. " +
-            "The welfare manager can request you to pick an employee from everywhere, or from a particular country. " +
+            "You work for a human experience manager. " +
+            "The manager uses your help to find which employee made the largest profit and thank this employee. " +
+            "The manager can guide you to choose between employees that sent orders to a particular country, " +
+            "or include all employees. " +
+            "To help the manager thank the employee, you are requested to find good vacation sites or other " +
+            "presents based on the employee's living area that the company can reward them with." +
             "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
             "based on the employee's living area that the company can reward them with. " +
             "You are equipped with: " +
@@ -287,9 +290,12 @@ public class AiAgents
 
         // Agent configuration
         var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
-            "You work for an employees welfare manager. " +
-            "The welfare manager uses you to find which employee made the largest profit and thank this employee. " +
-            "The welfare manager can request you to pick an employee from everywhere, or from a particular country. " +
+            "You work for a human experience manager. " +
+            "The manager uses your help to find which employee made the largest profit and thank this employee. " +
+            "The manager can guide you to choose between employees that sent orders to a particular country, " +
+            "or include all employees. " +
+            "To help the manager thank the employee, you are requested to find good vacation sites or other " +
+            "presents based on the employee's living area that the company can reward them with." +
             "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
             "based on the employee's living area that the company can reward them with. " +
             "You are equipped with: " +

@@ -146,7 +146,7 @@ To change this limit use `MaxModelIterationsPerCall`.
 ## Set chat trimming configuration
 
 Since the LLM keeps no history of previous chats, RavenDB updates it with the history 
-of the conversation when you choose to start this chat from where you left off.  
+of the conversation when you choose to start a chat from where you left off.  
 You can reduce the size of the prompt that is sent to the LLM with the conversation history 
 by either summarizing or truncating older messages.  
 This can be helpful when transfer rate and cost are a concern or the context may become 
@@ -254,7 +254,7 @@ You can choose for yourself whether to apply a schema or a sample object, just
 be aware that if you define both only the schema will be used.  
 
 
-* Example: 
+* **Example**:  
   The following query tools are used by an agent that helps a human experience manager 
   learn which employee made the largest profit. They use a `$country` agent parameter whose 
   value the manager provides when the chat is started. If the parameter's value is "everywhere" 
@@ -264,7 +264,7 @@ be aware that if you define both only the schema will be used.
   made the largest profit, and send its ID to the user through an action tool (explained below).  
   {CODE ai-agents_agent_query-tool-sample@AiIntegration\AiAgents\AiAgents.cs /}
 
-* Syntax:
+* **Syntax**:
   Query tools are defined in a list of `AiAgentToolQuery` classes.  
   {CODE ai-agents_AiAgentToolQuery_definition@AiIntegration\AiAgents\AiAgents.cs /}
 
