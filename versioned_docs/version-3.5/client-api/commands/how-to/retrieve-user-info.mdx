@@ -1,0 +1,43 @@
+---
+title: "Commands: How to retrieve user info?"
+hide_table_of_contents: true
+sidebar_label: ...How to retrieve user info
+sidebar_position: 14
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Commands: How to retrieve user info?
+
+`GetUserInfo` used to retrieve the user info
+
+## Syntax
+
+<TabItem value="get_user_info_1" label="get_user_info_1">
+<CodeBlock language="csharp">
+{`UserInfo GetUserInfo();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ----- |
+| [UserInfo](../../../glossary/user-info.mdx) | Retrieve the user info. |
+
+## Example I
+
+<TabItem value="get_user_info_2" label="get_user_info_2">
+<CodeBlock language="csharp">
+{`var info = store.DatabaseCommands.GetUserInfo();
+var isAdmin = info.IsAdminCurrentDb;
+List<DatabaseInfo> databases = info.Databases;
+`}
+</CodeBlock>
+</TabItem>
+

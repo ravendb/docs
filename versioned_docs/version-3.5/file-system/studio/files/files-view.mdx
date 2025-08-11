@@ -1,0 +1,97 @@
+---
+title: "Files view"
+hide_table_of_contents: true
+sidebar_label: Files view
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Files view
+
+The main view in the file system studio is a file explorer that allows you to browse and modify your files. It has the standard layout where
+the directory structure is visible on the left side while a list files of the selected directory occupies right side of the view. The name of the file system
+in the directory structure means the root directory.
+
+![Figure 1. Studio. Files View. Explorer](./assets/files-view-explorer.png)  
+
+<Admonition type="note" title="Note" id="note" href="#note">
+
+$revisions folder is only visible when versioning bundle is enabled and it contain all revisions files.
+
+</Admonition>
+
+## Creating a folder
+
+Directories in RavenFS are created automatically based on file names which are always full paths. The studio provides a feature to create
+folders virtually in order to build the appropriate structure before a file upload. Use `New Folder` button located above the directory 
+structure to create a new folder (it will become a subfolder of the currently selected one):
+
+![Figure 2. Studio. Files View. Create folder](./assets/files-view-create-folder.png)  
+
+The folder remains virtual as long as it is empty. If you switch between studio pages without uploading any file there then it will disappear.
+
+![Figure 3. Studio. Files View. Virtual folder](./assets/files-view-empty-folder.png)  
+
+To *persist* this folder you need to add a file there.
+
+## Deleting a folder
+
+Choose which folder you want to delete and click the delete button
+
+![Figure 4. Studio. Files View. Delete a folder](./assets/files-view-delete-folder.png)
+
+## Uploading a file
+
+To upload a file you have to select the folder where it should to be placed and click the upload button:
+
+![Figure 5. Studio. Files View. File upload](./assets/files-view-upload.png)
+
+A status of the upload operation is tracked by `Upload Queue` panel. If it finishes successfully it will be visible on the file list.
+
+![Figure 6. Studio. Files View. File uploaded](./assets/files-view-file-uploaded.png)
+
+Upload queue status colors:
+
+
+
+| Color | Description|
+| ------------- | ----- |
+| #772953 | No operation was made |
+| &lt;div class="rect_legend" style="background-color:#28b62c" /&gt; | Upload was successful |
+| #DF382C | Upload failed |
+
+## Downloading a file
+
+Choose which file you want to get and click the download button:
+
+![Figure 7. Studio. Files View. Download a file](./assets/files-view-download-file.png)
+
+## Deleting files
+
+You can select multiple files and delete them at once:
+
+![Figure 8. Studio. Files View. Delete a file](./assets/files-view-delete-files.png)
+
+## Editing a file
+
+Select a single document and click the edit button or click on its name to navigate you to [File Edit View](./file-edit-view).
+
+![Figure 9. Studio. Files View. Edit a file](./assets/files-view-edit-file.png)
+
+## Renaming a file
+
+Select a single document and click the rename button.
+
+![Figure 10. Studio. Files View. Rename a file](./assets/files-view-rename-file.png)
+
+<Admonition type="note" title="Note" id="note" href="#note">
+
+Multiple files can be selected using shift
+
+</Admonition>

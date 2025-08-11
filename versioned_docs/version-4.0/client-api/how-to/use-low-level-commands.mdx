@@ -1,0 +1,216 @@
+---
+title: "Client API: How to Use Low-Level Commands"
+hide_table_of_contents: true
+sidebar_label: ...use low-level commands
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Client API: How to Use Low-Level Commands
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations.mdx) are built on top of.  
+When performing an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 
+(via the **Request Executor**) and parsing the server reply.
+
+In order to use low-level commands directly, you will need to use the `Execute` or `ExectueAsync` method of a **Request Executor**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Execute" label="Execute">
+<CodeBlock language="csharp">
+{`void Execute<TResult>(RavenCommand<TResult> command, JsonOperationContext context, SessionInfo sessionInfo = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="ExecuteAsync" label="ExecuteAsync">
+<CodeBlock language="csharp">
+{`Task ExecuteAsync<TResult>(RavenCommand<TResult> command, JsonOperationContext context, SessionInfo sessionInfo = null, CancellationToken token = default(CancellationToken))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Examples
+
+### GetDocumentsCommand
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenSession())
+{
+    var command = new GetDocumentsCommand("orders/1-A", null, false);
+    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+    var order = (BlittableJsonReaderObject)command.Result.Results[0];
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenAsyncSession())
+{
+    var command = new GetDocumentsCommand("orders/1-A", null, false);
+    await session.Advanced.RequestExecutor.ExecuteAsync(command, session.Advanced.Context);
+    var order = (BlittableJsonReaderObject)command.Result.Results[0];
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### DeleteDocumentCommand
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenSession())
+{
+    var command = new DeleteDocumentCommand("employees/1-A", null);
+    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenAsyncSession())
+{
+    var command = new DeleteDocumentCommand("employees/1-A", null);
+    await session.Advanced.RequestExecutor.ExecuteAsync(command, session.Advanced.Context);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## The Following Low-Level Commands are Available:
+
+* BatchCommand  
+* CreateSubscriptionCommand  
+* DeleteDocumentCommand   
+* DeleteSubscriptionCommand  
+* DropSubscriptionConnectionCommand  
+* ExplainQueryCommand  
+* GetConflictsCommand  
+* GetDocumentsCommand  
+* GetIdentitiesCommand
+* GetNextOperationIdCommand  
+* GetOperationStateCommand  
+* GetRevisionsBinEntryCommand  
+* GetRevisionsCommand  
+* GetStatisticsCommand  
+* GetSubscriptionsCommand  
+* GetSubscriptionStateCommand  
+* HeadAttachmentCommand
+* HeadDocumentCommand  
+* HiLoReturnCommand  
+* KillOperationCommand  
+* NextHiLoCommand   
+* NextIdentityForCommand 
+* PatchCommand
+* PutDocumentCommand   
+* QueryCommand   
+* QueryStreamCommand   
+* SeedIdentityForCommand   
+* StartBackupCommand   
+* StreamCommand   
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations.mdx) are built on top of.  
+When performing an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 
+(via the **Request Executor**) and parsing the server reply.
+
+In order to use low-level commands directly, you will need to use the `execute` method of a **Request Executor**.
+
+<TabItem value="Execute" label="Execute">
+<CodeBlock language="java">
+{`public <TResult> void execute(RavenCommand<TResult> command);
+
+public <TResult> void execute(RavenCommand<TResult> command, SessionInfo sessionInfo);
+`}
+</CodeBlock>
+</TabItem>
+
+## Examples
+
+### GetDocumentsCommand
+
+<TabItem value="commands_1" label="commands_1">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    GetDocumentsCommand command = new GetDocumentsCommand("orders/1-A", null, false);
+    session.advanced().getRequestExecutor().execute(command);
+    ObjectNode order = (ObjectNode) command.getResult().getResults().get(0);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### DeleteDocumentCommand
+
+<TabItem value="commands_2" label="commands_2">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
+    session.advanced().getRequestExecutor().execute(command);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## The Following Low-Level Commands are Available:
+
+* BatchCommand  
+* CreateSubscriptionCommand  
+* DeleteDocumentCommand   
+* DeleteSubscriptionCommand  
+* DropSubscriptionConnectionCommand 
+* ExplainQueryCommand  
+* GetConflictsCommand  
+* GetDocumentsCommand  
+* GetIdentitiesCommand
+* GetNextOperationIdCommand  
+* GetOperationStateCommand  
+* GetRevisionsBinEntryCommand  
+* GetRevisionsCommand  
+* GetSubscriptionsCommand  
+* GetSubscriptionStateCommand  
+* GetStatisticsCommand  
+* HeadAttachmentCommand
+* HeadDocumentCommand  
+* HiLoReturnCommand  
+* KillOperationCommand  
+* NextHiLoCommand   
+* NextIdentityForCommand 
+* PatchCommand
+* PutDocumentCommand   
+* QueryCommand   
+* QueryStreamCommand   
+* SeedIdentityForCommand   
+* StreamCommand   
+
+
+</LanguageContent>
+
+<!---
+### Commands
+- [How to Send Multiple Commands Using a Batch](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+
+-->

@@ -1,0 +1,344 @@
+---
+title: "Time Series Rollups and Retention"
+hide_table_of_contents: true
+sidebar_label: Rollups and Retention
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Time Series Rollups and Retention
+<Admonition type="note" title="Note">
+
+Many time series applications produce massive amounts of data at a steady rate. 
+**Time Series Policies** help you to manage your data in two ways:  
+
+* Creating **Rollups** - summarizing time series data by aggregating it into the 
+form of a new, lower resolution time series.  
+
+* Limiting a time series' **Retention** - the amount of time that time series data 
+is kept before being deleted.  
+
+* In this page:  
+  * [Time Series Policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Usage Flow and Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#usage-flow-and-syntax)  
+  * [Samples](../../document-extensions/timeseries/rollup-and-retention.mdx#samples)  
+
+</Admonition>
+## Time Series Policies
+
+#### What are Rollups?
+
+A **rollup** is a time series that summarizes the data from another time series, 
+with each rollup entry representing a specific time frame in the original time 
+series. Each rollup entry contains 6 values that aggregate the data from all the 
+entries in the original time frame:  
+
+* *First* - the value of the first entry in the frame.  
+* *Last* - the value of the last entry.  
+* *Min* - the smallest value.  
+* *Max* - the largest value.  
+* *Sum* - the sum of all the values in the frame.  
+* *Count* - the total number of entries in the frame.  
+
+This results in a much more compact time series that still contains useful 
+information about the original time series (also called the "named" or "raw" 
+time series). Rollup time series are created automatically according to 
+**rollup policies**. Rollup policies apply to all time series of every document 
+in the given collection. Each collection can be configured to have multiple 
+policies.  
+
+The rollup policies for a given collection are not applied independently. A given 
+raw time series is rolled up using the policy with the shortest aggregation 
+frame. Then that rollup time series is rolled up using the policy with the 
+_next_ shortest aggregation frame, and so on.  
+
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregation-and-projection) 
+will transparently traverse over the rollups to retrieve the relevant results.  
+
+Let's look at an example of rollup data:  
+
+
+!["Rollup time series entries"](./assets/rollup-1.png)
+
+
+**1) Name:**  
+A rollup time series' name has this format:  
+`"<name of raw time series>@<name of time series policy>"`  
+It is a combination of the name of the raw time series and the name of the 
+time series policy separated by a `@` character - in the image above these are 
+"HeartRates" and "byHour" respectively. For this reason, neither 
+a time series name nor a policy name can have the character `@` in it.
+
+**2) Timestamp:**  
+The aggregation frame always begins at a round number of one of these time units: a 
+second, minute, hour, day, week, month, or year. So the frame includes all entries 
+starting at a round number of time units, and ending at a round number *minus 
+one millisecond* (since milliseconds are the minimal resolution in RavenDB 
+time series). The timestamp for a rollup entry is the beginning of the frame it 
+represents.  
+
+For example, if the aggregation frame is three days, a frame will start and end at a 
+time stamps like:  
+`2020-01-01 00:00:00` - `2020-01-03 23:59:59.999`.
+
+**3) Values:**  
+Each group of six values represents one value in the original entries. If the raw 
+time series has *n* values per entry, the rollup time series will have _6*n_ per entry: 
+the first six summarize the first raw value, the next six summarize the next raw value, 
+and so on. The aggregate values have the names:  
+`"First (<name of raw value>)", "Last (<name of raw value>)", ...` respectively.  
+Because time series entries are limited to 32 values, rollups are limited to 
+the first five values of an original time series entry, or 30 aggregate values.  
+
+
+
+
+
+
+## Usage Flow and Syntax  
+
+To configure time series policies for one or more collections:  
+
+* Create time series policy [objects](../../document-extensions/timeseries/rollup-and-retention.mdx#the-two-types-of-time-series-policy).  
+* Use those to populate `TimeSeriesCollectionConfiguration` [objects](../../document-extensions/timeseries/rollup-and-retention.mdx#and-) 
+for each collection you want to configure.  
+* Use _those_ to populate a `TimeSeriesConfiguration` [object](../../document-extensions/timeseries/rollup-and-retention.mdx#and-) 
+which will belong to the whole database.  
+* Finally, use the `ConfigureTimeSeriesOperation` [operation](../../document-extensions/timeseries/rollup-and-retention.mdx#the-time-series-configuration-operation) 
+to send the new configurations to the server.  
+
+
+### Syntax  
+
+#### The two types of time series policy:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Rollup policies
+public class TimeSeriesPolicy
+\{
+    public string Name;
+    public TimeValue RetentionTime;
+    public TimeValue AggregationTime;
+\}
+
+// A retention policy for the raw TS
+// Only one per collection
+public class RawTimeSeriesPolicy : TimeSeriesPolicy
+\{
+    public string Name;
+    public TimeValue RetentionTime;
+    // Does not perform aggregation
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+`TimeSeriesPolicy`:  
+
+| Property | Description |
+| - | - |
+| `Name` | This `string` is used to create the names of the rollup time series created by this policy.
+`Name` is added to the name of the raw time series - with `@` as a separator - to create the name of the resulting rollup time series. |
+| `RetentionTime` | Time series entries older than this time span (see `TimeValue` below) are automatically deleted. |
+| `AggregationTime` | The time series data being rolled up is divided at round time units, into parts of this length of time. Each of these parts is aggregated into an entry of the rollup time series. |
+
+`RawTimeSeriesPolicy`:  
+
+| Property | Description |
+| - | - |
+| `Name` | This `string` is used to create the names of the rollup time series created by this policy.
+`Name` is added to the name of the raw time series - with `@` as a separator - to create the name of the resulting rollup time series. |
+| `RetentionTime` | Time series entries older than this time span (see `TimeValue` below) are automatically deleted. |
+
+
+#### The `TimeValue` struct
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public struct TimeValue
+\{
+    public static TimeValue FromSeconds(int seconds);
+    public static TimeValue FromMinutes(int minutes);
+    public static TimeValue FromHours(int hours);
+    public static TimeValue FromDays(int days);
+    public static TimeValue FromMonths(int months);
+    public static TimeValue FromYears(int years);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+`Each of the above `TimeValue` methods returns a `TimeValue` object representing a 
+whole number of the specified time units. These are passed as the aggregation and 
+retention spans of time series policies.  
+
+<Admonition type="info" title="Info">
+The main reason we use `TimeValue` rather than something like `TimeSpan` is that 
+`TimeSpan` doesn't have a notion of 'months', because a calendar month is not a 
+standard unit of time (since it ranges from 28-31 days). `TimeValue` enables you 
+to define retention and aggregation spans for a calendar month.  
+</Admonition>
+<br/>
+#### `TimeSeriesCollectionConfiguration` and `TimeSeriesConfiguration`
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesCollectionConfiguration
+\{
+    public bool Disabled;
+    public List<TimeSeriesPolicy> Policies;
+    public RawTimeSeriesPolicy RawPolicy;
+\}
+
+public class TimeSeriesConfiguration
+\{
+    public Dictionary<string, TimeSeriesCollectionConfiguration> Collections;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property | Description |
+| - | - |
+| `Disabled` | If set to `true`, rollup processes will stop, and time series data will not be deleted by retention policies. |
+| `Policies` | Populate this `List` with your rollup policies |
+| `RawPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series |
+| `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the names of the corresponding collections. |
+<br/>
+#### The Time Series Configuration Operation
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public ConfigureTimeSeriesOperation(TimeSeriesConfiguration configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+Pass this your `TimeSeriesConfiguration`, see usage example below. How to use an [operation](../../client-api/operations/what-are-operations.mdx).  
+<br/>
+#### Casting Time Series Entries
+
+Time series entries are of one of the following classes:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesEntry \{   \}
+public class TimeSeriesEntry<T> : TimeSeriesEntry \{   \}
+public class TimeSeriesRollupEntry<TValues> : TimeSeriesEntry \{   \}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about time series with generic types [here](../../document-extensions/timeseries/client-api/named-time-series-values.mdx).
+
+If you have an existing rollup entry of type `TimeSeriesEntry`, you can 
+cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public static TimeSeriesRollupEntry<T> AsRollupEntry<T>(this TimeSeriesEntry<T> entry);
+`}
+</CodeBlock>
+</TabItem>
+
+You can cast a `TimeSeriesRollupEntry` to a `TimeSeriesEntry` directly. 
+Its values will consist of all the `First` values of the rollup entry.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var rollupEntry = new TimeSeriesRollupEntry<int>(
+                          new DateTime(2020,1,1));
+
+TimeSeriesEntry<int> TSEntry = (TimeSeriesEntry<int>)rollupEntry;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Samples
+
+How to create time series policies for a collection and pass them to the server:  
+
+<TabItem value="rollup_and_retention_0" label="rollup_and_retention_0">
+<CodeBlock language="csharp">
+{`var oneWeek = TimeValue.FromDays(7);
+var fiveYears = TimeValue.FromYears(5);
+
+// Define a policy on the RAW time series data:
+// ============================================
+var rawPolicy = new RawTimeSeriesPolicy(fiveYears); // Retain entries for five years
+
+// Define a ROLLUP policy: 
+// =======================
+var rollupPolicy = new TimeSeriesPolicy(
+        "By1WeekFor1Year", // Name of policy
+        oneWeek, // Aggregation time, roll-up the data for each week
+        fiveYears); // Retention time, keep data for five years
+
+// Define the time series configuration for collection "Companies" (use above policies):
+// =====================================================================================
+var timeSeriesConfig = new TimeSeriesConfiguration();
+timeSeriesConfig.Collections["Companies"] = new TimeSeriesCollectionConfiguration
+\{
+    Policies = new List<TimeSeriesPolicy> \{ rollupPolicy \},
+    RawPolicy = rawPolicy
+\};
+               
+// Deploy the time series configuration to the server
+// by sending the 'ConfigureTimeSeriesOperation' operation:
+// ========================================================
+store.Maintenance.Send(new ConfigureTimeSeriesOperation(timeSeriesConfig));
+
+// NOTE:
+// The time series entries in the RavenDB sample data are dated up to the year 2020.
+// To ensure that you see the rollup time series created when running this example,
+// the retention time should be set to exceed that year.
+`}
+</CodeBlock>
+</TabItem>  
+
+How to access a rollup time series:  
+
+<TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
+<CodeBlock language="csharp">
+{`// Get all data from the RAW time series:
+// ======================================
+
+var rawData = session
+    .TimeSeriesFor("companies/91-A", "StockPrices")
+    .Get(DateTime.MinValue, DateTime.MaxValue);
+
+// Get all data from the ROLLUP time series:
+// =========================================
+
+// Either - pass the rollup name explicitly to 'TimeSeriesFor':
+var rollupData = session
+    .TimeSeriesFor("companies/91-A", "StockPrices@By1WeekFor1Year")
+    .Get(DateTime.MinValue, DateTime.MaxValue);
+
+// Or - get the rollup name by calling 'GetTimeSeriesName':
+rollupData = session
+    .TimeSeriesFor("companies/91-A", rollupPolicy.GetTimeSeriesName("StockPrices"))
+    .Get(DateTime.MinValue, DateTime.MaxValue);
+
+// The raw time series has 100 entries
+Assert.Equal(rawData.Length, 100);
+Assert.Equal(rawData[0].IsRollup, false);
+
+// The rollup time series has only 22 entries
+// as each entry aggregates 1 week's data from the raw time series
+Assert.Equal(rollupData.Length, 22);
+Assert.Equal(rollupData[0].IsRollup, true);
+`}
+</CodeBlock>
+</TabItem>  
+
+

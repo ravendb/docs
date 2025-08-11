@@ -1,0 +1,170 @@
+---
+title: "Batches: How to Send Multiple Commands Using a Batch"
+hide_table_of_contents: true
+sidebar_label: Send Multiple Commands
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Batches: How to Send Multiple Commands Using a Batch
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="note" title="Note">
+
+To send **multiple commands** in a **single request**, reducing the number of remote calls and allowing several 
+operations to share the **same transaction**, `SingleNodeBatchCommand` should be used.
+
+In this page: 
+
+* [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
+* [Example](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#example)
+
+</Admonition>
+
+## Syntax
+
+<TabItem value="batch_1" label="batch_1">
+<CodeBlock language="csharp">
+{`public SingleNodeBatchCommand(DocumentConventions conventions, JsonOperationContext context, 
+    List<ICommandData> commands, BatchOptions options = null, 
+    TransactionMode mode = TransactionMode.SingleNode)
+`}
+</CodeBlock>
+</TabItem>
+
+### The following commands can be sent using a batch
+
+* DeleteAttachmentCommandData
+* DeleteCommandData
+* DeletePrefixedCommandData
+* PatchCommandData
+* PutAttachmentCommandData
+* PutCommandData
+
+### Batch Options
+
+<TabItem value="batch_2" label="batch_2">
+<CodeBlock language="csharp">
+{`public class BatchOptions
+\{
+    public bool WaitForReplicas \{ get; set; \}
+    //if set to true, will wait for replication to be performed on at least a majority
+    //of DB instances (applies only when WaitForReplicas is set to true)
+
+    public bool Majority \{ get; set; \}
+
+    public int NumberOfReplicasToWaitFor \{ get; set; \}
+
+    public TimeSpan WaitForReplicasTimeout \{ get; set; \}
+
+    public bool ThrowOnTimeoutInWaitForReplicas \{ get; set; \}
+
+    public bool WaitForIndexes \{ get; set; \}
+
+    public TimeSpan WaitForIndexesTimeout \{ get; set; \}
+
+    public bool ThrowOnTimeoutInWaitForIndexes \{ get; set; \}
+
+    public string[] WaitForSpecificIndexes \{ get; set; \}
+
+    public TimeSpan? RequestTimeout \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenSession())
+{
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("users/3", null, new DynamicJsonValue
+        {
+            ["Name"] = "James"
+        }),
+        new PatchCommandData("users/1-A", null, new PatchRequest
+        {
+            Script = "this.Name = 'Nhoj';"
+        }, null),
+        new DeleteCommandData("users/2-A", null)
+    };
+
+    // By including the method SingleNodeBatchCommand(),
+    // multiple commands can be executed in a single request
+    // and several operations can share the same transaction.
+    var batch = new SingleNodeBatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
+    session.Advanced.RequestExecutor.Execute(batch, session.Advanced.Context);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenAsyncSession())
+{
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("users/3", null, new DynamicJsonValue
+        {
+            ["Name"] = "James"
+        }),
+        new PatchCommandData("users/1-A", null, new PatchRequest
+        {
+            Script = "this.Name = 'Nhoj';"
+        }, null),
+        new DeleteCommandData("users/2-A", null)
+    };
+
+    // By including the method SingleNodeBatchCommand(),
+    // multiple commands can be executed in a single request
+    // and several operations can share the same transaction.
+    var batch = new SingleNodeBatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
+    await session.Advanced.RequestExecutor.ExecuteAsync(batch, session.Advanced.Context);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+<Admonition type="note" title="Note">
+All the commands in the batch will succeed or fail as a **transaction**. Other users will not be able to see any of the changes until the entire batch completes.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Transactions
+- [Transaction Support](../../../client-api/faq/transaction-support)
+
+### Commands
+- [Put](../../../client-api/commands/documents/put)
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to Get Document Metadata Only](../../../client-api/commands/documents/how-to/get-document-metadata-only)
+
+### Patching
+- [How to Perform Single Document Patch Operations](../../../client-api/operations/patching/single-document)
+
+### Attachments
+- [What are Attachments](../../../document-extensions/attachments/what-are-attachments)
+
+
+-->

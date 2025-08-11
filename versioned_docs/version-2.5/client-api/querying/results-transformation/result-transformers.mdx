@@ -1,0 +1,114 @@
+---
+title: "Results Transformers"
+hide_table_of_contents: true
+sidebar_label: Result Transformers
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Results Transformers
+
+Results Transformers have been introduced in RavenDB 2.5 to give the user the ability to do a server side projections (with possibility to load data from other documents).
+
+<Admonition type="note" title="Note">
+Result Transformers are substituting the index [TransformResults](transform-results) feature, marking it as obsolete.
+</Admonition>
+
+Main features of the Result Transformers are:   
+
+I. Stand-alone, separated from Index.   
+
+<TabItem value="result_transformers_0" label="result_transformers_0">
+<CodeBlock language="csharp">
+{`public class Order
+\{
+	public DateTime OrderedAt \{ get; set; \}
+
+	public Status Status \{ get; set; \}
+
+	public string CustomerId \{ get; set; \}
+
+	public IList<OrderLine> Lines \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="result_transformers_1" label="result_transformers_1">
+<CodeBlock language="csharp">
+{`public class OrderStatisticsTransformer : AbstractTransformerCreationTask<Order>
+\{
+	public OrderStatisticsTransformer()
+	\{
+		TransformResults = orders => from order in orders
+									 select new
+											\{
+												order.OrderedAt,
+												order.Status,
+												order.CustomerId,
+												CustomerName = LoadDocument<Customer>(order.CustomerId).Name,
+												LinesCount = order.Lines.Count
+											\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+II. User can use them on index results on demand.
+
+What does it mean? It means if you want load whole `Order` you can do so by not using a transformer in the query:    
+
+<TabItem value="result_transformers_3" label="result_transformers_3">
+<CodeBlock language="csharp">
+{`IList<Order> orders = session.Query<Order>()
+	.Where(x => x.CustomerId == "customers/1")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+or if you want to get your transformed results then you can execute query as follows:    
+
+<TabItem value="result_transformers_2" label="result_transformers_2">
+<CodeBlock language="csharp">
+{`public class OrderStatistics
+\{
+	public DateTime OrderedAt \{ get; set; \}
+
+	public Status Status \{ get; set; \}
+
+	public string CustomerId \{ get; set; \}
+
+	public string CustomerName \{ get; set; \}
+
+	public int LinesCount \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="result_transformers_4" label="result_transformers_4">
+<CodeBlock language="csharp">
+{`IList<OrderStatistics> statistics = session.Query<Order>()
+	.TransformWith<OrderStatisticsTransformer, OrderStatistics>()
+	.Where(x => x.CustomerId == "customers/1")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+III. Can be used with automatic indexes.   
+
+<TabItem value="result_transformers_5" label="result_transformers_5">
+<CodeBlock language="csharp">
+{`OrderStatistics statistic = session.Load<OrderStatisticsTransformer, OrderStatistics>("orders/1");
+`}
+</CodeBlock>
+</TabItem>

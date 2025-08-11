@@ -1,0 +1,89 @@
+---
+title: "Deleting documents"
+hide_table_of_contents: true
+sidebar_label: Deleting documents
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Deleting documents
+
+## Delete by an object reference
+
+Once a valid reference to a document has been retrieved, the document can be deleted with a call to `Delete` in the following manner:
+
+<TabItem value="deleting_document_1" label="deleting_document_1">
+<CodeBlock language="csharp">
+{`session.Delete(existingBlogPost);
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+This results in an HTTP communication as shown below:
+
+    
+```
+POST /bulk_docs HTTP/1.1
+    Accept-Encoding: deflate,gzip
+    Content-Type: application/json; charset=utf-8
+    Host: 127.0.0.1:8081
+    Content-Length: 49
+    Expect: 100-continue
+
+    [
+      {
+        "Key": "blogs/1",
+        "Etag": null,
+        "Method": "DELETE"
+      }
+    ]
+```
+
+	
+		
+<Admonition type="note" title="Note">
+Deletes are final and cannot be rolled back, once committed.
+</Admonition> 
+
+## Delete by ID
+
+If you have the document's ID, and you don't want to load it just for the sake of delete it, you can either defer deleting it using the `Defer` command or doing a direct delete using the `DatabaseCommands`.
+
+### Delete by ID using the Defer command
+
+Using the `Defer` command in the `Advanced` section of the session API, you can pass a `DeleteCommandData` instance which will instruct the session to delete the document upon the call to the `SaveChanges` method. This will ensure that the delete will be transactional because of its participation in the Unit Of Work of the session.
+
+Here is an example how to use it:
+
+<TabItem value="deleting_document_using_defer" label="deleting_document_using_defer">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new DeleteCommandData \{Key = "posts/1234"\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Delete by ID using the DatabaseCommands
+
+You can perform a direct delete using the `DatabaseCommands` property available in the `Advanced` section of the session API.
+
+<TabItem value="deleting_document_2" label="deleting_document_2">
+<CodeBlock language="csharp">
+{`session.Advanced.DatabaseCommands.Delete("posts/1234", null);
+`}
+</CodeBlock>
+</TabItem>
+
+This results in an HTTP communication as shown below:
+
+    DELETE /docs/posts/1234 HTTP/1.1
+    Host: 127.0.0.1:8081
+    
+    
+Unlike session operations, `DatabaseCommands` operations execute immediately, and do not wait for `SaveChanges` to be called.

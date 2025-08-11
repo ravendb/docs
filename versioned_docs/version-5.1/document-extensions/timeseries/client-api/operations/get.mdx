@@ -1,0 +1,244 @@
+---
+title: "Operations: How to Get Time Series"
+hide_table_of_contents: true
+sidebar_label: Get
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Operations: How to Get Time Series
+<Admonition type="note" title="Note">
+
+Get a single time series' entries using `GetTimeSeriesOperation`.  
+Get multiple time series' entries using `GetMultipleTimeSeriesOperation`.  
+
+* In this page:  
+      * [`GetTimeSeriesOperation`](../../../../document-extensions/timeseries/client-api/operations/get.mdx#gettimeseriesoperation)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
+         * [Usage Flow](../../../../document-extensions/timeseries/client-api/operations/get.mdx#usage-flow)  
+         * [Usage Samples](../../../../document-extensions/timeseries/client-api/operations/get.mdx#usage-sample)  
+      * [`GetMultipleTimeSeriesOperation`](../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
+         * [Usage Flow](../../../../document-extensions/timeseries/client-api/operations/get.mdx#usage-flow-1)  
+         * [Usage Sample](../../../../document-extensions/timeseries/client-api/operations/get.mdx#usage-sample-1)  
+
+</Admonition>
+## `GetTimeSeriesOperation`
+
+Use `GetTimeSeriesOperation` to retrieve entries from a single 
+time series.  
+### Syntax
+
+* **Definition**
+<TabItem value="GetTimeSeriesOperation-Definition" label="GetTimeSeriesOperation-Definition">
+<CodeBlock language="csharp">
+{`public GetTimeSeriesOperation(
+    string docId, 
+    string timeseries,
+    DateTime? from = null,
+    DateTime? to = null,
+    int start = 0,
+    int pageSize = int.MaxValue,
+    bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `docId` | `string` | Document ID |
+    | `timeseries` | `string` | Time series name |
+    | `from` (optional) | `DateTime?` | Range start  <br/> Default: `DateTime.Min` ||
+    | `to` (optional) | `DateTime?` | Range end  <br/> Default: `DateTime.Max` ||
+    | `start` | `int` | Start of first Page |
+    | `pageSize` | `int` | Size of each page |
+
+* **Return Value**: **`TimeSeriesRangeResult`**  
+<TabItem value="TimeSeriesRangeResult-class" label="TimeSeriesRangeResult-class">
+<CodeBlock language="csharp">
+{`public class TimeSeriesRangeResult
+\{
+    // Timestamp of first entry returned
+    public DateTime From;
+    
+    // Timestamp of last entry returned
+    public DateTime To;
+    
+    // The resulting entries
+    // Will be empty if requesting an entries range that does Not exist
+    public TimeSeriesEntry[] Entries;
+    
+    // The number of entries returned
+    // Will be undefined if not all entries of this time series were returned
+    public long? TotalResults;
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+   * Requesting a time series that doesn't exist will return `null`.  
+   * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object with an 
+     empty `Entries` property.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+### Usage Flow
+
+* Pass `GetTimeSeriesOperation` -  
+     Document ID, Time Series Name, Range Start, Range End.  
+* Call `store.Operations.Send` to execute the operation.  
+* Entries are returned into a `dictionary of `TimeSeriesRangeResult` classes.  
+### Usage Sample
+
+* In this sample, we retrieve all the entries of a time series.  
+<TabItem value="timeseries_region_Get-Single-Time-Series" label="timeseries_region_Get-Single-Time-Series">
+<CodeBlock language="csharp">
+{`// Define the get operation
+var getTimeSeriesOp = new GetTimeSeriesOperation(
+    "employees/1-A", // The document ID
+    "HeartRates", // The time series name
+    DateTime.MinValue, // Entries range start
+    DateTime.MaxValue); // Entries range end
+
+// Execute the operation by passing it to 'Operations.Send'
+TimeSeriesRangeResult timeSeriesEntries = store.Operations.Send(getTimeSeriesOp);
+
+// Access entries
+var firstEntryReturned = timeSeriesEntries.Entries[0];
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## `GetMultipleTimeSeriesOperation`
+
+Use `GetMultipleTimeSeriesOperation` to retrieve data from 
+multiple time series.  
+### Syntax
+
+* **Definition**
+<TabItem value="GetMultipleTimeSeriesOperation-Definition" label="GetMultipleTimeSeriesOperation-Definition">
+<CodeBlock language="csharp">
+{`public GetMultipleTimeSeriesOperation(
+        string docId,
+        IEnumerable<TimeSeriesRange> ranges,
+        int start = 0,
+        int pageSize = int.MaxValue,
+        bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `docId` | `string` | Document ID |
+    | `ranges` | `IEnumerable&lt;TimeSeriesRange&gt;` | Ranges of Time Series Entries |
+    | `start` (optional) | `int` | Start of first Page <br/> Default: 0 |
+    | `pageSize` (optional) | `int` | Size of each page <br/> Default: int.MaxValue |
+
+     Pass `GetMultipleTimeSeriesOperation` a **TimeSeriesRange** instance 
+     For each entries range you want it to retrieve.
+<TabItem value="TimeSeriesRange-class" label="TimeSeriesRange-class">
+<CodeBlock language="csharp">
+{`public class TimeSeriesRange
+\{
+    public string Name;   // Name of time series
+    public DateTime From; // Get time series entries starting from this timestamp (inclusive).
+    public DateTime To;   // Get time series entries ending at this timestamp (inclusive).
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Return Value**: **`TimeSeriesRangeResult`**  
+<TabItem value="TimeSeriesDetails-class" label="TimeSeriesDetails-class">
+<CodeBlock language="csharp">
+{`public class TimeSeriesDetails
+\{
+    // The document ID
+    public string Id \{ get; set; \}
+    
+    // Dictionary of time series name to the time series results 
+    public Dictionary<string, List<TimeSeriesRangeResult>> Values \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="TimeSeriesRangeResult-class" label="TimeSeriesRangeResult-class">
+<CodeBlock language="csharp">
+{`public class TimeSeriesRangeResult
+\{
+    // Timestamp of first entry returned
+    public DateTime From;
+    
+    // Timestamp of last entry returned
+    public DateTime To;
+    
+    // The resulting entries
+    // Will be empty if requesting an entries range that does Not exist
+    public TimeSeriesEntry[] Entries;
+    
+    // The number of entries returned
+    // Will be undefined if not all entries of this time series were returned
+    public long? TotalResults;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    * When a time series or an entries range that do not exist are requested, 
+      the return value for the erroneous range is a `TimeSeriesRangeResult` 
+      object with an empty `Entries` property.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+### Usage Flow
+
+* Pass `GetMultipleTimeSeriesOperation` -  
+   * The time series parent-Document ID  
+   * A **TimeSeriesRange** instance for each entries range you want 
+     it to retrieve.  
+* Populate each TimeSeriesRange instance with a **time Series name**, 
+  a **range start** timestamp (`From`), and a **range end** timestamp (`To`).  
+* Call `store.Operations.Send` to execute the operation.  
+### Usage Sample
+
+* In this sample, we retrieve chosen entries from two time series.  
+<TabItem value="timeseries_region_Get-Multiple-Time-Series" label="timeseries_region_Get-Multiple-Time-Series">
+<CodeBlock language="csharp">
+{`// Define the get operation
+var getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation("employees/1-A",
+    new List<TimeSeriesRange>
+    \{
+        new TimeSeriesRange
+        \{
+            Name = "ExerciseHeartRates", From = baseTime.AddHours(1), To = baseTime.AddHours(10)
+        \},
+        new TimeSeriesRange
+        \{
+            Name = "RestHeartRates", From = baseTime.AddHours(11), To = baseTime.AddHours(20)
+        \}
+    \});
+    
+// Execute the operation by passing it to 'Operations.Send'
+TimeSeriesDetails timesSeriesEntries = store.Operations.Send(getMultipleTimeSeriesOp);
+
+// Access entries
+var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries[0];
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

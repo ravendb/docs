@@ -1,0 +1,318 @@
+---
+title: "Commands: Put Document"
+hide_table_of_contents: true
+sidebar_label: Put Document
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Commands: Put Document
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="csharp">
+{`// Create a new document
+var doc = new Category
+\{
+    Name = "My category",
+    Description = "My category description"
+\};
+// Create metadata on the document
+var docInfo = new DocumentInfo
+\{
+    Collection = "Categories"
+\};
+// Convert your entity to a BlittableJsonReaderObject
+var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
+
+// The Put command (parameters are document ID, changeVector check is null, the document to store)
+var command = new PutDocumentCommand("categories/999", null, blittableDoc);
+// RequestExecutor sends the command to the server
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="csharp">
+{`public PutDocumentCommand(string id, string changeVector, BlittableJsonReaderObject document)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | Unique ID under which document will be stored |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document** | `BlittableJsonReaderObject` | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="java">
+{`public PutDocumentCommand(String id, String changeVector, ObjectNode document)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | String | unique ID under which document will be stored |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document** | ObjectNode | The document to store. You may use `session.advanced().getEntityToJson().convertEntityToJson` to convert your entity to a `ObjectNode` |
+
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="java">
+{`Category doc = new Category();
+doc.setName("My category");
+doc.setDescription("My category description");
+
+DocumentInfo docInfo = new DocumentInfo();
+docInfo.setCollection("Categories");
+
+ObjectNode jsonDoc = session.advanced().getEntityToJson().convertEntityToJson(doc, docInfo);
+PutDocumentCommand command = new PutDocumentCommand("categories/999", null, jsonDoc);
+session.advanced().getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="python">
+{`# Create a new document
+doc = Category(name="My category", description="My category description")
+
+# Create metadata on the document
+doc_info = DocumentInfo(collection="Categories")
+
+# Convert your entity to a dict
+dict_doc = session.entity_to_json.convert_entity_to_json_static(doc, session.conventions, doc_info)
+
+# The put command (parameters are document ID, change vector check is None, the document to store)
+command = PutDocumentCommand("employees/1-A", None, dict_doc)
+# Request executor sends the command to the server
+session.advanced.request_executor.execute_command(command)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="python">
+{`class PutDocumentCommand(RavenCommand[PutResult]):
+    def __init__(self, key: str, change_vector: Optional[str], document: dict): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **key** | `str` | Unique ID under which document will be stored |
+| **change_vector** | `str` (optional) | Entity changeVector, used for concurrency checks (`None` to skip check) |
+| **document** | `dict` | The document to store |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="php">
+{`// Create a new document
+$doc = new Category();
+$doc->setName("My category");
+$doc->setDescription("My category description");
+
+// Create metadata on the document
+$docInfo = new DocumentInfo();
+$docInfo->setCollection("Categories");
+
+// Convert your entity to a BlittableJsonReaderObject
+$jsonDoc = $session->advanced()->getEntityToJson()->convertEntityToJson($doc, $docInfo);
+
+// The Put command (parameters are document ID, changeVector check is null, the document to store)
+$command = new PutDocumentCommand("categories/999", null, $jsonDoc);
+// RequestExecutor sends the command to the server
+$session->advanced()->getRequestExecutor()->execute($command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="php">
+{`PutDocumentCommand(string $idOrCopy, ?string $changeVector, array $document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **idOrCopy** | `string` | Unique ID under which document will be stored |
+| **changeVector** | `string` (optional) | Entity changeVector, used for concurrency checks (`None` to skip check) |
+| **document** | `array` | The document to store |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put" label="put">
+<CodeBlock language="js">
+{`_document_1
+        // Define the json document to 'put'
+        const jsonDocument = \{
+            name: "My category",
+            description: "My category description",
+            "@metadata": \{
+                "@collection": "categories"
+            \}
+        \}
+        
+        // Define the 'PutDocumentCommand'
+        // Pass the document ID, whether to make concurrency checks, 
+        // and the json document to store
+        const command = new PutDocumentCommand("categories/999", null, jsonDocument);
+
+        // Call 'execute' on the Store Request Executor to send the command to the server
+        await documentStore.getRequestExecutor().execute(command);
+
+        // Access the command result
+        const result = command.result;
+        const theDocumentID = result.id;
+        const theDocumentCV = result.changeVector;
+        
+        assert.strictEqual(theDocumentID, "categories/999");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`PutDocumentCommand(id, changeVector, document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                             |
+|------------------|----------|-------------------------------------------------------------------------|
+| **id**           | `string` | Unique ID under which document will be stored                           |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document**     | `object` | The document to store.                                                  |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Executing \`PutDocumentCommand\` returns the following object:
+\{
+    // The document id under which the entity was stored
+    id; // string
+    
+    // The change vector assigned to the stored document
+    changeVector; // string
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Commands
+- [Get](../../../client-api/commands/documents/get)
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+
+-->

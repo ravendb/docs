@@ -1,0 +1,94 @@
+---
+title: "Include Time Series With Query"
+hide_table_of_contents: true
+sidebar_label: With Query
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Include Time Series With `Query`
+<Admonition type="note" title="Note">
+
+You can include time series data while retrieving a document via `session.Query`.  
+
+* [`session.Query` and `IncludeTimeSeries`](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#sessionquery-and-includetimeseries)  
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#syntax)  
+   * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#usage-flow)  
+   * [Usage Sample](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#usage-sample)  
+
+</Admonition>
+## `session.Query` and `IncludeTimeSeries`
+
+To include time series data via `session.Query`, use `session.Query` 
+with the `Include` LINQ expression and pass it the `IncludeTimeSeries` 
+method of the `IQueryIncludeBuilder` interface as an argument.  
+
+
+
+## Syntax
+
+* **`IncludeTimeSeries`**  
+   * **Definition**  
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `name` | `string` | Time series Name |
+        | `from` | `DateTime?` | Time series range start |
+        | `to` | `DateTime?` | Time series range end |
+
+
+
+## Usage Flow
+
+* Open a session  
+* Call `session.Query` with the `Include` Linq expression  
+  Pass it the `IncludeTimeSeries` method as an argument  
+* Pass `IncludeTimeSeries` its arguments:  
+   * **Time series name**  
+   * **Range start**  
+   * **Range end**  
+
+
+
+## Usage Sample
+
+In this sample, we retrieve a document using `session.Query` and 
+**include** entries from the time series "Heartrate".  
+<TabItem value="timeseries_region_Query-Document-And-Include-TimeSeries" label="timeseries_region_Query-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Query for a document and include a whole time-series
+    User user = session.Query<User>()
+        .Where(u => u.Name == "John")
+        .Include(includeBuilder => includeBuilder.IncludeTimeSeries("HeartRates"))
+        .FirstOrDefault();
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRates")
+        .Get();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The entries we Get after including the time series, are retrieved 
+**from the session's cache**.  
+
+
+

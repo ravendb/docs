@@ -1,0 +1,244 @@
+---
+title: "Session: Storing Entities"
+hide_table_of_contents: true
+sidebar_label: Storing Entities
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: Storing Entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To store entities inside the **session** object, use one of the three `Store` methods.
+
+## Syntax
+
+First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="csharp">
+{`void Store(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+Second overload: Stores the entity in a session with given ID.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="csharp">
+{`void Store(object entity, string id);
+`}
+</CodeBlock>
+</TabItem>
+
+Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="csharp">
+{`void Store(object entity, string changeVector, string id);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity that will be stored |
+| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="csharp">
+{`// generate Id automatically
+session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+// send all pending operations to server, in this case only \`Put\` operation
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To store entities inside the **session** object, use one of the three `store` methods.
+
+## Syntax
+
+First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="java">
+{`void store(Object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+Second overload: Stores the entity in a session with given ID.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="java">
+{`void store(Object entity, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="java">
+{`void store(Object entity, String changeVector, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Entity that will be stored |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **id** | String | Entity will be stored under this ID, (`null` to generate automatically) |
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="java">
+{`Employee employee = new Employee();
+employee.setFirstName("John");
+employee.setLastName("Doe");
+
+// generate Id automatically
+session.store(employee);
+
+// send all pending operations to server, in this case only \`Put\` operation
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+To store entities inside the **session** object, use `store()` method.
+
+## Syntax
+
+You can pass the following arguments to the `store()` method:
+
+- entity only: Stores the entity in the session, then extracts the ID from the entity or generates a new one if it's not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="js">
+{`session.store(entity, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+- entity and an id: Stores the entity in a session with given ID.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="js">
+{`session.store(entity, id);
+`}
+</CodeBlock>
+</TabItem>
+
+- entity, an id and store options: Stores the entity in a session with given ID, forces concurrency check with given change vector.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="js">
+{`session.store(entity, id, [options]);
+session.store(entity, id, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity that will be stored |
+| **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
+| **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
+| **options** | object | Options object with the below properties: |
+| **changeVector** | string | entity *change vector* used for concurrency checks (`null` to skip check) |
+| **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
+
+| Return value | |
+| ------------- | ----- |
+| Promise | A promise resolved once entity obtained an ID and is stored in Unit of Work |
+
+<Admonition type="warning" title="Asynchronous call " id="asynchronous-call" href="#asynchronous-call">
+`store()` method is asynchronous (since it reaches out to server to get a new ID) and returns a `Promise`, so don't forget to use either `await`, `.then()` *before* saving changes. 
+</Admonition>
+
+<Admonition type="info" title="On collection name when storing object literals " id="on-collection-name-when-storing-object-literals" href="#on-collection-name-when-storing-object-literals">
+In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
+
+<TabItem value="storing_literals_1" label="storing_literals_1">
+<CodeBlock language="js">
+{`const store = new DocumentStore(urls, database);
+store.conventions.findCollectionNameForObjectLiteral = entity => entity["collection"];
+// ...
+store.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+This needs to be done before an `initialize()` call on `DocumentStore` instance. If you fail to do so, your entites will land up in *@empty* collection having an *UUID* for an ID.
+
+</Admonition>
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="js">
+{`const employee = new Employee("John", "Doe");
+
+// generate Id automatically
+await session.store(employee);
+
+// send all pending operations to server, in this case only \`Put\` operation
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+- [Basics](../../indexes/querying/basics)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

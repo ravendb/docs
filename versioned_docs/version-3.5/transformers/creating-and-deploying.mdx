@@ -1,0 +1,191 @@
+---
+title: "Creating and deploying transformers"
+hide_table_of_contents: true
+sidebar_label: Creating and deploying transformers
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Creating and deploying transformers
+
+
+Transformers can be created and send to a server in a couple of ways, starting from the low-level [commands](../transformers/creating-and-deploying.mdx#using-commands), to creating [custom classes](../transformers/creating-and-deploying.mdx#using-abstracttransformercreationtask) and sending them individually, or even scanning an assembly.
+
+
+## **using AbstractTransformerCreationTask**
+
+Special abstract class has been created for strongly-typed transformer creation called `AbstractTransformerCreationTask`. 
+
+There are certain benefits of using it:
+
+- **strongly-typed syntax**
+- ability to deploy it easily
+- ability to deploy it using assembly scanner (more about that later)
+- ability to pass transformer as a generic type in various methods without having to hardcode string-based names
+
+By default the transformer's names are auto-generated from the type name. You can change that if you really want to (override the `TransformerName` property), but this option is used rarely. More details later in this article.
+
+This approach limits you to following the strongly typed rules, while server transformers aren't limited by them. However, it is rarely an issue, unless you write a transformer to cover multiple types without a common ancestor.
+
+<Admonition type="note" title="Note">
+We recommend creating and using transformers in this form because of its simplicity: there are many benefits and only few disadvantages.
+</Admonition>
+
+### Naming conventions
+
+Actually there is only one naming convention: each `_` in class name will be translated to `/` in transformer name. If you want to customize the transformer's name, you can do it by overriding the `TransformerName` property.
+
+e.g.
+
+In the `Northwind` samples, there is a transformer called `Orders/Company`. To get such a name for a transformer, we need to create a class called `Orders_Company`.
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Orders_Company : AbstractTransformerCreationTask<Order>
+\{
+	// ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Sending to server
+
+Since transformers are server-side projections, they must be stored on a server. To do so, we need to create instance of our class that inherits from `AbstractTransformerCreationTask`, and use one of the deployment methods: `Execute` or `ExecuteAsync` for asynchronous call.
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`// deploy transformer to \`DefaultDatabase\` for given \`DocumentStore\`
+// using store \`Conventions\`
+new Orders_Company().Execute(store);
+
+// deploy asynchronously transformer to \`DefaultDatabase\` for given \`DocumentStore\`
+// using store \`Conventions\`
+await new Orders_Company().ExecuteAsync(store);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`// deploy transformer to \`Northwind\` database
+// using store \`Conventions\`
+new Orders_Company().Execute(store.DatabaseCommands.ForDatabase("Northwind"), store.Conventions);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+If a transformer exists on a server and a stored definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten.
+</Admonition>
+
+### Using assembly scanner
+
+All classes that inherit from `AbstractTransformerCreationTask` can be deployed at once with one of `IndexCreation.CreateIndexes` method overloads.
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`// deploy all transformers (and indexes) 
+// from assembly where \`Orders_Company\` is found
+// to \`DefaultDatabase\` for given \`DocumentStore\`
+IndexCreation.CreateIndexes(typeof(Orders_Company).Assembly, store);
+`}
+</CodeBlock>
+</TabItem>
+
+Underneath, the `IndexCreation` will call `Execute` methods for each of the transformers (and indexes) found.
+
+<Admonition type="warning" title="Warning">
+`IndexCreation.CreateIndexes` will also deploy all the classes that inherit from the `AbstractIndexCreationTask` (more about it [here](../indexes/creating-and-deploying.mdx)).
+</Admonition>
+
+### Example
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="csharp">
+{`public class Orders_Company : AbstractTransformerCreationTask<Order>
+\{
+	public Orders_Company()
+	\{
+		TransformResults = results => from result in results select result.Company;
+	\}
+\}
+
+public static void Main(string[] args)
+\{
+	using (var store = new DocumentStore
+	\{
+		Url = "http://localhost:8080",
+		DefaultDatabase = "Northwind"
+	\})
+	\{
+		store.Initialize();
+
+		new Orders_Company().Execute(store);
+
+		using (var session = store.OpenSession())
+		\{
+			IList<string> companies = session.Query<Order>()
+				.Where(x => x.Freight > 100) // remember to add \`Raven.Client.Linq\` namespace
+				.TransformWith<Orders_Company, string>()
+				.ToList();
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **using Commands**
+
+Another way to create a transformer is to use low-level `PutTransformer` command from `DatabaseCommands`. API reference for this command can be found [here](../client-api/commands/transformers/put.mdx).
+
+The advantage of this approach is defining transformer's name as you feel fit, yet at the same time you loose all other possibilities when the `AbstractTransformerCreationTask` is used.
+
+<TabItem value="transformers_6" label="transformers_6">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.PutTransformer("ComboBox/Results", new TransformerDefinition
+	\{
+		TransformResults = "from doc in results select new \{ doc.Id, doc.Name \}"
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+This approach lacks any strongly-typed definition guarantees, but the advantage is that we aren't limited by the system type. In this case, we can
+execute this transformer on any type with a Name property. Note that in practice, you _can_ use any transformer on any type. They execute on the server
+and have no concept of your user defined types. However, it is usually easier to look at untyped transformers and see that they can operate on all types, 
+than to look at a typed transformer and understand that it can operate on types other than what it is defined for.
+
+TransformerDefinition can also be partially addressed by creating `TransformerDefinition` from class that implements `AbstractTransformerCreationTask` by invoking `CreateTransformerDefinition` method.
+
+<TabItem value="transformers_7" label="transformers_7">
+<CodeBlock language="csharp">
+{`TransformerDefinition definition = new Orders_Company().CreateTransformerDefinition();
+store
+	.DatabaseCommands
+	.PutTransformer("Orders/Company", definition);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+If transformer exists on server and definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten.
+</Admonition>
+
+<Admonition type="info" title="Info">
+Commands approach is not recommended and should be used only if needed.
+</Admonition>
+
+
+

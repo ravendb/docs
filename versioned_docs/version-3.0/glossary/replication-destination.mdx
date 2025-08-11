@@ -1,0 +1,42 @@
+---
+title: "Glossary: ReplicationDestination"
+hide_table_of_contents: true
+sidebar_label: ReplicationDestination
+sidebar_position: 48
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: ReplicationDestination
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Url** | string | the URL of the replication destination |
+| **Username** | string | The replication server username to use |
+| **Password** | string | The replication server password to use |
+| **Domain** | string | The replication server domain to use |
+| **ApiKey** | string | The replication server api key to use |
+| **Database** | string | The database to use |
+| **TransitiveReplicationBehavior** | [TransitiveReplicationOptions](../glossary/replication-destination.mdx#transitivereplicationoptions-enum) |  How should the replication bundle behave with respect to replicated documents. If a document was replicated to us from another node, should we replicate that to this destination, or should we replicate only documents that were locally modified. |
+| **IgnoredClient** | bool | Controls if the replication will ignore this destination in the client |
+| **Disabled** | bool | Controls if replication to this destination is disabled in both client and server. |
+| **ClientVisibleUrl** | string | The Client URL of the replication destination |
+
+---
+
+# TransitiveReplicationOptions (enum)
+
+### Members
+
+| Name | Description |
+| ---- | ----- |
+| **None** |  Don't replicate replicated documents |
+| **MapCompleted** | Replicate replicated documents |
+

@@ -1,0 +1,185 @@
+---
+title: "Querying: Time Series Querying Overview & Syntax"
+hide_table_of_contents: true
+sidebar_label: Overview and Syntax
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Time Series Querying Overview & Syntax
+<Admonition type="note" title="Note">
+
+* Time series querying is native to RavenDB's RQL.  
+  
+* Clients can express time series queries in RQL and LINQ expressions to, 
+  for example, expose the behavior of a process that populates a time series 
+  over time, and to locate documents related to chosen time series entries.  
+
+* Queries can be executed over time series indexes.  
+
+* In this page:  
+  * [Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#time-series-queries)
+  * [Server and Client Queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#server-and-client-queries)  
+  * [Dynamic and Indexed Queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#dynamic-and-indexed-queries)  
+  * [Syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)  
+     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax-creating-a-time-series-section)  
+     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax-declaring-a-time-series-function)  
+
+
+</Admonition>
+## Time Series Queries
+
+Time series query can -  
+
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) 
+  to query from.  
+* [Filter](../../../document-extensions/timeseries/querying/filtering.mdx) 
+  time series entries by their tags, values and timestamps.  
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
+  time series entries into groups by a chosen resolution, e.g. gather the prices 
+  of a stock that's been collected over the past two months to week-long groups).  
+* Select entries by various criteria, e.g. by the min and max values of each aggregated group, 
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
+  them to the client.  
+
+
+
+## Server and Client Queries
+
+Time series queries are executed by the server and their results are projected 
+to the client, so they require very little client computation resources.  
+
+* The server runs time series queries using RQL.  
+* Clients can phrase time series queries in **raw RQL** or using **LINQ expressions** 
+  (which will be automatically translated to RQL before their execution by the server).  
+
+
+
+## Dynamic and Indexed Queries
+
+Time series indexes are not created automatically by the server, but static time series 
+indexes can be created by clients (or using the Studio).  
+
+* Use **dynamic queries** when time series you query are unindexed 
+  or when you prefer that RavenDB would choose an index automatically 
+  using its [query optimizer](../../../indexes/querying/what-is-rql.mdx#query-optimizer). E.g. - 
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Look for time series named "HeartRate" in user profiles of users under 30.
+from Users as u where Age < 30
+    select timeseries(
+    from HeartRate
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* [Indexed queries](../../../document-extensions/timeseries/querying/using-indexes.mdx) 
+  can be performed over static indexes and their results. E.g. -
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from index 'SimpleIndex'
+    where Tag = 'watches/fitbit'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+You can query time series using two equivalent syntaxes, 
+choose the syntax you're comfortable with.  
+
+* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax-creating-a-time-series-section)  
+* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax-declaring-a-time-series-function)  
+#### `select timeseries` Syntax: Creating a Time Series Section
+
+This syntax allows you to encapsulate your query's time series functionality 
+in a `select timeseries` section.  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`//Look for time series named "HeartRate" in user profiles of users under 30.
+
+from Users as u where Age < 30
+select timeseries(
+    from HeartRate
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* `from Users as u where Age < 30`  
+  This **document query** locates the documents whose time series we want to query.  
+  
+<Admonition type="info" title="Info">
+    A typical time series query starts by locating a single document.  
+    For example, to query a time series of stock prices, we can first 
+    locate a specific company's profile in the Companies collection, 
+    and then query the StockPrices time series that belongs to this profile.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`from Companies as c where Name = 'Apple'
+select timeseries(
+    from StockPrices
+)
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+* `select timeseries`  
+  The `select` clause defines the time series query.  
+
+* `from HeartRate`  
+  The `from` keyword is used to select the time series we'd query, by its name.  
+#### `declare timeseries` Syntax: Declaring a Time Series Function
+
+This syntax allows you to declare a time series function and call it 
+from your query. It introduces greater flexibility to your queries as 
+you can, for example, pass arguments to/by the time series function.  
+
+Here is a query in both syntaxes. It picks users whose age is under 30, 
+and if they own a time series named "HeartRate", retrieves a range of 
+its entries.  
+
+
+| With Time Series Function | Without Time Series Function |
+|:---:|:---:|
+|
+```
+declare timeseries ts(jogger)\{
+    from jogger.HeartRate 
+    between 
+       '2020-05-27T00:00:00.0000000Z'
+      and 
+       '2020-06-23T00:00:00.0000000Z'
+
+from Users as jog where Age < 30
+select ts(jog)
+```
+|
+```
+from Users as jog where Age < 30
+select timeseries(
+   from HeartRate 
+   between 
+      '2020-05-27T00:00:00.0000000Z'
+     and 
+      '2020-06-23T00:00:00.0000000Z')
+```
+|
+Queries can use both declared time series functions and custom JavaScript functions.  
+The JavaScript functions can then call the time series functions, pass them arguments, 
+use and manipulate their results.  
+
+
+
+

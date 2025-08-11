@@ -1,0 +1,114 @@
+---
+title: "TransformResults"
+hide_table_of_contents: true
+sidebar_label: TransformResults
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#TransformResults
+
+If you want to do a client side results transformation in most cases it will be enough to you use standard Linq `Select` method. 
+However if your intention is to create a bit more complex projection then `TransformResults` customization method might be useful.
+An advantage of this approach is that you have an access to the executed index query and the collection of all returned results.
+
+In order to use this method you have to `Customize` your query as is in the example presented below.
+
+## Example
+
+Let's assume that we have the following classes:
+
+<TabItem value="product_item_class" label="product_item_class">
+<CodeBlock language="csharp">
+{`public class ProductItem
+\{
+	public string Id \{ get; set; \}
+	public string WarehouseId \{ get; set; \}
+	public string Name \{ get; set; \}
+	public string Manufacturer \{ get; set; \}
+	public string Description \{ get; set; \}
+	public double Price \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="product_item_view_model" label="product_item_view_model">
+<CodeBlock language="csharp">
+{`public class ProductItemViewModel
+\{
+	public string Name \{ get; set; \}
+	public string Description \{ get; set; \}
+	public double Price \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="warehouse_class" label="warehouse_class">
+<CodeBlock language="csharp">
+{`public class Warehouse
+\{
+	public string Id \{ get; set; \}
+	public IList<ProductItemViewModel> Products \{ get; set; \}
+	public double AverageProductPrice \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and an index defined as follow:
+
+<TabItem value="index_def" label="index_def">
+<CodeBlock language="csharp">
+{`public class Product_ById : AbstractIndexCreationTask<ProductItem>
+\{
+	public Product_ById()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  product.Id
+						  \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To transform the query results that are `Products` into `Warehouses` you can use the code:
+
+<TabItem value="transform_to_warehouses" label="transform_to_warehouses">
+<CodeBlock language="csharp">
+{`var warehouses = session.Query<dynamic, Product_ById>()
+	.Customize(x => x.TransformResults((query, results) =>
+		results.Cast<dynamic>().GroupBy(p => p.WarehouseId).Select(g =>
+		\{
+			double count = 0;
+			int totalSum = 0;
+
+			var products = g.Select(product =>
+			\{
+				count++;
+				totalSum += product.Price;
+				return new ProductItemViewModel
+						   \{
+							   Name = product.Name,
+							   Description = product.Description
+						   \};
+			\}).ToList();
+
+			return new Warehouse()
+					   \{
+						   Id = g.Key,
+						   Products = products,
+						   AverageProductPrice = totalSum / count,
+					   \};
+		\}))).ToList();
+`}
+</CodeBlock>
+</TabItem>

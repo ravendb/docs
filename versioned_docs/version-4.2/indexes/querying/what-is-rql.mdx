@@ -1,0 +1,401 @@
+---
+title: "Querying: RQL - Raven Query Language"
+hide_table_of_contents: true
+sidebar_label: What is RQL
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: RQL - Raven Query Language
+<Admonition type="note" title="Note">
+
+Queries in RavenDB use an SQL-like language called **RQL** (Raven Query Language).  
+
+* In this page:  
+  * [Overview](../../indexes/querying/what-is-rql.mdx#overview)  
+  * [Query Optimizer](../../indexes/querying/what-is-rql.mdx#query-optimizer)  
+     * [Dynamic and Indexed Queries](../../indexes/querying/what-is-rql.mdx#dynamic-and-indexed-queries)  
+     * [Queries Usage of Indexes](../../indexes/querying/what-is-rql.mdx#queries-usage-of-indexes)  
+  * [RQL Keywords and Methods](../../indexes/querying/what-is-rql.mdx#rql-keywords-and-methods)  
+     * [`declare`](../../indexes/querying/what-is-rql.mdx#declare)  
+     * [`from`](../../indexes/querying/what-is-rql.mdx#from)  
+     * [`group by`](../../indexes/querying/what-is-rql.mdx#group-by)  
+     * [`where`](../../indexes/querying/what-is-rql.mdx#where)  
+     * [`order by`](../../indexes/querying/what-is-rql.mdx#order-by)  
+     * [`load`](../../indexes/querying/what-is-rql.mdx#load)  
+     * [`select`](../../indexes/querying/what-is-rql.mdx#select)  
+     * [`update`](../../indexes/querying/what-is-rql.mdx#update)  
+     * [`include`](../../indexes/querying/what-is-rql.mdx#include)  
+     * [`with`](../../indexes/querying/what-is-rql.mdx#with)  
+     * [`match`](../../indexes/querying/what-is-rql.mdx#match)  
+     * [`Keywords and Methods Summary`](../../indexes/querying/what-is-rql.mdx#keywords-and-methods)  
+
+</Admonition>
+## Overview
+
+RQL is designed to expose externally the RavenDB query pipeline in a way that is easy 
+to understand, easy to use, and not overwhelming to the user.
+
+
+
+## Query Optimizer
+
+As soon as a query reaches a RavenDB instance, the instance calls its query optimizer to 
+analyze the query and determine which indexes should be used to retrieve the requested data.   
+#### Dynamic and Indexed Queries
+
+RavenDB has two types of queries:  
+
+* A **dynamic query**, e.g. ```from Orders where ...```, which gives the query optimizer 
+  full freedom to choose which index the query will use.  
+* An **indexed query**, that specifies the index it would use.  
+  E.g. ```from index 'Orders/ByCompany' where ...```, 
+  which instructs RavenDB to use the ```Orders/ByCompany``` index.
+#### Queries Usage of Indexes
+
+In other databases, the query optimizer may fail to find a suitable index and fall back 
+into querying using a full scan.  
+
+RavenDB doesn't include support for full scans. If an index cannot be found for a query, 
+the query optimizer will **create a new index for the query**.  
+
+RavenDB queries will use the index they have created or found, to minimize response 
+time and return results at the same speed regardless of the size of the data.  
+
+You can read more about indexes [here](../indexing-basics.mdx).   
+
+
+<Admonition type="note" title="Exception: Counters" id="exception-counters" href="#exception-counters">
+Queries in RavenDB are indexed automatically (unless they are already indexed).  
+[Distributed Counters](../../client-api/session/counters/overview.mdx) are an exception 
+to this rule: they are **not** indexed automatically, though they **can** be indexed 
+manually.  
+Counters that haven't been indexed manually, will be queried without index.  
+</Admonition>
+
+<Admonition type="note" title="Indexing and queries in RavenDB " id="indexing-and-queries-in-ravendb" href="#indexing-and-queries-in-ravendb">
+Indexing in RavenDB is a **background operation**.  
+An yet-unindexed query will wait for the indexing process to complete (or timeout).  
+A query that can be answered using an existing index will proceed normally 
+using this index.  
+When the creation of a new index has caught up, RavenDB will remove all the 
+old indexes that are now superseded by the new index.  
+</Admonition>
+
+
+#RQL Keywords and Methods
+
+## `declare`
+
+The keyword `declare` gives you the ability to create a JavaScript function that can be reused in `select` (when projection is done). You can read more about it [here](../../client-api/session/querying/how-to-project-query-results.mdx#example-iv---projection-with-).
+
+
+
+## `from`
+
+The keyword `from` is used to determine the source data that will be used when a query is executed.  
+
+You have two options:
+
+* `from <collection>`  
+  This option is used to perform:
+   - Collection queries that perform just basic ID filtering.  
+     When this is the case, there is no need to query an index 
+     and the required document is returned directly from the storage.  
+     E.g.  
+     `from Companies where id() == 'companies/1-A'`  
+   - Dynamic queries that are executed using [auto indexes](../../indexes/creating-and-deploying.mdx#auto-indexes).  
+
+      <Admonition type="info" title="All Documents" id="all-documents" href="#all-documents">
+       In order to query all documents, the `@all_docs` keyword can be used:
+
+         - `from @all_docs where FirstName = 'Laura'`
+         - `from @all_docs where id() = 'companies/1-A'`.
+       </Admonition>
+
+* `from INDEX <index-name>`  
+  This option is used to perform RQL operations with a specific index.  
+
+
+
+## `group by`
+
+The keyword `group by` is used to create an aggregation query. Please refer to the article about [dynamic group by queries](../../client-api/session/querying/how-to-perform-group-by-query.mdx) to find out more.
+
+
+
+## `where`
+
+You can use the `where` keyword with various operators 
+to filter chosen documents from the final result-set.  
+### Operator: `>=`, `<=`, `<>`, `!=`, `<`, `>`, `=`, `==`
+
+These basic operators can be used with all value types, including 'numbers' and 'strings'.
+
+You can, for example, return every document from the 
+[companies collection](../../client-api/faq/what-is-a-collection.mdx) 
+whose _field value_ **=** _a given input_.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Companies
+where Name = 'The Big Cheese'
+`}
+</CodeBlock>
+</TabItem>
+
+Filtering on **nested properties** is also supported, so in order to return all companies from 'Albuquerque' we need to execute following query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Companies
+where Address.City = 'Albuquerque'
+`}
+</CodeBlock>
+</TabItem>
+### Operator: `between`
+
+The operator `between` returns results inclusively, and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators (see the example below).
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Products 
+where PricePerUnit between 10.5 and 13.0
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Products 
+where PricePerUnit >= 10.5 and PricePerUnit <= 13.0
+`}
+</CodeBlock>
+</TabItem>
+### Operator: `in`
+
+The operator `in` is validating if a given field contains passed values. It will return results if a given field matches **any** of the passed values.
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Companies 
+where Name IN ('The Big Cheese', 'Unknown company name')
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Orders 
+where Lines[].ProductName in ('Chang', 'Spegesild', 'Unknown product name') 
+`}
+</CodeBlock>
+</TabItem>
+### Operator: `all in`
+
+This operator checks if **all** passes values are matching a given field. Due to its mechanics, it is only useful when used on array fields.
+
+The following query will yield no results in contrast to an 'in' operator.
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Orders 
+where Lines[].ProductName all in ('Chang', 'Spegesild', 'Unknown product name') 
+`}
+</CodeBlock>
+</TabItem>
+
+but removing the 'Unknown product name' will give you orders that only contains products with both 'Chang' and 'Spegesild' names
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Orders 
+where Lines[].ProductName all in ('Chang', 'Spegesild') 
+`}
+</CodeBlock>
+</TabItem>
+### Binary Operators: `AND`, `OR`, `NOT`
+
+Binary operators can be used to build more complex statements. The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Companies
+where Name = 'The Big Cheese' OR Name = 'Richter Supermarkt'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Orders
+where Freight > 500 AND ShippedAt > '1998-01-01'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Orders
+where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
+`}
+</CodeBlock>
+</TabItem>
+### Subclauses: `(`, `)`
+
+Subclauses can be used along with binary operators to build even more complex logical statements. They are self-explanatory so no example will be given.
+
+
+## `order by`
+
+To perform sorting, `order by` must be used.  
+Read more about this subject in the [article dedicated to sorting](../../indexes/querying/sorting.mdx).  
+
+
+
+## `load`
+
+When there is a need to use data from an external document in projection, `load` can be used. Please refer to the following [projection article](../../indexes/querying/projections.mdx#example-vii---projection-using-a-loaded-document) to find out more about it.
+
+
+
+## `select`
+
+Projections can be performed by using `select`. Please read our dedicated projection article [here](../../indexes/querying/projections.mdx).
+
+
+
+## `update`
+
+To patch documents on the server-side, use `update` with the desired JavaScript script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based.mdx).
+
+
+
+## `include`
+
+The keyword `include` has been introduced to support:
+
+- [including additional documents](../../client-api/how-to/handle-document-relationships.mdx#includes) or counters to the query response
+- [highlighting](../../client-api/session/querying/how-to-use-highlighting.mdx) results
+- query timings
+- explanations
+
+
+
+## `with`
+
+The keyword `with` is used to determine the data source of a [graph query](../../indexes/querying/graph/graph-queries-overview.mdx).  
+There are two types of `with` clauses, regular `with` and `with edges`.
+
+- with: `with {from Orders} as o`  
+  The above statement means that the data source referred to by the alias `o` is the result of the `from Orders` query  
+    
+- with edges: `with edges (Lines) { where Discount >= 0.25 select Product } as cheap`  
+  The above statement means that our data source is the property `Lines` of the source documents and we filter all lines that match `Discount >= 0.25` query
+  the destination referred to by the `cheap` alias is the product pointed by the `Product` property of the order line  
+    
+
+
+## `match`
+
+The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries-overview.mdx).  
+`match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
+The above statement means that we are searching for a pattern that starts with an order and traverse using the
+order lines referred to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product referred to by the `Product` property.  
+
+A match may contain an edge in both direction, a right edge would look like so `(node1)-[right]->(node2)` and a left one would look like so `(node1)<-[left]-(node2)`.  
+Any combination of edges is allowed in a match clause e.g.  
+`(node1)-[right]->(node2)<-[left]-(node3)`  
+The above match will actually be translated to:  
+`(node1)-[right]->(node2)`  
+and  
+`(node3)-[left]->(node2)`  
+where the `and` is a set intersection between the two patterns.  
+
+
+
+## Keywords and Methods
+
+The following keywords and methods are available in RQL:
+
+- DECLARE
+- [FROM](../../indexes/querying/what-is-rql.mdx#from)
+  - INDEX
+- [GROUP BY](../../indexes/querying/what-is-rql.mdx#group-by)
+  - [array()](../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [WHERE](../../indexes/querying/what-is-rql.mdx#where)
+  - id()
+  - [search()](../../indexes/querying/searching.mdx)
+  - cmpxchg()
+  - boost()
+  - [regex()](../../client-api/session/querying/how-to-use-regex.mdx)
+  - startsWith()
+  - endsWith()
+  - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+  - [exists()](../../client-api/session/querying/how-to-filter-by-field.mdx)
+  - exact()
+  - [intersect()](../../indexes/querying/intersection.mdx)
+  - [spatial.within()](../../indexes/querying/spatial.mdx)
+  - [spatial.contains()](../../indexes/querying/spatial.mdx)
+  - [spatial.disjoint()](../../indexes/querying/spatial.mdx)
+  - [spatial.intersects()](../../indexes/querying/spatial.mdx)
+  - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- [ORDER BY](../../indexes/querying/what-is-rql.mdx#order-by)
+  - [ASC | ASCENDING](../../indexes/querying/sorting.mdx#basics)
+  - [DESC | DESCENDING](../../indexes/querying/sorting.mdx#basics)
+  - [AS](../../indexes/querying/sorting.mdx#basics)
+    - [string](../../indexes/querying/sorting.mdx#basics)
+    - [long](../../indexes/querying/sorting.mdx#basics)
+    - [double](../../indexes/querying/sorting.mdx#basics)
+    - [alphaNumeric](../../indexes/querying/sorting.mdx#alphanumeric-ordering)
+  - [random()](../../indexes/querying/sorting.mdx#random-ordering)
+  - [score()](../../indexes/querying/sorting.mdx#ordering-by-score)
+  - [spatial.distance()](../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)
+- [LOAD](../../indexes/querying/what-is-rql.mdx#load)
+- [SELECT](../../indexes/querying/what-is-rql.mdx#select)
+  - DISTINCT
+  - key()
+  - sum()
+  - count()
+  - [facet()](../../indexes/querying/faceted-search.mdx)
+- [UPDATE](../../indexes/querying/what-is-rql.mdx#update)
+- [INCLUDE](../../indexes/querying/what-is-rql.mdx#include)
+- [WITH](../../indexes/querying/what-is-rql.mdx#with)
+- [MATCH](../../indexes/querying/what-is-rql.mdx#match)
+
+With the following operators:
+
+- &gt;=
+- &lt;=
+- &lt;&gt; or !=
+- &lt;
+- &gt;
+- = or ==
+- BETWEEN
+- IN
+- ALL IN
+- OR
+- AND
+- NOT
+- (
+- )
+
+And the following values:
+
+- true
+- false
+- null
+- string e.g. 'John' or "John"
+- number (long and double) e.g. 17
+- parameter e.g. $param1
+
+
+

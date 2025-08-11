@@ -1,0 +1,43 @@
+---
+title: "Changing metadata"
+hide_table_of_contents: true
+sidebar_label: Changing metadata
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Changing metadata
+
+The session keeps track of all the files loaded into the session context. If you want to change the file's metadata, you just need to modify it and save changes.
+
+
+
+<TabItem value="update_metadata_1" label="update_metadata_1">
+<CodeBlock language="csharp">
+{`FileHeader file = await session.LoadFileAsync("/movies/intro.avi");
+
+file.Metadata["Copyright"] = "2015 Hibernating Rhinos. All rights reserved."; // modification of existing metadata
+file.Metadata.Add("Duration", TimeSpan.FromMinutes(22).ToString()); // adding a new one
+
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,26 @@
+---
+title: "Glossary: SearchResults"
+hide_table_of_contents: true
+sidebar_label: SearchResults
+sidebar_position: 50
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: SearchResults
+
+RavenFS client API class representing search results.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Files** | List&lt;FileHeader&gt; | The list of matching files represented by [FileHeader](file-header) objects |
+| **FileCount** | int | The total number of files matching search criteria |
+| **Start** | int | The `start` parameter passed to a search method |
+| **PageSize** | int | The `pageSize` parameter passed to a search method |

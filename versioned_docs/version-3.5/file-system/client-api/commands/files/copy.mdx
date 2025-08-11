@@ -1,0 +1,80 @@
+---
+title: "Commands: CopyAsync"
+hide_table_of_contents: true
+sidebar_label: Copy
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: CopyAsync
+
+**CopyAsync** is used to copy the file.
+
+
+
+<TabItem value="copy_1" label="copy_1">
+<CodeBlock language="csharp">
+{`Task CopyAsync(string sourceName, string targetName, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **sourceName** | string | The full path of the file that you want to copy from |
+| **targetName** | string | The name of the new file you want to copy to |
+| **etag** | Etag | The current file etag used for concurrency checks (`null` skips check) |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous copy operation |
+
+## Example
+
+<TabItem value="copy_2" label="copy_2">
+<CodeBlock language="csharp">
+{`await store
+    .AsyncFilesCommands
+    .CopyAsync(
+        "/movies/intro.avi",
+        "/movies/copies/intro.avi"
+    );
+`}
+</CodeBlock>
+</TabItem>
+
+Note that with file copy operation you can change the name of the file too:
+
+<TabItem value="copy_3" label="copy_3">
+<CodeBlock language="csharp">
+{`await store
+    .AsyncFilesCommands
+    .CopyAsync(
+        "/movies/intro.avi",
+        "/movies/copies/newCopyFile.avi"
+    );
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [RetryCopyingAsync](../storage/retry-copying)
+
+-->

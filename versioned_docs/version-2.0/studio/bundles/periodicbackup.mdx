@@ -1,0 +1,30 @@
+---
+title: "Bundle: Periodic Backup"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Periodic Backup - Studio
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Periodic Backup
+In order to enable periodic backup for a database you need to go to its setting by pressing the cog wheel on the top right next to its name:  
+![Periodic Backup Fig 1](./assets/studio_periodic_1.PNG)  
+
+Once there select the "Periodic Backup" option:  
+![Periodic Backup Fig 2](./assets/studio_periodic_2.PNG)  
+
+On the first run you need to activate the periodic backup, after you do so you will need to enter the setting for the backup:  
+![Periodic Backup Fig 3](./assets/studio_periodic_3.PNG)  
+
+In here you have several fields to fill:  
+
+- Glacier Vault Name/S3 Bucket Name: first select in which way you wish to backup and then enter the name  
+![Periodic Backup Fig 4](./assets/studio_periodic_4.PNG)  
+- AWS Settings: You need to set the AWS access key, secret and region endpoint.
+- Interval: Set the interval between backups (in minutes)

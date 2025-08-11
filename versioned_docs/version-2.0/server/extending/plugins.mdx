@@ -1,0 +1,1020 @@
+---
+title: "Plugins"
+hide_table_of_contents: true
+sidebar_label: Plugins
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Plugins
+
+Under `Raven.Database.Plugins` namespace various interfaces and classes can be found that might be used to extend the database behavior.
+
+<Admonition type="note" title="Note">
+All DLL's containing custom plugins must be placed in `Plugins` directory that by default are found in `~\Plugins`. To change the default location of this directory, please refer to [this](../administration/configuration.mdx#bundles) page.
+</Admonition>
+
+## Triggers
+
+This type of extensions grants the ability to manipulate when certain action is taking place e.g. document is deleted or index is updated.
+
+Triggers can be divided to four categories:    
+* **PUT** triggers   
+* **DELETE** triggers  
+* **Read** triggers   
+* **Index Query** triggers   
+* **Index Update** triggers    
+
+### PUT triggers
+
+To create his own trigger, one must inherit from `AbstractPutTrigger` or `AbstractAttachmentPutTrigger`, but before we will do that let's take a look at them more closely.
+
+<TabItem value="plugins_1" label="plugins_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractPutTrigger
+\{
+	public virtual VetoResult AllowPut(string key, RavenJObject document, RavenJObject metadata, TransactionInformation transactionInformation)
+	\{
+		return VetoResult.Allowed;
+	\}
+
+	public virtual void OnPut(string key, RavenJObject document, RavenJObject metadata, TransactionInformation transactionInformation)
+	\{
+	\}
+
+	public virtual void AfterPut(string key, RavenJObject document, RavenJObject metadata, Etag etag, TransactionInformation transactionInformation)
+	\{
+	\}
+
+	public virtual void AfterCommit(string key, RavenJObject document, RavenJObject metadata, Etag etag)
+	\{
+	\}
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_3" label="plugins_3">
+<CodeBlock language="csharp">
+{`public abstract class AbstractAttachmentPutTrigger
+\{
+	public virtual VetoResult AllowPut(string key, Stream data, RavenJObject metadata)
+	\{
+		return VetoResult.Allowed;
+	\}
+
+	public virtual void OnPut(string key, Stream data, RavenJObject metadata)
+	\{
+	\}
+
+	public virtual void AfterPut(string key, Stream data, RavenJObject metadata, Etag etag)
+	\{
+	\}
+
+	public virtual void AfterCommit(string key, Stream data, RavenJObject metadata, Etag etag)
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_2" label="plugins_2">
+<CodeBlock language="csharp">
+{`public class VetoResult
+\{
+	public static VetoResult Allowed
+	\{
+		get \{ return new VetoResult(true, "allowed"); \}
+	\}
+
+	public static VetoResult Deny(string reason)
+	\{
+		return new VetoResult(false, reason);
+	\}
+
+	private VetoResult(bool allowed, string reason)
+	\{
+		IsAllowed = allowed;
+		Reason = reason;
+	\}
+
+	public bool IsAllowed \{ get; private set; \}
+
+	public string Reason \{ get; private set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **AllowPut** is used to `grant` or `deny` the put operation.   
+* **OnPut** is used to perform any logic just before the document is saved to the disk.   
+* **AfterPut** is used to perform any logic after the document was inserted but still in the same transaction as in `OnPut` method.   
+* **AfterCommit** is used to perform any logic `after` the transaction was commited.    
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.   
+
+**Example: Security trigger**
+
+<TabItem value="plugins_4" label="plugins_4">
+<CodeBlock language="csharp">
+{`public class SecurityTrigger : AbstractPutTrigger
+\{
+	public override VetoResult AllowPut(string key, RavenJObject document, RavenJObject metadata, TransactionInformation transactionInformation)
+	\{
+		var doc = Database.Get(key, transactionInformation);
+		if (doc == null) // new document
+			return VetoResult.Allowed;
+
+		if (doc.Metadata["Document-Owner"] == null)// no security
+			return VetoResult.Allowed;
+
+		if (doc.Metadata["Document-Owner"].Value<string>() == Thread.CurrentPrincipal.Identity.Name)
+			return VetoResult.Allowed;
+
+		return VetoResult.Deny("You are not the document owner, cannot modify document");
+	\}
+
+	public override void OnPut(string key, RavenJObject document, RavenJObject metadata, TransactionInformation transactionInformation)
+	\{
+		if (metadata["Document-Owner"] == null) // user didn't explicitly set it
+		\{
+			// modify the metadata to the current user
+			metadata["Document-Owner"] = RavenJObject.FromObject(Thread.CurrentPrincipal.Identity.Name);
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Most of the logic is in `AllowPut` method, where we check the existing owner (by checking the current version of the document) and reject the update if it if the owner doesn't match.
+In the `OnPut` method, we ensure that the metadata we need is setup correctly. To control attachment putting, similar trigger can be created.
+
+### DELETE triggers
+
+Delete triggers are similar in shape to the put triggers, but in contrast to them they control the delete operations. To build your own trigger, one must inherit from `AbstractDeleteTrigger` or `AbstractAttachmentDeleteTrigger`.
+
+<TabItem value="plugins_5" label="plugins_5">
+<CodeBlock language="csharp">
+{`public abstract class AbstractDeleteTrigger
+\{
+	public virtual VetoResult AllowDelete(string key, TransactionInformation transactionInformation)
+	\{
+		return VetoResult.Allowed;
+	\}
+
+	public virtual void OnDelete(string key, TransactionInformation transactionInformation)
+	\{
+	\}
+
+	public virtual void AfterDelete(string key, TransactionInformation transactionInformation)
+	\{
+	\}
+
+	public virtual void AfterCommit(string key)
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_6" label="plugins_6">
+<CodeBlock language="csharp">
+{`public abstract class AbstractAttachmentDeleteTrigger
+\{
+	public virtual VetoResult AllowDelete(string key)
+	\{
+		return VetoResult.Allowed;
+	\}
+
+	public virtual void OnDelete(string key)
+	\{
+	\}
+
+	public virtual void AfterDelete(string key)
+	\{
+	\}
+
+	public virtual void AfterCommit(string key)
+	\{
+
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **AllowDelete** is used to `grant` or `deny` the delete operation.   
+* **OnDelete** is used to perform any logic just before the document is deleted.   
+* **AfterDelete** is used to perform any logic after the document has been deleted but still in the same transaction as in `OnDelete` method.   
+* **AfterCommit** is used to perform any logic `after` the transaction was commited.    
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.   
+
+**Example: Cascading deletes**
+
+<TabItem value="plugins_7" label="plugins_7">
+<CodeBlock language="csharp">
+{`public class CascadeDeleteTrigger : AbstractDeleteTrigger
+\{
+	public override void OnDelete(string key, TransactionInformation txInfo)
+	\{
+		var document = Database.Get(key, txInfo);
+		if (document == null)
+			return;
+
+		Database.Delete(document.Metadata.Value<string>("Cascade-Delete"), null, txInfo);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In this case, we perform another delete operation as part of the current delete operation. This operation is done under the same transaction as the original operation.
+
+### Read triggers
+
+Another type of triggers is used to control the access to the documents and manipulate their context when performing read operations. Similar to the previous triggers, two classes were introduced, the `AbstractReadTrigger` and `AbstractAttachmentReadTrigger`.
+
+<TabItem value="plugins_8" label="plugins_8">
+<CodeBlock language="csharp">
+{`public abstract class AbstractReadTrigger
+\{
+	public virtual ReadVetoResult AllowRead(string key, RavenJObject metadata, ReadOperation operation, TransactionInformation transactionInformation)
+	\{
+		return ReadVetoResult.Allowed;
+	\}
+
+	public virtual void OnRead(string key, RavenJObject document, RavenJObject metadata, ReadOperation operation, TransactionInformation transactionInformation)
+	\{
+	\}
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_9" label="plugins_9">
+<CodeBlock language="csharp">
+{`public abstract class AbstractAttachmentReadTrigger
+\{
+	public virtual ReadVetoResult AllowRead(string key, Stream data, RavenJObject metadata, ReadOperation operation)
+	\{
+		return ReadVetoResult.Allowed;
+	\}
+
+	public virtual void OnRead(string key, Attachment attachment)
+	\{
+	\}
+
+	public virtual void OnRead(AttachmentInformation information)
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public DocumentDatabase Database \{ get; set; \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_1_0" label="plugins_1_0">
+<CodeBlock language="csharp">
+{`public class ReadVetoResult
+\{
+	public static ReadVetoResult Allowed
+	\{
+		get \{ return new ReadVetoResult(ReadAllow.Allow, "allowed"); \}
+	\}
+
+	public static ReadVetoResult Ignore
+	\{
+		get \{ return new ReadVetoResult(ReadAllow.Ignore, "ignore"); \}
+	\}
+
+	public static ReadVetoResult Deny(string reason)
+	\{
+		return new ReadVetoResult(ReadAllow.Deny, reason);
+	\}
+
+	private ReadVetoResult(ReadAllow allowed, string reason)
+	\{
+		Veto = allowed;
+		Reason = reason;
+	\}
+
+	public ReadAllow Veto \{ get; private set; \}
+
+	public enum ReadAllow
+	\{
+		Allow,
+		Deny,
+		Ignore
+	\}
+
+	public string Reason \{ get; private set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **AllowRead** is used to `grant` or `deny` the read operation.   
+* **OnRead** is used to perform any logic just before the document is read e.g. modify the document or document metadata (modified values are transient and are `not saved` to the database).     
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.      
+
+**Example: Information hiding**
+
+<TabItem value="plugins_1_1" label="plugins_1_1">
+<CodeBlock language="csharp">
+{`public class SecurityReadTrigger : AbstractReadTrigger
+\{
+	public override ReadVetoResult AllowRead(string key, RavenJObject metadata, ReadOperation operation, TransactionInformation transactionInformation)
+	\{
+		if (metadata.Value<string>("Document-Owner") == Thread.CurrentPrincipal.Identity.Name)
+			return ReadVetoResult.Allowed;
+
+		if (operation == ReadOperation.Load)
+			return ReadVetoResult.Deny("You don't have permission to read this document");
+
+		return ReadVetoResult.Ignore;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In the example above, we only let the owner of a document to read it. You can see that a Read trigger can deny the read to the user (returning an error to the user) or ignoring the read (hiding the presence of the document). You can also make decisions based on wheter that specific document was requested, or if the document was read as part of a query.
+
+**Example: Linking document on the server side**
+
+<TabItem value="plugins_1_2" label="plugins_1_2">
+<CodeBlock language="csharp">
+{`public class EmbedLinkDocument : AbstractReadTrigger
+\{
+	public override void OnRead(string key, RavenJObject document, RavenJObject metadata, ReadOperation operation, TransactionInformation transactionInformation)
+	\{
+		var linkName = metadata.Value<string>("Raven-Link-Name");
+		var link = metadata.Value<string>("Raven-Link");
+		if (link == null)
+			return;
+
+		var linkedDocument = Database.Get(link, transactionInformation);
+		document.Add(linkName, linkedDocument.ToJson());
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In this case, we detect that a document with a link was requested, and we stitch the document together with its link to create a single document.
+
+### Index Query triggers
+
+Query triggers have been introduced to extend the query parsing capabilities and provide users with a way to modify the queries before they are executed against the index. To write your own query trigger, you must inherit from `AbstractIndexQueryTrigger` class.
+
+<TabItem value="plugins_1_3" label="plugins_1_3">
+<CodeBlock language="csharp">
+{`public abstract class AbstractIndexQueryTrigger
+\{
+	public virtual void Initialize()
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+
+	public DocumentDatabase Database \{ get; set; \}
+
+	public abstract Query ProcessQuery(string indexName, Query query, IndexQuery originalQuery);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **ProcessQuery** is used to perform any logic on the provided query.   
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.    
+
+**Example: Combining current query with our additional custom logic**
+
+<TabItem value="plugins_1_4" label="plugins_1_4">
+<CodeBlock language="csharp">
+{`public class CustomQueryTrigger : AbstractIndexQueryTrigger
+\{
+	private const string SpecificIndexName = "Specific/Index";
+
+	public override Query ProcessQuery(string indexName, Query query, IndexQuery originalQuery)
+	\{
+		if (indexName != SpecificIndexName)
+			return query;
+
+		var customQuery = new PrefixQuery(new Term("CustomField", "CustomPrefix"));
+
+		return new BooleanQuery
+			\{
+				\{ query, Occur.MUST \},
+				\{ customQuery, Occur.MUST\}
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Index Update triggers
+
+Index Update triggers allow users to perform custom actions every time an index entry has been created or deleted. To write your own trigger we must consider two classes. The `AbstractIndexUpdateTrigger` and `AbstractIndexUpdateTriggerBatcher` defined below.
+
+<TabItem value="plugins_2_0" label="plugins_2_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractIndexUpdateTrigger
+\{
+	public virtual void Initialize()
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public abstract AbstractIndexUpdateTriggerBatcher CreateBatcher(string indexName);
+
+	public DocumentDatabase Database \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **CreateBatcher** is used to construct a batcher for given index.   
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.    
+
+<TabItem value="plugins_2_1" label="plugins_2_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractIndexUpdateTriggerBatcher
+\{
+	public virtual void OnIndexEntryDeleted(string entryKey)
+	\{
+	\}
+
+	public virtual void OnIndexEntryCreated(string entryKey, Document document)
+	\{
+	\}
+
+	public virtual void AnErrorOccured(Exception exception)
+	\{
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **OnIndexEntryDeleted** is executed when index entry is being removed from the index. The provided key may represent an already deleted document.    
+* **OnIndexEntryCreated** is executed when specified document with a given key is being inserted. The changes to the provided lucene document will be writen to the Lucene index.    
+* **AnErrorOccured** is used to notify the batcher that an error occured.   
+
+**Example: Creating static snapshot from the indexed document**
+
+<TabItem value="plugins_2_2" label="plugins_2_2">
+<CodeBlock language="csharp">
+{`public class SnapshotShoppingCartUpdateTrigger : AbstractIndexUpdateTrigger
+\{
+	public override AbstractIndexUpdateTriggerBatcher CreateBatcher(string indexName)
+	\{
+		return new SnapshotShoppingCartBatcher(indexName, Database);
+	\}
+\}
+
+public class SnapshotShoppingCartBatcher : AbstractIndexUpdateTriggerBatcher
+\{
+	private readonly string indexName;
+
+	private readonly DocumentDatabase database;
+
+	public SnapshotShoppingCartBatcher(string indexName, DocumentDatabase database)
+	\{
+		this.indexName = indexName;
+		this.database = database;
+	\}
+
+	public override void OnIndexEntryCreated(string entryKey, Document document)
+	\{
+		if (indexName != "Aggregates/ShoppingCart")
+			return;
+
+		var shoppingCart = RavenJObject.Parse(document.GetField("Aggregate").StringValue);
+		var shoppingCartId = document.GetField("Id").StringValue;
+
+		var result = database.Put("shoppingcarts/" + shoppingCartId + "/snapshots/", null, shoppingCart, new RavenJObject(), null);
+		document.Add(new Field("Snapshot", result.Key, Field.Store.YES, Field.Index.NOT_ANALYZED));
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This index works on the [following index](https://ayende.com/blog/4530/raven-event-sourcing) in order to create a static snapshot of the indexed document whenever it is indexed. Note that we use identity insert here (the key we use ends with '/') so we will have documents like this:
+
+* shoppingcarts/12/snapshots/1
+* shoppingcarts/12/snapshots/2
+* shoppingcarts/12/snapshots/3
+
+This is nice if we want to keep a record of all the changes to the index. Note that we also change the document to store the snapshot key for this particular version.    
+
+## Codecs
+
+The `AbstractDocumentCodec` and `AbstractIndexCodec` classes have been introduced as an entry point to custom compression methods.
+
+<TabItem value="plugins_3_0" label="plugins_3_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractDocumentCodec
+\{
+	public DocumentDatabase Database \{ get; set; \}
+
+	public virtual void Initialize()
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public abstract Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream);
+
+	public abstract Stream Decode(string key, RavenJObject metadata, Stream dataStream);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_3_1" label="plugins_3_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractIndexCodec
+\{
+	public virtual void Initialize(DocumentDatabase database)
+	\{
+	\}
+
+	public virtual void SecondStageInit()
+	\{
+	\}
+
+	public abstract Stream Encode(string key, Stream dataStream);
+
+	public abstract Stream Decode(string key, Stream dataStream);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **Encode** is executed when given document/index is written.   
+* **Decode** is executed when provided document/index is read.    
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.   
+
+**Example: Compression**
+
+<TabItem value="plugins_3_2" label="plugins_3_2">
+<CodeBlock language="csharp">
+{`public class SimpleCompressionCodec : AbstractDocumentCodec
+\{
+	private readonly SimpleCompressor compressor = new SimpleCompressor();
+
+	public override Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream)
+	\{
+		return compressor.Compress(key, data, metadata, dataStream);
+	\}
+
+	public override Stream Decode(string key, RavenJObject metadata, Stream dataStream)
+	\{
+		return compressor.Decompress(key, metadata, dataStream);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Example: Encryption**
+
+<TabItem value="plugins_3_3" label="plugins_3_3">
+<CodeBlock language="csharp">
+{`public class SimpleEncryptionCodec : AbstractDocumentCodec
+\{
+	private readonly SimpleEncryptor encryptor = new SimpleEncryptor();
+
+	public override Stream Encode(string key, RavenJObject data, RavenJObject metadata, Stream dataStream)
+	\{
+		return encryptor.Encrypt(key, data, metadata, dataStream);
+	\}
+
+	public override Stream Decode(string key, RavenJObject metadata, Stream dataStream)
+	\{
+		return encryptor.Decrypt(key, metadata, dataStream);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Tasks
+
+Another type of plugins gives us the ability to perform various actions during server/database startup process or enables us to perform actions periodically. For these needs we have introduced two interfaces and one abstract class.
+
+<TabItem value="plugins_4_0" label="plugins_4_0">
+<CodeBlock language="csharp">
+{`public interface IStartupTask
+\{
+	void Execute(DocumentDatabase database);
+\}
+
+public interface IServerStartupTask
+\{
+	void Execute(HttpServer server);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_4_1" label="plugins_4_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractBackgroundTask : IStartupTask
+\{
+	private static readonly ILog log = LogManager.GetCurrentClassLogger();
+
+	public DocumentDatabase Database \{ get; set; \}
+
+	public void Execute(DocumentDatabase database)
+	\{
+		Database = database;
+		Initialize();
+		Task.Factory.StartNew(BackgroundTask, TaskCreationOptions.LongRunning);
+	\}
+
+	protected virtual void Initialize()
+	\{
+	\}
+
+	int workCounter;
+	public void BackgroundTask()
+	\{
+		var name = GetType().Name;
+		var context = Database.WorkContext;
+		while (context.DoWork)
+		\{
+			var foundWork = false;
+			try
+			\{
+				foundWork = HandleWork();
+			\}
+			catch (Exception e)
+			\{
+				log.ErrorException("Failed to execute background task", e);
+			\}
+			if (foundWork == false)
+			\{
+				context.WaitForWork(TimeoutForNextWork(), ref workCounter, name);
+			\}
+			else
+			\{
+				context.UpdateFoundWork();
+			\}
+		\}
+	\}
+
+	protected virtual TimeSpan TimeoutForNextWork()
+	\{
+		return TimeSpan.FromHours(1);
+	\}
+
+	protected abstract bool HandleWork();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* `IStartupTask` can be used to implement a task that will be started during database initialization.   
+* `IServerStartupTask` can be used to implement a task that will be started during server initialization.    
+* `AbstractBackgroundTask ` is a base for all periodic tasks.    
+
+**Example: Send email when server is starting**
+
+<TabItem value="plugins_4_2" label="plugins_4_2">
+<CodeBlock language="csharp">
+{`public class SendEmailWhenServerIsStartingTask : IServerStartupTask
+\{
+	public void Execute(HttpServer server)
+	\{
+		var message = new MailMessage("ravendb@myhost.com", "admin@myhost.com")
+			\{
+				Subject = "RavenDB server started.",
+				Body = "Start at: " + DateTime.Now.ToShortDateString()
+			\};
+
+		using (var smtpClient = new SmtpClient("mail.myhost.com"))
+		\{
+			smtpClient.Send(message);
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Example: Perform a cleanup task during database initialization**
+
+<TabItem value="plugins_4_3" label="plugins_4_3">
+<CodeBlock language="csharp">
+{`public class CleanupWhenDatabaseIsStarting : IStartupTask
+\{
+	private const string SpecificDatabaseName = "ExampleDB";
+
+	public void Execute(DocumentDatabase database)
+	\{
+		if (database.Name != SpecificDatabaseName)
+			return;
+
+		bool stale;
+		var queryResults = database.QueryDocumentIds("Notifications/Temp", new IndexQuery(), CancellationToken.None, out stale);
+
+		foreach (var documentId in queryResults)
+		\{
+			database.Delete(documentId, null, null);
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Example: Perform a cleanup task every six hours**
+
+<TabItem value="plugins_4_4" label="plugins_4_4">
+<CodeBlock language="csharp">
+{`public class RemoveAllTemporaryNotificationsTask : AbstractBackgroundTask
+\{
+	protected override bool HandleWork()
+	\{
+		var queryResults = Database.Query("Notifications/Temp", new IndexQuery(), CancellationToken.None);
+		foreach (var document in queryResults.Results)
+		\{
+			var id = ((RavenJObject)document["@metadata"]).Value<string>("@id");
+			Database.Delete(id, null, null);
+		\}
+
+		return true;
+	\}
+
+	protected override TimeSpan TimeoutForNextWork()
+	\{
+		return TimeSpan.FromHours(6);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Compilation Extensions
+
+There might be a certian situations when users want to put more complex logic to calculate a value of an index entry field. To do this, in RavenDB, we have introduced an `AbstractDynamicCompilationExtension`.
+
+<TabItem value="plugins_6_0" label="plugins_6_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractDynamicCompilationExtension
+\{
+	public abstract string[] GetNamespacesToImport();
+
+	public abstract string[] GetAssembliesToReference();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **GetNamespacesToImport** returns a list of namespaces that RavenDB will have to import   
+* **GetAssembliesToReference** returns a list of full paths to assemblies    
+
+**Example: Check if a given word is a [palindrome](https://en.wikipedia.org/wiki/Palindrome)**
+
+<TabItem value="plugins_6_1" label="plugins_6_1">
+<CodeBlock language="csharp">
+{`public static class Palindrome
+\{
+	public static bool IsPalindrome(string word)
+	\{
+		if (string.IsNullOrEmpty(word))
+			return true;
+
+		var min = 0;
+		var max = word.Length - 1;
+		while (true)
+		\{
+			if (min > max)
+				return true;
+
+			var a = word[min];
+			var b = word[max];
+			if (char.ToLower(a) != char.ToLower(b))
+				return false;
+
+			min++;
+			max--;
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_6_2" label="plugins_6_2">
+<CodeBlock language="csharp">
+{`public class PalindromeDynamicCompilationExtension : AbstractDynamicCompilationExtension
+\{
+	public override string[] GetNamespacesToImport()
+	\{
+		return new[]
+			\{
+				typeof (Palindrome).Namespace
+			\};
+	\}
+
+	public override string[] GetAssembliesToReference()
+	\{
+		return new[]
+			\{
+				typeof (Palindrome).Assembly.Location
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we can use our `Palindrome` in our index definition.
+
+<TabItem value="plugins_6_3" label="plugins_6_3">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("Dictionary/Palindromes", new IndexDefinition
+	\{
+		Map = @"from word in docs.Words 
+				select new 
+				\{ 
+							Word = word.Value, 
+							IsPalindrome = Palindrome.IsPalindrome(word.Value) 
+				\}"
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Analyzer Generators
+
+To add your custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
+
+<TabItem value="plugins_7_0" label="plugins_7_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractAnalyzerGenerator
+\{
+	public abstract Analyzer GenerateAnalyzerForIndexing(string indexName, Document document, Analyzer previousAnalyzer);
+
+	public abstract Analyzer GenerateAnalyzerForQuerying(string indexName, string query, Analyzer previousAnalyzer);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **GenerateAnalyzerForIndexing** returns an analyzer that will be used while performing indexing operation.   
+* **GenerateAnalyzerForQuerying** returns an analyzer that will be used while performing querying.    
+
+**Example: Using different analyzer for specific index**
+
+<TabItem value="plugins_7_1" label="plugins_7_1">
+<CodeBlock language="csharp">
+{`public class CustomAnalyzerGenerator : AbstractAnalyzerGenerator
+\{
+	private const string SpecificIndexName = "Specific/Index";
+
+	public override Analyzer GenerateAnalyzerForIndexing(string indexName, Document document, Analyzer previousAnalyzer)
+	\{
+		if (indexName == SpecificIndexName)
+		\{
+			return new WhitespaceAnalyzer();
+		\}
+
+		return previousAnalyzer;
+	\}
+
+	public override Analyzer GenerateAnalyzerForQuerying(string indexName, string query, Analyzer previousAnalyzer)
+	\{
+		if (indexName == SpecificIndexName)
+		\{
+			return new WhitespaceAnalyzer();
+		\}
+
+		return previousAnalyzer;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Database configuration
+
+To alter database configuration you can edit the configuration document (more about how it can be done and what configuration options are available can be found [here](../../server/administration/configuration.mdx)), but sometimes it might be better to change configuration programatically e.g. imagine a situation, where you have 100 databases and you want to change one setting in every one of them. This is why the `IAlterConfiguration` interfaces was created.
+
+<TabItem value="plugins_5_0" label="plugins_5_0">
+<CodeBlock language="csharp">
+{`public interface IAlterConfiguration
+\{
+	void AlterConfiguration(InMemoryRavenConfiguration configuration);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Example: Disable compression and extend temp index cleanup period**
+
+<TabItem value="plugins_5_1" label="plugins_5_1">
+<CodeBlock language="csharp">
+{`public class CommonConfiguration : IAlterConfiguration
+\{
+	public void AlterConfiguration(InMemoryRavenConfiguration configuration)
+	\{
+		configuration.HttpCompression = false;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

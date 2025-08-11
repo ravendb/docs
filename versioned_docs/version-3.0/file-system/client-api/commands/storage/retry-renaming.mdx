@@ -1,0 +1,97 @@
+---
+title: "Commands: RetryRenamingAsync"
+hide_table_of_contents: true
+sidebar_label: RetryRenaming
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: RetryRenamingAsync
+
+**RetryRenamingAsync** runs a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks.mdx) article for details.
+
+
+
+<TabItem value="retry_renaming_1" label="retry_renaming_1">
+<CodeBlock language="csharp">
+{`Task RetryRenamingAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** |  A task that represents the asynchronous operation |
+
+## Example
+
+<TabItem value="retry_renaming_2" label="retry_renaming_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Storage
+		.RetryRenamingAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: RetryRenaming
+
+The **POST** method runs a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks.mdx) article for details.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/storage/retryRenaming  \\
+	-X POST \\
+    -d ""
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| Empty |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | NoContent |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X POST http://localhost:8080/fs/NorthwindFS/storage/retryRenaming  \\
+	-d ""
+< HTTP/1.1 204 NoContent
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

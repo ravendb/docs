@@ -1,0 +1,54 @@
+---
+title: "Configuration: Backup"
+hide_table_of_contents: true
+sidebar_label: Backup Options
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Backup
+
+## Server.LocalRootPath
+
+Local backups can only be created under this root path.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## Server.AllowedDestinations
+
+Semicolon separated list of allowed backup destinations. If not specified, all destinations are allowed. 
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+Possible values: 
+
+- `None`
+- `Local`
+- `Azure`
+- `AmazonGlacier`
+- `AmazonS3`
+- `FTP`
+
+
+
+## Server.AllowedAwsRegions
+
+Semicolon separated list of allowed AWS regions. If not specified, all regions are allowed.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+

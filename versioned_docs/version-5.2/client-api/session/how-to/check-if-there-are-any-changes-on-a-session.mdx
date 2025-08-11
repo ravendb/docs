@@ -1,0 +1,319 @@
+---
+title: "Session: How to Check if There are Any Changes on a Session"
+hide_table_of_contents: true
+sidebar_label: ...check for session changes
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: How to Check if There are Any Changes on a Session
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Single entity can be checked for changes using [HasChanged](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `HasChanges` property and the `WhatChanged` method are available in the `Advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="what_changed_1" label="what_changed_1">
+<CodeBlock language="csharp">
+{`bool HasChanges \{ get; \}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="what_changed_2" label="what_changed_2">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	Assert.False(session.Advanced.HasChanges);
+
+	session.Store(new Employee
+					  \{
+						  FirstName = "John",
+						  LastName = "Doe"
+					  \});
+
+	Assert.True(session.Advanced.HasChanges);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="what_changed_3" label="what_changed_3">
+<CodeBlock language="csharp">
+{`IDictionary<string, DocumentsChanges[]> WhatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| IDictionary&lt;string, DocumentsChanges[]&gt; | Dictionary containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="what_changed_4" label="what_changed_4">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	session.Store(new Employee
+	\{
+		FirstName = "Joe",
+		LastName = "Doe"
+	\});
+
+	IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+	DocumentsChanges[] employeeChanges = changes["employees/1-A"];
+	DocumentsChanges.ChangeType change = employeeChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="what_changed_5" label="what_changed_5">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	Employee employee = session.Load<Employee>("employees/1-A"); // 'Joe Doe'
+	employee.FirstName = "John";
+	employee.LastName = "Shmoe";
+
+	IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+	DocumentsChanges[] employeeChanges = changes["employees/1-A"];
+	DocumentsChanges change1 = employeeChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
+	DocumentsChanges change2 = employeeChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="what_changed_1" label="what_changed_1">
+<CodeBlock language="java">
+{`boolean hasChanges()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="what_changed_2" label="what_changed_2">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Assert.assertFalse(session.advanced().hasChanges());
+
+    Employee employee = new Employee();
+    employee.setFirstName("John");
+    employee.setLastName("Doe");
+
+    session.store(employee);
+
+    Assert.assertTrue(session.advanced().hasChanges());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="what_changed_3" label="what_changed_3">
+<CodeBlock language="java">
+{`Map<String, List<DocumentsChanges>> whatChanged()
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| Map&lt;String, List&lt;DocumentsChanges&gt;&gt; | Map containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="what_changed_4" label="what_changed_4">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee employee = new Employee();
+    employee.setFirstName("Joe");
+    employee.setLastName("Doe");
+    session.store(employee);
+
+    Map<String, List<DocumentsChanges>> changes = session.advanced().whatChanged();
+    List<DocumentsChanges> employeeChanges = changes.get("employees/1-A");
+    DocumentsChanges.ChangeType change
+        = employeeChanges.get(0).getChange(); // DocumentsChanges.ChangeType.DOCUMENT_ADDED
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="what_changed_5" label="what_changed_5">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee employee = session.load(Employee.class, "employees/1-A");// 'Joe Doe'
+    employee.setFirstName("John");
+    employee.setLastName("Shmoe");
+
+    Map<String, List<DocumentsChanges>> changes = session.advanced().whatChanged();
+    List<DocumentsChanges> employeeChanges = changes.get("employees/1-A");
+    DocumentsChanges change1
+        = employeeChanges.get(0); //DocumentsChanges.ChangeType.FIELD_CHANGED
+    DocumentsChanges change2
+        = employeeChanges.get(1); //DocumentsChanges.ChangeType.FIELD_CHANGED
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Single entity can be checked for changes using [hasChanged()](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges()`  method and the `whatChanged()` method are available in the `advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="what_changed_1" label="what_changed_1">
+<CodeBlock language="js">
+{`session.advanced.hasChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="what_changed_2" label="what_changed_2">
+<CodeBlock language="js">
+{`\{
+    const session = store.openSession();
+
+    assert.ok(!session.advanced.hasChanges());
+
+    const employee = new Employee();
+    employee.firstName = "John";
+    employee.lastName = "Doe";
+
+    await session.store(employee);
+
+    assert.ok(session.advanced.hasChanges());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="what_changed_3" label="what_changed_3">
+<CodeBlock language="js">
+{`session.advanced.whatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| `{ [id]: DocumentsChanges[] }` | Object containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="what_changed_4" label="what_changed_4">
+<CodeBlock language="js">
+{`\{
+    const session = store.openSession();
+
+    const employee = new Employee();
+    employee.firstName = "John";
+    employee.lastName = "Doe";
+
+    await session.store(employee);
+
+    const changes = session.advanced.whatChanged();
+    const employeeChanges = changes["employees/1-A"];
+    const change =
+        employeeChanges[0].change; // "DocumentAdded"
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="what_changed_5" label="what_changed_5">
+<CodeBlock language="js">
+{`const session = store.openSession();
+const employee = await session.load("employees/1-A"); // 'Joe Doe'
+employee.firstName = "John";
+employee.lastName = "Shmoe";
+
+const changes = session.advanced.whatChanged();
+const employeeChanges = changes["employees/1-A"];
+const change1 = employeeChanges[0]; // "FieldChanged"
+const change2 = employeeChanges[1]; // "FieldChanged"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

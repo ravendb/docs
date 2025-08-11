@@ -1,0 +1,87 @@
+---
+title: "Create ASP.NET Web API Project with RavenDB"
+hide_table_of_contents: true
+sidebar_label: ASP.NET WebAPI Sample
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create ASP.NET Web API Project with RavenDB
+In this section we will go over the steps to creating you own ASP.NET Web API Application.
+
+## Step by Step Instructions
+1) Make sure you have ASP.NET Web API installed.  
+2) In visual studio and create a new "ASP.NET MVC 4 Web Application" project.  
+3) As Project template select "Web API".  
+4) Add the NuGet Package named "RavenDB Client".  
+5) Create the following controller:
+
+<TabItem value="create_asp_net_web_api_project_1" label="create_asp_net_web_api_project_1">
+<CodeBlock language="csharp">
+{`public abstract class RavenDbController : ApiController
+\{
+	public IDocumentStore Store
+	\{
+		get \{ return LazyDocStore.Value; \}
+	\}
+
+	private static readonly Lazy<IDocumentStore> LazyDocStore = new Lazy<IDocumentStore>(() =>
+	\{
+		var docStore = new DocumentStore
+		\{
+			Url = "http://localhost:8080",
+			DefaultDatabase = "WebApiSample"
+		\};
+
+		docStore.Initialize();
+		return docStore;
+	\});
+
+	public IAsyncDocumentSession Session \{ get; set; \}
+
+	public async override Task<HttpResponseMessage> ExecuteAsync(
+		HttpControllerContext controllerContext,
+		CancellationToken cancellationToken)
+	\{
+		using (Session = Store.OpenAsyncSession())
+		\{
+			var result = await base.ExecuteAsync(controllerContext, cancellationToken);
+			await Session.SaveChangesAsync();
+
+			return result;
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+6) From now on write you application as you would normally but Inherit from RavenDbController in any controller you want to contact RavenDB
+
+Example of a controller: 
+
+<TabItem value="create_asp_net_web_api_project_2" label="create_asp_net_web_api_project_2">
+<CodeBlock language="csharp">
+{`public class SampleController : RavenDbController
+\{
+	public Task<IList<string>> GetDocs()
+	\{
+		return Session.Query<WebData>().Select(data => data.Name).ToListAsync();
+	\}
+
+	public async Task<HttpResponseMessage> Put([FromBody]string value)
+	\{
+		await Session.StoreAsync(new WebData \{ Name = value \});
+
+		return new HttpResponseMessage(HttpStatusCode.Created);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

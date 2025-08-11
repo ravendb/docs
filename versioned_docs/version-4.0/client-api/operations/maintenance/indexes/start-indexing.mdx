@@ -1,0 +1,84 @@
+---
+title: "Operations: How to Start Indexing"
+hide_table_of_contents: true
+sidebar_label: Resume Indexing
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Start Indexing
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**StartIndexingOperation** is used to resume indexing for entire database. 
+
+### Syntax
+
+<TabItem value="start_1" label="start_1">
+<CodeBlock language="csharp">
+{`public StartIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="start_2" label="start_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new StartIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**StartIndexingOperation** is used to resume indexing for entire database. 
+
+### Syntax
+
+<TabItem value="start_1" label="start_1">
+<CodeBlock language="java">
+{`public StartIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="start_2" label="start_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StartIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+
+-->

@@ -1,0 +1,135 @@
+---
+title: "Commands: GetFinishedAsync"
+hide_table_of_contents: true
+sidebar_label: GetFinished
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: GetFinishedAsync
+
+**GetFinishedAsync** allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report.mdx) of already accomplished file synchronizations on the destination server.
+
+
+
+<TabItem value="get_finished_1" label="get_finished_1">
+<CodeBlock language="csharp">
+{`Task<ItemsPage<SynchronizationReport>> GetFinishedAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of reports to skip |
+| **pageSize** | int | The maximum number of reports that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ItemsPage&lt;SynchronizationReport&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object, which contains the number of total results and the list of the `SynchronizationReport` objects for the requested page. |
+
+## Example
+
+<TabItem value="get_finished_2" label="get_finished_2">
+<CodeBlock language="csharp">
+{`ItemsPage<SynchronizationReport> page;
+IList<SynchronizationReport> reports = new List<SynchronizationReport>();
+
+var start = 0;
+const int pageSize = 10;
+
+do
+\{
+	page = await store.AsyncFilesCommands.Synchronization.GetFinishedAsync(start, pageSize);
+
+	reports.AddRange(page.Items);
+
+	Console.WriteLine("Retrieved \{0\} of \{1\} reports", reports.Count, page.TotalCount);
+
+\} while (page.Items.Count == pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: GetFinished
+
+The **GET** method allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report.mdx) of already accomplished file synchronizations on the destination server.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/synchronization/finished?start=\{start\}&pageSize=\{pageSize\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **start** | No | The number of results that should be skipped |
+| **pageSize** | No | The maximum number of results that will be returned |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **JSON** | The `ItemsPage` object, which contains the number of total results and the list of the `SynchronizationReport` objects for the requested page. |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8081/fs/SlaveNorthwindFS/synchronization/finished?start=2&pageSize=25  \\
+< HTTP/1.1 200 OK
+
+\{
+    "TotalCount":3,
+    "Items":
+    [
+        \{
+            "FileName":"/pdfs/NoSQL Tech Comparison Report.pdf",
+            "FileETag":"00000000-0000-0001-0000-000000000006",
+            "BytesTransfered":1408461,
+            "BytesCopied":0,
+            "NeedListLength":1,
+            "Exception":null,
+            "Type":"ContentUpdate"
+        \}
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

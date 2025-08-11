@@ -1,0 +1,296 @@
+---
+title: "Commands: Transformers: Get"
+hide_table_of_contents: true
+sidebar_label: Get
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Transformers: Get
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+There are few methods that allow you to retrieve transformers from a database:   
+- [GetTransformer](../../../client-api/commands/transformers/get.mdx#gettransformer)   
+- [GetTransformers](../../../client-api/commands/transformers/get.mdx#gettransformers)   
+
+## GetTransformer
+
+**GetTransformer** is used to retrieve a single transformer
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`TransformerDefinition GetTransformer(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | transformer name | 
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing transformer. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="csharp">
+{`TransformerDefinition transformer = store
+	.DatabaseCommands
+	.GetTransformer("Order/Statistics"); // returns null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetTransformers
+
+**GetTransformers** is used to retrieve a multiple transformers
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`TransformerDefinition[] GetTransformers(int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of transformers that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing a transformer. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="csharp">
+{`TransformerDefinition[] transformers = store
+	.DatabaseCommands
+	.GetTransformers(0, 128);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are few methods that allow you to retrieve transformers from a database:   
+- [GetTransformer](../../../client-api/commands/transformers/get.mdx#gettransformer)   
+- [GetTransformers](../../../client-api/commands/transformers/get.mdx#gettransformers)   
+
+## GetTransformer
+
+**GetTransformer** is used to retrieve a single transformer
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="java">
+{`public TransformerDefinition getTransformer(String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | transformer name | 
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing transformer. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="java">
+{`TransformerDefinition transformer = store
+  .getDatabaseCommands()
+  .getTransformer("Order/Statistics"); // returns null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetTransformers
+
+**GetTransformers** is used to retrieve a multiple transformers
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="java">
+{`public List<TransformerDefinition> getTransformers(int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of transformers that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing a transformer. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="java">
+{`List<TransformerDefinition> transformers = store.getDatabaseCommands().getTransformers(0, 128);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+There are few methods that allow you to retrieve transformers from a database:   
+- [GetTransformer](../../../client-api/commands/transformers/get.mdx#gettransformer)   
+- [GetTransformers](../../../client-api/commands/transformers/get.mdx#gettransformers)   
+
+## GetTransformer
+
+**GetTransformer** is used to retrieve a single transformer
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/transformers/\{transformerName\} \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **transformerName** | Yes |   transformer name |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | [TransformerDefinition](../../../glossary/transformer-definition.mdx)  |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/transformers/Order/Statistics"
+< HTTP/1.1 200 OK
+\{
+	"Transformer":
+	\{
+		"TransformResults":"from order in results select new \{ 
+		    order.OrderedAt,     
+			order.Status,     
+			order.CustomerId,     
+			CustomerName = LoadDocument(order.CustomerId).Name,     
+			LinesCount = order.Lines.Count \}",
+		"TransfomerId":2,
+		"Name":"Order/Statistics"
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetTransformers
+
+**GetTransformers** is used to retrieve a multiple transformers
+
+### Syntax
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/transformers? \\
+		&start=\{start\} \\
+		&pageSize=\{pageSize\} \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **start** | No | number of documents that should be skipped  |
+| **pageSize** | No | maximum number of transformers that will be retrieved |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | array of [TransformerDefinition](../../../glossary/transformer-definition.mdx)  |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/transformers?start=0&pageSize=10"
+< HTTP/1.1 200 OK
+[ transformerDefinition, transformerDefinition, ... ]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+- [PutTransformer](../../../client-api/commands/transformers/put)
+- [DeleteTransformer](../../../client-api/commands/transformers/delete)
+
+-->

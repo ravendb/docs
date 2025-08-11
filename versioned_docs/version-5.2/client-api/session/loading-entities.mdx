@@ -1,0 +1,1459 @@
+---
+title: "Session: Loading Entities"
+hide_table_of_contents: true
+sidebar_label: Loading Entities
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: Loading Entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* There are several methods that allow users to load documents from the database and convert them to entities.  
+
+* This article covers the following methods:  
+
+  - [Load](../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [Stream](../../client-api/session/loading-entities.mdx#stream)
+  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+
+</Admonition>
+## Load
+
+The most basic way to load a single entity is to use one of the `Load` methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`TResult Load<TResult>(string id);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<TResult> LoadAsync<TResult>(string id);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | Identifier of a document that will be loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `TResult` | Instance of `TResult` or `null` if a document with a given ID does not exist. |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Employee employee = await asyncSession.LoadAsync<Employee>("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+<Admonition type="note" title="Note">
+From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
+</Admonition>
+
+
+
+## Load with Includes
+
+When there is a 'relationship' between documents, those documents can be loaded in a 
+single request call using the `Include + Load` methods. Learn more in 
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+
+<Admonition type="note" title="Note">
+Also see:  
+
+* [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* [Including Document Revisions](../../client-api/session/revisions/including.mdx)  
+</Admonition>
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="csharp">
+{`ILoaderWithInclude<object> Include(string path);
+
+ILoaderWithInclude<T> Include<T>(Expression<Func<T, string>> path);
+
+ILoaderWithInclude<T> Include<T>(Expression<Func<T, IEnumerable<string>>> path);
+
+ILoaderWithInclude<T> Include<T, TInclude>(Expression<Func<T, string>> path);
+
+ILoaderWithInclude<T> Include<T, TInclude>(Expression<Func<T, IEnumerable<string>>> path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **path** | `string` or Expression | Path in documents in which the server should look for 'referenced' documents. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `ILoaderWithInclude` | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// loading 'products/1'
+// including document found in 'Supplier' property
+Product product = session
+    .Include("Supplier")
+    .Load<Product>("products/1");
+
+Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// loading 'products/1'
+// including document found in 'Supplier' property
+Product product = await asyncSession
+    .Include("Supplier")
+    .LoadAsync<Product>("products/1");
+
+Supplier supplier = await asyncSession.LoadAsync<Supplier>(product.Supplier); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+### Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// loading 'products/1'
+// including document found in 'Supplier' property
+Product product = session
+    .Include<Product>(x => x.Supplier)
+    .Load<Product>("products/1");
+
+Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// loading 'products/1'
+// including document found in 'Supplier' property
+Product product = await asyncSession
+    .Include<Product>(x => x.Supplier)
+    .LoadAsync<Product>("products/1");
+
+Supplier supplier = await asyncSession.LoadAsync<Supplier>(product.Supplier); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+
+## Load - multiple entities
+
+To load multiple entities at once, use one of the following `Load` overloads.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Dictionary<string, TResult> Load<TResult>(IEnumerable<string> ids);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<Dictionary<string, TResult>> LoadAsync<TResult>(IEnumerable<string> ids);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **ids** | `IEnumerable<string>` | Multiple document identifiers to load |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `Dictionary<string, TResult>` | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Dictionary<string, Employee> employees = session.Load<Employee>(new[]
+{
+    "employees/1",
+    "employees/2",
+    "employees/3"
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Dictionary<string, Employee> employees = await asyncSession.LoadAsync<Employee>(new[]
+{
+    "employees/1",
+    "employees/2",
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+
+## LoadStartingWith
+
+To load multiple entities that contain a common prefix, use the `LoadStartingWith` method from the `Advanced` session operations.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`T[] LoadStartingWith<T>(
+    string idPrefix,
+    string matches = null,
+    int start = 0,
+    int pageSize = 25,
+    string exclude = null,
+    string startAfter = null);
+
+void LoadStartingWithIntoStream(
+    string idPrefix,
+    Stream output,
+    string matches = null,
+    int start = 0,
+    int pageSize = 25,
+    string exclude = null,
+    string startAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<T[]> LoadStartingWithAsync<T>(
+    string idPrefix,
+    string matches = null,
+    int start = 0,
+    int pageSize = 25,
+    string exclude = null,
+    string startAfter = null);
+
+Task LoadStartingWithIntoStreamAsync(
+    string idPrefix,
+    Stream output,
+    string matches = null,
+    int start = 0,
+    int pageSize = 25,
+    string exclude = null,
+    string startAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **idPrefix** | `string` |  prefix for which the documents should be returned  |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | `string` | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `TResult[]` | Array of entities matching given parameters. |
+| `Stream` | Output entities matching given parameters as a stream. |
+
+### Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// return up to 128 entities with Id that starts with 'employees'
+Employee[] result = session
+    .Advanced
+    .LoadStartingWith<Employee>("employees", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// return up to 128 entities with Id that starts with 'employees'
+Employee[] result = (await asyncSession
+    .Advanced
+    .LoadStartingWithAsync<Employee>("employees", null, 0, 128))
+    .ToArray();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// return up to 128 entities with Id that starts with 'employees/' 
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+Employee[] result = session
+    .Advanced
+    .LoadStartingWith<Employee>("employees/", "1*|2*", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// return up to 128 entities with Id that starts with 'employees/' 
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+Employee[] result = (await asyncSession
+    .Advanced
+    .LoadStartingWithAsync<Employee>("employees/", "1*|2*", 0, 128))
+    .ToArray();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## ConditionalLoad
+
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+The method is accessible from the `session.Advanced` operations.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`(T Entity, string ChangeVector) ConditionalLoad<T>(string id, string changeVector);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<(T Entity, string ChangeVector)> ConditionalLoadAsync<T>(string id, string changeVector);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | The identifier of a document to be loaded. |
+| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| ValueTuple `(T Entity, string ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.
+If the change vectors match, the method returns `default` as the entity, and the current change vector.
+If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`string changeVector;
+User user = new User { Name = "Bob" };
+
+using (var session = store.OpenSession())
+{
+    session.Store(user, "users/1");
+    session.SaveChanges();
+
+    changeVector = session.Advanced.GetChangeVectorFor(user);
+}
+
+// New session which does not track our User entity
+using (var session = store.OpenSession())
+{
+    // The given change vector matches 
+    // the server-side change vector
+    // Does not load the document
+    var result1 = session.Advanced
+                   .ConditionalLoad<User>("users/1", changeVector);
+
+    // Modify the document
+    user.Name = "Bob Smith";
+    session.Store(user);
+    session.SaveChanges();
+
+    // Change vectors do not match
+    // Loads the document
+    var result2 = session.Advanced
+                   .ConditionalLoad<User>("users/1", changeVector);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`string changeVector;
+User user = new User { Name = "Bob" };
+
+using (var session = store.OpenAsyncSession())
+{
+    await session.StoreAsync(user, "users/1");
+    await session.SaveChangesAsync();
+
+    changeVector = session.Advanced.GetChangeVectorFor(user);
+}
+
+// New session which does not track our User entity
+using (var session = store.OpenAsyncSession())
+{
+    // The given change vector matches 
+    // the server-side change vector
+    // Does not load the document
+    var result1 = await session.Advanced
+                   .ConditionalLoadAsync<User>("users/1", changeVector);
+
+    // Modify the document
+    user.Name = "Bob Smith";
+    await session.StoreAsync(user);
+    await session.SaveChangesAsync();
+
+    // Change vectors do not match
+    // Loads the document
+    var result2 = await session.Advanced
+                   .ConditionalLoadAsync<User>("users/1", changeVector);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+
+## Stream
+
+Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
+
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+
+<Admonition type="info" title="Info">
+Entities loaded using `Stream` will be transient (not attached to session).
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query);
+
+IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query, out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query);
+
+IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query);
+
+IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null, int start = 0, int pageSize = int.MaxValue, string startAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IQueryable<T> query);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IQueryable<T> query, out StreamQueryStatistics streamQueryStats);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IDocumentQuery<T> query);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IRawDocumentQuery<T> query);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IRawDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+
+Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(string startsWith, string matches = null, int start = 0, int pageSize = int.MaxValue, string startAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **startsWith** | `string` | prefix for which documents should be streamed |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **StreamQueryStats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
+| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`IEnumerator<StreamResult<Employee>> enumerator = session
+    .Advanced
+    .Stream<Employee>("employees/");
+
+while (enumerator.MoveNext())
+{
+    StreamResult<Employee> employee = enumerator.Current;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`IAsyncEnumerator<StreamResult<Employee>> enumerator = await asyncSession
+    .Advanced
+    .StreamAsync<Employee>("employees/");
+
+while (await enumerator.MoveNextAsync())
+{
+    StreamResult<Employee> employee = enumerator.Current;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example 2
+
+Fetch documents for a ID prefix directly into a stream:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var outputStream = new MemoryStream())
+{
+    session
+        .Advanced
+        .LoadStartingWithIntoStream("employees/", outputStream);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var outputStream = new MemoryStream())
+{
+    await asyncSession
+        .Advanced
+        .LoadStartingWithIntoStreamAsync("employees/", outputStream);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## IsLoaded
+
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the **Advanced** session operations.  
+  
+`IsLoaded` checks if you've already tried to load a document during the current session.  
+If you try to load a document that no longer exists with the `Load` method (perhaps it has been deleted),  
+`IsLoaded` will then return `true` because `IsLoaded` shows that you've already tried to load the non-existent document.  
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="csharp">
+{`bool IsLoaded(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | Entity ID for which the check should be performed. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `bool` | Indicates if an entity with a given ID is loaded. |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool isLoaded = session.Advanced.IsLoaded("employees/1"); // false
+Employee employee = session.Load<Employee>("employees/1");
+isLoaded = session.Advanced.IsLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`bool isLoaded = asyncSession.Advanced.IsLoaded("employees/1"); // false
+Employee employee = await asyncSession.LoadAsync<Employee>("employees/1");
+isLoaded = asyncSession.Advanced.IsLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+There are several methods with many overloads that allow users to download documents 
+from the database and convert them to entities. This article will cover the following 
+methods:  
+
+- [Load](../../client-api/session/loading-entities.mdx#load)
+- [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+- [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+- [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+- [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+- [Stream](../../client-api/session/loading-entities.mdx#stream)
+- [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+
+</Admonition>
+## Load
+
+The most basic way to load a single entity is to use one of the `load` methods.
+
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="java">
+{`<T> T load(Class<T> clazz, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | Identifier of a document that will be loaded. |
+
+| Return Value | |
+| ------------- | ----- |
+| T | Instance of `T` or `null` if a document with a given ID does not exist. |
+
+### Example
+
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
+</Admonition>
+
+
+
+## Load with Includes
+
+When there is a 'relationship' between documents, those documents can be loaded in a 
+single request call using the `include + load` methods. Learn more in 
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+See also [including counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters) 
+and [including time series](../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="java">
+{`ILoaderWithInclude include(String path);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, Collection<String> ids);
+
+<TResult> TResult load(Class<TResult> clazz, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **path** | `String` | Path in documents in which the server should look for 'referenced' documents. |
+| **ids** | `String` | Ids to load. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `ILoaderWithInclude` | The `include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="java">
+{`// loading 'products/1'
+// including document found in 'supplier' property
+Product product = session
+    .include("Supplier")
+    .load(Product.class, "products/1");
+
+Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Load - multiple entities
+
+To load multiple entities at once, use one of the following `load` overloads.
+
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
+<CodeBlock language="java">
+{`<TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, Collection<String> ids);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **ids** | Collection&lt;String&gt; or String... | Multiple document identifiers to load |
+
+| Return Value | |
+| ------------- | ----- |
+| Map&lt;String, T&gt; | Instance of Map which maps document identifiers to `T` or `null` if a document with given ID doesn't exist. |
+
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="java">
+{`Map<String, Employee> employees
+    = session.load(Employee.class,
+    "employees/1", "employees/2", "employees/3");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## LoadStartingWith
+
+To load multiple entities that contain a common prefix, use the `loadStartingWith` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
+<CodeBlock language="java">
+{`<T> T[] loadStartingWith(Class<T> clazz, String idPrefix);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude, String startAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | String |  prefix for which the documents should be returned  |
+| **matches** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **exclude** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | String | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| T[] | Array of entities matching given parameters. |
+
+### Example I
+
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="java">
+{`// return up to 128 entities with Id that starts with 'employees'
+Employee[] result = session
+    .advanced()
+    .loadStartingWith(Employee.class, "employees/", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="java">
+{`// return up to 128 entities with Id that starts with 'employees/'
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+Employee[] result = session
+    .advanced()
+    .loadStartingWith(Employee.class, "employees/", "1*|2*", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ConditionalLoad
+
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+In other words, this method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The method is accessible from the `session.advanced()` operations.  
+
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="java">
+{`<T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **clazz** | `Class<T>` | The class of a document to be loaded. |
+| **id** | `String` | The identifier of a document to be loaded. |
+| **changeVector** | `String` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| ConditionalLoadResult&lt;T&gt;`(Class<T>, String ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.
+If the change vectors match, the method returns `default` as the entity, and the current change vector.
+If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+
+    String changeVector;
+    User user = new User("Bob");
+
+    session.store(User.class, "users/1");
+    session.saveChanges();
+
+    changeVector = session.advanced().getChangeVectorFor(user);
+\}
+
+User user = new User("Bob");
+String changeVector = "a";
+
+try (IDocumentSession session = store.openSession()) \{
+    // New session which does not track our User entity
+
+    // The given change vector matches
+    // the server-side change vector
+    // Does not load the document
+    ConditionalLoadResult<User> result1 = session.advanced()
+        .conditionalLoad(User.class, "users/1", changeVector);
+
+    // Modify the document
+    user.setName("Bob Smith");
+    session.store(user);
+    session.saveChanges();
+
+    // Change vectors do not match
+    // Loads the document
+    ConditionalLoadResult<User> result2 = session.advanced()
+        .conditionalLoad(User.class, "users/1", changeVector);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Stream
+
+Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
+
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize, String startAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **startsWith** | `String` | prefix for which documents should be streamed |
+| **matches** | `String` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `String` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **streamQueryStats** | `Reference streamQueryStats (out parameter)` | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator&lt;StreamResult&lt;T&gt;&gt; | Iterator with entities. |
+| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="java">
+{`try (CloseableIterator<StreamResult<Employee>> iterator =
+         session.advanced().stream(Employee.class, "employees/")) \{
+    while (iterator.hasNext()) \{
+        StreamResult<Employee> employee = iterator.next();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+Fetch documents for a ID prefix directly into a stream:
+
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="java">
+{`ByteArrayOutputStream baos = new ByteArrayOutputStream();
+session
+    .advanced()
+    .loadStartingWithIntoStream("employees/", baos);
+`}
+</CodeBlock>
+</TabItem>
+
+### Remarks
+
+<Admonition type="info" title="Info">
+Entities loaded using `stream` will be transient (not attached to session).
+</Admonition>
+
+
+
+## IsLoaded
+
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.  
+  
+If you try to load a document that does not exist with the `load` method, `isLoaded` will return `true` because that document load has already been attempted.  
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="java">
+{`boolean isLoaded(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | Entity ID for which the check should be performed. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if an entity with a given ID is loaded. |
+
+### Example
+
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="java">
+{`boolean isLoaded = session.advanced().isLoaded("employees/1");//false
+Employee employee = session.load(Employee.class, "employees/1");
+isLoaded = session.advanced().isLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* There are several methods that allow users to load documents from the database and convert them to entities.
+
+* This article covers the following methods:
+
+  - [Load](../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+  - [Stream](../../client-api/session/loading-entities.mdx#stream)
+
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+
+</Admonition>
+## Load
+
+The most basic way to load a single entity is to use session's `load()` method.
+
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="js">
+{`await session.load(id, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | Identifier of a document that will be loaded. |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<object>` | A `Promise` returning `object` or `null` if a document with a given ID does not exist. |
+
+### Example
+
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="js">
+{`const employee = await session.load("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
+</Admonition>
+
+
+
+## Load with Includes
+
+When there is a *relationship* between documents, those documents can be loaded in a single request call using the `include()` and `load()` methods.
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="js">
+{`session.include(path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | Field path in documents in which the server should look for 'referenced' documents. |
+
+| Return Value | |
+| ------------- | ----- |
+| `object{load()}` | The `include()` method by itself does not materialize any requests but returns loader containing methods such as `load()`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="js">
+{`// loading 'products/1'
+// including document found in 'supplier' property
+const product = await session
+    .include("supplier")
+    .load("products/1");
+
+const supplier = await session.load(product.supplier); // this will *not* make a server call
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Load - multiple entities
+
+To load multiple entities at once, use one of the following ways to call `load()`.
+
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
+<CodeBlock language="js">
+{`await session.load(idsArray, [documentType]);
+await session.load(idsArray, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idsArray** | string[] | Multiple document identifiers to load |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **options** | string | Options with the following properties |
+| **documentType** | function | A class construcor used for reviving the results' entities |
+| **includes** | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<{ [id]: object }>` | A `Promise` resolving to an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist |
+
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="js">
+{`const employees = await session.load(
+    ["employees/1", "employees/2", "employees/3"]);
+// \{
+//     "employees/1": \{ ... \},
+//     "employees/2": \{ ... \}
+//     "employees/3": \{ ... \}
+// \}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## LoadStartingWith
+
+To load multiple entities that contain a common prefix, use the `loadStartingWith()` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
+<CodeBlock language="js">
+{`await session.advanced.loadStartingWith(idPrefix, [options]);
+
+await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **options** | string | Options with the following properties |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<object[]>` | A `Promise` resolving to an array of entities matching given parameters |
+
+### Example I
+
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="js">
+{`// return up to 128 entities with Id that starts with 'employees'
+const result = await session
+    .advanced
+    .loadStartingWith("employees/", \{
+        start: 0,
+        pageSize: 128
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="js">
+{`// return up to 128 entities with Id that starts with 'employees/'
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+const result = await session
+    .advanced
+    .loadStartingWith("employees/", \{
+        matches: "1*|2*",
+        start: 0,
+        pageSize: 128
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ConditionalLoad
+
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+The method is accessible from the `session.Advanced` operations.  
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="js">
+{`await session.advanced.conditionalLoad(id, changeVector, clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | The identifier of a document to be loaded. |
+| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| ValueTuple `(object, changeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.
+If the change vectors match, the method returns `default` as the entity, and the current change vector.
+If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="js">
+{`const session = store.openSession();
+const user = new User("Bob");
+await session.store(user, "users/1");
+await session.saveChanges();
+
+const changeVector = session.advanced.getChangeVectorFor(user);
+
+\{
+    // New session which does not track our User entity
+    // The given change vector matches
+    // the server-side change vector
+    // Does not load the document
+    const session = store.openSession();
+    const result1 = await session.advanced
+        .conditionalLoad("users/1", changeVector, User);
+
+    // Modify the document
+    user.name = "Bob Smith";
+    await session.store(user);
+    await session.saveChanges();
+
+    // Change vectors do not match
+    // Loads the document
+    const result2 = await session.advanced
+        .conditionalLoad("users/1", changeVector, User);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Stream
+
+Entities can be streamed from the server using the `stream()` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="js">
+{`// stream query results
+await session.stream(query, [statsCallback]);
+
+// stream documents with ID starting with
+await session.stream(idPrefix, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **query** | query object | a query obtained from a call to `session.query()` or `session.advanced.rawQuery()` |
+| **options** | string | Options with the following properties |
+| **startsWith** | string | prefix for which documents should be streamed |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<Readable>` | A `Promise` resolving to readable stream with query results |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="js">
+{`// stream() returns a Node.js Readable
+const stream = await session.advanced.stream("employees/");
+
+stream.on("data", data => \{
+    // Employee \{ name: 'Anna', id: 'employees/1-A' \}
+\});
+
+stream.on("error", err => \{
+    // handle errors
+\});
+
+stream.on("end", () => \{
+    // stream ended
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example 2
+
+Fetch documents for a ID prefix directly into a writable stream:
+
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="js">
+{`const employeesFile = fs.createWriteStream("employees.json");
+await session.advanced.loadStartingWithIntoStream("employees/", employeesFile);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+Entities loaded using `stream()` will be transient (not attached to session).
+</Admonition>
+
+
+
+## IsLoaded
+
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.  
+  
+If you try to load a document that does not exist with the `load` method, `isLoaded` will return `true` because that document load has already been attempted.  
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="js">
+{`session.advanced.isLoaded(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | Entity ID for which the check should be performed. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if an entity with a given ID is loaded. |
+
+### Example
+
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="js">
+{`session.advanced.isLoaded("employees/1"); // false
+const employee = await session.load("employees/1");
+session.advanced.isLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+### On entities loading, JS classes and the **documentType** parameter
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
+
+<Admonition type="info" title="Entity type registration " id="entity-type-registration" href="#entity-type-registration">
+In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+<TabItem value="loading_entities_8" label="loading_entities_8">
+<CodeBlock language="js">
+{`class Pet \{
+    constructor(name) \{
+        this.name = name;
+    \}
+\}
+
+class Person \{
+    constructor(name, pet) \{
+        this.name = name;
+        this.pet = pet;
+    \}
+\}
+
+documentStore.conventions.registerEntityType(Person);
+documentStore.conventions.registerEntityType(Pet);
+// ...
+
+documentStore.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Deleting Entities](../../client-api/session/deleting-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Basics](../../indexes/querying/query-index)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

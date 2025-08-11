@@ -1,0 +1,65 @@
+---
+title: "Registering renames"
+hide_table_of_contents: true
+sidebar_label: Renaming files
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Registering renames
+
+Use the `RegisterRename` method to rename a file.
+
+
+
+<TabItem value="rename_1" label="rename_1">
+<CodeBlock language="csharp">
+{`void RegisterRename(string sourceFile, string destinationFile, Etag etag = null);
+void RegisterRename(FileHeader sourceFile, string destinationFile, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **sourceFile** | string | The full file path to change|
+| **sourceFile** | [FileHeader](../../../glossary/file-header.mdx) | The file that you want to rename represented by the `FileHeader` |
+| **destinationFile** | string | The new file path |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` will skip the check) |
+
+<Admonition type="warning" title="FileNotFoundException" id="filenotfoundexception" href="#filenotfoundexception">
+If the requested file does not exist in the file system, the `FileNotFoundException` will be thrown by the `SaveChangesAsync`.
+</Admonition>
+
+<Admonition type="note" title="Rename and move" id="rename-and-move" href="#rename-and-move">
+Rename and move is basically the same operation. Directories in RavenFS are a virtual concept, which relies on the file paths. So if you want to move a file into a different "directory", simply rename it.
+</Admonition>
+
+## Example
+
+<TabItem value="rename_2" label="rename_2">
+<CodeBlock language="csharp">
+{`session.RegisterRename("/movies/intro.avi", "/movies/introduction-to-ravenfs.avi");
+
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

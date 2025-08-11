@@ -1,0 +1,33 @@
+---
+title: "How to create a custom message handler?"
+hide_table_of_contents: true
+sidebar_label: ...create a custom message handler
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#How to create a custom message handler?
+
+RavenDB client uses `HttpClient` under the hood to talk to RavenDB server through HTTP. In order to customize how it should deal
+with sending and receiving requests you might overwrite its default message handler using `DocumentStore.HttpMessageHandlerFactory`.
+
+## Example
+
+To properly setup windows auth with unsafe connection sharing use the following code:
+
+<TabItem value="custom_handler_provided" label="custom_handler_provided">
+<CodeBlock language="csharp">
+{`documentStore.HttpMessageHandlerFactory = () => new WebRequestHandler
+\{
+    UnsafeAuthenticatedConnectionSharing = true,
+    PreAuthenticate = true
+\};
+`}
+</CodeBlock>
+</TabItem>

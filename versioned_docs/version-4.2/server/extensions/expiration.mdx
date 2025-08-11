@@ -1,0 +1,103 @@
+---
+title: "Document Expiration"
+hide_table_of_contents: true
+sidebar_label: Document Expiration
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Document Expiration
+<Admonition type="note" title="Note">
+
+* The Expiration feature deletes expired documents, documents whose time has passed.  
+  Documents that are set with a future expiration time will be automatically deleted.  
+
+* The Expiration feature can be turned on and off while the database is already live with data.  
+
+* In this page:  
+  * [Expiration Feature Usages](../../server/extensions/expiration.mdx#usages)  
+  * [Configuring the Expiration Feature](../../server/extensions/expiration.mdx#configuring-the-expiration-feature)  
+  * [Setting the Document Expiration Time](../../server/extensions/expiration.mdx#setting-the-document-expiration-time)  
+  * [Eventual Consistency Considerations](../../server/extensions/expiration.mdx#eventual-consistency-considerations)  
+  * [More Details](../../server/extensions/expiration.mdx#more-details)  
+</Admonition>
+## Expiration Feature Usages
+
+* Use the Expiration feature when data is needed to be kept for only a temporary time.  
+
+* Examples:
+  * Shopping cart data that is kept for only a specific time  
+  * Email links that need to be expired after a few hours  
+  * Storing a web application login session details  
+  * When using RavenDB to hold cache data from a SQL server.  
+
+
+## Configuring the Expiration Feature
+
+* By default, the expiration feature is turned off.  
+
+* The delete frequency is configurable, the default value is 60 secs.  
+
+* The Expiration feature can be turned on and off using the **Studio**, see [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration.mdx).  
+
+* The Expiration feature can also be configured using the **Client**:
+
+<TabItem value="configuration" label="configuration">
+<CodeBlock language="csharp">
+{`await store.Maintenance.SendAsync(new ConfigureExpirationOperation(new ExpirationConfiguration
+\{
+             Disabled = false,
+             DeleteFrequencyInSec = 60
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Setting the Document Expiration Time
+
+* To set the document expiration time just add the `@expires` property to the document `@metadata` and set it to contain the appropriate expiration time.  
+
+* Once the Expiration feature is enabled, the document will automatically be deleted at the specified time.  
+
+* **Note**: The date must be in **UTC** format, not local time.  
+
+* The document expiration time can be set using the following code from the client:  
+
+<TabItem value="expiration1" label="expiration1">
+<CodeBlock language="csharp">
+{`DateTime expiry = DateTime.UtcNow.AddMinutes(5);
+using (IAsyncDocumentSession session = store.OpenAsyncSession())
+\{
+	await session.StoreAsync(user);
+	session.Advanced.GetMetadataFor(user)[Constants.Documents.Metadata.Expires] = expiry;
+    await session.SaveChangesAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Eventual Consistency Considerations
+
+* Once documents are expired, it can take up to the delete frequency interval (60 seconds by default) until these expired documents are actually deleted.  
+
+* Expired documents are _not_ filtered on load/query/indexing time, so be aware that an expired document might still be there after it has expired up to the 'delete frequency interval' timeframe.  
+
+
+## More Details
+
+* Internally, each document that has the `@expires` property in the metadata is tracked by the RavenDB server  
+  even if the expiration feature is turned off.  
+This way, once the expiration feature is turned on we can easily delete all the expired documents.  
+
+* **Note**: Metadata properties starting with `@` are internal for RavenDB usage.  
+You should _not_ use the `@expires` property in the metadata for any other purpose other than the built-in expiration feature.  
+
+

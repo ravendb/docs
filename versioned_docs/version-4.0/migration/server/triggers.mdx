@@ -1,0 +1,20 @@
+---
+title: "Migration: Triggers"
+hide_table_of_contents: true
+sidebar_label: Triggers
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Triggers
+
+The server side triggers were often the source of problems in RavenDB 3.x, especially related to performance. In RavenDB 4.0 the notion of triggers has been removed completely.
+
+Some of the capabilities can be achieved using [client side events](../../client-api/session/how-to/subscribe-to-events.mdx). The simpliest example would be to can use
+`OnBeforeStore` / `OnBeforeDelete` to prevent from creating or deleting some documents.

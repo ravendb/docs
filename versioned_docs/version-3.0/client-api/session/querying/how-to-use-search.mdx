@@ -1,0 +1,140 @@
+---
+title: "Session: Querying: How to use search?"
+hide_table_of_contents: true
+sidebar_label: How to Use Search
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to use search?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+More complex text searching can be achieved by using `Search` extension method. This method allows you to pass one or more search terms that will be used in searching process for a particular field (or fields).
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Search<T>(
+        Expression<Func<T, object>> fieldSelector,
+        string searchTerms,
+        decimal boost = 1,
+        SearchOptions options = SearchOptions.Guess,
+        SearchOperator @operator = SearchOperator.Or)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldSelector** | Expression&lt;Func&lt;TResult&gt;&gt; | Expression marking a field in which terms should be looked for. |
+| **searchTerms** | string | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. |
+| **boost** | decimal | Boost value. Default: `1`. |
+| **options** | SearchOptions | Explicitly set relation between each Search functions. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **escapeQueryOptions** | `EscapeQueryOptions()` | Terms escaping strategy. One of the following: `EscapeAll`, `AllowPostfixWildcard`, `AllowAllWildcards`, `RawQuery`. Default: `EscapeQueryOptions.EscapeAll`. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="search_2" label="search_2">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User, Users_ByNameAndHobbies>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="search_3" label="search_3">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User>("Users/ByHobbies")
+    .Search(x => x.Hobbies, "I love sport", boost: 10)
+    .Search(x => x.Hobbies, "but also like reading books", boost: 5)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+More complex text searching can be achieved by using `search` extension method. This method allows you to pass one or more search terms that will be used in searching process for a particular field (or fields).
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> search(String fieldName, String searchTerms);
+IDocumentQuery<T> search(String fieldName, String searchTerms, SearchOperator operator);
+IDocumentQuery<T> boost(double boost);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldSelector** | Path | Expression marking a field in which terms should be looked for. |
+| **searchTerms** | String | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. |
+| **boost** | double | Boost value. Default: `1`. |
+| **options** | SearchOptions | Explicitly set relation between each Search functions. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **escapeQueryOptions** | `EscapeQueryOptions()` | Terms escaping strategy. One of the following: `EscapeAll`, `AllowPostfixWildcard`, `AllowAllWildcards`, `RawQuery`. Default: `EscapeQueryOptions.EscapeAll`. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="search_2" label="search_2">
+<CodeBlock language="java">
+{`List<User> users = session.query(User.class, Users_ByNameAndHobbies.class)
+    .search("Name", "Adam")
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="search_3" label="search_3">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class, index("Users/ByHobbies"))
+    .search("Hobbies", "I love sport")
+    .boost(10)
+    .search("Hobbies", "but also like reading books")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Querying : Searching](../../../indexes/querying/searching)
+
+-->

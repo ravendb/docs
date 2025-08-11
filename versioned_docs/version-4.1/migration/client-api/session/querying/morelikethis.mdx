@@ -1,0 +1,136 @@
+---
+title: "Migration: How to Migrate MoreLikeThis from 3.x"
+hide_table_of_contents: true
+sidebar_label: MoreLikeThis
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate MoreLikeThis from 3.x
+
+MoreLikeThis functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql.mdx). To reflect this change the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
+
+## Namespaces
+
+| 3.x |
+|:---:|
+|
+<TabItem value="more_like_this_5" label="more_like_this_5">
+<CodeBlock language="csharp">
+{`using Raven.Abstractions.Data;
+using Raven.Client.Bundles.MoreLikeThis;
+using Raven.Client.Document;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="more_like_this_6" label="more_like_this_6">
+<CodeBlock language="csharp">
+{`using Raven.Client.Documents;
+using Raven.Client.Documents.Queries.MoreLikeThis;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example I
+
+| 3.x |
+|:---:|
+|
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="csharp">
+{`Article[] articles = session
+    .Advanced
+    .MoreLikeThis<Article>(
+        "Articles/MoreLikeThis",
+        null,
+        new MoreLikeThisQuery
+        \{
+            IndexName = "Articles/MoreLikeThis",
+            DocumentId = "articles/1",
+            Fields = new[] \{ "Body" \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="csharp">
+{`List<Article> articles = session
+    .Query<Article>("Articles/MoreLikeThis")
+    .MoreLikeThis(builder => builder
+        .UsingDocument(x => x.Id == "articles/1")
+        .WithOptions(new MoreLikeThisOptions
+        \{
+            Fields = new[] \{ "Body" \}
+        \}))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example II
+
+| 3.x |
+|:---:|
+|
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="csharp">
+{`Article[] articles = session
+    .Advanced
+    .MoreLikeThis<Article>(
+        "Articles/MoreLikeThis",
+        null,
+        new MoreLikeThisQuery
+        \{
+            IndexName = "Articles/MoreLikeThis",
+            DocumentId = "articles/1",
+            Fields = new[] \{ "Body" \},
+            AdditionalQuery = "Category:IT"
+        \});
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="more_like_this_4" label="more_like_this_4">
+<CodeBlock language="csharp">
+{`List<Article> articles = session
+    .Query<Article>("Articles/MoreLikeThis")
+    .MoreLikeThis(builder => builder
+        .UsingDocument(x => x.Id == "articles/1")
+        .WithOptions(new MoreLikeThisOptions
+        \{
+            Fields = new[] \{ "Body" \}
+        \}))
+    .Where(x => x.Category == "IT")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Remarks
+
+<Admonition type="info" title="Info">
+You can read more about MoreLikeThis in a dedicated Client API article that can be found [here](../../../../client-api/session/querying/how-to-use-morelikethis.mdx).
+</Admonition>

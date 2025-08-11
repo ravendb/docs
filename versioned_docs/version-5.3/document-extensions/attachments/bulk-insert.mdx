@@ -1,0 +1,106 @@
+---
+title: "Bulk Insert: How to Add Attachments"
+hide_table_of_contents: true
+sidebar_label: Bulk Insert
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bulk Insert: How to Add Attachments
+<Admonition type="note" title="Note">
+
+* `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
+  Use its `AttachmentsFor` interface's `Store` method to add attachments with great speed.  
+
+* In this page:  
+      * [Syntax](../../document-extensions/attachments/bulk-insert.mdx#syntax)  
+      * [Usage Flow](../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
+      * [Usage Sample](../../document-extensions/attachments/bulk-insert.mdx#usage-sample)  
+
+</Admonition>
+
+## Syntax
+
+*   `AttachmentsFor`
+<TabItem value="AttachmentsFor-definition" label="AttachmentsFor-definition">
+<CodeBlock language="csharp">
+{`public AttachmentsBulkInsert AttachmentsFor(string id)
+`}
+</CodeBlock>
+</TabItem>  
+
+     | Parameters | Type | Description |
+     |:-------------|:-------------|:-------------|
+     | `id` | `string` | Document ID |
+
+*   `AttachmentsFor.Store`
+<TabItem value="AttachmentsFor.Store-definition" label="AttachmentsFor.Store-definition">
+<CodeBlock language="csharp">
+{`public void Store(string name, Stream stream, string contentType = null)
+`}
+</CodeBlock>
+</TabItem>  
+
+     | Parameters | Type | Description |
+     |:-------------|:-------------|:-------------|
+     | `name` | `string` | Attachment Name |
+     | `stream` | `Stream` | Attachment Stream |
+     | `contentType` | `string` | Attachment Type (default: null)|
+
+
+
+## Usage Flow
+
+* Create a `store.BulkInsert` instance.  
+* Pass the instance's `AttachmentsFor` interface -  
+   * Document ID  
+* Call `Store` as many times as you like. Pass it -  
+   * The attachment Name, Stream, and Type  
+
+
+
+## Usage Sample
+
+* In this sample, we attach a file to all User documents.  
+<TabItem value="bulk-insert-attachment" label="bulk-insert-attachment">
+<CodeBlock language="csharp">
+{`List<User> result;
+
+// Choose user profiles to attach files to
+using (var session = store.OpenSession())
+\{
+    IRavenQueryable<User> query = session.Query<User>()
+        .Where(u => u.Age < 30);
+
+    result = query.ToList();
+\}
+
+// Bulk-insert an attachment to the chosen users
+using (var bulkInsert = store.BulkInsert())
+\{
+    for (var user = 0; user < result.Count; user++)
+    \{
+        byte[] byteArray = Encoding.UTF8.GetBytes("some contents here");
+        var stream = new MemoryStream(byteArray);
+
+        string userId = result[user].Id;
+        
+        // Choose the document to attach to
+        var attachmentsFor = bulkInsert.AttachmentsFor(userId);
+
+        // Attach the stream
+        await attachmentsFor.StoreAsync("attName", stream);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

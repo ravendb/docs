@@ -1,0 +1,99 @@
+---
+title: "Metadata change listeners"
+hide_table_of_contents: true
+sidebar_label: Metadata change listeners
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Metadata change listeners
+
+Implement and register `IMetadataChangeListener` if you want to provide custom logic when file metadata was changed in a session and
+the metadata update operation is executed. The interface looks as follow:
+
+<TabItem value="interface" label="interface">
+<CodeBlock language="csharp">
+{`public interface IMetadataChangeListener
+\{
+	/// <summary>
+	/// Invoked before the written data is sent to the server.
+	/// </summary>
+	/// <param name="instance">The file to affect</param>
+	/// <param name="metadata">The new metadata</param>
+	/// <param name="original">The original remote object metadata</param>
+	/// <returns>
+	/// Whatever the metadata was modified and requires us to re-send it.
+	/// Returning false would mean that any request of write to the file would be 
+	/// ignored in the current SaveChanges call.
+	/// </returns>
+	bool BeforeChange(FileHeader instance, RavenJObject metadata, RavenJObject original);
+
+	/// <summary>
+	/// Invoked after the metadata is sent to the server.
+	/// </summary>
+	/// <param name="instance">The updated file information.</param>
+	/// <param name="metadata">The current metadata as stored in the server.</param>
+	void AfterChange(FileHeader instance, RavenJObject metadata);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The same like for delete operations you can prevent from updating metadata by returning `false` from `BeforeChange` method. The operation will be skipped then
+and `AfterChange` won't be executed.
+
+#Example
+
+You can modify the metadata before it will be sent to the server. For example you can remove tags that are banned:
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`public class RemoveBannedTagsListener : IMetadataChangeListener
+\{
+	private readonly string[] bannedTags =
+	\{
+		/* ... */
+	\};
+
+	public bool BeforeChange(FileHeader instance, RavenJObject metadata, RavenJObject original)
+	\{
+		var tags = metadata.Value<RavenJArray>("Tags");
+
+		if (tags == null)
+			return true;
+
+		foreach (var banned in bannedTags)
+		\{
+			tags.Remove(banned);
+		\}
+
+		metadata["Tags"] = tags; 
+
+		return true;
+	\}
+
+	public void AfterChange(FileHeader instance, RavenJObject metadata)
+	\{
+		
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

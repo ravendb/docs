@@ -1,0 +1,157 @@
+---
+title: "Operations: How to Put Indexes"
+hide_table_of_contents: true
+sidebar_label: Put Indexes
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Put Indexes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**PutIndexesOperation** is used to insert indexes into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="csharp">
+{`public PutIndexesOperation(params IndexDefinition[] indexToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexToAdd** | `params IndexDefinition[]` | Definitions of indexes |
+
+| Return Value | |
+| ------------- | ----- |
+| PutIndexResult[] | List of created indexes |
+
+### Example I
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="csharp">
+{`IndexDefinition definition = new IndexDefinition
+\{
+    Maps = new HashSet<string> \{ @"from order in docs.Orders
+                        select new 
+                        \{
+                            order.Employee,
+                            order.Company,
+                            Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+                        \}" \}
+\};
+
+store.Maintenance.Send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="put_1_2" label="put_1_2">
+<CodeBlock language="csharp">
+{`IndexDefinition definition = new IndexDefinitionBuilder<Order>
+\{
+    Map = orders => from order in orders
+                    select new
+                    \{
+                        order.Employee,
+                        order.Company,
+                        Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+                    \}
+\}
+.ToIndexDefinition(store.Conventions);
+store.Maintenance.Send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**PutIndexesOperation** is used to insert indexes into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="java">
+{`PutIndexesOperation(IndexDefinition... indexToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexToAdd** | `IndexDefinition...` | Definitions of indexes |
+
+| Return Value | |
+| ------------- | ----- |
+| PutIndexResult[] | List of created indexes |
+
+### Example I
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setMaps(Collections.singleton("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="put_1_2" label="put_1_2">
+<CodeBlock language="java">
+{`IndexDefinitionBuilder builder = new IndexDefinitionBuilder();
+builder.setMap("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}");
+
+IndexDefinition definition = builder.toIndexDefinition(store.getConventions());
+store.maintenance()
+    .send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+
+
+-->

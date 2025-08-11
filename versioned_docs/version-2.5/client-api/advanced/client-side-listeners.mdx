@@ -1,0 +1,289 @@
+---
+title: "Client-side listeners"
+hide_table_of_contents: true
+sidebar_label: Client-side Listeners
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Client-side listeners
+
+To perform various custom document store actions such as automatic conflict resolution or global query customization, we introduced concept of listeners to RavenDB client.
+
+Currently there are five types of listeners that allow user to perform custom actions:
+
+* Document Conflict listeners (**IDocumentConflictListener**),
+* Document Conversion listeners (**IDocumentConversionListener**)
+* Document Delete listeners (**IDocumentDeleteListener**)
+* Document Query listeners (**IDocumentQueryListener**)
+* Document Store listeners (**IDocumentStoreListener**)
+
+and all of them are registered by using `RegisterListener` method in `DocumentStore`.
+
+## Document Conflict listener
+
+To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener. 
+To create your own listener of this type, just implement `IDocumentConflictListener` interface.
+
+<TabItem value="document_conflict_interface" label="document_conflict_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentConflictListener
+\{
+	bool TryResolveConflict(string key, JsonDocument[] conflictedDocs, out JsonDocument resolvedDocument);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+This example shows how to create `TakeNewestConflictResolutionListener`, which will pick newest item from list of conflicted documents.
+
+<TabItem value="document_conflict_example" label="document_conflict_example">
+<CodeBlock language="csharp">
+{`public class TakeNewestConflictResolutionListener : IDocumentConflictListener
+\{
+	public bool TryResolveConflict(
+		string key,
+		JsonDocument[] conflictedDocs,
+		out JsonDocument resolvedDocument)
+	\{
+		var maxDate = conflictedDocs.Max(x => x.LastModified);
+		resolvedDocument = conflictedDocs
+							.FirstOrDefault(x => x.LastModified == maxDate);
+
+		if (resolvedDocument == null)
+			return false;
+
+		resolvedDocument.Metadata.Remove("@id");
+		resolvedDocument.Metadata.Remove("@etag");
+		return true;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Document Conversion listener
+
+Conversion listeners provide users with hook for additional logic when converting entities to documents and metadata and backwards. Just implement `IDocumentConversionListener` with any logic that you need.
+
+<TabItem value="document_conversion_interface" label="document_conversion_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentConversionListener
+\{
+	/// <summary>
+	/// Called when converting an entity to a document and metadata
+	/// </summary>
+	void EntityToDocument(string key, object entity, RavenJObject document, RavenJObject metadata);
+
+	/// <summary>
+	/// Called when converting a document and metadata to an entity
+	/// </summary>
+	void DocumentToEntity(string key, object entity, RavenJObject document, RavenJObject metadata);
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+Lets consider a case when we want to convert one of the metadata values to one of our `Custom` class properties. To achieve this we created `MetadataToPropertyConversionListener`.
+
+<TabItem value="document_conversion_example" label="document_conversion_example">
+<CodeBlock language="csharp">
+{`public class Custom
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public string Value \{ get; set; \}
+\}
+
+public class MetadataToPropertyConversionListener : IDocumentConversionListener
+\{
+	public void EntityToDocument(string key, object entity, RavenJObject document, RavenJObject metadata)
+	\{
+		if (entity is Custom == false)
+			return;
+		document.Remove("Value");
+	\}
+
+	public void DocumentToEntity(string key, object entity, RavenJObject document, RavenJObject metadata)
+	\{
+		if (entity is Custom == false)
+			return;
+		((Custom)entity).Value = metadata.Value<string>("Raven-Document-Revision");
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Extended Document Conversion listener
+
+Extended conversion listeners provide users with hook for additional logic when converting entities to documents and metadata and backwards. In contrast to `IDocumentConversionListener` the extended conversion listeners are providing hooks before and after actual document/entity conversion. Just implement `IExtendedDocumentConversionListener` with any logic that you need.
+
+<TabItem value="extended_document_conversion_interface" label="extended_document_conversion_interface">
+<CodeBlock language="csharp">
+{`public interface IExtendedDocumentConversionListener
+\{
+	/// <summary>
+	/// Called before converting an entity to a document and metadata
+	/// </summary>
+	void BeforeConversionToDocument(string key, object entity, RavenJObject metadata);
+
+	/// <summary>
+	/// Called after having converted an entity to a document and metadata
+	/// </summary>
+	void AfterConversionToDocument(string key, object entity, RavenJObject document, RavenJObject metadata);
+
+	/// <summary>
+	/// Called before converting a document and metadata to an entity
+	/// </summary>
+	void BeforeConversionToEntity(string key, RavenJObject document, RavenJObject metadata);
+
+	/// <summary>
+	/// Called after having converted a document and metadata to an entity
+	/// </summary>
+	void AfterConversionToEntity(string key, RavenJObject document, RavenJObject metadata, object entity);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Document Delete listener
+
+We introduced `IDocumentDeleteListener` interface which needs to be implemented if users wants to perform custom actions when delete operations are executed. Currently the interface contains only one method that is invoked before the delete request is sent to the server.
+
+<TabItem value="document_delete_interface" label="document_delete_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentDeleteListener
+\{
+	/// <summary>
+	/// Invoked before the delete request is sent to the server.
+	/// </summary>
+	/// <param name="key">The key.</param>
+	/// <param name="entityInstance">The entity instance.</param>
+	/// <param name="metadata">The metadata.</param>
+	void BeforeDelete(string key, object entityInstance, RavenJObject metadata);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+To prevent anyone from deleting documents we can create `PreventDeleteListener` with implementation as follows:
+
+<TabItem value="document_delete_example" label="document_delete_example">
+<CodeBlock language="csharp">
+{`public class FailDelete : IDocumentDeleteListener
+\{
+	public void BeforeDelete(string key, object entityInstance, RavenJObject metadata)
+	\{
+		throw new NotSupportedException();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Document Query listener
+
+To modify all queries globally, users need to create their own implementation of a `IDocumentQueryListener`.
+
+<TabItem value="document_query_interface" label="document_query_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentQueryListener
+\{
+	/// <summary>
+	/// Allow to customize a query globally
+	/// </summary>
+	void BeforeQueryExecuted(IDocumentQueryCustomization queryCustomization);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+If we want to have all results non stale, one can implement `NonStaleDocumentQueryListener` which will add `WaitForNonStaleResults` to every query executed.
+
+<TabItem value="document_query_example" label="document_query_example">
+<CodeBlock language="csharp">
+{`public class NonStaleQueryListener : IDocumentQueryListener
+\{
+	public void BeforeQueryExecuted(IDocumentQueryCustomization customization)
+	\{
+		customization.WaitForNonStaleResults();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Document Store listener
+
+To execute any custom actions before of after document is stored  the `IDocumentStoreListener` needs to be implemented.
+
+<TabItem value="document_store_interface" label="document_store_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentStoreListener
+\{
+	/// <summary>
+	/// Invoked before the store request is sent to the server.
+	/// </summary>
+	/// <param name="key">The key.</param>
+	/// <param name="entityInstance">The entity instance.</param>
+	/// <param name="metadata">The metadata.</param>
+	/// <param name="original">The original document that was loaded from the server</param>
+	/// <returns>
+	/// Whatever the entity instance was modified and requires us re-serialize it.
+	/// Returning true would force re-serialization of the entity, returning false would 
+	/// mean that any changes to the entityInstance would be ignored in the current SaveChanges call.
+	/// </returns>
+	bool BeforeStore(string key, object entityInstance, RavenJObject metadata, RavenJObject original);
+
+	/// <summary>
+	/// Invoked after the store request is sent to the server.
+	/// </summary>
+	/// <param name="key">The key.</param>
+	/// <param name="entityInstance">The entity instance.</param>
+	/// <param name="metadata">The metadata.</param>
+	void AfterStore(string key, object entityInstance, RavenJObject metadata);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+To prevent anyone from adding documents with certain key, one can create `FilterForbiddenKeysDocumentListener`.
+
+<TabItem value="document_store_example" label="document_store_example">
+<CodeBlock language="csharp">
+{`public class FilterForbiddenKeysDocumentListener : IDocumentStoreListener
+\{
+	private readonly IList<string> forbiddenKeys = new List<string> \{ "system" \};
+
+	public bool BeforeStore(string key, object entityInstance, RavenJObject metadata, RavenJObject original)
+	\{
+		return this.forbiddenKeys.Any(x => x.Equals(key, StringComparison.InvariantCultureIgnoreCase)) == false;
+	\}
+
+	public void AfterStore(string key, object entityInstance, RavenJObject metadata)
+	\{
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

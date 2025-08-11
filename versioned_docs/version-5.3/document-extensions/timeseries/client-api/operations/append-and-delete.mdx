@@ -1,0 +1,230 @@
+---
+title: "Operations: Append & Delete Time Series"
+hide_table_of_contents: true
+sidebar_label: Append & Delete
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Operations: Append & Delete Time Series
+<Admonition type="note" title="Note">
+
+To **Append** and **Delete** multiple time series entries, use `TimeSeriesBatchOperation`.  
+
+* In this page:  
+  * [`TimeSeriesBatchOperation`](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#timeseriesbatchoperation)  
+     * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#syntax)  
+     * [Usage Flow](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage-flow)  
+     * [Usage Samples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage-samples)  
+</Admonition>
+## `TimeSeriesBatchOperation`
+
+`TimeSeriesBatchOperation` executes a list of time series entries **Append** 
+and **Delete** actions.  
+The list is prepared in advance in a `TimeSeriesOperation` instance using 
+**TimeSeriesOperation.Append** and **TimeSeriesOperation.Delete**, and is 
+passed to `TimeSeriesBatchOperation` as an argument.  
+
+
+
+## Syntax
+
+* `TimeSeriesBatchOperation`  
+  **This is the operation you need to execute to append and delete time series entries.**  
+
+   * **Definition**  
+<TabItem value="TimeSeriesBatchOperation-definition" label="TimeSeriesBatchOperation-definition">
+<CodeBlock language="csharp">
+{`public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
+`}
+</CodeBlock>
+</TabItem>  
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `documentId` | `string` | ID of the document to append TS data to |
+        | `operation` | `TimeSeriesOperation` | Operation configuration class: <br/> Which Append/Delete actions to perform |
+
+* `TimeSeriesOperation`  
+  **This is the configuration class provided to `TimeSeriesBatchOperation` 
+  as an argument, with a list of time series entries Append and Delete actions.**  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public class TimeSeriesOperation
+\{
+    public string Name;
+    public void Append(AppendOperation appendOperation)
+    public void Delete(DeleteOperation deleteOperation)
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `Name` | `string` | Time Series name |
+         | `Append` | `method` | Add an Append action to the list |
+         | `Delete` | `method` | Add a Delete action to the list |
+   * To add a time series entry Append action, call `TimeSeriesOperation.Append`.
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public void Append(AppendOperation appendOperation)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public class AppendOperation
+\{
+    public DateTime Timestamp;
+    public double[] Values;
+    public string Tag;
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `Timestamp` | `DateTime` | The TS entry will be appended at this timestamp |
+         | `Values` | `double[]` | Entry values |
+         | `Tag` | `string` | Entry tag (optional) |
+   * To add a time series entry Delete action, call `TimeSeriesOperation.Delete`.
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public void Delete(DeleteOperation deleteOperation)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public class DeleteOperation
+\{
+    public DateTime? From, To;
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `From` (optional) | `DateTime?` | Range start <br/> Entries will be deleted starting at this timestamp |
+         | `To` (optional) | `DateTime?` | Range end <br/> Entries will be deleted up to this timestamp |
+
+
+
+
+## Usage Flow
+
+* Create an instance of `TimeSeriesOperation`  
+   * Add it the **time series name**.  
+
+* Prepare the Append and Delete sequence.  
+   * Call `TimeSeriesOperation.Append` to add an Append action  
+   * Call `TimeSeriesOperation.Delete` to add a Delete action  
+
+        <Admonition type="info" title="Info">
+         NOTE: Delete actions will be executed **before** Append actions.  
+        </Admonition>
+
+* Create a `TimeSeriesBatchOperation` instance.  
+  Pass it the **document ID** and your **`TimeSeriesOperation` instance**  
+
+* Call `store.Operations.Send` with your `TimeSeriesBatchOperation` 
+  instance to execute the operation.  
+
+
+
+
+## Usage Samples
+
+* In this sample, we append two entries to a time series using `TimeSeriesBatchOperation`.  
+<TabItem value="timeseries_region_Append-Using-TimeSeriesBatchOperation" label="timeseries_region_Append-Using-TimeSeriesBatchOperation">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.Today;
+
+// Define the Append operations:
+// =============================
+var appendOp1 = new TimeSeriesOperation.AppendOperation
+\{
+    Timestamp = baseTime.AddMinutes(1), Values = new[] \{79d\}, Tag = "watches/fitbit"
+\};
+
+var appendOp2 = new TimeSeriesOperation.AppendOperation
+\{
+    Timestamp = baseTime.AddMinutes(2), Values = new[] \{82d\}, Tag = "watches/fitbit"
+\};
+
+var appendOp3 = new TimeSeriesOperation.AppendOperation
+\{
+    Timestamp = baseTime.AddMinutes(3), Values = new[] \{80d\}, Tag = "watches/fitbit" 
+\};
+
+var appendOp4 = new TimeSeriesOperation.AppendOperation
+\{
+    Timestamp = baseTime.AddMinutes(4), Values = new[] \{78d\}, Tag = "watches/fitbit" 
+\};
+
+// Define 'TimeSeriesOperation' and add the Append operations:
+// ===========================================================
+var timeSeriesOp = new TimeSeriesOperation
+\{
+    Name = "HeartRates"
+\};
+
+timeSeriesOp.Append(appendOp1);
+timeSeriesOp.Append(appendOp2);
+timeSeriesOp.Append(appendOp3);
+timeSeriesOp.Append(appendOp4);
+
+
+// Define 'TimeSeriesBatchOperation' and execute:
+// ==============================================
+var timeSeriesBatchOp = new TimeSeriesBatchOperation("users/john", timeSeriesOp);
+store.Operations.Send(timeSeriesBatchOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+* In this sample, we delete two ranges of entries from a time series.  
+<TabItem value="timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation" label="timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.Today;
+
+var deleteOp = new TimeSeriesOperation.DeleteOperation
+\{
+    From = baseTime.AddMinutes(2), To = baseTime.AddMinutes(3)
+\};
+
+var timeSeriesOp = new TimeSeriesOperation
+\{
+    Name = "HeartRates"
+\};
+
+timeSeriesOp.Delete(deleteOp);
+
+var timeSeriesBatchOp = new TimeSeriesBatchOperation("users/john", timeSeriesOp);
+
+store.Operations.Send(timeSeriesBatchOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+

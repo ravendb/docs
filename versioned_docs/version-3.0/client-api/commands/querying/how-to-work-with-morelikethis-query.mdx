@@ -1,0 +1,228 @@
+---
+title: "Commands: Querying: How to work with MoreLikeThis query?"
+hide_table_of_contents: true
+sidebar_label: How to work with MoreLikeThis query?
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Querying: How to work with MoreLikeThis query?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To find similar or related documents use the **MoreLikeThis** method from the commands.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="csharp">
+{`MultiLoadResult MoreLikeThis(MoreLikeThisQuery query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed |
+
+| Return Value | |
+| ------------- | ----- |
+| [MultiLoadResult](../../../glossary/multi-load-result.mdx) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="csharp">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+MultiLoadResult result = store
+	.DatabaseCommands
+	.MoreLikeThis(
+		new MoreLikeThisQuery
+			\{
+				IndexName = "Articles/MoreLikeThis",
+				DocumentId = "articles/1",
+				Fields = new[] \{ "Body" \}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="csharp">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+MultiLoadResult result = store
+	.DatabaseCommands
+	.MoreLikeThis(
+		new MoreLikeThisQuery
+		\{
+			IndexName = "Articles/MoreLikeThis",
+			DocumentId = "articles/1",
+			Fields = new[] \{ "Body" \},
+			AdditionalQuery = "Category:IT"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To find similar or related documents use the **MoreLikeThis** method from commands.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="java">
+{`public MultiLoadResult moreLikeThis(MoreLikeThisQuery query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed |
+
+| Return Value | |
+| ------------- | ----- |
+| [MultiLoadResult](../../../glossary/multi-load-result.mdx) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="java">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="java">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+moreLikeThisQuery.setAdditionalQuery("Category:IT");
+MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+To find similar or related documents use the **/morelikethis/** endpoint.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/morelikethis/? \\
+		&index=\{indexName\} \\
+		&docId=\{documentId\} \\
+		&fields=\{field\} \\
+		&boost=\{boost\} \\ 
+		&boostFactor=\{boostFactor\} \\
+		&maxQueryTerms=\{maxQueryTerms\} \\
+		&maxNumTokens=\{maxNumTokens\} \\
+		&maxWordLen=\{maxWordLen\} \\
+		&minDocFreq=\{minDocFreq\} \\
+		&maxDocFreq=\{maxDocFreq\} \\
+		&maxDocFreqPct=\{maxDocFreqPct\} \\
+		&minTermFreq=\{minTermFreq\} \\
+		&minWordLen=\{minWordLen\} \\
+		&stopWords=\{stopWords\} \\
+		&resultsTransformer=\{resultsTransformer\} \\
+		&tp-\{param\}=\{value\} \\
+		&include=\{include\} \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Multiple allowed | Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | No | A name of an index to query. |
+| **documentId** | Yes | No | Document id to be used for more like this |
+| **fields** | No | Yes | Fields used for comparision |
+| **boost** | No | No | Whether to enable boost |
+| **boostFactor** | No | No | Boost factor |
+| **maxQueryTerms** | No | No | Maximum query terms |
+| **maxNumTokens** | No | No | Maximum number of tokens |
+| **maxWordLen** | No | No | Maximum word length |
+| **minDocFreq** | No | No | Minimum document frequency |
+| **maxDocFreq** | No | No | Maximum document frequency |
+| **maxDocFreqPct** | No | No | Maximum document frequency (as percentage) |
+| **minTermFreq** | No | No | Minimum term frequency |
+| **minWordLen** | No | No | Minimum word length |
+| **stopWords** | No | No | Name of document which contains stop words |
+| **resultsTransformer** | No | No | Result transformer to use |
+| `{param}={value}` | No | Yes | Transformer parameters |
+| **include** | No | No | Include paths |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Results** | List of requested documents |
+| **Includes** | List of included documents |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/suggest/Users/ByFullName?term=johne&field=FullName&max=10&popularity=false&distance=Levenshtein" 
+< HTTP/1.1 200 OK
+\{"Results":[...results ...],"Includes":[]\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)
+- [How to query a database?](../../../client-api/commands/querying/how-to-query-a-database)
+- [How to stream query results?](../../../client-api/commands/querying/how-to-stream-query-results)
+
+-->

@@ -1,0 +1,95 @@
+---
+title: "Monitoring: Request Tracking"
+hide_table_of_contents: true
+sidebar_label: Request Tracking
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Monitoring: Request Tracking
+
+It is possible to record and replay requests that are being received by RavenDB.
+
+Monitoring is possible using the `Raven.Traffic.exe` tool, which can be found in the `Tools` ZIP package in the download page. 
+
+## **Recording Traffic**
+
+To record traffic, use this command:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Traffic rec http://localhost:8080/ Northwind outputFile.json
+`}
+</CodeBlock>
+</TabItem>
+
+
+### Customizing recording
+The default recording behaviour is to record 1000 requests, for no longer then 60 seconds. In order to change this behavior, you can use the traceSeconds and\or traceRequests options.
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Traffic rec out http://localhost:8080/ Northwind outputFile.json traceSeconds=10
+`}
+</CodeBlock>
+</TabItem>						
+or
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Traffic rec out http://localhost:8080/ Northwind outputFile.json traceRequests=100
+`}
+</CodeBlock>
+</TabItem>
+or
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Traffic rec out http://localhost:8080/ Northwind outputFile.json traceSeconds=180 traceRequests=5000
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Other possible customizations allows compressing output, setting API keys etc. you can see it in the options section.
+</Admonition>
+
+
+## **Replaying Traffic**
+
+In addition to recording traffic, it is possible to replay recorder traffic. In order to replay, use this command:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Traffic play http://localhost:8080/ Northwind outputFile.json
+`}
+</CodeBlock>
+</TabItem>
+
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Unlike the recording, in replaying it is not possible to limit replay length or volume, instead, the whole file will be replayed. But it does allow you to set connection settings compressing output, setting API keys etc. you can see it in the options section.
+</Admonition>
+
+
+
+## **Command line options**
+
+You can change the Raven.Traffic behavior using the config parameters below
+
+ - --traceSeconds[=VALUE] : (In Record mode only) Requests recording max duration
+ - --traceRequests[=VALUE] : (In Record mode only) Max amount of requests to record
+ - --compressed              Work with compressed json outpu/input
+ - --noOutput                Suppress console progress output
+ - --timeout[=VALUE]         The timeout to use for requests(seconds)
+ - -u, --user, --username[=VALUE] The username to use when the database requires the client to authenticate.
+ - -p, --pass, --password[=VALUE] The password to use when the database requires the client to authenticate.
+ - --domain[=VALUE]          The domain to use when the database requires the client to authenticate.
+ - --key, --api-key, --apikey[=VALUE] The API-key to use, when using OAuth.
+
+
+
+

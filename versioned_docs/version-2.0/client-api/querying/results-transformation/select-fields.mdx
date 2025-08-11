@@ -1,0 +1,98 @@
+---
+title: "SelectFields"
+hide_table_of_contents: true
+sidebar_label: SelectFields
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#SelectFields
+
+The `SelectFields<T>` method is very similar to [`ProjectFromIndexFieldsInto<T>`](project-from-index-fields-into) but it works with Lucene queries.
+After applying it the query results will become objects of the specified type `T`. The transformation is done server side and the projected fields are retrieved directly from stored index fields, what influences positively time of the query execution.
+It means that an index definition should indicate what fields have to be stored inside Lucene index, for example:
+
+<TabItem value="index_def" label="index_def">
+<CodeBlock language="csharp">
+{`public class Product_ByName : AbstractIndexCreationTask<Product>
+\{
+	public Product_ByName()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  Name = product.Name
+						  \};
+
+		Stores.Add(x => x.Name, FieldStorage.Yes);
+		Stores.Add(x => x.Description, FieldStorage.Yes);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now you can take advantage of those field when querying the index:
+
+<TabItem value="select_fields_1" label="select_fields_1">
+<CodeBlock language="csharp">
+{`var results =
+	session.Advanced.LuceneQuery<Product>("Product/ByName")
+	       .SelectFields<ProductViewModel>()
+	       .WhereEquals(x => x.Name, "Raven")
+	       .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+The classes `Product` and `ProductViewModel` look as following:
+
+<TabItem value="product_class" label="product_class">
+<CodeBlock language="csharp">
+{`public class Product
+\{
+	public string Id \{ get; set; \}
+	public string ArticleNumber \{ get; set; \}
+	public string Name \{ get; set; \}
+	public string Manufacturer \{ get; set; \}
+	public string Description \{ get; set; \}
+	public int QuantityInWarehouse \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="product_view_model_class" label="product_view_model_class">
+<CodeBlock language="csharp">
+{`public class ProductViewModel
+\{
+	public string Name \{ get; set; \}
+	public string Description \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The default behavior of `SelectFields<T>` method is the same like of `ProjectFromIndexFieldsInto<T>`, so it means that the projection is performed from index stored values if they are available (note the usage of `Stores.Add` in the index definition),
+otherwise the entire document is pulled and appropriate properties are used for the transformation. It works differently if you specify exactly what fields you want to fetch directly from index, e.g.:
+
+<TabItem value="select_fields_2" label="select_fields_2">
+<CodeBlock language="csharp">
+{`var resultsWithNameOnly =
+	session.Advanced.LuceneQuery<Product>("Product/ByName")
+		   .SelectFields<ProductViewModel>("Name")
+		   .WhereEquals(x => x.Name, "Raven")
+		   .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+In case above only *Name* property will be retrieved and the resulting objects will consist of projected *Name* value while *Description* will be `null`.
+
+
+

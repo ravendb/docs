@@ -1,0 +1,33 @@
+---
+title: "Status: Storage"
+hide_table_of_contents: true
+sidebar_label: Storage
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Status: Storage
+
+`On disk` - shows general information about space used and paths to logs, data and indexes.
+
+![Figure 1. Studio. Status. Storage. On disk.](./assets/status-storage-1.png)
+
+`Internal storage breakdown` - shows detailed information about space used. 
+
+![Figure 2. Studio. Status. Storage. Internal storage breakdown.](./assets/status-storage-2.png)
+
+`Collections storage` - shows statistics for each collection.
+
+![Figure 3. Studio. Status. Storage. Collections storage.](./assets/status-storage-3.png)
+![Figure 3. Studio. Status. Storage. Collections storage continued.](./assets/status-storage-4.png)
+
+<Admonition type="note" title="Note">
+Because these operations are expensive, we show the progress and added a cancellation button.
+</Admonition>
+![Figure 4. Studio. Status. Storage. Show Progress.](./assets/status-storage-5.png)

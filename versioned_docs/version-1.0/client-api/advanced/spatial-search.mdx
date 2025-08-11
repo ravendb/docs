@@ -1,0 +1,65 @@
+---
+title: "Spatial search"
+hide_table_of_contents: true
+sidebar_label: Spatial search
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Spatial search
+
+RavenDB supports performing queries based on spatial coordinates. That is, searching for locations which are within a specified radius from an origin.
+
+Let's assume we build a restaurant-finder application, and to that end we store restaurant entities using the following structure:
+
+<TabItem value="spatial0" label="spatial0">
+<CodeBlock language="csharp">
+{`public class Restaurant
+\{
+	public string Name \{ get; set; \}
+	public double Longitude \{ get; set; \}
+	public double Latitude \{ get; set; \}
+	public short Rating \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To allow spatial searches we will need to define an index like so:
+
+<TabItem value="spatial1" label="spatial1">
+<CodeBlock language="csharp">
+{`public class Restaurants_ByRatingAndLocation : AbstractIndexCreationTask<Restaurant>
+\{
+	public Restaurants_ByRatingAndLocation()
+	\{
+		Map = restaurants => from r in restaurants
+		                     select new \{r.Rating, _ = SpatialIndex.Generate(r.Latitude, r.Longitude)\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The key part is the call to `SpatialIndex.Generate()`. The field name assigned to it will be ignored, so we recommend using the underscore letter to mark it, which is a convention used to denote an unimportant variable.
+
+This index gives us the ability to make spatial searches, using the following code:
+
+<TabItem value="spatial2" label="spatial2">
+<CodeBlock language="csharp">
+{`var matchingRestaurants =
+	session.Advanced.LuceneQuery<Restaurant>("Restaurants/ByRatingAndLocation")
+		.WhereGreaterThanOrEqual("Rating", 4)
+		.WithinRadiusOf(radius: 5, latitude: 38.9103000, longitude: -77.3942)
+		.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+This will return all the restaurants within 5 miles radius with a rating of 4 or more.

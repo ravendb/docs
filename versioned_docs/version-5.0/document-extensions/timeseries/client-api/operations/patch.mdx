@@ -1,0 +1,349 @@
+---
+title: "Operations: Patch Time Series"
+hide_table_of_contents: true
+sidebar_label: Patch
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Operations: Patch Time Series  
+<Admonition type="note" title="Note">
+
+* Time series data can be patched -  
+   * to a single document located by its ID, using [PatchOperation](../../../../client-api/operations/patching/single-document.mdx#patching-how-to-perform-single-document-patch-operations).  
+   * to multiple documents located by a query, using [PatchByQueryOperation](../../../../client-api/operations/patching/set-based.mdx).  
+* Both patching operations can be used to Append, Get and Delete time series entries.  
+
+* In this page:  
+  * [Patching Operations](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patching-operations)  
+  * [`PatchOperation`](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchoperation)  
+     * [Syntax](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax)  
+     * [Usage Flow](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-flow)  
+     * [Usage Samples](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-samples)  
+  * [`PatchByQueryOperation`](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation)  
+     * [Syntax](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax-1)  
+     * [Usage Flow](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-flow-1)  
+     * [Usage Samples](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-samples-1)  
+
+</Admonition>
+## Patching Operations
+
+<Admonition type="info" title="Info">
+
+* To patch time series data, use `PatchOperation` or `PatchByQueryOperation`.  
+* `PatchOperation` is RavenDB's operation for single-document patching, and 
+  `PatchByQueryOperation` is used for set-based document operations. 
+  You can use both to patch time series data, by 
+  [customizing the JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) 
+  they are using.  
+
+</Admonition>
+
+* Use `PatchOperation` to **load a document by its ID and patch it time series entries**.  
+
+    Here, for example, we use `PatchOperation` to patch a document a single time series entry.
+<TabItem value="TS_region-Operation_Patch-Append-Single-TS-Entry" label="TS_region-Operation_Patch-Append-Single-TS-Entry">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.UtcNow;
+
+var patchRequest = new PatchRequest
+\{
+    // Define the patch request using JavaScript:
+    Script = "timeseries(this, $timeseries).append($timestamp, $values, $tag);",
+    
+    // Provide values for the parameters in the script:
+    Values =
+    \{
+        \{ "timeseries", "HeartRates" \},
+        \{ "timestamp", baseTime.AddMinutes(1) \},
+        \{ "values", 59d \},
+        \{ "tag", "watches/fitbit" \}
+    \}
+\};
+
+// Define the patch operation;
+var patchOp = new PatchOperation("users/john", null, patchRequest);
+
+// Execute the operation:
+store.Operations.Send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+
+* Use `PatchByQueryOperation` to **run a document query and patch time series entries to matching documents**.  
+
+    Here, we use `PatchByQueryOperation` to append a time series entry to all 
+    documents of the User collection.
+<TabItem value="TS_region-PatchByQueryOperation-Append-To-Multiple-Docs" label="TS_region-PatchByQueryOperation-Append-To-Multiple-Docs">
+<CodeBlock language="csharp">
+{`var indexQuery = new IndexQuery
+\{
+    // Define the query and the patching action that follows the 'update' keyword:
+    Query = @"from Users as u
+              update
+              \{
+                  timeseries(u, $name).append($time, $values, $tag)
+              \}",
+    
+    // Provide values for the parameters in the script:
+    QueryParameters = new Parameters
+    \{
+        \{ "name", "HeartRates" \},
+        \{ "time", baseline.AddMinutes(1) \},
+        \{ "values", new[] \{59d\} \},
+        \{ "tag", "watches/fitbit" \}
+    \}
+\};
+
+// Define the patch operation:
+var patchByQueryOp = new PatchByQueryOperation(indexQuery);
+
+// Execute the operation:
+store.Operations.Send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## `PatchOperation`
+#### Syntax
+
+* **`PatchOperation`**  
+   * **Definition**  
+<TabItem value="PatchOperation-definition" label="PatchOperation-definition">
+<CodeBlock language="csharp">
+{`public PatchOperation(
+        string id,
+        string changeVector,
+        PatchRequest patch,
+        PatchRequest patchIfMissing = null,
+        bool skipPatchIfChangeVectorMismatch = false)
+`}
+</CodeBlock>
+</TabItem>
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `string` | Patched document ID |
+        | `changeVector` | `string` | Change vector, to verify that the document hasn't been modified. <br/> Can be `null`. |
+        | `patch` | `PatchRequest` | The patching JavaScript |
+        | `patchIfMissing` | `PatchRequest` | Patching JavaScript to be used if the document isn't found |
+        | `skipPatchIfChangeVectorMismatch` | `bool` | If true, do not patch if the document has been modified <br/> default: **false** |
+
+* **`PatchRequest`**  
+   * **Definition**  
+<TabItem value="PatchRequest-definition" label="PatchRequest-definition">
+<CodeBlock language="csharp">
+{`public class PatchRequest
+\{
+    // The patching script     
+    public string Script \{ get; set; \}
+    
+    // Values for the parameters used by the patching script
+    public Dictionary<string, object> Values \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `Script` | `string` | Patching script |
+        | `Values` | `Dictionary<string, object>` | Values that the patching script can use |
+#### Usage Flow
+
+* Create an instance of `PatchOperation` and pass its constructor -  
+   * the document ID  
+   * the change vector (or `null`)  
+   * a new `PatchRequest` instance  
+* Use the `PatchRequest` instance to pass `PatchOperation` 
+  a JavaScript that appends or deletes time series entries.  
+* Call `store.Operations.Send` to execute the operation.  
+#### Usage Samples
+
+* In this sample, we provide `PatchOperation`with a script that appends 
+  100 time series entries to a document.  
+  Timestamps and values are drawn from an array, and other 
+  arguments are provided in the "Values" section.  
+<TabItem value="TS_region-Operation_Patch-Append-100-TS-Entries" label="TS_region-Operation_Patch-Append-100-TS-Entries">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.UtcNow;
+
+// Create arrays of timestamps and random values to patch
+var values = new List<double>();
+var timeStamps = new List<DateTime>();
+
+for (var i = 0; i < 100; i++)
+\{
+    values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+    timeStamps.Add(baseTime.AddMinutes(i));
+\}
+
+var patchRequest = new PatchRequest
+\{
+    Script = @"var i = 0;
+               for (i = 0; i < $values.length; i++) \{
+                   timeseries(id(this), $timeseries).append (
+                       $timeStamps[i],
+                       $values[i],
+                       $tag);
+               \}",
+    Values =
+    \{
+        \{ "timeseries", "HeartRates" \},
+        \{ "timeStamps", timeStamps \},
+        \{ "values", values \},
+        \{ "tag", "watches/fitbit" \}
+    \}
+\};
+
+var patchOp = new PatchOperation("users/john", null, patchRequest);
+store.Operations.Send(patchOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+* In this sample, we use `PatchOperation` to delete a range of 50 time series 
+  entries from a document.  
+<TabItem value="TS_region-Operation_Patch-Delete-50-TS-Entries" label="TS_region-Operation_Patch-Delete-50-TS-Entries">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("users/john", null,
+    new PatchRequest
+    \{
+        Script = "timeseries(this, $timeseries).delete($from, $to);",
+        Values =
+        \{
+            \{ "timeseries", "HeartRates" \},
+            \{ "from", baseTime \},
+            \{ "to", baseTime.AddMinutes(49) \}
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## `PatchByQueryOperation`
+#### Syntax
+
+* **`store.Operations.Send` Definition**  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`public Operation Send(IOperation<OperationIdResult> operation, 
+                      SessionInfo sessionInfo = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* **`PatchByQueryOperation` Definition**  
+<TabItem value="PatchByQueryOperation-definition" label="PatchByQueryOperation-definition">
+<CodeBlock language="csharp">
+{`-1
+                public PatchByQueryOperation(string queryToUpdate)
+`}
+</CodeBlock>
+</TabItem>
+   * **Parameters**  
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `queryToUpdate` | `IndexQuery` | The query, including the JavaScript |
+        | `QueryOperationOptions` | `options` | Additional options <br/> Default: `null` |
+
+* **Return Value**: `Operation`   
+#### Usage Flow
+
+* Create a `PatchByQueryOperation` operation.  
+* Pass `PatchByQueryOperation` a new `IndexQuery` instance.  
+* Add the `IndexQuery` instance a JavaScript that specifies 
+   the query you want to run.  
+* Call `store.Operations.Send` to execute the operation.  
+#### Usage Samples
+
+* In this sample, we run a document query and delete the HeartRate time series 
+  from documents we find.  
+<TabItem value="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs" label="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs">
+<CodeBlock language="csharp">
+{`PatchByQueryOperation deleteByQueryOp = new PatchByQueryOperation(new IndexQuery
+\{
+    Query = @"from Users as u
+              where u.Age < 30
+              update
+              \{
+                  timeseries(u, $name).delete($from, $to)
+              \}",
+    
+    QueryParameters = new Parameters
+    \{
+        \{ "name", "HeartRates" \},
+        \{ "from", DateTime.MinValue \},
+        \{ "to", DateTime.MaxValue \}
+    \}
+\});
+
+// Execute the operation: 
+// Time series "HeartRates" will be deleted for all users with age < 30
+store.Operations.Send(deleteByQueryOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+* In this sample, we patch each User document a "NumberOfUniqueTagsInTS" field with 
+  the number of different tags in the user's "ExerciseHeartRate" time series.  
+  To do this, we use the JavaScript `get` method to get each time series' entries (the 
+  range we choose includes them all), and check each entry's tag.  
+<TabItem value="TS_region-PatchByQueryOperation-Get" label="TS_region-PatchByQueryOperation-Get">
+<CodeBlock language="csharp">
+{`PatchByQueryOperation patchNumOfUniqueTags = new PatchByQueryOperation(new IndexQuery
+\{
+    Query = @"
+        declare function patchDocumentField(doc) \{
+            var differentTags = [];
+            var entries = timeseries(doc, $name).get($from, $to);
+
+            for (var i = 0; i < entries.length; i++) \{
+                var e = entries[i];
+
+                if (e.Tag !== null) \{
+                    if (!differentTags.includes(e.Tag)) \{
+                        differentTags.push(e.Tag);
+                    \}
+                \}
+            \}
+
+            doc.NumberOfUniqueTagsInTS = differentTags.length;
+            return doc;
+        \}
+
+        from Users as u
+        update \{
+            put(id(u), patchDocumentField(u))
+        \}",
+
+    QueryParameters = new Parameters
+    \{
+        \{ "name", "HeartRates" \},
+        \{ "from", DateTime.MinValue \},
+        \{ "to", DateTime.MaxValue \}
+    \}
+\});
+
+// Execute the operation and Wait for completion:
+var result = store.Operations.Send(patchNumOfUniqueTags).WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

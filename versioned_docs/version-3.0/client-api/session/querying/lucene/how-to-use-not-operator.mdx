@@ -1,0 +1,116 @@
+---
+title: "Session: Querying: How to use NOT operator?"
+hide_table_of_contents: true
+sidebar_label: How to use NOT operator?
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to use NOT operator?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
+
+<Admonition type="note" title="Note">
+`NOT` operator cannot be used alone without succeeding predicate.
+</Admonition>
+
+## Example I
+
+<TabItem value="not_1" label="not_1">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName NOT equals 'Robert'
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee>()
+	.Not
+	.WhereEquals(x => x.FirstName, "Robert")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="not_2" label="not_2">
+<CodeBlock language="csharp">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName NOT equals 'Robert'
+// and LastName NOT equals 'King'
+List<Employee> employees = session
+	.Advanced
+	.DocumentQuery<Employee>()
+	.Not
+	.OpenSubclause()
+	.WhereEquals(x => x.FirstName, "Robert")
+	.AndAlso()
+	.WhereEquals(x => x.LastName, "King")
+	.CloseSubclause()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
+
+<Admonition type="note" title="Note">
+`NOT` operator cannot be used alone without succeeding predicate.
+</Admonition>
+
+## Example I
+
+<TabItem value="not_1" label="not_1">
+<CodeBlock language="java">
+{`// load up to 128 entities from 'Employees' collection
+// where FirstName NOT equals 'Robert'
+List<Employee> employees = session.advanced().documentQuery(Employee.class).not()
+    .whereEquals(e.firstName, "Robert").toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="not_2" label="not_2">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+// load up to 128 entities from 'Employees' collection
+// where FirstName NOT equals 'Robert'
+// and LastName NOT equals 'King'
+List<Employee> employees = session.advanced()
+    .documentQuery(Employee.class)
+    .not()
+    .openSubclause()
+    .whereEquals(e.firstName, "Robert")
+    .andAlso()
+    .whereEquals(e.lastName, "King")
+    .closeSubclause()
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to use lucene in queries?](../../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries)
+
+-->

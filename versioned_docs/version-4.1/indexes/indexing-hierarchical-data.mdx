@@ -1,0 +1,321 @@
+---
+title: "Indexes: Indexing Hierarchical Data"
+hide_table_of_contents: true
+sidebar_label: Indexing Hierarchical Data
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Indexes: Indexing Hierarchical Data
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`private class BlogPost
+\{
+    public string Author \{ get; set; \}
+    public string Title \{ get; set; \}
+    public string Text \{ get; set; \}
+
+    // Blog post readers can leave comments
+    public List<BlogPostComment> Comments \{ get; set; \}
+\}
+
+public class BlogPostComment
+\{
+    public string Author \{ get; set; \}
+    public string Text \{ get; set; \}
+
+    // Comments can be left recursively
+    public List<BlogPostComment> Comments \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+
+The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
+{
+    public class Result
+    {
+        public IEnumerable<string> Authors { get; set; }
+    }
+
+    public BlogPosts_ByCommentAuthor()
+    {
+        Map = posts => from post in posts
+                       select new Result
+                       {
+                           Authors = Recurse(post, x => x.Comments).Select(x => x.Author)
+                       };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutIndexesOperation(
+    new IndexDefinition
+    {
+        Name = "BlogPosts/ByCommentAuthor",
+        Maps =
+        {
+            @"from post in docs.Posts
+              from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.Comments))
+              select new
+              {
+                  Author = comment.Author
+              }"
+        }
+    }));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByCommentAuthor : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string[] Authors { get; set; }
+
+    }
+
+    public BlogPosts_ByCommentAuthor()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('BlogPosts', function(b){
+                var names = [];
+                b.Comments.forEach(x => getNames(x, names));
+                return {
+                    Authors : names
+                };})"
+        };
+        AdditionalSources = new Dictionary<string, string>
+        {
+            ["The Script"] = @"function getNames(x, names){
+                                names.push(x.Author);
+                                x.Comments.forEach(x => getNames(x, names));
+                         }"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+    .Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
+    .Where(x => x.Authors.Any(a => a == "Ayende Rahien"))
+    .OfType<BlogPost>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+    .Advanced
+    .DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
+    .WhereEquals("Authors", "Ayende Rahien")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="java">
+{`public static class BlogPost \{
+    private String author;
+    private String title;
+    private String text;
+    private List<BlogPostComment> comments;
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getTitle() \{
+        return title;
+    \}
+
+    public void setTitle(String title) \{
+        this.title = title;
+    \}
+
+    public String getText() \{
+        return text;
+    \}
+
+    public void setText(String text) \{
+        this.text = text;
+    \}
+
+    public List<BlogPostComment> getComments() \{
+        return comments;
+    \}
+
+    public void setComments(List<BlogPostComment> comments) \{
+        this.comments = comments;
+    \}
+\}
+
+public static class BlogPostComment \{
+    private String author;
+    private String text;
+    private List<BlogPostComment> comments;
+
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getText() \{
+        return text;
+    \}
+
+    public void setText(String text) \{
+        this.text = text;
+    \}
+
+    public List<BlogPostComment> getComments() \{
+        return comments;
+    \}
+
+    public void setComments(List<BlogPostComment> comments) \{
+        this.comments = comments;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+
+The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByCommentAuthor extends AbstractIndexCreationTask {
+    public BlogPosts_ByCommentAuthor() {
+        map = "docs.BlogPosts.Select(post => new { " +
+            "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author) " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("BlogPosts/ByCommentAuthor");
+indexDefinition.setMaps(Collections.singleton(
+    "from post in docs.Posts" +
+        "  from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.comments)) " +
+        "  select new " +
+        "  { " +
+        "      author = comment.author " +
+        "  }"
+));
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByCommentAuthor extends AbstractJavaScriptIndexCreationTask {
+    public BlogPosts_ByCommentAuthor() {
+        setMaps(Sets.newHashSet("map('BlogPosts', function(b){\\n" +
+            "            var names = [];\\n" +
+            "            b.comments.forEach(x => getNames(x, names));\\n" +
+            "                return {\\n" +
+            "                   authors : names\\n" +
+            "                };" +
+            "            })"));
+
+        java.util.Map<String, String> additionalSources = new HashMap<>();
+        additionalSources.put("The Script", "function getNames(x, names){\\n" +
+            "        names.push(x.author);\\n" +
+            "        x.comments.forEach(x => getNames(x, names));\\n" +
+            "    }");
+
+        setAdditionalSources(additionalSources);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="java">
+{`List<BlogPost> results = session
+    .query(BlogPost.class, BlogPosts_ByCommentAuthor.class)
+    .whereEquals("authors", "Ayende Rahien")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Indexing Spatial Data](../indexes/indexing-spatial-data)
+- [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
+
+### Querying
+- [Basics](../indexes/querying/basics)
+
+
+-->

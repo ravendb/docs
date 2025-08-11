@@ -1,0 +1,235 @@
+---
+title: "Session: Querying: How to use transformers in queries?"
+hide_table_of_contents: true
+sidebar_label: How to use transformers in queries?
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to use transformers in queries?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Transformers can be used with session queries using `TransformWith` method.
+
+## Syntax
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TResult> TransformWith<TTransformer, TResult>()
+	where TTransformer : AbstractTransformerCreationTask, new();
+
+IRavenQueryable<TResult> TransformWith<TResult>(string transformerName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **transformerName** | string | Name of a transformer to use. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`// return up to 128 entities from 'Products' collection
+// transform results using 'Products_Name' transformer
+// which returns only 'Name' property, rest will be 'null'
+List<Product> results = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Products_Name, Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Loading document inside transformer and projecting results to different type.
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="csharp">
+{`public class ProductWithCategoryAndSupplier
+\{
+	public string Name \{ get; set; \}
+
+	public Supplier Supplier \{ get; set; \}
+
+	public Category Category \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`public class Products_WithCategoryAndSupplier : AbstractTransformerCreationTask<Product>
+\{
+	public Products_WithCategoryAndSupplier()
+	\{
+		TransformResults =
+			products => from product in products 
+						select new
+						\{
+							Name = product.Name,
+							Category = LoadDocument<Category>(product.Category),
+							Supplier = LoadDocument<Supplier>(product.Supplier)
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`// return 1 entity from 'Products' collection
+// transform results using 'Products_WithCategoryAndSupplier' transformer
+// project results to 'ProductWithCategoryAndSupplier' class
+ProductWithCategoryAndSupplier product = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Products_WithCategoryAndSupplier, ProductWithCategoryAndSupplier>()
+	.First();
+
+Assert.Equal("Chocolade", product.Name);
+Assert.Equal("Confections", product.Category.Name);
+Assert.Equal("Zaanse Snoepfabriek", product.Supplier.Name);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Transformers can be used with session queries using `transformWith` method.
+
+## Syntax
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="java">
+{`<S> IRavenQueryable<S> transformWith(String transformerName, Class<S> resultClass);
+
+<S> IRavenQueryable<S> transformWith(Class<? extends AbstractTransformerCreationTask> transformerClazz, Class<S> resultClass);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **transformerName** | String | Name of a transformer to use. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="java">
+{`// return up to 128 entities from 'Products' collection
+// transform results using 'Products_Name' transformer
+// which returns only 'name' field, rest will be 'null'
+QProduct p = QProduct.product;
+List<Product> results = session
+  .query(Product.class)
+  .where(p.name.eq("Chocolade"))
+  .transformWith(Products_Name.class, Product.class)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Loading document inside transformer and projecting results to different type.
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="java">
+{`public class ProductWithCategoryAndSupplier \{
+  private String name;
+  private Supplier supplier;
+  private Category category;
+
+  public String getName() \{
+    return name;
+  \}
+  public void setName(String name) \{
+    this.name = name;
+  \}
+  public Supplier getSupplier() \{
+    return supplier;
+  \}
+  public void setSupplier(Supplier supplier) \{
+    this.supplier = supplier;
+  \}
+  public Category getCategory() \{
+    return category;
+  \}
+  public void setCategory(Category category) \{
+    this.category = category;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="java">
+{`public class Products_WithCategoryAndSupplier extends AbstractTransformerCreationTask \{
+  public Products_WithCategoryAndSupplier() \{
+    transformResults = "from product in results               " +
+             " select new \{                                   " +
+             "     Name = product.Name,                       " +
+             "     Category = LoadDocument(product.Category), " +
+             "     Supplier = LoadDocument(product.Supplier)  " +
+             " \}";
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="java">
+{`// return 1 entity from 'Products' collection
+// transform results using 'Products_WithCategoryAndSupplier' transformer
+// project results to 'ProductWithCategoryAndSupplier' class
+QProduct p = QProduct.product;
+ProductWithCategoryAndSupplier product = session
+  .query(Product.class)
+  .where(p.name.eq("Chocolade"))
+  .transformWith(Products_WithCategoryAndSupplier.class, ProductWithCategoryAndSupplier.class)
+  .first();
+
+assertEquals("Chocolade", product.getName());
+assertEquals("Confections", product.getCategory().getName());
+assertEquals("Zaanse Snoepfabriek", product.getSupplier().getName());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [What are transformers?](../../../transformers/what-are-transformers)
+
+-->

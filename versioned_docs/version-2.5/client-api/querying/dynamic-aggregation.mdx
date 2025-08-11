@@ -1,0 +1,107 @@
+---
+title: "Dynamic aggregation"
+hide_table_of_contents: true
+sidebar_label: Dynamic aggregation
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Dynamic aggregation
+
+This feature is an another way to do aggregations and in contrast to map/reduce indexes, it allows to create much more complex queries. It gives you more options for reporting applications,
+dynamic selection and complex aggregation with additional filtering. 
+
+When working with a map/reduce index we are able to do only limited amount of queries. Let's imagine a sample SQL query:
+
+```csharp 
+select sum(Total) from Orders where Total > 500 group by Product
+```
+
+In order give you the ability to query like this, we introduced the dynamic aggregation feature. Thanks this you can build the following query:
+
+<TabItem value="dynamic_aggregation_1" label="dynamic_aggregation_1">
+<CodeBlock language="csharp">
+{`var result = session.Query<Order>("Orders/All")
+                    .Where(x => x.Total > 500)
+                    .AggregateBy(x => x.Product)
+						.SumOn(x => x.Total)
+                    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+The _Orders/All_ index used in the query is a simple map-only index. The only difference is that you have to specify sort options for numeric fields used in the query. This is needed
+for recognizing by RavenDB types of numeric fields when such a query will come in.
+
+<TabItem value="dynamic_aggregation_index_def" label="dynamic_aggregation_index_def">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("Orders/All", new IndexDefinitionBuilder<Order>()
+\{
+	Map = orders => from order in orders
+					select new
+					\{
+						order.Total,
+						order.Product,
+						order.Concurrency
+					\},
+	SortOptions = \{ \{ x => x.Product, SortOptions.Double \} \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Results of a dynamic aggregation query are calculated on the fly, while results of map/reduce index are precomputed. Most cases is fast enough but note that you can hit a lot of data. This feature should be used only for complex aggregate queries that cannot be done by using standard map/reduce.
+</Admonition>
+
+## Extended feceted search
+
+Under the covers this is [a faceted search](../faceted-search.mdx) with an extended support for doing aggregations. For example you can aggregate ranges:
+
+<TabItem value="dynamic_aggregation_range" label="dynamic_aggregation_range">
+<CodeBlock language="csharp">
+{`result = session.Query<Order>("Orders/All")
+                .AggregateBy(x => x.Product)
+                .AddRanges(x => x.Total < 100,
+                           x => x.Total >= 100 && x.Total < 500,
+                           x => x.Total >= 500 && x.Total < 1500,
+                           x => x.Total >= 1500)
+                .SumOn(x => x.Total)
+                .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+It also supports an aggregation on multiple levels:
+
+<TabItem value="dynamic_aggregation_multiple_items" label="dynamic_aggregation_multiple_items">
+<CodeBlock language="csharp">
+{`result = session.Query<Order>("Orders/All")
+                .AggregateBy(x => x.Product)
+					.SumOn(x => x.Total)
+					.CountOn(x => x.Total)
+                .AndAggregateOn(x => x.Concurrency)
+					.MinOn(x => x.Total)
+                .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Another example is an aggregation on different fields based on same facet:
+
+<TabItem value="dynamic_aggregation_different_fieldss" label="dynamic_aggregation_different_fieldss">
+<CodeBlock language="csharp">
+{`result = session.Query<Order>("Orders/All")
+                .AggregateBy(x => x.Product)
+					.MaxOn(x => x.Total)
+					.MinOn(x => x.Concurrency)
+				.ToList();
+`}
+</CodeBlock>
+</TabItem>

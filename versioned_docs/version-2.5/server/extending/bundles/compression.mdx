@@ -1,0 +1,46 @@
+---
+title: "Bundle: Compression"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Compression
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Compression
+
+To reduce the cost of I/O operations and reduce the size of the database on disk, we have introduced the `Compression` bundle. Compression is only applied on documents, indexes are not compressed. This is because RavenDB is performing a lot of random reads from indexes, whereas with documents, we almost always read/write the full content. Worth noting is that compression process is fully transparent for the end-user.
+
+## How to enable compression
+
+To activate compression server-wide just add `Compression` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
+
+How to create a database with compression enabled using Studio can be found [here](../../../studio/bundles/compression.mdx).
+
+<TabItem value="compression_1" label="compression_1">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.CreateDatabase(new DatabaseDocument
+\{
+    Id = "CompressedDB",
+    // Other configuration options omitted for simplicity
+    Settings =
+            \{
+                // ...
+                \{"Raven/ActiveBundles", "Compression"\}
+            \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Above example demonstrates how to create new database called `CompressedDB` with `Compression` bundle enabled.
+
+<Admonition type="note" title="Note">
+Activating compression bundle is only supported for new databases. Activating or disabling compression on an already existing database will cause DB malfunction.
+</Admonition>
+

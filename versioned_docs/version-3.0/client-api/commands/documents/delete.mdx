@@ -1,0 +1,135 @@
+---
+title: "Commands: Documents: Delete"
+hide_table_of_contents: true
+sidebar_label: Delete Document
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Documents: Delete
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`void Delete(string key, Etag etag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of a document to be deleted |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.Delete("employees/1", null);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`public void delete(String key, Etag etag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key of a document to be deleted |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().delete("employees/1", null);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**Delete** is used to remove a document from a database.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+http://\{serverName\}/databases/\{databaseName\}/docs/\{key\} \\
+-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **key** | Yes | key of a document to be deleted |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  current document etag, used for concurrency checks |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No content |
+
+---
+
+### Example I
+
+Delete document `products/9999`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE "http://localhost:8080/databases/NorthWind/docs/products%2F9999" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+
+<!---
+- [Get](../../../client-api/commands/documents/get)
+- [Put](../../../client-api/commands/documents/put)
+- [Revisions and concurrency with ETags](../../../client-api/concurrency/revisions-and-concurrency-with-etags)
+
+-->

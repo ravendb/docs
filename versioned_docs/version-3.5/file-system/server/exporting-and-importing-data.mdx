@@ -1,0 +1,161 @@
+---
+title: "Exporting and importing files"
+hide_table_of_contents: true
+sidebar_label: Exporting and importing files
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Exporting and importing files
+
+In order to export or import files from RavenFS you can use the same tool like for exporting and importing databases - [Raven.Smuggler](../../server/administration/exporting-and-importing-data.mdx).
+
+## **Exporting to a file**
+
+To export data from RavenFS use this command:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Smuggler out http://localhost:8080/ dump.ravenfs --filesystem=NorthwindFS
+`}
+</CodeBlock>
+</TabItem>
+
+This command will export `NorthwindFS` file system to a file named `dump.ravenfs`.
+
+
+
+## **Importing from a file**
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Smuggler in http://localhost:8080/ dump.ravenfs --filesystem=NewNorthwindFS
+`}
+</CodeBlock>
+</TabItem>
+
+This command will import data from `dump.ravenfs` file to `NewNorthwindFS` file system.
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+- Import does **not support** file system creation. If a destination file system does not exist, an error message will appear.
+- Import will **overwrite** any existing files in a destination file system.
+</Admonition>
+
+
+
+## **Moving data between two file systems**
+
+To move files directly between two instances (or different file systems in the same instance) use  the `between` option in following manner:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`Raven.Smuggler between http://localhost:8080/ http://localhost:8081/ --filesystem=NorthwindFS --filesystem2=NewNorthwindFS
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **Command line options**
+
+You can tweak the export/import process with the following parameters:
+
+ - timeout: The timeout (in milliseconds) to use for requests.
+ - batch-size: The batch size for requests.
+ - filesystem: The file system to operate on.
+ - username: A username to use when a file system requires client authentication.
+ - password: A password to use when a file system requires client authentication.
+ - domain: A domain to use when a file system requires client authentication.
+ - api-key: An API-key to use, when using OAuth.
+ - incremental: States usage of incremental operations.
+ - strip-replication-information: Remove all synchronization information from metadata (import only). 
+ - disable-versioning-during-import: Disables versioning for the duration of the import.
+ - help: You can use the help option in order to print the built-in options documentation.
+
+
+
+## **SmugglerFilesApi**
+
+Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerFilesApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
+
+### Exporting
+
+<TabItem value="smuggler_api_1" label="smuggler_api_1">
+<CodeBlock language="csharp">
+{`SmugglerFilesApi smugglerApi = new SmugglerFilesApi();
+
+var exportOptions = new SmugglerExportOptions<FilesConnectionStringOptions>
+\{
+	ToFile = "dump.ravenfs",
+	From = new FilesConnectionStringOptions
+	\{
+		Url = "http://localhost:8080",
+		DefaultFileSystem = "NorthwindFS"
+	\}
+\};
+
+var exportResult = await smugglerApi.ExportData(exportOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+### Importing
+
+<TabItem value="smuggler_api_2" label="smuggler_api_2">
+<CodeBlock language="csharp">
+{`SmugglerFilesApi smugglerApi = new SmugglerFilesApi();
+
+var importOptions = new SmugglerImportOptions<FilesConnectionStringOptions>
+\{
+	FromFile = "dump.ravenfs",
+	To = new FilesConnectionStringOptions
+	\{
+		Url = "http://localhost:8080",
+		DefaultFileSystem = "NewNorthwindFS"
+	\}
+\};
+
+await smugglerApi.ImportData(importOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+### Moving data between two databases
+
+<TabItem value="smuggler_api_3" label="smuggler_api_3">
+<CodeBlock language="csharp">
+{`// export files
+// from NorthwindFS file system
+// found on http://localhost:8080
+// and import them to NewNorthwindFS
+// found on the same server
+SmugglerFilesApi smugglerApi = new SmugglerFilesApi();
+
+var betweenOptions = new SmugglerBetweenOptions<FilesConnectionStringOptions>
+\{
+	From = new FilesConnectionStringOptions
+	\{
+		Url = "http://localhost:8080",
+		DefaultFileSystem = "NorthwindFS"
+	\},
+	To = new FilesConnectionStringOptions
+	\{
+		Url = "http://localhost:8080",
+		DefaultFileSystem = "NewNorthwindFS"
+	\}
+\};
+
+await smugglerApi.Between(betweenOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+
+

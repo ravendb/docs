@@ -1,0 +1,103 @@
+---
+title: "Operations: How to Get an Index"
+hide_table_of_contents: true
+sidebar_label: Get Index
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Get an Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**GetIndexOperation** is used to retrieve an index definition from a database.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`public GetIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index |
+
+| Return Value | |
+| ------------- | ----- |
+| `IndexDefinition` | Instance of IndexDefinition representing index. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="csharp">
+{`IndexDefinition index = store.Maintenance.Send(new GetIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetIndexOperation** is used to retrieve an index definition from a database.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="java">
+{`public GetIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index |
+
+| Return Value | |
+| ------------- | ----- |
+| `IndexDefinition` | Instance of IndexDefinition representing index. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="java">
+{`IndexDefinition index
+    = store.maintenance()
+        .send(new GetIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

@@ -1,0 +1,32 @@
+---
+title: "License Registration"
+hide_table_of_contents: true
+sidebar_label: License Registration
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# License Registration
+
+In order to register an instance of RavenDB with a license you can either: 
+
+Rename the license file to License.xml and put it in the bin folder where RavenDB executable exists
+
+Or use the following configuration options:
+
+* **Raven/License**
+	The full license string for RavenDB. If Raven/License is specified, it overrides the Raven/LicensePath configuration.
+
+* **Raven/LicensePath**
+	The path to the license file for RavenDB.   
+	_Default:_ ~\license.xml
+
+<Admonition type="note" title="Note">
+Each instance of RavenDB outside of the development machines must be registered with a license.
+</Admonition>

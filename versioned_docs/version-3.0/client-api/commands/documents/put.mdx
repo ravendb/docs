@@ -1,0 +1,277 @@
+---
+title: "Commands: Documents: Put"
+hide_table_of_contents: true
+sidebar_label: Put Document
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Documents: Put
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`PutResult Put(string key, Etag etag, RavenJObject document, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | unique key under which document will be stored |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+| **document** | RavenJObject | document data |
+| **metadata** | RavenJObject | document metadata |
+
+---
+
+<TabItem value="putresult" label="putresult">
+<CodeBlock language="csharp">
+{`public class PutResult
+\{
+	public string Key \{ get; set; \}
+
+	public Etag ETag \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Key** | string | unique key under which document was stored |
+| **Etag** | Etag | stored document etag |
+
+## Example
+
+<TabItem value="put_3" label="put_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.Put(
+		"categories/999",
+		null,
+		RavenJObject.FromObject(new Category
+		\{
+			Name = "My Category",
+			Description = "My Category description"
+		\}),
+		new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="java">
+{`public PutResult put(String key, Etag guid, RavenJObject document, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | unique key under which document will be stored |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+| **document** | RavenJObject | document data |
+| **metadata** | RavenJObject | document metadata |
+
+---
+
+<TabItem value="putresult" label="putresult">
+<CodeBlock language="java">
+{`public class PutResult
+\{
+  private String key;
+  private Etag etag;
+
+  public String getKey() \{
+    return key;
+  \}
+
+  public void setKey(String key) \{
+    this.key = key;
+  \}
+
+  public Etag getEtag() \{
+    return etag;
+  \}
+
+  public void setEtag(Etag etag) \{
+    this.etag = etag;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Key** | String | unique key under which document was stored |
+| **Etag** | Etag | stored document etag |
+
+## Example
+
+<TabItem value="put_3" label="put_3">
+<CodeBlock language="java">
+{`Category category = new Category();
+category.setName("My Category");
+category.setDescription("My Category description");
+
+store.getDatabaseCommands().put(
+  "categories/999",
+  null,
+  RavenJObject.fromObject(category),
+  new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/docs/\{key\}  \\
+	-X PUT \\
+	-d @jsonData.txt  \\
+	--header "anyKey:anyValue" \\
+    --header "If-None-Match:\{etag\}" 
+ 
+curl \\
+	http://\{serverUrl\}/databases/\{databaseName\}/docs \\
+	-X POST \\
+	-d @jsonData.txt  \\
+	--header "anyKey:anyValue" \\	
+    --header "If-None-Match:\{etag\}" 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Method | Description |
+| -------| - |
+| `POST` | document key isn't passed in url and is auto-generated on server side |
+| `PUT` | document key is passed in url |
+
+| Payload |
+| ------- |
+| Json document data |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **key** | for `PUT` | unique key under which document will be stored |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  Used to pass document `Etag` |
+| Any other header | No | Used to pass document metadata |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK - for `POST` |
+| `201` | Created - for `PUT` |
+| `409` | When concurrency exception occurred |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Key** | unique key under which document was stored |
+| **Etag** | stored document etag |
+
+---
+
+## Examples
+
+Put document under key `items/1` with  `CreatedBy` and `ItemOwner` in metadata.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X PUT http://localhost:8080/docs/items/1  \\
+	-d "\{ \}"  \\
+	--header "CreatedBy:Adam Smith" \\
+	--header "ItemOwner:John Davis"
+< HTTP/1.1 201 Created
+\{"Key":"items/1","ETag":"01000000-0000-0001-0000-000000000004"\}
+`}
+</CodeBlock>
+</TabItem>
+
+Put document and auto-generate key on server side.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST http://localhost:8080/docs \\
+	-d "\{ FirstName: 'Bob', LastName: 'Smith', Address: '5 Elm St' \}"
+< HTTP/1.1 200 OK
+\{"Key":"156b3ed5-ad89-47d9-96fa-ba11811b9fad","ETag":"01000000-0000-0001-0000-000000000004"\}
+`}
+</CodeBlock>
+</TabItem>
+
+Attempting to put document with invalid etag ends up with conflict.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT http://localhost:8080/docs/user/100  \\
+	-d "\{ \}" 
+< HTTP/1.1 201 Created
+\{"Key":"user/100","ETag":"01000000-0000-0008-0000-00000000000A"\}
+ 
+curl -X PUT http://localhost:8080/docs/user/100 \\
+	-d "\{ \}" \\
+	--header "If-None-Match:01000000-0000-0008-0000-0000000000CC" 
+< HTTP/1.1 409 Conflict
+\{
+	"Url":"/docs/user/100",
+	"ActualETag":"01000000-0000-0008-0000-00000000000A",
+	"ExpectedETag":"01000000-0000-0008-0000-000000000010",
+	"Error":"PUT attempted on document 'user/100' using a non current etag"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+
+<!---
+- [Get](../../../client-api/commands/documents/get)
+- [Delete](../../../client-api/commands/documents/delete)
+- [Revisions and concurrency with ETags](../../../client-api/concurrency/revisions-and-concurrency-with-etags)
+
+-->

@@ -1,0 +1,92 @@
+---
+title: "No title"
+hide_table_of_contents: true
+sidebar_label: ProjectFromIndexFieldsInto (AsProjection)
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+## ProjectFromIndexFieldsInto (AsProjection)
+
+The `ProjectFromIndexFieldsInto<T>` (`AsProjection<T>`) method (extension accessible from `Raven.Client` namespace) provides the way to change the type of a query result according to *stored fields in an index*.
+
+<Admonition type="info" title="Info">
+RavenDB supports both methods `ProjectFromIndexFieldsInto<T>` and `AsProjection<T>` but the recommended usage is `ProjectFromIndexFieldsInto<T>`.
+</Admonition>
+
+This method the same way like [`OfType<T>`](of-type) allows you to move between the query model and the query result. The difference between them is the way how they pull the data.
+In contrast to `OfType<T>`, the usage of `ProjectFromIndexFieldsInto<T>` causes that fields are grabbed directly from the stored values in the indexes (Lucene documents).
+
+Let's consider the example. We have a simple map-only index:
+
+<TabItem value="index_def" label="index_def">
+<CodeBlock language="csharp">
+{`public class Product_ByQuantityNameAndDescription : AbstractIndexCreationTask<Product>
+\{
+	public Product_ByQuantityNameAndDescription()
+	\{
+		Map = products => from product in products
+						  select new
+						  \{
+							  QuantityInWarehouse = product.QuantityInWarehouse,
+							  Name = product.Name,
+							  Description = product.Description
+						  \};
+
+		Stores.Add(x => x.Name, FieldStorage.Yes);
+		Stores.Add(x => x.Description, FieldStorage.Yes);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Apart from &lt;em&gt;__document_id&lt;/em&gt; (which is stored by default) it stores *Name* and *Description*. We also have two classes `Product` and `ProductViewModel`:
+
+<TabItem value="product_class" label="product_class">
+<CodeBlock language="csharp">
+{`public class Product
+\{
+	public string Id \{ get; set; \}
+	public string ArticleNumber \{ get; set; \}
+	public string Name \{ get; set; \}
+	public string Manufacturer \{ get; set; \}
+	public string Description \{ get; set; \}
+	public int QuantityInWarehouse \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="product_view_model_class" label="product_view_model_class">
+<CodeBlock language="csharp">
+{`public class ProductViewModel
+\{
+	public string Name \{ get; set; \}
+	public string Description \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we are able to do projection of the index results into `ProductViewModel` by using fields stored in the index:
+
+<TabItem value="query" label="query">
+<CodeBlock language="csharp">
+{`List<ProductViewModel> products = session.Query<Product, Product_ByQuantityNameAndDescription>()
+                                         .Where(x => x.QuantityInWarehouse > 50)
+                                         .ProjectFromIndexFieldsInto<ProductViewModel>()
+                                         .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+The query as above will sent additional query string parameters: *?fetch=Name&fetch=Description*, what is a hint for RavenDB that those values should be pulled from index. 
+By default all properties of the type specified in `ProjectFromIndexFieldsInto<T>` method will be marked to retrieve from index fields. If the index will not store the field then it will be retrieved by loading the entire document and projecting needed property.
+
+Such query is treated as the projection (but very different than Live Projection - note that the index does not contain `TransformResults` definition). In result RavenDB will return only fields corresponding with properties that the type `T` contains. They will be transformed on the client side and returned as collection of specified type objects.

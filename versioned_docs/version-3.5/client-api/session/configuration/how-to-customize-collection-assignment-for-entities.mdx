@@ -1,0 +1,38 @@
+---
+title: "Session: How to customize collection assignment for entities?"
+hide_table_of_contents: true
+sidebar_label: How to Customize Collection Assignment for Entities
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: How to customize collection assignment for entities?
+
+Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side. In order to determine the collection name that an entity belongs to
+there are special conventions which return the collection name based on the type of an entity: [`FindTypeTagName` and `FindDynamicTagName`](../../configuration/conventions/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname).
+
+## Example
+
+By default a collection name is pluralized form of a name of an entity type. For example objects which type is `Category` will belong to `Categories` collection. However if your intention
+is to classify them as `ProductGroups` use the following code:
+
+<TabItem value="custom_collection_name" label="custom_collection_name">
+<CodeBlock language="csharp">
+{`store.Conventions.FindCollectionName = type =>
+\{
+    if (typeof(Category).IsAssignableFrom(type))
+        return "ProductGroups";
+
+    return DocumentConventions.DefaultGetCollectionName(type);
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+

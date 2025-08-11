@@ -1,0 +1,205 @@
+---
+title: "Querying: Using Indexes"
+hide_table_of_contents: true
+sidebar_label: Querying Time Series Indexes
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Querying: Using Indexes
+<Admonition type="note" title="Note">
+
+* Time series [indexes](../../../document-extensions/timeseries/indexing.mdx) 
+  are not generated automatically by the server, but static 
+  indexes can be created by clients or using the Studio. As any other index, static 
+  time series indexes can be queried.  
+  
+* Querying a time series index projects the contents of fields specified 
+  in the index' `select` clause. The result-set can then be further filtered 
+  using LINQ expressions.  
+  
+* In this page:  
+  * [Query Using Indexes](../../../document-extensions/timeseries/querying/using-indexes.mdx#indexed-queries)  
+  * [Syntax](../../../document-extensions/timeseries/querying/using-indexes.mdx#syntax)  
+  * [Usage Samples](../../../document-extensions/timeseries/querying/using-indexes.mdx#usage-samples)  
+
+</Admonition>
+## Query Using Indexes
+
+You can query time series indexes using `session.Query` and 
+`session.Advanced.DocumentQuery`, and enhance the queries 
+using LINQ expressions.  
+
+
+
+## Syntax
+
+* Definitions  
+   
+   * `session.Query`  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`IRavenQueryable<T> Query<T, TIndexCreator>() where TIndexCreator 
+: AbstractCommonApiForIndexes, new();
+`}
+</CodeBlock>
+</TabItem>
+   * `DocumentQuery`  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() where TIndexCreator 
+: AbstractCommonApiForIndexes, new();
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters** 
+
+        | Parameters | Description |
+        |:-------------|:-------------|
+        | `T` | Results Container |
+        | `TIndexCreator` | Index |
+
+* **Return Values**  
+
+    As return values are specific to each index, we need to define 
+    a matching results container.  
+
+    In the following sample we define a **map index** that collects three fields from the "HeartRate" 
+    time series, a "Results" container for the results, and an **index query** that uses both.
+<TabItem value="ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class" label="ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class">
+<CodeBlock language="csharp">
+{`public class SimpleIndex : AbstractTimeSeriesIndexCreationTask<Employee>
+\{
+
+    public class Result
+    \{
+        public double HeartBeat \{ get; set; \}
+        public DateTime Date \{ get; set; \}
+        public string User \{ get; set; \}
+        public string Tag \{ get; set; \}
+    \}
+
+    public SimpleIndex()
+    \{
+        AddMap(
+            "HeartRates",
+            timeSeries => from ts in timeSeries
+                          from entry in ts.Entries
+                          select new
+                          \{
+                              HeartBeat =
+                                entry.Values[0],
+                              entry.Timestamp.Date,
+                              User = ts.DocumentId,
+                              Tag = entry.Tag
+                          \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="ts_region_Index-TS-Queries-1-session-Query" label="ts_region_Index-TS-Queries-1-session-Query">
+<CodeBlock language="csharp">
+{`// Query time-series index using session.Query
+using (var session = store.OpenSession())
+\{
+    List<SimpleIndex.Result> results =
+        session.Query<SimpleIndex.Result, SimpleIndex>()
+        .ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Usage Samples
+
+* **Querying an Index**  
+  To query a time series index, call `session.Query` or `session.Advanced.DocumentQuery`.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="session.Query" label="session.Query">
+<CodeBlock language="csharp">
+{`// Query time-series index using session.Query
+using (var session = store.OpenSession())
+{
+    List<SimpleIndex.Result> results = 
+        session.Query<SimpleIndex.Result, SimpleIndex>()
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Query time-series index using DocumentQuery
+using (var session = store.OpenSession())
+{
+    List<SimpleIndex.Result> results = 
+        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+   </Tabs>
+
+
+* **Enhancing Index Queries**  
+
+   * When you call `session.Query`, You can add LINQ expressions to your query.  
+<TabItem value="ts_region_Index-TS-Queries-2-session-Query-with-Linq" label="ts_region_Index-TS-Queries-2-session-Query-with-Linq">
+<CodeBlock language="csharp">
+{`// Enhance the query using LINQ expressions
+var chosenDate = new DateTime(2020, 5, 20);
+using (var session = store.OpenSession())
+\{
+    List<SimpleIndex.Result> results =
+        session.Query<SimpleIndex.Result, SimpleIndex>()
+        .Where(w => w.Date < chosenDate)
+        .OrderBy(o => o.HeartBeat)
+        .ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+   * You can add LINQ-like expressions to a DocumentQuery as well.  
+<TabItem value="ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq" label="ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq">
+<CodeBlock language="csharp">
+{`// Query time-series index using DocumentQuery with Linq-like expressions
+using (var session = store.OpenSession())
+\{
+    List<SimpleIndex.Result> results =
+        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+        .WhereEquals("Tag", "watches/fitbit")
+        .ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Async queries**  
+  You can run asynchronous queries as well.
+<TabItem value="ts_region_Index-TS-Queries-5-session-Query-Async" label="ts_region_Index-TS-Queries-5-session-Query-Async">
+<CodeBlock language="csharp">
+{`// Time-series async index query using session.Query
+using (var session = store.OpenAsyncSession())
+\{
+    List<SimpleIndex.Result> results =
+        await session.Query<SimpleIndex.Result, SimpleIndex>()
+        .ToListAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

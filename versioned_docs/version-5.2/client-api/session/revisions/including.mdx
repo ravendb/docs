@@ -1,0 +1,289 @@
+---
+title: "Revisions: Including Revisions"
+hide_table_of_contents: true
+sidebar_label: Including
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Revisions: Including Revisions
+<Admonition type="note" title="Note">
+
+* A document's **Revisions** can be 
+  [Included](../../../client-api/how-to/handle-document-relationships.mdx#includes) 
+  with the document.  
+  The included revisions are retrieved when the document is loaded, without 
+  requiring additional trips to the server.  
+* Revisions can be Included by their **Creation Time** or **Change Vector**, 
+  and retrieved when documents are -  
+   * Loaded using `Session.Load`  
+   * Queried using `Session.Query`  
+   * Queried using `Session.Advanced.RawQuery`  
+
+- [Including Revisions](../../../client-api/session/revisions/including.mdx#including-revisions)  
+   - [Including Revisions By Time](../../../client-api/session/revisions/including.mdx#including-revisions-by-time)  
+   - [Including Revisions By Change Vector](../../../client-api/session/revisions/including.mdx#including-revisions-by-change-vector)  
+   - [`IncludeRevisions`](../../../client-api/session/revisions/including.mdx#section)  
+- [Including Revisions With `Session.Load`](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionload)  
+   - [By Time](../../../client-api/session/revisions/including.mdx#load-include-revisions-by-time)  
+   - [By Change Vector](../../../client-api/session/revisions/including.mdx#load-include-revisions-by-change-vector)  
+- [Including Revisions With `Session.Query`](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionquery)  
+   - [By Time](../../../client-api/session/revisions/including.mdx#query-include-revisions-by-time)  
+   - [By Change Vector](../../../client-api/session/revisions/including.mdx#query-include-revisions-by-change-vector)  
+- [Including Revisions with `Session.Advanced.RawQuery`](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionadvancedrawquery)  
+   - [By Time](../../../client-api/session/revisions/including.mdx#raw-query-include-revisions-by-time)  
+   - [By Change Vector](../../../client-api/session/revisions/including.mdx#raw-query-include-revisions-by-change-vector)  
+
+</Admonition>
+## Including Revisions
+
+When it is known prior to the retrieval of a document that its revisions may 
+be needed, the revisions can be **Included** so they'd be loaded along with the 
+document without requiring additional trips to the server.  
+
+When the document is loaded, [Loading](../../../client-api/session/revisions/loading.mdx) 
+any of its included revisions will retrieve them from memory rather than from the server.  
+
+This may be useful when, for example, a document that contains financial data 
+is loaded by an auditing application. The document's past revisions can be included 
+with the document, to make the document's history available for instant inspection.  
+
+Revisions can be Included by their **Creation Time** or **Change Vector**.  
+#### Including Revisions By Time
+
+To include **a single revision** by its **creation time** -  
+Pass a `DateTime` value to 
+[Session.Load](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionload) 
+or [Session.Query](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionquery) 
+using `IncludeRevisions` (see below),  
+or to a [Raw Query](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionadvancedrawquery) 
+using `.AddParameter`.  
+
+* If the provided time matches the creation time of a document revision, this revision will be included.  
+* If no exact match is found, the nearest revision to precede it will be included.  
+   * E.g. -  
+     If the time you provided is `April 7 2020`,  
+     and it is located between two existing revisions dated `April 2 2020` and `April 11 2020`,  
+     the `April 2` revision will be included.  
+* If no revisions exist RavenDB will remember it, and when you ask for the revision
+  it will skip the trip to the server and return `null`.  
+#### Including Revisions By Change Vector
+
+Each time a document is modified, its [Change Vector](../../../server/clustering/replication/change-vector.mdx) 
+is revised to trigger the document's replication, backup, etc.  
+While the **Revisions** feature is enabled, each new document revision keeps the document's 
+change vector at the time of its creation.  
+We can use this to track and include **Single** or **Multiple** document revisions by their change vectors.  
+To do so:  
+
+1. Store helpful change vectors in advance, in a property of the document.  
+2. When you want to include revisions by their change vector -  
+   Pass the **path** to the document property to 
+   [Session.Load](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionload) 
+   or [Session.Query](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionquery) 
+   via `IncludeRevisions` (see below),  
+   or to a [Raw Query](../../../client-api/session/revisions/including.mdx#including-revisions-with-sessionadvancedrawquery) 
+   using `.AddParameter`.  
+
+<Admonition type="note" title="Note">
+Storing a document's change vector/s in one of the document's properties helps 
+clarify their context and purpose.  
+E.g. -  
+A change vector can be added to an employee's contract document's "ContractRev" property 
+each time the contract is revised (e.g. when their salary is raised).  
+Whenever the time comes to re-evaluate this employee's terms and their contract 
+is loaded, its past revisions can be easily included with it by their change vectors.  
+</Admonition>
+
+----
+
+#### `IncludeRevisions`
+
+Revisions can be included with documents retrieved via `Session.Load` 
+and `Session.Query`, using one of the `IncludeRevisions` methods.  
+
+<TabItem value="IncludeRevisions_1_IncludeRevisions" label="IncludeRevisions_1_IncludeRevisions">
+<CodeBlock language="csharp">
+{`// Include a single revision by Time
+TBuilder IncludeRevisions(DateTime before);
+// Include a single revision by Change Vector
+TBuilder IncludeRevisions(Expression<Func<T, string>> path);
+// Include an array of revisions by Change Vectors
+TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | --------------------------- | ----- |
+| **before** | `DateTime` | A **single revision** that matches or precedes the given time will be included. |
+| **path** | `Expression<Func<T, string>>` | A path to a document property that contains **a single change vector**. <br/> The revision whose change vector is contained in the document property will be Included. |
+| **path** | `Expression<Func<T, IEnumerable<string>>>` | A path to a document property that contains **an array of change vectors**. <br/> The revisions whose change vectors are contained in the array will be Included. |
+
+
+
+
+## Including Revisions With `Session.Load`
+
+#### Load: Include Revisions by Time
+
+To include a **single revision** by its **creation time**, pass `IncludeRevisions` the time.  
+The revision whose creation time [matches or immediately precedes](../../../client-api/session/revisions/including.mdx#including-revisions-by-time) 
+that of the given time will be included.  
+
+<TabItem value="IncludeRevisions_2_LoadByTime" label="IncludeRevisions_2_LoadByTime">
+<CodeBlock language="csharp">
+{`// Pass \`IncludeRevisions\` a \`DateTime\` value
+var query = session.Load<User>(id, builder => builder
+    .IncludeRevisions(creationTime.ToUniversalTime()));
+
+// The revision has been included by its creation time,
+// and is now retrieved locally from the session
+var revision = session
+    .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
+`}
+</CodeBlock>
+</TabItem>
+#### Load: Include Revisions by Change Vector
+
+* To include a **single revision** by a document's change vector:  
+  Pass `IncludeRevisions` the path to a property of the document you load, 
+  that contains the change vector.  
+
+* To include **a group of revisions** by their change vectors:  
+  Pass `IncludeRevisions` the path to a property of the document you load, 
+  that contains an array of change vectors.  
+
+* **Sample**:  
+<TabItem value="IncludeRevisions_4_LoadByChangeVector" label="IncludeRevisions_4_LoadByChangeVector">
+<CodeBlock language="csharp">
+{`var sn = session.Load<Contract>(id, builder => builder
+    // Include a single revision 
+    .IncludeRevisions(x => x.ContractRev_1_ChangeVector)
+    // Include a group of revisions
+    .IncludeRevisions(x => x.ContractRevChangeVectors));
+
+// The revisions have been included by change vectors,
+// and are now retrieved locally from the session
+var revision = sn.ContractRev_1_ChangeVector;
+var revisions = sn.ContractRevChangeVectors;
+`}
+</CodeBlock>
+</TabItem>
+  `Contract`:  
+<TabItem value="IncludeRevisions_3_UserDefinition" label="IncludeRevisions_3_UserDefinition">
+<CodeBlock language="csharp">
+{`private class Contract
+\{
+    public string Name \{ get; set; \}
+    
+    // A single revision's Change Vector
+    public string ContractRev_1_ChangeVector \{ get; set; \}
+
+    // A single revision's Change Vector
+    public string ContractRev_2_ChangeVector \{ get; set; \}
+
+    // An array of revision Change Vectors
+    public List<string> ContractRevChangeVectors \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Including Revisions With `Session.Query`
+
+* To include a revision by time, pass `IncludeRevisions` a 
+  [DateTime value](../../../client-api/session/revisions/including.mdx#including-revisions-by-time).  
+* To include a single revision or a group of revisions by change vectors, pass 
+  `IncludeRevisions` a [path](../../../client-api/session/revisions/including.mdx#including-revisions-by-change-vector) 
+  to a property of the loaded document, that stores change vectors.  
+
+#### Query: Include Revisions by Time
+<TabItem value="IncludeRevisions_5_QueryByTime" label="IncludeRevisions_5_QueryByTime">
+<CodeBlock language="csharp">
+{`// Pass \`IncludeRevisions\` a \`DateTime\` value
+var query = session.Query<User>()
+    .Include(builder => builder
+        .IncludeRevisions(creationTime.ToUniversalTime()));
+
+// The revision has been included by its creation time,
+// and is now retrieved locally from the session
+var revision = session
+    .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
+`}
+</CodeBlock>
+</TabItem>
+#### Query: Include Revisions by Change Vector
+<TabItem value="IncludeRevisions_6_QueryByChangeVectors" label="IncludeRevisions_6_QueryByChangeVectors">
+<CodeBlock language="csharp">
+{`// Include the revision whose change vector is stored in
+// "ContractRev_2_ChangeVector",
+// and the revisions whose change vectors are stored in
+// "ContractRevChangeVectors"
+var query = session.Load<Contract>(id, builder => builder
+    .IncludeRevisions(creationTime)
+    .IncludeRevisions(x => x.ContractRev_2_ChangeVector)
+    .IncludeRevisions(x => x.ContractRevChangeVectors));
+
+// The revisions have been included by change vectors,
+// and are now retrieved locally from the session
+var revision = query.ContractRev_2_ChangeVector;
+var revisions = query.ContractRevChangeVectors;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Including Revisions with `Session.Advanced.RawQuery`
+
+* To include revisions by time or change vector, pass the raw query `include revisions` 
+  command either a `DateTime` value or a `path` to a  change vector document property.  
+* RavenDB will figure out by itself whether the parameter you passed was a `DateTime` values 
+  or a path, and include revisions accordingly.  
+* Aliases (e.g. `from Users as U`) are not supported by raw queries that include revisions.  
+
+#### Raw Query: Include Revisions by Time
+<TabItem value="IncludeRevisions_7_RawQueryByTime" label="IncludeRevisions_7_RawQueryByTime">
+<CodeBlock language="csharp">
+{`// Pass the \`include revision\` command a \`DateTime\` value
+var query = session.Advanced
+    .RawQuery<User>("from Users include revisions($p0)")
+    .AddParameter("p0", creationTime.ToUniversalTime())
+    .ToList();
+
+// The revision has been included by its creation time,
+// and is now retrieved locally from the session
+var revision = session
+    .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
+`}
+</CodeBlock>
+</TabItem>
+#### Raw Query: Include Revisions by Change Vector
+<TabItem value="IncludeRevisions_8_RawQueryByChangeVector" label="IncludeRevisions_8_RawQueryByChangeVector">
+<CodeBlock language="csharp">
+{`// Pass the \`include revision\` command a \`path\`
+// to a document property that holds change vector/s,
+var query = session.Advanced
+    .RawQuery<Contract>("from Users where Name = 'JohnDoe' include revisions($p0)")
+    .AddParameter("p0", "ContractRev_1_ChangeVector")
+    .ToList();
+
+// The revision has been included by change vector,
+// and is now retrieved locally from the session
+var revision = session.Advanced.Revisions.Get<Contract>(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+
+

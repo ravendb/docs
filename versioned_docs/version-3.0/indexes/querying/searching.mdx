@@ -1,0 +1,1717 @@
+---
+title: "Searching"
+hide_table_of_contents: true
+sidebar_label: Full-Text Search
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Searching
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+One of the most common functionalities that many real world applications provide is a search feature. Many times it will be enough to apply `Where` closure to create a simple condition, for example to get all users whose name equals `John Doe` use the code:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Where(x => x.Name == "John")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.WhereEquals(x => x.Name, "John")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:John"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+where `User` class is defined as follows:
+
+<TabItem value="linq_extensions_search_user_class" label="linq_extensions_search_user_class">
+<CodeBlock language="csharp">
+{`public class User
+\{
+    public string Id \{ get; set; \}
+
+    public string Name \{ get; set; \}
+
+    public byte Age \{ get; set; \}
+
+    public ICollection<string> Hobbies \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The `Where` statement also is good if you want to perform a really simple text field search, for example let's create a query to retrieve users whose name starts with *Jo*:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Where(x => x.Name.StartsWith("Jo"))
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.WhereStartsWith(x => x.Name, "Jo")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:Jo*"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Eventually all queries are always transformed into a Lucene query. The query like above will be translated into &lt;em&gt;Name:Jo*&lt;/em&gt;.
+
+<Admonition type="note" title="Note">
+An attempt to use `string.Contains()` method as condition of `Where` closure, will throw `NotSupportedException`. That is because the search term like \*&lt;em&gt;term&lt;/em&gt;* (note wildcards at the beginning and at the end) can cause performance issues. Due to Raven's *safe-by-default* paradigm such operation is forbidden. If you really want to achieve this case, you will find more details in one of the next section below.
+</Admonition>
+
+<Admonition type="info" title="Info">
+Note that that results of a query might be different depending on [an analyzer](../../indexes/using-analyzers.mdx) that was applied.
+</Admonition>
+
+---
+
+## Multiple terms
+
+When you need to do a more complex text searching use `Search` extension method (in `Raven.Client` namespace). This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
+that uses `Search` extension to get users with name *John* or *Adam*:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Search(x => x.Name, "John Adam")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.Search(x => x.Name, "John Adam")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:(John Adam)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Each of search terms (separated by space character) will be checked independently. The result documents must match exact one of the passed terms.
+
+The same way you are also able to look for users that have some hobby:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByHobbies>()
+	.Search(x => x.Hobbies, "looking for someone who likes sport books computers")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByHobbies>()
+	.Search(x => x.Hobbies, "looking for someone who likes sport books computers")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByHobbies",
+		new IndexQuery
+		{
+			Query = "Name:(looking for someone who likes sport books computers)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByHobbies : AbstractIndexCreationTask<User>
+{
+	public Users_ByHobbies()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Hobbies
+					   };
+
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In result you will get users that are interested in *sport*, *books* or *computers*.
+
+---
+
+## Multiple fields
+
+By using `Search` extension you are also able to look for by multiple indexed fields. First let's introduce the index:
+ 
+<TabItem value="search_5_3" label="search_5_3">
+<CodeBlock language="csharp">
+{`public class Users_ByNameAndHobbies : AbstractIndexCreationTask<User>
+\{
+	public Users_ByNameAndHobbies()
+	\{
+		Map = users => from user in users
+					   select new
+					   \{
+						   user.Name,
+						   user.Hobbies
+					   \};
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we are able to search by using `Name` and `Hobbies` properties:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<User> users = session
+	.Query<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.Search(x => x.Hobbies, "sport")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.Search(x => x.Hobbies, "sport")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByNameAndHobbies",
+		new IndexQuery
+		{
+			Query = "Name:(Adam) OR Hobbies:(sport)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## Boosting
+
+Indexing in RavenDB is built upon Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+RavenDB also supports that, in order to improve your searching mechanism and provide the users with much more accurate results you can specify the boost argument. Let's see the example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByHobbies>()
+	.Search(x => x.Hobbies, "I love sport", boost: 10)
+	.Search(x => x.Hobbies, "but also like reading books", boost: 5)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByHobbies>()
+	.Search(x => x.Hobbies, "I love sport")
+	.Boost(10)
+	.Search(x => x.Hobbies, "but also like reading books")
+	.Boost(5)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByHobbies",
+		new IndexQuery
+		{
+			Query = "Hobbies:(I love sport)^10 OR Hobbies:(but also like reading books)^5"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByHobbies : AbstractIndexCreationTask<User>
+{
+	public Users_ByHobbies()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Hobbies
+					   };
+
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The search above will promote users who do sports before book readers and they will be placed at the top of the result list.
+
+---
+
+## Search options
+
+In order to specify the logic of search expression specify the options argument of the `Search` method. It is `SearchOptions` enum with the following values:
+
+* Or,
+* And,
+* Not,
+* Guess (default).
+
+By default RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise AND semantic will be used by default.
+
+The following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByNameAgeAndHobbies>()
+	.Search(x => x.Hobbies, "computers")
+	.Search(x => x.Name, "James")
+	.Where(x => x.Age == 20)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByNameAgeAndHobbies>()
+	.Search(x => x.Hobbies, "computers")
+	.Search(x => x.Name, "James")
+	.WhereEquals(x => x.Age, 20)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByNameAgeAndHobbies",
+		new IndexQuery
+		{
+			Query = "(Hobbies:(computers) OR Name:(James)) AND Age:20"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByNameAgeAndHobbies : AbstractIndexCreationTask<User>
+{
+	public Users_ByNameAgeAndHobbies()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name,
+						   user.Age,
+						   user.Hobbies
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will be translated into `(Hobbies:(computers) Name:(James)) AND (Age:20)` (if there is no boolean operator then OR is used).
+
+You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follow:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.Search(x => x.Hobbies, "sport", options: SearchOptions.And)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.AndAlso()
+	.Search(x => x.Hobbies, "sport")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByNameAndHobbies",
+		new IndexQuery
+		{
+			Query = "Name:(Adam) AND Hobbies:(sport)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByNameAndHobbies : AbstractIndexCreationTask<User>
+{
+	public Users_ByNameAndHobbies()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name,
+						   user.Hobbies
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will result in the following Lucene query: `Name:(Adam) AND Hobbies:(sport)`
+
+If you want to negate the term use `SearchOptions.Not`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Search(x => x.Name, "James", options: SearchOptions.Not)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.Not
+	.Search(x => x.Name, "James")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "-Name:(James)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+According to Lucene syntax it will be transformed to the query: `-Name:(James)`.
+
+You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values, e.g:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.Search(x => x.Hobbies, "sport", options: SearchOptions.Not | SearchOptions.And)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByNameAndHobbies>()
+	.Search(x => x.Name, "Adam")
+	.AndAlso()
+	.Not
+	.Search(x => x.Hobbies, "sport")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:(Adam) AND -Hobbies:(sport)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByNameAndHobbies : AbstractIndexCreationTask<User>
+{
+	public Users_ByNameAndHobbies()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name,
+						   user.Hobbies
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+		Indexes.Add(x => x.Hobbies, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It will produce the following Lucene query: `Name:(Adam) AND -Hobbies:(sport)`.
+
+---
+
+## Query escaping
+
+The code examples presented in this section have hard coded searching terms. However in a real use case the user will specify the term. You are able to control the escaping strategy of the provided query by specifying 
+the `EscapeQueryOptions` parameter. It's the enum that can have one of the following values:
+
+* EscapeAll (default),
+* AllowPostfixWildcard,
+* AllowAllWildcards,
+* RawQuery.
+
+By default all special characters contained in the query will be escaped (`EscapeAll`) when [Query](../../client-api/session/querying/how-to-query.mdx) from session is used. However you can add a bit more of flexibility to your searching mechanism.
+`EscapeQueryOptions.AllowPostfixWildcard` enables searching against a field by using search term that ends with wildcard character:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Search(x => x.Name, "Jo* Ad*", escapeQueryOptions: EscapeQueryOptions.AllowPostfixWildcard)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.Search("Name", "Jo* Ad*", escapeQueryOptions: EscapeQueryOptions.AllowPostfixWildcard)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:(Jo* Ad*)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next option `EscapeQueryOptions.AllowAllWildcards` extends the previous one by allowing the wildcard character to be present at the beginning as well as at the end of the search term.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Search(x => x.Name, "*oh* *da*", escapeQueryOptions: EscapeQueryOptions.AllowAllWildcards)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.Search("Name", "*oh* *da*", escapeQueryOptions: EscapeQueryOptions.AllowAllWildcards)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:(*oh* *da*)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+RavenDB allows to search by using such queries but you have to be aware that **leading wildcards drastically slow down searches**.
+
+Consider if you really need to find substrings, most cases looking for words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+</Admonition>
+
+The last option makes that the query will not be escaped and the raw term will be relayed to Lucene:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Query<User, Users_ByName>()
+	.Search(x => x.Name, "*J?n*", escapeQueryOptions: EscapeQueryOptions.RawQuery)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+	.Advanced
+	.DocumentQuery<User, Users_ByName>()
+	.Search(x => x.Name, "*J?n*", escapeQueryOptions: EscapeQueryOptions.RawQuery)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Users/ByName",
+		new IndexQuery
+		{
+			Query = "Name:(*J?n*)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+{
+	public Users_ByName()
+	{
+		Map = users => from user in users
+					   select new
+					   {
+						   user.Name
+					   };
+
+		Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="EscapeQueryOptions" id="escapequeryoptions" href="#escapequeryoptions">
+Default `EscapeQueryOptions` value for **Query** is `EscapeQueryOptions.EscapeAll`.
+
+Default `EscapeQueryOptions` value for **DocumentQuery** is `EscapeQueryOptions.RawQuery`.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+One of the most common functionalities that many real world applications provide is a search feature. Many times it will be enough to apply `where` closure to create a simple condition, for example to get all users whose name equals `John Doe` use the code:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .where(u.name.eq("John"))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .whereEquals(u.name, "John")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:John"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+where `User` class is defined as follows:
+
+<TabItem value="linq_extensions_search_user_class" label="linq_extensions_search_user_class">
+<CodeBlock language="java">
+{`public static class User \{
+    private String id;
+    private String name;
+    private byte age;
+    private List<String> hobbies;
+
+    public String getId() \{
+        return id;
+    \}
+
+    public void setId(String id) \{
+        this.id = id;
+    \}
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public byte getAge() \{
+        return age;
+    \}
+
+    public void setAge(byte age) \{
+        this.age = age;
+    \}
+
+    public List<String> getHobbies() \{
+        return hobbies;
+    \}
+
+    public void setHobbies(List<String> hobbies) \{
+        this.hobbies = hobbies;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The `where` statement also is good if you want to perform a really simple text field search, for example let's create a query to retrieve users whose name starts with *Jo*:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .where(u.name.startsWith("Jo"))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .whereStartsWith(u.name, "Jo")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:Jo*"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Eventually all queries are always transformed into a Lucene query. The query like above will be translated into &lt;em&gt;Name:Jo*&lt;/em&gt;.
+
+<Admonition type="note" title="Note">
+An attempt to use `contains()` method as condition of `where` closure, will throw `IllegalStateException`. That is because the search term like \*&lt;em&gt;term&lt;/em&gt;* (note wildcards at the beginning and at the end) can cause performance issues. Due to Raven's *safe-by-default* paradigm such operation is forbidden. If you really want to achieve this case, you will find more details in one of the next section below.
+</Admonition>
+
+<Admonition type="info" title="Info">
+Note that that results of a query might be different depending on [an analyzer](../../indexes/using-analyzers.mdx) that was applied.
+</Admonition>
+
+---
+
+## Multiple terms
+
+When you need to do a more complex text searching use `search` method. This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
+that uses `search` to get users with name *John* or *Adam*:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .search(u.name, "John Adam")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .search(u.name, "John Adam")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:(John Adam)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Each of search terms (separated by space character) will be checked independently. The result documents must match exact one of the passed terms.
+
+The same way you are also able to look for users that have some hobby:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByHobbies.class)
+  .search(u.hobbies, "looking for someone who likes sport books computers")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByHobbies.class)
+  .search(u.hobbies, "looking for someone who likes sport books computers")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByHobbies",
+    new IndexQuery("Name:(looking for someone who likes sport books computers)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByHobbies extends AbstractIndexCreationTask {
+  public Users_ByHobbies() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Hobbies        " +
+     " }; ";
+
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In result you will get users that are interested in *sport*, *books* or *computers*.
+
+---
+
+## Multiple fields
+
+By using `search` you are also able to look for by multiple indexed fields. First let's introduce the index:
+ 
+<TabItem value="search_5_3" label="search_5_3">
+<CodeBlock language="java">
+{`public static class Users_ByNameAndHobbies extends AbstractIndexCreationTask \{
+  public Users_ByNameAndHobbies() \{
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " \{                       " +
+     "     user.Name,          " +
+     "     user.Hobbies        " +
+     " \}; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we are able to search by using `Name` and `Hobbies` fields:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .search(u.hobbies, "sport")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .search(u.hobbies, "sport")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByNameAndHobbies",
+    new IndexQuery("Name:(Adam) OR Hobbies:(sport)"));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## Boosting
+
+Indexing in RavenDB is built upon Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+RavenDB also supports that, in order to improve your searching mechanism and provide the users with much more accurate results you can specify the boost argument. Let's see the example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByHobbies.class)
+  .search(u.hobbies, "I love sport", 10)
+  .search(u.hobbies, "but also like reading books", 5)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByHobbies.class)
+  .search(u.hobbies, "I love sport")
+  .boost(10.0)
+  .search(u.hobbies, "but also like reading books")
+  .boost(5.0)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByHobbies",
+    new IndexQuery("Hobbies:(I love sport)^10 OR Hobbies:(but also like reading books)^5"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByHobbies extends AbstractIndexCreationTask {
+  public Users_ByHobbies() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Hobbies        " +
+     " }; ";
+
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The search above will promote users who do sports before book readers and they will be placed at the top of the result list.
+
+---
+
+## Search options
+
+In order to specify the logic of search expression specify the options argument of the `search` method. It is `SearchOptions` enum with the following values:
+
+* OR,
+* AND,
+* NOT,
+* GUESS (default).
+
+By default RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise AND semantic will be used by default.
+
+The following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByNameAgeAndHobbies.class)
+  .search(u.hobbies, "computer")
+  .search(u.name, "James")
+  .where(u.age.eq((byte)20))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByNameAgeAndHobbies.class)
+  .search(u.hobbies, "computer")
+  .search(u.name, "James")
+  .whereEquals(u.age, (byte)20)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByNameAgeAndHobbies",
+    new IndexQuery("(Hobbies:(computers) OR Name:(James)) AND Age:20"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByNameAgeAndHobbies extends AbstractIndexCreationTask {
+  public Users_ByNameAgeAndHobbies() {
+    QSearching_User u = QSearching_User.user;
+    map =
+      " from user in docs.Users " +
+      " select new              " +
+      " {                       " +
+      "     user.Name,          " +
+      "     user.Age,           " +
+      "     user.Hobbies        " +
+      " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will be translated into `(Hobbies:(computers) Name:(James)) AND (Age:20)` (if there is no boolean operator then OR is used).
+
+You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follow:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .search(u.hobbies, "sport", SearchOptionsSet.of(SearchOptions.AND))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .andAlso()
+  .search(u.hobbies, "sport")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByNameAndHobbies",
+    new IndexQuery("Name:(Adam) AND Hobbies:(sport)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByNameAndHobbies extends AbstractIndexCreationTask {
+  public Users_ByNameAndHobbies() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name,          " +
+     "     user.Hobbies        " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will result in the following Lucene query: `Name:(Adam) AND Hobbies:(sport)`
+
+If you want to negate the term use `SearchOptions.NOT`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .search(u.name, "James", SearchOptionsSet.of(SearchOptions.NOT))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .not()
+  .search(u.name, "James")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("-Name:(James)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+According to Lucene syntax it will be transformed to the query: `-Name:(James)`.
+
+You can create combination of `SearchOptions` values, e.g.: 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .search(u.hobbies, "sport", SearchOptionsSet.of(SearchOptions.NOT, SearchOptions.AND))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByNameAndHobbies.class)
+  .search(u.name, "Adam")
+  .andAlso()
+  .not()
+  .search(u.hobbies, "sport")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:(Adam) AND -Hobbies:(sport)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByNameAndHobbies extends AbstractIndexCreationTask {
+  public Users_ByNameAndHobbies() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name,          " +
+     "     user.Hobbies        " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+    index(u.hobbies, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It will produce the following Lucene query: `Name:(Adam) AND -Hobbies:(sport)`.
+
+---
+
+## Query escaping
+
+The code examples presented in this section have hard coded searching terms. However in a real use case the user will specify the term. You are able to control the escaping strategy of the provided query by specifying 
+the `EscapeQueryOptions` parameter. It's the enum that can have one of the following values:
+
+* ESCAPE_ALL (default),
+* ALLOW_POSTFIX_WILDCARD,
+* ALLOW_ALL_WILDCARDS,
+* RAW_QUERY.
+
+By default all special characters contained in the query will be escaped (`ESCAPE_ALL`) when [Query](../../client-api/session/querying/how-to-query.mdx) from session is used. However you can add a bit more of flexibility to your searching mechanism.
+`EscapeQueryOptions.ALLOW_POSTFIX_WILDCARD` enables searching against a field by using search term that ends with wildcard character:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .search(u.name, "Jo* Ad*", EscapeQueryOptions.ALLOW_POSTFIX_WILDCARD)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .search(u.name, "Jo* Ad*", EscapeQueryOptions.ALLOW_POSTFIX_WILDCARD)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:(Jo* Ad*)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next option `EscapeQueryOptions.ALLOW_ALL_WILDCARDS` extends the previous one by allowing the wildcard character to be present at the beginning as well as at the end of the search term.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .search(u.name, "*oh* *da*", EscapeQueryOptions.ALLOW_ALL_WILDCARDS)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .search(u.name, "*oh* *da*", EscapeQueryOptions.ALLOW_ALL_WILDCARDS)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:(*oh* *da*)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+RavenDB allows to search by using such queries but you have to be aware that **leading wildcards drastically slow down searches**.
+
+Consider if you really need to find substrings, most cases looking for words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+</Admonition>
+
+The last option makes that the query will not be escaped and the raw term will be relayed to Lucene:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .query(User.class, Users_ByName.class)
+  .search(u.name, "*J?n*", EscapeQueryOptions.RAW_QUERY)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSearching_User u = QSearching_User.user;
+List<User> users = session
+  .advanced()
+  .documentQuery(User.class, Users_ByName.class)
+  .search(u.name, "*J?n*", EscapeQueryOptions.RAW_QUERY)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Users/ByName",
+    new IndexQuery("Name:(*J?n*)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask {
+  public Users_ByName() {
+    QSearching_User u = QSearching_User.user;
+    map =
+     " from user in docs.Users " +
+     " select new              " +
+     " {                       " +
+     "     user.Name           " +
+     " }; ";
+
+    index(u.name, FieldIndexing.ANALYZED);
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="EscapeQueryOptions" id="escapequeryoptions" href="#escapequeryoptions">
+Default `EscapeQueryOptions` value for **Query** is `EscapeQueryOptions.ESCAPE_ALL`.
+
+Default `EscapeQueryOptions` value for **DocumentQuery** is `EscapeQueryOptions.RAW_QUERY`.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Indexing : Boosting](../../indexes/boosting)
+- [Client API : Session : How to use search?](../../client-api/session/querying/how-to-use-search)
+
+-->

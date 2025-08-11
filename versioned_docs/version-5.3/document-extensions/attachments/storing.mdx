@@ -1,0 +1,225 @@
+---
+title: "Attachments: Storing Attachments"
+hide_table_of_contents: true
+sidebar_label: Storing
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Attachments: Storing Attachments
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+In order to store an attachment in RavenDB you need to create a document. Then you can attach an attachment to the document using the `session.Advanced.Attachments.Store` method.
+
+Attachments, just like documents, are a part of the session and will be only saved on the Server when `DocumentSession.SaveChanges` is executed (you can read more about saving changes in session [here](../../client-api/session/saving-changes.mdx)).
+
+## Syntax
+
+Attachments can be stored using one of the following `session.Advanced.Attachments.Store` methods:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="csharp">
+{`void Store(string documentId, string name, Stream stream, string contentType = null);
+void Store(object entity, string name, Stream stream, string contentType = null);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+using (var file1 = File.Open("001.jpg", FileMode.Open))
+using (var file2 = File.Open("002.jpg", FileMode.Open))
+using (var file3 = File.Open("003.jpg", FileMode.Open))
+using (var file4 = File.Open("004.mp4", FileMode.Open))
+{
+    var album = new Album
+    {
+        Name = "Holidays",
+        Description = "Holidays travel pictures of the all family",
+        Tags = new[] { "Holidays Travel", "All Family" },
+    };
+    session.Store(album, "albums/1");
+
+    session.Advanced.Attachments.Store("albums/1", "001.jpg", file1, "image/jpeg");
+    session.Advanced.Attachments.Store("albums/1", "002.jpg", file2, "image/jpeg");
+    session.Advanced.Attachments.Store("albums/1", "003.jpg", file3, "image/jpeg");
+    session.Advanced.Attachments.Store("albums/1", "004.mp4", file4, "video/mp4");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+using (var file1 = File.Open("001.jpg", FileMode.Open))
+using (var file2 = File.Open("002.jpg", FileMode.Open))
+using (var file3 = File.Open("003.jpg", FileMode.Open))
+using (var file4 = File.Open("004.mp4", FileMode.Open))
+{
+    var album = new Album
+    {
+        Name = "Holidays",
+        Description = "Holidays travel pictures of the all family",
+        Tags = new[] { "Holidays Travel", "All Family" },
+    };
+    await asyncSession.StoreAsync(album, "albums/1");
+
+    asyncSession.Advanced.Attachments.Store("albums/1", "001.jpg", file1, "image/jpeg");
+    asyncSession.Advanced.Attachments.Store("albums/1", "002.jpg", file2, "image/jpeg");
+    asyncSession.Advanced.Attachments.Store("albums/1", "003.jpg", file3, "image/jpeg");
+    asyncSession.Advanced.Attachments.Store("albums/1", "004.mp4", file4, "video/mp4");
+
+    await asyncSession.SaveChangesAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+In order to store an attachment in RavenDB you need to create a document. Then you can attach an attachment to the document using the `session.advanced().attachments().store` method.
+
+Attachments, just like documents, are a part of the session and will be only saved on the Server when `DocumentSession.saveChanges` is executed (you can read more about saving changes in session [here](../../client-api/session/saving-changes.mdx)).
+
+## Syntax
+
+Attachments can be stored using one of the following `session.advanced().attachments().store` methods:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="java">
+{`void store(String documentId, String name, InputStream stream);
+
+void store(String documentId, String name, InputStream stream, String contentType);
+
+void store(Object entity, String name, InputStream stream);
+
+void store(Object entity, String name, InputStream stream, String contentType);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    try (
+        FileInputStream file1 = new FileInputStream("001.jpg");
+        FileInputStream file2 = new FileInputStream("002.jpg");
+        FileInputStream file3 = new FileInputStream("003.jpg");
+        FileInputStream file4 = new FileInputStream("004.mp4")
+    ) \{
+        Album album = new Album();
+        album.setName("Holidays");
+        album.setDescription("Holidays travel pictures of the all family");
+        album.setTags(new String[] \{ "Holidays Travel", "All Family" \});
+        session.store(album, "albums/1");
+
+        session.advanced().attachments()
+            .store("albums/1", "001.jpg", file1, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "002.jpg", file2, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "003.jpg", file3, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "004.mp4", file4, "video/mp4");
+
+        session.saveChanges();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+In order to store an attachment in RavenDB you need to create a document. Then you can attach an attachment to the document using the `session.advanced.attachments.store()` method.
+
+Attachments, just like documents, are a part of the session and will be only saved on the Server when `DocumentSession.saveChanges()` is executed.  
+
+## Syntax
+
+Attachments can be stored using one of the following `session.advanced.attachments.store()` methods:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="js">
+{`session.advanced.attachments.store(documentId, name, stream, [contentType]);
+
+session.advanced.attachments.store(entity, name, stream, [contentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** or **documentId** | object or string | instance of the entity or the entity ID |
+| **name** | string | attachment name |
+| **stream** | `Readable` or `Buffer` | attachment content |
+| **contentType** | string | attachment content type |
+
+## Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="js">
+{`const session = store.openSession();
+
+const file1 = fs.createReadStream("001.jpg");
+const file2 = fs.createReadStream("002.jpg");
+const file3 = fs.createReadStream("003.jpg");
+const file4 = fs.createReadStream("004.mp4");
+
+const album = new Album();
+album.name = "Holidays";
+album.description = "Holidays travel pictures of the all family";
+album.tags = [ "Holidays Travel", "All Family" ];
+await session.store(album, "albums/1");
+
+session.advanced.attachments
+    .store("albums/1", "001.jpg", file1, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "002.jpg", file2, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "003.jpg", file3, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "004.mp4", file4, "video/mp4");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Attachments
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)
+- [Loading](../../document-extensions/attachments/loading)
+- [Deleting](../../document-extensions/attachments/deleting)
+
+
+-->

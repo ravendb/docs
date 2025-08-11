@@ -1,0 +1,173 @@
+---
+title: "Migration: Indexing Changes"
+hide_table_of_contents: true
+sidebar_label: Indexes
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Indexing Changes
+
+## Breaking changes in index definition
+
+Regardless of [the data migration strategy](../../migration/server/data-migration.mdx) you have chosen, you might get warnings complaining about an inability to import some indexes.
+
+This is due to breaking changes to index definitions and requires a manual change.
+
+### LoadDocument
+
+`LoadDocument` requires a second argument which is a collection name of the loaded document.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`from doc in doc.Orders
+let company = LoadDocument(doc.Company)
+select new 
+\{
+    CompanyName: company.Name
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="csharp">
+{`from doc in doc.Orders
+let company = LoadDocument(doc.Company, "Companies")
+select new 
+\{
+    CompanyName: company.Name
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### Spatial Field Creation
+
+`AbstractIndexCreationTask.SpatialGenerate` and `SpatialIndex.Generate` should be replaced with `CreateSpatialField`. In addition, you can define your own field name and use it when querying.   
+
+There are also the following changes:
+
+- No support for GeoJSON and other non-standard formats
+- No support for spatial clustering
+
+| 3.x |
+|:---:|
+|
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="csharp">
+{`from b in docs.Places
+select new \{
+ _ = AbstractIndexCreationTask.SpatialGenerate(
+                            (double?)b.Latitude, 
+                            (double?)b.Longitude)
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="csharp">
+{`from b in docs.Places
+select new \{
+    Coordinates = CreateSpatialField(
+                        (double?)b.Latitude, 
+                        (double?)b.Longitude)
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### AsDocument 
+
+`AsDocument` call should be replaced by [`AsJson`](../../indexes/converting-to-json-and-accessing-metadata.mdx#asjson---converting-to-json) method.
+
+| 3.x |
+|:---:|
+|
+<TabItem value="indexes_5" label="indexes_5">
+<CodeBlock language="csharp">
+{`from user in users
+select new
+\{
+    Query = AsDocument(user).Select(x => x.Value)
+\};
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="indexes_6" label="indexes_6">
+<CodeBlock language="csharp">
+{`from user in users
+select new
+\{
+    Query = AsJson(user).Select(x => x.Value)
+\};
+`}
+</CodeBlock>
+</TabItem>
+|
+
+### DynamicList
+
+Any occurrence of `new Raven.Abstractions.Linq.DynamicList()` should be removed from an index definition.
+
+
+
+## Built-in Indexes
+
+`Raven/DocumentsByEntityName` and `Raven/ConflictDocuments` are no longer necessary and are intentionally skipped during the import.
+
+
+
+## Auto Indexes
+
+The query optimizer and auto indexing mechanisms have significantly changed in RavenDB 4.0. Auto indexes imported from 3.x will get `Legacy/` prefix added to their names. You should consider removing the legacy ones and let RavenDB create new auto indexes from scratch.
+
+Another important breaking change is that dynamic queries (not specifying an index name) are only handled by auto indexes. The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
+
+The legacy auto indexes won't be used to satisfy dynamic queries because they will be imported as the static ones.
+
+
+
+
+## Plugins & Extensions
+
+### Compilation Extensions
+
+As a replacement for Compilation Extensions you can use the [Additional Sources](../../indexes/extending-indexes.mdx) feature. It allows you to write your own C# code and use it during indexing. The code is attached to the index definition.
+
+You can also deploy custom DLLs next to RavenDB binaries and reference them in your extensions.
+
+### Custom Analyzers
+
+Please read our dedicated article about [using non-default or custom analyzers](../../indexes/using-analyzers.mdx#using-non-default-analyzer).
+
+### Analyzer Generators
+
+Analyzer generators aren't supported.
+
+

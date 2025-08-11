@@ -1,0 +1,50 @@
+---
+title: "Status: Replication Stats"
+hide_table_of_contents: true
+sidebar_label: Replication Stats
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Status: Replication Stats
+
+Here you can find information about replication status and detailed information concerning each node to which data is replicated or from which it is received.
+
+![Figure 1. Studio. Status. Replication Stats.](./assets/status-replication_stats-1.png)
+
+## Replication Topology
+
+An additional functionality allows requesting the server for a replication topology. 
+When the answer is received, a graph presenting nodes and their connection status will be displayed.
+
+![Figure 2. Studio. Status. Replication Stats. Replication Topology.](./assets/status-replication_stats-2.png)
+![Figure 3. Studio. Status. Replication Stats. Fetch Replication Topology.](./assets/status-replication_stats-3.png)
+
+<Admonition type="note" title="Note">
+A red link indicates there is no connection between the nodes and replication is disabled.
+</Admonition>
+
+If you click on one of the links, the arrow will be displayed as a broken line, and some useful replication information will be displayed.
+![Figure 4. Studio. Status. Replication Stats. Click on link between nodes.](./assets/status-replication_stats-4.png)
+
+In our example, the "Rep1" node was taken down before it got a chance to receive the replicated documents from the "Northwind" node.
+In that case, you might want to know what's the status of the replication task and which documents weren't replicated yet. 
+Just click calculate for a count of not-replicated documents, or export a CSV to see a detailed list.   
+![Figure 5. Studio. Status. Replication Stats. Detailed Replication Info.](./assets/status-replication_stats-6.png)
+![Figure 6. Studio. Status. Replication Stats. Exported CSV.](./assets/status-replication_stats-7.png)
+
+<Admonition type="note" title="Note">
+If there are more than 25,000 documents waiting to be replicated, the number displayed will only be an approximation.
+</Admonition>
+
+## Replication Performance Statistics
+
+Here you can find information about replication performance - when and how many documents were replicated, and to which node.
+
+![Figure 7. Studio. Status. Replication Stats. Replication Performance Statistics.](./assets/status-replication_stats-8.png)

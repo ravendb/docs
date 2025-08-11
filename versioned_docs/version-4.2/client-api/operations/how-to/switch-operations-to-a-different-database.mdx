@@ -1,0 +1,198 @@
+---
+title: "Operations: How to Switch Operations to a Different Database"
+hide_table_of_contents: true
+sidebar_label: Switch operations to different database
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Switch Operations to a Different Database
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+By default, the operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **ForDatabase** method.
+
+## Operations.ForDatabase
+
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore)
+\{
+    // Use 'ForDatabase', get operation executor for another database
+    OperationExecutor opExecutor = documentStore.Operations.ForDatabase("AnotherDB");
+    
+    // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    var revisionsInAnotherDB = 
+        opExecutor.Send(new GetRevisionsOperation<Order>("Orders/1-A"));
+ 
+    // Without 'ForDatabase', the operation is executed "DefaultDB"
+    var revisionsInDefaultDB =
+        documentStore.Operations.Send(new GetRevisionsOperation<Company>("Company/1-A"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of a database for which you want to get new Operations |
+
+| Return Value | |
+| ------------- | ----- |
+| OperationExecutor | New instance of Operations that is scoped to the requested database |
+
+### Example
+
+<TabItem value="for_database_3" label="for_database_3">
+<CodeBlock language="csharp">
+{`OperationExecutor operations = documentStore.Operations.ForDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## How to Switch Maintenance Operations to a Different Database
+
+As with Operations, by default the Maintenance operations available directly in store are working on a default database that was setup for that store. To switch maintenance operations to a different database use the **ForDatabase** method.
+
+## Maintenance.ForDatabase
+
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore = new DocumentStore())
+\{
+    // Use 'ForDatabase', get maintenance operation executor for another database
+    MaintenanceOperationExecutor opExecutor = documentStore.Maintenance.ForDatabase("AnotherDB");
+    
+    // Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    var statsForAnotherDB =
+        opExecutor.Send(new GetStatisticsOperation());
+    
+    // Without 'ForDatabase', the stats are retrieved for "DefaultDB"
+    var statsForDefaultDB =
+        documentStore.Maintenance.Send(new GetStatisticsOperation());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of a database for which you want to get new Maintenance operations|
+
+| Return Value | |
+| ------------- | ----- |
+| MaintenanceOperationExecutor | New instance of Maintenance that is scoped to the requested database |
+
+### Example
+
+<TabItem value="for_database_4" label="for_database_4">
+<CodeBlock language="csharp">
+{`MaintenanceOperationExecutor maintenanceOperations = documentStore.Maintenance.ForDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+By default, the operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **forDatabase** method.
+
+## Operations.forDatabase
+
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="java">
+{`OperationExecutor forDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database for which you want to get new Operations |
+
+| Return Value | |
+| ------------- | ----- |
+| OperationExecutor | New instance of Operations that is scoped to the requested database |
+
+### Example
+
+<TabItem value="for_database_3" label="for_database_3">
+<CodeBlock language="java">
+{`OperationExecutor operations = documentStore.operations().forDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## How to Switch Maintenance Operations to a Different Database
+
+As with `operations`, by default the `maintenance` operations available directly in store are working on a default database that was setup for that store. To switch maintenance operations to a different database use the **forDatabase** method.
+
+## Maintenance.forDatabase
+
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="java">
+{`MaintenanceOperationExecutor forDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database for which you want to get new maintenance operations |
+
+| Return Value | |
+| ------------- | ----- |
+| MaintenanceOperationExecutor | New instance of maintenance that is scoped to the requested database |
+
+### Example
+
+<TabItem value="for_database_4" label="for_database_4">
+<CodeBlock language="java">
+{`MaintenanceOperationExecutor maintenanceOperations = documentStore.maintenance().forDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+
+
+-->

@@ -1,0 +1,190 @@
+---
+title: "Changes API"
+hide_table_of_contents: true
+sidebar_label: Changes API
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Changes API
+
+The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
+You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
+This mechanism lets you to notify users if something has changed without the need to do any expensive pooling. 
+
+## IDatabaseChanges interface
+
+The changes subscription is accessible by a document store. Depending on the type of the store you use (`DocumentStore`, `ShardedDocumentStore` or `EmbeddableDocumentStore`) you will get an appropriate instance
+which is an implementation of a common `IDatabaseChanges` interface.
+
+<TabItem value="getting_database_changes_instance" label="getting_database_changes_instance">
+<CodeBlock language="csharp">
+{`IDatabaseChanges changes = store.Changes("DatabaseName");
+`}
+</CodeBlock>
+</TabItem>
+
+The parameter of the `Changes` method is an optional database name that you want get notifications from. If it is not provided the default database will be chosen.
+
+## Connection properties
+
+`IDatabaseChanges` has three properties that are related to the server connection:
+
+``` csharp 
+// represents the task responsible for establishing connection with the server
+	Task Task { get; }
+
+	// returns state of the connection
+	bool Connected { get; }
+
+	// the event raised if a connection state is changed
+	event EventHandler ConnectionStatusChanged
+```
+
+## Subscribing methods
+
+In order to retrieve notifications you have to subscribe server-side events by using either document or index related methods.
+
+<Admonition type="info" title="Info">
+To achieve a better experience of subsribing methods by using delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+### Document notifications
+
+You are able to subscribe changes of all documents in database. For example to get information from the server about replication conflicts use the following code:
+
+<TabItem value="subscribe_documents_replication_conflict" label="subscribe_documents_replication_conflict">
+<CodeBlock language="csharp">
+{`store.Changes()
+	.ForAllReplicationConflicts()
+	.Subscribe(conflict =>
+		\{
+			if (conflict.ItemType == ReplicationConflictTypes.DocumentReplicationConflict)
+			\{
+				Console.WriteLine("Conflict detected for \{0\}. Ids of conflicted docs: \{1\}. " +
+				                  "Type of replication operation: \{2\}",
+				                  conflict.Id, 
+								  string.Join(", ", conflict.Conflicts), 
+								  conflict.OperationType);
+			\}						
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+The very common scenario is to subscribe changes for documents within the same collection. To achieve that you should use the `ForDocumentsStartingWith` method:
+
+<TabItem value="subscribe_documents_starting_with" label="subscribe_documents_starting_with">
+<CodeBlock language="csharp">
+{`store.Changes()
+	.ForDocumentsStartingWith("users")
+	 .Subscribe(change =>
+	 \{
+		 if (change.Type == DocumentChangeTypes.Put)
+		 \{
+			 Console.WriteLine("New user has been added. Its ID is " + change.Id + ", document ETag " + change.Etag);
+		 \}
+	 \});
+`}
+</CodeBlock>
+</TabItem>
+
+You can also observe the particular document by specifing its identifier:
+
+<TabItem value="subscribe_document_delete" label="subscribe_document_delete">
+<CodeBlock language="csharp">
+{`store.Changes()
+	.ForDocument("users/1")
+	 .Subscribe(change =>
+	 \{
+		 if (change.Type == DocumentChangeTypes.Delete)
+		 \{
+			 Console.WriteLine("User " + change.Id + " has been deleted.");
+		 \}
+	 \});
+`}
+</CodeBlock>
+</TabItem>
+
+The result of subscription methods above is `DocumentChangeNotification` object. It consists of the following properties:
+``` csharp 
+DocumentChangeTypes Type { get; set; }
+string Id { get; set; }
+Guid? Etag { get; set; }
+```
+
+where `DocumentChangeTypes` is the enum with the values as follow:
+``` csharp 
+None,
+Put,
+Delete,
+ReplicationConflict,
+AttachmentReplicationConflict,
+BulkInsertStarted,
+BulkInsertEnded,
+Common (Put | Delete)
+```
+
+### Index notifications
+
+The same like observing changes for documents you are allowed to grab information about indexes from the server. In order to look for changes for all indexes
+you should use the `ForAllIndexes` method. For example to get info about newly created indexes use the code:
+
+<TabItem value="subscribe_indexes" label="subscribe_indexes">
+<CodeBlock language="csharp">
+{`store.Changes()
+	.ForAllIndexes()
+	 .Subscribe(change =>
+	 \{
+		 if (change.Type == IndexChangeTypes.IndexAdded)
+		 \{
+			 Console.WriteLine("Index " + change.Name + " has been added.");
+		 \}
+	 \});
+`}
+</CodeBlock>
+</TabItem>
+
+If you are interested in observing changes of a specified index only, you can pass the index name:
+
+<TabItem value="subscribe_index_reduce_completed" label="subscribe_index_reduce_completed">
+<CodeBlock language="csharp">
+{`store.Changes()
+	.ForIndex("Orders/Total")
+	 .Subscribe(change =>
+	 \{
+		 if (change.Type == IndexChangeTypes.ReduceCompleted)
+		 \{
+			 Console.WriteLine("Index 'Orders/Total' has finished the reduce work.");
+		 \}
+	 \});
+`}
+</CodeBlock>
+</TabItem>
+
+This sample shows how to get information about completed reduce work by the map/reduce index.
+
+
+In result of subscribing the index notifications you will get `IndexChangeNotification` objects that contains the following properties:
+``` csharp 
+IndexChangeTypes Type { get; set; }
+string Name { get; set; }
+Guid? Etag { get; set; }
+```
+
+`IndexChangeTypes` is the enum that has the flags:
+``` csharp 
+None,
+MapCompleted,
+ReduceCompleted,
+RemoveFromIndex,
+IndexAdded,
+IndexRemoved
+```

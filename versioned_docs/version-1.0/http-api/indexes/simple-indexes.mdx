@@ -1,0 +1,142 @@
+---
+title: "HTTP API - Simple Indexes"
+hide_table_of_contents: true
+sidebar_label: Simple Indexes
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# HTTP API - Simple Indexes
+Indexes enable advanced fast and complex queries of JSON documents already in RavenDB. Indexes are expressed using LINQ and are composed of up to two parts, a map and a reduce function.
+
+This section of the documentation focuses on map only or simple indexes. This type of index functions much like an index in a relational database. It offers fast access to documents in RavenDB by a property or properties other then their unique id.
+
+## Creating a Simple Index
+Imagine we had a document per user in our address book and wanted to find any users who live in Maryland. We have five users, so five documents:
+
+```json 
+    http://localhost:8080/docs/bob
+    {
+       "Name": "Bob",
+       "HomeState": "Maryland",
+       "ObjectType": "User"
+    }
+    
+    http://localhost:8080/docs/sarah
+    {
+       "Name": "Sarah",
+       "HomeState": "Illinois",
+       "ObjectType": "User"
+    }
+    
+    http://localhost:8080/docs/paul
+    {
+       "Name": "Paul",
+       "HomeState": "Maryland",
+       "ObjectType": "User"
+    }
+    
+    http://localhost:8080/docs/mary
+    {
+       "Name": "Mary",
+       "HomeState": "Maryland",
+       "ObjectType": "User"
+    }
+    
+    http://localhost:8080/docs/george
+    {
+       "Name": "George",
+       "HomeState": "California",
+       "ObjectType": "User"
+    }
+```
+    
+If you're following along with curl:
+
+```json     
+    > curl -X PUT http://localhost:8080/docs/bob -d "{ Name: 'Bob', HomeState: 'Maryland', ObjectType: 'User' }"
+    > curl -X PUT http://localhost:8080/docs/sarah -d "{ Name: 'Sarah', HomeState: 'Illinois', ObjectType: 'User' }"
+    > curl -X PUT http://localhost:8080/docs/paul -d "{ Name: 'Paul', HomeState: 'Maryland', ObjectType: 'User' }"
+    > curl -X PUT http://localhost:8080/docs/mary -d "{ Name: 'Mary', HomeState: 'Maryland', ObjectType: 'User' }"
+    > curl -X PUT http://localhost:8080/docs/george -d "{ Name: 'George', HomeState: 'California', ObjectType: 'User' }"
+```
+
+To create an index to retrieve these documents by the HomeState property, make a PUT request to \indexes\{index_id}:
+
+```json 
+    > curl -X PUT http://localhost:8080/indexes/usersByHomeState 
+              -d "{ Map:'from doc in docs
+where doc.ObjectType==\"User\"
+select new { doc.HomeState }' }"
+```
+
+On a successful index create, RavenDB will respond with a HTTP 201 Created response code, and a JSON acknowledgment of the index just created:
+
+```json 
+    HTTP/1.1 201 Created
+
+    {"index":"usersByHomeState"}
+```
+
+## Querying a Simple Index
+
+Perform a GET request to the URL of an index to retrieve all the documents in that index:
+
+```plain 
+    > curl -X GET http://localhost:8080/indexes/usersByHomeState?query=HomeState%3AMaryland
+```
+
+RavenDB will respond with a result set that includes all the matching records, plus some other useful information:
+
+```json 
+    {"Results":
+    [{"Name":"Mary","HomeState":"Maryland","ObjectType":"User",
+               "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"mary","@etag":"25ff8144-36f8-11df-858f-001de034b773"}},
+    {"Name":"Paul","HomeState":"Maryland","ObjectType":"User",
+               "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"paul","@etag":"25ff8145-36f8-11df-858f-001de034b773"}},
+    {"Name":"Bob","HomeState":"Maryland","ObjectType":"User",
+               "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"bob","@etag":"25ff8147-36f8-11df-858f-001de034b773"}}],
+     "IsStale":false,"TotalResults":3}
+```
+
+In the result set, "TotalResults" is a count of the matching records.
+
+"IsStale" is a boolean indicator of whether or not this index (and results) are up to date. When an index is first created or when new documents are added that could be part of the index, RavenDB runs a background process to update the index. If this process is running while an index query is issued, then the last known results will be returned, but clearly marked as stale with "IsStale" set to true.
+
+## Paging Results
+
+RavenDB allows you to control how many documents are returned from an index query by using the query string arguments "start" and "pageSize". "pageSize" specifies how many records to return, "start" is the starting position within all results to return "pageSize" records from. So with our Maryland users, we could break up the results as follows:
+
+```json 
+    > curl -X GET "http://localhost:8080/indexes/usersByHomeState?query=HomeState%3AMaryland&start=0&pageSize=2"
+    
+    {"Results":
+    [{"Name":"Mary","HomeState":"Maryland","ObjectType":"User",
+                "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"mary","@etag":"25ff8144-36f8-11df-858f-001de034b773"}},
+    {"Name":"Paul","HomeState":"Maryland","ObjectType":"User",
+                "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"paul","@etag":"25ff8145-36f8-11df-858f-001de034b773"}}],
+     "IsStale":false,"TotalResults":3}
+    
+    > curl -X GET "http://localhost:8080/indexes/usersByHomeState?query=HomeState%3AMaryland&start=2&pageSize=2"
+    
+    {"Results":
+    [{"Name":"Bob","HomeState":"Maryland","ObjectType":"User",
+                "@metadata":{"Content-Type":"application/x-www-form-urlencoded","@id":"bob","@etag":"25ff8147-36f8-11df-858f-001de034b773"}}],
+      "IsStale":false,"TotalResults":3}
+```
+
+## Deleting an Index
+
+To delete an index, use the following syntax:
+
+```plain 
+    > curl -X DELETE http://localhost:8080/indexes/usersByHomeState
+```
+
+RavenDB will respond with an HTTP 204 No Content response code for a successful delete.

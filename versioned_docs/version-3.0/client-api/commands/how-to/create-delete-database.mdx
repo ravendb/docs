@@ -1,0 +1,355 @@
+---
+title: "Commands: How to create or delete database?"
+hide_table_of_contents: true
+sidebar_label: ...create or delete database
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: How to create or delete database?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This article will describe the following commands (and extensions) that enable you to manage databases on a server:   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#deletedatabase)   
+- [EnsureDatabaseExists](../../../client-api/commands/how-to/create-delete-database.mdx#ensuredatabaseexists---extension-method)   
+
+## **CreateDatabase**
+
+This method is used to create a new database on a server.
+
+### Syntax
+
+<TabItem value="create_database_1" label="create_database_1">
+<CodeBlock language="csharp">
+{`void CreateDatabase(DatabaseDocument databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
+
+### Example
+
+<TabItem value="create_database_2" label="create_database_2">
+<CodeBlock language="csharp">
+{`// create database 'NewDatabase' with 'PeriodicExport' bundle enabled
+store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(new DatabaseDocument
+		                \{
+			                Id = "NewDatabase", 
+							Settings =
+								\{
+									\{ "Raven/ActiveBundles", "PeriodicExport" \},
+                                                \{ "Raven/DataDir", @"~\\Databases\\NewDatabase" \}
+                                            \}
+		                \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **DeleteDatabase**
+
+This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
+
+### Syntax
+
+<TabItem value="delete_database_1" label="delete_database_1">
+<CodeBlock language="csharp">
+{`void DeleteDatabase(string dbName, bool hardDelete = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **dbName** | string | Name of a database to delete |
+| **hardDelete** | bool | Should all data be removed (data files, indexing files, etc.). Default: `false` |
+
+### Example
+
+<TabItem value="delete_database_2" label="delete_database_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.GlobalAdmin.DeleteDatabase("NewDatabase", hardDelete: true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **EnsureDatabaseExists - extension method**
+
+This extension method creates database on a server with **default configuration and indexes** if that database does not exist.
+
+### Syntax
+
+<TabItem value="ensure_database_exists_2" label="ensure_database_exists_2">
+<CodeBlock language="csharp">
+{`// required namespace in usings
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="ensure_database_exists_1" label="ensure_database_exists_1">
+<CodeBlock language="csharp">
+{`public static void EnsureDatabaseExists(
+	this IGlobalAdminDatabaseCommands self,
+	string name,
+	bool ignoreFailures = false)
+\{
+	throw new CodeOmitted();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a database that will be created if it does not exist |
+| **ignoreFailures** | bool | Ignore any exceptions that could heve occurred during database creation. Default: `false` |
+
+### Example
+
+<TabItem value="ensure_database_exists_3" label="ensure_database_exists_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.EnsureDatabaseExists("NewDatabase", ignoreFailures: false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This article will describe the following commands that enable you to manage databases on a server:   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#deletedatabase)   
+- [EnsureDatabaseExists](../../../client-api/commands/how-to/create-delete-database.mdx#ensuredatabaseexists---extension-method)   
+
+## **CreateDatabase**
+
+This method is used to create a new database on a server.
+
+### Syntax
+
+<TabItem value="create_database_1" label="create_database_1">
+<CodeBlock language="java">
+{`public void createDatabase(DatabaseDocument databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
+
+### Example
+
+<TabItem value="create_database_2" label="create_database_2">
+<CodeBlock language="java">
+{`// create database 'NewDatabase' with 'PeriodicExport' bundle enabled
+DatabaseDocument databaseDocument = new DatabaseDocument();
+databaseDocument.setId("NewDatabase");
+Map<String, String> settings = new HashMap<>();
+settings.put("Raven/ActiveBundles", "PeriodicExport");
+settings.put("Raven/DataDir", "~\\\\Databases\\\\NewDatabase");
+databaseDocument.setSettings(settings);
+store.getDatabaseCommands().getGlobalAdmin().createDatabase(databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **DeleteDatabase**
+
+This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
+
+### Syntax
+
+<TabItem value="delete_database_1" label="delete_database_1">
+<CodeBlock language="java">
+{`public void deleteDatabase(String dbName);
+public void deleteDatabase(String dbName, boolean hardDelete);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **dbName** | String | Name of a database to delete |
+| **hardDelete** | bool | Should all data be removed (data files, indexing files, etc.). Default: `false` |
+
+### Example
+
+<TabItem value="delete_database_2" label="delete_database_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getGlobalAdmin().deleteDatabase("NewDatabase", true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **EnsureDatabaseExists**
+
+This extension method creates database on a server with **default configuration and indexes** if that database does not exist.
+
+### Syntax
+
+<TabItem value="ensure_database_exists_1" label="ensure_database_exists_1">
+<CodeBlock language="java">
+{`public void ensureDatabaseExists(String name);
+public void ensureDatabaseExists(String name, boolean ignoreFailures);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of a database that will be created if it does not exist |
+| **ignoreFailures** | boolean | Ignore any exceptions that could have occurred during database creation. Default: `false` |
+
+### Example
+
+<TabItem value="ensure_database_exists_3" label="ensure_database_exists_3">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getGlobalAdmin().ensureDatabaseExists("NewDatabase", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+This article will describe the following commands that enable you to manage databases on a server:   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#deletedatabase)   
+
+## **CreateDatabase**
+
+Used to create a new database on a server.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/databases/\{databaseName\} \\
+	-X PUT \\
+	-d @databaseDocument.txt
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| [DatabaseDocument](../../../glossary/database-document.mdx) |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **databaseName** | Yes | Name of a database to created |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/admin/databases/NewDatabase" \\
+	-d "\{\\"SecuredSettings\\":\{\},\\"Settings\\":\{\\"Raven/ActiveBundles\\":\\"PeriodicExport\\",\\"Raven/DataDir\\":\\"~//\\"\},\\"Disabled\\":false,\\"Id\\":\\"NewDatabase\\"\}"
+< HTTP/1.1 200 OK
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **DeleteDatabase**
+
+Used to delete a database from a server, with a possibility to remove all the data from hard drive.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/databases/\{databaseName\} \\
+		&hard-delete=\{hardDelete\} \\
+	-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description  |
+| ------------- | -- | ---- |
+| **databaseName** | Yes | Name of a database to delete |
+| **hardDelete** | No | Should all data be removed (data files, indexing files, etc.). Default: `false` |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/admin/databases/NewDatabase?hard-delete=true" \\
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+</LanguageContent>
+
+<!---
+- [How to switch commands to different database?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)
+- [How to get database and server statistics?](../../../client-api/commands/how-to/get-database-and-server-statistics)
+- [How to start backup or restore operations?](../../../client-api/commands/how-to/start-backup-restore-operations)
+
+-->

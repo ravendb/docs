@@ -1,0 +1,270 @@
+---
+title: "Operations: How to Add a Connection String"
+hide_table_of_contents: true
+sidebar_label: Add Connection String
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Add a Connection String
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+* You can add a connection string by using the [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) method.
+
+* This article demonstrates how to connect to an external database.  
+
+In this page:
+
+* [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation)  
+* [Add a Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string)  
+* [Add an Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
+
+## `PutConnectionStringOperation`
+
+<TabItem value="add_connection_string" label="add_connection_string">
+<CodeBlock language="csharp">
+{`public PutConnectionStringOperation(T connectionString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Connection String Type | Description |
+| ------------- | ----- | ---- |
+| **connectionString** | `Raven` | Connection string to create: `RavenConnectionString` |
+| **connectionString** | `Sql` | Connection string to create: `SqlConnectionString` |
+
+
+#### `ConnectionString`
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="csharp">
+{`public class ConnectionString
+\{
+    public string Name \{ get; set; \} // name of connection string        
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## Add a Raven Connection String
+
+<Admonition type="note" title="Secure servers" id="secure-servers" href="#secure-servers">
+ To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+ you need to 
+
+  1. Export the server certificate from the source server. 
+  2. Install it as a client certificate on the destination server.  
+
+</Admonition>
+
+<TabItem value="add_raven_connection_string" label="add_raven_connection_string">
+<CodeBlock language="csharp">
+{`PutConnectionStringOperation<RavenConnectionString> operation
+    = new PutConnectionStringOperation<RavenConnectionString>(
+        new RavenConnectionString
+        \{
+            Name = "raven2",
+            Database = "Northwind2",
+            TopologyDiscoveryUrls = new[]
+            \{
+                "https://rvn2:8080"
+            \}
+        \});
+
+PutConnectionStringResult connectionStringResult
+    = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+* `RavenConnectionString` 
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="csharp">
+{`public class RavenConnectionString : ConnectionString
+\{
+    public string Database \{ get; set; \} // target database name
+    public string[] TopologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType Type => ConnectionStringType.Raven;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## Add an Sql Connection String
+
+<TabItem value="add_sql_connection_string" label="add_sql_connection_string">
+<CodeBlock language="csharp">
+{`PutConnectionStringOperation<SqlConnectionString> operation
+    = new PutConnectionStringOperation<SqlConnectionString>(
+        new SqlConnectionString
+        \{
+            Name = "local_mysql",
+            FactoryName = "MySql.Data.MySqlClient",
+            ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+        \});
+
+PutConnectionStringResult connectionStringResult
+    = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+* `SqlConnectionString` 
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="csharp">
+{`public class SqlConnectionString : ConnectionString
+\{
+    public string ConnectionString \{ get; set; \}
+
+    public string FactoryName \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.Sql;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+You can add a connection string by using **PutConnectionStringOperation**.
+
+## Syntax
+
+<TabItem value="add_connection_string" label="add_connection_string">
+<CodeBlock language="java">
+{`public PutConnectionStringOperation(T connectionString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
+
+#### RavenConnectionString 
+
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="java">
+{`public class RavenConnectionString extends ConnectionString \{
+    private String database; // target database name
+    private String[] topologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.RAVEN;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### SqlConnectionString
+
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="java">
+{`public class SqlConnectionString extends ConnectionString \{
+    private String connectionString;
+    private String factoryName;
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.SQL;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### ConnectionString
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="java">
+{`public class ConnectionString \{
+    private String name; // name of connection string
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Raven Connection String
+
+<TabItem value="add_raven_connection_string" label="add_raven_connection_string">
+<CodeBlock language="java">
+{`RavenConnectionString connectionString = new RavenConnectionString();
+connectionString.setName("raven2");
+connectionString.setDatabase("Northwind2");
+connectionString.setTopologyDiscoveryUrls(new String[]\{"http://rvn2:8080"\});
+
+PutConnectionStringOperation<RavenConnectionString> operation =
+    new PutConnectionStringOperation<>(connectionString);
+PutConnectionStringResult connectionStringResult =
+    store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Sql Connection String
+
+<TabItem value="add_sql_connection_string" label="add_sql_connection_string">
+<CodeBlock language="java">
+{`SqlConnectionString connectionString = new SqlConnectionString();
+connectionString.setName("local_mysql");
+connectionString.setFactoryName("MySql.Data.MySqlClient");
+connectionString.setConnectionString("host=127.0.0.1;user=root;database=Northwind");
+PutConnectionStringOperation<SqlConnectionString> operation
+    = new PutConnectionStringOperation<>(connectionString);
+
+PutConnectionStringResult connectionStringResult = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Connection Strings
+- [Get](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)
+- [Remove](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string)
+
+### ETL (Extract, Transform, Load) Tasks
+- [Operations: How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
+- [Ongoing Tasks: ETL Basics](../../../../server/ongoing-tasks/etl/basics)
+
+### External Replication
+- [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)
+- [How Replication Works](../../../../server/clustering/replication/replication)
+
+
+-->

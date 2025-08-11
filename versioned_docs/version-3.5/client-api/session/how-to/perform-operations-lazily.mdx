@@ -1,0 +1,126 @@
+---
+title: "Session: How to perform operations lazily?"
+hide_table_of_contents: true
+sidebar_label: ...perform requests lazily
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: How to perform operations lazily?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Operation execution for operations such as `Load`, `Load with Includes`, `LoadStartingWith`, `MoreLikeThis` and queries can be deferred till needed using **lazy session operations**. Those operations ca be accessed using `Lazily` property found in `Advanced` session operations.
+
+## Operations
+
+Available operations are:
+
+- `Load` - described [here](../../../client-api/session/loading-entities.mdx#load).
+- `Load with Includes` - described [here](../../../client-api/session/loading-entities.mdx#load-with-includes).
+- `LoadStartingWith` - described [here](../../../client-api/session/loading-entities.mdx#loadstartingwith).
+- `MoreLikeThis` - described [here](../../../client-api/session/how-to/use-morelikethis.mdx).
+
+## Querying
+
+Dedicated article about lazy queries can be found [here](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+
+## Example
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="csharp">
+{`Lazy<Employee> employeeLazy = session
+	.Advanced
+	.Lazily
+	.Load<Employee>("employees/1-A");
+
+Employee employee = employeeLazy.Value; // load operation will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+## Executing all pending lazy operations
+
+To execute all pending lazy operations use `ExecuteAllPendingLazyOperations` method from **eager session operations** found under `Eagerly` property in `Advanced` session operations.
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="csharp">
+{`Lazy<IEnumerable<Employee>> employeesLazy = session
+	.Query<Employee>()
+	.Lazily();
+
+session.Advanced.Eagerly.ExecuteAllPendingLazyOperations(); // query will be executed here
+
+IEnumerable<Employee> employees = employeesLazy.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Operation execution for operations such as `load`, `load with includes`, `loadStartingWith`, `moreLikeThis` and queries can be deferred till needed using **lazy session operations**. Those operations ca be accessed using `lazily` in `advanced()` session operations.
+
+## Operations
+
+Available operations are:
+
+- `load` - described [here](../../../client-api/session/loading-entities.mdx#load).
+- `load with Includes` - described [here](../../../client-api/session/loading-entities.mdx#load-with-includes).
+- `loadStartingWith` - described [here](../../../client-api/session/loading-entities.mdx#loadstartingwith).
+- `moreLikeThis` - described [here](../../../client-api/session/how-to/use-morelikethis.mdx).
+
+## Querying
+
+Dedicated article about lazy queries can be found [here](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+
+## Example
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="java">
+{`net.ravendb.client.documents.Lazy<Employee> employeeLazy = session
+    .advanced()
+    .lazily()
+    .load(Employee.class, "employees/1-A");
+
+Employee employee = employeeLazy.getValue(); // load operation will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+## Executing all pending lazy operations
+
+To execute all pending lazy operations use `executeAllPendingLazyOperations` method from **eager session operations** found under `eagerly` in `advanced()` session operations.
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="java">
+{`net.ravendb.client.documents.Lazy<List<Employee>> employeesLazy = session
+    .query(Employee.class)
+    .lazily();
+
+session.advanced().eagerly().executeAllPendingLazyOperations(); // query will be executed here
+
+List<Employee> employees = employeesLazy.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to perform queries lazily?](../querying/how-to-perform-queries-lazily)
+
+-->

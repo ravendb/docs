@@ -1,0 +1,433 @@
+---
+title: "Spatial"
+hide_table_of_contents: true
+sidebar_label: Spatial
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Spatial
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="info" title="Info">
+This article focuses only on **querying** side of spatial search. If you want to read how to index spatial data, click [here](../../indexes/indexing-spatial-data.mdx).
+</Admonition>
+
+To perform a spatial search you can use `Spatial` method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<SpatialDoc> results = session
+	.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+	.Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<SpatialDoc> results = session
+	.Advanced
+	.DocumentQuery<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+	.Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class SpatialDoc_ByShapeAndPoint : AbstractIndexCreationTask<SpatialDoc>
+{
+	public SpatialDoc_ByShapeAndPoint()
+	{
+		Map = docs => from spatial in docs
+					  select new
+					  {
+						  Shape = spatial.Shape,
+						  Point = spatial.Point
+					  };
+
+		Spatial(x => x.Shape, options => options.Geography.Default());
+		Spatial(x => x.Point, options => options.Cartesian.BoundingBoxIndex());
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Under `criteria` following methods are available:
+
+<TabItem value="spatial_search_enhancements_a" label="spatial_search_enhancements_a">
+<CodeBlock language="csharp">
+{`SpatialCriteria RelatesToShape(object shape, SpatialRelation relation);
+
+SpatialCriteria Intersects(object shape);
+
+SpatialCriteria Contains(object shape);
+
+SpatialCriteria Disjoint(object shape);
+
+SpatialCriteria Within(object shape);
+
+[Obsolete("Order of parameters in this method is inconsistent with the rest of the API (x = longitude, y = latitude). Please use 'WithinRadius'.")]
+SpatialCriteria WithinRadiusOf(double radius, double x, double y);
+
+SpatialCriteria WithinRadius(double radius, double latitude, double longitude);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Obsolete method" id="obsolete-method" href="#obsolete-method">
+Since version 3.0.3699-Unstable `WithinRadiusOf` method is marked as obsolete because of parameter order inconsistency. Use `WithinRadius` instead.
+</Admonition>
+
+## Radius search
+
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use `WithinRadiusOf` method that is a part of query customizations.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Event> results = session
+	.Query<Event, Events_ByNameAndCoordinates>()
+	.Customize(x => x
+		.WithinRadiusOf(
+			fieldName: "Coordinates",
+			radius: 10,
+			latitude: 32.1234,
+			longitude: 23.4321))
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Event> results = session
+	.Advanced
+	.DocumentQuery<Event, Events_ByNameAndCoordinates>()
+	.WithinRadiusOf(
+		fieldName: "Coordinates",
+		radius: 10,
+		latitude: 32.1234,
+		longitude: 23.4321)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
+{
+	public Events_ByNameAndCoordinates()
+	{
+		Map = events => from e in events
+						select new
+						{
+							Name = e.Name,
+							__ = SpatialGenerate("Coordinates", e.Latitude, e.Longitude)
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced search
+
+The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
+
+<TabItem value="spatial_search_5" label="spatial_search_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization RelatesToShape(string fieldName, string shapeWKT, SpatialRelation rel);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="spatial_search_7" label="spatial_search_7">
+<CodeBlock language="csharp">
+{`public enum SpatialRelation
+\{
+	Within,
+	Contains,
+	Disjoint,
+	Intersects,
+
+	/// <summary>
+	/// Does not filter the query, merely sort by the distance
+	/// </summary>
+	Nearby
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the last one is a spatial relation type.
+
+So to perform a radius search from the above example and use `RelatesToShape` method, we do as follows
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Event> results = session
+	.Query<Event, Events_ByNameAndCoordinates>()
+	.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Event> results = session
+	.Advanced
+	.DocumentQuery<Event, Events_ByNameAndCoordinates>()
+	.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
+{
+	public Events_ByNameAndCoordinates()
+	{
+		Map = events => from e in events
+						select new
+						{
+							Name = e.Name,
+							__ = SpatialGenerate("Coordinates", e.Latitude, e.Longitude)
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+Distance in RavenDB by default is measured in **kilometers**.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+<Admonition type="info" title="Info">
+This article focuses only on **querying** side of spatial search. If you want to read how to index spatial data, click [here](../../indexes/indexing-spatial-data.mdx).
+</Admonition>
+
+To perform a spatial search you can use `spatial` method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QSpatialIndexes_SpatialDoc s = QSpatialIndexes_SpatialDoc.spatialDoc;
+List<SpatialDoc> results = session
+  .query(SpatialDoc.class, SpatialDoc_ByShapeAndPoint.class)
+  .spatial(s.shape, new SpatialCriteriaFactory().withinRadius(500, 30, 30))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QSpatialIndexes_SpatialDoc s = QSpatialIndexes_SpatialDoc.spatialDoc;
+List<SpatialDoc> results = session
+  .advanced()
+  .documentQuery(SpatialDoc.class, SpatialDoc_ByShapeAndPoint.class)
+  .spatial(s.shape, new SpatialCriteriaFactory().withinRadius(500, 30, 30))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class SpatialDoc_ByShapeAndPoint extends AbstractIndexCreationTask {
+  public SpatialDoc_ByShapeAndPoint() {
+    QSpatialIndexes_SpatialDoc s = QSpatialIndexes_SpatialDoc.spatialDoc;
+    map =
+     " from spatial in docs        " +
+     " select new                  " +
+     " {                           " +
+     "     Shape = spatial.Shape,  " +
+     "     Point = spatial.Point   " +
+     " }; ";
+
+    spatial(s.shape, new SpatialOptionsFactory().getGeography().defaultOptions());
+    spatial(s.point, new SpatialOptionsFactory().getCartesian().boundingBoxIndex());
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Under `criteria` following methods are available:
+
+<TabItem value="spatial_search_enhancements_a" label="spatial_search_enhancements_a">
+<CodeBlock language="java">
+{`public SpatialCriteria relatesToShape(Object shape, SpatialRelation relation);
+
+public SpatialCriteria intersects(Object shape);
+
+public SpatialCriteria contains(Object shape);
+
+public SpatialCriteria disjoint(Object shape);
+
+public SpatialCriteria within(Object shape);
+
+public SpatialCriteria withinRadius(double radius, double latitude, double longitude);
+
+/**
+ * Order of parameters in this method is inconsistent with the rest of the API (x = longitude, y = latitude). Please use 'withinRadius'.
+ */
+@Deprecated
+public SpatialCriteria withinRadiusOf(double radius, double x, double y);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Obsolete method" id="obsolete-method" href="#obsolete-method">
+Since version 3.0.3699-Unstable `withinRadiusOf` method is marked as obsolete because of parameter order inconsistency. Use `withinRadius` instead.
+</Admonition>
+
+## Radius search
+
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use `withinRadiusOf` method that is a part of query customizations.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Event> results = session
+  .query(Event.class, Events_ByNameAndCoordinates.class)
+  .customize(new DocumentQueryCustomizationFactory().withinRadiusOf("Coordinates", 10, 32.1234, 23.4321))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Event> results = session
+  .advanced()
+  .documentQuery(Event.class, Events_ByNameAndCoordinates.class)
+  .withinRadiusOf("Coordinates", 10, 32.1234, 23.4321)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Events_ByNameAndCoordinates extends AbstractIndexCreationTask {
+  public Events_ByNameAndCoordinates() {
+    map =
+     " from e in docs.Events                                             " +
+     " select new                                                        " +
+     " {                                                                 " +
+     "     Name = e.Name,                                                " +
+     "     __ = SpatialGenerate(\\"Coordinates\\", e.Latitude, e.Longitude)" +
+     " }; ";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced search
+
+The `withinRadiusOf` method is a wrapper around `relatesToShape` method.
+
+<TabItem value="spatial_search_5" label="spatial_search_5">
+<CodeBlock language="java">
+{`public DocumentQueryCustomizationFactory relatesToShape(final String fieldName, final String shapeWKT, final SpatialRelation rel);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="spatial_search_7" label="spatial_search_7">
+<CodeBlock language="java">
+{`@UseSharpEnum
+public enum SpatialRelation \{
+  WITHIN, CONTAINS, DISJOINT, INTERSECTS,
+
+  /**
+   * Does not filter the query, merely sort by the distance
+   */
+  NEARBY
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the last one is a spatial relation type.
+
+So to perform a radius search from the above example and use `relatesToShape` method, we do as follows
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Event> results = session
+  .query(Event.class, Events_ByNameAndCoordinates.class)
+  .customize(new DocumentQueryCustomizationFactory()
+    .relatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)",
+      net.ravendb.abstractions.indexing.SpatialOptions.SpatialRelation.WITHIN))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Event> results = session
+  .advanced()
+  .documentQuery(Event.class, Events_ByNameAndCoordinates.class)
+  .relatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)",
+      net.ravendb.abstractions.indexing.SpatialOptions.SpatialRelation.WITHIN)
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Events_ByNameAndCoordinates extends AbstractIndexCreationTask {
+  public Events_ByNameAndCoordinates() {
+    map =
+     " from e in docs.Events                                             " +
+     " select new                                                        " +
+     " {                                                                 " +
+     "     Name = e.Name,                                                " +
+     "     __ = SpatialGenerate(\\"Coordinates\\", e.Latitude, e.Longitude)" +
+     " }; ";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+Distance in RavenDB by default is measured in **kilometers**.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Indexing spatial data](../../indexes/indexing-spatial-data)
+- [Client API : Session : How to query a spatial index?](../../client-api/session/querying/how-to-query-a-spatial-index)
+
+-->

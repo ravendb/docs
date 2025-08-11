@@ -1,0 +1,68 @@
+---
+title: "Excel integration"
+hide_table_of_contents: true
+sidebar_label: Excel integration
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Excel integration
+
+To integrate with Excel application we will need following items:   
+1. Some data (built-in Northwind sample data in this example).   
+2. [Index](../client-api/querying/static-indexes/defining-static-index.mdx) that we will query against (in this example we will use default `Raven/DocumentsByEntityName` index).   
+3. [Transformer](../client-api/querying/results-transformation/result-transformers.mdx) (optional - just to shape up the results).   
+
+!['Products/ForExcel' transformer](./assets/excel_transformer.png)
+
+To query a database for `Product` using our `Raven/DocumentsByEntityName` index then transforming the results with `Products/ForExcel` transformer and formating them to excel we need to visit following url:   
+
+```plain 
+curl -X GET http://localhost:8080/streams/query/Raven/DocumentsByEntityName?query=Tag:Products&resultsTransformer=Products/ForExcel&format=excel
+```
+
+![Query results](./assets/excel_result.png)
+
+Now to push it to Excel we need to create new spreadsheet and import data `From Text`.
+
+![Importing data from text in Excel](./assets/excel_from_text.png)
+
+Then in a Open File Dialog we paste our querying URL.
+
+![Open File Dialog](./assets/excel_from_text_dialog.png)
+
+Next, the Import Wizard will show up where we can adjust our import settings (don't forget to check 'Comma' as a desired delimiter).
+
+![Import Wizard Step 1](./assets/excel_from_text_wizard_1.png)
+
+![Import Wizard Step 2](./assets/excel_from_text_wizard_2.png)
+
+Finally we need to select where we would like the imported data to go:
+
+![Select where to put the data](./assets/excel_from_text_select.png)
+
+As a result of previous actions, the spreadsheet data should look like:
+
+![Excel results](./assets/excel_from_text_results.png)
+
+Now we must tell Excel to to refresh data, to do it click on Connections in Data tab:
+
+![Excel connections](./assets/excel_connections.png)
+
+And you will see something like this:
+
+![Excel connections dialog](./assets/excel_connections_dialog_1.png)
+
+Go to Properties and:   
+1. **uncheck** Prompt for file name on refresh.   
+2. **check** Refresh data when opening the file.   
+
+![Excel connection properties](./assets/excel_connections_dialog_2.png)
+
+Finally you can close the file, change something in the database and reopen it and you will see new values.

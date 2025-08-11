@@ -1,0 +1,134 @@
+---
+title: "Commands: SearchAsync"
+hide_table_of_contents: true
+sidebar_label: Search
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "http"];
+
+
+## Syntax
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Commands: SearchAsync
+
+**SearchAsync** retrieves the names of configurations that starts with a specified prefix.
+
+
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="csharp">
+{`Task<ConfigurationSearchResults> SearchAsync(string prefix, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **prefix** | string | The prefix value with which the name of a configuration has to start |
+| **start** | int | The number of results that should be skipped |
+| **pageSize** | int | The maximum number of results that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ConfigurationSearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`ConfigurationSearchResults`](../../../../glossary/configuration-search-results.mdx) object which represents results of a prefix query. |
+
+## Example
+
+In order to get all configuration names which keys start with `descriptions/` prefix you can use the following code:
+
+<TabItem value="search_2" label="search_2">
+<CodeBlock language="csharp">
+{`int start = 0;
+int pageSize = 10;
+
+do
+\{
+	ConfigurationSearchResults results = await store
+		.AsyncFilesCommands
+		.Configuration
+		.SearchAsync("descriptions/", start, pageSize);
+
+	IList<string> names = results.ConfigNames;
+
+	start += pageSize;
+	
+	if(names.Count < pageSize)
+		break;
+
+\} while (true);
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="http">
+#Commands: Search
+
+The **GET** method retrieves the names of configurations that starts with a specified prefix. 
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/config/search?prefix=\{prefix\}&start=\{start\}&pageSize=\{pageSize\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **prefix** | Yes | The prefix value with which the name of a configuration has to start |
+| **start** | No | The number of results that should be skipped |
+| **pageSize** | No | The maximum number of results that will be returned (Default: 25) |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **JSON** | JSON object representing [configuration search results](../../../../glossary/configuration-search-results.mdx)|
+
+---
+
+## Example
+
+In order to get first 25 configuration names which keys start with `descriptions/`` prefix you need to create the following request:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/config/search?prefix=descriptions/
+< HTTP/1.1 200 OK
+\{
+    "ConfigNames":["descriptions/intro.avi"],
+    "TotalCount":1,
+    "Start":0,
+    "PageSize":25
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

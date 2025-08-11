@@ -1,0 +1,240 @@
+---
+title: "Indexes: Storing Data in Index"
+hide_table_of_contents: true
+sidebar_label: Storing Data in Index
+sidebar_position: 26
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Indexes: Storing Data in Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
+By default, tokens saved in the index are available for searching. but their original field values aren't stored.
+
+Lucene allows you to store the original field text (before it is analyzed) as well. This feature is exposed in the index definition object as the `Storage` property of the `IndexFieldOptions`.
+
+Enabling field storing causes original values will be available for retrieval when doing [projections](../indexes/querying/projections.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               employee.FirstName,
+                               employee.LastName
+                           };
+
+        Stores.Add(x => x.FirstName, FieldStorage.Yes);
+        Stores.Add(x => x.LastName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store
+    .Maintenance
+    .Send(new PutIndexesOperation(
+        new IndexDefinition
+        {
+            Name = "Employees_ByFirstAndLastName",
+            Maps =
+            {
+                @"from employee in docs.Employees
+                  select new
+                  {
+                      employee.FirstName,
+                      employee.LastName
+                  }"
+            },
+            Fields = new Dictionary<string, IndexFieldOptions>
+            {
+                {"FirstName", new IndexFieldOptions
+                              {
+                                  Storage = FieldStorage.Yes
+                              }
+                },
+                {"LastName", new IndexFieldOptions
+                             {
+                                Storage = FieldStorage.Yes
+                             }
+                }
+            }
+        }));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Default `Storage` value for each field is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage.
+</Admonition>
+
+<Admonition type="info" title="Info" id="info" href="#info">
+If **the projection requires only the fields that are stored**, then the document will not be loaded from the storage and the query results will come directly from the index. This can increase query performance at the cost of disk space used.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
+By default, tokens saved in the index are available for searching. but their original field values aren't stored.
+
+Lucene allows you to store the original field text (before it is analyzed) as well. This feature is exposed in the index definition object as the `Storage` property of the `IndexFieldOptions`.
+
+Enabling field storing causes original values will be available for retrieval when doing [projections](../indexes/querying/projections.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map =  "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+
+        store("FirstName", FieldStorage.YES);
+        store("LastName", FieldStorage.YES);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Employees_ByFirstAndLastName");
+indexDefinition.setMaps(Collections.singleton("docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName," +
+    "    LastName = employee.LastName" +
+    "})"));
+
+java.util.Map<String, IndexFieldOptions> fields = new HashMap<>();
+indexDefinition.setFields(fields);
+
+IndexFieldOptions firstNameOptions = new IndexFieldOptions();
+firstNameOptions.setStorage(FieldStorage.YES);
+fields.put("FirstName", firstNameOptions);
+
+IndexFieldOptions lastNameOptions = new IndexFieldOptions();
+lastNameOptions.setStorage(FieldStorage.YES);
+fields.put("LastName", lastNameOptions);
+
+store
+    .maintenance()
+    .send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Default `Storage` value for each field is `FieldStorage.NO`. Keep in mind that storing fields will increase disk space usage.
+</Admonition>
+
+<Admonition type="info" title="Info" id="info" href="#info">
+If **the projection requires only the fields that are stored**, then the document will not be loaded from the storage and the query results will come directly from the index. This can increase query performance at the cost of disk space used.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
+By default, tokens saved in the index are available for searching. but their original field values aren't stored.
+
+Lucene allows you to store the original field text (before it is analyzed) as well. This feature is exposed in the index definition object as the `Storage` property of the `IndexFieldOptions`.
+
+Enabling field storing causes original values will be available for retrieval when doing [projections](../indexes/querying/projections.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+        
+        this.map = \`docs.Employees.Select(employee => new {    
+            FirstName = employee.FirstName,    
+            LastName = employee.LastName
+        })\`;
+
+        this.store("FirstName", "Yes");
+        this.store("LastName", "Yes");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="js">
+{`const indexDefinition = new IndexDefinition();
+indexDefinition.name = "Employees_ByFirstAndLastName";
+indexDefinition.maps = new Set([
+    "docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName," +
+    "    LastName = employee.LastName" +
+    "})"
+]);
+indexDefinition.fields = {
+    "FirstName": { storage: "Yes" },
+    "LastName": { storage: "Yes" }
+};
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Default `Storage` value for each field is `"No"`. Keep in mind that storing fields will increase disk space usage.
+</Admonition>
+
+<Admonition type="info" title="Info" id="info" href="#info">
+If **the projection requires only the fields that are stored**, then the document will not be loaded from the storage and the query results will come directly from the index. This can increase query performance at the cost of disk space used.
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Boosting](../indexes/boosting)
+- [Analyzers](../indexes/using-analyzers)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)
+
+### Querying
+- [Projections and Stored Fields](../indexes/querying/projections#projections-and-stored-fields)
+
+
+-->

@@ -1,0 +1,81 @@
+---
+title: "What are Revisions"
+hide_table_of_contents: true
+sidebar_label: What are Revisions
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# What are Revisions
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+RavenDB can create snapshots of the documents (and their attachments) upon every document (or attachment) update or deletion. This feature can be very useful when historic records of the documents are needed e.g. for full audit trails.
+
+## Configuration
+
+Configuration can be set either per [collection](../../../client-api/faq/what-is-a-collection.mdx) or for _all collections_ (known as 'default configuration'). The 'default configuration' is applied only if collection-specific configuration is not present or enabled.
+
+The following three options are available for each configuration:
+
+- **Purge on delete** - when this option is active then on document deletion all of the revisions will be also removed
+- **Limit # of revisions** - the database can limit number of revisions to the given number (old ones will be removed)
+- **Limit # of revisions per age** - database will keep revisions at least for the provided time (takes precedence over '# of revisions' option)
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+RavenDB can create snapshots of the documents (and their attachments) upon every document (or attachment) update or deletion. This feature can be very useful when historic records of the documents are needed e.g. for full audit trails.
+
+## Configuration
+
+Configuration can be set either per [collection](../../../client-api/faq/what-is-a-collection.mdx) or for _all collections_ (known as 'default configuration'). The 'default configuration' is applied only if collection-specific configuration is not present or enabled.
+
+The following three options are available for each configuration:
+
+- **Purge on delete** - when this option is active then on document deletion all of the revisions will be also removed
+- **Limit # of revisions** - the database can limit number of revisions to the given number (old ones will be removed)
+- **Limit # of revisions per age** - database will keep revisions at least for the provided time (takes precedence over '# of revisions' option)
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+RavenDB can create snapshots of the documents (and their attachments) upon every document (or attachment) update or deletion. This feature can be very useful when historic records of the documents are needed e.g. for full audit trails.
+
+## Configuration
+
+Configuration can be set either per [collection](../../../client-api/faq/what-is-a-collection.mdx) or for _all collections_ (known as 'default configuration'). The 'default configuration' is applied only if collection-specific configuration is not present or enabled.
+
+The following three options are available for each configuration:
+
+- **Purge on delete** - when this option is active then on document deletion all of the revisions will be also removed
+- **Limit # of revisions** - the database can limit number of revisions to the given number (old ones will be removed)
+- **Limit # of revisions per age** - database will keep revisions at least for the provided time (takes precedence over '# of revisions' option)
+
+
+</LanguageContent>
+
+<!---
+### Revisions
+- [Loading](../../../client-api/session/revisions/loading)
+- [Revisions in Data Subscriptions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+
+### Server
+- [Revisions](../../../server/extensions/revisions)
+
+
+-->

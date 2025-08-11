@@ -1,0 +1,208 @@
+---
+title: "Restore"
+hide_table_of_contents: true
+sidebar_label: Restore
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Restore
+<Admonition type="note" title="Note">
+
+Being able to restore data is, naturally, an inseparable part of backing it up.  
+You can restore backed up databases using the Studio, or client API methods.  
+
+* In this page:  
+  * [Restoring a Database](../../../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database)  
+     * [Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore.mdx#configuration-and-execution)  
+     * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node)  
+         * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore.mdx#optional-settings)  
+     * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes)  
+         * [Restore Database to a Single Node & Replicate it to Other Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
+         * [Restore Database to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes-simultaneously)  
+  * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-cautions)  
+
+</Admonition>
+## Restoring a Database
+
+#### Configuration and Execution  
+
+* To restore your database, configure a `RestoreBackupConfiguration` instance and pass it to `RestoreBackupOperation` for execution.  
+
+* `RestoreBackupOperation`
+<TabItem value="restore_restorebackupoperation" label="restore_restorebackupoperation">
+<CodeBlock language="csharp">
+{`public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+`}
+</CodeBlock>
+</TabItem>  
+
+* `RestoreBackupConfiguration`
+<TabItem value="restore_restorebackupconfiguration" label="restore_restorebackupconfiguration">
+<CodeBlock language="csharp">
+{`public class RestoreBackupConfiguration
+\{
+    public string DatabaseName \{ get; set; \}
+    public string BackupLocation \{ get; set; \}
+    public string LastFileNameToRestore \{ get; set; \}
+    public string DataDirectory \{ get; set; \}
+    public string EncryptionKey \{ get; set; \}
+    public bool DisableOngoingTasks \{ get; set; \}
+    public bool SkipIndexes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+   * Parameters:
+
+    | Parameter | Value | Functionality |
+    | ------------- | ------------- | ----- |
+    | **DatabaseName** | string | Name for the new database. |
+    | **BackupLocation** | string | Backup file local path. <br/> Backup source path **has to be local** for the restoration to continue.|
+    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | string | Last backup file to restore. <br/> **Default behavior: Restore all backup files in the folder.** |
+    | **DataDirectory** <br/> (Optional -<br/> omit for default) | string | Database data directory. <br/> **Default folder: Under the "Databases" folder, in a folder that carries the restored database's name.** |
+    | **EncryptionKey** <br/> (Optional -<br/> omit for default) | string | A key for an encrypted database. <br/> **Default behavior: Try to restore as if DB is unencrypted.**|
+    | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | boolean | `true` to disable ongoing tasks after restoring, <br/> `false` to enable tasks after restoring. <br/> **Default: `false` (tasks DO run when backup is restored)**|
+  
+<Admonition type="note" title="Make sure your server has permissions to read from `BackupLocation` and write to `DataDirectory`." id="make-sure-your-server-has-permissions-to-read-from-backuplocation-and-write-to-datadirectory" href="#make-sure-your-server-has-permissions-to-read-from-backuplocation-and-write-to-datadirectory">
+Verify that RavenDB has full access to the backup-files and database folders.
+</Admonition>
+
+
+
+## Restore Database to a Single Node
+
+*  **Configuration**  
+     * Set `DatabaseName` with the **new database name**.  
+     * Set `BackupLocation` with a **local path for the backup files**.  
+
+*  **Execution**  
+     * Pass `RestoreBackupOperation` the configured `RestoreBackupConfiguration`.  
+     * Restore tha database by sending the task to the server.  
+
+* Code Sample:  
+<TabItem value="restore_to_single_node" label="restore_to_single_node">
+<CodeBlock language="csharp">
+{`var restoreConfiguration = new RestoreBackupConfiguration();
+
+// New database name
+restoreConfiguration.DatabaseName = "newProductsDatabase";
+
+// Local path with a backup file
+var backupPath = @"C:\\Users\\RavenDB\\backups\\2018-12-26-16-17.ravendb-Products-A-backup";
+restoreConfiguration.BackupLocation = backupPath;
+
+var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+docStore.Maintenance.Server.Send(restoreBackupTask);
+`}
+</CodeBlock>
+</TabItem>
+
+
+<Admonition type="note" title="Note">
+#### Optional Settings:
+
+* `LastFileNameToRestore`
+    * Use **LastFileNameToRestore** if you want to restore backup-files until a certain file is reached and stop there.  
+      For example - 
+       * These are the files in your backup folder:  
+          2018-12-26-09-00.ravendb-full-backup  
+          2018-12-26-12-00.ravendb-incremental-backup  
+          2018-12-26-15-00.ravendb-incremental-backup  
+          2018-12-26-18-00.ravendb-incremental-backup  
+       * Feed **LastFileNameToRestore** with the 2018-12-26-12-00 incremental-backup file name:
+<TabItem value="restore_last_file_name_to_restore" label="restore_last_file_name_to_restore">
+<CodeBlock language="csharp">
+{`//Last incremental backup file to restore from
+restoreConfiguration.LastFileNameToRestore = @"2018-12-26-12-00.ravendb-incremental-backup";
+`}
+</CodeBlock>
+</TabItem>  
+       * The full-backup and 12:00 incremental-backup files **will** be restored.  
+         The 15:00 and 18:00 files will be **omitted**.  
+
+* `DataDirectory`  
+   Choose the location and name of the directory the database will be restored to.  
+<TabItem value="restore_to_specific__data_directory" label="restore_to_specific__data_directory">
+<CodeBlock language="csharp">
+{`// Restore to the specified directory path
+var dataPath = @"C:\\Users\\RavenDB\\backups\\2018-12-26-16-17.ravendb-Products-A-backup\\restoredDatabaseLocation";
+restoreConfiguration.DataDirectory = dataPath;
+`}
+</CodeBlock>
+</TabItem>
+
+* `EncryptionKey`  
+   This is where you need to provide your encryption key if your backup is encrypted.  
+
+* `DisableOngoingTasks`  
+   set **DisableOngoingTasks** to **true** to [disable ongoing tasks](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-cautions) after restoration.  
+<TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
+<CodeBlock language="csharp">
+{`// Do or do not run ongoing tasks after restoration.
+// Default setting is FALSE, to allow tasks' execution when the backup is restored.
+restoreConfiguration.DisableOngoingTasks = true;
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+
+## Restore Database to Multiple Nodes
+
+#### Restore Database to a Single Node & Replicate it to Other Nodes  
+
+The common approach to restoring a cluster is to restore the backed-up database to a single server, and then expand the database group to additional nodes, allowing normal replication.  
+
+* [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node).  
+* Modify the database group [topology](../../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology) using [the Studio](../../../../studio/server/cluster/cluster-view.mdx#cluster-view-operations) or [code](../../../../server/clustering/cluster-api.mdx#cluster--cluster-api) to spread the database to the other nodes.  
+#### Restore Database to Multiple Nodes Simultaneously  
+
+You can create the cluster in advance, and restore the database to multiple nodes simultaneously.  
+
+<Admonition type="note" title="This procedure is advisable only when restoring a Snapshot." id="this-procedure-is-advisable-only-when-restoring-a-snapshot" href="#this-procedure-is-advisable-only-when-restoring-a-snapshot">
+
+* Simultaneously restoring a [logical-backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup-or-simply-backup) by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
+* Simultaneously restoring [a snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) does **not** initiate this behavior, because the databases kept by all nodes are considered identical.  
+
+</Admonition>
+
+* On the first node, restore the database using its original name.  
+* On other nodes, restore the database using different names.  
+* Wait for the restoration to complete on all nodes.  
+* **Soft-delete** the additional databases (those with altered names).  
+   * [Delete](../../../../client-api/operations/server-wide/delete-database.mdx#operations--server--how-to-delete-a-database) the databases from the cluster with `HardDelete` set to `false`, to retain the data files on disk.  
+* Rename the database folder on all nodes to the original database name.  
+* [Expand](../../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology) the database group to all relevant nodes.  
+
+
+
+## Recommended Cautions
+<Admonition type="warning" title="Warning">
+
+When you create a backup of a database on one machine and restore it to another, you may be interested more in the database itself than in behaviors accompanying it like its ongoing tasks.  
+
+* E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
+
+In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore.mdx#configuration-and-execution) flag.  
+
+* Code Sample:  
+<TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
+<CodeBlock language="csharp">
+{`// Do or do not run ongoing tasks after restoration.
+// Default setting is FALSE, to allow tasks' execution when the backup is restored.
+restoreConfiguration.DisableOngoingTasks = true;
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
