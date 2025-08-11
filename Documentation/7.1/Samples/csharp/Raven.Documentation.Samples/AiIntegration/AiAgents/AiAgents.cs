@@ -112,19 +112,17 @@ public class AiAgents
             "You work for a human experience manager. " +
             "The manager uses your help to find which employee made the largest profit and thank this employee. " +
             "The manager can guide you to choose between employees that sent orders to a particular country, " +
-            "or include all employees. " +
-            "To help the manager thank the employee, you are requested to find good vacation sites or other " +
-            "presents based on the employee's living area that the company can reward them with." +
+            "or include all employees." +
             "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
             "based on the employee's living area that the company can reward them with. " +
             "You are equipped with: " +
-            "1.a query tool that allows you to retrieve all orders sent to all countries.use this tool to retrieve " +
-            "all orders sent to all countries and calculate which employee made the largest profit. " +
-            "2.A query tool that allows you to retrieve all the orders sent to a particular country.use this tool if " +
-            "the user prompt specifies a country that orders were sent to, and calculate which employee that sent products " +
-            "to this country made the largest profit. " +
+            "1. a query tool that allows you to retrieve all orders sent to all countries. use this tool to retrieve " +
+            "orders and calculate which employee made the largest profit. " +
+            "2. A query tool that allows you to retrieve all the orders sent to a particular country. use this tool " +
+            "if the user prompt specifies a country, and calculate which employee that sent products to this country " +
+            "made the largest profit. " +
             "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
-            "When you're done. return the employee ID, the profit the employee made, and the suggested rewards."
+            "When you're done, return the employee ID, the profit the employee made, and the suggested rewards."
             );
         #endregion
 
@@ -293,19 +291,17 @@ public class AiAgents
             "You work for a human experience manager. " +
             "The manager uses your help to find which employee made the largest profit and thank this employee. " +
             "The manager can guide you to choose between employees that sent orders to a particular country, " +
-            "or include all employees. " +
-            "To help the manager thank the employee, you are requested to find good vacation sites or other " +
-            "presents based on the employee's living area that the company can reward them with." +
+            "or include all employees." +
             "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
             "based on the employee's living area that the company can reward them with. " +
             "You are equipped with: " +
-            "1.a query tool that allows you to retrieve all orders sent to all countries.use this tool to retrieve " +
-            "all orders sent to all countries and calculate which employee made the largest profit. " +
-            "2.A query tool that allows you to retrieve all the orders sent to a particular country.use this tool if " +
-            "the user prompt specifies a country that orders were sent to, and calculate which employee that sent products " +
-            "to this country made the largest profit. " +
+            "1. a query tool that allows you to retrieve all orders sent to all countries. use this tool to retrieve " +
+            "orders and calculate which employee made the largest profit. " +
+            "2. A query tool that allows you to retrieve all the orders sent to a particular country. use this tool " +
+            "if the user prompt specifies a country, and calculate which employee that sent products to this country " +
+            "made the largest profit. " +
             "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
-            "When you're done. return the employee ID, the profit the employee made, and the suggested rewards."
+            "When you're done, return the employee ID, the profit the employee made, and the suggested rewards."
             );
 
         // Agent ID
@@ -470,7 +466,7 @@ public class AiAgents
             // between the client and the LLM.  
             public List<AiAgentParameter> Parameters { get; set; } = new List<AiAgentParameter>();
 
-            // The trimming configuration defines if and how the chat history is compacted or truncated, 
+            // The trimming configuration defines if and how the chat history is summarized, 
             // to minimize the amount of data passed to the LLM when a chat is started.  
             public AiAgentChatTrimmingConfiguration ChatTrimming { get; set; } = new AiAgentChatTrimmingConfiguration(new AiAgentSummarizationByTokens());
             
@@ -597,15 +593,6 @@ public class AiAgents
 
             // The maximum number of tokens allowed in the generated summary.
             public long? MaxTokensAfterSummarization { get; set; }
-        }
-
-        public class AiAgentTruncateChat
-        {
-            // The maximum number of messages allowed before deleting old messages
-            public int MessagesLengthBeforeTruncate { get; set; }
-
-            // The number of messages after deleting old messages
-            public int MessagesLengthAfterTruncate { get; set; } = DefaultMessagesLengthBeforeTruncate / 2;
         }
         */
 
