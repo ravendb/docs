@@ -30,12 +30,13 @@
 
 ---
 
-* To index attachments' details, call `attachmentsFor()` within the index definition.  
+* To index **attachments' details**, call `attachmentsFor()` within the index definition.
 
 * `attachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
   These details can then be used when defining the index-fields.
+  Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
-* To index attachments' content, see the examples below. 
+* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing#index-details-&-content---by-attachment-name).
 
 {CODE:nodejs index_1@documentExtensions\attachments\indexAttachments.js /}
 
@@ -68,7 +69,7 @@ where attachmentNames == "photo.jpg" and attachmentSizes > 20000
 
 ---
 
-* Each Employee document in the Northwind sample data already includes a _photo.jpg_ attachment.
+* Each Employee document in RavenDB's sample data already includes a _photo.jpg_ attachment.
 
 * For all following examples, let's store a textual attachment (file _notes.txt_) on 3 documents  
   in the 'Employees' collection.
