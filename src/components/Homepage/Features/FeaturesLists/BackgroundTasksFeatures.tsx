@@ -25,6 +25,7 @@ export default function BackgroundTasksFeaturesGrid() {
       icon: "data-archival",
       url: `/${activeVersion.label}/data-archival/overview`,
       description: "Retain old documents access while boosting performance",
+      minimumSupportedVersion: "6.0"
     },
   ];
 
@@ -34,9 +35,15 @@ export default function BackgroundTasksFeaturesGrid() {
         Background tasks
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {backgroundTasksFeatures.map((props, idx) => (
-          <FeatureItem key={idx} {...props} />
-        ))}
+        {backgroundTasksFeatures
+            .filter(
+                feature =>
+                    !feature.minimumSupportedVersion ||
+                    feature.minimumSupportedVersion <= activeVersion.label
+            )
+            .map((props, idx) => (
+                <FeatureItem key={idx} {...props} />
+            ))}
       </div>
     </>
   );
