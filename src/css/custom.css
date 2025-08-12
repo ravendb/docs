@@ -261,11 +261,6 @@ ul {
   list-style: revert;
 }
 
-/* Custom wrap for pre */
-pre {
-  white-space: pre-wrap;
-}
-
 /* Custom color for code */
 code {
   color: var(--ifm-color-primary-lightest);

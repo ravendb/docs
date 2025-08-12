@@ -15,13 +15,11 @@ export default function DocItemWrapper(props: Props): ReactNode {
   return (
     <div className="wrapper row">
       <LanguageProvider>
-        <div className="col">
+        <div className="col flex-1 min-w-0">
           <DocItem {...props} />
         </div>
       </LanguageProvider>
-      {!isHomePage && (
-        <div className="col col--3 lg:block"></div>
-      )}
+      {!isHomePage && <div className="col col--3 lg:block"></div>}
     </div>
   );
 }
