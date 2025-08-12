@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use [CountersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`Get` to retrieve the value of **a single Counter**,  
   or [CountersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`GetAll` to retrieve the values of **all the Counters of a document**.  
@@ -65,7 +65,7 @@ export const supportedLanguages = ["csharp", "java"];
       * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
   * Execute `CountersFor.Get`
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Get Code Sample:
 
@@ -111,7 +111,7 @@ using (var session = docStore.OpenSession())
    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
 * Execute `CountersFor.GetAll`.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### GetAll Code Sample:
 <TabItem value="counters_region_GetAll" label="counters_region_GetAll">
@@ -142,7 +142,7 @@ using (var session = docStore.OpenSession())
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use [countersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`get` to retrieve the value of **a single Counter**,  
   or [countersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`getAll` to retrieve the values of **all the Counters of a document**.  
@@ -189,7 +189,7 @@ using (var session = docStore.OpenSession())
         returned from `session.query` or from `session.load`.  
   * Execute `countersFor.get`
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Get Code Sample:
 
@@ -235,7 +235,7 @@ try (IDocumentSession session = docStore.openSession()) \{
      or from session.load.  
 * Execute `countersFor.getAll`.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### getAll Code Sample:
 <TabItem value="counters_region_GetAll" label="counters_region_GetAll">

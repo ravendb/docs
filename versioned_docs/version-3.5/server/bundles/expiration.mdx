@@ -34,10 +34,10 @@ using (IDocumentSession session = store.OpenSession())
 
 As you can see, all we need to do is to set the `Raven-Expiration-Date` property in the metadata for the appropriate date, and, at the specified time, the document will be automatically deleted.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The date must be UTC, not local time.
 </Admonition>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 When master-master [replication](../../server/scaling-out/replication/how-replication-works.mdx) is set between servers, the Expiration bundle should be turned on **ONLY** on **one** server, otherwise conflicts will occur.
 </Admonition>

@@ -22,7 +22,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is generate/register an admin client certificate.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This operation is only required when doing a **manual** secured setup. If you are using the automated [Setup Wizard](../../../start/installation/setup-wizard.mdx), an admin client certificate will be generated for you as part of the wizard.
 </Admonition>
 
@@ -111,7 +111,7 @@ First, we will convert the .pfx certificate to .pem:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 You must provide a password when creating the .pem file, cURL will only accept a password protected certificate.
 </Admonition>
 
@@ -128,7 +128,7 @@ Then make the request:
 Once you have the admin client certificate you can access the server/cluster by using the Studio, 
 the Client API or any other client. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 [Read Here](../../../studio/overview.mdx#accessing-studio-after-setup) 
 about gaining management access to RavenDB after setup.  
 </Admonition>

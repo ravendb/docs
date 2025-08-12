@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Indexes Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB uses __indexes__ to satisfy queries, allowing for fast query results.  
   The index type the query will use depends on the query itself.  
@@ -65,7 +65,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Indexes - The Moving Parts
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### 1. Index Definition
 * **The index definition** tells RavenDB how to index the data.  
@@ -80,7 +80,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Learn more in [Indexing Related Documents](../../../indexes/indexing-related-documents.mdx).  
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### 2. Indexing Process
 * **Indexing** is the process of iterating over the raw documents, indexing their data as defined by the index definition,
@@ -111,7 +111,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   See: [Index Throttling](../../../indexes/index-throttling.mdx)  
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### 3. Indexed Data
 * The resulting output of the indexing process from 'step 2' above is also referred to as an 'Index'.  
@@ -141,7 +141,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 Indexes in RavenDB are split across the following multiple axes:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Auto Indexes -vs- Static Indexes
 * **Auto Indexes**:  
@@ -160,7 +160,7 @@ Indexes in RavenDB are split across the following multiple axes:
     as the indexed data can be a computed value. 
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Map Indexes -vs- Map-Reduce Indexes
 * **Map Indexes**:  
@@ -174,7 +174,7 @@ Indexes in RavenDB are split across the following multiple axes:
   The _Reduce_ stage operates on the Map results, specifying how the data should be grouped and aggregated.  
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Single-Collection Indexes -vs- Multi-Collection Indexes
 * **Single-Collection Indexes**:  

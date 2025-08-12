@@ -22,7 +22,7 @@ export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
 `includeExplanations` allows to investigate details related to score assigned for each query result.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * Including explanations is available only when using **Lucene** as the underlying search engine.  
 * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
@@ -76,7 +76,7 @@ Sample explanation:
 </LanguageContent>
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
@@ -87,7 +87,7 @@ Sample explanation:
 * **To get the score details** and see how it was calculated,  
   use method `IncludeExplanations`, which is available in the [IDocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) interface.
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     * Including explanations is available only when using **Lucene** as the underlying search engine.  
     * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
@@ -236,7 +236,7 @@ include explanations()
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
@@ -246,7 +246,7 @@ include explanations()
 
 * Use `include_explanations` to get the score details** and see how it was calculated.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
     * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
@@ -339,7 +339,7 @@ include explanations()
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
@@ -349,7 +349,7 @@ include explanations()
 
 * Use `includeExplanations` to get the score details and see how it was calculated.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
     * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
@@ -385,7 +385,7 @@ include explanations()
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Please note that the First parameter is optional.  
 If you intend to use the default options, just paste `null` instead of the options object.  
 </Admonition>
@@ -425,7 +425,7 @@ If you intend to use the default options, just paste `null` instead of the optio
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
@@ -435,7 +435,7 @@ If you intend to use the default options, just paste `null` instead of the optio
 
 * Use `includeExplanations` in your query **to get the score details** and see how it was calculated.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
     * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>

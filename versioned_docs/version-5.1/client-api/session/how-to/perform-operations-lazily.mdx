@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Defining a lazy operation** allows deferring the execution of the operation until it is needed.  
 
@@ -40,7 +40,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Operations that can be executed lazily
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadEntities"/> __Load entities__
 
 * [Load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
@@ -61,7 +61,7 @@ Employee employee = lazyEmployee.Value; // 'Load' operation is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadWithInclude"/> __Load entities with include__
 
 * [Load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
@@ -103,7 +103,7 @@ Supplier supplier = session.Load<Supplier>(product.SupplierId);
 </Tabs>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadStartingWith"/> __Load entities starting with__
 
 * [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
@@ -125,7 +125,7 @@ var employees = lazyEmployees.Value; // 'Load' operation is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="conditionalLoad"/> __Conditional load__
 
 * [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
@@ -171,7 +171,7 @@ using (var session2 = store.OpenSession())
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
@@ -195,7 +195,7 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getRevisions"/> __Get revisions__
 
 * All methods for [getting revisions](../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
@@ -218,7 +218,7 @@ List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
 * [Getting compare-exchange](../../../client-api/session/cluster-transaction.mdx#get-compare-exchange-lazily) values can be executed __lazily__.

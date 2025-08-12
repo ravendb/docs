@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When the [Revisions feature](../../../document-extensions/revisions/overview.mdx) is enabled, a document revision is created with each change made to the document.  
   Each revision contains a snapshot of the document at the time of modification, forming a complete audit trail.
@@ -40,7 +40,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 </Admonition>
 ## Regular subscription vs Revisions subscription
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Regular subscription
 * **Processed items**:  
@@ -53,7 +53,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   as defined in the subscription.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Revisions subscription
 * **Processed items**:   
@@ -65,7 +65,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   By default, unless the subscription query is [projecting specific fields](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#projecting-fields-from-revisions),
   each item in the batch sent to the client contains both the processed revision (`Result.Current`) and its preceding revision (`Result.Previous`).
   If the document has just been created, the previous revision will be `null`. 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * In order for the revisions subscription to work,  
   [Revisions must be configured](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
@@ -329,7 +329,7 @@ await revenuesComparisonWorker.Run(batch =>
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **Data Subscription** feature supports subscribing not only to documents, but also to [document revisions](../../../document-extensions/revisions/overview.mdx).  
 
@@ -375,7 +375,7 @@ The data subscriptions revisions processing mechanism will receive pairs of revi
 | 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
 | 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 The revisions subscription will be able to function properly only if the revisions it needs to process are available.
 Please make sure that your revisions configuration doesn't purge revisions before the subscription had the chance to process them.  
 </Admonition>
@@ -474,7 +474,7 @@ revisionWorker.run(x -> \{
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When the [Revisions feature](../../../document-extensions/revisions/overview.mdx) is enabled, a document revision is created with each change made to the document.  
   Each revision contains a snapshot of the document at the time of modification, forming a complete audit trail.
@@ -495,7 +495,7 @@ revisionWorker.run(x -> \{
 </Admonition>
 ## Regular subscription vs Revisions subscription
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Regular subscription
 * **Processed items**:  
@@ -508,7 +508,7 @@ revisionWorker.run(x -> \{
   as defined in the subscription.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Revisions subscription
 * **Processed items**:   
@@ -520,7 +520,7 @@ revisionWorker.run(x -> \{
   By default, unless the subscription query is projecting specific fields,
   each item in the batch sent to the client contains both the processed revision (`result.current`) and its preceding revision (`result.previous`).
   If the document has just been created, the previous revision will be `null`. 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * In order for the revisions subscription to work,  
   [Revisions must be configured](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.

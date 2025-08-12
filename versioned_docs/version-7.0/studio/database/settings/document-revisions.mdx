@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Document Revisions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
  
 * Revisions configuration settings can be managed from the **Document Revisions** view.  
 
@@ -52,7 +52,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 5. **Enforce Configuration**  
    Click to [enforce the revisions configuration](../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    This operation may delete many revisions irrevocably and require substantial 
    server resources.  
    Please read carefully the dedicated section.  
@@ -141,7 +141,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
        <br/>
        ![Maximum Number of Revisions to Purge](./assets/maximum-revisions-to-purge.png)   
        Enable to limit the number of revisions that RavenDB is allowed to purge per document modification.  
-       <Admonition type="info" title="Info">
+       <Admonition type="info" title="">
        This will be the maximum number of revisions that RavenDB will purge per document modification,  
        even if the number of revisions that pend purging is greater.  
        Setting this limit can reserve server resources if many revisions pend purging,  
@@ -159,7 +159,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 5. Click **OK** to keep these default settings, or **Cancel**.  
    Confirming will add the new settings to the revisions configuration **Defaults** section:  
    ![Defined Default Settings](./assets/defined-default-settings.png)
-   <Admonition type="info" title="Info">
+   <Admonition type="info" title="">
    Click __Save__ when done.
    </Admonition>
 
@@ -184,7 +184,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 4. Click __OK__ to keep the configuration, or __Cancel__.  
    Confirming will add the new configuration to the **Collections** section:  
    ![Defined Configuration](./assets/defined-collection-specific-configuration.png)  
-   <Admonition type="info" title="Info">
+   <Admonition type="info" title="">
    Click __Save__ when done.
    </Admonition>
 
@@ -205,7 +205,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   This means that revisions created for conflicting documents will start to be purged after 45 days,  
   whenever their parent documents are modified.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Conflicting documents example:
 
@@ -216,7 +216,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     1. when the replicated document arrived and entered a conflict state.   
     2. when the local document entered a conflict state on the arrival of the replicated document.  
     3. when the conflict was resolved by replacing the local document with the replicated one.  
-       <Admonition type="info" title="Info">
+       <Admonition type="info" title="">
        In this example, the conflict was resolved by placing the replicated version as the current document. 
        Learn more about conflict resolution [here](../../../studio/database/settings/conflict-resolution.mdx#conflict-resolution).  
        </Admonition>
@@ -244,7 +244,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * The revision configuration rules are usually applied to the revisions of a document when the document is modified.  
 * Executing __Enforce__ will apply the current revision configuration rules on ALL existing revisions for ALL documents at once.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __For collections that have a specific revision configuration__:  
 
@@ -252,7 +252,7 @@ __For collections that have a specific revision configuration__:
   * Revisions that pend purging (according to the configuration) will be __deleted__.
 </Admonition>
 
-<Admonition type="note" title="Note"> 
+<Admonition type="note" title=""> 
 
 __For collections that DON'T have a specific revision configuration__:  
 
@@ -264,7 +264,7 @@ __For collections that DON'T have a specific revision configuration__:
       * If disabled, ALL conflicting document revisions will be __deleted__.  
 </Admonition>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Large databases may contain numerous revisions pending purging that Enforcing will purge all at once.  
   Be aware that this operation may require substantial server resources, and time it accordingly.  

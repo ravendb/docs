@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cluster: Cluster-Wide Transactions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Cluster transactions are a way to ensure that certain operations will favor consistency over availability in the CAP theorem.  
 * Code examples and client API can be found [here](../../client-api/session/saving-changes.mdx#transaction-mode---cluster-wide).  
@@ -116,7 +116,7 @@ to appear as if they are run one at a time.
 Cluster-wide transactions may only contain `PUT` / `DELETE` commands. This is required to ensure that we can apply the transaction 
 to each of the database nodes without regard to the current node state.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If the concurrency check of the compare exchange has passed, the transaction will proceed and will be committed on all the database nodes.
 </Admonition>
 ### Case 2: Concurrent cluster and non-cluster transaction
@@ -169,7 +169,7 @@ Any failure at this stage must be remedied.
 | Out of disk space | Freeing space will fix the problem and allow cluster transactions to be committed. |
 | Creation/Deletion of a document with a different collection | Deleting the document from the other collection |
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 The execution of cluster transactions on the database will be stopped until these types of failures are fixed.
 </Admonition>
 

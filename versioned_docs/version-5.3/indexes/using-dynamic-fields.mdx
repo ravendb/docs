@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.
@@ -48,7 +48,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Indexing documents fields KEYS
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field under object
 The following allows you to:
 
@@ -165,14 +165,14 @@ from index 'Products/ByAttributeKey' where Size = 42
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field
 The following allows you to:
 
 * Define an index on a collection __without__ needing any common structure between the indexed documents.
 * After index is deployed, any new field added to the document will be indexed as well.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
 
@@ -272,7 +272,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 
 ## Indexing documents fields VALUES
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - basic
 This example shows:
 
@@ -381,7 +381,7 @@ from index 'Products/ByProductType' where Electronics = 23
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - list
 The following allows you to:
 
@@ -564,7 +564,7 @@ The field Terms are derived from this value.                                    
 | **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * All above examples have used the character `_` in the dynamic-index-field definition.  
   However, using `_` is just a convention. Any other string can be used instead.
@@ -591,7 +591,7 @@ Below are sample index fields & their terms generated from the last example.
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.
@@ -620,7 +620,7 @@ Below are sample index fields & their terms generated from the last example.
 
 ## Indexing documents fields KEYS
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field under object
 The following allows you to:
 
@@ -717,14 +717,14 @@ from index 'Products/ByAttributeKey/JS' where size = 42
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field
 The following allows you to:
 
 * Define an index on a collection __without__ needing any common structure between the indexed documents.
 * After index is deployed, any new field added to the document will be indexed as well.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
 
@@ -822,7 +822,7 @@ from index 'Products/ByAnyField/JS' where lastName = "Doe"
 
 ## Indexing documents fields VALUES
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - basic
 This example shows:
 
@@ -906,7 +906,7 @@ from index 'Products/ByProductType' where Electronics = 23
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - list
 The following allows you to:
 
@@ -1062,7 +1062,7 @@ The field Terms are derived from this value.                                    
 | **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * All above examples have used the character `_` in the dynamic-index-field definition.  
   However, using `_` is just a convention. Any other string can be used instead.
@@ -1089,7 +1089,7 @@ Below are sample index fields & their terms generated from the last example.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.
@@ -1118,7 +1118,7 @@ Below are sample index fields & their terms generated from the last example.
 
 ## Indexing documents fields KEYS
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field under object
 The following allows you to:
 
@@ -1220,14 +1220,14 @@ from index 'Products/ByAttributeKey' where size = 42
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field
 The following allows you to:
 
 * Define an index on a collection __without__ needing any common structure between the indexed documents.
 * After index is deployed, any new field added to the document will be indexed as well.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
 
@@ -1328,7 +1328,7 @@ from index 'Products/ByAnyField/JS' where lastName = "Doe"
 
 ## Indexing documents fields VALUES
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - basic
 This example shows:
 
@@ -1439,7 +1439,7 @@ from index 'Products/ByProductType' where Electronics = 23
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - list
 The following allows you to:
 
@@ -1624,7 +1624,7 @@ The field Terms are derived from this value.                                    
 | **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * All above examples have used the character `_` in the dynamic-index-field definition.  
   However, using `_` is just a convention. Any other string can be used instead.

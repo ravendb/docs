@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Change Vector
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Change vectors are the RavenDB implementation of the [Vector clock](https://en.wikipedia.org/wiki/Vector_clock) concept.
   They give us partial order over modifications of documents in a RavenDB cluster.
@@ -171,7 +171,7 @@ Will have the following _global change vector_:
 The global change vector is used in the replication process to determine which data is already contained by the database.
 A document that all of his entries are lower or equal from/to the _global change vector_ is considered contained.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Note that if data is considered contained by a database it doesn't mean it is present in the database, it may already be overwritten by more up-to-date data.  
 

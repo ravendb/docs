@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Time Series Rollups and Retention
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Many time series applications produce massive amounts of data at a steady rate. 
 **Time Series Policies** help you to manage your data in two ways:  
@@ -179,7 +179,7 @@ public class RawTimeSeriesPolicy : TimeSeriesPolicy
 whole number of the specified time units. These are passed as the aggregation and 
 retention spans of time series policies.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The main reason we use `TimeValue` rather than something like `TimeSpan` is that 
 `TimeSpan` doesn't have a notion of 'months', because a calendar month is not a 
 standard unit of time (since it ranges from 28-31 days). `TimeValue` enables you 

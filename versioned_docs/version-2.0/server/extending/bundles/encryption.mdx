@@ -57,7 +57,7 @@ All settings can be overridden per database during the database creation process
 
 Above example demonstrates how to create `EncryptedDB` with active encryption and with non-default encryption algorithm.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 All encryption settings can only be provided when database is being created. Changing them later will cause DB malfunction.
 </Admonition>
 
@@ -71,6 +71,6 @@ So, as the end result of above:
 *	Your encryption key is guarded using DPAPI.   
 *	The data is safely encrypted on disk, and the OS guarantee that no one can access the encryption key.   
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 It is your responsibility to backup the encryption key, because there is no way to recover data without it.
 </Admonition>

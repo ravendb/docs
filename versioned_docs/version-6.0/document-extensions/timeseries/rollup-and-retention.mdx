@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Many time series applications produce massive amounts of data at a steady rate.  
 **Time Series Policies** help you manage your data in two ways:  
@@ -236,7 +236,7 @@ public class TimeSeriesPolicy
 Each of the above `TimeValue` methods returns a `TimeValue` object representing a whole number of the specified time units. 
 These methods are used to define the aggregation and retention spans om time series policies.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The main reason we use `TimeValue` rather than something like `TimeSpan` is that `TimeSpan` doesn't have a notion of 'months' 
 because a calendar month is not a standard unit of time (as it can range from 28 to 31 days).  
 `TimeValue` enables you to define retention and aggregation spans specifically tailored to calendar months.
@@ -318,7 +318,7 @@ Read more about time series with generic types [here](../../document-extensions/
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Many time series applications produce massive amounts of data at a steady rate.  
 **Time Series Policies** help you manage your data in two ways:  
@@ -626,7 +626,7 @@ class TypedTimeSeriesRollupEntry(Generic[_T_Values]):
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Many time series applications produce massive amounts of data at a steady rate.  
 **Time Series Policies** help you manage your data in two ways:  
@@ -959,7 +959,7 @@ class TypedTimeSeriesRollupEntry(Generic[_T_Values]):
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Many time series applications produce massive amounts of data at a steady rate.  
 **Time Series Policies** help you manage your data in two ways:  
@@ -1166,7 +1166,7 @@ class TimeSeriesPolicy \{
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The main reason we use `TimeValue` rather than something like `TimeSpan` is that `TimeSpan` doesn't have a notion of 'months' 
 because a calendar month is not a standard unit of time (as it can range from 28 to 31 days).  
 `TimeValue` enables you to define retention and aggregation spans specifically tailored to calendar months.

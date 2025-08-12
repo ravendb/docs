@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector.mdx), 
   triggering its re-indexation as well as other features that react to document updates.  
@@ -40,7 +40,7 @@ export const supportedLanguages = ["csharp"];
   `@refresh` property with the designated refresh time as a value.  
   Set the time in **UTC** format, not local time, e.g. -  
   **"@refresh": "2025-04-22T08:00:00.0000000Z"**  
-  <Admonition type="warning" title="Warning">
+  <Admonition type="warning" title="">
   Metadata properties starting with `@` are for internal RavenDB usage only.  
   Do _not_ use the metadata `@refresh` property for any other purpose than 
   scheduling a document's refresh time for the built-in refresh feature.  

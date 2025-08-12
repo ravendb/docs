@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Installation: Upgrading to a New Version
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 On a live system, a minor version upgrade process typically takes around 30 seconds.
 </Admonition>
 
@@ -44,7 +44,7 @@ If you want a zero downtime, please upgrade a single cluster node at a time and 
 
 You don't have to do anything when you upgrade RavenDB to migrate the stored data. However, sometimes our adjustments require changing the file format (called schema version). RavenDB includes support for performing of those kind of migrations automatically on startup if it finds that the stored database is using an old format.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Data file migrations are only one way. If you want to move backward and any changes in the file format have occurred, RavenDB will fail to start (with a detailed error message). You can move data between different versions using the import/export tool, which works across all versions of RavenDB.
 </Admonition>
 

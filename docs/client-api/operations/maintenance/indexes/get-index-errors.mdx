@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetIndexErrorsOperation` to get errors encountered during indexing.
 
@@ -276,7 +276,7 @@ IndexErrors[] indexErrors
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetIndexErrorsOperation` to get errors encountered during indexing.
 
@@ -389,7 +389,7 @@ index_errors = store.maintenance.send(get_index_errors_op)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetIndexErrorsOperation` to get errors encountered during indexing.
 
@@ -504,7 +504,7 @@ GetIndexErrorsOperation(array $indexNames) // Get errors for specific indexes
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetIndexErrorsOperation` to get errors encountered during indexing.
 
@@ -572,7 +572,7 @@ const getIndexErrorsOp = new GetIndexErrorsOperation(indexNames); // Get errors 
 | - | - |
 | `object[]` | List of 'index errors' objects - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="js">
 {`// An 'index errors' object:

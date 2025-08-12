@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The HiLo algorithm is an efficient solution used by [a session](../session/what-is-a-session-and-how-does-it-work.mdx) 
   to generate the numeric parts of unique document identifiers. 
@@ -151,7 +151,7 @@ using (var session = newStore.OpenSession())
 
 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### Identity Parts Separator
 By default, document IDs created by the server use the character `/` to separate their components.  
 This separator can be changed to any other character except `|` in the 
@@ -170,7 +170,7 @@ provided by the client.
 The manual generator does not guarantee unique IDs across a cluster because it does not attach a collection name and a node-tag to the ID.  
 It only provides the next number in the range that it got from the server.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 RavenDB can only guarantee unique IDs when using [RavenDB's ID generators.](../../client-api/document-identifiers/working-with-document-identifiers.mdx)  
 
 When manually specifying your own IDs, you are responsible to ensure that the IDs are unique.

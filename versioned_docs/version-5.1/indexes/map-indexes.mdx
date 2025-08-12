@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
 
@@ -46,7 +46,7 @@ You can:
 Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
 * First, let's create an index called `Employees/ByFirstAndLastName`  
-   <Admonition type="note" title="Note">
+   <Admonition type="note" title="">
    Note: The naming separator character "`_`" in your code will become "/" in the index name.  
    In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
    </Admonition>

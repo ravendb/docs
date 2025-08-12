@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Configuration: HTTP
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB uses [Kestrel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-8.0), which is an HTTP web server built on ASP.NET Core.
 
@@ -66,7 +66,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     - [MinResponseDataRate](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserverlimits.minresponsedatarate?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-kestrelserverlimits-minresponsedatarate)
     - [MinRequestBodyDataRate](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserverlimits.minrequestbodydatarate?view=aspnetcore-8.0)
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 If __either__ one of _Http.MinDataRateBytesPerSec_ or _Http.MinDataRateGracePeriodInSec_ is Not set or set to `null`,  
 then __both__ Kestrel's properties ( _MinResponseDataRate_ & _MinRequestBodyDataRate_ ) will be set to `null`.
 </Admonition>

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Backup Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at chosen points in time. 
   Use this overview as an introduction to backing up and restoring your databases.  
@@ -58,7 +58,7 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
    * Restoration time is reduced because no re-indexing is needed, but more data is transferred during backups.  
    * [Incremental Snapshot backups](../../server/ongoing-tasks/backup-overview.mdx#backup-scope:-full-or-incremental) 
      (the changes made since the last backup) **do not incrementally update indexes or change vector data** after the initial complete Snapshot image. 
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Snapshots are only available for _Enterprise subscribers_.  
   </Admonition>
 

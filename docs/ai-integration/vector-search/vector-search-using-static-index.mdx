@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article explains how to perform a **vector search** using a **static index**.  
   **Prior to this article**, it is recommended to get familiar with the [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) article.
@@ -47,7 +47,7 @@ export const supportedLanguages = ["csharp"];
 </Admonition>
 ## Indexing a vector field - Overview
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Defining a vector field in a static index
 To define a vector index-field in your static-index definition:  
@@ -67,7 +67,7 @@ To define a vector index-field in your static-index definition:
 The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search.mdx).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Parameters defined at index definition  
 The following params can be defined for the vector index-field in the index definition:  
@@ -100,7 +100,7 @@ If not specified, the default value is taken from the following configuration ke
 (Note, this param differs from the number of candidates for query time).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Behavior during indexing
 * **Raw textual input**:  
@@ -121,7 +121,7 @@ This algorithm organizes embeddings into a high-dimensional graph structure,
 enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queries.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Parameters used at query time
 **Minimum similarity** -  
@@ -160,7 +160,7 @@ You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScore
 In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results.mdx).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Vector behavior when documents are deleted  
 * RavenDB's implementation of the HNSW graph is append-only.  
@@ -673,7 +673,7 @@ where exact(vector.search(VectorFromTextEmbeddings, $p0, 0.75, 20))
 
 ## Indexing vector data - NUMERICAL
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The examples in this section use the [sample data provided in the dynamic query article](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#sample-data).
 </Admonition>
 The following index defines a vector field named `VectorFromSingle`.  

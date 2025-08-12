@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Administration: RavenDB CLI
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Running RavenDB as a console application offers basic information along with 
   a Command Line Interface that can be used to get additional information regarding 
@@ -62,7 +62,7 @@ The `rvn admin-channel` uses [Named Pipe Connection](https://en.wikipedia.org/wi
 and can connect to RavenDB CLI only when running on the same machine as the server and with 
 appropriate privileges.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The `rvn` executable can be found in the distribution package under **Server** directory 
 </Admonition>
 
@@ -150,7 +150,7 @@ Set logging to `debug` level but do not log to the console:
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If log is enabled using `rvn admin-channel`, the information will be displayed 
 in the main console application. If RavenDB is running as a service, you will see the 
 log output in the service log. 
@@ -278,7 +278,7 @@ ravendb>
 </CodeBlock>
 </TabItem>
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 Running scripts can harm the database beyond recovery. Use with care.
 </Admonition>
 
@@ -346,7 +346,7 @@ Register a client certificate to be trusted on this server with `ClusterAdmin` s
 ## `replaceClusterCert`
 
 Replace the cluster certificate.  
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 If **replaceImmediately** is specified, RavenDB will replace the certificate by force, 
 even if some nodes are not responding. In that case, you will have to manually replace the 
 certificate in those nodes. Use with care. 
@@ -441,7 +441,7 @@ Display help screen.
 
 ## `lowMem`
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Debugging command. Not intended for normal use.
 </Admonition>
 
@@ -458,7 +458,7 @@ Simulates low memory state in RavenDB.
 
 ## `timer`
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Debugging command. Not intended for normal use.
 </Admonition>
 

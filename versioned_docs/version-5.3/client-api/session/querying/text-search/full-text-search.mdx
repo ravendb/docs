@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article is about making a full-text search with a __dynamic query__.
 
@@ -52,7 +52,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </Admonition>
 ## Search for single term
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -136,7 +136,7 @@ where search(Notes, "University")
 
 * This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Pass terms in a string__:
 
@@ -197,7 +197,7 @@ where search(Notes, "University Sales Japanese")
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Pass terms in a list__:
  
@@ -253,7 +253,7 @@ where search(Notes, "University Sales Japanese")
 
 * This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -323,7 +323,7 @@ where (search(Notes, "French") or search(Title, "President"))
 
 * Any nested text field within the object is searchable.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -387,7 +387,7 @@ where search(Address, "USA London")
 
 * This can be modified using the `@operator` parameter as follows: 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __AND__:
 
@@ -445,7 +445,7 @@ where search(Notes, "College German", and)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __OR__:
 
@@ -514,7 +514,7 @@ where search(Notes, "College German")
 * When using `Query`: use the `options` parameter.  
   When using `DocumentQuery`: follow the specific syntax in each example below.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Negate search__:
 
@@ -572,7 +572,7 @@ where (exists(Address) and not search(Address, "USA"))
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Default behavior between search calls__:
 
@@ -655,7 +655,7 @@ where Contact.Title == "Owner" and
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __AND search calls__:
 
@@ -728,7 +728,7 @@ where search(Notes, "French") and search(Title, "Manager")
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Use options as bit flags__:
 
@@ -821,7 +821,7 @@ where search(Notes, "French") and
   * Instead, consider using a static-index that indexes the field in reverse order  
     and then query with a wildcard as the postfix, which is much faster.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -950,7 +950,7 @@ Or, can pass an array (or other `IEnumerable`) with terms to search for.        
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article is about making a full-text search with a __dynamic query__.  
 
@@ -981,7 +981,7 @@ Or, can pass an array (or other `IEnumerable`) with terms to search for.        
 </Admonition>
 ## Search for single term
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -1032,7 +1032,7 @@ where search(Notes, "University")
 * By default, the logical operator between these terms is __OR__.  
   Specify __AND__ explicitly To perform an 'and' operation between these terms.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __AND__:
 
@@ -1064,7 +1064,7 @@ where search(Notes, "College German", and)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __OR__:
 
@@ -1105,7 +1105,7 @@ where search(Notes, "University Sales Japanese")
 * By default, the logical operator between __consecutive search methods__ is 'OR'.  
   This behavior can be modified. See examples below.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Default behavior between search calls__:
 
@@ -1172,7 +1172,7 @@ where Contact.Title = "Owner" and
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __AND search calls:__:
 
@@ -1207,7 +1207,7 @@ where search(Notes, "French") and search(Title, "Manger")
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Negate search__:
 
@@ -1256,7 +1256,7 @@ where search(Notes, "French") and
 
 * Any nested text field within the object is searchable.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -1301,7 +1301,7 @@ where search(Address, "USA London")
   * Instead, consider using a static-index that indexes the field in reverse order  
     and then query with a wildcard as the postfix, which is much faster.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">

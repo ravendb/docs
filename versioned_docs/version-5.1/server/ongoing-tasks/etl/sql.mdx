@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: SQL ETL  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **SQL ETL** is a task that creates an [ETL](../../../server/ongoing-tasks/etl/basics.mdx) process 
 for a given database where the destination is a relational database.
@@ -114,7 +114,7 @@ The method parameter must be a JS object. You can create it as follows:
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ### Alternative Syntax
 
 The target table name can be passed to the `loadTo` command separately, as a string argument, 
@@ -125,7 +125,7 @@ using this syntax: `loadTo('Target', obj)`
   `loadToEmployees(this);`  
   `loadTo('Employees', this);`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one: 
    it is simply a string literal of the target's name.  

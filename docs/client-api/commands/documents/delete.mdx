@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `DeleteDocumentCommand` to remove a document from the database.
 
@@ -34,7 +34,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - using the Store's request executor**:
 <Tabs groupId='languageSyntax'>
@@ -63,7 +63,7 @@ using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var c
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - using the Session's request executor**:
 <Tabs groupId='languageSyntax'>
@@ -84,7 +84,7 @@ await asyncSession.Advanced.RequestExecutor.ExecuteAsync(command, asyncSession.A
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - with concurrency check**:
 <Tabs groupId='languageSyntax'>
@@ -199,7 +199,7 @@ session.advanced().getRequestExecutor().execute(command);
 <LanguageContent language="python">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `DeleteDocumentCommand` to remove a document from the database.
 
@@ -244,7 +244,7 @@ session.advanced.request_executor.execute_command(command)
 <LanguageContent language="php">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `DeleteDocumentCommand` to remove a document from the database.
 
@@ -288,7 +288,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 <LanguageContent language="nodejs">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `DeleteDocumentCommand` to remove a document from the database.
 
@@ -302,7 +302,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - using the Store's request executor**:
 <TabItem value="delete_document_1" label="delete_document_1">
@@ -318,7 +318,7 @@ await documentStore.getRequestExecutor().execute(command);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - using the Session's request executor**:
 <TabItem value="delete_document_2" label="delete_document_2">
@@ -332,7 +332,7 @@ await session.advanced.requestExecutor.execute(command);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Delete document command - with concurrency check**:
 <TabItem value="delete_document_3" label="delete_document_3">

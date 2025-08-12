@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Authentication: Certificate Management
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.  
   Each client certificate can be configured to specify which databases the certificate can access and its authorization clearance level.  
@@ -64,7 +64,7 @@ In this page:
 6. Status of current client certificates active in this server. You can remove or [edit client certificates](../../../server/security/authentication/certificate-management.mdx#edit-certificate), 
    including configuring databases permissions and [authorization (security clearance) levels](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) here. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Client certificates are managed by RavenDB directly and not by any [Public Key Infrastructure](https://en.wikipedia.org/wiki/Public_key_infrastructure). 
 
@@ -143,7 +143,7 @@ Some developers need to provide partial access to a database that also contains 
 5. Check the dedicated database to make sure that the transform script did what you want it to do. 
    This database should only have the information that you filtered and is ready to expose to the public.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 With this approach, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because the ETL process is unidirectional, 
 this also protects the source data from modifications made to the new database. On the other hand, ETLs are ongoing tasks, so changes made to data 
@@ -163,7 +163,7 @@ With this clearance, you can set a different access level to each database. The 
 * [Read-Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)  
   * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level.mdx).  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 This approach is similar to the HR Manager and Customers certificates in the example given [above](../../../server/security/authentication/certificate-management.mdx#authorization-levels-in-client-certificates). 
 It enables developers to control access levels by configuring client certificates.  
@@ -231,13 +231,13 @@ When generating a certificate, you must complete the following fields:
    Relevant for "User" authorization level.  "Cluster Admin" and "Operator" have access to all databases.  
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 This information is used by RavenDB internally and is not stored in the certificate itself.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Expiration for client certificates is set to 5 years by default.
 
@@ -262,13 +262,13 @@ To edit existing certificates:
    Configure allowed databases and ["User" access level](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) for each database.  
    Relevant for "User" authorization level.  "Cluster Admin" and "Operator" have access to all databases.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 This information is used by RavenDB internally and is not stored in the certificate itself.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Expiration for client certificates is set to 5 years by default.
 
@@ -283,7 +283,7 @@ There are various situations where developers need to create a database with par
 For example, a source server may contain sensitive information that should not be exposed to the public, but also contain databases that need to be exposed with limited access.  
 The following section explains how to give configurable access that enables communication between servers.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 To connect two secure databases, the destination cluster needs to trust the source cluster.  
 To achieve that you need to:
@@ -334,13 +334,13 @@ When uploading an existing certificate .pfx file, you must configure the certifi
 
 The uploaded certificate will be added to the list of registered client certificates on this server.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 This information is used by RavenDB internally and is not stored in the certificate itself.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Expiration for client certificates is set to 5 years by default.
 

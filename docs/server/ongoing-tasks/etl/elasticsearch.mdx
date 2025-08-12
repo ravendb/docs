@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: Elasticsearch ETL
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics.mdx) task creates an ETL process 
   from selected collections in a RavenDB database to Elasticsearch destinations.
@@ -94,7 +94,7 @@ oOrders(orderData);
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ### Alternative Syntax
 
 The target index name can be passed to the `loadTo` command separately, as a string argument, 
@@ -105,7 +105,7 @@ using this syntax: `loadTo('Target', obj)`
   `loadToOrders(obj);`  
   `loadTo('Orders', obj);`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
    it is simply a string literal of the target's name.  
@@ -180,10 +180,10 @@ OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"\}
 You can enable the task's **Insert Only** mode using [code](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task) 
 or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes), 
 to **omit** _delete_by_query commands and so refrain from deleting documents before the transfer.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
  Enabling **Insert Only** can boost the task's performance when there is no need to delete documents before loading them.  
 </Admonition>
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
  Be aware that enabling Insert Only mode will append documents to Elasticsearch whenever they 
  are modified on RavenDB, without removing existing documents. If document versions that are not 
  needed accumulate and storage space is a concern, keep Insert Only disabled.  
@@ -218,7 +218,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 If you choose to create the Elasticsearch Index on your own (before running the 
 Elasticsearch ETL task), you must define the `DocumentIdProperty` **type** property 
 as **"keyword"** in your index definition.  

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Backup
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Create a backup of your data to secure it or to preserve a copy of it in its current state for future reference.  
 
@@ -161,7 +161,7 @@ FullBackupFrequency = "0 */6 * * *",
     It is so even when the full-backup it is associated with is a binary snapshot.  
   * An incremental backup stores index definitions (not full indexes).  
     After the backup is restored, the dataset is re-indexed according to the index definitions.
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     This initial re-indexing can be time-consuming on large datasets.
     </Admonition>
   * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector.mdx).
@@ -491,7 +491,7 @@ var backupStatus = new GetPeriodicBackupStatusOperation(result.TaskId);
 
 
 ## Recommended Precautions
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * **Don't substitute RavenDB's backup procedures with simply copying the database folder yourself**.  
   The official backup procedure satisfies needs that simply copying the database folder does not. E.g. -  

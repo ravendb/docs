@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Terraform
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [Terraform](https://www.terraform.io/intro/index.html) is an 
   [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) (infrastructure 
@@ -71,7 +71,7 @@ To deploy RavenDB using Terraform, you need:
 
 ## Prepare Terraform Configuration
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This section explains how Terraform handles configuration files 
 in general, and how to create a RavenDB configuration file.  
 For a more comprehensive understanding of Terraform and its various 
@@ -148,7 +148,7 @@ that your resources definitions will be able to refer, including:
 Use the `resource` block to define your RavenDB node, its hosts, and its properties.  
 Terraform will use this resource to create your cluster nodes.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 See the full list of available properties [here](https://github.com/ravendb/terraform-provider-ravendb#inputs), 
 including mandatory properties (also listed in the example below) and optional ones.  
 </Admonition>

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Queue ETL: RabbitMQ
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **RabbitMQ** exchanges are designed to disperse data to multiple queues, 
   making for a flexible data channeling system that can easily handle complex 
@@ -136,12 +136,12 @@ Each message will then be pushed to the tail of the queue assigned to it in the 
 advance in the queue as preceding messages are pulled, and finally reach the queue's head and become 
 available for consumers.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 RavenDB publishes messages to RabbitMQ using **transactions and batches**, 
 creating a batch of messages and opening a transaction to the exchange for the batch.  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/) 
 or a variety of other sources.  
 </Admonition>
@@ -300,7 +300,7 @@ store.Maintenance.Send(operation);
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` to define a RabbitMQ ETL task |
     | **SkipAutomaticQueueDeclaration** | `bool` | Set to `true` to skip automatic queue declaration <br/> Use this option when you prefer to define Exchanges, Queues & Bindings manually. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 By default we define exchanges on our own with **Fanout** type so the routing keys are ignored.
 </Admonition>
 ### Delete Processed Documents

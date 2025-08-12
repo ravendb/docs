@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 # Time Series Settings
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **Time Series Settings view** allows you to define and manage time series 
   configurations per collection. Configurations may include:  
@@ -55,7 +55,7 @@ or if to delete it at all.
 It must be kept at least until it is aggregated/summarized in the rollup policy, 
 but can be set to be available for any time period after the rollup, as seen in the example below.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Heart Clinic Example  
 Imagine a heart clinic whose raw data shows their patients' heart rates every minute.  
 Here are the different levels of resolution that they want to see:  
@@ -107,7 +107,7 @@ Here are the different levels of resolution that they want to see:
          </Admonition>
 3. **Policy Check Frequency**  
    Set the frequency by which the server checks and executes the Rollup and Retention policies.  
-   <Admonition type="note" title="Note">
+   <Admonition type="note" title="">
    Note that any policy defined with a time frame shorter than the server's 
    **Policy Check Frequency** will still be executed at the server checkup time.  
    E.g., If Policy Check Frequency is set to 8 seconds, a retention policy set to 
@@ -163,7 +163,7 @@ Here are the different levels of resolution that they want to see:
          The aggregation period defined by the rollup policy.  
          In this example, every 1 minute of raw data will be aggregated into 
          a single entry of the `ByMinute` rollup time series.
-         <Admonition type="note" title="Note">
+         <Admonition type="note" title="">
          An entry is added to the rollup time series only when the 
          defined aggregation time frame has ended.  
          </Admonition>
@@ -181,7 +181,7 @@ Here are the different levels of resolution that they want to see:
          In this example, every 30 minutes of data from the `ByMinute` 
          rollup time series will be aggregated into a single entry of the 
          `30Mins` rollup time series.  
-         <Admonition type="note" title="Note">
+         <Admonition type="note" title="">
          An entry is added to the rollup time series only when the defined 
          aggregation time frame has ended.  
          </Admonition>
@@ -223,7 +223,7 @@ Here are the different levels of resolution that they want to see:
       In the example above, raw time series entries older than 1 hour will be removed.  
 5. **Add Rollup Policy**  
    Click to add a rollup policy.  
-   <Admonition type="note" title="Note">
+   <Admonition type="note" title="">
    Rollup policies can be defined both for **raw time series data** 
    and for **rollup time series**.  
    Read more [here](../../../studio/database/settings/time-series-settings.mdx#rollup-policies-for-rollup-time-series).  
@@ -239,7 +239,7 @@ Here are the different levels of resolution that they want to see:
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
       Toggle to set a retention time period for the new rollup time series entries.
-      <Admonition type="note" title="Note">
+      <Admonition type="note" title="">
       The **aggregation time** cannot exceed the **retention period** 
       defined for the origin time series.  
       </Admonition>
@@ -254,7 +254,7 @@ Here are the different levels of resolution that they want to see:
       Click to define an additional value name.  
 7. **Add/Update**  
    Click **Add** or **Update** to add this configuration to the configuration list.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    Note: Any modifications made in this view will **not** be saved until 
    you click the **Save** button (9).  
    </Admonition>
@@ -279,7 +279,7 @@ Here are the different levels of resolution that they want to see:
    * And so on: each additional rollup policy aggregates data from the 
      time series that precedes it.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Aggregation Time set by each policy must be **greater** than the 
   aggregation time set for the previous policy.  

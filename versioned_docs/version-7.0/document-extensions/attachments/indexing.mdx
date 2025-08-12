@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
@@ -172,7 +172,7 @@ where AttachmentNames == "photo.jpg" and AttachmentSizes > 20000
 
 ## Index details & content - by attachment name
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Sample data**:
 
@@ -590,7 +590,7 @@ public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
@@ -775,7 +775,7 @@ List<Employee> employees = session.query(Employees_ByAttachmentNames.class)
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
@@ -1033,7 +1033,7 @@ employees = list(
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
@@ -1327,7 +1327,7 @@ $employees = $session
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
@@ -1347,7 +1347,7 @@ $employees = $session
 </Admonition>
 ## Index attachments details
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **The index**:
 * To index **attachments' details**, call `attachmentsFor()` within the index definition.
@@ -1388,7 +1388,7 @@ $employees = $session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the Index**:
 You can now query for Employee documents based on their attachments details.
@@ -1426,7 +1426,7 @@ where attachmentNames == "photo.jpg" and attachmentSizes > 20000
 
 ## Index details & content - by attachment name
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Sample data**:
 * Each Employee document in RavenDB's sample data already includes a _photo.jpg_ attachment.
@@ -1454,7 +1454,7 @@ await session.saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **The index**:
 * To index the **details & content** for a specific attachment, call `loadAttachment()` within the index definition.  
@@ -1500,7 +1500,7 @@ await session.saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the Index**:
 You can now query for Employee documents based on their attachment details and/or its content.
@@ -1539,7 +1539,7 @@ where search(attachmentContent, "Colorado Dallas")
 
 ## Index details & content - all attachments
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **The index**:
 * Use `loadAttachments()` to be able to index the **details & content** of ALL attachments.
@@ -1584,7 +1584,7 @@ where search(attachmentContent, "Colorado Dallas")
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the Index**:
 <Tabs groupId='languageSyntax'>

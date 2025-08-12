@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) variables change your server's behavior in various ways.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 RavenDB reads `settings.json` only during startup.  
 When you edit the file, restart the server to apply changes.  
 </Admonition>
@@ -33,7 +33,7 @@ Indicates the IP addresses or host addresses with ports and protocols that the s
 
 Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *HTTPS* protocol.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Setting to a non loopback address using the ***HTTP*** protocol will expose the server to the network and requires security measurements (using HTTPS, certificates). When set, RavenDB will prevent a startup unless **UnsecuredAccessAllowed** is set to **PublicNetwork** manually.
 </Admonition>
 
@@ -83,7 +83,7 @@ If no URL is set, the ServerUrl will be used along with random port
 If just a number is set, the ServerUrl will be used with the specified number as port
 If the address and port are set, RavenDB will listen to the address and port specified
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Same security consideration as in ***ServerUrl*** option should be applied (see above)
 </Admonition>
 
@@ -130,7 +130,7 @@ Set the URL to be accessible by clients and other nodes, regardless of which IP 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In the above example, `example.com` is the external domain/ip provided by the ISP, and `ServerUrl` must be specified when the server is behind a firewall, proxy, or router
 </Admonition>
 
@@ -167,7 +167,7 @@ failover to its public IP/URL.
 Using internal IPs (rather than the public network, requiring DNS 
 resolutions etc.) can **accelerate internal cluster communications**.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Internal cluster communications can be particularly useful when the 
 cluster is [sharded](../../sharding/overview.mdx), because of the amount 
 of internal communication needed: for a shard to satisfy its client 
@@ -297,7 +297,7 @@ Possible values:
 - `Stable`: Standard set of features  
 - `Experimental`: Enables experimental features  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We'd be grateful for any feedback you send us regarding experimental features.  
 </Admonition>
 

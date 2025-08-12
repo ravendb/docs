@@ -25,7 +25,7 @@ One of the design principles that RavenDB adheres to is the idea that documents 
 There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourselves to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities as well (unless we are not interested in them). While the alternative of storing the whole entity in every object graph it is referenced in seems cheaper at first, this proves to be quite costly in terms of database resources and network traffic.
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one or more of them. When applied correctly, they can drastically improve performance, reduce network bandwidth, and speed up development.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Denormalization](../../client-api/how-to/handle-document-relationships.mdx#denormalization)  
@@ -250,11 +250,11 @@ include CustomerId,counters(o,'OrderUpdateCount')
 
 This works because RavenDB has two channels through which it can return information in response to a load request. The first is the Results channel, through which the root object retrieved by the `Load()` method call is returned. The second is the Includes channel, through which any included documents are sent back to the client. Client side, those included documents are not returned from the `Load()` method call, but they are added to the session unit of work, and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Streaming query results does not support the includes feature.  
 Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
 </Admonition>
@@ -441,7 +441,7 @@ when you want to load multiple documents.
 
 The `Select()` within the Include tells RavenDB which property of secondary level objects to use as a reference.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 ### `string`&nbsp;Path Conventions
 
 When using string-based includes like:

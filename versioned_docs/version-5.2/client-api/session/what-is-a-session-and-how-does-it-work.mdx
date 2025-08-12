@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">  
+<Admonition type="note" title="">  
 
 * The __Session__, which is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx),  
   is the primary interface your application will interact with.
@@ -229,7 +229,7 @@ Assert.Same(entity1, entity2);
 
 ## Batching & Transactions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Batching
 
@@ -239,7 +239,7 @@ Assert.Same(entity1, entity2);
   These changes are then combined into a single batch that is sent to the server in a __single remote call__ and executed as a single ACID transaction.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transactions
 
@@ -268,14 +268,14 @@ Assert.Same(entity1, entity2);
   This can be done either with the usage of a [JavaScript patch](../../client-api/operations/patching/single-document.mdx) syntax or [JSON Patch](../../client-api/operations/patching/json-patch-syntax.mdx) syntax.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transaction mode
 
 * The session's transaction mode can be set to either:  
   * __Single-Node__ - transaction is executed on a specific node and then replicated  
   * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
-  * <Admonition type="warning" title="Warning">
+  * <Admonition type="warning" title="">
       The phrase "session's transaction mode" refers to the type of transaction that will be executed on the server-side when `SaveChanges()` is called.
       As mentioned earlier, the session itself does not represent an ACID transaction.
     </Admonition>
@@ -365,7 +365,7 @@ To address this, the session API offers the concurrency control feature.
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The __Session__, which is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx),  
   is the primary interface your application will interact with.
@@ -518,7 +518,7 @@ Assert.assertSame(entity1, entity2);
 
 ## Batching & Transactions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Batching
 
@@ -528,7 +528,7 @@ Assert.assertSame(entity1, entity2);
   These changes are then combined into a single batch that is sent to the server in a __single remote call__ and executed as a single ACID transaction.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transactions
 
@@ -557,14 +557,14 @@ Assert.assertSame(entity1, entity2);
   This can be done either with the usage of a [JavaScript patch](../../client-api/operations/patching/single-document.mdx) syntax or [JSON Patch](../../client-api/operations/patching/json-patch-syntax.mdx) syntax.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transaction mode
 
 * The session's transaction mode can be set to either:
     * __Single-Node__ - transaction is executed on a specific node and then replicated
     * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
-    * <Admonition type="warning" title="Warning">
+    * <Admonition type="warning" title="">
       The phrase "session's transaction mode" refers to the type of transaction that will be executed on the server-side when `saveChanges()` is called.
       As mentioned earlier, the session itself does not represent an ACID transaction.
       </Admonition>
@@ -654,7 +654,7 @@ To address this, the session API offers the concurrency control feature.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The __session__, which is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx),  
   is the primary interface your application will interact with.
@@ -863,7 +863,7 @@ assert.equal(entity1, entity2);
 
 ## Batching & Transactions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Batching
 
@@ -873,7 +873,7 @@ assert.equal(entity1, entity2);
   These changes are then combined into a single batch that is sent to the server in a __single remote call__ and executed as a single ACID transaction.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transactions
 
@@ -902,14 +902,14 @@ assert.equal(entity1, entity2);
   This can be done either with the usage of a [JavaScript patch](../../client-api/operations/patching/single-document.mdx) syntax or [JSON Patch](../../client-api/operations/patching/json-patch-syntax.mdx) syntax.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Transaction mode
 
 * The session's transaction mode can be set to either:
     * __Single-Node__ - transaction is executed on a specific node and then replicated
     * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
-    * <Admonition type="warning" title="Warning">
+    * <Admonition type="warning" title="">
       The phrase "session's transaction mode" refers to the type of transaction that will be executed on the server-side when `saveChanges()` is called.
       As mentioned earlier, the session itself does not represent an ACID transaction.
       </Admonition>

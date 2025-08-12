@@ -95,11 +95,11 @@ The _Orders/All_ index used in the query is a simple map-only index. The only di
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Not specifying appropriate `SortOptions` for numerical fields will result in an **exception** when aggregation query is executed.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Results of a dynamic aggregation query are calculated on the fly, while results of map/reduce index are precomputed. Most cases is fast enough but note that you can hit a lot of data. This feature should be used only for complex aggregate queries that cannot be done by using standard map/reduce.
 </Admonition>
 
@@ -153,7 +153,7 @@ Another example is an aggregation on different fields based on same facet:
 
 ## Remarks
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 `AggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values.
 </Admonition>
 
@@ -254,11 +254,11 @@ The _Orders/All_ index used in the query is a simple map-only index. The only di
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Not specifying appropriate `SortOptions` for numerical fields will result in an **exception** when aggregation query is executed.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Results of a dynamic aggregation query are calculated on the fly, while results of map/reduce index are precomputed. Most cases is fast enough but note that you can hit a lot of data. This feature should be used only for complex aggregate queries that cannot be done by using standard map/reduce.
 </Admonition>
 
@@ -318,7 +318,7 @@ FacetResults facetResults = session
 
 ## Remarks
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 `aggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values.
 </Admonition>
 

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Indexes: Index Throttling
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Index Throttling** delays indexing operations by a time interval of your choice.  
   Indexing is triggered normally when items are added or modified, but RavenDB suspends 
@@ -47,7 +47,7 @@ along the timeline, with a 1500 Milliseconds gap between consecutive batches.
 Throttling offers indexing-free time gaps that the database can use for other 
 tasks and the procession of larger batches when indexing does take place.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Throttled indexes are kept [stale](../indexes/stale-indexes.mdx#indexes-stale-indexes) 
 as long as their procession is incomplete.  
 They are therefore expected to remain stale longer than indexes that are processed sequentially.  
@@ -102,7 +102,7 @@ Setting this property overrides the
       2. **Edit Value** - Enter a new time in Milliseconds, or leave empty for null (no throttling).  
       3. **Set Default** - Click 'Set Default' to select the server-wide default value.  
       4. **Save** - Apply changes.  
-         <Admonition type="warning" title="Warning">
+         <Admonition type="warning" title="">
          An edited configuration key's value will become effective only after the database is reloaded.  
          </Admonition>
 ### Index Throttling in an Index Definition

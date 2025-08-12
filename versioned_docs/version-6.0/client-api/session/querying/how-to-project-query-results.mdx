@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
@@ -105,7 +105,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * You can specify what fields from the document you want to retrieve and even provide a complex expression.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example I - Projecting individual fields of the document:
 
@@ -153,7 +153,7 @@ select Name, Address.City as City, Address.Country as Country
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example II - Projecting arrays and objects:
 
@@ -204,7 +204,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example III - Projection with expression:
 
@@ -247,7 +247,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example IV - Projection with calculations:
 
@@ -298,7 +298,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example V - Projecting using functions:
 
@@ -346,7 +346,7 @@ from "Employees" as e select output(e)
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VI - Projecting using a loaded document:
 
@@ -395,7 +395,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VII - Projection with dates:
 
@@ -442,7 +442,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VIII - Projection with raw JavaScript code:
 
@@ -486,7 +486,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example IX - Projection with metadata:
 
@@ -526,7 +526,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example X - Projection with include:
 
@@ -668,7 +668,7 @@ IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using projection class type
 
@@ -727,7 +727,7 @@ select Name, Phone, Fax
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using specific fields
 
@@ -1145,11 +1145,11 @@ List<Product> results = session.query(Products_BySupplierName.Result.class, Prod
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Projected entities (even named types) are not tracked by the session.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If the projected fields are stored inside the index itself (`FieldStorage.YES` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
 </Admonition>
 
@@ -1157,7 +1157,7 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
@@ -1571,7 +1571,7 @@ except Exception as e:
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
@@ -1932,7 +1932,7 @@ Attempting multiple projection executions in the same query will result in an ex
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content.
@@ -2013,7 +2013,7 @@ Attempting multiple projection executions in the same query will result in an ex
 * Complex projection expressions can be provided directly with RQL via the `rawQuery` syntax,  
   see examples below.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example I - Projecting individual fields of the document
 
@@ -2042,7 +2042,7 @@ select Name, Address.City, Address.Country
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example II - Projecting individual fields with alias
 
@@ -2077,7 +2077,7 @@ select Name as CompanyName, Address.City as City, Address.Country as Country
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example III - Projecting arrays and objects
 
@@ -2115,7 +2115,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example IV - Projection with expression
 
@@ -2146,7 +2146,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example V - Projection with calculations
 
@@ -2184,7 +2184,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VI - Projecting using functions
 
@@ -2218,7 +2218,7 @@ from "employees" as e select output(e)
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VII - Projecting using a loaded document
 
@@ -2250,7 +2250,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example VIII - Projection with dates
 
@@ -2282,7 +2282,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example IX - Projection with metadata
 
@@ -2312,7 +2312,7 @@ select {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example X - Projection with include:
 

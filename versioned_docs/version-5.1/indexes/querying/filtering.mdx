@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. 
 There are a couple of ways to do this and they all depend on the querying approach you want to use: 
@@ -577,7 +577,7 @@ To find all documents in a collection that don't have a specified field, see [Ho
 
 ## Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Underneath, `Query` and `DocumentQuery` are converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**.
 </Admonition>
 
@@ -904,7 +904,7 @@ where endsWith(Name, 'ra')
 
 ## Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Underneath, `Query` is converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**.
 </Admonition>
 

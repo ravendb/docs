@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Queue ETL: Apache Kafka
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Apache Kafka** is a distributed, high-performance, transactional 
   messaging platform, that remains performant as the number of messages 
@@ -88,7 +88,7 @@ loadToOrders(orderData, \{
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ### Alternative Syntax
 
 The target topic name can be passed to the `loadTo` command separately, as a string argument, 
@@ -99,7 +99,7 @@ using this syntax: `loadTo('topic_name', obj, {attributes})`
   `loadToOrders(obj, {attributes})`  
   `loadTo('Orders', obj, {attributes})`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
    it is simply a string literal of the target's name.  
@@ -132,11 +132,11 @@ Each message will then be pushed to the tail of each topic assigned to it in the
 advance in the queue as preceding messages are pulled, and finally reach the queue's head and become 
 available for consumers.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 RavenDB publishes messages to Kafka using **transactions**.  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Read more about Kafka clusters, brokers, topics, partitions, and other related subjects, 
 in the platform's [official documentation](https://kafka.apache.org/documentation/#gettingStarted) 
 or a variety of other sources.  

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB creates **revisions for conflict documents** for all collections  
   when conflicts occur and when they are resolved.  
@@ -129,7 +129,7 @@ await documentStore.Maintenance.Server.SendAsync(configureConflictRevisionsOp);
 
 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### Storage consideration 
 
@@ -148,7 +148,7 @@ However, it can also lead to a significant increase in the database size if many
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB creates **revisions for conflict documents** for all collections  
   when conflicts occur and when they are resolved.  
@@ -231,7 +231,7 @@ $documentStore->maintenance()->server()->send($configureConflictRevisionsOp);
 
 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### Storage consideration 
 
@@ -250,7 +250,7 @@ However, it can also lead to a significant increase in the database size if many
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB creates **revisions for conflict documents** for all collections  
   when conflicts occur and when they are resolved.  
@@ -331,7 +331,7 @@ await documentStore.maintenance.server.send(configureConflictRevisionsOp);
 
 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### Storage consideration 
 

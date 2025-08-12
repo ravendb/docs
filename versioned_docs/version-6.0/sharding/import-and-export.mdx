@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Import and Export
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Smuggler is a RavenDB interface with which data can be 
   exported from a database into a dump file and imported 
@@ -49,7 +49,7 @@ a sharded database:
 * The client sends an export request to the orchestrator.  
 * The orchestrator forwards the request to all other shards.  
 * All shards stream their data to the client machine, where the data is gathered in a single `.ravendbdump` file.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   The amount of time it takes to complete the export process depends 
   upon factors like shards' databases sizes, network performance, and 
   the user-defined transform script.  
@@ -119,7 +119,7 @@ and casting it using a non-sharded type [will fail](../migration/client-api/clie
      into multiple databases, you can simply import the backup of each 
      shard into a newly created (sharded or not) database.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 [Incremental backups](../server/ongoing-tasks/backup-overview.mdx#backup-scope:-full-or-incremental) 
 contain only the changes that have been made in the database since the last full backup.  
 Import the full backup first, and then the incremental backups that complement it.  

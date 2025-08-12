@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Compare Exchange items are __key/value pairs__ where the key is unique across your database. 
 
@@ -275,7 +275,7 @@ is defined between two databases that need to be synced with unique values.
 The reference documents will replicate to the destination database, 
 as opposed to compare-exchange items, which are not externally replicated.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction/overview.mdx).  
 </Admonition>
 
@@ -343,7 +343,7 @@ class UniquePhoneReference
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **Compare Exchange** feature allows you to perform cluster-wide _interlocked_ distributed operations.  
 
@@ -355,7 +355,7 @@ class UniquePhoneReference
 * Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx),  
   or by using RQL in a query (see example-I below)  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Compare exchange key/value pairs can be created and managed explicitly in your code.  
 Starting from RavenDB 5.2, they can also be created and managed automatically by RavenDB.  
 Compare exchange entries that are automatically administered by RavenDB are called 

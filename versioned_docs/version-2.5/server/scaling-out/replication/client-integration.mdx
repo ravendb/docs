@@ -25,7 +25,7 @@ RavenDB's Client API is aware of the replication mechanism offered by server ins
 
 This is because a failover mechanism is turned on in a document store by default. Then the client attempts to gain a replication document from `/docs/Raven/Replication/Destinations` in order to know what replication instances it would have use if a need of the failover occurred.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that the client by default creates requests for the replication document even if the server has not the replication bundle enabled. Then you might notice in server's logs that requests for `/docs/Raven/Replication/Destinations` result in `404`.
 </Admonition>
 

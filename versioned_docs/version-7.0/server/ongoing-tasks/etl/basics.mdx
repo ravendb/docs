@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: ETL Basics
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **ETL (Extract, Transform & Load)** is a three-stage RavenDB process that transfers data from a RavenDB database to an external target. 
   The data can be filtered and transformed along the way.  
@@ -133,7 +133,7 @@ loadToEmployeesWithManager(\{
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Syntax
 
@@ -157,11 +157,11 @@ Specific ETL functions:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### The&nbsp;`loadTo`&nbsp;method
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 An object will only be sent to the destination if the `loadTo` method is called.
 </Admonition>
 
@@ -191,7 +191,7 @@ For each ETL type, the target must be:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### Batch processing
 
@@ -224,7 +224,7 @@ The number of documents processed depends on the following configuration limits:
     * In RavenDB ETL, when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and will just update it.
     * in SQL ETL you can configure to use inserts only, which is a viable option for append-only systems.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Securing ETL Processes for Encrypted Databases**:  
 

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Data deserialization can trigger the execution of gadgets that 
   may initiate RCE attacks on the client machine.  
@@ -125,7 +125,7 @@ methods to forbid or allow the deserialization of entities, and register
 the defined instance as a serialization convention as shown 
 [below](../../client-api/security/deserialization-security.mdx#example).  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Be sure to update the default deserializer list **before** the initialization 
 of the document that you want the list to apply to.  
 </Admonition>

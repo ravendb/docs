@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When querying with some filtering conditions,  
   a basic score is calculated for each document in the results by the underlying engine.
@@ -42,7 +42,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * When making a full-text search with the `Search()` method then boosting can be applied  
   to both `Query` and `DocumentQuery`.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -130,7 +130,7 @@ search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 * When querying with `Where` clauses (using an OR condition in between) then boosting can be applied  
   only with `DocuemtQuery`.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DocumentQuery" label="DocumentQuery">
@@ -216,7 +216,7 @@ boost(endsWith(Name, "OP"), 90)
    * __Get the metadata__ of the resulting entities that were loaded to the session.  
      See example below.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <TabItem value="boost_6" label="boost_6">
 <CodeBlock language="csharp">
@@ -249,7 +249,7 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When querying with some filtering conditions,  
   a basic score is calculated for each document in the results by the underlying engine.
@@ -269,7 +269,7 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
 </Admonition>
 ## Boost results - when making a full-text search
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -311,7 +311,7 @@ search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 
 ## Boost results - when querying with where clause
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -368,7 +368,7 @@ boost(endsWith(Name, "OP"), 90)
     * __Get the metadata__ of the resulting entities that were loaded to the session.  
       See example below.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <TabItem value="boost_3" label="boost_3">
 <CodeBlock language="js">

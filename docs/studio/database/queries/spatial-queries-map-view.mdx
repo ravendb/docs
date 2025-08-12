@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Spatial Queries Map View
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [Spatial queries](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx) retrieve documents using geographical criteria,  
   provided that the documents contain spatial data.
@@ -24,7 +24,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * When executing a dynamic spatial query in the Studio, in addition to the regular document results,   
   a **Spatial Map** view will be displayed, showing the search results on a global map. 
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     The spatial map view is added only for a [dynamic](../../../client-api/session/querying/how-to-query.mdx#dynamicquery) spatial query.  
     It is not added when querying a spatial index.  
     </Admonition>
@@ -155,7 +155,7 @@ where spatial.within(
 
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Circular region example
 The following query locates companies within **two separate circular regions**.  
@@ -179,7 +179,7 @@ spatial.within(
 
 ![Figure 13. Multiple Regions](./assets/spatial-map-view-query-13.png)
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * **Circular region syntax**  
   A circular region can be defined using two different syntaxes, 
@@ -217,7 +217,7 @@ where spatial.within(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Polygonal region example
 The following query searches for companies within the boundaries of a **polygonal** region.  
@@ -250,7 +250,7 @@ spatial.within(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Mixed shapes intersection example
 This query searches for companies at the intersection of a **circular region** and a **polygonal region**.  

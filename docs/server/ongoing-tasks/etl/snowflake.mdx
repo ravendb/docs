@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: Snowflake ETL  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Snowflake is a widely used cloud-based [Data Warehouse](https://docs.snowflake.com/en/user-guide/warehouses) 
   implementation, designated to gather data from a variety of sources and consolidate 
@@ -57,7 +57,7 @@ A Snowflake ETL task can be created using **Code** or via **Studio**.
      Find an example [Here](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-snowflake-etl-task).  
 
 * To create the task using **Studio**:
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
    Find [Here](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx) 
    a **detailed look** at the creation of a Snowflake ETL task using Studio.  
   </Admonition>
@@ -87,13 +87,13 @@ Use the **Snowflake Tables** section to select which tables the ETL process is t
 For each table, specify a column that would be used as the document ID column.  
 RavenDB will fill the document ID column with the source document IDs, and use them to handle updates and deletes.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The column does **not** have to be a table's primary key.
 </Admonition>
 
 ![Define Snowflake Tables](./assets/snowflake-etl-tables.png)
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### Performance improvement suggestions
 
 * **Insert data directly**:  
@@ -168,7 +168,7 @@ E.g., the following two calls to `loadTo` are equivalent.
 `loadToEmployees(this);`  
 `loadTo('Employees', this);`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one; 
    it is simply a string literal of the target's name.  
@@ -294,7 +294,7 @@ To check whether an attachment exists, use the `hasAttachment(name)` function.
 * The ETL task will issue an SQL `INSERT` statement with each document it loads to the warehouse database.  
   The transaction is handled as an atomic unit, and the inserted documents will be stored in the warehouse 
   database using a `COMMIT` statement **only when the transaction completes**.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If the ETL task is interrupted while the transaction is underway, e.g. due to a server failover or because 
   the task was restarted for some other reason, the transaction will be rolled back and the ETL task will 
   process the interrupted batch from scratch, starting right after the last `COMMIT`.  

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Backups
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Backups save your data at a specific point in time and allow you to 
   [restore](../../../studio/database/create-new-database/from-backup.mdx) 
@@ -152,7 +152,7 @@ Old backups are deleted after the defined time period during the next scheduled 
     **We recommend enabling** it so that the deletion of obsolete backups can be scheduled.  
  2. Select the retention period.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 Some organizations require backups to be stored for as long as 7 years. If this is the case, consider the issue when scheduling and setting the retention policy. 
 
@@ -258,7 +258,7 @@ If you've selected 'manual backup', the following screen will open.
 
 Click **Backup Now** to finish the process.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Manual backups have only some of the properties of periodic backups:  
 
@@ -284,7 +284,7 @@ The execution of a running backup task can be **delayed** for a given time perio
 
 * The current execution of the delayed task is cancelled immediately.  
 * All scheduled executions of the task during the delay period are cancelled.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Delaying a running backup operation is only available for 
   [periodic backup tasks](../../../studio/database/tasks/backup-task.mdx#periodic-backup-creation).  
   A [one-time backup operation](../../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) 
@@ -314,7 +314,7 @@ process currently overuses resources.
    
       ![Delay Backup](./assets/backup_delay-backup.png)
 
-      <Admonition type="info" title="Info">
+      <Admonition type="info" title="">
       Backup tasks can be delayed using this Studio option for a **preset** time period, 
       e.g. an hour or a day.  
       You can also delay tasks for a **custom time period** via code, applying the 

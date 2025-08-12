@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Migration: Client Breaking Changes
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The features listed on this page were available in former RavenDB versions.  
 In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
@@ -111,7 +111,7 @@ The below query, for example, is *not supported*.
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 While _auto_ indexes do not currently support this type of query, _static_ indexes do.  
 You can define a **static fanout index** that creates separate index entries for different 
 document sub-objects, and run your query over these entries.  
@@ -143,7 +143,7 @@ select new \{
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that the validation of the collection name string will be forced only during 
 the creation of a **new** index. 
 An attempt to update an existing index with a collection name expression rather 

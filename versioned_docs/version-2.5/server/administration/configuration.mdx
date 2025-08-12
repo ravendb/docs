@@ -375,7 +375,7 @@ _Minimum:_ 2
 	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users, Admin - all (including administrative actions).   
 	_Default:_ Get
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 If your database instance does not have a valid license then `Admin` is the only available option to set. In a commercial system it should not be used. It is only for testing and development purposes, since it grants to **ANY** user administrative rights.
 </Admonition>
 
@@ -504,10 +504,10 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Encryption/Key** | ![Yes](./assets/tick.png)** | ![Yes](./assets/tick.png) |
 | **Raven/Encryption/EncryptIndexes** | ![Yes](./assets/tick.png)** | ![Yes](./assets/tick.png) |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../../server/extending/bundles/encryption.mdx).
 </Admonition>

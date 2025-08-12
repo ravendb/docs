@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Document Revisions Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Document Revisions** are snapshots of documents and their extensions.  
    * Revisions can be created for documents **automatically** when the documents 
@@ -31,7 +31,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   made in the document over time, and the document's live version can be reverted to any 
   of its recorded revisions.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     Tracking document revisions allows you, for example, to check how an employee's 
     contract has changed over time, restore a single corrupted document without requiring 
     a backup file, or conduct a full-scale audit of your data.  
@@ -84,7 +84,7 @@ The Revisions configuration is comprised of **Default Settings** and/or
   configuration is not defined for.  
 * **Collection-specific** configurations apply only to documents of the collections they are defined for,  
   overriding the default settings for these collections.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If you apply no default settings, Revisions will be **disabled** for any 
   collection that a collection-specific configuration is not defined for.  
   </Admonition>
@@ -134,7 +134,7 @@ Default and collection-specific configurations are executed when -
   throughout the database, **purging** all the revisions that pend purging 
   by default settings or collection-specific configurations and **deleting** 
   all the revisions that no configuration applies to.  
-  <Admonition type="warning" title="Warning">
+  <Admonition type="warning" title="">
   
   * Large databases and collections may contain numerous revisions pending 
     purging that Enforcing Configuration will purge all at once.  

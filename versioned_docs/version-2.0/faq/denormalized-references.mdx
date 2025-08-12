@@ -24,7 +24,7 @@ Order has a reference to the customer. However, the above is the logical model, 
 
 On the other hand, holding just the document id (common in RDBMS systems) is usually going to be insufficient. Normally, a document should contain all the data that is required to perform all routine operations on it. In the case of the Order, that means displaying the Customer's name.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 From our experiences, it seems that the vast majority of cases requires just holding a name/id pair as a denormalized reference for a document. There are cases where we need more, certainly, but the method outline here works for those as well.
 </Admonition>
 

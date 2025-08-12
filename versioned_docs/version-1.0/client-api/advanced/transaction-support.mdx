@@ -83,6 +83,6 @@ A call to commit involves a separate call to another HTTP endpoint with that tra
 	Host: 127.0.0.1:8081
 	Content-Length: 0
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 While RavenDB supports `System.Transactions`, you should only use this if you really require this (for example, to coordinate between multiple transactional resources), since there is additional cost for using `System.Transactions` and distributed transactions over simply using the standard API and the transactional `SaveChanges`.
 </Admonition>

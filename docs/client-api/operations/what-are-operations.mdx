@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)**
@@ -155,7 +155,7 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
 * **Attachments**:  
@@ -269,7 +269,7 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
 * **Statistics**:  
@@ -460,7 +460,7 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
 * **Client certificates**:  
@@ -979,7 +979,7 @@ public <TResult> TResult send(IServerOperation<TResult> operation)
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, operations available in `store.operations` or `store.maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx)** method.
 </Admonition>
 
@@ -987,7 +987,7 @@ By default, operations available in `store.operations` or `store.maintenance` ar
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store.mdx)**
@@ -1093,7 +1093,7 @@ def send_patch_operation_with_entity_class(
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
 * **Attachments**:  
@@ -1175,7 +1175,7 @@ def send_async(self, operation: MaintenanceOperation[OperationIdResult]) -> Oper
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
 * **Statistics**:  
@@ -1343,7 +1343,7 @@ with self.embedded_server.get_document_store("WhatAreOperations") as store:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
 * **Client certificates**:  
@@ -1424,7 +1424,7 @@ with self.embedded_server.get_document_store("WhatAreOperations") as store:
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store.mdx)**
@@ -1530,7 +1530,7 @@ public function send(...$parameters);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
 * **Attachments**:  
@@ -1611,7 +1611,7 @@ $status = $indexStats->getStatus(); // will be "Paused"
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
 * **Statistics**:  
@@ -1766,7 +1766,7 @@ $version = $buildNumberResult->getBuildVersion();
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
 * **Client certificates**:  
@@ -1916,7 +1916,7 @@ public function waitForCompletion(Duration|int|null $duration = null): void;
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)**
@@ -1975,7 +1975,7 @@ public function waitForCompletion(Duration|int|null $duration = null): void;
 
 ## Common operations
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * All common operations implement the `IOperation` interface.  
   The operation is executed within the __database scope__.  
@@ -2006,7 +2006,7 @@ const numberOfCounters = allCountersResult.counters.length;
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Send syntax__:
 
@@ -2026,7 +2026,7 @@ await send(patchOperation, sessionInfo, resultType);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="operations-list"&gt; __The following common operations are available:__ &lt;/span&gt;
 * __Attachments__:  
@@ -2065,7 +2065,7 @@ await send(patchOperation, sessionInfo, resultType);
 
 ## Maintenance operations
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
   The operation is executed within the __database scope__.  
@@ -2099,7 +2099,7 @@ const status = indexStats.status; // will be "Paused"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Send syntax__:
 
@@ -2112,7 +2112,7 @@ __Send syntax__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="maintenance-list"&gt; __The following maintenance operations are available:__ &lt;/span&gt;
 * __Statistics__:  
@@ -2231,7 +2231,7 @@ __Send syntax__:
 
 ## Server-maintenance operations
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * All server-maintenance operations implement the `IServerOperation` interface.  
   The operation is executed within the __server scope__.   
@@ -2261,7 +2261,7 @@ const version = buildNumberResult.buildVersion;
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Send syntax__:
 
@@ -2274,7 +2274,7 @@ __Send syntax__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 &lt;span id="server-list"&gt; __The following server-maintenance operations are available:__ &lt;/span&gt;
 * __Client certificates__:  
@@ -2358,7 +2358,7 @@ __Send syntax__:
 * For Operations that implement an interface with type `OperationIdResult`,  
   executing the operation via the `send` method will return a promise for `OperationCompletionAwaiter` object,  
   which can then be __awaited for completion__ or __aborted (killed)__.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="wait-for-completion"/> __Wait for completion__:
 
@@ -2380,7 +2380,7 @@ await asyncOperation.waitForCompletion();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="killOperation"/> __Kill operation__:
 
@@ -2402,7 +2402,7 @@ await asyncOperation.kill();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Syntax:
 

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Knowledge Base: Document Identifier Generation
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A document identifier (**document ID**) is a string that is associated with the document.  
   It is globally unique in the scope of the database. No two documents in the same database will have the same ID.  
@@ -132,7 +132,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * **When to use**:  
   Use an identity only if you really need documents with incremental IDs,  
   i.e. when generating invoices, or upon legal obligation.  
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
      Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
      that there wouldn't be gaps in the sequence.  
      The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  

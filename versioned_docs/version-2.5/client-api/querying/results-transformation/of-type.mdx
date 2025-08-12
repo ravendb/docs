@@ -14,14 +14,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # OfType (As)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Both methods `OfType<T>` and `As<T>` are obsolete in favor of [Result Transformers](result-transformers)
 </Admonition>
 
 RavenDB provides a feature called [Live Projections](../static-indexes/live-projections.mdx) that offers the ability to transform results of a query on a server side. 
 In order to use it in the Client API you have to use `OfType<T>` (`As<T>`) extension method accessible from `Raven.Client` namespace.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 RavenDB supports both methods `OfType<T>` and `As<T>` but the recommended usage is `OfType<T>`.
 </Admonition>
 

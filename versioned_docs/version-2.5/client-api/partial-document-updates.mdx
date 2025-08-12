@@ -18,7 +18,7 @@ The process of document patching allows for modifying a document on the server w
 
 In a normal use case, the client would issue a Load command to the server, deserialize the response into an entity, make changes to that entity, and then send it back for the server serialized. Using the Patching API the client can issue a single Patch command and the server will perform the requested operation on the JSON representation of the document. This can save bandwidth and be faster, but it is not a transactional operation, and as such only the last patching command is actually going to be persisted.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Since this feature involves low-level document manipulation, it is considered to be an expert feature and generally should not be used as a general purpose solution. If you have reached a scenario where you are considering using this, you might want to recheck your data model and see if it can be optimized to prevent usage of the Patching API. The only exception is updating denormalized data, where this approach is valid but not always recommended.
 </Admonition>
 

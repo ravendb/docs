@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Queries in RavenDB can be written with either of the following:
     * __LINQ__ - when querying with the session's `Query` method.  
@@ -63,7 +63,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * Indexes allow to provide query results without scanning the entire dataset each and every time.  
   Learn more about indexes in [indexes overview](../../../studio/database/indexes/indexes-overview.mdx). 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 We differentiate between the following __3 query scenarios__:  
 
@@ -75,7 +75,7 @@ For each scenario, a different index type will be used.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="indexQuery"/> 
 __1. Query an existing index__:
@@ -94,7 +94,7 @@ __1. Query an existing index__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="dynamicQuery"/> 
 __2. Query a collection - with filtering__:  
@@ -131,7 +131,7 @@ __2. Query a collection - with filtering__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="collectionQuery"/> 
 __3. Query a collection - query full collection | query by ID__:  
@@ -173,7 +173,7 @@ __3. Query a collection - query full collection | query by ID__:
 
 * Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - no filtering__ 
 
@@ -247,7 +247,7 @@ from "Employees"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - by ID__
 
@@ -325,7 +325,7 @@ from "Employees" where id() == "employees/1-A"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - with filtering__ 
 
@@ -413,7 +413,7 @@ from "Employees" where FirstName == "Robert"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - with paging__ 
 
@@ -689,7 +689,7 @@ IRawDocumentQuery<T> RawQuery<T>(string query);
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Queries in RavenDB can be written with:
     * The session's `query` method - rich API is provided
@@ -730,7 +730,7 @@ IRawDocumentQuery<T> RawQuery<T>(string query);
 * Indexes allow to provide query results without scanning the entire dataset each and every time.  
   Learn more about indexes in [indexes overview](../../../studio/database/indexes/indexes-overview.mdx).
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 We differentiate between the following __3 query scenarios__:
 
@@ -742,7 +742,7 @@ For each scenario, a different index type will be used.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="indexQuery"/> 
 __1. Query an existing index__:
@@ -760,7 +760,7 @@ __1. Query an existing index__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="dynamicQuery"/> 
 __2. Query a collection - with filtering (Dynamic Query)__:
@@ -797,7 +797,7 @@ __2. Query a collection - with filtering (Dynamic Query)__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="collectionQuery"/> 
 __3. Query a collection - no filtering__:
@@ -837,7 +837,7 @@ __3. Query a collection - no filtering__:
 * The following examples show __dynamic queries__ that do not specify which index to use.  
   Please refer to [querying an index](../../../indexes/querying/query-index.mdx) for other examples.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - no filtering__ 
 
@@ -883,7 +883,7 @@ from "employees"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - by ID__
 
@@ -927,7 +927,7 @@ from "employees" where id() == "employees/1-A"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - with filtering__ 
 
@@ -977,7 +977,7 @@ from "employees" where firstName == "Robert"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Query collection - with paging__ 
 

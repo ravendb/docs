@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cluster Topology
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The cluster topology is defined by the type and state of each node in the cluster and the relation between them.  
 
@@ -64,7 +64,7 @@ See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage
 
 In Rachis every cluster node has a [state](../../../server/clustering/rachis/cluster-topology.mdx#state) and a [type](../../../server/clustering/rachis/cluster-topology.mdx#type).  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Type
 The type defines the node's ability to **vote** on accepting a new raft command in the cluster,  
@@ -80,7 +80,7 @@ Can be assigned with databases and tasks. See more [below](../../../server/clust
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### State
 The Rachis state defines the **current role** of the node in the cluster.
@@ -101,7 +101,7 @@ A node that is removed from the topology moves back to the **Passive** state. |
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ![Figure 3. States Transitions](./assets/cluster-states.png)
 
@@ -117,7 +117,7 @@ A node that is removed from the topology moves back to the **Passive** state. |
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Leader
 * The Leader makes sure that decisions are consistent at the cluster level, as long as a majority of the nodes are functioning and can talk to the Leader.  
@@ -128,7 +128,7 @@ A node that is removed from the topology moves back to the **Passive** state. |
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Watcher
 Increase your RavenDB cluster by adding Watchers with the advantage of _not_ suffering from large voting majorities and the latencies they can incur, 

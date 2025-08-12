@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Anchoring Documents to a Bucket
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB selects the bucket for storing a document based on a [hash code](../../sharding/overview.mdx#buckets-population) derived from the entire document ID.
   To give you more control over the document's bucket selection, RavenDB allows you to **Anchor documents to a bucket**,
@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
 * Documents whose IDs end with the **same suffix**, will **share the same bucket** (and therefore a shard).
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Avoid anchoring too many documents to the same bucket to prevent creating an oversized bucket  
 that cannot be split and resharded if needed to balance the database.
 </Admonition>

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Studio Administration
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page explains how to create and manage a sharded database using Studio.  
 * Learn [here](../../sharding/administration/api-admin.mdx) how to manage 
@@ -170,7 +170,7 @@ shard [replicas](../../sharding/overview.mdx#shard-replication).
       
         Click **Soft Delete** to stop replication to this node but keep the database files on it.  
         Click **Hard Delete** to stop replication to this node and **delete database files** from it.  
-        <Admonition type="warning" title="Warning">
+        <Admonition type="warning" title="">
         Removing a shard is done by removing all its replicas.  
         Please be careful not to remove files that have no backup and may still be needed.  
         </Admonition>

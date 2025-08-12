@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cluster Observer
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Cluster Observer is a supervising component in the cluster.  
   It monitors the nodes health and adjusts the nodes state in the Database Group accordingly.  
@@ -29,7 +29,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [States Flow](../../../../studio/server/debug/advanced/cluster-observer.mdx#states-flow)  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Note:**  
 
 * Don't confuse the Database Group Topology with the Cluster Topology  
@@ -50,7 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ### 1. Refreshing Data
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Click `Refresh` to get latest actions performed by the Observer
 
 **When a new Leader is elected:**  
@@ -62,7 +62,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 ### 2. Suspending the Cluster Observer
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Be careful with this option**  
 
 * Use this only when you don't want the Observer to make any changes to the Database Group Topology  
@@ -71,7 +71,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 ### 3. States Flow
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### **When a new node is added to a Database Group:**  
 
 1. The Observer will add the node as `Promotable`.  
@@ -82,7 +82,7 @@ Click `Refresh` to get latest actions performed by the Observer
    For a detailed explanation of a Member actions and tasks within a database group see [Database Group](../../../../studio/database/settings/manage-database-group.mdx)  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### **When the Observer notices that a node is down ,or unresponsive, it will:**  
 
 1. Set the node to a `Rehab` state.  
@@ -99,7 +99,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### **When the `Rehab` node is responsive again:**  
 
 **1.** If a replacement node was added when the node was down: (Dynamic Database distribution was set)  

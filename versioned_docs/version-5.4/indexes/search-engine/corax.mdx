@@ -13,14 +13,14 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Search Engine: Corax
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Corax** is RavenDB's native search engine, introduced in RavenDB 
   version 5.4 as an in-house searching alternative for Lucene.  
   Lucene remains available as well; you can use either Corax or 
   Lucene as your search engine, as you prefer.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     Corax is still an **experimental feature**. 
     To use it, you must 
     [enable experimental features](../../indexes/search-engine/corax.mdx#enabling-corax) first.  
@@ -73,7 +73,7 @@ To use it, you must explicitly enable RavenDB's experimental features.
 </CodeBlock>
 </TabItem>
 
-      <Admonition type="note" title="Note">
+      <Admonition type="note" title="">
         You must restart the server after making these changes, 
         for the new settings to be read and applied.  
       </Admonition>
@@ -119,7 +119,7 @@ E.g. -
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 You must restart the server for the new settings to be read and applied.  
 </Admonition>
 ### Select Search Engine: Per Database
@@ -254,7 +254,7 @@ Trying to use Corax with an unimplemented method (see
 [Supported Features](../../indexes/search-engine/corax.mdx#supported-features) above) 
 will generate a `System.NotImplementedException` exception and end the search.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 E.g. -  
 the following query uses the `intersect` method, which is currently not supported by Corax.  
 <TabItem value="sql" label="sql">
@@ -392,7 +392,7 @@ select new
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Using `ToString` will serialize all the properties of the complex property into 
 a single string, including names, values, brackets, and so on.  
 The produced string is **not** a good feed for analyzers and is not commonly used for searches.  

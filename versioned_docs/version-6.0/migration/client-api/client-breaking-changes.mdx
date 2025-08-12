@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Migration: Client Breaking Changes
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The features listed on this page were available in former RavenDB versions and are unavailable in RavenDB `6.x`,  
 or their behavior is inconsistent with their behavior in previous versions.  
 
@@ -113,7 +113,7 @@ For the code to succeed, replace the last line with:
 * `GET /databases/*/revisions/bin`  
   Pass `start` instead of `etag`.  
   We now fetch from the last entry backward rather than from a specific etag.  
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
   `GetRevisionsBinEntryCommand`  
   Previous definition: `GetRevisionsBinEntryCommand(long etag, int? pageSize)`  
   Current definition: `GetRevisionsBinEntryCommand(int start, int? pageSize)`  

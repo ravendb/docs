@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Authentication: Manual Certificate Configuration
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This article explains how to set up authentication **manually** by storing your certificate locally, externally or with logic you create that is foreign to RavenDB. 
 
 Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard.mdx) which lets you set up 
@@ -72,7 +72,7 @@ and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) f
 
        ![Enhanced Key Usage](./assets/cert-enhanced-key-usage.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates.mdx) 
   are already provided with the above fields and OIDs.  
@@ -174,7 +174,7 @@ catch
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In all secure configurations, the `ServerUrl` must contain the same domain name that is used in the certificate (under the CN or ASN properties).
 </Admonition>
 
@@ -248,7 +248,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
 
 8. To set up as an OS service, run PowerShell as an administrator and navigate to the root `Server` folder where the `settings.json` is located.  
    Copy and paste the following command `.\rvn.exe windows-service register --service-name RavenDB`.
-   <Admonition type="note" title="Note"> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
+   <Admonition type="note" title=""> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
     but will fail to start if the Local Service account doesn't have access to all the required resources.  </Admonition>
    - Open the "Services" manager for Windows. Make sure that the "RavenDB" service is there and that the Startup Type is "Automatic".  
 

@@ -24,7 +24,7 @@ In this setup, we have two nodes holding the users, and two nodes with serve as 
 
 ![Figure 1: Replication and Sharding](./assets/replication_and_sharding_docs.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Should you allow to failover writes to the replicated node? If you do, you need to recover those writes. The usual approach for that is to setup two way replication between the master and slave. Since the slave will be written to only if the master have failed, in essence what this means is that when the master restarts, we will be able to send it all the documents that were written to while it was down. There is a small chance of getting conflicts using this system, if a write occurs on the server as soon as it is up but before replication from the slave have finished.
 </Admonition>
 
@@ -36,7 +36,7 @@ Another option is to use sharding primarily as a mean of reducing load on the se
 
 ![Figure 2: Replication and Sharding](./assets/replication_and_sharding_docs_2.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This reduces the number of instances that you use, but it also means that your capacity is limited to what can be stored in a single node. In practice, it means that if there is a failover, all the traffic will be directed to a single node. This may very well lead to a cascading failure scenario, since a single node may not be able to handle all the load for the application.
 </Admonition>
 

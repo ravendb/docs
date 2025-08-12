@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Security: Common Errors & FAQ
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article explains some of the common security configuration errors and how to handle them.
 
@@ -310,7 +310,7 @@ This server requires client certificate for authentication, but none was provide
      Linux users can import the certificate directly to the browser.  
    * Chrome versions **105 and on** look for certificatees registered with the browser's [root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
      A failure to locate the certificate may be the result of registering it with the OS rather than with the browser.  
-       <Admonition type="note" title="Note">
+       <Admonition type="note" title="">
        This failure typically occures when [self-signed certificates](../../server/security/authentication/certificate-configuration.mdx) 
        are used rather than with let's encrypt certificates issued during setup, since 
        let's encrypt certificates are automatically installed in the Chrome root store. 

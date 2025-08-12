@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: API Administration
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page explains how to manage a sharded database using RavenDB's API.  
 * Learn [here](../../sharding/administration/studio-admin.mdx) how to manage 
@@ -190,7 +190,7 @@ orchestrators nodes that host no shards.
     | `replicationFactor` | int? | The new shard's replication factor (**see comment below**) |
     | `nodes` | string[] | A list of nodes to replicate the shard to. <br/> If provided, the replication factor will be set by the number of nodes. |
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     `replicationFactor`, the new shard's replication factor, is determined as follows:  
     
     * If `replicationFactor` is **not** provided explicitly, and a list of nodes is provided, 
@@ -225,7 +225,7 @@ orchestrators nodes that host no shards.
 * To add a replica to an existing shard pass the database name and a shard 
   number to the `AddDatabaseNodeOperation` operation.  
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     The replication factor is updated automatically as replicas are added, 
     there is no need to update it explicitly.  
     </Admonition>

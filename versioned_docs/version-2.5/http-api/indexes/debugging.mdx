@@ -225,7 +225,7 @@ The output:
 }
 ```
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This index debug option can be used only if the reduce operation was performed as multi-level process. RavenDB has also an optimized version of the reducing which is performed in single step (if the number of items per reduce key is smaller than `NumberOfItemsToExecuteReduceInSingleStep` value specified in configuration). Then instead of persisting intermediate results Raven will store them directly into Lucene indexes, so the usage of this debug command will give you no results.
 </Admonition>
 

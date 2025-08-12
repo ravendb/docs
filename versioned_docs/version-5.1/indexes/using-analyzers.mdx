@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
@@ -55,7 +55,7 @@ The examples below use the following text:
 
 ### Analyzers that remove common "Stop Words":
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 [Stop words](https://en.wikipedia.org/wiki/Stop_word) (e.g. the, it, a, is, this, who, that...) are often removed to 
 narrow search results by including only words that are used less frequently.
 
@@ -443,7 +443,7 @@ To make a document property indexed using a specific Analyzer, all you need to d
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name).
 </Admonition>
 
@@ -637,7 +637,7 @@ await store.maintenance
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name).
 </Admonition>
 

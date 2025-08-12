@@ -19,7 +19,7 @@ Rather than define indexes up front, RavenDB can analyze a query and create an a
 Automatic indexes have their age, and that is tracked internally by RavenDB. If an automatic index isn't being used, it will become idle and eventually abandoned (see [index priorities](../../server/administration/index-administration.mdx#index-prioritization)). If it is a very young index, we will decide it was a temporary index after all, and remove it from the system completely.
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 When a dynamic index is first created, results are likely to be stale, subsequent calls can be used to alleviate this, but this may result in sup optimal application performance.
 </Admonition>
 

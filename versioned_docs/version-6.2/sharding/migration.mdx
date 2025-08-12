@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Migration
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 When [it's time](../sharding/overview.mdx#when-should-sharding-be-used) 
 to move on to a sharded database, data can be migrated from the existing 
@@ -55,7 +55,7 @@ a sharded database, that will distribute the data between its shard.
   [imported from backup files](../sharding/import-and-export.mdx#importing-data-from-backup-files).  
   A backup of a non-sharded database **can** be imported into an existing sharded database.  
   The imported data will be added to the sharded database and distributed between the shards.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Note that this opposes [restoring](../sharding/backup-and-restore/restore.mdx) 
   a non-sharded database, which can only create a new non-sharded database 
   but **not** create a sharded database or add its data to an existing database.  
@@ -75,7 +75,7 @@ backup files made for a non-sharded database can be
 [imported](../sharding/import-and-export.mdx#importing-data-from-backup-files) 
 into a new or an existing sharded database.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 A backup created for a non-sharded database **cannot** be 
 [restored](../sharding/backup-and-restore/restore.mdx) as a sharded database.  
 The data can be migrated into a sharded database only by importing it.  
@@ -100,7 +100,7 @@ The sharded database can be kept and tested in a controlled environment
 as long as necessary, as the original database keeps on serving its users. 
 When all is ready, the new database can be moved into production.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 A live replica created using external replication includes all documents 
 and document extensions, but **not** server and cluster level features like 
 indexes and compare exchange entries. Find the full list [here](../server/ongoing-tasks/external-replication.mdx#general-information-about-external-replication-task).  

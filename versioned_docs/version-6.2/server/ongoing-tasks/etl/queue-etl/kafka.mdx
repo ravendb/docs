@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Queue ETL: Apache Kafka
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Apache Kafka is a distributed, high-performance, transactional messaging platform that remains performant 
   as the number of messages it needs to process increases and the number of events it needs to stream climbs to the big-data zone.  
@@ -125,7 +125,7 @@ var res = store.Maintenance.Send(
 
 ## Add a Kafka ETL task
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="example-basic"/> **Example - basic**:
 * In this example, the Kafka ETL Task will -
@@ -195,7 +195,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="delete-processed-documents"/> **Example - delete processed documents**:
 * You have the option to delete documents from your RavenDB database once they have been processed by the Queue ETL task.

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB, you can define AI tasks to automatically generate embeddings from your document content.  
   These embeddings are then stored in [dedicated collections](../../ai-integration/generating-embeddings/embedding-collections.mdx) within the database,  
@@ -152,7 +152,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Configuring an embeddings generation task - from the Client API
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Configure an embeddings generation task - define source using PATHS:
 <TabItem value="create_embeddings_task_1" label="create_embeddings_task_1">
@@ -238,7 +238,7 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Configure an embeddings generation task - define source using SCRIPT:
 * To configure the source content using a script -  
@@ -332,7 +332,7 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
 RavenDB offers several chunking methods that can be applied per source type.  
 These methods determine how input text is split before being sent to the provider.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * `PlainText: Split`  
   Splits a plain text string into multiple chunks based on the specified maximum token count.  

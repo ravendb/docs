@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Sharding**, supported by RavenDB from version 6.0 and on, 
   is the distribution of a database's content between autonomous 
@@ -76,7 +76,7 @@ this fashion dozens of terabytes and more while keeping the resources
 of each shard in check and maintaining its high performance and throughput.  
 ### Licensing
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Sharding is **Fully Available** on an **Enterprise** license.  
 </Admonition>
 
@@ -104,13 +104,13 @@ server is well equipped and would comfortably handle a much larger volume,
 and no dramatic increase is expected in the number of potential users 
 any time soon.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend that you plan ahead for a transition to a sharded database when 
 your database size is in the vicinity of 250 GB, so the transition is already well 
 established when it reaches 500 GB.  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 RavenDB 6.0 and above can **migrate** its database to a sharded database 
 via [external replication](../server/ongoing-tasks/external-replication.mdx) 
 or [export & import](../studio/database/tasks/export-database.mdx) operations.  
@@ -127,7 +127,7 @@ export the data into it.
 While each cluster node of a non-sharded database handles a full replica 
 of the entire database, each **shard** is assigned a **subset** of the 
 entire database content.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Take, for example, a 3-shards database, in which shard **1** is populated with 
 documents `Users/1`..`Users/2000`, shard **2** with documents `Users/2001`..`Users/4000`, 
 and shard **3** with documents `Users/4001`..`Users/6000`.  
@@ -212,7 +212,7 @@ all shards handle about the same volume of data.
 The resharding process moves all the data related to a certain 
 bucket, including documents, document extensions, tombstones, etc., 
 to a different shard, and then associates the bucket with the new shard.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
   E.g.,
 
   1. Bucket `100,000` was initially associated with shard **1**.  

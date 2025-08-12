@@ -431,7 +431,7 @@ you must remember to follow certain rules that must apply to the provided string
 2.	**Commas** are used to indicate that property is a collection type e.g. List. So if our `Order` will have a list of LineItems and each `LineItem` will contain `ProductId` property then we can create string path as follows: `"LineItems.,ProductId"`.
 3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Referral.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Referral.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Prefix** is not required for string identifiers, because they contain it by default.
 </Admonition>
 
@@ -523,7 +523,7 @@ A Live Projection will return a projection, on which you can use the `.As&lt;&gt
 
 The main benefits of using Live Projections are; not having to write as much code, they run on the server and they reduce the network bandwidth by returning only the data we are interested in.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 An important difference to note is that while Includes are useful for both explicit loading by id and for querying, Live Projections can only be used for querying.
 </Admonition>
 

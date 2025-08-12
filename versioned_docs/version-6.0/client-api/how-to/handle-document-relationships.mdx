@@ -32,7 +32,7 @@ this proves to be quite costly in terms of database resources and network traffi
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one or more of them.
 When applied correctly, they can drastically improve performance, reduce network bandwidth, and speed up development.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Denormalization](../../client-api/how-to/handle-document-relationships.mdx#denormalization)  
@@ -273,11 +273,11 @@ The second is the Includes channel, through which any included documents are sen
 Client side, those included documents are not returned from the `Load()` method call, but they are added to the session unit of work,
 and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Streaming query results does not support the includes feature.  
 Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).  
 </Admonition>
@@ -467,7 +467,7 @@ foreach (LineItem lineItem in order.LineItems)
 
 The `Select()` within the Include tells RavenDB which property of secondary level objects to use as a reference.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 ### String path conventions
 
 When using string-based includes like:
@@ -1039,11 +1039,11 @@ The second is the Includes channel, through which any included documents are sen
 Client side, those included documents are not returned from the `load()` method call, but they are added to the session unit of work,
 and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Streaming query results does not support the includes feature.  
 Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).  
 </Admonition>
@@ -1235,7 +1235,7 @@ for (LineItem lineItem : order.getLineItems()) \{
 
 The `[]` within the `include` tells RavenDB which field of secondary level objects to use as a reference.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 ### String path conventions
 
 When using string-based includes like:
@@ -1620,7 +1620,7 @@ this proves to be quite costly in terms of database resources and network traffi
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one or more of them.
 When applied correctly, they can drastically improve performance, reduce network bandwidth, and speed up development.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Denormalization](../../client-api/how-to/handle-document-relationships.mdx#denormalization)  
@@ -1858,11 +1858,11 @@ The second is the Includes channel, through which any included documents are sen
 Client side, those included documents are not returned from the `load()` method call, but they are added to the session unit of work,
 and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Embedded and builder variants of `include` clause are essentially syntax sugar and are equivalent at the server side.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Streaming query results does not support the includes feature.  
 Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).  
 </Admonition>
@@ -2034,7 +2034,7 @@ for (let i = 0; i < order.lineItems.length; i++) \{
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 ### String path conventions
 
 When using string-based includes like:

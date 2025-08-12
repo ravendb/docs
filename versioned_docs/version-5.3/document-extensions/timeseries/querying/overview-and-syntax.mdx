@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Querying: Time Series Querying Overview & Syntax
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series querying is native to RavenDB's RQL.  
   
@@ -175,7 +175,7 @@ select timeseries(
 * `from Employees as e where Birthday > '1990-01-01'`  
   This **document query** locates the documents whose time series we want to query.  
   
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
     A typical time series query starts by locating a single document.  
     For example, to query a time series of stock prices, we can first 
     locate a specific company's profile in the Companies collection, 
@@ -241,7 +241,7 @@ in a query.
 JavaScript functions can then call time series functions, pass them arguments, 
 use and manipulate their results.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Custom Javascript functions return a flat set of values rather than a nested 
 array, to ease the projection of retrieved values.  
 </Admonition>

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes are used by the server to satisfy queries.  
   They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
@@ -83,7 +83,7 @@ There are a couple of ways to create a `static index` and send it to the server.
 
 If you are interested in having a **strongly-typed syntax** during index creation, or have an **ability to deploy indexes using assembly scanner**, **avoid hard-coding index names in every query**, then `AbstractIndexCreationTask` should be your choice. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages.
 </Admonition>
 
@@ -134,7 +134,7 @@ new Orders_ByTotal().Execute(store);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch.
 </Admonition>
 
@@ -215,7 +215,7 @@ await store.ExecuteIndexAsync(new Orders_ByTotal());
 
 #### Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Maintenance Operations or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do it by inheriting from `AbstractIndexCreationTask`.
 </Admonition>
 
@@ -231,7 +231,7 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 Auto-indexes are **created** when queries that **do not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
 </Admonition>
 
@@ -285,7 +285,7 @@ Setting this configuration option to a high value may result in performance degr
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes are used by the server to satisfy queries.  
   They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
@@ -349,7 +349,7 @@ There are a couple of ways to create a `static index` and send it to the server.
 
 AbstractIndexCreationTask let you avoid hard-coding index names in every query.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages.
 </Admonition>
 
@@ -392,7 +392,7 @@ new Orders_Totals().execute(store, store.getConventions(), "Northwind");
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch.
 </Admonition>
 
@@ -528,7 +528,7 @@ store.maintenance()
 
 #### Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Maintenance Operations or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do it by inheriting from `AbstractIndexCreationTask`.
 </Admonition>
 
@@ -544,7 +544,7 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
 </Admonition>
 
@@ -601,7 +601,7 @@ Setting this configuration option to a high value may result in performance degr
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes are used by the server to satisfy queries.  
   They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
@@ -665,7 +665,7 @@ There are a couple of ways to create a `static index` and send it to the server.
 
 `AbstractCsharpIndexCreationTask` lets you avoid hard-coding index names in every query.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages.
 </Admonition>
 
@@ -715,7 +715,7 @@ await new Orders_ByTotal().execute(documentStore);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch.
 </Admonition>
 
@@ -795,7 +795,7 @@ await IndexCreation.createIndexes(indexesToDeploy, documentStore);
 
 #### Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Maintenance Operations or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do it by inheriting from `AbstractIndexCreationTask`.
 </Admonition>
 
@@ -811,7 +811,7 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 Auto-indexes are **created** when queries that **do not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
 </Admonition>
 

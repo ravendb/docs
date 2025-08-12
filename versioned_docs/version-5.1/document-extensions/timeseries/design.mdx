@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Design: Time Series
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series are sequences of numerical values, associated with timestamps 
   and sorted chronologically.  
@@ -59,7 +59,7 @@ Each time series entry is composed of:
     | `Tag` | string | An optional tag for an entry. Can be any string up to 255 bytes. Possible uses for the tag: descriptions or metadata for individual entries; storing a document id, which can then be referenced when querying a time series. This is the only component of the entry that is not numerical. |
     | `Values` | double[] | An array of up to 32 `double` values |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Doubles with higher precision - i.e. more digits after the decimal point, 
 are much less compressible.  
 In other words, `1.672` takes up more space than `1672`.
@@ -120,12 +120,12 @@ Each segment contains a number of consecutive entries from the same time series.
    - The segment's **Count** of values  
    - The segment's values **Sum**  
 
-      <Admonition type="note" title="Note">
+      <Admonition type="note" title="">
       The existence of aggregate values makes it worthwhile to reference individual 
       segments in indexes and queries.  
       </Admonition>
 
-      <Admonition type="note" title="Note">
+      <Admonition type="note" title="">
       When segment entries store multiple values, e.g. each entry contains a **Latitude** value 
       and a **Longitude** value, the six aggregate values are kept for each value separately.  
       </Admonition>

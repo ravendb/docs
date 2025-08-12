@@ -118,7 +118,7 @@ To make a document property indexed using a specific Analyzer, all you need to d
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name).
 </Admonition>
 
@@ -211,7 +211,7 @@ When field is marked as `SEARCH` sorting must be done using additional field. Mo
 </LanguageContent>
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB supports fast and efficient querying through indexes, 
   which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax.mdx),  
@@ -240,14 +240,14 @@ When field is marked as `SEARCH` sorting must be done using additional field. Mo
 </Admonition>
 ## Understanding the role of analyzers
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers in the index definition:
 The [index definition](../studio/database/indexes/indexes-overview.mdx#index-definition) determines what content from the documents will be indexed for each index-field.  
 For each index-field you can specify a particular analyzer to process the content of that field.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers at indexing time:
 During the [indexing process](../studio/database/indexes/indexes-overview.mdx#indexing-process),
@@ -262,7 +262,7 @@ The resulting tokens are then stored in the index for each index-field and can l
 enabling [Full-text search](../indexes/querying/searching.mdx).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers at query time:
 When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search.mdx),  
@@ -288,7 +288,7 @@ There are two exceptions to this rule:
      This is explained in detail in [Searching with wildcards](../indexes/querying/searching.mdx#searching-with-wildcards).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Full-text search:
 In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
@@ -320,14 +320,14 @@ Learn more in [Sorting and Collation](../indexes/sorting-and-collation.mdx#colla
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
   RavenDB will use its [Default Analyzers](../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 All examples below use the following text:  
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that remove common "stop words":
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:  
 
@@ -342,7 +342,7 @@ All examples below use the following text:
     * Splits words at hyphens, unless there's a number in the token, in which case the whole token is interpreted as a product number and is not split.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **StopAnalyzer**, which works similarly, will produce the following tokens:
 
@@ -358,7 +358,7 @@ All examples below use the following text:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * **Stop words**:
 
@@ -373,10 +373,10 @@ All examples below use the following text:
 </Admonition>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that do not remove common "stop words"
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **SimpleAnalyzer** will produce the following tokens:  
 
@@ -392,7 +392,7 @@ All examples below use the following text:
       This means email and web addresses are split into separate tokens.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **WhitespaceAnalyzer** will produce the following tokens:
 
@@ -406,7 +406,7 @@ All examples below use the following text:
     * Keeps forms like email addresses, phone numbers, and web addresses whole.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **LowerCaseWhitespaceAnalyzer** will produce the following tokens:
 
@@ -420,7 +420,7 @@ All examples below use the following text:
     * Keeps forms like email addresses, phone numbers, and web addresses whole.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **KeywordAnalyzer** will produce the following single token:
 
@@ -434,10 +434,10 @@ All examples below use the following text:
 
 </Admonition>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that tokenize according to the defined number of characters
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **NGramAnalyzer** tokenizes based on predefined token lengths.
 
@@ -569,7 +569,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
     * `FieldIndexing.No` - This behavior [disables field indexing](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Search Analyzer
 * When the indexing behavior is set to `FieldIndexing.Search` and no analyzer is specified for the index-field,
@@ -611,7 +611,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Exact Analyzer
 * When the indexing behavior is set to `FieldIndexing.Exact`,
@@ -655,7 +655,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Analyzer
 * When no indexing behavior is set and no analyzer is specified for the index-field,  
@@ -761,7 +761,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   1. [Add custom analyzer via Studio](../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)  
   2. [Add custom analyzer via Client API](../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
   3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer via Studio
 
@@ -769,7 +769,7 @@ Custom analyzers can be added from the Custom Analyzers view in the Studio.
 Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer via Client API
 
@@ -862,7 +862,7 @@ store.Maintenance.ForDatabase("MyDatabase").Send(putAnalyzerOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer directly to RavenDB's binaries
 
@@ -900,7 +900,7 @@ The terms generated for each index-field can be viewed in the Studio.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB supports fast and efficient querying through indexes,
   which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax.mdx),  
@@ -929,14 +929,14 @@ The terms generated for each index-field can be viewed in the Studio.
 </Admonition>
 ## Understanding the role of analyzers
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers in the index definition:
 The [index definition](../studio/database/indexes/indexes-overview.mdx#index-definition) determines what content from the documents will be indexed for each index-field.  
 For each index-field you can specify a particular analyzer to process the content of that field.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers at indexing time:
 During the [indexing process](../studio/database/indexes/indexes-overview.mdx#indexing-process),
@@ -951,7 +951,7 @@ The resulting tokens are then stored in the index for each index-field and can l
 enabling [Full-text search](../indexes/querying/searching.mdx).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Analyzers at query time:
 When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search.mdx),  
@@ -977,7 +977,7 @@ There are two exceptions to this rule:
    This is explained in detail in [Searching with wildcards](../indexes/querying/searching.mdx#searching-with-wildcards).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ###### Full-text search:
 In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
@@ -1009,14 +1009,14 @@ Learn more in [Sorting and Collation](../indexes/sorting-and-collation.mdx#colla
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
   RavenDB will use its [Default Analyzers](../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 All examples below use the following text:  
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that remove common "stop words":
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:
 
@@ -1031,7 +1031,7 @@ All examples below use the following text:
     * Splits words at hyphens, unless there's a number in the token, in which case the whole token is interpreted as a product number and is not split.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **StopAnalyzer**, which works similarly, will produce the following tokens:
 
@@ -1047,7 +1047,7 @@ All examples below use the following text:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * **Stop words**:
 
@@ -1062,10 +1062,10 @@ All examples below use the following text:
 </Admonition>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that do not remove common "stop words"
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **SimpleAnalyzer** will produce the following tokens:
 
@@ -1081,7 +1081,7 @@ All examples below use the following text:
       This means email and web addresses are split into separate tokens.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **WhitespaceAnalyzer** will produce the following tokens:
 
@@ -1095,7 +1095,7 @@ All examples below use the following text:
     * Keeps forms like email addresses, phone numbers, and web addresses whole.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **LowerCaseWhitespaceAnalyzer** will produce the following tokens:
 
@@ -1109,7 +1109,7 @@ All examples below use the following text:
     * Keeps forms like email addresses, phone numbers, and web addresses whole.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **KeywordAnalyzer** will produce the following single token:
 
@@ -1123,10 +1123,10 @@ All examples below use the following text:
 
 </Admonition>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Analyzers that tokenize according to the defined number of characters
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **NGramAnalyzer** tokenizes based on predefined token lengths.
 
@@ -1242,7 +1242,7 @@ await store.maintenance
     * `No` - This behavior [disables field indexing](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Search Analyzer
 * When the indexing behavior is set to `Search` and no analyzer is specified for the index-field,  
@@ -1282,7 +1282,7 @@ await store.maintenance
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Exact Analyzer
 * When the indexing behavior is set to `Exact`, RavenDB will use the Default Exact Analyzer.  
@@ -1323,7 +1323,7 @@ await store.maintenance
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Using the Default Analyzer
 * When no indexing behavior is set and no analyzer is specified for the index-field,  
@@ -1424,7 +1424,7 @@ await store.maintenance
     1. [Add custom analyzer via Studio](../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)
     2. [Add custom analyzer via Client API](../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)
     3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer via Studio
 
@@ -1432,7 +1432,7 @@ Custom analyzers can be added from the Custom Analyzers view in the Studio.
 Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer via Client API
 
@@ -1515,7 +1515,7 @@ await store.maintenance.send(new PutAnalyzersOperation(analyzerDefinition))
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add custom analyzer directly to RavenDB's binaries
 

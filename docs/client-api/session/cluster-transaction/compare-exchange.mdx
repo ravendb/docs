@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Compare-Exchange items can be created and managed on the advanced session (`Session.Advanced`)  
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview.mdx#how-to-create-and-manage-compare-exchange-items).
@@ -34,7 +34,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 </Admonition>
 ## Create compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example
 
 <Tabs groupId='languageSyntax'>
@@ -69,7 +69,7 @@ await session.SaveChangesAsync();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Syntax
 
 <Tabs groupId='languageSyntax'>
@@ -97,7 +97,7 @@ await session.SaveChangesAsync();
 | `CompareExchangeValue<T>` | The new compare-exchange item is returned |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### The CompareExchangeValue
 
 | Parameters   | Type     | Description                                                        |
@@ -111,7 +111,7 @@ await session.SaveChangesAsync();
 
 ## Get compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get single value
 
 <Tabs groupId='languageSyntax'>
@@ -139,7 +139,7 @@ await session.SaveChangesAsync();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get multiple values
 
 <Tabs groupId='languageSyntax'>
@@ -166,7 +166,7 @@ await session.SaveChangesAsync();
 | `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get compare-exchange lazily
 
 <Tabs groupId='languageSyntax'>
@@ -206,7 +206,7 @@ session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValuesAsync<T>(keys
 
 ## Delete compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -244,7 +244,7 @@ session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview.mdx#how-to-create-and-manage-compare-exchange-items).
@@ -259,7 +259,7 @@ session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
 </Admonition>
 ## Create compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example
 
 <TabItem value="new_compare_exchange_sync" label="new_compare_exchange_sync">
@@ -280,7 +280,7 @@ session.save_changes()
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Syntax
 
 <TabItem value="methods_3_sync" label="methods_3_sync">
@@ -300,7 +300,7 @@ session.save_changes()
 | `CompareExchangeValue[T]` | The new compare-exchange item is returned |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### The CompareExchangeValue
 
 | Parameters   | Type     | Description                                                         |
@@ -314,7 +314,7 @@ session.save_changes()
 
 ## Get compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get single value
 
 <TabItem value="methods_1_sync" label="methods_1_sync">
@@ -334,7 +334,7 @@ session.save_changes()
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get multiple values
 
 <TabItem value="methods_2_sync" label="methods_2_sync">
@@ -353,7 +353,7 @@ session.save_changes()
 | `Dict[str, CompareExchangeValue[T]]` | A dictionary of requested values<br/>If a key doesn't exist the value associated with it will be `None` |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get compare-exchange lazily
 
 <TabItem value="methods_sync_lazy_1" label="methods_sync_lazy_1">
@@ -383,7 +383,7 @@ session.advanced.cluster_transaction.lazily.get_compare_exchange_values(keys)
 
 To delete a compare exchange item, use either of the following methods.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <TabItem value="methods_4_sync" label="methods_4_sync">
 <CodeBlock language="python">
@@ -409,7 +409,7 @@ session.advanced.cluster_transaction.delete_compare_exchange_value(item)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Compare-Exchange items can be created and managed on the advanced session (`session.advanced`).  
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview.mdx#how-to-create-and-manage-compare-exchange-items).
@@ -424,7 +424,7 @@ session.advanced.cluster_transaction.delete_compare_exchange_value(item)
 </Admonition>
 ## Create compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example
 
 <TabItem value="new_compare_exchange_sync" label="new_compare_exchange_sync">
@@ -445,7 +445,7 @@ $session->saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Syntax
 
 <TabItem value="methods_3_sync" label="methods_3_sync">
@@ -465,7 +465,7 @@ $session->saveChanges();
 | `CompareExchangeValue<T>` | The new compare-exchange item is returned |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### The CompareExchangeValue
 
 | Parameters   | Type     | Description                                                        |
@@ -479,7 +479,7 @@ $session->saveChanges();
 
 ## Get compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get single value
 
 <TabItem value="methods_1_sync" label="methods_1_sync">
@@ -499,7 +499,7 @@ $session->saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get multiple values
 
 <TabItem value="methods_2_sync" label="methods_2_sync">
@@ -518,7 +518,7 @@ $session->saveChanges();
 | `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get compare-exchange lazily
 
 <TabItem value="methods_sync_lazy_1" label="methods_sync_lazy_1">
@@ -546,7 +546,7 @@ $session->advanced()->clusterTransaction()->lazily()->getCompareExchangeValues(n
 
 ## Delete compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <TabItem value="methods_4_sync" label="methods_4_sync">
 <CodeBlock language="php">
@@ -572,7 +572,7 @@ $session->advanced()->clusterTransaction()->deleteCompareExchangeValue($item);
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview.mdx#how-to-create-and-manage-compare-exchange-items).
@@ -587,7 +587,7 @@ $session->advanced()->clusterTransaction()->deleteCompareExchangeValue($item);
 </Admonition>
 ## Create compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example
 
 <TabItem value="create_compare_exchange_example" label="create_compare_exchange_example">
@@ -612,7 +612,7 @@ await session.saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Syntax
 
 <TabItem value="create_compare_exchange" label="create_compare_exchange">
@@ -632,7 +632,7 @@ await session.saveChanges();
 | `object`      | The new compare-exchange item is returned |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### The compare exchange object returned
 
 | Parameters   | Type     | Description                                                        |
@@ -646,7 +646,7 @@ await session.saveChanges();
 
 ## Get compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get single value
 
 <TabItem value="get_compare_exchange_1" label="get_compare_exchange_1">
@@ -668,7 +668,7 @@ await session.saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get multiple values
 
 <TabItem value="get_compare_exchange_2" label="get_compare_exchange_2">
@@ -687,7 +687,7 @@ await session.saveChanges();
 | `Record<string, object>` | If a key doesn't exists the associate value will be `null` |
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Get compare-exchange lazily
 
 <TabItem value="get_compare_exchange_3" label="get_compare_exchange_3">
@@ -717,7 +717,7 @@ const items = await lazyItems.getValue();
 
 ## Delete compare-exchange
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <TabItem value="delete_compare_exchange" label="delete_compare_exchange">
 <CodeBlock language="js">

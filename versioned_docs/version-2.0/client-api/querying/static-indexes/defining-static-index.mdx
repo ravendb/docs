@@ -125,7 +125,7 @@ If you also define a reduce function (described below) then your index is going 
 The map function that is executed over the set of documents, the same like previously, filters data of documents and produces an output called *mapped results*. This one is stored internally in RavenDB 
 and it becomes an input for the reduce function. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The map functions defined in multi map index must return identical types.
 </Admonition>
 
@@ -135,7 +135,7 @@ The reduce function is an optional, written and executed just like the map funct
 and reduces the values. This is a second pass of the map/reduce index processing. The reduce function aggregates the incoming data set based on a *reduce key* (given in `group by` clause)
 and performs an actual operation over the groupped items. The values are calculated and then the actual results are stored into Lucene index. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The reduce function must be able to process the map function output as well as its own output. This is required because reduce may be applied recursively to its own output. This means is that the output of map and reduce functions must be the same type.
 </Admonition>
 
@@ -165,7 +165,7 @@ documentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings.
 </Admonition>
 
@@ -337,7 +337,7 @@ session.Query<Users_AllProperties.Result, Users_AllProperties>()
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Indexing all entity properties will result in larger index sizes, decreased performance and may lead to poor search relevancy, because whole document is used as an index entry. Use with caution.
 </Admonition>
 

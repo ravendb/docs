@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
   to a dataset after its retrieval by [Query](../../client-api/session/querying/how-to-query.mdx#sessionquery), 
@@ -38,7 +38,7 @@ export const supportedLanguages = ["csharp"];
   since scanning and filtering all the data retrieved by a query cost substantial 
   [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
 
     We recommend that you -  
 
@@ -116,7 +116,7 @@ This helps understand when exploration queries should be used, why a Limit
 should be set for the number of filtered records, and when `where` should 
 be preferred:  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### When to use
 Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
 no existing index and is not expected to be repeated much.  
@@ -126,7 +126,7 @@ no existing index and is not expected to be repeated much.
 * The dataset will be filtered without creating an unrequired index that the cluster 
   would continue updating from now on.  
 </Admonition>
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 #### Limit the query, and prefer `where` for recurring queries 
 Be aware that when a large dataset is retrieved, like the whole collection in 
 the case of a collection query, exploring it all using `filter` would tax the server 
@@ -230,7 +230,7 @@ Use `filter` with a collection query to scan and filter the entire collection.
 </TabItem>
 </Tabs>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Filtering a sizable collection will burden the server and prolong user waiting time.  
 Set a `filter_limit` to restrict the number of filtered records.  
 </Admonition>

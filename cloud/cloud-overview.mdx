@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # NoSQL Cloud Service: Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Running RavenDB as a cloud service frees you from operational overhead by passing much of the administration to the hands
 of RavenDB's developers and allowing them to maintain and optimize your instances for you, take care of cluster operations
@@ -63,7 +63,7 @@ billing data. We create your account and send you a link to its [Portal](../clou
 as soon as you finish registering, so you can immediately start creating and handling your
 [cloud products](../cloud/portal/cloud-portal-products-tab.mdx).
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 It is possible to become the owner of multiple Cloud Accounts using the same email address.
 This can be useful if you need to separate environments, teams, or billing contexts. 
@@ -103,7 +103,7 @@ and allow the wizard to walk you through the 5 simple stages of the registration
 - Enter your billing information.
 - Click the **Continue** button.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Click the **Skip Billing Information** button if you prefer to evaluate the cloud service for now using the free product.
 </Admonition>
 #### 4. Payment information
@@ -138,15 +138,15 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 
 * The login procedure will send you a message with a link. Click the link to enter your account, no password required.
 
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   The magic link is expirable to make sure each visit is logged and keep account activity trackable and more secure.  
   </Admonition>
 
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   An account can currently be managed by a single operator, we will soon add multiple-operators management.  
   </Admonition>
 
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   We advise you to enable 2FA. Setup is described [here](../cloud/cloud-security.mdx#enable-mfa).  
   </Admonition>
 
@@ -216,7 +216,7 @@ throttle operations if the cluster uses more than its fair share of system resou
 Such clusters are useful because a RavenDB Cloud balances resource usage among the instances in the cluster.  
 If you expect moderate usage (with some peaks), choosing a burstable option can allow you to save about 20% of your costs.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Upgrading from Burstable to Reserved
 The RavenDB Cloud allows you to upgrade from a **Basic** production instance to a **Standard** or
 **Performance** cluster at will, with no impact on your system availability.
@@ -230,7 +230,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
   When an instance's budget is consumed, its services are throttled.  
   For example, **Indexing may be delayed** and **Requests may be denied**.
 
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
   We throttle by denying resources, instead of charging you more.  
   RavenDB Cloud automatically attempts to balance the load between your cluster nodes.  
   </Admonition>
@@ -242,7 +242,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
   credits to work with.  
   If the amount of work you're performing is large enough to drain the entire cluster's budget, it may still be throttled.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Use a suitable configuration**.  
 The stronger your burstable instances are, the less susceptible they are to budget drainage and throttling.  
 If you are regularly warned or your product is actually throttled, consider [upscaling](../cloud/cloud-scaling.mdx) its configuration.  

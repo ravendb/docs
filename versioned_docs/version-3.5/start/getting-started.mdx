@@ -29,7 +29,7 @@ For starters, you need to have a RavenDB server running. There are couple of way
 - Distribution package or installer which can be downloaded from [ravendb.net](https://ravendb.net/download)
 - [NuGet package](https://www.nuget.org/packages/RavenDB.Server/)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In RavenDB 3.5 we had the distribution package split into two ZIP packages to make things more comfortable and have a separate Tools package.
 </Admonition>
 
@@ -54,7 +54,7 @@ The second zip file called `Tools` is for advanced users and contains the follow
 - `Raven.Traffic.exe` - A utility to record and replay requests that are being received by RavenDB, [read more](../server/administration/monitoring/request-tracking.mdx). 
 - `Raven.ApiToken.exe` - A utility to generate an ApiToken, not through the studio.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If you want to install RavenDB as a service, please visit [this](../server/installation/as-a-service.mdx) article. There is also a possibility to install it on [IIS](../server/installation/iis.mdx) or run it as an [embedded](../server/installation/embedded.mdx) instance.
 </Admonition>
 
@@ -68,7 +68,7 @@ In the `Client` directory (in the distribution package), all .NET client librari
 - [Creating a document store](../client-api/creating-document-store.mdx)
 - [Setting up a default database](../client-api/setting-up-default-database.mdx)
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Worth knowing is that the `DocumentStore` is a heavyweight object and there should only be one instance of it per application (singleton).
 </Admonition>
 

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Elasticsearch ETL Task
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * An **Elasticsearch ETL Task** creates an ETL process that transfers data 
   from selected RavenDB collections to an Elasticsearch destination.  
@@ -128,7 +128,7 @@ Indexes the ETL task will access.
 
 * Check **Insert Only** to **skip the first step** and append new documents **without** 
   deleting existing ones first.  
-  <Admonition type="warning" title="Warning">
+  <Admonition type="warning" title="">
    Enabling **Insert Only** would accumulate new document versions on 
    your Elasticsearch destination without ever removing them.  
   </Admonition>
@@ -179,7 +179,7 @@ Elasticsearch destination per RavenDB document from the selected collections.
      E.g., `var orderData` in the above example.  
    * Make sure that one of the properties of the document object 
      is given the value `id(this)`.  
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      The ETL task will use this property [to identify](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#document-id-property-name) 
      documents that reside on the Elasticsearch destination by their source 
      RavenDB document ID.  

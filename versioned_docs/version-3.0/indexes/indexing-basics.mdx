@@ -22,7 +22,7 @@ The notion of stale indexes comes from an observation deep in RavenDB's design, 
 
 And indeed, RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. And since the previous request has returned so quickly, the next query can be made a millisecond after that and results will be returned, but they will be marked as `Stale`.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 You can read more about stale indexes [here](../indexes/stale-indexes.mdx).
 </Admonition>
 

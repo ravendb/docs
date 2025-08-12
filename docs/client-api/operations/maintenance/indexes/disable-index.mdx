@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
@@ -189,7 +189,7 @@ public DisableIndexOperation(string indexName, bool clusterWide)
 
 The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx) disable index is a persistent operation, so the index remains disabled even after a server restart.
 </Admonition>
 
@@ -222,7 +222,7 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
@@ -356,7 +356,7 @@ store.maintenance.send(disable_index_op)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
@@ -489,7 +489,7 @@ $store->maintenance()->send($disableIndexOp);
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  

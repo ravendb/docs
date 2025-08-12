@@ -150,7 +150,7 @@ For example to ask for users whose age is greater than 20 we need to create the 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The syntax for range queries is the same like in Lucene. Inclusive range queries are denoted by square brackets. Exclusive range queries are denoted by curly brackets.
 </Admonition>
 
@@ -238,7 +238,7 @@ If you need to escape a comma character, wrap it by using grave accent (`) chara
 
 This will cause the exact search for string values *"Australia, Canada"* or *"Israel"*.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The operator `@in` is used internally by `WhereIn` method. If the specified list of values is empty then instead of `@in` the following expression is created `@emptyIn&lt;FieldName&gt;:(no-results)` to handle such cases.
 </Admonition>
 

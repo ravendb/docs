@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # RQL - Raven Query Language
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Queries in RavenDB use a SQL-like language called **RQL** (Raven Query Language).
 
@@ -214,7 +214,7 @@ See an example for this usage [here](../../../document-extensions/timeseries/que
 
 The keyword `from` is used to determine the source data that will be used when the query is executed.  
 The following options are available:
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __Query a specific collection__: &nbsp;&nbsp; `from <collection-name>`
 
@@ -247,7 +247,7 @@ from "Employees" where FirstName = "Laura"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __Query all documents__: &nbsp;&nbsp; `from @all_docs`
 
@@ -271,7 +271,7 @@ from @all_docs where FirstName = "Laura"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __Query an index__: &nbsp;&nbsp; `from index <index-name>`
 
@@ -300,7 +300,7 @@ from index "Employees/ByFirstName" where FirstName = "Laura"
 ## `where`
 
 Use the `where` keyword with various operators to filter chosen documents from the final result-set.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `>=`, `<=`, `<>`, `!=`, `<`, `>`, `=`, `==`
 
@@ -328,7 +328,7 @@ where Address.City = "Albuquerque"
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `between`
 
@@ -352,7 +352,7 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `in`
 
@@ -376,7 +376,7 @@ where Lines[].ProductName in ('Chang', 'Spegesild', 'Unknown product name')
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `all in`
 
@@ -405,7 +405,7 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Binary Operators: &nbsp;&nbsp; `AND`, `OR`, `NOT`
 
@@ -437,7 +437,7 @@ where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Subclauses: &nbsp;&nbsp; `(`, `)`
 
@@ -554,7 +554,7 @@ where the `and` is a set intersection between the two patterns.
 
 ## RQL comments
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Single-line comments__:
 
@@ -579,7 +579,7 @@ where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Multiline comments__:
 

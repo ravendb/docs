@@ -42,10 +42,9 @@ const config: Config = {
               label: "7.1",
               path: "7.1"
             }
-          }
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //  'https://github.com/ravendb/docs/new-docs/main/'
+          },
+          //editUrl:
+          //    'https://github.com/ravendb/docs/tree/main/'
         },
         blog: false,
         theme: {

@@ -67,7 +67,7 @@ If _Prepare_ phase succeeded then the actual transaction commit is made by sendi
 
 All the intermediate states are durable between requests of the DTC transaction and any document that has been modified is locked for modifications for other transactions. The modifications aren't visible to others until the DTC transaction is committed. Once the transaction is committed, standard transaction rules apply.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Although RavenDB supports `System.Transactions`, you should only use DTC transactions if you really need them (for example, to coordinate between multiple transactional resources). There is an additional cost for using `System.Transactions` and distributed transactions over simply using the standard API and the transactional `SaveChanges`.
 </Admonition>
 

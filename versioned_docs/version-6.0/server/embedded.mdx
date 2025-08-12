@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page explains how to run RavenDB as an embedded server.
 
@@ -346,7 +346,7 @@ You can pass the same configuration options to the embedded server using environ
 </TabItem>
 </Tabs>
 
-     <Admonition type="info" title="Info">
+     <Admonition type="info" title="">
      You can reformat the license manually, or use a script to do it.  
      E.g., find below a Bash script that specifies the name of the file from which the license 
      will be read, and then uses the `-c` flag to compact the file's contents to a single line.  
@@ -660,7 +660,7 @@ EmbeddedServer.INSTANCE.startServer(serverOptions);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`
 </Admonition>
 

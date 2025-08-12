@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Integrating with Akka.NET Persistence
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article provides guidance on integrating RavenDB with Akka.Persistence.
 
@@ -101,7 +101,7 @@ dotnet add package Akka.Persistence.RavenDB.Hosting
 </TabItem>
 Installing either package will also install the _Akka.Persistence_ package.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 When configuring the plugin using both Hosting and HOCON, if the same parameters are specified in both,  
 the configuration provided via Hosting takes precedence and will override the corresponding HOCON settings.
 </Admonition>
@@ -180,7 +180,7 @@ the configuration provided via Hosting takes precedence and will override the co
 
 ### Configuration keys 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Journal and snapshot config keys
 Predefined plugins and class names to use:
@@ -234,7 +234,7 @@ Default: `false`
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query config keys
 * **query.ravendb.class**  

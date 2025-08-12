@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Querying
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Query syntax is similar in sharded and non-sharded databases.  
 * A sharded database offers the same set of querying features that 
@@ -118,7 +118,7 @@ data retrieval from the database to only those items that match given conditions
 
      To solve this problem, the role of the `filter` command is 
      [altered on sharded databases](../sharding/querying.mdx#section-1).  
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      Using `where` raises no problem, and is actually [recommended](../sharding/querying.mdx#vs--recommendations), 
      when the filtering is done [over a GroupBy field](../sharding/querying.mdx#orderby-in-a-map-reduce-index).  
      </Admonition>
@@ -160,7 +160,7 @@ r TotalSales >= 5000
 `}
 </CodeBlock>
 </TabItem>
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   The results volume retrieved from the shards can be decreased 
   (when it makes sense as part of the query) by applying `where` 
   [over a GroupBy field](../sharding/querying.mdx#orderby-in-a-map-reduce-index) 
@@ -255,7 +255,7 @@ map-reduce index:
 </CodeBlock>
 </TabItem>
     
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Note that retrieving all the results from all shards, either 
   by setting no limit or by setting a limit based on a computation 
   as demonstrated above, may cause the retrieval of a large amount 
@@ -412,7 +412,7 @@ long totalResults = stats.TotalResults;
       * skip 7 pages (of 24).  
       * hand page 8 to the client (results 701 to 800).  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The shards sort the data by modification order before sending 
 it to the orchestrator.  
 If a shard is required to send 800 results to the orchestrator, 

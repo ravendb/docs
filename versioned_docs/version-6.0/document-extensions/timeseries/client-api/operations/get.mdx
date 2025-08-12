@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
   You can also retrieve entries from a single time series using the Session's [TimesSeriesFor.Get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
@@ -109,7 +109,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 </CodeBlock>
 </TabItem>  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, the returned object will be `null`.
@@ -233,7 +233,7 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
   You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
@@ -317,7 +317,7 @@ const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, a null object will be returned.

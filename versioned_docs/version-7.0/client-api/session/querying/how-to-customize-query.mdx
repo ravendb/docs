@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query.mdx).   
   Can be set for both **dynamic** and **index** queries.
@@ -49,7 +49,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `BeforeQueryExecuted` to customize the query just before it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -125,7 +125,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -148,7 +148,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `AfterQueryExecuted` to access the raw query result after it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -221,7 +221,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -246,7 +246,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -323,7 +323,7 @@ var streamResults = session.Advanced.Stream(query);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -350,7 +350,7 @@ var streamResults = session.Advanced.Stream(query);
 
 * Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -402,7 +402,7 @@ var streamResults = session.Advanced.Stream(query);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -425,7 +425,7 @@ var streamResults = session.Advanced.Stream(query);
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -477,7 +477,7 @@ var streamResults = session.Advanced.Stream(query);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -496,7 +496,7 @@ var streamResults = session.Advanced.Stream(query);
 
 * By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
   the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
 
@@ -511,7 +511,7 @@ var streamResults = session.Advanced.Stream(query);
   * [Project index query results](../../../indexes/querying/projections.mdx)
   * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -601,7 +601,7 @@ In the above example:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -647,7 +647,7 @@ public enum ProjectionBehavior \{
 
 * More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -695,7 +695,7 @@ public enum ProjectionBehavior \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -723,7 +723,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -779,7 +779,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -813,7 +813,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -865,7 +865,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -902,7 +902,7 @@ All of the above customization methods return the following:
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
@@ -1231,7 +1231,7 @@ List<Employee> results = session.query(Employee.class)
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query.mdx).  
 
@@ -1260,7 +1260,7 @@ List<Employee> results = session.query(Employee.class)
 
 * Use `before_query_executed` to customize the query just before it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1303,7 +1303,7 @@ results = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1326,7 +1326,7 @@ results = list(
 
 * Use `after_query_executed` to access the raw query result after it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1367,7 +1367,7 @@ result = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1392,7 +1392,7 @@ result = list(
 
 * Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1419,7 +1419,7 @@ result = list(
 
 * Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1448,7 +1448,7 @@ result = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1471,7 +1471,7 @@ result = list(
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1500,7 +1500,7 @@ result = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1519,7 +1519,7 @@ result = list(
 
 * By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
   the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
 
@@ -1533,7 +1533,7 @@ result = list(
     * [Project index query results](../../../indexes/querying/projections.mdx)
     * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1594,7 +1594,7 @@ In the above example:
 
 
 <!--
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1640,7 +1640,7 @@ class ProjectionBehavior(Enum):
 
 * Learn [here](../../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1669,7 +1669,7 @@ class ProjectionBehavior(Enum):
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1699,7 +1699,7 @@ class ProjectionBehavior(Enum):
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1736,7 +1736,7 @@ results = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1770,7 +1770,7 @@ results = list(
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -1799,7 +1799,7 @@ results = list(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1832,7 +1832,7 @@ All of the above customization methods return the following:
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the below methods to set customization options on a specific [query](../../../client-api/session/querying/how-to-query.mdx).  
   Customizations can be set for both **dynamic** and **index** queries.
@@ -1873,7 +1873,7 @@ $session->query(Employee::class)->toList();
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -1912,7 +1912,7 @@ $session->query(Employee::class)
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2006,7 +2006,7 @@ $results = $session->query(Employee::class)
 
 * By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
   the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
 
@@ -2125,7 +2125,7 @@ public function randomOrdering(?string $seed): DocumentQueryCustomizationInterfa
  
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2145,7 +2145,7 @@ $results = $session->query(Employee::class)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2179,7 +2179,7 @@ All of the above customization methods return the following:
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The following query customization methods that are available for the **.NET client** under `IDocumentQueryCustomization` 
   are also available in the **Node.js client**.
@@ -2205,7 +2205,7 @@ All of the above customization methods return the following:
 
 * Use `on("beforeQueryExecuted")` to customize the query just before it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2272,7 +2272,7 @@ class TagResult {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2295,7 +2295,7 @@ class TagResult {
 
 * Use `on("afterQueryExecuted")` to access the raw query result after it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2319,7 +2319,7 @@ const results = await session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2344,7 +2344,7 @@ const results = await session
 
 * You can use the `noCaching` customization to disable query caching.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2362,7 +2362,7 @@ const results = await session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2385,7 +2385,7 @@ const results = await session
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2403,7 +2403,7 @@ const results = await session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2434,7 +2434,7 @@ const results = await session
     * [Projections](../../../indexes/querying/projections.mdx)
     * [How to project query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2490,7 +2490,7 @@ const query = session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2534,7 +2534,7 @@ const query = session
 
 * More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2551,7 +2551,7 @@ const query = session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2579,7 +2579,7 @@ randomOrdering(seed);
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2599,7 +2599,7 @@ const results = await session.query(\{ collection: "Products" \})
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 
@@ -2639,7 +2639,7 @@ const results = await session.query(\{ collection: "Products" \})
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**
 
@@ -2657,7 +2657,7 @@ const results = await session.query(\{ collection: "Products" \})
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax**
 

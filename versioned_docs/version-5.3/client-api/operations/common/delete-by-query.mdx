@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
 
@@ -41,7 +41,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Delete by dynamic query
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete all documents in collection__:
 
@@ -80,7 +80,7 @@ var result = await store.Operations.SendAsync(deleteByQueryOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete with filtering__:  
 
@@ -133,7 +133,7 @@ var result = await store.Operations.SendAsync(deleteByQueryOp);
   An exception is thrown when executing the operation on a Map-Reduce index.  
 
 * A few overloads are available, see the following examples:
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __A sample Map-index__:
 
@@ -164,7 +164,7 @@ public class Products_ByPrice : AbstractIndexCreationTask<Product>
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete documents via an index query__:
 
@@ -238,7 +238,7 @@ var operation = store.Operations.Send(deleteByQueryOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete with options__:
 
@@ -525,7 +525,7 @@ so it can happen than a document has been updated or deleted meanwhile.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
 
@@ -547,7 +547,7 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ## Delete by dynamic query
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete all documents in collection__:
 
@@ -574,7 +574,7 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete with filtering__:  
 
@@ -612,7 +612,7 @@ const operation = await store.operations.send(deleteByQueryOp);
   An exception is thrown when executing the operation on a Map-Reduce index.  
 
 * A few overloads are available, see the following examples:
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __A sample Map-index__:
 
@@ -638,7 +638,7 @@ class Products_ByPrice extends AbstractJavaScriptIndexCreationTask \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete documents via an index query__:
 
@@ -682,7 +682,7 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Delete with options__:
 

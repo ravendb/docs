@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB's distributed counters, **Counters** for short, are numeric data variables that can be added to documents.  
   Use a Counter to count anything that needs counting, like:
@@ -100,7 +100,7 @@ Counter actions (for either name or value) **do not cause conflicts**.
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
 - You can successfully modify Counters while their document is being modified by a different client.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Counters actions **can still be performed** when their related documents are in a conflicted state.  
 </Admonition>
 #### Counters Cost
@@ -110,7 +110,7 @@ Counters are designated to lower the cost of counting, but do come with a price.
 * **All the names** of a document's Counters are added to its content, increasing its size.  
 * **Counter values** occupy storage space.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Be aware that the negligible amount of resources required by a few Counters, 
 may become significant when there are many.  
 A single document with thousands of Counters is probably an indication of a modeling mistake, 
@@ -129,7 +129,7 @@ for example.
 
 RavenDB doesn't limit the number of Counters you can create.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../../client-api/session/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
@@ -236,7 +236,7 @@ can operate on a set of Counters of different documents in a single request.
 <LanguageContent language="java">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB's distributed counters, **Counters** for short, are numeric data variables that can be added to documents.  
   Use a Counter to count anything that needs counting, like:
@@ -316,7 +316,7 @@ Counter actions (for either name or value) **do not cause conflicts**.
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
 - You can successfully modify Counters while their document is being modified by a different client.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Counters actions **can still be performed** when their related documents are in a conflicted state.  
 </Admonition>
 #### Counters Cost
@@ -326,7 +326,7 @@ Counters are designated to lower the cost of counting, but do come with a price.
 * **All the names** of a document's Counters are added to its content, increasing its size.  
 * **Counter values** occupy storage space.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Be aware that the negligible amount of resources required by a few Counters, 
 may become significant when there are many.  
 A single document with thousands of Counters is probably an indication of a modeling mistake, 
@@ -345,7 +345,7 @@ for example.
 
 RavenDB doesn't limit the number of Counters you can create.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../../client-api/session/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag

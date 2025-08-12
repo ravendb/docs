@@ -29,7 +29,7 @@ The following methods allow you to subscribe to operation changes:
 
 Operation changes for one operation can be observed using the `ForOperationId` method.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Please note that from RavenDB 6.2 on, operation changes can be tracked only on a **specific node**.  
 The purpose of this change is to improve results consistency, as an operation may behave very differently 
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
@@ -94,7 +94,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 Operations changes for all Operations can be observed using the `ForAllOperations` method.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Please note that from RavenDB 6.2 on, operation changes can be tracked only on a **specific node**.  
 The purpose of this change is to improve results consistency, as an operation may behave very differently 
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
@@ -177,7 +177,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 ## Remarks
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 To get more method overloads, especially ones supporting **delegates**, please add the 
 [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
 </Admonition>

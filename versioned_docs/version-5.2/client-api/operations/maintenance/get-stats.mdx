@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics about your database and collections can be retrieved.  
 
@@ -34,7 +34,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
     * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
 </Admonition>
 ## Get collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetCollectionStatisticsOperation` to get __collection stats__.
 <TabItem value="stats_1" label="stats_1">
 <CodeBlock language="csharp">
@@ -45,7 +45,7 @@ CollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `CollectionStatistics` object.
 <TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="csharp">
@@ -66,7 +66,7 @@ public class CollectionStatistics
 
 
 ## Get detailed collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stats__.
 <TabItem value="stats_2" label="stats_2">
 <CodeBlock language="csharp">
@@ -77,7 +77,7 @@ DetailedCollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedCollectionStatistics` object.
 <TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="csharp">
@@ -109,7 +109,7 @@ public class CollectionDetails
 
 
 ## Get database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetStatisticsOperation` to get __database stats__.
 <TabItem value="stats_3" label="stats_3">
 <CodeBlock language="csharp">
@@ -120,7 +120,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DatabaseStatistics` object.
 <TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="csharp">
@@ -162,7 +162,7 @@ public class DatabaseStatistics
 
 
 ## Get detailed database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
 <TabItem value="stats_4" label="stats_4">
 <CodeBlock language="csharp">
@@ -173,7 +173,7 @@ DetailedDatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedDatabaseStatistics` object.
 <TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="csharp">
@@ -196,7 +196,7 @@ public class DetailedDatabaseStatistics : DatabaseStatistics
 
 
 ## Get stats for another database
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, you get stats for the database defined in your Document Store.  
 * Use `ForDatabase` to get database & collection stats for another database.  
@@ -220,7 +220,7 @@ DatabaseStatistics stats =
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics about your database and collections can be retrieved.
 
@@ -235,7 +235,7 @@ DatabaseStatistics stats =
     * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
 </Admonition>
 ## Get collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetCollectionStatisticsOperation` to get __collection stats__.
 <TabItem value="stats_1" label="stats_1">
 <CodeBlock language="java">
@@ -246,7 +246,7 @@ CollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `CollectionStatistics` object.
 <TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="java">
@@ -266,7 +266,7 @@ Stats are returned in the `CollectionStatistics` object.
 
 
 ## Get detailed collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stats__.
 <TabItem value="stats_2" label="stats_2">
 <CodeBlock language="java">
@@ -277,7 +277,7 @@ DetailedCollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedCollectionStatistics` object.
 <TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="java">
@@ -307,7 +307,7 @@ public class CollectionDetails \{
 
 
 ## Get database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetStatisticsOperation` to get __database stats__.
 <TabItem value="stats_3" label="stats_3">
 <CodeBlock language="java">
@@ -318,7 +318,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DatabaseStatistics` object.
 <TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="java">
@@ -356,7 +356,7 @@ public class DatabaseStatistics \{
 
 
 ## Get detailed database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
 <TabItem value="stats_4" label="stats_4">
 <CodeBlock language="java">
@@ -367,7 +367,7 @@ DetailedDatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedDatabaseStatistics` object.
 <TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="java">
@@ -389,7 +389,7 @@ public class DetailedDatabaseStatistics extends DatabaseStatistics \{
 
 
 ## Get stats for another database
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, you get stats for the database defined in your Document Store.
 * Use `forDatabase` to get database & collection stats for another database.
@@ -413,7 +413,7 @@ DatabaseStatistics stats =
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics about your database and collections can be retrieved.
 
@@ -428,7 +428,7 @@ DatabaseStatistics stats =
     * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
 </Admonition>
 ## Get collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetCollectionStatisticsOperation` to get __collection stats__.
 <TabItem value="stats_1" label="stats_1">
 <CodeBlock language="js">
@@ -438,7 +438,7 @@ const stats = await store.maintenance.send(new GetCollectionStatisticsOperation(
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Collection stats results:
 <TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="js">
@@ -458,7 +458,7 @@ Collection stats results:
 
 
 ## Get detailed collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stats__.
 <TabItem value="stats_2" label="stats_2">
 <CodeBlock language="js">
@@ -468,7 +468,7 @@ const stats = await store.maintenance.send(new GetDetailedCollectionStatisticsOp
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Detailed collection stats results:
 <TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="js">
@@ -498,7 +498,7 @@ Detailed collection stats results:
 
 
 ## Get database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetStatisticsOperation` to get __database stats__.
 <TabItem value="stats_3" label="stats_3">
 <CodeBlock language="js">
@@ -508,7 +508,7 @@ const stats = await store.maintenance.send(new GetStatisticsOperation());
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Database stats results:
 <TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="js">
@@ -546,7 +546,7 @@ Database stats results:
 
 
 ## Get detailed database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
 <TabItem value="stats_4" label="stats_4">
 <CodeBlock language="js">
@@ -556,7 +556,7 @@ const stats = await store.maintenance.send(new GetDetailedStatisticsOperation())
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Detailed database stats results:
 <TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="js">
@@ -578,7 +578,7 @@ Detailed database stats results:
 
 
 ## Get stats for another database
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, you get stats for the database defined in your Document Store.
 * Use `forDatabase` to get database & collection stats for another database.

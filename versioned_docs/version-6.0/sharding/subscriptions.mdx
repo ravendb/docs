@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Data Subscriptions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * From a user's point of view, [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   are created and [consumed](../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx) 
@@ -98,7 +98,7 @@ Data subscriptions features that are not supported yet under a sharded database:
 * [SubscriptionCreationOptions.ChangeVector](../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;)  
   Providing an arbitrary change vector from which the subscription would start processing 
   is currently not supported.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Setting `ChangeVector` to one of the following special values **is** supported:  
    
    * `"LastDocument"` (the latest change vector on the database)  

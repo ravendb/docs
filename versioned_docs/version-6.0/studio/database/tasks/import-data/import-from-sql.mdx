@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Import from SQL
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * SQL Migration allows you to import data from an SQL database to RavenDB.  
 
@@ -80,7 +80,7 @@ The configuration can then be exported and [reused](../../../../studio/database/
    `server=127.0.0.1;`  
    `database=sample_schema;port=3306;`  
    `userid=root;password=secret;`  
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     Click the **Syntax** caption to display valid connection strings for the different SQL sources.  
     </Admonition>
 3. [Advanced](../../../../studio/database/tasks/import-data/import-from-sql.mdx#advanced-import-options)  
@@ -135,7 +135,7 @@ you can locate and run it here.
 
 ## SQL Migration
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The _NoSQL_ data model allows nested arrays/objects, where _SQL_ uses additional 
 tables to render such relations, that are often unrelated to the natural data form.  
 The nested items satisfy [third normal form (3NF)](https://en.wikipedia.org/wiki/Third_normal_form), 
@@ -185,7 +185,7 @@ target documents structure.
         
            ![Partial Migration](./assets/sql-migration-tuning_settings_partial-migration.png)
            
-           <Admonition type="note" title="Note">
+           <Admonition type="note" title="">
            Please note that limiting the migration may break links between documents.  
            </Admonition>
 
@@ -393,7 +393,7 @@ The **target document structure** is determined by the relationship and selected
    * Mode set to **link** - Property value contains a single document identifier or null  
    * Mode set to **embed** - Property value contains single nested document  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Embedded documents do **not** contain an identifier, as it is redundant in this context.  
 </Admonition>
 

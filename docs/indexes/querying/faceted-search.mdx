@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.
  
@@ -330,7 +330,7 @@ Assert.Equal(3, facetValue.Count); // Number of documents in this range
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Query further**:
 
@@ -1430,7 +1430,7 @@ As an alternative for creating a list of facets and passing it to the `aggregate
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.
  
@@ -1731,7 +1731,7 @@ self.assertEqual(3, facet_value.count_)
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Query further**:
 
@@ -2373,7 +2373,7 @@ def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOper
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.
  
@@ -2791,7 +2791,7 @@ $this->assertEquals(3, $facetValue->getCount()); // Number of documents in this 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Query further**:
 
@@ -3465,7 +3465,7 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.
  
@@ -3565,7 +3565,7 @@ await bulkInsert.finish();
 
 ## Facets - Basics
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Facets definition**:
 * Define a list of facets by which to aggregate the data.
@@ -3607,7 +3607,7 @@ const facets = [brandFacet, priceRangeFacet];
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index for facets results**:
 * Query the index to get the aggregated facets information.  
@@ -3696,7 +3696,7 @@ select
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query results**:
 * **Query results** are Not the collection documents, they are of type `FacetResultObject`  
@@ -3755,7 +3755,7 @@ assert.equalfacetValue.count, 3); // Number of documents in this range
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Query further**:
 * Typically, after presenting users with the initial facets results which show the available options,  
@@ -3782,7 +3782,7 @@ assert.equalfacetValue.count, 3); // Number of documents in this range
 
 ## Facets - Options
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Facets definition**:
 * **Options** are available only for the `Facet` type.  
@@ -3816,7 +3816,7 @@ facet.options = facetOptions;
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index for facets results**:
 <Tabs groupId='languageSyntax'>
@@ -3880,7 +3880,7 @@ select facet(brand, $p0)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query results**:
 <TabItem value="facets_10" label="facets_10">
@@ -3921,7 +3921,7 @@ assert.equal(facetValue.count, 4);
 
 ## Facets - Aggregations
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Facets definition**:
 * Aggregation of data is available for an index-field per unique Facet or Range item.  
@@ -3987,7 +3987,7 @@ const facetsWithAggregations = [facet, rangeFacet];
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index for facets results**:
 <Tabs groupId='languageSyntax'>
@@ -4105,7 +4105,7 @@ select
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query results**:
 <TabItem value="facets_15" label="facets_15">
@@ -4180,7 +4180,7 @@ assert.equal(facetValue.sum, 17);
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Define and store facets in a document**:
 * The facets definitions can be stored in a document.
@@ -4226,7 +4226,7 @@ await session.saveChanges();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query using facets from document**:
 <Tabs groupId='languageSyntax'>

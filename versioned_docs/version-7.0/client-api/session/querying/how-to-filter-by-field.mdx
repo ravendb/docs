@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * To query for documents that contain a particular field,  
   use extension method `WhereExists()` which is accessible from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
@@ -138,7 +138,7 @@ IDocumentQuery<T> WhereExists<TValue>(Expression<Func<T, TValue>> propertySelect
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * To filter documents by whether they contain a particular field, use the LINQ extension method `whereExists()` accessible 
 from the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
@@ -218,7 +218,7 @@ where exists("Address.Location.Latitude")
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * To search for documents that contain a specific field by the field **name** or **path**, 
   use the [document_query](../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
@@ -298,7 +298,7 @@ where exists("Address.Location.Latitude")
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * To query for documents that contain a particular field, use the `whereExists` extension method.  
 
@@ -382,7 +382,7 @@ where exists("Address.Location.Latitude")
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use method `whereExists()` to query for documents that contain a particular field.  
 

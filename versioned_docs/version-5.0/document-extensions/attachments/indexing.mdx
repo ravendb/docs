@@ -49,23 +49,38 @@ The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
 
 <TabItem value="index" label="index">
 <CodeBlock language="csharp">
-{`public class Employees_ByAttachmentNames : AbstractIndexCreationTask<Employee>
-\{
-    public class Result
-    \{
-        public string[] AttachmentNames \{ get; set; \}
-    \}
+{`_1
+        public class Employees_ByAttachmentDetails : 
+            AbstractIndexCreationTask<Employee, Employees_ByAttachmentDetails.IndexEntry>
+        \{
+            public class IndexEntry
+            \{
+                public string EmployeeName \{ get; set; \}
+                
+                public string[] AttachmentNames \{ get; set; \}
+                public string[] AttachmentContentTypes \{ get; set; \}
+                public long[] AttachmentSizes \{ get; set; \}
+            \}
 
-    public Employees_ByAttachmentNames()
-    \{
-        Map = employees => from e in employees
-                           let attachments = AttachmentsFor(e)
-                           select new Result
-                           \{
-                               AttachmentNames = attachments.Select(x => x.Name).ToArray()
-                           \};
-    \}
-\}
+            public Employees_ByAttachmentDetails()
+            \{
+                Map = employees => from employee in employees
+                    
+                    // Call 'AttachmentsFor' to get attachments details
+                    let attachments = AttachmentsFor(employee)
+                    
+                    select new IndexEntry()
+                    \{
+                        // Can index info from document properties:
+                        EmployeeName = employee.FirstName + " " + employee.LastName,
+                        
+                        // Index DETAILS of attachments:
+                        AttachmentNames = attachments.Select(x => x.Name).ToArray(),
+                        AttachmentContentTypes = attachments.Select(x => x.ContentType).ToArray(),
+                        AttachmentSizes = attachments.Select(x => x.Size).ToArray()
+                    \};
+            \}
+        \}
 `}
 </CodeBlock>
 </TabItem>

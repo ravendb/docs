@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Use Session Context for Load Balancing
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The `LoadBalanceBehavior` convention determines whether client sessions 
   are allowed to select the topologies that handle their requests.  
@@ -98,7 +98,7 @@ database node will happen automatically and transparently.
        influences only the client, causing no change in replication 
        or other server functions.  
 
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Conflicts may rarely happen, when multiple sessions that use different tags 
   modify a shared document concurrently. This is handled by RavenDB according 
   to your [conflict resolution strategy](../../../server/clustering/replication/replication-conflicts.mdx).  

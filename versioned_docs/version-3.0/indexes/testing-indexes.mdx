@@ -22,7 +22,7 @@ To resolve this issue, we have introduced the ability to test indexes on a limit
 
 Data set for index testing is limited to first 512 matching records that are returned from built-in index [Raven/DocumentsByEntityName](../indexes/indexing-basics.mdx#default-index), so if this index is [stale](../indexes/stale-indexes.mdx) then the results might differ from your expectations.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 To change the default 512 matching records limit, you can change the `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes` setting to appropriate value.
 </Admonition>
 

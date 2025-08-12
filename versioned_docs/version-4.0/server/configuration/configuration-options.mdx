@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Configuration Options
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 RavenDB is **Safe by Default**, which means its default settings are configured for best safety.  
 You can change these settings, however, to divert from the default behavior.  
 
@@ -30,7 +30,7 @@ RavenDB's configuration can be adjusted using environment variables.
 The server will retrieve all the environment variables that start with `RAVEN_` 
 and apply their values to the specified configuration keys.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 All the period (`.`) characters in configuration keys must be replaced with an 
 underscore character (`_`) when used in environment variables.  
 </Admonition>
@@ -69,7 +69,7 @@ The file is read and applied only on server startup.
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 `settings.json` configuration options **override** [environment variables](../../server/configuration/configuration-options.mdx#environment-variables) settings. 
 </Admonition>
 
@@ -88,7 +88,7 @@ The server can be configured using command line arguments that can be passed to 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Command line arguments **override** [environment variables](../../server/configuration/configuration-options.mdx#environment-variables) 
 and [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) settings.  
 Find additional details about Command Line Arguments [here](../../server/configuration/command-line-arguments.mdx). 

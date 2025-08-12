@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query.mdx).   
   Can be set for both dynamic-query and for index-query.
@@ -50,7 +50,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * Use `BeforeQueryExecuted` to customize the query just before it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -126,7 +126,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -149,7 +149,7 @@ __Syntax__
 
 * Use `AfterQueryExecuted` to access the raw query result after it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -222,7 +222,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -247,7 +247,7 @@ __Syntax__
 
 * Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -324,7 +324,7 @@ var streamResults = session.Advanced.Stream(query);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -351,7 +351,7 @@ __Syntax__
 
 * Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -403,7 +403,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -426,7 +426,7 @@ __Syntax__
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -478,7 +478,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -510,7 +510,7 @@ __Syntax__
   * [Project index query results](../../../indexes/querying/projections.mdx)
   * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -600,7 +600,7 @@ In the above example:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -646,7 +646,7 @@ public enum ProjectionBehavior \{
 
 * More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -694,7 +694,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -722,7 +722,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -778,7 +778,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -812,7 +812,7 @@ __Syntax__
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -864,7 +864,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -901,7 +901,7 @@ All above customization methods return the following:
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
@@ -1230,7 +1230,7 @@ List<Employee> results = session.query(Employee.class)
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The following query customization methods that are available for the __.NET client__ under `IDocumentQueryCustomization` 
   are also available in the __Node.js client__.
@@ -1257,7 +1257,7 @@ List<Employee> results = session.query(Employee.class)
 
 * Use `on("beforeQueryExecuted")` to customize the query just before it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1324,7 +1324,7 @@ class TagResult {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1347,7 +1347,7 @@ __Syntax__
 
 * Use `on("afterQueryExecuted")` to access the raw query result after it is executed.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1371,7 +1371,7 @@ const results = await session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1396,7 +1396,7 @@ __Syntax__
 
 * You can use the `noCaching` customization to disable query caching.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1414,7 +1414,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1437,7 +1437,7 @@ __Syntax__
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1455,7 +1455,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1486,7 +1486,7 @@ __Syntax__
     * [Projections](../../../indexes/querying/projections.mdx)
     * [How to project query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1542,7 +1542,7 @@ const query = session
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1586,7 +1586,7 @@ __Syntax__
 
 * More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1603,7 +1603,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1631,7 +1631,7 @@ randomOrdering(seed);
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1651,7 +1651,7 @@ const results = await session.query(\{ collection: "Products" \})
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 
@@ -1691,7 +1691,7 @@ __Syntax__
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__
 
@@ -1709,7 +1709,7 @@ __Example__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Syntax__
 

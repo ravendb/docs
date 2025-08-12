@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # FAQ: Transaction Support in RavenDB
-<Admonition type="note" title="Note">  
+<Admonition type="note" title="">  
 
 * In this page:
   * [ACID storage](../../client-api/faq/transaction-support.mdx#acid-storage)  
@@ -88,7 +88,7 @@ RavenDB client uses HTTP to communicate with the RavenDB server.
 It means that RavenDB doesn't allow you to open a transaction on the server side, make multiple operations over a network connection, and then commit or roll it back.  
 This model, known as the interactive transactions model, is incredibly costly. Both in terms of engine complexity and the impact on the overall performance of the system.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 In [one study](http://nms.csail.mit.edu/~stavros/pubs/OLTP_sigmod08.pdf) the cost of managing the transaction state across multiple network operations was measured at over 40% of the total system performance. 
 This is because the server needs to maintain locks and state across potentially very large time frames.
@@ -195,7 +195,7 @@ Similar to single-node transactions, RavenDB requires that you submit the cluste
 
 Cluster-wide transactions have the notion of [atomic guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) to prevent an overwrite of a document modified in a cluster transaction by a change made in another cluster transaction.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 The usage of atomic guards makes cluster-wide transactions conflict-free.  
 There is no way to make a conflict between two versions of the same document.  

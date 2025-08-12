@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">  
+<Admonition type="note" title="">  
 
 * **Creating a Document Store** is the _first step_ that a RavenDB client application needs to make when working with RavenDB.
 
@@ -61,7 +61,7 @@ The following properties can be configured when creating a new Document Store:
 
 After setting the above configurations as necessary, call `.Initialize()` to begin using the Document Store.  
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 The Document Store is immutable - all above configuration are frozen upon calling .Initialize().  
 Create a new document store object if you need different default configuration values.  
 </Admonition>
@@ -174,7 +174,7 @@ initialization looks like the following:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If you use more than one instance of `DocumentStore` you should dispose it after use.
 </Admonition>
 
@@ -230,7 +230,7 @@ export \{ store as documentStore \};
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If you use more than one instance of `DocumentStore`, you should dispose it after use by calling its `.dispose()` method.
 </Admonition>
 

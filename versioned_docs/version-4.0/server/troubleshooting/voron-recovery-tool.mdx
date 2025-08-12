@@ -69,12 +69,12 @@ Recovery-1- was removed and is reserved for later use.
 `--ProgressIntervalInSec`: overwrite the time interval in which the recovery tool refreshes the report in the console.  
 
 `--DisableCopyOnWriteMode`: disables the copy on write. This option should be used when recovering the journals failed, which would happen most likely due to them being corrupted. In this case, the error indicating corruption of journals will be thrown by the Voron engine, and this will stop the recovery process.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The data-file should be backed up before using this option.
 </Admonition>  
 
 `--LoggingMode`: controls the logging level, either `Operations` or `Information` are valid values.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Logging is not enabled by default, for any output report, the tool should be invoked with this option.
 </Admonition>  
 

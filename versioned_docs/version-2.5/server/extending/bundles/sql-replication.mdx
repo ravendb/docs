@@ -170,6 +170,6 @@ In Studio the configuration page is found under `Settings -> SQL Replication`.
 
 ![Figure 1: SQL Replication in the Studio](./assets/sql_replication_studio.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The script will be called once for each document in the source document collection, with `this` representing the document, and the document id available as `documentId`. Call `replicateTo<TableName>()` (e.g. `replicateToOrders`) for each row you want to write to the database.
 </Admonition>

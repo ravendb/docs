@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **Patch** operation is used to perform *partial* document updates with **one trip to the server**, 
   instead of loading, modifying, and saving a full document. 
@@ -74,7 +74,7 @@ In this page:
 A type-safe session interface that allows performing the most common patch operations.  
 The patch request will be sent to the server only after the call to `SaveChanges`. This way it's possible to perform multiple operations in one request to the server.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Increment Field Value
 `Session.Advanced.Increment`
@@ -115,7 +115,7 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 | **valToAdd** | `U` | Value to be added. |
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 
 ### Set Field Value
@@ -156,7 +156,7 @@ void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
 | **value** | `U` | Value to set. |
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 
 ### Array Manipulation

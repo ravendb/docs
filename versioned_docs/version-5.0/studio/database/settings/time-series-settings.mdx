@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 # Time Series Settings
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **Time Series Settings view** allows you to define and manage time series 
   configurations per collection. Configurations may include:  
@@ -64,7 +64,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
          </Admonition>
 3. **Policy Check Frequency**  
    Set the frequency by which the server checks and executes the Rollup and Retention policies.  
-   <Admonition type="note" title="Note">
+   <Admonition type="note" title="">
    Note that any policy defined with a time frame shorter than the server's 
    **Policy Check Frequency** will still be executed at the server checkup time.  
    E.g., If Policy Check Frequency is set to 8 seconds, a retention policy set to 
@@ -120,7 +120,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
          The aggregation period defined by the rollup policy.  
          In this example, every 1 minute of raw data will be aggregated into 
          a single entry of the `ByMinute` rollup time series.
-         <Admonition type="note" title="Note">
+         <Admonition type="note" title="">
          An entry is added to the rollup time series only when the 
          defined aggregation time frame has ended.  
          </Admonition>
@@ -138,7 +138,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
          In this example, every 30 minutes of data from the `ByMinute` 
          rollup time series will be aggregated into a single entry of the 
          `30Mins` rollup time series.  
-         <Admonition type="note" title="Note">
+         <Admonition type="note" title="">
          An entry is added to the rollup time series only when the defined 
          aggregation time frame has ended.  
          </Admonition>
@@ -178,7 +178,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       In the example above, raw time series entries older than 1 hour will be removed.  
 5. **Add Rollup Policy**  
    Click to add a rollup policy.  
-   <Admonition type="note" title="Note">
+   <Admonition type="note" title="">
    Rollup policies can be defined both for **raw time series data** 
    and for **rollup time series**.  
    Read more [here](../../../studio/database/settings/time-series-settings.mdx#rollup-policies-for-rollup-time-series).  
@@ -194,7 +194,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
       Enable to set a retention time period for the new rollup time series entries.
-      <Admonition type="note" title="Note">
+      <Admonition type="note" title="">
       The **aggregation time** cannot exceed the **retention period** 
       defined for the origin time series.  
       </Admonition>
@@ -209,7 +209,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       Click to define an additional value name.  
 7. **Add**  
    Click **OK** to add this configuration to the configuration list.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    Note: Any modifications made in this view will **Not** be saved until 
    you click the **Save** button (9).  
    </Admonition>
@@ -234,7 +234,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * And so on: each additional rollup policy aggregates data from the 
      time series that precedes it.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Aggregation Time set by each policy must be **greater** than the 
   aggregation time set for the previous policy.  

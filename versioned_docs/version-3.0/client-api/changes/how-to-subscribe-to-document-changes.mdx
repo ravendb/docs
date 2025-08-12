@@ -98,7 +98,7 @@ IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
 | ------------- | ----- |
 | IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name.
 </Admonition>
 
@@ -157,7 +157,7 @@ IObservableWithTask<DocumentChangeNotification>
 | ------------- | ----- |
 | IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name.
 </Admonition>
 
@@ -256,7 +256,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 ## Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
 </Admonition>
 
@@ -339,7 +339,7 @@ IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
 | ------------- | ----- |
 | IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with `Class` uses `Conventions.getTypeTagName` to get collection name.
 </Admonition>
 
@@ -397,7 +397,7 @@ public IObservable<DocumentChangeNotification> forDocumentsOfType(Class<?> clazz
 | ------------- | ----- |
 | IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with `Class` uses `Conventions.findClrTypeName` to get type name.
 </Admonition>
 
