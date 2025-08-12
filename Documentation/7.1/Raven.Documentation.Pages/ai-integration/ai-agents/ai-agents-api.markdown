@@ -115,10 +115,10 @@ tools are applied. Users and clients can provide their selections and preference
 using agent parameters when the chat starts, and focus the queries and the whole 
 interaction on their selections.  
 
-In the example shown below, for example, an agent parameter is used to determine 
-what area of the world a query will handle. Another example can be a student that 
-uses a librarian agent, providing the agent with a subject and having the agent 
-fetch and summarize documents related to this subject.  
+In the example shown below, an agent parameter is used to determine what area 
+of the world a query will handle. Another example can be a student that uses 
+a librarian agent, providing the agent with a subject and having the agent fetch 
+and summarize documents related to this subject.  
 
 To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
 the parameter's **name** and **description** (explaining the LLM what the parameter 
@@ -175,13 +175,11 @@ with your history settings.
 At the end of a chat, when the LLM is done processing and negotiating, 
 it returns a structured output reply through the agent to the client in an 
 object whose layout we need to prepare beforehand.  
-The layout object we prepare is sent to the LLM when the agent is started.  
 
-You can prepare this object in two different formats.  
-The first format is the formal **JSON-based schema** in which the LLM expects 
-the structure to arrive.  
-The second is a friendlier **sample object** format, that RavenDB will turn 
-to a schema behind the scenes for us.  
+The layout object we prepare is sent to the LLM when the agent is started.  
+You can prepare this object in two different formats: a formal **JSON-based 
+schema**, or a friendlier **sample object** format, that RavenDB will turn 
+to a schema behind the scenes.  
 Normally the simpler way is to prepare a sample object and let RavenDB translate 
 it to a schema for you.  
 
@@ -259,14 +257,10 @@ Query tools are for **read only operations**. To make changes in the database,
 use an action tool.  
 
 * **Example**:  
-  The following query tools are used by an agent that helps a human experience manager 
-  learn which employee made the largest profit. They use a `$country` agent parameter whose 
-  value the manager provides when the chat is started. If the parameter's value is "everywhere" 
-  the first tool is applied, and if it is a specific country the second tool is applied.  
-  The tools retrieve all the orders that were sent to the selected destination.  
-  As instructed in the system prompt, the LLM will then calculate which employee 
-  made the largest profit, and send its ID to the user (human experience manager) 
-  through an action tool (explained below).  
+  Two of the query tools shown here retrieve the orders that were sent to a certain 
+  country if the manager provided (in an agent parameter) a country, or in all countries 
+  if the parameter says "everywhere".  
+  The third tool retrieves the general location of an employee that the LLM picked.  
   {CODE ai-agents_agent_query-tool-sample@AiIntegration\AiAgents\AiAgents.cs /}
 
 * **Syntax**:
@@ -284,16 +278,11 @@ and a schema.
 The description informs the LLM in natural language what the tool is capable of.  
 The schema is filled by the LLM with values when it requests the agent to apply the action.  
 
-When the LLM sends the agent a request to use an action tool, the chat will halt and 
-wait for the agent's response. The agent will perform the action, populate the object 
-whose layout is determined by the parameters schema, and reply to the LLM with the response.  
+When the agent sends the client a request to use an action tool, the client will need to 
+perform the action, and reply to the agent when it's done.  
 
-* The following action tool gets from the LLM an ID of an employee and transfers an 
-  object with this ID to the client. The client will need to provide an employee's living 
-  region and resume the chat with a prompt that includes the requested data.  
-  As defined by the system prompt, this data will be used by the LLM to find a vacation 
-  or another present for the employee based on its location, in reward for the employee's 
-  performance.  
+* The following action tool sends the client an ID so the client will store it in the 
+  databse.  
   {CODE ai-agents_agent_action-tool-sample@AiIntegration\AiAgents\AiAgents.cs /}
 
 * Syntax:
@@ -339,7 +328,7 @@ You can:
 * Provide a prefix that ends with `/` or `|` to trigger automatic ID creation.  
 
 
-## Set and start the chat
+## Set the conversation
 
 - Set a chat using the `store.AI.Conversation` method.  
   Pass `Conversation`:  
@@ -353,39 +342,6 @@ You can:
   The user prompt informs the agent with the user's requests and expectations for this chat.  
 - Use the value returned by the `Conversation` method to run the chat.
 
-### Chat reply
-
-LLM replies are returned by the agent to the client in an `AiAnswer` object.  
-The conversation status is indicated by `AiAnswer.AiConversationResult`.   
-
-* `AiAnswer`syntax:
-  {CODE ai-agents_AiAnswer@AiIntegration\AiAgents\AiAgents.cs /}
-
-First, check the conversation status to see if this is the agent's final response 
-or whether it just requests the client to apply an action tool.  
-
-- A request for action is relayed by an `AiConversationResult.ActionRequired` status, 
-  with any additional details stored in `AiAnswer.Answer` - within the return object 
-  that you defined for the action tool.  
-  To send requested data to the agent, use `chat.SetUserPrompt` to set the data as 
-  the user prompt and use `chat.RunAsync` to resume the chat. The prompt will be sent 
-  to the LLM by the agent and the chat will continue.  
-
-- A final response from the LLM is relayed by a `AiConversationResult.Done` status, 
-  with the LLM's message stored in `AiAnswer.Answer` - within the return object that 
-  you defined for the agent.  
-
-In the example below the chat is initiated with a user prompt and an agent parameter 
-from the human experience manager, requesting the LLM to check which employee made 
-the largest profit with orders sent to the selected country (or "everywhere" for the 
-entire world).  
-The reply is then checked:  
-If this is an action request, the ID of the highest-grossing employee is retrieved 
-from the answer, additional data is retrieved from the database based on this ID, and 
-the chat is resumed with the retrieved data as a user prompt.  
-If this is the final LLM response, the LLM suggestions regarding a reward for the 
-employee are also provided in the answer and can be handled further.  
-
 * Example: 
   {CODE ai-agents_Conversation_example@AiIntegration\AiAgents\AiAgents.cs /}
 
@@ -394,18 +350,48 @@ employee are also provided in the answer and can be handled further.
 
 * `SetUserPrompt` Definition:  
   {CODE ai-agents_SetUserPrompt_definition@AiIntegration\AiAgents\AiAgents.cs /}
-  
+
+### Handling action tools
+
+Handle action tools messages by passing the chat's `Handle` method the name of the 
+action toolyou want it to handle. When the LLM sends your agent action tool requests, 
+the data they include will reach the `Handle` method.  
+Also pass `Handle` an object to receive the incoming data, in the same structure 
+that you gave the action tool's sample object.  
+When you finish handling the requested action `return` the LLM an indication that 
+it was done.  
+
+{CODE ai-agents_Conversation_handle-for-action-tool@AiIntegration\AiAgents\AiAgents.cs /}
+
+{CODE ai-agents_Conversation_action-tool-data-object@AiIntegration\AiAgents\AiAgents.cs /}
+
+### Chat reply
+
+LLM replies are returned by the agent to the client in an `AiAnswer` object.  
+The conversation status is indicated by `AiAnswer.AiConversationResult`.   
+
+* `AiAnswer`syntax:
+  {CODE ai-agents_AiAnswer@AiIntegration\AiAgents\AiAgents.cs /}
+
+### Set user prompt and run the chat
+
+Set the user prompt using the `SetUserPrompt` method, and run the chat with the
+`RunAsync` method.
+{CODE ai-agents_Conversation_user-prompt-and-run@AiIntegration\AiAgents\AiAgents.cs /}
+
 {PANEL/}
 
 {PANEL: Full example}
 
-The agent in this example is a library assistant with access to a documentation database.  
-Its users pass it a subject, and the agent searches the database for documents in this 
-subject by their title. When it finds a document that suits the user it gives the user 
-asummary of the document. It uses a query tool to search the documents, and an action 
-tool to trigger the user to retrieve for it the text from the document.  
+The agent in this example helps a human experience manage to reward employees.  
+It searches, using query tools, the orders sent to a certain country or (if the 
+manager prompts it "everywhere") to all countries, and finds the employee that 
+made the larget profit. It then uses another query tool to find in which region 
+this employee lives, and finds rewards based on this location. Finally, it 
+uses an action tool to store the employee's ID in a `Performers` collection, 
+and returns, in its final response, the employee's ID, profits, and suggested rewards.  
 
-{CODE ai-agents_full-example@AiIntegration\AiAgents\AiAgents.cs /}
+{CODE ai-agents-full-example@AiIntegration\AiAgents\AiAgents.cs /}
 
 {PANEL/}
 
