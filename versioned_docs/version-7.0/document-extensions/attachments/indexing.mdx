@@ -14,8 +14,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
+# Index Attachments
 
-# Index Attachments
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
@@ -37,6 +37,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)
 
 </Admonition>
+    
 ## Index attachments details
 
 **The index**:
@@ -112,6 +113,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 </CodeBlock>
 </TabItem>
 </Tabs>
+    
 **Query the Index**:
 
 You can now query for Employee documents based on their attachments details.
@@ -168,8 +170,6 @@ where AttachmentNames == "photo.jpg" and AttachmentSizes > 20000
 </TabItem>
 </Tabs>
 
-
-
 ## Index details & content - by attachment name
 
 <Admonition type="note" title="Note">
@@ -209,6 +209,7 @@ for (var i = 1; i <= 3; i++)
 </TabItem>
 
 </Admonition>
+    
 **The index**:
 
 * To index the **details & content** for a specific attachment, call `LoadAttachment()` within the index definition.
@@ -297,6 +298,7 @@ for (var i = 1; i <= 3; i++)
 </CodeBlock>
 </TabItem>
 </Tabs>
+    
 **Query the Index**:
 
 You can now query for Employee documents based on their attachment details and/or its content.
@@ -352,8 +354,6 @@ where search(AttachmentContent, "Colorado Dallas")
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
 
 ## Index details & content - all attachments
 
@@ -444,6 +444,7 @@ where search(AttachmentContent, "Colorado Dallas")
 </CodeBlock>
 </TabItem>
 </Tabs>
+    
 **Query the Index**:
 
 <Tabs groupId='languageSyntax'>
@@ -501,8 +502,6 @@ where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
 </TabItem>
 </Tabs>
 
-
-
 ## Leveraging indexed attachments
 
 * Access to the indexed attachment content opens the door to many different applications,  
@@ -511,8 +510,6 @@ where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
 * This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates
   how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature.
   The resulting index allows filtering and querying based on image content.
-
-
 
 ## Syntax
 
@@ -543,12 +540,13 @@ public class AttachmentName
 `}
 </CodeBlock>
 </TabItem>
+    
 #### `LoadAttachment`
 
 <TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
-{`public IAttachmentObject LoadAttachment(object doc, string name);
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+{`// LoadAttachment returns attachment details and methods to access its content.
+public IAttachmentObject LoadAttachment(object document, string attachmentName);
 `}
 </CodeBlock>
 </TabItem>
@@ -574,18 +572,20 @@ public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
 `}
 </CodeBlock>
 </TabItem>
+    
 #### `LoadAttachments`
 
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
-{`// Returns a list of all attachments for the specified document.
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+{`// Returns a list of ALL attachments for the specified document.
+public IEnumerable<IAttachmentObject> LoadAttachments(object document);
 `}
 </CodeBlock>
 </TabItem>
 
-
-
+| Parameter      | Type      | Description                                      |
+|----------------|-----------|--------------------------------------------------|
+| **document**   | `object`  | The document whose attachments you want to load. |
 
 </LanguageContent>
 <LanguageContent language="java">
@@ -1618,7 +1618,6 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 </Admonition>
 
-
 ## Leveraging indexed attachments
 
 * Access to the indexed attachment content opens the door to many different applications,  
@@ -1628,10 +1627,10 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
   how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature. 
   The resulting index allows filtering and querying based on image content.
 
-
-
 ## Syntax
 
+#### `attachmentsFor`
+  
 <TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="js">
 {`attachmentsFor(document);
@@ -1655,6 +1654,9 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 `}
 </CodeBlock>
 </TabItem>
+
+#### `loadAttachment`
+    
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="js">
 {`loadAttachment(document, attachmentName);
@@ -1662,10 +1664,10 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 </CodeBlock>
 </TabItem>
 
-| Parameter           | Type      | Description                                    |
-|---------------------|-----------|------------------------------------------------|
-| **document**        | `object`  | The document whose attachment you want to load |
-| **attachmentName**  | `string`  | The name of the attachment to load             |
+| Parameter           | Type      | Description                                     |
+|---------------------|-----------|-------------------------------------------------|
+| **document**        | `object`  | The document whose attachment you want to load. |
+| **attachmentName**  | `string`  | The name of the attachment to load.             |
 
 <TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="js">
@@ -1687,18 +1689,27 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 `}
 </CodeBlock>
 </TabItem>
+
+#### `loadAttachments`
+    
 <TabItem value="syntax_5" label="syntax_5">
 <CodeBlock language="js">
 {`loadAttachments(document);
-
-// Returns a list containing the above attachment object per attachment.
 `}
 </CodeBlock>
 </TabItem>
 
+| Parameter       | Type      | Description                                      |
+|-----------------|-----------|--------------------------------------------------|
+| **document**    | `object`  | The document whose attachments you want to load. |
 
-
-
+<TabItem value="syntax_6" label="syntax_6">
+<CodeBlock language="js">
+{` // Returns a list containing the above attachment object per attachment.
+`}
+</CodeBlock>
+</TabItem>
+    
 </LanguageContent>
 
 <!---
