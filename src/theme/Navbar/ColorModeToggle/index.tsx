@@ -35,12 +35,12 @@ export default function NavbarColorModeToggle({
         className="absolute top-0 left-0 w-full h-[200%] flex flex-col items-center justify-center transition-transform duration-300"
         style={{ transform: `translateY(${isDark ? "-50%" : "0%"})` }}
       >
-        <div className="flex items-center justify-center h-8">
-          <Icon icon="moon" size="xs" color="ifm-menu" />
+        <div className="flex items-center justify-center h-8 text-ifm-menu">
+          <Icon icon="moon" size="xs" />
         </div>
 
-        <div className="flex items-center justify-center h-8">
-          <Icon icon="sun" size="xs" color="ifm-menu" />
+        <div className="flex items-center justify-center h-8 text-ifm-menu">
+          <Icon icon="sun" size="xs" />
         </div>
       </div>
     </button>

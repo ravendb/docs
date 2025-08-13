@@ -14,6 +14,7 @@ import {
 } from "@docusaurus/plugin-content-docs/client";
 import { Icon } from "@site/src/components/Common/Icon";
 import type { Props as DocSidebarProps } from "@theme/DocSidebar";
+import SidebarVersionDropdown from "@site/src/components/SidebarVersionDropdown";
 
 function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
   const mobileSidebar = useNavbarMobileSidebar();
@@ -79,6 +80,7 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
       <li className="menu__list-item !my-3">
         <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />
       </li>
+      {!isCloudPath && <SidebarVersionDropdown />}
       <DocSidebarItems
         items={sidebar}
         activePath={path}
