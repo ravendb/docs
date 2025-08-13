@@ -279,3 +279,18 @@ code {
 .footer {
   @apply !pb-5  !border-t-black/10 dark:!border-t-white/10;
 }
+
+/* Custom styling for secondary alerts */
+.alert--secondary {
+  --ifm-alert-background-color: rgba(243, 244, 246, 0.75);
+  --ifm-alert-background-color-highlight: rgba(229, 231, 235, 0.5);
+  --ifm-alert-foreground-color: rgba(17, 24, 39, 0.9);
+  --ifm-alert-border-color: rgba(75, 85, 99, 0.6);
+}
+
+[data-theme='dark'] .alert--secondary {
+  --ifm-alert-background-color: rgba(55, 65, 81, 0.3);
+  --ifm-alert-background-color-highlight: rgba(75, 85, 99, 0.5);
+  --ifm-alert-foreground-color: rgba(243, 244, 246, 0.9);
+  --ifm-alert-border-color: rgba(156, 163, 175, 0.6);
+}
