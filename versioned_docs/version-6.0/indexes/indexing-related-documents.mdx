@@ -203,11 +203,11 @@ store.maintenance().send(new PutIndexesOperation(indexDefinition));
 
 ## Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Indexes are updated automatically when related documents change.
 </Admonition>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Using the `LoadDocument` adds a loaded document to the tracking list. This may cause very expensive calculations to occur, especially when multiple documents are tracking the same document.
 </Admonition>
 
@@ -215,7 +215,7 @@ Using the `LoadDocument` adds a loaded document to the tracking list. This may c
 </LanguageContent>
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * As described in [modeling considerations in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling#summary),  
   it is recommended for documents to be: independent, isolated, and coherent.  
@@ -473,7 +473,7 @@ where BookNames = "The Witcher"
 </CodeBlock>
 </TabItem>
   </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### Tracking implications
 
 * Indexing related data with tracking can be a useful way to query documents by their related data.  
@@ -592,7 +592,7 @@ where CategoryName == "Beverages"
 </CodeBlock>
 </TabItem>
      </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### No-tracking implications
 
 * Indexing related data with no-tracking can be a useful way to query documents by their related data.  
@@ -659,7 +659,7 @@ T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds, string relatedCollec
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * As described in [modeling considerations in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling#summary),  
   it is recommended for documents to be: independent, isolated, and coherent.  
@@ -872,7 +872,7 @@ where BookNames = "The Witcher"
 </CodeBlock>
 </TabItem>
   </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### Tracking implications
 
 * Indexing related data with tracking can be a useful way to query documents by their related data.  
@@ -973,7 +973,7 @@ where CategoryName == "Beverages"
 </CodeBlock>
 </TabItem>
      </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### No-tracking implications
 
 * Indexing related data with no-tracking can be a useful way to query documents by their related data.  
@@ -1038,7 +1038,7 @@ T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds, string relatedCollec
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * As described in [modeling considerations in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling#summary),  
   it is recommended for documents to be: independent, isolated, and coherent.  
@@ -1343,7 +1343,7 @@ where BookNames = "The Witcher"
 </CodeBlock>
 </TabItem>
   </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### Tracking implications
 
 * Indexing related data with tracking can be a useful way to query documents by their related data.  
@@ -1462,7 +1462,7 @@ where CategoryName == "Beverages"
 </CodeBlock>
 </TabItem>
      </Tabs>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ### No-tracking implications
 
 * Indexing related data with no-tracking can be a useful way to query documents by their related data.  
@@ -1527,7 +1527,7 @@ T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds, string relatedCollec
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * As described in [modeling considerations in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling#summary),  
   it is recommended for documents to be: independent, isolated, and coherent.  
@@ -1567,7 +1567,7 @@ T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds, string relatedCollec
 
 ## Index related documents - With tracking
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example I - basic
 **What is tracked**:
 
@@ -1654,7 +1654,7 @@ where CategoryName == "Beverages"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example II - list
 **The documents**:
 
@@ -1755,7 +1755,7 @@ where BookNames = "The Witcher"
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### Tracking implications
 
 * Indexing related data with tracking can be a useful way to query documents by their related data.  
@@ -1776,7 +1776,7 @@ where BookNames = "The Witcher"
 
 ## Index related documents - No tracking
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example III - no tracking
 **What is tracked**:
 
@@ -1855,7 +1855,7 @@ where CategoryName == "Beverages"
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### No-tracking implications
 
 * Indexing related data with no-tracking can be a useful way to query documents by their related data.  

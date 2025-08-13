@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Load balancing client requests - Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A database can have multiple instances, each one residing on a different cluster node.  
   Each instance is a complete replica of the database.  
@@ -56,7 +56,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Client logic for choosing a node
 
 The client uses the following logic (from top to bottom) to determine which node to send the request to:  
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * Use the __specified node__:   
   A client can explicitly specify the target node when executing a [server-maintenance operation](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).  

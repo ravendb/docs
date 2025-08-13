@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Knowledge Base: Document Identifier Generation
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **Document Identifier**, `ID` in short, is a unique identification string associated with the document.  
   IDs are globally unique in the scope of the database: no two documents in the same 
@@ -208,7 +208,7 @@ using (var session = store.OpenSession())
 * **When to use**:  
   Use an identity only if you really need documents with incremental IDs,  
   i.e. when generating invoices, or upon legal obligation.  
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
      Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
      that there wouldn't be gaps in the sequence.  
      The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  

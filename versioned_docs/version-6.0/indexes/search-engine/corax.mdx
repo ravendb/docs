@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Search Engine: Corax
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Corax** is RavenDB's native search engine, introduced in RavenDB 
   version 6.0 as an in-house searching alternative for Lucene.  
@@ -57,7 +57,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      overriding server-wide and per-database settings.  
      Per-index settings are available only for **static** indexes.  
 
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      Note that the search engine is selected for **new indexes** only.  
      These settings do not apply to existing indexes.  
      </Admonition>
@@ -85,11 +85,11 @@ E.g. -
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 You must restart the server for the new settings to be read and applied.  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Selecting a new search engine will change the search engine only for indexes created from now on.  
 
 E.g., If my configuration has been `"Indexing.Static.SearchEngineType": "Corax"` 
@@ -210,7 +210,7 @@ Trying to use Corax with an unimplemented method (see
 [Unsupported Features](../../indexes/search-engine/corax.mdx#unsupported-features) above) 
 will generate a `NotSupportedInCoraxException` exception and end the search.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 E.g. -  
 The following query uses the `intersect` method, which is currently not supported by Corax.  
 <TabItem value="sql" label="sql">
@@ -235,7 +235,7 @@ To avoid unnecessary resource usage, the contents of complex JSON properties is 
 [See below](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
 how auto and static indexes handle such fields.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Lucene's approach of indexing complex fields as JSON strings usually makes no 
 sense, and is not supported by Corax.  
 </Admonition>
@@ -359,7 +359,7 @@ select new
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Serializing all the properties of a complex property into a single string, 
 including names, values, brackets, and so on, produces a string that is 
 **not** a good feed for analyzers and is not commonly used for searches.  
@@ -393,13 +393,13 @@ It does, however, make sense in some cases to **project** such a string.
 
 ## Compound Fields
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 This feature should be applied to very large datasets and specific queries.  
 It is meant for **experts only**.  
 </Admonition>
 
 A compound field is a Corax index field comprised of 2 simple data elements.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 A compound field can currently be composed of exactly **2 elements**.  
 </Admonition>
 
@@ -487,13 +487,13 @@ Corax configuration options include:
 
 * [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore)  
   Choose whether to include the score value in document metadata when sorting by score.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Disabling this option can improve query performance.  
   </Admonition>
 
 * [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance)  
   Choose whether to include spatial information in document metadata when sorting by distance.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Disabling this option can improve query performance.  
   </Admonition>
 
@@ -532,7 +532,7 @@ Here are some additional things to keep in mind about Corax indexes compression 
 * The compression dictionaries are stored with the index and are used for all subsequent 
   operations (indexing and querying).  
 * The benefits of compression dictionaries are most pronounced for large collections.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Training stops when it reaches either the 
   [number of documents](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation)
   threshold (100,000 docs by default) or the 
@@ -543,7 +543,7 @@ Here are some additional things to keep in mind about Corax indexes compression 
   it may make sense to manually force an index reset after reaching 
   [100,000](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation) 
   documents to force retraining.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   Indexes are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing) 
   manner: existing indexes would continue running until the new ones are created, 
   to avoid any interruption to existing queries.  

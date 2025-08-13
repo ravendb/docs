@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Data Archival
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB (6.0 and on) offers the ability to archive selected documents.  
   Archived documents are **compressed** and can be handled differently by 
@@ -69,7 +69,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   RavenDB runs an archiving task that periodically scans the database for 
   documents scheduled for archival.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     On a cluster, the archiving task is running on one node only, which is 
     always the first node in the cluster topology. Archived documents are then 
     propagated to the other nodes by regular replication.  
@@ -78,7 +78,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * When it's time to archive a document the archiving task archives it and then 
   replaces its metadata `@archive-at` property with an `@archived: true` property.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     A metadata `@archived: true` property is just an external indication that 
     RavenDB has archived a document. Users **cannot** archive documents manually 
     by adding this property to their metadata. To archive a document, schedule 
@@ -97,7 +97,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   archived documents.  
 ### Licensing
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Archival is Available on an **Enterprise** license.  
 </Admonition>
 
@@ -109,7 +109,7 @@ Learn more about licensing [here](../../start/licensing/licensing-overview.mdx).
 
 A document can be **scheduled for archival** by adding its metadata an 
 `@archive-at` property with the designated archival time (**UTC**) as a value.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Provide the scheduled time in `DateTime` format, in `UTC`.  
 E.g., `DateTime.UtcNow`
 </Admonition>
@@ -137,7 +137,7 @@ Around the specified time (considering the scan frequency) the document
 will be archived:  
 
 * The document will be compressed.  
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
   Compressing archived documents saves disk space.  
   Note, though, that archived docs' compression, as well as their 
   possible absence from any index, makes their retrieval longer and 
@@ -319,7 +319,7 @@ await store.Smuggler.ExportAsync
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 By default, archived documents are **Included** when importing/exporting data.  
 </Admonition>
 #### Archiving and Expiration
@@ -433,7 +433,7 @@ var operation =
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 **Be aware** that a patch query may run over an index, and if 
 the index **excludes archived documents** the query will not find
 any archived documents to unarchive.  
@@ -515,7 +515,7 @@ var result = await store.Maintenance.SendAsync(
 | - | - | - |
 | **Disabled** | `bool` | If set to `true`, archival is disabled for the entire database. <br/> Default: `true` |
 | **ArchiveFrequencyInSec** | `long` | Frequency (in sec) in which the server checks for documents that need to be archived. <br/> Default: 60 |
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Read [here](../../studio/database/settings/document-archival.mdx) about setting document archival using Studio.  
 </Admonition>
 
@@ -532,7 +532,7 @@ RavenDB features that currently include built-in support for archived documents 
 These features can be configured to **exclude**, **include**, or handle **only** 
 archived documents they encounter, using the `ArchivedDataProcessingBehavior` enum 
 (see below).  
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 The archiving policy is applied to an index or a data subscription task 
 **when the index or task are created**, i.e. changing the default configuration 
 will **not** change the behavior of an existing index or data subscription task.  
@@ -564,7 +564,7 @@ will **not** change the behavior of an existing index or data subscription task.
 * The definition of an index can also read the metadata of a certain document and 
   apply additional logic by its archival status.  
 The following configuration options determine how RavenDB features handle archived documents.  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that configuring the behavior of a specific [index](../../server/extensions/archival.mdx#archiving-and-indexing) 
 or [data subscription task](../../server/extensions/archival.mdx#archiving-and-data-subscriptions) 
 when they encounter archived documents will override the default settings presented here.  

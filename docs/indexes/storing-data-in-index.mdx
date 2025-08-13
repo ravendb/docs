@@ -19,7 +19,7 @@ export const supportedLanguages = ["java", "python", "php", "nodejs", "csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, 
 the resulting tokens created by the used analyzer are stored in the index.  
@@ -86,12 +86,12 @@ store
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The default `Storage` value for each field is `FieldStorage.NO`.  
 Keep in mind that storing fields will increase disk space usage.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If **the projection requires only the fields that are stored**, the document will 
 not be loaded from the storage and the query results will be retrieved directly from the index.  
 This can increase query performance at the cost of disk space used.  
@@ -103,7 +103,7 @@ This can increase query performance at the cost of disk space used.
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, 
 the resulting tokens created by the used analyzer are stored in the index.  
@@ -165,12 +165,12 @@ When the original values are stored in the index, they become available for retr
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The default `storage` value for each field is `FieldStorage.NO`.  
 Keep in mind that storing fields will increase disk space usage.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If **the projection requires only the fields that are stored**, the document will 
 not be loaded from the storage and the query results will be retrieved directly from the index.  
 This can increase query performance at the cost of disk space used.  
@@ -182,7 +182,7 @@ This can increase query performance at the cost of disk space used.
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, 
 the resulting tokens created by the used analyzer are stored in the index.  
@@ -254,12 +254,12 @@ $store->maintenance()->send(new PutIndexesOperation($indexDefinition));
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The default `storage` value for each field is `FieldStorage.NO`.  
 Keep in mind that storing fields will increase disk space usage.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If **the projection requires only the fields that are stored**, the document will 
 not be loaded from the storage and the query results will be retrieved directly from the index.  
 This can increase query performance at the cost of disk space used.  
@@ -271,7 +271,7 @@ This can increase query performance at the cost of disk space used.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, 
 the resulting tokens created by the used analyzer are stored in the index.  
@@ -333,12 +333,12 @@ await store.maintenance.send(new PutIndexesOperation(indexDefinition));
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The default `Storage` value for each field is `"No"`.  
 Keep in mind that storing fields will increase disk space usage.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If **the projection requires only the fields that are stored**, the document will 
 not be loaded from the storage and the query results will be retrieved directly from the index.  
 This can increase query performance at the cost of disk space used.  
@@ -350,7 +350,7 @@ This can increase query performance at the cost of disk space used.
 </LanguageContent>
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB allows you to store data in a static index.
 
@@ -551,7 +551,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 <a id="query-the-index"/>
 **Querying the index and projecting results:**
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this query, the projected results are defined by the custom class `NumberOfItemsOrdered`.
 
@@ -634,7 +634,7 @@ select TotalItemsOrdered
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this query, the projected results are defined by the custom class `ProjectedDetails`.
  

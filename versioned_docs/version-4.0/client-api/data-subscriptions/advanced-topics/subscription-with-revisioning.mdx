@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
 Revision support should be defined in the subscription. It also requires revisions to be configured on the collection in question.  
@@ -60,7 +60,7 @@ Data subscription's revision processing mechanism will receive pairs of revision
 | 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions
 </Admonition>
 
@@ -188,7 +188,7 @@ await revisionsWorker.Run((SubscriptionBatch<Revision<Order>> batch) =>
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
 Revision support should be defined in the subscription. It also requires revisions to be configured on the collection in question.  
@@ -229,7 +229,7 @@ Data subscription's revision processing mechanism will receive pairs of revision
 | 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions
 </Admonition>
 

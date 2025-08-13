@@ -62,11 +62,11 @@ The `Where` statement also is good if you want to perform a really simple text f
 
 Eventually all queries are always transformed into a Lucene query. The query like above will be translated into &lt;em&gt;Name:Jo*&lt;/em&gt;.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 An attempt to use `string.Contains()` method as condition of `Where` closure, will throw `NotSupportedException`. That is because the search term like \*&lt;em&gt;term&lt;/em&gt;* (note wildcards at the beginning and at the end) can cause performance issues. Due to Raven's *safe-by-default* paradigm such operation is forbidden. If you really want to achieve this case, you will find more details in one of the next section below.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Note that that results of a query might be different depending on [an analyzer](../static-indexes/configuring-index-options.mdx) that was applied.
 </Admonition>
 
@@ -244,7 +244,7 @@ The next option `EscapeQueryOptions.AllowAllWildcards` extends the previous one 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 RavenDB allows to search by using such queries but you have to be aware that leading wildcards drastically slow down searches. Consider if you really need to find substrings, most cases looking for words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
 </Admonition>
 

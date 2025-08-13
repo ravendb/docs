@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
    * [Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
@@ -64,7 +64,7 @@ SubscriptionWorker<T> GetSubscriptionWorker<T>(
 
 ## SubscriptionWorkerOptions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The only mandatory parameter for SubscriptionWorkerOptions creation is the subscription's name.
 </Admonition>
 
@@ -140,7 +140,7 @@ node is currently responsible for data subscriptions.
 
 <Admonition type="info" title="SubscriptionBatch&lt;T&gt;.Item" id="subscriptionbatch-lt-t-gt-item" href="#subscriptionbatch-lt-t-gt-item">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 if T is `BlittableJsonReaderObject`, no deserialization will take place
 </Admonition>
 
@@ -155,7 +155,7 @@ if T is `BlittableJsonReaderObject`, no deserialization will take place
 | **Metadata** | `IMetadataDictionary` | Current batch item's underlying metadata values. |
 
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Usage of `RawResult`, `RawMetadata`, and `Metadata` values outside of the document processing delegate are not supported
 </Admonition>
 
@@ -217,7 +217,7 @@ Usage of `RawResult`, `RawMetadata`, and `Metadata` values outside of the docume
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
    * [Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
@@ -268,7 +268,7 @@ SubscriptionWorker<ObjectNode> getSubscriptionWorker(String subscriptionName, St
 
 ## SubscriptionWorkerOptions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The only mandatory parameter for SubscriptionWorkerOptions creation is the subscription's name.
 </Admonition>
 
@@ -335,7 +335,7 @@ node is currently responsible for data subscriptions.
 
 <Admonition type="info" title="SubscriptionBatch&lt;T&gt;.Item" id="subscriptionbatch-lt-t-gt-item" href="#subscriptionbatch-lt-t-gt-item">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 if T is `ObjectNode`, no deserialization will take place
 </Admonition>
 

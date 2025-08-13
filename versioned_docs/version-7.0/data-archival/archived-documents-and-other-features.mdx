@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Once you have archived documents in your database (see how to [enable](../data-archival/enable-data-archiving.mdx) and [schedule](../data-archival/schedule-document-archiving.mdx) document archiving),  
   RavenDB features can detect these documents and handle them in different ways.
@@ -82,7 +82,7 @@ export const supportedLanguages = ["csharp"];
 You can configure how a static index handles archived documents when creating the index using the Client API.
 This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Example:
 
@@ -164,7 +164,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   </Tabs>   
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 When a static-index is configured to include **both** archived and non-archived documents in its processing,  
 you can also apply custom logic based on the presence of the `@archived` metadata property. 
@@ -342,7 +342,7 @@ This setting will **override** the global configuration defined by the [Indexing
 You can configure how a subscription task handles archived documents when creating the subscription using the Client API.  
 This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Example:
 
@@ -429,7 +429,7 @@ You can control whether archived documents are included when exporting or import
 [Smuggler](../client-api/smuggler/what-is-smuggler.mdx), RavenDB’s tool for database export and import, can be configured to include or exclude archived documents.
 By default, archived documents are **included** in the operation.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 In this example, exported data **excludes** archived documents:
 
@@ -447,7 +447,7 @@ In this example, exported data **excludes** archived documents:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 In this example, imported data **includes** archived documents:
 

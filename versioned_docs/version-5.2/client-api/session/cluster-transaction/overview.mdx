@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support.mdx)).  
  
@@ -75,7 +75,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 ## Cluster-wide transaction vs. Single-node transaction
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Cluster-Wide
 * Cluster-wide transactions are __fully ACID__ transactions across all the database-group nodes.  
   Implemented by the Raft algorithm, the cluster must first reach a consensus.  
@@ -102,7 +102,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Single-Node
 * A single-node transaction is considered successful once executed successfully on the node the client is communicating with.
   The data is __immediately available__ on that node, and it will be __eventually-consistent__ across all the other database nodes when the replication process takes place soon after.
@@ -133,7 +133,7 @@ For a detailed description of transactions in RavenDB please refer to the [Trans
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support.mdx)).
 
@@ -174,7 +174,7 @@ For a detailed description of transactions in RavenDB please refer to the [Trans
 
 ## Cluster-wide transaction vs. Single-node transaction
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Cluster-Wide
 * Cluster-wide transactions are __fully ACID__ transactions across all the database-group nodes.  
   Implemented by the Raft algorithm, the cluster must first reach a consensus.  
@@ -201,7 +201,7 @@ For a detailed description of transactions in RavenDB please refer to the [Trans
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Single-Node
 * A single-node transaction is considered successful once executed successfully on the node the client is communicating with.
   The data is __immediately available__ on that node, and it will be __eventually-consistent__ across all the other database nodes when the replication process takes place soon after.

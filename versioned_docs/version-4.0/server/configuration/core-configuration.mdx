@@ -26,7 +26,7 @@ Indicates the IP addresses or host addresses with ports and protocols that the s
 
 Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *HTTPS* protocol.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Setting to a non loopback address using the ***HTTP*** protocol will expose the server to the network and requires security measurements (using HTTPS, certificates). When set, RavenDB will prevent a startup unless **UnsecuredAccessAllowed** is set to **PublicNetwork** manually.
 </Admonition>
 
@@ -76,7 +76,7 @@ If no URL is set, the ServerUrl will be used along with random port
 If just a number is set, the ServerUrl will be used with the specified number as port
 If the address and port are set, RavenDB will listen to the address and port specified
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Same security consideration as in ***ServerUrl*** option should be applied (see above)
 </Admonition>
 
@@ -123,7 +123,7 @@ Set the URL to be accessible by clients and other nodes, regardless of which IP 
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In the above example, `example.com` is the external domain/ip provided by the ISP, and `ServerUrl` must be specified when the server is behind a firewall, proxy, or router
 </Admonition>
 

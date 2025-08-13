@@ -39,7 +39,7 @@ You have two options to do so:
 </TabItem>
 2. Place your .CER file in '%USERPROFILE%\My Documents\Fiddler2\ClientCertificate.cer' ( the name must be ClientCertificate.cer)
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 If you do this your client certificate is exposed through fiddler
 </Admonition>
 
@@ -55,7 +55,7 @@ If you do this your client certificate is exposed through fiddler
 
     4. After `Do you want to install this certificate?`, click Yes.
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 If you do this windows will automatically trust any certificate issued by this CA. This is a security risk!
 </Admonition>
 
@@ -65,6 +65,6 @@ If you do this windows will automatically trust any certificate issued by this C
 
     Raven.Client.Http.RequestExecutor.RemoteCertificateValidationCallback += (sender, cert, chain, errors) =&gt; true;
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 If you do this and forget to remove it from your code, your client will accept any response!
 </Admonition>

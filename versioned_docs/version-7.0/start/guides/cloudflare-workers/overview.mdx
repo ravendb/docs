@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Guides: Cloudflare Workers
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [Cloudflare Workers](https://developers.cloudflare.com/workers/) is a serverless platform that allows 
   you to deploy workloads closer to where your users are with 200+ metro data centers in its CDN network.  
@@ -22,7 +22,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   resources in RavenDB Cloud or in your own cloud infrastructure.  
 * In this guide, you will learn how to deploy a Cloudflare Worker using the [RavenDB Cloudflare Worker template][template] 
   that is connected to your RavenDB database.  
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
   This guide assumes you are familiar with Node.js development techniques 
   and the basics of Cloudflare Workers.  
   </Admonition>
@@ -257,7 +257,7 @@ Once the certificate binding is added, you will be able to start the Worker loca
 
 This will launch `wrangler` in development mode. It may require you to sign in to your Cloudflare account before continuing.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The `env.DB_CERT` binding will not be available in local mode (`--local`), this is a known issue with Wrangler.  
 The template is configured to start Wrangler in non-local mode.  
 </Admonition>

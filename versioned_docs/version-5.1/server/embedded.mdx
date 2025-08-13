@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page explains how to run RavenDB as an embedded server.
 
@@ -330,7 +330,7 @@ To access the certificate via logic that is external to RavenDB, you can use the
 <TabItem value="security2" label="security2">
 <CodeBlock language="csharp">
 {`var serverOptionsWithExec = new ServerOptions();
-var certificate = new X509Certificate2();
+var certificate = new X509Certificate2(fileName, password);
 serverOptionsWithExec.Secured(
     certLoadExec: "powershell",
     certExecArgs: "C:\\\\secrets\\\\give_me_cert.ps1",
@@ -537,7 +537,7 @@ EmbeddedServer.INSTANCE.startServer(serverOptions);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`
 </Admonition>
 

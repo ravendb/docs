@@ -674,11 +674,11 @@ List<Product> results = await asyncSession
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Projected entities (even named types) are not tracked by the session.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
 </Admonition>
 
@@ -989,11 +989,11 @@ List<Product> results = session.query(Products_BySupplierName.Result.class, Prod
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Projected entities (even named types) are not tracked by the session.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If the projected fields are stored inside the index itself (`FieldStorage.YES` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
 </Admonition>
 
@@ -1001,7 +1001,7 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
@@ -1383,7 +1383,7 @@ select Name, Phone
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
@@ -2071,11 +2071,11 @@ const projectedResults = await session.query(\{ collection: "users" \})
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Projected entities (even named types) are not tracked by the session.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If the projected fields are stored inside the index itself (`"Yes"` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
 </Admonition>
 

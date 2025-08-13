@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The __Patch__ operation is used to perform _partial_ document updates with __one trip to the server__, 
   instead of loading, modifying, and saving a full document.  
@@ -75,7 +75,7 @@ A type-safe session interface that allows performing the most common patch opera
 The patch request will be sent to the server only when calling `SaveChanges`.  
 This way it's possible to perform multiple operations in one request to the server.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Increment field value
 `Session.Advanced.Increment`
@@ -117,7 +117,7 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Set field value
 `Session.Advanced.Patch`
@@ -158,7 +158,7 @@ void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ### Array manipulation
 `Session.Advanced.Patch`
@@ -231,7 +231,7 @@ The patch request will be sent to the server only when calling `SaveChanges`, th
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### PatchCommandData
 
@@ -244,7 +244,7 @@ The patch request will be sent to the server only when calling `SaveChanges`, th
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### PatchRequest
 
@@ -1004,7 +1004,7 @@ session.SaveChanges();
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Attachments, Counters, Time Series, and Revisions:__
 
@@ -1166,7 +1166,7 @@ The method can be called by document ID or by document reference.
 <LanguageContent language="java">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document.  
 The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
 
@@ -1807,7 +1807,7 @@ store.operations().send(new PatchOperation("employees/1-A", null, patchRequest))
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Attachments, Counters, Time Series, and Revisions:__
 
@@ -1939,7 +1939,7 @@ The method can be called by document ID or by document reference
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Patching allows __updating only parts of a document__ in a single trip to the server,  
   without having to load, modify, and save the entire document back to the database.
@@ -1991,7 +1991,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 * __Session API__
 * __Session API using defer__ 
 * __Operations API__
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Session API
 
@@ -2009,7 +2009,7 @@ Patching can be performed using either of the following interfaces (detailed syn
   * `addOrPatchArray`
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Session API using defer
 
@@ -2023,7 +2023,7 @@ Patching can be performed using either of the following interfaces (detailed syn
   all patch requests done via `defer` are sent to the server for execution only when _saveChanges_ is called.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Operations API
 
@@ -2038,7 +2038,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="change-value-of-single-field"/> __Change value of single field__:  
 <Tabs groupId='languageSyntax'>
@@ -2085,7 +2085,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="change-values-of-two-fields"/> __Change values of two fields__:
 <Tabs groupId='languageSyntax'>
@@ -2152,7 +2152,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="increment-value"/> __Increment value__:
 <Tabs groupId='languageSyntax'>
@@ -2203,7 +2203,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="add-or-increment"/> __Add or increment__:
 `addOrIncrement` behavior:
@@ -2270,7 +2270,7 @@ await session.saveChanges();
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="add-or-patch"/> __Add or patch__:  
 `addOrPatch` behavior:
@@ -2336,7 +2336,7 @@ await session.saveChanges();
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="add-item-to-array"/> __Add item to array__:  
 `patchArray` behavior:
@@ -2450,7 +2450,7 @@ class BlogComment {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="add-or-patch-an-existing-array"/> __Add or patch an existing array__:  
 `addOrPatchArray` behavior:
@@ -2516,7 +2516,7 @@ await session.saveChanges();
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="insert-item-into-specific-position-in-array"/> __Insert item into specific position in array__:  
 * Inserting an item in a specific position is supported only by the _defer_ or the _operations_ syntax.  
@@ -2602,7 +2602,7 @@ class BlogComment {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="modify-item-in-specific-position-in-array"/> __Modify item in specific position in array__:  
 * Inserting an item in a specific position is supported only by the _defer_ or the _operations_ syntax.
@@ -2688,7 +2688,7 @@ class BlogComment {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="remove-items-from-array"/> __Remove items from array__:  
 * Removing all items that match some predicate from an array is supported only by the _defer_ or the _operations_ syntax.
@@ -2770,7 +2770,7 @@ class BlogComment {
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="load-documents-in-a-script"/> __Load documents in a script__:  
 * Loading documents is supported only by the _defer_ or the _operations_ syntax.
@@ -2817,7 +2817,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="remove-property"/> __Remove property__:  
 * Removing a property is supported only by the _defer_ or the _operations_ syntax.
@@ -2858,7 +2858,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="rename-property"/> __Rename property__:  
 * Renaming a property is supported only by the _defer_ or the _operations_ syntax.
@@ -2911,7 +2911,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="add-document"/> __Add document__:  
 * Adding a new document is supported only by the _defer_ or the _operations_ syntax.
@@ -2966,7 +2966,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="clone-document"/> __Clone document__:  
 * Cloning a new document is supported only by the _defer_ or the _operations_ syntax.
@@ -3012,7 +3012,7 @@ await documentStore.operations.send(patchOp);
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Attachments, Counters, Time Series, and Revisions:__
 
@@ -3021,7 +3021,7 @@ Attachments, counters, time series data, and revisions from the source document 
 </Admonition>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="createincrement-counter"/> __Create/Increment counter__:  
 <Tabs groupId='languageSyntax'>
@@ -3082,14 +3082,14 @@ await documentStore.operations.send(patchOp);
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 Learn more about Counters in this [Counters Overview](../../../document-extensions/counters/overview.mdx).
 
 </Admonition>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="delete-counter"/> __Delete counter__:  
 <Tabs groupId='languageSyntax'>
@@ -3148,7 +3148,7 @@ await documentStore.operations.send(patchOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="get-counter"/> __Get counter__:  
 <Tabs groupId='languageSyntax'>

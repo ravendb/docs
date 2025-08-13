@@ -174,7 +174,7 @@ session.SaveChanges();
 Using `/` at the end of the ID will create an ID at the server side by appending a numeric value and the node tag.
 After executing the code above we will get from the server ID something that looks like `companies/000000000000000027-A`.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Be aware that the only guarantee for the numeric part is that it will always be increasing only within the same node.
 </Admonition>
 
@@ -185,7 +185,7 @@ To do so you need to use a pipe (`|`) as a suffix to the provided ID. This will 
 to create the ID when the document is saved, using a special cluster-wide integer value that is 
 continuously incremented.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
 that there wouldn't be gaps in the sequence.  
 The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  
@@ -214,12 +214,12 @@ Identities continuously increase, so running the above code again will generate 
 Note that we used `companies` as the prefix just to follow the RavenDB convention.  
 Nothing prevents you from providing a different prefix, unrelated to the collection name.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Be aware that using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster 
 and might affect performance. 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Identity Parts Separator**  
 By default, document IDs created by the server use `/` to separate their components.  
@@ -448,7 +448,7 @@ session.saveChanges();
 Using `/` at the end of the ID will create an ID at the server side by appending a numeric value and the node tag.
 After executing the code above we will get from the server ID something that looks like `companies/000000000000000027-A`.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Be aware that the only guarantee for the numeric part is that it will always be increasing only within the same node.
 </Admonition>
 
@@ -459,7 +459,7 @@ To do so you need to use a pipe (`|`) as a suffix to the provided ID. This will 
 to create the ID when the document is saved, using a special cluster-wide integer value that is 
 continuously incremented.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
 that there wouldn't be gaps in the sequence.  
 The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  
@@ -486,7 +486,7 @@ Identities continuously increase, so running the above code again will generate 
 Note that we used `companies` as the prefix just to follow the RavenDB convention.  
 Nothing prevents you from providing a different prefix, unrelated to the collection name.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Be aware that using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster 
 and might affect performance. 
 </Admonition>
@@ -702,7 +702,7 @@ await session.saveChanges();
 Using `/` at the end of the ID will create an ID at the server side by appending a numeric value and the node tag.
 After executing the code above we will get from the server ID something that looks like `companies/000000000000000027-A`.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Be aware that the only guarantee for the numeric part is that it will always be increasing only within the same node.
 </Admonition>
 
@@ -713,7 +713,7 @@ To do so you need to use a pipe (`|`) as a suffix to the provided ID. This will 
 to create the ID when the document is saved, using a special cluster-wide integer value that is 
 continuously incremented.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
 that there wouldn't be gaps in the sequence.  
 The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  
@@ -740,7 +740,7 @@ Identities continuously increase, so running the above code again will generate 
 Note that we used `companies` as the prefix just to follow the RavenDB convention.  
 Nothing prevents you from providing a different prefix, unrelated to the collection name.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster and **might** affect performance
 </Admonition>
 

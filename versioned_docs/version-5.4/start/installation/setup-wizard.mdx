@@ -490,7 +490,7 @@ Then the following configuration should be applied:
 
 ![Configure Docker Node](./assets/w2a.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 A [common DNS error](../../server/security/common-errors-and-faq.mdx) is that **DNS records didn't yet update** locally.  
 Usually, the solution is to wait a few minutes and try again. If you do not want to wait, you can configure your network card 
@@ -517,7 +517,7 @@ RavenDB will accept `.pfx` server certificates which contain the private key, ar
 
 
 1. Place the `.pfx` file in a permanent location in each server/node folder.  
-  <Admonition type="warning" title="Warning">
+  <Admonition type="warning" title="">
   If this location changes without adjusting your `settings.json` file, the server won't find the certificate and will not run 
   unless you also reconfigure the settings.json.  
   </Admonition>
@@ -580,7 +580,7 @@ Nodes B and C are not running yet. As soon as we start them, node A will detect 
 
 You have successfully finished setting up a secure cluster of RavenDB servers using your own wildcard certificate.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 You are responsible to periodically renew your server certificate.
 

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 </Admonition>
 ## Select
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example I - Projecting individual fields of the document**:
 
@@ -136,7 +136,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example II - Projecting stored fields**:
 
@@ -215,7 +215,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example III - Projecting arrays and objects**:
 
@@ -318,7 +318,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example IV - Projection with expression**:
 
@@ -389,7 +389,7 @@ select
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example V - Projection with calculations**:
 
@@ -486,7 +486,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VI - Projecting using functions**:
 
@@ -570,7 +570,7 @@ select output(e)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VII - Projecting using a loaded document**:
 
@@ -648,7 +648,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VIII - Projection with dates**:
 
@@ -720,7 +720,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example IX - Projection with raw JavaScript code**:
 
@@ -791,7 +791,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example X - Projection with metadata**:
 
@@ -867,7 +867,7 @@ select {
 
 * The results will be projected into objects of the specified projection class.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -965,7 +965,7 @@ IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Using projection class type**:
 
@@ -1057,7 +1057,7 @@ select ProductName, PricePerUnit, UnitsInStock
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Using specific fields**:
 
@@ -1174,7 +1174,7 @@ select ProductName, PricePerUnit
 * Note: Storing fields in the index can increase query performance when projecting,  
   but this comes at the expense of the disk space used by the index.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**:
 
@@ -1276,7 +1276,7 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Syntax for projection behavior**:
 
@@ -1337,7 +1337,7 @@ public enum ProjectionBehavior {
   * Using _OfType_ with projection queries - resulting objects are Not tracked by the session  
   * Using _OfType_ with non-projection queries - resulting documents are tracked by the session
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Using OfType with projection queries**:
 
@@ -1434,7 +1434,7 @@ where ContactTitle == "owner"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Using OfType with non-projection queries**:
 
@@ -1954,7 +1954,7 @@ Because you are working with projections and not directly with documents, they a
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article provides examples of projecting query results when querying a **static-index**.  
 
@@ -2651,7 +2651,7 @@ class QueryData:
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article provides examples of projecting query results when querying a **static-index**.  
 
@@ -3381,7 +3381,7 @@ Modifications to a projection will not modify the document when `saveChanges` is
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
@@ -3396,7 +3396,7 @@ Modifications to a projection will not modify the document when `saveChanges` is
 </Admonition>
 ## SelectFields
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example I - Projecting individual fields of the document**:
 
@@ -3459,7 +3459,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example II - Projecting stored fields**:
 
@@ -3512,7 +3512,7 @@ select FirstName, LastName
 * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example III - Projecting arrays and objects**:
 
@@ -3571,7 +3571,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example IV - Projection with expression**:
 
@@ -3622,7 +3622,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example V - Projection with calculations**:
 
@@ -3678,7 +3678,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VI - Projecting using functions**:
 
@@ -3732,7 +3732,7 @@ select output(e)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VII - Projecting using a loaded document**:
 
@@ -3782,7 +3782,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example VIII - Projection with dates**:
 
@@ -3832,7 +3832,7 @@ select {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example IX - Projection with metadata**:
 
@@ -3892,7 +3892,7 @@ select {
 * Note: Storing fields in the index can increase query performance when projecting,  
   but this comes at the expense of the disk space used by the index.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**:
 
@@ -3958,7 +3958,7 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Projection behavior options**:
 

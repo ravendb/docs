@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Replication Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Replication in RavenDB is the process of __transferring data__ from one database instance to another.  
 
@@ -80,7 +80,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## What is replicated
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __The following database-items are replicated__:  
 
 * Documents
@@ -96,7 +96,7 @@ __Content replicated__:
 * The content of the replicated items data is Not changed.  
 * If content change is required then consider using [ETL tasks](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task--vs--replication-task) that use transformation scripts.
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __The following cluster-level features are Not replicated__:  
 
 * Index definitions and index data
@@ -147,7 +147,7 @@ __The following cluster-level features are Not replicated__:
 
 ## Replication & transaction boundary
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Transactions atomicity__
 
 * RavenDB guarantees that modifications made in the same transaction will always be replicated  
@@ -156,7 +156,7 @@ __Transactions atomicity__
 * This is true for both the internal-replication and the replication-tasks.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Replication & cluster-wide transactions__
 
 * A [cluster-wide transaction](../../../client-api/session/cluster-transaction/overview.mdx), which is implemented by the [Raft Protocol](../../../server/clustering/rachis/consensus-operations.mdx#consensus-operations),  
@@ -170,7 +170,7 @@ __Replication & cluster-wide transactions__
   unless it has already committed it through a raft command it received before.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Transaction boundaries in single-node transactions__
 
 * If there are several document modifications in the same transaction they will be sent in the same replication
@@ -186,7 +186,7 @@ __Transaction boundaries in single-node transactions__
   The revision is then replicated along with the document in the same indivisible batch.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 #### How revisions replication help data consistency
 

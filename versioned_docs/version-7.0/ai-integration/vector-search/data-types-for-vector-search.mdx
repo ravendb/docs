@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Data for vector search can be stored in **raw** or **pre-quantized** formats using several data types,  
   as outlined below.
@@ -38,7 +38,7 @@ export const supportedLanguages = ["csharp"];
 
 ### Textual data
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 `string` - A single text entry.  
 `string[]` - An array of text entries.
@@ -56,7 +56,7 @@ export const supportedLanguages = ["csharp"];
 * In addition to the native types described below, we highly recommended using [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search.mdx#ravenvector)  
   for efficient storage and fast queries when working with numerical embeddings.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Raw embedding data**:  
 Use when precision is critical.  
@@ -65,7 +65,7 @@ Use when precision is critical.
 `float[][]`- An array of vectors, where each entry is a separate embedding vector.  
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Pre-quantized data**:   
 Use when you prioritize storage efficiency and query speed.  
@@ -76,7 +76,7 @@ Use when you prioritize storage efficiency and query speed.
 When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#section-1).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Base64-encoded data**:  
 Use when embedding data needs to be represented as a compact and easily serializable string format.
@@ -85,7 +85,7 @@ Use when embedding data needs to be represented as a compact and easily serializ
 `string[]` - An array of Base64-encoded vectors.    
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Using lists**:  
 

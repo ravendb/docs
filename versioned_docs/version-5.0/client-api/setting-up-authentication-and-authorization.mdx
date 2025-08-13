@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Authentication and authorization** are based on [Client X.509 Certificates](../server/security/authorization/security-clearance-and-permissions.mdx).  
 
@@ -69,7 +69,7 @@ Authentication and authorization is based on [client X.509 certificates](../serv
 
 The `certificate` property allows you to pass a certificate which will be used by the RavenDB client to connect to a server. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If your RavenDB instance is running on 'https', then your application has to use a client certificate in order to be able to access the server. You can find more information [here](../server/security/overview.mdx).
 </Admonition>
 
@@ -103,7 +103,7 @@ Authentication and authorization is based on [client X.509 certificates](../serv
 
 The authentication options argument in `DocumentStore` constructor property allows you to pass a certificate which will be used by the RavenDB client to connect to a server. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If your RavenDB server instance is served using `https`, then your application is required to use a client certificate in order to be able to access the server. You can find more information [here](../server/security/overview.mdx).
 </Admonition>
 

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding by prefix
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The default technique of distributing data across shards uses a hashing algorithm based on document IDs  
   to [populate buckets](../../sharding/overview.mdx#buckets-population) that are assigned to shards. While this method is effective in distributing data evenly,  
@@ -177,7 +177,7 @@ New documents will be stored in the matching shards:
 
 Using the Client API, you can add prefixes when creating the database or after database creation:  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add prefixes when creating a database
 <Tabs groupId='languageSyntax'>
@@ -292,7 +292,7 @@ var numberOfPrefixes = shardingConfiguration.Prefixed.Count; // 2
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Add prefixes after database creation
 * Use `AddPrefixedShardingSettingOperation` to add a prefix to your sharding configuration after the database has been created.
@@ -455,7 +455,7 @@ await store.Maintenance.SendAsync(updatePrefixOp);
 
 * See the following examples:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query a selected shard by prefix**:
 
@@ -571,7 +571,7 @@ where Address.Country == "US"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query selected shards by prefix**:
 
@@ -689,7 +689,7 @@ where Address.Country == "US"
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query selected shard by prefix and by document ID**:
 

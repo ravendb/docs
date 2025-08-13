@@ -88,11 +88,11 @@ By default, if you don't set the `ShardResolutionStrategy` property on, the `Sha
 
 If you're using the `DefaultShardResolutionStrategy`, you can just use the `ShardingOn` method on the `ShardStrategy` object, in order to instruct the `DefaultShardResolutionStrategy` which property holds the shards id information for a specific entity.   
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If used, `DefaultShardResolutionStrategy` `ShardingOn` implementation enforces user to set it up on all entities that are getting stored.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If `ShardingOn` is not used, the `DefaultShardResolutionStrategy` will assign all entities within the same session to the same shard.
 </Admonition>
 

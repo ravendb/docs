@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # OpenTelemetry Support
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [OpenTelemetry](https://opentelemetry.io) is an open-source observability framework that provides a set of APIs, SDKs, and tools 
   for collecting, processing, and exporting telemetry data (metrics, traces, and logs) from applications and systems.
@@ -247,7 +247,7 @@ RavenDB offers two options for exporting metrics:
   * Export data to the console for immediate metrics insight.
   * Export data via the OpenTelemetry Protocol (OTLP) for integration with other observability platforms.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="console"/> __Console__:
 * RavenDB can output telemetry data directly to the console,  
@@ -260,7 +260,7 @@ RavenDB offers two options for exporting metrics:
   set the [Monitoring.OpenTelemetry.ConsoleExporter](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryconsoleexporter) configuration key to _true_.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="opentelemetry-protocol"/> __OpenTelemetry Protocol__:
 * OpenTelemetry supports the **OpenTelemetry Protocol** (OTLP),  
@@ -289,7 +289,7 @@ RavenDB offers two options for exporting metrics:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 <a id="configure-endpoint"/> __Configuring the OpenTelemetry Protocol endpoint__:
 The defined endpoint must correspond to the endpoint [configured on the collector](../../../server/administration/monitoring/open-telemetry.mdx#configuring-the-opentelemetry-collector) for receiving metrics data.
@@ -333,7 +333,7 @@ The endpoint format should match the transport protocol you are using:
    * Receive data via OTLP from RavenDB
    * Retrieve data from RavenDB's Prometheus endpoint
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="receive-data-via-otlp"/> __Receive data via OTLP__:
 * The `otlp` receiver is used for receiving telemetry data in the OpenTelemetry Protocol (OTLP) format.
@@ -358,7 +358,7 @@ The endpoint format should match the transport protocol you are using:
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
  
 <a id="retrieve-data-from-prometheus"/> __Retrieve data from Prometheus__:
 * The OpenTelemetry Collector includes support for retrieving metrics from a Prometheus endpoint.  

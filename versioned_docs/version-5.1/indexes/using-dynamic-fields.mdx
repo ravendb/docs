@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.
@@ -46,7 +46,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Indexing documents fields KEYS
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - index any field
 The following allows you to:  
 
@@ -145,7 +145,7 @@ from index 'Products/ByAttributeKey' where Size = 42
 
 ## Indexing documents fields VALUES
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - basic
 This example shows:  
 
@@ -238,7 +238,7 @@ from index 'Products/ByProductType' where Electronics = 23
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Example - list
 The following allows you to:
 
@@ -375,7 +375,7 @@ The field Terms are derived from this value.                                    
 | **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * All above examples have used the character `_` in the dynamic-index-field definition.  
   However, using `_` is just a convention. Any other string can be used instead.
@@ -392,7 +392,7 @@ The field Terms are derived from this value.                                    
 <LanguageContent language="java">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.
@@ -518,7 +518,7 @@ Looking for products by attributes with the usage of such a defined index is sup
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 All types of values are supported by dynamically created fields. They can be numbers, dates, etc.
 </Admonition>
 
@@ -527,7 +527,7 @@ All types of values are supported by dynamically created fields. They can be num
 <LanguageContent language="nodejs">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In RavenDB different documents can have different shapes.  
   Documents are schemaless - new fields can be added or removed as needed.

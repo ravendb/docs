@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Queue ETL: Amazon SQS
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Amazon **SQS** (**S**imple **Q**ueue **S**ervice) is a distributed Message 
   Queue service (like Azure Queue Storage and others) that is widely used 
@@ -27,7 +27,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * and **Load** the resulting JSON object to an SQS destination 
     in [CloudEvents messages](https://cloudevents.io) format.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 This article focuses on the creation of an Amazon SQS ETL task using the Client API.  
 To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx).  
 For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
@@ -64,7 +64,7 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
      such as [Amazon SNS](https://aws.amazon.com/sns/) to distribute message-related notifications 
      and [Step Functions](https://aws.amazon.com/step-functions/) to manage and visualize your workflows.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Read more about Amazon SQS in the platform's [official documentation](https://docs.aws.amazon.com/sqs/).
 </Admonition>
 
@@ -80,7 +80,7 @@ nature of the transferred data.
 Standard queueing offers an extremely high transfer rate but lacks the ability to ensure 
 that messages would arrive in the same order they were sent or prevent their duplication.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Use standard queueing when quick delivery takes precedence over messages order and 
 distinctness or the recepient can make up for them.  
 </Admonition>
@@ -131,13 +131,13 @@ transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/que
   Messages with the same _Message Group ID_ are processed in order.  
   Each group is handled independently, allowing parallel processing across different message groups.  
 
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
    Use this method when throughput is not as important as the order and uniqueness of 
    arriving messages.  
   </Admonition>
 #### Caution: ETL message size -vs- Queue message size
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Please **be aware** that the maximum size of an SQS queue message is `64 KB`, while the 
 maximum size of an ETL message to the queue is `256 KB`.  
 The significance of this difference is that when a maximum-size ETL message arrives 

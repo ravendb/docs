@@ -36,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 `Cluster Admin` is the highest security clearance. There are no restrictions. A `Cluster Admin` certificate has admin permissions to all databases. It also has the ability to modify the cluster itself.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The server certificate security clearance is called `Cluster Node`. The server certificate can also be used as a client certificate, and in that case `Cluster Node` is equivalent to `Cluster Admin` in terms of permissions.
 </Admonition>
 
@@ -121,7 +121,7 @@ The `ReadOnly` access level **allows** clients to:
 - Read data from a database, but not to write or modify data.  
 - Be subscription workers to consume data subscriptions.  
 - Query the databases that are configured in the client certificate.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   [An Auto-index](../../../indexes/creating-and-deploying.mdx#auto-indexes) 
   is built if there is no existing index that satisfies a query.  
   </Admonition>

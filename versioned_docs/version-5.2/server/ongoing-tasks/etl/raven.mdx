@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: RavenDB ETL  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics.mdx) 
   process for a given database when the destination is another RavenDB database.  
@@ -118,7 +118,7 @@ loadToEmployees(\{
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ### Alternative Syntax
 
 The target collection name can be passed to the `loadTo` command separately, as a string argument, 
@@ -129,7 +129,7 @@ using this syntax: `loadTo('Target', obj)`
   `loadToEmployees(this);`  
   `loadTo('Employees', this);`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one: 
    it is simply a string literal of the target's name.  
@@ -480,13 +480,13 @@ employee.addTimeSeries(loadTimeSeries('StockPrices'));
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 When using `addTimeSeries`, `addAttachment`, and\or `addCounter`, ETL deletes and 
 replaces the existing documents at the destination database, including all time 
 series, counters, and attachments.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Since the transformation script is run on document update, time series added to 
 documents using `addTimeSeries()` will be loaded _only_ when the document they 
 extend has changed.  

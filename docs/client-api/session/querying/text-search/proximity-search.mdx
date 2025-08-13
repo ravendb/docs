@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **proximity search** retrieves documents containing search terms that are located within a specified distance from each other.
   The distance is measured by the number of intermediate terms.
@@ -260,7 +260,7 @@ where proximity(search(Name, 'quick fox'), 2)
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **proximity search** retrieves documents containing search terms that are located within a specified distance from each other.
   The distance is measured by the number of intermediate terms.
@@ -403,7 +403,7 @@ where proximity(search(Notes, "fluent french"), 5)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A **proximity search** retrieves documents containing search terms that are located within a specified distance from each other.
   The distance is measured by the number of intermediate terms.
@@ -486,7 +486,7 @@ Each resulting document has the text 'fluent in French' in its 'Notes' field.
 The word "in" is not taken into account as it is Not part of the terms list generated
 by the analyzer. (Search is case-insensitive in this case.)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Documents containing text with the search terms appearing with no words between them
 (e.g. "fluent french") will also be returned.
 </Admonition>
@@ -550,7 +550,7 @@ by the analyzer.(Search is case-insensitive in this case).
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A __proximity search__ retrieves documents containing search terms that are located within a specified distance from each other.
   The distance is measured by the number of intermediate terms.
@@ -598,7 +598,7 @@ by the analyzer.(Search is case-insensitive in this case).
 
 ## Proximity search examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Proximity search (0 distance)__
 
@@ -640,7 +640,7 @@ where proximity(search(Notes, "fluent french"), 0)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Proximity search (distance &gt; 0)__
 

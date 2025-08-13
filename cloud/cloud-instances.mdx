@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cloud: Tiers and Instances
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 - Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) to raise or modify 
 a Free node, a Development node, or a Production cluster.  
@@ -47,7 +47,7 @@ to create a **free**-tier instance.
 * A free instance is identical to a development [Dev10](../cloud/cloud-instances.mdx#a-development-cloud-server) instance.  
   It comes with a monthly credit of **$10**, used to cover the cost of the instance and incidentals like backup storage 
   and traffic.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If your free instance uses more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
   </Admonition>
 
@@ -106,13 +106,13 @@ with a **higher number of nodes** to further distribute the cluster's workload.
 with configurations that suit your needs.  
 
 *Production tier* clusters can be also extended by [additional product nodes](../cloud/portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes).  
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 This option is not available for **PS** instance types.
 </Admonition>
 
 !["Production Tier"](./assets/tiers-and-instances-003-production.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Please be aware that cloud cluster nodes are provided with dynamic IP addresses and are 
 **not guaranteed** to keep the same addresses if the instances they reside on are rebooted.  
 </Admonition>
@@ -155,7 +155,7 @@ number of IOPS reserved for your instances.
 
 Performance tier cluster are special [reserved](../cloud/cloud-overview.mdx#reserved-clusters) production clusters featuring high-throughput and low latency with a directly mapped local NVMe storage. When multiple NVME disks are available, in order to achieve the best possible throughput and to get as many IOPS as possible, multiple NVME volumes are striped together with RAID0. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Scaling up and ephemeral drives**  
 
 Local NVMe disks on PN instance types are ephemeral, data will be lost on these disks if the VM is stopped (terminated). During normal operations, like OS or RavenDB updates and restarts, data is being preserved and there is no need to worry about the ephemeral nature of the disks. Higher-risk operations like scaling-up, where we do copy data to a temporary non-ephemeral drive, are dispatched manually by our team upon Support Request created in the RavenDB Cloud Portal.
@@ -163,13 +163,13 @@ Local NVMe disks on PN instance types are ephemeral, data will be lost on these 
 All products in this category are offered only with high-availability cluster of a minimum 3 nodes to balance the ephemeral nature of the disks.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Snapshot backups**
 
 Since this type of RavenDB clusters is designed to hold data of terrabyte order of magnitude, by default PN instance types run backups of type Snapshot to ensure fast data restore.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Local NVMe drives on PN clusters are encrypted by default using hardware-based encryption.
 </Admonition>
 

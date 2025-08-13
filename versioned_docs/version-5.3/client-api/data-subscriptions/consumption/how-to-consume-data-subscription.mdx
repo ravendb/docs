@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Batches of documents sent from a Subscription Task defined on the server are 
   consumed and processed by a subscription worker client.  
@@ -143,7 +143,7 @@ useful for logging these unexpected exceptions.
 * If a one-at-a-time strategy is chosen, it also determines how the workers 
   interact with each other to resolve which will connect the subscription.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 The strategy is configured by the `SubscriptionWorkerOptions` `Strategy` field.  
 The strategy field is the enum `SubscriptionOpeningStrategy`.  
@@ -193,7 +193,7 @@ worker is connected and another tries to connect.
 
 ## Determining Which Workers a Subscription Will Serve
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The **strategy used by the first worker connecting to a subscription** will determine 
 which additional workers this subscription will be able to serve until all worker connections
 are dropped.  
@@ -221,7 +221,7 @@ are dropped.
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Subscriptions are consumed by processing batches of documents received from the server. 
 A `SubscriptionWorker` object manages the documents processing and the communication between the client and the server according to a set of configurations received upon it's creation. 

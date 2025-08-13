@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Revert Documents to Revisions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * You can **revert the database to its state at a specified point in time**  
   by reverting documents to their revisions as they were at that time.
@@ -77,13 +77,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The information text on the right will display the expected behavior in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 * When the revert process is executed:
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     
     Documents created **AFTER** the specified Point in Time will be **moved to the Revision Bin**.
     
     </Admonition>  
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
 
     Documents created **BEFORE** this time and that were modified after this time:
     
@@ -99,7 +99,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
     </Admonition>
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
 
     Documents created **BEFORE** this time that were Not modified after this Time are **not reverted**.
 
@@ -122,7 +122,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The default Time Window value is 96 hours (4 days).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Example**:  
 
@@ -183,7 +183,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Content reverted
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * When reverting a document to one of its revisions, RavenDB actually creates a new revision for the document.  
   The content of this new revision is a copy of the historical revision content, and it becomes the current version of the document.

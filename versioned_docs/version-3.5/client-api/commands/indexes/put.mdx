@@ -129,7 +129,7 @@ string PutIndex<TDocument, TReduceResult>(string name, IndexDefinitionBuilder<TD
 
 If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases.
 </Admonition>
 
@@ -321,7 +321,7 @@ String indexName = store.getDatabaseCommands()
 
 If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases.
 </Admonition>
 

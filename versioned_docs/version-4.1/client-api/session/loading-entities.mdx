@@ -73,7 +73,7 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 </TabItem>
 </Tabs> 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
 </Admonition>
 
@@ -343,7 +343,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
 Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Entities loaded using `Stream` will be transient (not attached to session).
 </Admonition>
 
@@ -552,7 +552,7 @@ The most basic way to load a single entity is to use one of the `load` methods.
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
 </Admonition>
 
@@ -769,7 +769,7 @@ session
 
 ### Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Entities loaded using `stream` will be transient (not attached to session).
 </Admonition>
 
@@ -853,7 +853,7 @@ The most basic way to load a single entity is to use session's `load()` method.
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
 </Admonition>
 
@@ -1070,7 +1070,7 @@ await session.advanced.loadStartingWithIntoStream("employees/", employeesFile);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Entities loaded using `stream()` will be transient (not attached to session).
 </Admonition>
 

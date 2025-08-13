@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # AI agents: API
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A RavenDB **AI Agent** can be used by a RavenDB client to invoke a chat or 
   a continuous conversation between the client, an AI model, and a RavenDB database.  
@@ -179,22 +179,20 @@ We are very careful and selective with the details we send the LLM about employe
 
 <TabItem value="ai-agents_AiAgentConfiguration_example" label="ai-agents_AiAgentConfiguration_example">
 <CodeBlock language="csharp">
-{`// Agent configuration
-var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
+{`// Create an agent configuration instance and start setting it by providing
+// it with the agent name, connection string name, and system prompt.
+var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
     "You work for a human experience manager. " +
-    "The manager uses your help to find which employee made the largest profit and thank this employee. " +
-    "The manager can guide you to choose between employees that sent orders to a particular country, " +
-    "or include all employees." +
-    "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
-    "based on the employee's living area that the company can reward them with. " +
-    "You are equipped with: " +
-    "1. a query tool that allows you to retrieve all orders sent to all countries. use this tool to retrieve " +
-    "orders and calculate which employee made the largest profit. " +
-    "2. A query tool that allows you to retrieve all the orders sent to a particular country. use this tool " +
-    "if the user prompt specifies a country, and calculate which employee that sent products to this country " +
-    "made the largest profit. " +
-    "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
-    "When you're done, return the employee ID, the profit the employee made, and the suggested rewards."
+    "The manager uses your services to find which employee has made the largest profit and to suggest a reward. " +
+    "The manager provides you with the name of a country, or with the word \\"everything\\" to indicate all countries. " +
+    "then you: " +
+    "1. use a query tool to load all the orders sent to the selected countery, " +
+    "or a query tool to load all orders sent to all counteries. " +
+    "2. calculate which employee made the largest profit." +
+    "3. use a query tool to learn in what general area this employee lives." +
+    "4. find suitable vacations sites or other rewards based on the employee's residence area." +
+    "5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions." +
+    "When you're done, return these details in your answer to the user as well."
     );
 `}
 </CodeBlock>
@@ -263,7 +261,7 @@ system will recognize it by.
 <TabItem value="ai-agents_agent-identifier" label="ai-agents_agent-identifier">
 <CodeBlock language="csharp">
 {`// Agent ID
-agent.Identifier = "congratulate-employee-with-present";
+agent.Identifier = "reward-productive-employee";
 `}
 </CodeBlock>
 </TabItem>
@@ -277,10 +275,10 @@ tools are applied. Users and clients can provide their selections and preference
 using agent parameters when the chat starts, and focus the queries and the whole 
 interaction on their selections.  
 
-In the example shown below, for example, an agent parameter is used to determine 
-what area of the world a query will handle. Another example can be a student that 
-uses a librarian agent, providing the agent with a subject and having the agent 
-fetch and summarize documents related to this subject.  
+In the example shown below, an agent parameter is used to determine what area 
+of the world a query will handle. Another example can be a student that uses 
+a librarian agent, providing the agent with a subject and having the agent fetch 
+and summarize documents related to this subject.  
 
 To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
 the parameter's **name** and **description** (explaining the LLM what the parameter 
@@ -289,8 +287,9 @@ is for), and pass this instance to the `agent.Parameters.Add` method.
 * Example:
 <TabItem value="ai-agents_AiAgentParameter_function" label="ai-agents_AiAgentParameter_function">
 <CodeBlock language="csharp">
-{`//  Agent parametera
-agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, or \\"everywhere\\" to look for orders shipped to all countries"));
+{`// Agent parametera
+agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, " +
+                                          "or \\"everywhere\\" to look for orders shipped to all countries"));
 `}
 </CodeBlock>
 </TabItem>
@@ -314,6 +313,10 @@ To change this limit use `MaxModelIterationsPerCall`.
 <CodeBlock language="csharp">
 {`// Limit the number of times the LLM can request for tools in response to a single user prompt
 agent.MaxModelIterationsPerCall = 3;
+#region ai-agents_CreateAgentAsync_example
+
+#region ai-agents_CreateAgentAsync_example
+var createResult = await store.AI.CreateAgentAsync(agent);
 `}
 </CodeBlock>
 </TabItem>
@@ -353,19 +356,11 @@ with your history settings.
 {`// Set chat trimming configuration
 AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
 \{
-    SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
-    SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
-    ResultPrefix = "Summary: ",
-    MaxTokensBeforeSummarization = 10000,
-    MaxTokensAfterSummarization = 10000
+    MaxTokensBeforeSummarization = 32768,
+    MaxTokensAfterSummarization = 1024
 \};
 
-AiAgentHistoryConfiguration history = new AiAgentHistoryConfiguration()
-\{
-    HistoryExpirationInSec = 60 * 60 * 24 // 1 day
-\};
-
-agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization, history);
+agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
 `}
 </CodeBlock>
 </TabItem>
@@ -375,19 +370,6 @@ agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization, history
 <CodeBlock language="csharp">
 {`public class AiAgentSummarizationByTokens
 \{
-    // Sent with the system prompt and appears before any summary content.
-    // Customize it to influence the structure, tone, or depth of the generated summary.
-    public string SummarizationTaskBeginningPrompt \{ get; set; \}
-
-    // A concise request to generate the summary according to the guidelines set by 
-    // SummarizationTaskBeginningPrompt. Sent after the system prompt.
-    // Adjust its phrasing to change how explicitly the model understands the summarization task.
-    public string SummarizationTaskEndPrompt \{ get; set; \}
-
-    // An introductory prefix that appears before the generated summary of the previous conversation.
-    // Customize this prefix to change how the summary is introduced when producing conversation summaries.
-    public string ResultPrefix \{ get; set; \}
-
     // The maximum number of tokens allowed before summarization is triggered.
     public long? MaxTokensBeforeSummarization \{ get; set; \}
 
@@ -419,13 +401,11 @@ public class AiAgentHistoryConfiguration
 At the end of a chat, when the LLM is done processing and negotiating, 
 it returns a structured output reply through the agent to the client in an 
 object whose layout we need to prepare beforehand.  
-The layout object we prepare is sent to the LLM when the agent is started.  
 
-You can prepare this object in two different formats.  
-The first format is the formal **JSON-based schema** in which the LLM expects 
-the structure to arrive.  
-The second is a friendlier **sample object** format, that RavenDB will turn 
-to a schema behind the scenes for us.  
+The layout object we prepare is sent to the LLM when the agent is started.  
+You can prepare this object in two different formats: a formal **JSON-based 
+schema**, or a friendlier **sample object** format, that RavenDB will turn 
+to a schema behind the scenes.  
 Normally the simpler way is to prepare a sample object and let RavenDB translate 
 it to a schema for you.  
 
@@ -475,11 +455,11 @@ To prepare a sample object, use the agent's `SampleObject` string property.
 To prepare a schema, use `OutputSchema`.  
 <TabItem value="ai-agents_agent_sampleObjectString" label="ai-agents_agent_sampleObjectString">
 <CodeBlock language="csharp">
-{`// Set sample object
+{`// Set LLM response object
 agent.SampleObject = "\{" +
-                        "\\"EmployeeID\\": \\"embed the employee’s ID here\\"" +
-                        "\\"EmployeeProfit\\": \\"embed the profit made by the employee here\\"," +
-                        "\\"Suggestions\\": \\"embed suggested rewards here\\"" +
+                        "\\"EmployeeID\\": \\"embed the employee’s ID here\\"," +
+                        "\\"Profit\\": \\"embed the profit made by the employee here\\"," +
+                        "\\"SuggestedReward\\": \\"embed suggested rewards here\\"" +
                      "\}";
 `}
 </CodeBlock>
@@ -519,41 +499,42 @@ Query tools are for **read only operations**. To make changes in the database,
 use an action tool.  
 
 * **Example**:  
-  The following query tools are used by an agent that helps a human experience manager 
-  learn which employee made the largest profit. They use a `$country` agent parameter whose 
-  value the manager provides when the chat is started. If the parameter's value is "everywhere" 
-  the first tool is applied, and if it is a specific country the second tool is applied.  
-  The tools retrieve all the orders that were sent to the selected destination.  
-  As instructed in the system prompt, the LLM will then calculate which employee 
-  made the largest profit, and send its ID to the user (human experience manager) 
-  through an action tool (explained below).  
+  Two of the query tools shown here retrieve the orders that were sent to a certain 
+  country if the manager provided (in an agent parameter) a country, or in all countries 
+  if the parameter says "everywhere".  
+  The third tool retrieves the general location of an employee that the LLM picked.  
 <TabItem value="ai-agents_agent_query-tool-sample" label="ai-agents_agent_query-tool-sample">
 <CodeBlock language="csharp">
-{`agent.Queries =
-[   
-    // Set first query tool
+{`// Create query tools
+agent.Queries =
+[
+    // Creata a query tool that triggers the agent to retrieve all the orders that were sent to all countries
     new AiAgentToolQuery
     \{
         Name = "retrieve-orders-sent-to-all-countries",
         Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-        Query = "from \\"Orders\\" " +
-                "select Employee, Lines.Quantity",
-        ParametersSampleObject = "\{" +
-                                    "\\"Employee\\": \\"employee ID\\"," +
-                                    "\\"Lines.Quantity\\": \\"an array of profits made by this employee\\"" +
-                                 "\}"
+        Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+        ParametersSampleObject = "\{\}"
     \},
     
-    // Set second query tool
+    // Create a query tool that triggers the agent to retrieve all the orders that were sent to a specific country
     new AiAgentToolQuery
     \{
-        Name = "retrieve-orders-sent-to-a-particular-country",
-        Description = "a query tool that allows you to retrieve all orders sent to a particular country",
-        Query = "from \\"Orders\\" where ShipTo.Country == $country " +
-                "select Employee, Lines.Quantity",
+        Name = "retrieve-orders-sent-to-a-specific-country",
+        Description = "a query tool that allows you to retrieve all orders sent to a specific country",
+        Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+        ParametersSampleObject = "\{\}"
+    \},
+
+    // Create a query tool that triggers the agent to retrieve the performer's living region 
+    // details from the database
+    new AiAgentToolQuery
+    \{
+        Name = "retrieve-performer-living-region",
+        Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+        Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
         ParametersSampleObject = "\{" +
-                                    "\\"Employee\\": \\"employee ID\\"," +
-                                    "\\"Lines.Quantity\\": \\"an array of profits made by this employee\\"" +
+                                    "\\"employeeId\\": \\"embed the employee's ID here\\"" +
                                  "\}"
     \}
 ];
@@ -588,29 +569,28 @@ and a schema.
 The description informs the LLM in natural language what the tool is capable of.  
 The schema is filled by the LLM with values when it requests the agent to apply the action.  
 
-When the LLM sends the agent a request to use an action tool, the chat will halt and 
-wait for the agent's response. The agent will perform the action, populate the object 
-whose layout is determined by the parameters schema, and reply to the LLM with the response.  
+When the agent sends the client a request to use an action tool, the client will need to 
+perform the action, and reply to the agent when it's done.  
 
-* The following action tool gets from the LLM an ID of an employee and transfers an 
-  object with this ID to the client. The client will need to provide an employee's living 
-  region and resume the chat with a prompt that includes the requested data.  
-  As defined by the system prompt, this data will be used by the LLM to find a vacation 
-  or another present for the employee based on its location, in reward for the employee's 
-  performance.  
+* The following action tool sends the client an ID so the client will store it in the 
+  databse.  
 <TabItem value="ai-agents_agent_action-tool-sample" label="ai-agents_agent_action-tool-sample">
 <CodeBlock language="csharp">
-{`agent.Actions =
-[   // set action tool
+{`// Create action tools
+agent.Actions =
+[
+    // Create an action tool that triggers the client to store the performer's details
     new AiAgentToolAction
-    \{
-        Name = "request-employee-details-by-ID",
-        Description = "an action tool that allows you to provide the user the ID of the employee that made " +
-                      "the largest profit so the user will send you a prompt with the employee’s living region",
-        ParametersSampleObject = "\{" +
-                                    "\\"EmployeeID\\": \\"embed the employee’s ID here\\"" +
-                                 "\}"
-    \}
+        \{
+            Name = "store-performer-details",
+            Description = "an action tool that allows you to store the ID of the employee that made " +
+                          "the largest profit, the profit, and your suggestions for a reward, in the database.",
+            ParametersSampleObject = "\{" +
+                                        "\\"employeeID\\": \\"embed the employee’s ID here\\"," +
+                                        "\\"profit\\": \\"embed the employee’s profit here\\"," +
+                                        "\\"suggestedReward\\": \\"embed your suggestions for a reward here\\"" +
+                                     "\}"
+        \}
 ];
 `}
 </CodeBlock>
@@ -641,7 +621,8 @@ within the agent configuration and one that passes to the method a sample object
 * Example:  
 <TabItem value="ai-agents_CreateAgentAsync_example" label="ai-agents_CreateAgentAsync_example">
 <CodeBlock language="csharp">
-{`var createResult = await store.AI.CreateAgentAsync(agent);
+{`#region ai-agents_CreateAgentAsync_example
+var createResult = await store.AI.CreateAgentAsync(agent);
 `}
 </CodeBlock>
 </TabItem>
@@ -687,7 +668,7 @@ You can:
 * Provide a prefix that ends with `/` or `|` to trigger automatic ID creation.  
 
 
-## Set and start the chat
+## Set the conversation
 
 - Set a chat using the `store.AI.Conversation` method.  
   Pass `Conversation`:  
@@ -700,6 +681,80 @@ You can:
 - Set the user prompt using the `SetUserPrompt`method.  
   The user prompt informs the agent with the user's requests and expectations for this chat.  
 - Use the value returned by the `Conversation` method to run the chat.
+
+* Example: 
+<TabItem value="ai-agents_Conversation_example" label="ai-agents_Conversation_example">
+<CodeBlock language="csharp">
+{`// Set chat ID, prefix, and agent parameters
+var chat = store.AI.Conversation(
+    createResult.Identifier,
+    "Performers/",
+    new AiConversationCreationOptions().AddParameter("country", "France"));
+`}
+</CodeBlock>
+</TabItem>
+
+* `Conversation` Definition:  
+<TabItem value="ai-agents_Conversation_definition" label="ai-agents_Conversation_definition">
+<CodeBlock language="csharp">
+{`public IAiConversationOperations Conversation(string agentId, string conversationId, AiConversationCreationOptions creationOptions, string changeVector = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* `SetUserPrompt` Definition:  
+<TabItem value="ai-agents_SetUserPrompt_definition" label="ai-agents_SetUserPrompt_definition">
+<CodeBlock language="csharp">
+{`void SetUserPrompt(string userPrompt);
+`}
+</CodeBlock>
+</TabItem>
+
+### Handling action tools
+
+Handle action tools messages by passing the chat's `Handle` method the name of the 
+action toolyou want it to handle. When the LLM sends your agent action tool requests, 
+the data they include will reach the `Handle` method.  
+Also pass `Handle` an object to receive the incoming data, in the same structure 
+that you gave the action tool's sample object.  
+When you finish handling the requested action `return` the LLM an indication that 
+it was done.  
+
+<TabItem value="ai-agents_Conversation_handle-for-action-tool" label="ai-agents_Conversation_handle-for-action-tool">
+<CodeBlock language="csharp">
+{`// Handle the action tool that the LLM uses to store an employee's details in the database
+chat.Handle("store-performer-details", (Performer performer) =>
+\{
+    using (var session1 = store.OpenSession())
+    \{
+        Performer rewarded = new Performer
+        \{
+            employeeID = performer.employeeID,
+            profit = performer.profit,
+            suggestedReward = performer.suggestedReward
+        \};
+
+        session1.Store(rewarded);
+        session1.SaveChanges();
+    \}
+    return "done";
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="ai-agents_Conversation_action-tool-data-object" label="ai-agents_Conversation_action-tool-data-object">
+<CodeBlock language="csharp">
+{`// An object for the LLM response
+public class Performer
+\{
+    public string employeeID;
+    public string profit;
+    public string suggestedReward;
+\}
+`}
+</CodeBlock>
+</TabItem>
 
 ### Chat reply
 
@@ -729,103 +784,42 @@ public enum AiConversationResult
 </CodeBlock>
 </TabItem>
 
-First, check the conversation status to see if this is the agent's final response 
-or whether it just requests the client to apply an action tool.  
+### Set user prompt and run the chat
 
-- A request for action is relayed by an `AiConversationResult.ActionRequired` status, 
-  with any additional details stored in `AiAnswer.Answer` - within the return object 
-  that you defined for the action tool.  
-  To send requested data to the agent, use `chat.SetUserPrompt` to set the data as 
-  the user prompt and use `chat.RunAsync` to resume the chat. The prompt will be sent 
-  to the LLM by the agent and the chat will continue.  
-
-- A final response from the LLM is relayed by a `AiConversationResult.Done` status, 
-  with the LLM's message stored in `AiAnswer.Answer` - within the return object that 
-  you defined for the agent.  
-
-In the example below the chat is initiated with a user prompt and an agent parameter 
-from the human experience manager, requesting the LLM to check which employee made 
-the largest profit with orders sent to the selected country (or "everywhere" for the 
-entire world).  
-The reply is then checked:  
-If this is an action request, the ID of the highest-grossing employee is retrieved 
-from the answer, additional data is retrieved from the database based on this ID, and 
-the chat is resumed with the retrieved data as a user prompt.  
-If this is the final LLM response, the LLM suggestions regarding a reward for the 
-employee are also provided in the answer and can be handled further.  
-
-* Example: 
-<TabItem value="ai-agents_Conversation_example" label="ai-agents_Conversation_example">
+Set the user prompt using the `SetUserPrompt` method, and run the chat with the
+`RunAsync` method.
+<TabItem value="ai-agents_Conversation_user-prompt-and-run" label="ai-agents_Conversation_user-prompt-and-run">
 <CodeBlock language="csharp">
-{`// Set chat
-var chat = store.AI.Conversation(
-    createResult.Identifier,
-    "suggestions/",
-    new AiConversationCreationOptions().AddParameter("country", "France"));
+{`// Set the user prompt and run the chat
+chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
 
-// Set user prompt and run the chat
-chat.SetUserPrompt("check which employee made the largest profit");
-var LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
+var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
 
-Employee employee;
-if (LLMResponse.Status == AiConversationResult.ActionRequired)
+if (LLMResponse.Status == AiConversationResult.Done)
 \{
-    // Handle action required case
-
-    // The LLM response indicates that an action is required to fetch the employee's ID
-    // Extract the employee ID from the LLM response
-    var employeeId = LLMResponse.Answer.EmployeeID;
-
-    employee = (Employee)session.Advanced
-        .AsyncDocumentQuery<Employee>()
-        .WhereEquals(x => x.Id, employeeId);
-
-    // Run the chat again and send as user prompt the details requested by the LLM
-    chat.SetUserPrompt("\{\\"City\\": " + employee.Address.City +
-                       "\{\\"Region\\": " + employee.Address.Region +
-                       "\{\\"Country\\": " + employee.Address.Country);
-    LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
-
-    if (LLMResponse.Status == AiConversationResult.Done)
-    \{
-        // The LLM has successfully processed the action and returned the final response
-        // Find it in LLMResponse.Answer.EmployeeID, LLMResponse.Answer.EmployeeProfit, 
-        // and LLMResponse.Answer.SuggestedRewards
-    \}
+    // The LLM successfully processed the user prompt and returned its response.
+    // The performer's ID was stored in the Performers collection by the action tool.  
+    // LLM response includes the performer's ID, profit, and suggested rewards.
 \}
 `}
 </CodeBlock>
 </TabItem>
 
-* `Conversation` Definition:  
-<TabItem value="ai-agents_Conversation_definition" label="ai-agents_Conversation_definition">
-<CodeBlock language="csharp">
-{`public IAiConversationOperations Conversation(string agentId, string conversationId, AiConversationCreationOptions creationOptions, string changeVector = null)
-`}
-</CodeBlock>
-</TabItem>
-
-* `SetUserPrompt` Definition:  
-<TabItem value="ai-agents_SetUserPrompt_definition" label="ai-agents_SetUserPrompt_definition">
-<CodeBlock language="csharp">
-{`void SetUserPrompt(string userPrompt);
-`}
-</CodeBlock>
-</TabItem>
-  
 
 
 ## Full example
 
-The agent in this example is a library assistant with access to a documentation database.  
-Its users pass it a subject, and the agent searches the database for documents in this 
-subject by their title. When it finds a document that suits the user it gives the user 
-asummary of the document. It uses a query tool to search the documents, and an action 
-tool to trigger the user to retrieve for it the text from the document.  
+The agent in this example helps a human experience manage to reward employees.  
+It searches, using query tools, the orders sent to a certain country or (if the 
+manager prompts it "everywhere") to all countries, and finds the employee that 
+made the larget profit. It then uses another query tool to find in which region 
+this employee lives, and finds rewards based on this location. Finally, it 
+uses an action tool to store the employee's ID in a `Performers` collection, 
+and returns, in its final response, the employee's ID, profits, and suggested rewards.  
 
-<TabItem value="ai-agents_full-example" label="ai-agents_full-example">
+<TabItem value="ai-agents-full-example" label="ai-agents-full-example">
 <CodeBlock language="csharp">
-{`public async Task FullAIAgentsExample()
+{`public async Task usingHandleToRunChat_full()
 \{
     var store = new DocumentStore();
 
@@ -835,9 +829,12 @@ tool to trigger the user to retrieve for it the text from the document.
         // Connection string name & identifier
         Name = "open-ai-cs",
 
+        ModelType = AiModelType.Chat,
+
         // OpenAI connection settings
+
         OpenAiSettings = new OpenAiSettings(
-            apiKey: "your-api-key",
+            apiKey: "your api key",
             endpoint: "https://api.openai.com/v1",
             // LLM model for text generation
             model: "gpt-4.1")
@@ -845,144 +842,140 @@ tool to trigger the user to retrieve for it the text from the document.
 
     // Deploy the connection string to the server
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-
     var putConnectionStringResult = store.Maintenance.Send(operation);
 
     using var session = store.OpenAsyncSession();
 
-    // Agent configuration
-    var agent = new AiAgentConfiguration("congratulate-employee-with-present", connectionString.Name,
+    // Create an agent configuration instance and start setting it by providing
+    // it with the agent name, connection string name, and system prompt.
+    var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
         "You work for a human experience manager. " +
-        "The manager uses your help to find which employee made the largest profit and thank this employee. " +
-        "The manager can guide you to choose between employees that sent orders to a particular country, " +
-        "or include all employees." +
-        "To help the manager thank the employee, you are requested to find good vacation sites or other presents " +
-        "based on the employee's living area that the company can reward them with. " +
-        "You are equipped with: " +
-        "1. a query tool that allows you to retrieve all orders sent to all countries. use this tool to retrieve " +
-        "orders and calculate which employee made the largest profit. " +
-        "2. A query tool that allows you to retrieve all the orders sent to a particular country. use this tool " +
-        "if the user prompt specifies a country, and calculate which employee that sent products to this country " +
-        "made the largest profit. " +
-        "3.An action tool that you can provide the employee's ID with to get the employee's living region." +
-        "When you're done, return the employee ID, the profit the employee made, and the suggested rewards."
+        "The manager uses your services to find which employee has made the largest profit and to suggest a reward. " +
+        "The manager provides you with the name of a country, or with the word \\"everything\\" to indicate all countries. " +
+        "then you: " +
+        "1. use a query tool to load all the orders sent to the selected countery, " +
+        "or a query tool to load all orders sent to all counteries. " +
+        "2. calculate which employee made the largest profit." +
+        "3. use a query tool to learn in what general area this employee lives." +
+        "4. find suitable vacations sites or other rewards based on the employee's residence area." +
+        "5. use an action tool to store in the database the employee's ID." +
+        "When you're done, return these details in your answer to the user as well."
         );
 
     // Agent ID
-    agent.Identifier = "congratulate-employee-with-present";
+    agent.Identifier = "reward-productive-employee";
 
     //  Agent parametera
-    agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, or \\"everywhere\\" to look for orders shipped to all countries"));
+    agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, " +
+                                              "or \\"everywhere\\" to look for orders shipped to all countries"));
 
-    // Set sample object
+    // Set LLM response object
     agent.SampleObject = "\{" +
-                            "\\"EmployeeID\\": \\"embed the employee’s ID here\\"" +
-                            "\\"EmployeeProfit\\": \\"embed the profit made by the employee here\\"," +
-                            "\\"Suggestions\\": \\"embed suggested rewards here\\"" +
+                            "\\"EmployeeID\\": \\"embed the employee’s ID here\\"," +
+                            "\\"Profit\\": \\"embed the profit made by the employee here\\"," +
+                            "\\"SuggestedReward\\": \\"embed suggested rewards here\\"" +
                          "\}";
 
+    // Create query tools
     agent.Queries =
-    [   
-        // Set first query tool
+    [
+        // Creata a query tool that triggers the agent to retrieve all the orders that were sent to all countries
         new AiAgentToolQuery
         \{
             Name = "retrieve-orders-sent-to-all-countries",
             Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-            Query = "from \\"Orders\\" " +
-                    "select Employee, Lines.Quantity",
-            ParametersSampleObject = "\{" +
-                                        "\\"Employee\\": \\"employee ID\\"," +
-                                        "\\"Lines.Quantity\\": \\"an array of profits made by this employee\\"" +
-                                     "\}"
+            Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+            ParametersSampleObject = "\{\}"
         \},
         
-        // Set second query tool
+        // Create a query tool that triggers the agent to retrieve all the orders that were sent to a specific country
         new AiAgentToolQuery
         \{
-            Name = "retrieve-orders-sent-to-a-particular-country",
-            Description = "a query tool that allows you to retrieve all orders sent to a particular country",
-            Query = "from \\"Orders\\" where ShipTo.Country == $country " +
-                    "select Employee, Lines.Quantity",
+            Name = "retrieve-orders-sent-to-a-specific-country",
+            Description = "a query tool that allows you to retrieve all orders sent to a specific country",
+            Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+            ParametersSampleObject = "\{\}"
+        \},
+
+        // Create a query tool that triggers the agent to retrieve the performer's living region 
+        // details from the database
+        new AiAgentToolQuery
+        \{
+            Name = "retrieve-performer-living-region",
+            Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+            Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
             ParametersSampleObject = "\{" +
-                                        "\\"Employee\\": \\"employee ID\\"," +
-                                        "\\"Lines.Quantity\\": \\"an array of profits made by this employee\\"" +
+                                        "\\"employeeId\\": \\"embed the employee's ID here\\"" +
                                      "\}"
         \}
     ];
 
+    // Create action tools
     agent.Actions =
-    [   
-        // set action tool
+    [
+        // Create an action tool that triggers the client to store the performer's details
         new AiAgentToolAction
-        \{
-            Name = "request-employee-details-by-ID",
-            Description = "an action tool that allows you to provide the user the ID of the employee that made " +
-                          "the largest profit so the user will send you a prompt with the employee’s living region",
-            ParametersSampleObject = "\{" +
-                                        "\\"EmployeeID\\": \\"embed the employee’s ID here\\"" +
-                                     "\}"
-        \}
+            \{
+                Name = "store-performer-details",
+                Description = "an action tool that allows you to store the ID of the employee that made " +
+                              "the largest profit, the profit, and your suggestions for a reward, in the database.",
+                ParametersSampleObject = "\{" +
+                                            "\\"employeeID\\": \\"embed the employee’s ID here\\"," +
+                                            "\\"profit\\": \\"embed the employee’s profit here\\"," +
+                                            "\\"suggestedReward\\": \\"embed your suggestions for a reward here\\"" +
+                                         "\}"
+            \}
     ];
 
     // Set chat trimming configuration
     AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
     \{
-        SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
-        SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
-        ResultPrefix = "Summary: ",
-        MaxTokensBeforeSummarization = 10000,
-        MaxTokensAfterSummarization = 10000
+        MaxTokensBeforeSummarization = 32768,
+        MaxTokensAfterSummarization = 1024
     \};
+
     agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
 
     // Limit the number of times the LLM can request for tools in response to a single user prompt
     agent.MaxModelIterationsPerCall = 3;
 
     var createResult = await store.AI.CreateAgentAsync(agent);
-    // Set chat
+
+    // Set chat ID, prefix, and agent parameters
     var chat = store.AI.Conversation(
         createResult.Identifier,
-        "suggestions/",
+        "Performers/",
         new AiConversationCreationOptions().AddParameter("country", "France"));
 
-    // Set user prompt and run the chat
-    chat.SetUserPrompt("check which employee made the largest profit");
-    var LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
-
-    Employee employee;
-    if (LLMResponse.Status == AiConversationResult.ActionRequired)
+    // Handle the action tool that the LLM uses to store an employee's details in the database
+    chat.Handle("store-performer-details", (Performer performer) =>
     \{
-        // Handle action required case
-
-        // The LLM response indicates that an action is required to fetch the employee's ID
-        // Extract the employee ID from the LLM response
-        var employeeId = LLMResponse.Answer.EmployeeID;
-
-        employee = (Employee)session.Advanced
-            .AsyncDocumentQuery<Employee>()
-            .WhereEquals(x => x.Id, employeeId);
-
-        // Run the chat again and send as user prompt the details requested by the LLM
-        chat.SetUserPrompt("\{\\"City\\": " + employee.Address.City +
-                           "\{\\"Region\\": " + employee.Address.Region +
-                           "\{\\"Country\\": " + employee.Address.Country);
-        LLMResponse = await chat.RunAsync<OutputSchem>(CancellationToken.None);
-
-        if (LLMResponse.Status == AiConversationResult.Done)
+        using (var session1 = store.OpenSession())
         \{
-            // The LLM has successfully processed the action and returned the final response
-            // Find it in LLMResponse.Answer.EmployeeID, LLMResponse.Answer.EmployeeProfit, 
-            // and LLMResponse.Answer.SuggestedRewards
-        \}
-    \}
-\}
+            Performer rewarded = new Performer
+            \{
+                employeeID = performer.employeeID,
+                profit = performer.profit,
+                suggestedReward = performer.suggestedReward
+            \};
 
-public class OutputSchem
-\{
-    public static OutputSchem Instance = new();
-    public string EmployeeID = "The employee's ID";
-    public string EmployeeProfit = "The profit made by the employee";
-    public string SuggestedRewards = "Suggested rewards for the employee";
+            session1.Store(rewarded);
+            session1.SaveChanges();
+        \}
+        return "done";
+    \});
+
+    // Set the user prompt and run the chat
+    chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
+
+    var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+
+    if (LLMResponse.Status == AiConversationResult.Done)
+    \{
+        // The LLM successfully processed the user prompt and returned its response.
+        // The performer's ID was stored in the Performers collection by the action tool.  
+        // LLM response includes the performer's ID, profit, and suggested rewards.
+    \}
 \}
 `}
 </CodeBlock>

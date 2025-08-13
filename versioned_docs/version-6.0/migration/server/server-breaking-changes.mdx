@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Migration: Server Breaking Changes
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The following features and behaviors that were available in previous versions of RavenDB   
   are either unavailable in RavenDB `6.x` or incompatible with those earlier versions.
@@ -75,7 +75,7 @@ This is done to distinguish partial load errors that are used in SQL ETL from, f
 
 Starting with `6.0` we have changed how the [Search method](../../indexes/querying/searching.mdx) handles wildcards when they are included in search terms:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Behavior for versions lower than `6.0`:  
 
@@ -84,7 +84,7 @@ RavenDB would attempt to restore the `*` to their original positions before send
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Behavior for `6.0` and up:
 
@@ -100,7 +100,7 @@ Note the different behavior in the following cases:
 * **When using the Exact analyzer**:  
   The queried terms in the _Search_ method remain untouched as produced by the exact analyzer. 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 When using **Corax** as the search engine,  
 this behavior will only apply to indexes that are newly created or have been reset.
 </Admonition>

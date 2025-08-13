@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB supports __streaming data__ from the server to the client.  
   Streaming is useful when processing a large number of results.
@@ -72,7 +72,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Stream by query
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a dynamic query
 
 <Tabs groupId='languageSyntax'>
@@ -224,7 +224,7 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a dynamic raw query
 
 <Tabs groupId='languageSyntax'>
@@ -270,7 +270,7 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a projected query
 
 <Tabs groupId='languageSyntax'>
@@ -329,7 +329,7 @@ public class NameProjection
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream an index query
 
 <Tabs groupId='languageSyntax'>
@@ -390,7 +390,7 @@ public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream related documents
 __Why streaming query results does not support 'include'__:
 
@@ -507,7 +507,7 @@ public class AllDocsProjection
 
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### By query syntax
 
 <TabItem value="syntax" label="syntax">
@@ -538,7 +538,7 @@ IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQue
 
 ## Stream by prefix
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ####  Stream results by prefix
 * Streamed data can also be filtered by an __ID prefix__ and by other __filtering options__, see syntax below.
 * Note: No auto-index is created when streaming results by a prefix.
@@ -592,7 +592,7 @@ await using (IAsyncEnumerator<StreamResult<Order>> streamResults =
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### By prefix syntax
 
 <TabItem value="syntax_2" label="syntax_2">
@@ -734,7 +734,7 @@ while (results.hasNext()) \{
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB supports __streaming data__ from the server to the client.  
   Streaming is useful when processing a large number of results.
@@ -787,7 +787,7 @@ while (results.hasNext()) \{
 
 ## Stream by query
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a dynamic query
 
 <TabItem value="stream_1" label="stream_1">
@@ -844,7 +844,7 @@ queryStream.on("error", err => \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a dynamic raw query
 
 <TabItem value="stream_2" label="stream_2">
@@ -863,7 +863,7 @@ const queryStream = await session.advanced.stream(rawQuery);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream a projected query
 
 <TabItem value="stream_3" label="stream_3">
@@ -888,7 +888,7 @@ queryStream.on("data", resultItem => \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream an index query
 
 <Tabs groupId='languageSyntax'>
@@ -934,7 +934,7 @@ class Employees_ByFirstName extends AbstractJavaScriptIndexCreationTask {
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream related documents
 __Why streaming query results does not support 'include'__:
 
@@ -995,7 +995,7 @@ queryStream.on("data", resultItem => \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### By query syntax
 
 <TabItem value="syntax_1" label="syntax_1">
@@ -1028,7 +1028,7 @@ queryStream.on("data", resultItem => \{
 
 ## Stream by prefix
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Stream results by prefix
 * Streamed data can also be filtered by an __ID prefix__ and by some __filtering options__, see below.
 * Note: No auto-index is created when streaming results by a prefix.
@@ -1087,7 +1087,7 @@ queryStream.on("error", err => \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### By prefix syntax
 
 <TabItem value="syntax_2" label="syntax_2">

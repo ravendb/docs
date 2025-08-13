@@ -26,7 +26,7 @@ You can also ignore these limits and replace the certificates immediately but be
 
 To manually replace the server certificate you can either edit [settings.json](../../configuration/configuration-options.mdx#json) with a new certificate path and restart the server or you can overwrite the existing certificate file and the server will pick it up within one hour without requiring a restart.
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 The new certificate must contain all of the cluster domain names in the CN or ASN properties of the certificate. Otherwise you will get an authentication error because SSL/TLS requires the domain in the certificate to match with the actual domain being used.
 </Admonition>
 

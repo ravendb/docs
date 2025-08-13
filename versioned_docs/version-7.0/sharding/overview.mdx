@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Sharding, supported by RavenDB from version 6.0 onward, is the distribution of a database's content among autonomous **Shards**,
   where each Shard hosts and manages a **unique subset** of the database content.
@@ -54,7 +54,7 @@ In this manner, the size of the overall database, comprised of all shards, can r
 while keeping the resources of each shard in check and maintaining high performance and throughput.  
 #### Licensing
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Sharding is fully available with the **Enterprise** license.  
 </Admonition>
 
@@ -92,7 +92,7 @@ and no dramatic increase in the number of potential users is expected any time s
 We recommend that you plan ahead for a transition to a sharded database when your database size  
 is in the vicinity of 250 GB, so the transition is already well established when it reaches 500 GB.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB 6.0 and above can **migrate** a non-sharded database to a sharded database via  
   [external replication](../server/ongoing-tasks/external-replication.mdx) or [export & import](../studio/database/tasks/export-database.mdx) operations.
@@ -109,7 +109,7 @@ is in the vicinity of 250 GB, so the transition is already well established when
 While each cluster node of a non-sharded database handles a full replica of the entire database,  
 each **shard** is assigned a **subset** of the entire database content.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 For example:  
 
 Take a 3-shard database, in which shard **1** is populated with documents `Users/1`..`Users/2000`,  
@@ -172,7 +172,7 @@ the bucket number assigned to a document also determines which shard the documen
 
 !["Buckets Population"](./assets/overview_buckets-population.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Anchoring documents to a bucket**:  
   You can make documents share a bucket (and therefore a shard) based on their document ID suffix.  
@@ -200,7 +200,7 @@ where all shards handle approximately the same volume of data.
 The resharding process moves all data related to a certain bucket, including documents, document extensions,  
 tombstones, etc., to a different shard and then associates the bucket with the new shard.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 For example:  
 

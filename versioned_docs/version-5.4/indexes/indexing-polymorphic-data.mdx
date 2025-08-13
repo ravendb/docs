@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
   and do not consider the inheritance hierarchy.
@@ -184,7 +184,7 @@ It will generate an index that matches both Cats and Dogs.
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
   and do not consider the inheritance hierarchy.
@@ -330,7 +330,7 @@ It will generate an index that matches both Cats and Dogs.
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
   and do not consider the inheritance hierarchy.
@@ -470,7 +470,7 @@ It will generate an index that matches both Cats and Dogs.
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
   and do not consider the inheritance hierarchy.
@@ -626,7 +626,7 @@ It will generate an index that matches both Cats and Dogs.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
   and do not consider the inheritance hierarchy.
@@ -726,7 +726,7 @@ However, what if we need to query across ALL animal collections?
 
 ## Possible solutions
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="multi-map-index"/> **Multi-Map Index**:
 Writing a [Multi-map index](../indexes/multi-map-indexes.mdx) enables getting results from all collections the index was defined for.
@@ -784,7 +784,7 @@ where name == "Mitzy"
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="polymorphic-index"/> **Polymorphic index**:
 Another option is to create a polymorphic-index.
@@ -837,7 +837,7 @@ where name == "Mitzy"
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="customize-collection"/> **Customize collection**:
 This option involves customizing the collection name that is assigned to documents created from  

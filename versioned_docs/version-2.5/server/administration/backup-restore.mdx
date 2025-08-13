@@ -39,7 +39,7 @@ If running from IIS, make sure to enable Windows Authentication for RavenDB's II
 
 Only one backup operation may run at any given time.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The utility has to be run with administrative privileges
 </Admonition>
 
@@ -63,7 +63,7 @@ Parameters are as follows:
 * readkey - Optional. Specifying this flag will make the utility wait for key press before exiting.
 * incremental - Optional. When specified, the backup process will be incremental when done to a folder where a previous backup lies. If `dest` is an empty folder, or it does not exist, a full backup will be created. For incremental backups to work, the configuration option `Raven/Esent/CircularLog` has to be set to false.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Backups are not supported for Embedded databases.
 </Admonition>
 
@@ -79,7 +79,7 @@ The backup operation is asynchronous. The backup process will start, and the req
 
 You can check the status of the backup by querying the document with the key: "Raven/Backup/Status". The backup is completed when the IsRunning field in the document is set to false. The backup current status can be tracked by querying the backup status document, this includes any errors that occur during the backup process.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine.
 </Admonition>
 

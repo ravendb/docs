@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
@@ -118,7 +118,7 @@ order by UnitsInStock as long
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Ordering Type__:
 
@@ -201,7 +201,7 @@ order by score()
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Get resulting score__:
 
@@ -471,7 +471,7 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 * When using RQL directly, if no ordering type is specified, then the server defaults to lexicographic ordering.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Using alphanumeric ordering example__:
 
@@ -732,7 +732,7 @@ IOrderedQueryable<T> OrderByDescending<T>(Expression<Func<T, object>> path, stri
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
@@ -800,7 +800,7 @@ order by UnitsInStock as long
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Ordering Type__:
 
@@ -851,7 +851,7 @@ order by score()
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Get resulting score__:
 
@@ -994,7 +994,7 @@ select key() as 'Category', sum(UnitsInStock) as sum
     * `AlphaNumeric`
     * `String` (lexicographic ordering)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Using alphanumeric ordering example__:
 

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series queries can easily generate powerful statistics by applying an aggregation function  
   (such as Min, Max, Count, Average, etc.) to a group of entries within a chosen time frame,  
@@ -79,14 +79,14 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
        Returns an array of the size of the number of values.  
        Each array element contains the number of entries having a measurement for that value.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Execute all aggregation functions**:  
 When a query groups entries by a time frame but does Not explicitly select a specific aggregation function,  
 the server will implicitly execute ALL available aggregation functions (except for Percentile, Slope, and StandardDeviation) for each group.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Get aggregated values without grouping**:  
 When selecting aggregation functions WITHOUT first grouping the time series entries,  
@@ -607,7 +607,7 @@ c.Name as CompanyName // Project property 'Name' from the company document
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series queries can easily generate powerful statistics by applying an aggregation function  
   (such as Min, Max, Count, Average, etc.) to a group of entries within a chosen time frame,  
@@ -663,14 +663,14 @@ c.Name as CompanyName // Project property 'Name' from the company document
        Returns an array of the size of the number of values.  
        Each array element contains the number of entries having a measurement for that value.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Execute all aggregation functions**:  
 When a query groups entries by a time frame but does Not explicitly select a specific aggregation function,  
 the server will implicitly execute ALL available aggregation functions (except for Percentile, Slope, and StandardDeviation) for each group.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Get aggregated values without grouping**:  
 When selecting aggregation functions WITHOUT first grouping the time series entries,  
@@ -973,7 +973,7 @@ c.Name as CompanyName // Project property 'Name' from the company document
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series queries can easily generate powerful statistics by applying an aggregation function  
   (such as Min, Max, Count, Average, etc.) to a group of entries within a chosen time frame,  
@@ -1031,14 +1031,14 @@ c.Name as CompanyName // Project property 'Name' from the company document
        Returns an array of the size of the number of values.  
        Each array element contains the number of entries having a measurement for that value.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Execute all aggregation functions**:  
 When a query groups entries by a time frame but does Not explicitly select a specific aggregation function,  
 the server will implicitly execute ALL available aggregation functions (except for Percentile, Slope, and StandardDeviation) for each group.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Get aggregated values without grouping**:  
 When selecting aggregation functions WITHOUT first grouping the time series entries,  

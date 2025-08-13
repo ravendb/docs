@@ -475,7 +475,7 @@ you must remember to follow certain rules that must apply to the provided string
 2.	**Commas** are used to indicate that property is a collection type e.g. List. So if our `Order` will have a list of LineItems and each `LineItem` will contain `ProductId` property then we can create string path as follows: `"LineItems.,ProductId"`.
 3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Referral.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Referral.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Prefix** is not required for string identifiers, because they contain it by default.
 </Admonition>
 
@@ -1519,7 +1519,7 @@ you must remember to follow certain rules that must apply to the provided string
 2.	**Commas** are used to indicate that property is a collection type e.g. List. So if our `Order` will have a list of LineItems and each `LineItem` will contain `ProductId` property then we can create string path as follows: `"LineItems.,ProductId"`.
 3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Referral.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Referral.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 **Prefix** is not required for string identifiers, because they contain it by default.
 </Admonition>
 

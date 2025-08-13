@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This article explains how to run a vector search using a **dynamic query**.  
   To learn how to run a vector search using a static-index, see [vector search using a static-index](../../ai-integration/vector-search/vector-search-using-static-index.mdx).
@@ -55,7 +55,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Dynamic vector search - query overview
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Overview
 * A dynamic vector search query can be performed on:  
@@ -75,7 +75,7 @@ export const supportedLanguages = ["csharp"];
     * Examples are provided below
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Creating embeddings for the Auto-index
 * **Creating embeddings from TEXTUAL content**:  
@@ -95,7 +95,7 @@ export const supportedLanguages = ["csharp"];
   When querying over pre-made numerical arrays that are already in vector format,  
   RavenDB will index them without transformation (unless further quantization is applied).  
   A query example is available in: [Vector search on numerical content](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#vector-search-on-numerical-content).
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
     To avoid index errors, ensure that the dimensionality of these numerical arrays (i.e., their length)  
     is consistent across all your source documents for the field you are querying.  
     If you wish to enforce such consistency -  
@@ -112,7 +112,7 @@ export const supportedLanguages = ["csharp"];
   enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queries.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Retrieving results
 * **Processing the query**:  
@@ -127,7 +127,7 @@ export const supportedLanguages = ["csharp"];
   In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results.mdx).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### The dynamic query parameters
 * **Source data format**  
@@ -167,7 +167,7 @@ export const supportedLanguages = ["csharp"];
       Learn more in [Exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#exact-search).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Corax auto-indexes
 * Only [Corax indexes](../../indexes/search-engine/corax.mdx) support vector search.
@@ -178,7 +178,7 @@ export const supportedLanguages = ["csharp"];
 * Normally, new dynamic queries extend existing [auto-indexes](../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
   However, a dynamic query with a vector search will not extend an existing Lucene-based auto-index.
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     For example, suppose you have an existing **Lucene**-based auto-index on the Employees collection: e.g.:  
     `Auto/Employees/ByFirstName`.  
 
@@ -586,7 +586,7 @@ public class Movie
 
 These examples search for Movie documents with vectors similar to the one provided in the query.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Search on the `TagsEmbeddedAsSingle` field,  
   which contains numerical data in **floating-point format**. 
@@ -705,7 +705,7 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Search on the `TagsEmbeddedAsInt8` field,  
   which contains numerical data that is already quantized in **_Int8_ format**.
@@ -744,7 +744,7 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $queryVector)
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Search on the `TagsEmbeddedAsBase64` field,  
   which contains numerical data represented in **_Base64_ format**.
@@ -1063,13 +1063,13 @@ The available quantization options are:
      Saves approximately 96% storage compared to 32-bit floating-point values.  
      The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) method will be used for searching and matching.  
       
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      If your documents contain data that is already quantized,  
      it cannot be re-quantized to a lower precision format (e.g., Int8 cannot be converted to Binary).
      </Admonition>
 #### Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this example: 
   * The source data consists of text.
@@ -1175,7 +1175,7 @@ where vector.search(embedding.text_i8(Name), $searchTerm)
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this example:  
     * The source data is an array of 32-bit floats.
@@ -1303,7 +1303,7 @@ where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)
 
 The following methods are available for performing a vector search via RQL:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * `embedding.text`:  
   Generates embeddings from text as multi-dimensional vectors with 32-bit floating-point values,  
@@ -1463,7 +1463,7 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
 </TabItem>
   </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Impact of _NumberOfCandidates_ on query results**:  
 
@@ -1645,7 +1645,7 @@ or
 </TabItem>
   </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **How multiple vector search clauses are evaluated**:
 

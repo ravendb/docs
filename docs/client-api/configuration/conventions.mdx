@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
 
@@ -112,7 +112,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 ## Conventions:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### AddIdFieldToDynamicObjects
 * Use the `AddIdFieldToDynamicObjects` convention to determine whether an `Id` field is automatically added  
@@ -129,7 +129,7 @@ public bool AddIdFieldToDynamicObjects \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### AggressiveCache.Duration
 * Use the `AggressiveCache.Duration` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching.mdx) duration period.
@@ -145,7 +145,7 @@ public TimeSpan Duration \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### AggressiveCache.Mode
 * Use the `AggressiveCache.Mode` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching.mdx) mode.  
@@ -162,7 +162,7 @@ public AggressiveCacheMode Mode \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### AsyncDocumentIdGenerator
 * Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method 
@@ -199,7 +199,7 @@ public Func<string, object, Task<string>> AsyncDocumentIdGenerator \{ get; set; 
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### CreateHttpClient
 * Use the `CreateHttpClient` convention to modify the HTTP client your client application uses.
@@ -229,7 +229,7 @@ public Func<HttpClientHandler, HttpClient> CreateHttpClient \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### DisableAtomicDocumentWritesInClusterWideTransaction
 * EXPERT ONLY:   
@@ -249,7 +249,7 @@ public bool? DisableAtomicDocumentWritesInClusterWideTransaction \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### DisableTcpCompression
 * When setting the `DisableTcpCompression` convention to `true`, TCP data will not be compressed.
@@ -265,7 +265,7 @@ public bool DisableTcpCompression \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### DisableTopologyCache
 * By default, the client caches the cluster's topology in `*.raven-cluster-topology` files on disk.  
@@ -290,7 +290,7 @@ public bool DisableTopologyCache \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### DisableTopologyUpdates
 * When setting the `DisableTopologyUpdates` convention to `true`,  
@@ -307,7 +307,7 @@ public bool DisableTopologyUpdates \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### DisposeCertificate
 * When setting the `DisposeCertificate` convention to `true`,  
@@ -324,7 +324,7 @@ public bool DisposeCertificate \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindClrType
 * Use the `FindClrType` convention to define a function that finds the CLR type of a document.
@@ -355,7 +355,7 @@ public Func<string, BlittableJsonReaderObject, string> FindClrType \{ get; set; 
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindClrTypeName
 * Use the `FindClrTypeName` convention to define a function that returns the CLR type name from a given type.
@@ -371,7 +371,7 @@ public Func<Type, string> FindClrTypeName \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindClrTypeNameForDynamic
 * Use the `FindClrTypeNameForDynamic` convention to define a function that returns the CLR type name  
@@ -395,7 +395,7 @@ public Func<dynamic, string> FindClrTypeNameForDynamic \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindCollectionName
 * Use the `FindCollectionName` convention to define a function that will customize 
@@ -419,7 +419,7 @@ public Func<Type, string> FindCollectionName \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindCollectionNameForDynamic
 * Use the `FindCollectionNameForDynamic` convention to define a function that will customize the  
@@ -443,7 +443,7 @@ public Func<dynamic, string> FindCollectionNameForDynamic \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindIdentityProperty
 * Use the `FindIdentityProperty` convention to define a function that finds the specified ID property  
@@ -467,7 +467,7 @@ public Func<MemberInfo, bool> FindIdentityProperty \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindIdentityPropertyNameFromCollectionName
 * Use the `FindIdentityPropertyNameFromCollectionName` convention to define a function that customizes
@@ -491,7 +491,7 @@ public Func<string, string> FindIdentityPropertyNameFromCollectionName \{ get; s
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindProjectedPropertyNameForIndex
 * Use the `FindProjectedPropertyNameForIndex` convention to define a function that customizes the  
@@ -638,7 +638,7 @@ public Func<Type, string, string, string, string> FindProjectedPropertyNameForIn
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindPropertyNameForDynamicIndex
 * Use the `FindPropertyNameForDynamicIndex` convention to define a function that customizes the  
@@ -664,7 +664,7 @@ public Func<Type, string, string, string, string> FindPropertyNameForDynamicInde
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FindPropertyNameForIndex
 * Use the `FindPropertyNameForIndex` convention to define a function that customizes the name of the  
@@ -692,7 +692,7 @@ public Func<Type, string, string, string, string> FindPropertyNameForIndex \{ ge
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### FirstBroadcastAttemptTimeout
 * Use the `FirstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.
@@ -719,7 +719,7 @@ public TimeSpan FirstBroadcastAttemptTimeout \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### HttpClientType
 * Use the `HttpClientType` convention to set the type of HTTP client you're using.
@@ -745,7 +745,7 @@ public Type HttpClientType \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### HttpVersion
 * Use the `HttpVersion` convention to set the Http version the client will use when communicating  
@@ -764,7 +764,7 @@ public Version HttpVersion \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### IdentityPartsSeparator
 * Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically generated document IDs.
@@ -787,7 +787,7 @@ public char IdentityPartsSeparator \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### LoadBalanceBehavior
 #### LoadBalancerPerSessionContextSelector
@@ -800,7 +800,7 @@ public char IdentityPartsSeparator \{ get; set; \}
 * Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### MaxHttpCacheSize
 * Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.  
@@ -842,7 +842,7 @@ public Size MaxHttpCacheSize \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### MaxNumberOfRequestsPerSession
 * Use the `MaxNumberOfRequestsPerSession` convention to set the maximum number of requests per session.
@@ -858,7 +858,7 @@ public int MaxNumberOfRequestsPerSession \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Modify serialization of property name
 * Different clients use different casing conventions for entity field names. For example:
@@ -906,7 +906,7 @@ public ISerializationConventions Serialization \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### OperationStatusFetchMode
 * Use the `OperationStatusFetchMode` convention to set the way an [operation](../../client-api/operations/what-are-operations.mdx) is getting its status when [waiting for completion](../../client-api/operations/what-are-operations.mdx#wait-for-completion).
@@ -932,7 +932,7 @@ public OperationStatusFetchMode OperationStatusFetchMode \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### PreserveDocumentPropertiesNotFoundOnModel
 * Loading a document using a different model will result in the removal of the missing model properties  
@@ -954,7 +954,7 @@ public bool PreserveDocumentPropertiesNotFoundOnModel \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### ReadBalanceBehavior
 * Configure the **read request behavior** by setting the `ReadBalanceBehavior` convention.
@@ -962,7 +962,7 @@ public bool PreserveDocumentPropertiesNotFoundOnModel \{ get; set; \}
 * Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### RequestTimeout
 * Use the `RequestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
@@ -984,7 +984,7 @@ public TimeSpan? RequestTimeout \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### ResolveTypeFromClrTypeName
 * Use the `ResolveTypeFromClrTypeName` convention to define a function that resolves the CLR type  
@@ -1008,7 +1008,7 @@ public Func<string, Type> ResolveTypeFromClrTypeName \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### SaveEnumsAsIntegers
 * When setting the `SaveEnumsAsIntegers` convention to `true`,  
@@ -1025,7 +1025,7 @@ public bool SaveEnumsAsIntegers \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### SecondBroadcastAttemptTimeout
 * Use the `SecondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
@@ -1048,7 +1048,7 @@ public bool SaveEnumsAsIntegers \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### SendApplicationIdentifier
 * Use the `SendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
@@ -1067,7 +1067,7 @@ public bool SendApplicationIdentifier \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### ShouldIgnoreEntityChanges
 * Set the `ShouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.
@@ -1075,7 +1075,7 @@ public bool SendApplicationIdentifier \{ get; set; \}
 * Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### TopologyCacheLocation
 * Use the `TopologyCacheLocation` convention to change the location of the topology cache files   
@@ -1100,7 +1100,7 @@ public string TopologyCacheLocation \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### TransformTypeCollectionNameToDocumentIdPrefix
 * Use the `TransformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
@@ -1123,7 +1123,7 @@ public Func<string, string> TransformTypeCollectionNameToDocumentIdPrefix \{ get
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### UseHttpCompression
 * When setting the `UseHttpCompression` convention to `true`,  
@@ -1142,7 +1142,7 @@ public bool UseHttpCompression \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### UseHttpDecompression
 * When setting the `UseHttpDecompression` convention to `true`,  
@@ -1160,7 +1160,7 @@ public bool UseHttpDecompression \{ get; set; \}
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### HttpCompressionAlgorithm
 * Use this convention to set the HTTP compression algorithm 
@@ -1183,7 +1183,7 @@ public HttpCompressionAlgorithm HttpCompressionAlgorithm \{ get; set; \}
 </Admonition>
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### UseOptimisticConcurrency
 * When setting the `UseOptimisticConcurrency` convention to `true`,  
@@ -1204,7 +1204,7 @@ public bool UseOptimisticConcurrency \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### WaitForIndexesAfterSaveChangesTimeout
 * Use the `WaitForIndexesAfterSaveChangesTimeout` convention to set the default timeout for the
@@ -1227,7 +1227,7 @@ public TimeSpan WaitForIndexesAfterSaveChangesTimeout \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### WaitForNonStaleResultsTimeout
 * Use the `WaitForNonStaleResultsTimeout` convention to set the default timeout used by the  
@@ -1250,7 +1250,7 @@ public TimeSpan WaitForNonStaleResultsTimeout \{ get; set; \}
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### WaitForReplicationAfterSaveChangesTimeout
 * Use the `WaitForReplicationAfterSaveChangesTimeout` convention to set the default timeout for the  
@@ -1280,7 +1280,7 @@ public TimeSpan WaitForReplicationAfterSaveChangesTimeout \{ get; set; \}
 <LanguageContent language="nodejs">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
  
@@ -1349,7 +1349,7 @@ documentStore.initialize();
 
 ## Conventions:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### customFetch
 * Use the `customFetch` convention to override the default _fetch_ method.  
@@ -1368,7 +1368,7 @@ set customFetch(customFetch);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### disableAtomicDocumentWritesInClusterWideTransaction
 * EXPERT ONLY:   
@@ -1392,7 +1392,7 @@ set disableAtomicDocumentWritesInClusterWideTransaction(
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### disableTopologyUpdates
 * When setting the `disableTopologyUpdates` convention to `true`,  
@@ -1411,7 +1411,7 @@ set disableTopologyUpdates(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### findCollectionName
 * Use the `findCollectionName` convention to define a function that will customize the collection name  
@@ -1430,7 +1430,7 @@ set findCollectionName(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### findJsType
 * Use the `findJsType` convention to define a function that finds the class of a document (if exists).
@@ -1450,7 +1450,7 @@ set findJsType(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### findJsTypeName
 * Use the `findJsTypeName` convention to define a function that returns the class type name from a given type.
@@ -1470,7 +1470,7 @@ set findJsTypeName(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### firstBroadcastAttemptTimeout
 * Use the `firstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.  
@@ -1493,7 +1493,7 @@ set firstBroadcastAttemptTimeout(firstBroadcastAttemptTimeout);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### identityPartsSeparator
 * Use the `identityPartsSeparator` convention to set the default **ID separator** for automatically-generated document IDs.
@@ -1518,7 +1518,7 @@ set identityPartsSeparator(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### loadBalanceBehavior
 #### loadBalancerPerSessionContextSelector
@@ -1531,7 +1531,7 @@ set identityPartsSeparator(value);
 * Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### maxHttpCacheSize
 * Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.  
@@ -1558,7 +1558,7 @@ set maxHttpCacheSize(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### maxNumberOfRequestsPerSession
 * Use the `maxNumberOfRequestsPerSession` convention to set the maximum number of requests per session.
@@ -1576,7 +1576,7 @@ set maxNumberOfRequestsPerSession(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### readBalanceBehavior
 * Configure the **read request behavior** by setting the `readBalanceBehavior` convention.
@@ -1584,7 +1584,7 @@ set maxNumberOfRequestsPerSession(value);
 * Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### requestTimeout
 * Use the `requestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
@@ -1602,7 +1602,7 @@ set requestTimeout(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### secondBroadcastAttemptTimeout
 * Use the `secondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
@@ -1622,7 +1622,7 @@ set secondBroadcastAttemptTimeout(timeout);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### sendApplicationIdentifier
 * Use the `sendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
@@ -1643,7 +1643,7 @@ set sendApplicationIdentifier(sendApplicationIdentifier)
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### shouldIgnoreEntityChanges
 * Set the `shouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.  
@@ -1651,7 +1651,7 @@ set sendApplicationIdentifier(sendApplicationIdentifier)
 * Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### storeDatesInUtc
 * When setting the `storeDatesInUtc` convention to `true`,  
@@ -1670,7 +1670,7 @@ set storeDatesInUtc(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### storeDatesWithTimezoneInfo
 * When setting the `storeDatesWithTimezoneInfo` to `true`,  
@@ -1689,7 +1689,7 @@ set storeDatesWithTimezoneInfo(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### syncJsonParseLimit
 * Use the `syncJsonParseLimit` convention to define the maximum size for the _sync_ parsing of the JSON data responses received from the server.  
@@ -1708,7 +1708,7 @@ set syncJsonParseLimit(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### throwIfQueryPageSizeIsNotSet
 * When setting the `throwIfQueryPageSizeIsNotSet` convention to `true`,  
@@ -1730,7 +1730,7 @@ set throwIfQueryPageSizeIsNotSet(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### transformClassCollectionNameToDocumentIdPrefix
 * Use the `transformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
@@ -1755,7 +1755,7 @@ set transformClassCollectionNameToDocumentIdPrefix(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### useCompression
 * Set the `useCompression` convention to true in order to accept the **response** in compressed format and the automatic decompression of the HTTP response content.
@@ -1776,7 +1776,7 @@ set useCompression(value);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### useJsonlStreaming
 * Set the `useJsonlStreaming` convention to `true` when streaming query results as JSON Lines (JSONL) format.
@@ -1794,7 +1794,7 @@ set useJsonlStreaming(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### useOptimisticConcurrency
 * When setting the `useOptimisticConcurrency` convention to `true`,  
@@ -1816,7 +1816,7 @@ set useOptimisticConcurrency(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### waitForIndexesAfterSaveChangesTimeout
 * Use the `waitForIndexesAfterSaveChangesTimeout` convention to set the default timeout for the 
@@ -1835,7 +1835,7 @@ set waitForIndexesAfterSaveChangesTimeout(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### waitForNonStaleResultsTimeout
 * Use the `waitForNonStaleResultsTimeout` convention to set the default timeout used by the  
@@ -1854,7 +1854,7 @@ set waitForNonStaleResultsTimeout(value);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### waitForReplicationAfterSaveChangesTimeout
 * Use the `waitForReplicationAfterSaveChangesTimeout` convention to set the default timeout for the  

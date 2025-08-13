@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The `LoadBalanceBehavior` configuration  
   allows you to specify which sessions should communicate with the same node.  
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </Admonition>
 ## LoadBalanceBehavior options 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`None`__ (default option)
 
@@ -51,7 +51,7 @@ __`None`__ (default option)
  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`UseSessionContext`__
 
@@ -159,7 +159,7 @@ using (var session = documentStore.OpenSession())
 
 ## Set LoadBalanceBehavior on the server 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Note__:  
 
@@ -172,7 +172,7 @@ __Note__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setByOperation"/> __Set LoadBalanceBehavior on the server - by operation__ 
 * The `LoadBalanceBehavior` configuration can be set __on the server__ by sending an [operation](../../../client-api/operations/what-are-operations.mdx).
@@ -267,7 +267,7 @@ using (documentStore)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setFromStudio"/> __Set LoadBalanceBehavior on the server - from Studio__
 * The `LoadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  
@@ -299,7 +299,7 @@ using (documentStore)
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The `loadBalanceBehavior` configuration  
   allows you to specify which sessions should communicate with the same node.  
@@ -317,7 +317,7 @@ using (documentStore)
 </Admonition>
 ## loadBalanceBehavior options 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`None`__ (default option)
 
@@ -331,7 +331,7 @@ __`None`__ (default option)
  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`UseSessionContext`__
 
@@ -434,7 +434,7 @@ const employee = await session.load("employees/1-A");
 
 ## Set loadBalanceBehavior on the server 
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 __Note__:  
 
@@ -447,7 +447,7 @@ __Note__:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setByOperation"/> __Set loadBalanceBehavior on the server - by operation__ 
 * The `loadBalanceBehavior` configuration can be set __on the server__ by sending an [operation](../../../client-api/operations/what-are-operations.mdx).
@@ -538,7 +538,7 @@ await documentStore.maintenance.server.send(putConfigurationOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setFromStudio"/> __Set loadBalanceBehavior on the server - from Studio__
 * The `loadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  

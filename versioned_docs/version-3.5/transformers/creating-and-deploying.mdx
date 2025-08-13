@@ -33,7 +33,7 @@ By default the transformer's names are auto-generated from the type name. You ca
 
 This approach limits you to following the strongly typed rules, while server transformers aren't limited by them. However, it is rarely an issue, unless you write a transformer to cover multiple types without a common ancestor.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend creating and using transformers in this form because of its simplicity: there are many benefits and only few disadvantages.
 </Admonition>
 
@@ -81,7 +81,7 @@ new Orders_Company().Execute(store.DatabaseCommands.ForDatabase("Northwind"), st
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If a transformer exists on a server and a stored definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten.
 </Admonition>
 
@@ -101,7 +101,7 @@ IndexCreation.CreateIndexes(typeof(Orders_Company).Assembly, store);
 
 Underneath, the `IndexCreation` will call `Execute` methods for each of the transformers (and indexes) found.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 `IndexCreation.CreateIndexes` will also deploy all the classes that inherit from the `AbstractIndexCreationTask` (more about it [here](../indexes/creating-and-deploying.mdx)).
 </Admonition>
 
@@ -179,11 +179,11 @@ store
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If transformer exists on server and definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten.
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Commands approach is not recommended and should be used only if needed.
 </Admonition>
 

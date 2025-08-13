@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You have two options:
@@ -393,7 +393,7 @@ order by spatial.distance(
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You have two options:
@@ -807,7 +807,7 @@ where spatial.within(coordinates, spatial.circle(500, 30, 30))
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data.mdx) article.
 </Admonition>
 
@@ -817,7 +817,7 @@ In order to sort the results by distance, please use the `orderByDistance` or `o
 
 ## Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Distance in RavenDB by default is measured in **kilometers**.
 </Admonition>
 

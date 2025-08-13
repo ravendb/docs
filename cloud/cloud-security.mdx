@@ -13,14 +13,14 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cloud: Security
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 RavenDB cloud products use several layers of security.  
 
 * All instances are encrypted using HTTPS and TLS protocol version 1.2 or 1.3.  
 
 * Servers and client applications authenticate each other using X.509 certificates.  
-  <Admonition type="info" title="Info">
+  <Admonition type="info" title="">
   Note that a RavenDB cloud product **comes with an initial client certificate**.  
   You need this certificate in order to access your RavenDB instances.  
   </Admonition>
@@ -65,7 +65,7 @@ that define networks from which the connection is allowed.
 - Regardless of the allowed IPs setting, your RavenDB Cloud **instances will always require authentication** using X.509
   certificates for access. The allowed IPs list serves as an additional layer of security, but isn't the only one.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  
 If addresses in your list overlap, an error is going to be displayed upon product creation. E.g. -
 
@@ -75,7 +75,7 @@ If addresses in your list overlap, an error is going to be displayed upon produc
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
 </Admonition>
 
@@ -96,11 +96,11 @@ Your initial [operator-level](../7.1/server/security/authorization/security-clea
 certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.  
 Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview.mdx#ravendb-on-the-cloud-overview).  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 We recommend that you generate and use **different certificates** for your client applications, for maximum security.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 If your instance runs on a [burstable CPU](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters), especially if it is a low-end one, 
 RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](../cloud/cloud-overview.mdx#budget-credits-and-throttling) in the 
 process.  

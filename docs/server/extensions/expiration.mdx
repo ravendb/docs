@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents can be given a future expiration time in which they'll be automatically deleted.  
 * The Expiration feature deletes documents set for expiration, when their time has passed.  
@@ -55,7 +55,7 @@ It is possible to:
   Default value: **60 seconds**  
 * Set the maximal number of documents that RavenDB is allowed to delete per interval.  
   Default value: **All expired documents**  
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 [Learn how to configure expiration settings via Studio](../../studio/database/settings/document-expiration.mdx)
 </Admonition>
 ### Configure expiration settings using the client API  
@@ -110,7 +110,7 @@ object and sending it to RavenDB using a `ConfigureExpirationOperation` operatio
   `@expires` property with the designated expiration time as a value.  
   Set the time in **UTC** format, not local time. E.g. -  
   **"@expires": "2025-04-22T08:00:00.0000000Z"**  
-  <Admonition type="warning" title="Warning">
+  <Admonition type="warning" title="">
   Metadata properties starting with `@` are for internal RavenDB usage only.  
   Do _not_ use the metadata `@expires` property for any other purpose than 
   scheduling a document's expiration time for the built-in expiration feature.  

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to the server.  
   This reduces the number of remote calls and allows several operations to share the same transaction.
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Send multiple commands - using the Store's request executor:
 <Tabs groupId='languageSyntax'>
@@ -141,7 +141,7 @@ using (store.GetRequestExecutor()
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Send multiple commands - using the Session's request executor:
 * `SingleNodeBatchCommand` can also be executed using the session's request executor.
@@ -416,7 +416,7 @@ To send **multiple commands** in a **single request**, reducing the number of re
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 All the commands in the batch will succeed or fail as a **transaction**. Other users will not be able to see any of the changes until the entire batch completes.
 </Admonition>
 
@@ -424,7 +424,7 @@ All the commands in the batch will succeed or fail as a **transaction**. Other u
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to the server.  
   This reduces the number of remote calls and allows several operations to share the same transaction.
@@ -442,7 +442,7 @@ All the commands in the batch will succeed or fail as a **transaction**. Other u
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Send multiple commands - using the Store's request executor:
 <TabItem value="batch_1" label="batch_1">
@@ -482,7 +482,7 @@ assert.equal(commandResults[0]["@id"], "employees/999");
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Send multiple commands - using the Session's request executor:
 * `SingleNodeBatchCommand` can also be executed using the session's request executor.

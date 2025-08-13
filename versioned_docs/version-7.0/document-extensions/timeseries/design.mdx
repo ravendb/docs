@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series are sequences of numerical values, associated with timestamps and sorted chronologically.  
  
@@ -81,7 +81,7 @@ Each time series entry is composed of a `TimeSeriesEntry` object which contains:
 | **Values**    | `double[]`       | &lt;ul&gt;&lt;li&gt;An array of up to 32 `double` values.&lt;/li&gt;&lt;/ul&gt;                                                                                                                                                                                                                          |
 | **Value**     | `double`         | &lt;ul&gt;&lt;li&gt;equivalent to Values[0].&lt;/li&gt;&lt;/ul&gt;                                                                                                                                                                                                                                       |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Doubles with higher precision - i.e. more digits after the decimal point, are much less compressible.  
 In other words, `1.672` takes up more space than `1672`.
@@ -117,7 +117,7 @@ In other words, `1.672` takes up more space than `1672`.
    - The segment's **First** timestamp
    - The segment's **Last** timestamp
 
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      When segment entries store multiple values, e.g. each entry contains a _Latitude_ value and a _Longitude_ value,
      the six aggregated values are stored for each value separately.  
      </Admonition>
@@ -191,7 +191,7 @@ is equivalent to
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Time series are sequences of numerical values, associated with timestamps and sorted chronologically.  
  
@@ -253,7 +253,7 @@ Each time series entry is composed of a `TimeSeriesEntry` object which contains:
 | **values**    | `number[]` | &lt;ul&gt;&lt;li&gt;An array of up to 32 values.&lt;/li&gt;&lt;/ul&gt;                                                                                                                                                                                                                          |
 | **value**     | `number`   | &lt;ul&gt;&lt;li&gt;equivalent to values[0].&lt;/li&gt;&lt;/ul&gt;                                                                                                                                                                                                                                       |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Doubles with higher precision - i.e. more digits after the decimal point, are much less compressible.  
 In other words, `1.672` takes up more space than `1672`.
@@ -290,7 +290,7 @@ In other words, `1.672` takes up more space than `1672`.
    - The segment's **First** timestamp
    - The segment's **Last** timestamp
 
-     <Admonition type="note" title="Note">
+     <Admonition type="note" title="">
      When segment entries store multiple values, e.g. each entry contains a _Latitude_ value and a _Longitude_ value,
      the six aggregated values are stored for each value separately.  
      </Admonition>

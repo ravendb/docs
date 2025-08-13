@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Indexing
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexing a sharded database is performed locally, per shard.  
   There is no multi-shard indexing process.  
@@ -48,7 +48,7 @@ shard during indexation, and on the orchestrator machine each time a query uses 
    distributes the query to the shards, collects and combines the results, 
    and then reduces them again.  
   
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Learn about **querying map-reduce indexes** in a sharded database [here](../sharding/querying.mdx#orderby-in-a-map-reduce-index).  
 </Admonition>
 
@@ -75,7 +75,7 @@ Unsupported or yet-unimplemented indexing features include:
 `}
 </CodeBlock>
 </TabItem>
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   You can make sure that documents share a bucket, and 
   can therefore locate and load each other, using the 
   [$ syntax](../sharding/administration/anchoring-documents.mdx).  

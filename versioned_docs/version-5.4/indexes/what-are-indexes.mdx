@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
   Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
@@ -100,7 +100,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Define the index
 
@@ -143,7 +143,7 @@ public class Employees_ByNameAndCountry : AbstractIndexCreationTask<Employee>
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Deploy the index
 
@@ -163,7 +163,7 @@ new Employees_ByNameAndCountry().Execute(store);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query the index
 
@@ -193,7 +193,7 @@ IList<Employee> employeesFromUK = session
 
 ## Understanding index query results
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 A common mistake is treating indexes like SQL Views, but they are not analogous.  
 The results of a query for a given index are the **full raw documents** that match the query predicate,  
@@ -252,7 +252,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
   Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
@@ -333,7 +333,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Define the index
 
@@ -363,7 +363,7 @@ public static class Employees_ByNameAndCountry extends AbstractIndexCreationTask
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Deploy the index
 
@@ -383,7 +383,7 @@ new Employees_ByNameAndCountry().execute(store);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query the index
 
@@ -413,7 +413,7 @@ List<Employee> employeesFromUK = session
 
 ## Understanding index query results
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 A common mistake is treating indexes like SQL Views, but they are not analogous.  
 The results of a query for a given index are the **full raw documents** that match the query predicate,  
@@ -472,7 +472,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
   Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
@@ -553,7 +553,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Define the index
 
@@ -586,7 +586,7 @@ class Employees_ByNameAndCountry(AbstractIndexCreationTask):
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Deploy the index
 
@@ -606,7 +606,7 @@ Employees_ByNameAndCountry().execute(store)
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query the index
 
@@ -636,7 +636,7 @@ employeesFromUK = list(
 
 ## Understanding index query results
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 A common mistake is treating indexes like SQL Views, but they are not analogous.  
 The results of a query for a given index are the **full raw documents** that match the query predicate,  
@@ -695,7 +695,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
   Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
@@ -776,7 +776,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Define the index
 
@@ -806,7 +806,7 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Deploy the index
 
@@ -824,7 +824,7 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query the index
 
@@ -848,7 +848,7 @@ $results = $session->query(Employee::class, Employees_ByFirstAndLastName::class)
 
 ## Understanding index query results
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 A common mistake is treating indexes like SQL Views, but they are not analogous.  
 The results of a query for a given index are the **full raw documents** that match the query predicate,  
@@ -907,7 +907,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
   Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
@@ -988,7 +988,7 @@ you can enable the option to show "raw index entries" instead of the matching do
 In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Define the index
 
@@ -1024,7 +1024,7 @@ class Employees_ByNameAndCountry extends AbstractJavaScriptIndexCreationTask \{
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Deploy the index
 
@@ -1045,7 +1045,7 @@ await employeesIndex.execute(store);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Query the index
 
@@ -1075,7 +1075,7 @@ const employeesFromUK = await session
 
 ## Understanding index query results
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 A common mistake is treating indexes like SQL Views, but they are not analogous.  
 The results of a query for a given index are the **full raw documents** that match the query predicate,  

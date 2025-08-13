@@ -13,13 +13,13 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # The Search Pattern  
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 A graph query's search pattern follows the `match` keyword with **data node** and **edge** clauses, 
 aliases that clarify query logic and enable filtering and projection, dedicated graph syntax, and 
 integrated [RQL](../../../client-api/session/querying/what-is-rql.mdx) commands.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Sample queries included in this article use only data that is available in the 
 [Northwind sample database](../../../studio/database/tasks/create-sample-data.mdx#creating-sample-data), 
 so you may easily try them out.  
@@ -37,7 +37,7 @@ so you may easily try them out.
 </Admonition>
 ## Data Nodes
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 We use the term **data nodes** to distinguish these graph elements from 
 RavenDB's distributed servers 
 ([cluster nodes](../../../glossary/cluster-node.mdx#glossary-ravendb-cluster-node)).  
@@ -266,7 +266,7 @@ Aliases have a few important roles in graph queries.
     
     ![Employees](./assets/SearchPattern_008_Abstraction.png)
     
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     These aliases are operational, not just informative: they relay to the graph interpreter 
     how it should handle this query.  
     Reinstating an element **without** providing a unique alias for each of its occurrences, 

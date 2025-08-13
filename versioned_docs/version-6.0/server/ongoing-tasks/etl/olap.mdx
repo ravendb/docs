@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Ongoing Tasks: OLAP ETL
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The **OLAP ETL task** creates an ETL process from a RavenDB database to a variety of destinations that 
 are especially useful for conducting OLAP. These destinations currently include:  
@@ -99,7 +99,7 @@ The OLAP connection string contains the configurations for each destination of t
 | `GoogleCloudSettings` | Settings for Google Cloud Platform. |
 | `FTPSettings` | Settings for File Transfer Protocol. |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### ETL destination settings
 
@@ -262,7 +262,7 @@ loadToMyFolder(
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ### Alternative Syntax
 
 The target folder name can be passed to the `loadTo` command separately, as a string argument, 
@@ -273,7 +273,7 @@ using this syntax: `loadTo('folder_name', key, object)`
   `loadToOrders(key, object)`  
   `loadTo('Orders', key, object)`  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
  * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
    it is simply a string literal of the target's name.  

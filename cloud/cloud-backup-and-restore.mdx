@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cloud: Backup And Restore
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB cloud instances of the [Free](../cloud/cloud-instances.mdx#a-free-cloud-node) and 
   [Production](../cloud/cloud-instances.mdx#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
@@ -38,11 +38,11 @@ stores a [full backup](../7.1/server/ongoing-tasks/backup-overview#backup-scope-
 **every 24 hours** and an **incremental backup every 1 hour** with all the changes that took 
 place since the last backup.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The mandatory backup process cannot be disabled.  
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 We keep your backup files for no less than 14 days.  
 You can [contact support](../cloud/portal/cloud-portal-support-tab.mdx) to prolong this period, but not reduce it.  
 </Admonition>
@@ -65,7 +65,7 @@ cloud you have no direct access to.
 You can [view and restore](../cloud/cloud-backup-and-restore.mdx#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 A backup created for data hosted by a server in Europe or the US 
 will be kept within the same [geographical region](https://cloud.ravendb.net/pricing), 
 i.e. backups made for a database hosted in Europe are kept in Europe 
@@ -84,7 +84,7 @@ Upon backup geographically closest AWS S3 bucket is used for backup storage e.g.
 (S3 or S3 Glacier) or a Microsoft service (Azure).  
 We recommend that you use a backup method **local to your host cloud**. If your product is hosted by Amazon AWS for example, 
 you can store your backup files on an Amazon S3 bucket.  
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 All mandatory-backup files are **compressed** and **encrypted**. This is the case whether the backed-up database is encrypted or not.  
 
 If you define custom-backup tasks, you are responsible for their security. RavenDB offers backup encryption for custom backup as well, 
@@ -123,7 +123,7 @@ Your mandatory backup files are encrypted.
 * If your database **is encrypted**:  
   **Your own database encryption key** will be used to encrypt the backup as well.  
   
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
     Be aware that RavenDB Cloud does NOT keep or manage *your own* database encryption keys.  
     If you lose a database encryption key we will NOT be able to help you decrypt the database itself nor its backup files.  
     **KEEP YOUR ENCRYPTION KEYS SAFE!**  

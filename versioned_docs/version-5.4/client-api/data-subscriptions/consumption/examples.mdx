@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
@@ -165,7 +165,7 @@ _ = workerWBatch.Run(x =>
 Here we create a subscription that sends _Order_ documents that do not have a shipping date.  
 The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Note:  
 The session is opened with `batch.OpenSession` instead of with `Store.OpenSession`.
 </Admonition>
@@ -467,7 +467,7 @@ while (true)
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 *  this page:  
    * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)  
@@ -759,7 +759,7 @@ while (true) \{
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
@@ -1071,7 +1071,7 @@ while True:
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:
   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
@@ -1266,7 +1266,7 @@ worker.on("batch", (batch, callback) => \{
 Here we create a subscription that sends _Order_ documents that do not have a shipping date.  
 The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Note:  
 The session is opened with `batch.openSession` instead of with `documentStore.openSession`.
 </Admonition>

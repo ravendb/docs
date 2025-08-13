@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) made to all entities that it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `SaveChanges()` is called.
@@ -235,7 +235,7 @@ hasChanged = session.advanced().hasChanged(employee);// true
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) made to all entities that it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `save_changes` is called.
@@ -413,7 +413,7 @@ def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) made to all entities that it has either loaded, stored, or queried for,  
   and persists to the server only what is needed when `saveChanges` is called.
@@ -603,7 +603,7 @@ class ChangeType
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) made to all entities that it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `saveChanges()` is called.

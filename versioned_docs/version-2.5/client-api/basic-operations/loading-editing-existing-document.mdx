@@ -48,7 +48,7 @@ Flushing those changes to the document store is achieved in the usual way:
 	
 You don't have to neither call the `Store` method nor track any changes yourself. RavenDB will do all of that for you.
 	```
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The entire document is sent to the server with the Id set to the existing document value, this means that the existing document will be replaced in the document store with the new one. Whilst patching operations are possible with RavenDB, the client API by default will always just replace the entire document in its entirety.
 </Admonition>
 

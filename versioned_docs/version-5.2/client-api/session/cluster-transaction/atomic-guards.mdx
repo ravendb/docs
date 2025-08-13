@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Atomic-Guards** are [compare exchange](../../../client-api/operations/compare-exchange/overview.mdx) 
   key/value items that RavenDB creates and manages automatically to guarantee 
@@ -190,7 +190,7 @@ In the sample below, the session uses **no Atomic-Guards**.
 Atomic guards expire on the expiration of the documents they are used for and are automatically 
 removed by a RavenDB cleanup task. You do not need to handle the cleanup yourself.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Since different cleanup tasks handle the removal of deleted and expired documents 
 and the removal of expired Atomic-Guards, it may happen that Atomic-Guards of removed 
 documents would linger in the compare exchange entries list a short while longer before 
@@ -208,7 +208,7 @@ they are removed.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Atomic-Guards** are [compare exchange](../../../client-api/operations/compare-exchange/overview.mdx) 
   key/value items that RavenDB creates and manages automatically to guarantee 
@@ -380,7 +380,7 @@ await session.saveChanges();
 Atomic-Guards expire on the expiration of the documents they are used for and are automatically 
 removed by a RavenDB cleanup task. You do not need to handle the cleanup yourself.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Since different cleanup tasks handle the removal of deleted and expired documents 
 and the removal of expired Atomic-Guards, it may happen that Atomic-Guards of removed 
 documents would linger in the compare exchange entries list a short while longer before 

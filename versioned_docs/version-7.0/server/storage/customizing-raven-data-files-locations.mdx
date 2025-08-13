@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Customizing Data Files Locations
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The structure of [RavenDB directories](../../server/storage/directory-structure.mdx) **cannot** be changed. However:  
     * Path for temporary files can be customized.
@@ -67,7 +67,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   By default, backup temporary files are written under the `Database` directory or under `Storage.TempPath` if defined.  
   Customize the path for these files by setting the [Backup.TempPath](../../server/configuration/backup-configuration.mdx#backuptemppath) configuration option.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Refer to article [Configuration overview](../../server/configuration/configuration-options.mdx) to learn how to set the configuration keys.
 
@@ -86,7 +86,7 @@ Refer to article [Configuration overview](../../server/configuration/configurati
 * The database must be offline when moving the database folder itself to a new point.  
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Example - Moving Journals__
 
 A common practice is to store the journals on a very fast drive to achieve better write performance.
@@ -110,7 +110,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Journals ~/RavenDB/Server/RavenData/Dat
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Example - Moving Indexes__
 
 To store the data of all indexes of the _Northwind_ database in the custom location,
@@ -153,7 +153,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
         * Path of the `DataDir` directory
         * Path of the `Temp` directory
         * Path of the `Journals` directory
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Script example - Basic usage
 
 The following is a very simple PowerShell script example, here only to show basic usage.  
@@ -211,7 +211,7 @@ Index Northwind C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Product_Sear
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Script example - Point Indexes to different location
 
 The following bash script example will point the Indexes data to a new location.  

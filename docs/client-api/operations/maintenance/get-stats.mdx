@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics can be retrieved for the database and for collections.  
 
@@ -210,7 +210,7 @@ DatabaseStatistics stats =
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics can be retrieved for the database and for collections.
 
@@ -225,7 +225,7 @@ DatabaseStatistics stats =
     * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
 </Admonition>
 ## Get collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetCollectionStatisticsOperation` to get **collection stats**.
 <TabItem value="stats_1" label="stats_1">
 <CodeBlock language="java">
@@ -236,7 +236,7 @@ CollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `CollectionStatistics` object.
 <TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="java">
@@ -256,7 +256,7 @@ Stats are returned in the `CollectionStatistics` object.
 
 
 ## Get detailed collection stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedCollectionStatisticsOperation` to get **detailed collection stats**.
 <TabItem value="stats_2" label="stats_2">
 <CodeBlock language="java">
@@ -267,7 +267,7 @@ DetailedCollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedCollectionStatistics` object.
 <TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="java">
@@ -297,7 +297,7 @@ public class CollectionDetails \{
 
 
 ## Get database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetStatisticsOperation` to get **database stats**.
 <TabItem value="stats_3" label="stats_3">
 <CodeBlock language="java">
@@ -308,7 +308,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DatabaseStatistics` object.
 <TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="java">
@@ -346,7 +346,7 @@ public class DatabaseStatistics \{
 
 
 ## Get detailed database stats
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Use `GetDetailedStatisticsOperation` to get **detailed database stats**.
 <TabItem value="stats_4" label="stats_4">
 <CodeBlock language="java">
@@ -357,7 +357,7 @@ DetailedDatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Stats are returned in the `DetailedDatabaseStatistics` object.
 <TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="java">
@@ -379,7 +379,7 @@ public class DetailedDatabaseStatistics extends DatabaseStatistics \{
 
 
 ## Get stats for another database
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, you get stats for the database defined in your Document Store.
 * Use `forDatabase` to get database & collection stats for another database.
@@ -403,7 +403,7 @@ DatabaseStatistics stats =
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics can be retrieved for the database and for collections.  
 
@@ -596,7 +596,7 @@ stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOper
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics can be retrieved for the database and for collections.  
 
@@ -805,7 +805,7 @@ $stats = $store->maintenance()->forDatabase("AnotherDatabase")->send(new GetStat
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Statistics can be retrieved for the database and for collections.  
 

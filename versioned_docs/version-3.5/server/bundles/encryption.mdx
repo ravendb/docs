@@ -26,7 +26,7 @@ Four possible configuration options are:
 * **Raven/Encryption/KeyBitsPreference** the preferred encryption key size in bits 
 * **Raven/Encryption/EncryptIndexes** Boolean value indicating if the indexes should be encrypted. Default: true   
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 For security reasons all `Raven/Encryption/*` settings should be placed in `SecuredSettings` configuration section.
 </Admonition>
 
@@ -69,7 +69,7 @@ All settings can be overridden per database during the database creation process
 
 Above example demonstrates how to create `EncryptedDB` with active encryption and with non-default encryption algorithm.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 All encryption settings can only be provided when a database is being created. Changing them later will cause DB malfunction.
 </Admonition>
 
@@ -83,7 +83,7 @@ So, as the consequences of the above:
 *	Your encryption key is guarded using DPAPI.   
 *	The data is safely encrypted on a disk, and the OS guarantees that no one can access the encryption key.   
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 It is your responsibility to backup the encryption key, as there is no way to recover data without it.
 </Admonition>
 

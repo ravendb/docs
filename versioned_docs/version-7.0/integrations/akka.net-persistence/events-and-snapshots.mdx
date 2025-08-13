@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Events and Snapshots
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Akka.Persistence provides two primary methods to persist actor state: **Event sourcing** and **Snapshots**.
 
@@ -98,7 +98,7 @@ Each snapshot document includes the following fields, among others:
 
 ## Storing guidelines
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * The RavenDB plugin designates the Events and Snapshots collections for storing Akka’s data.  
   While it’s technically possible to store documents from other sources in these collections,  

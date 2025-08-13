@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a [Full-Text Search query](../../indexes/querying/searching.mdx), 
   in addition to retrieving documents that contain the searched terms, you can 
@@ -776,7 +776,7 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a [Full-Text Search query](../../indexes/querying/searching.mdx), 
   in addition to retrieving documents that contain the searched terms, you can 
@@ -1105,7 +1105,7 @@ fragments_html = "".join(builder)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a [Full-Text Search query](../../indexes/querying/searching.mdx), 
   in addition to retrieving documents that contain the searched terms, you can 
@@ -1474,7 +1474,7 @@ $fragmentsHtml = $builder . "</ul>";
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When making a [Full-Text Search query](../../indexes/querying/searching.mdx), 
   in addition to retrieving documents that contain the searched terms, you can 
@@ -1495,7 +1495,7 @@ $fragmentsHtml = $builder . "</ul>";
 </Admonition>
 ## Highlight results - Map index
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Configure a Map index for highlighting**:
 To search and get fragments with highlighted terms,  
@@ -1532,7 +1532,7 @@ class Employees_ByNotes extends AbstractJavaScriptIndexCreationTask \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index with `search`**:
 <Tabs groupId='languageSyntax'>
@@ -1568,7 +1568,7 @@ include highlight(EmployeeNotes, 35, 2)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index with `whereEquals`**:
 <Tabs groupId='languageSyntax'>
@@ -1604,7 +1604,7 @@ include highlight(EmployeeNotes, 35, 2)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Process results**:
 <TabItem value="highlight_3" label="highlight_3">
@@ -1648,7 +1648,7 @@ fragmentsHtml += "</ul>";
 
 ## Highlight results - Map-Reduce index
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Configure a Map-Reduce index for highlighting**:
 In order to search and get fragments with highlighted terms in a Map-Reduce index:  
@@ -1709,7 +1709,7 @@ class ContactDetailsPerCountry extends AbstractJavaScriptIndexCreationTask \{
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Query the index**:
 <Tabs groupId='languageSyntax'>
@@ -1756,7 +1756,7 @@ include highlight(ContactDetails, 35, 2, $p0)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Process results**:
 <TabItem value="highlight_5" label="highlight_5">

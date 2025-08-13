@@ -34,11 +34,11 @@ There are a couple of ways to create `static index` and send it to server, we ca
 
 If you are interested in having a **strongly-typed syntax** during index creation, have an **ability to deploy indexes using assembly scanner**, **avoid hard-coding index names in every query** and **do not worry about setting sorting for numerical fields**, then `AbstractIndexCreationTask` should be your choice. 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 We recommend creating and using indexes in this form due to its simplicity, many benefits and few disadvantages.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 When index is deployed using `AbstractIndexCreationTask` then all numerical fields in generated index definition will contain appropriate sorting options set.
 </Admonition>
 
@@ -89,7 +89,7 @@ new Orders_ByTotal().Execute(store);
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If index exists on server and stored definition is the same as the one that was send, then it will not be overwritten, which implies that indexed data will not be deleted and indexation will not start from scratch.
 </Admonition>
 
@@ -108,7 +108,7 @@ await new Orders_ByTotal().ExecuteAsync(store);
 Underneath, the `IndexCreation` will attempt to create all indexes in a single request. If it fails, then it will repeat the execution by calling 
  `Execute` method one-by-one for each of found indexes in separate requests.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 `IndexCreation.CreateIndexes` will also deploy all classes that inherit from `AbstractTransformerCreationTask` (more about it [here](../transformers/creating-and-deploying.mdx)).
 </Admonition>
 
@@ -158,7 +158,7 @@ await store.ExecuteIndexAsync(new Orders_ByTotal());
 
 #### Remarks
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Commands or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do that by inheriting from `AbstractIndexCreationTask`.
 </Admonition>
 

@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Time Series Overview
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A huge number of systems, including an expanding variety of IoT devices, 
   produce continuous streams of values that can be collected and used for 
@@ -149,7 +149,7 @@ When a time series is created, its values are held in a single segment.
 As the number of values grows (or when a certain amount of time has passed 
 since the last entry appendage), segments are added to the series.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Segments are managed automatically by RavenDB, clients do not need to do 
 anything in this regard.  
 </Admonition>
@@ -172,7 +172,7 @@ Each time series segment is composed of consecutive **time series entries**.
 Each entry is composed of a **timestamp**, 1 to 32 **values**, and an **optional tag**.  
 #### Timestamps
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 A single `DateTime` timestamp marks each entry in millisecond precision.  
 </Admonition>
 
@@ -184,7 +184,7 @@ E.g. in a heart rate time series, timestamps would indicate the time in which ea
 heart rate measurement has been taken.  
 #### Values
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Up to 32 `double` **values** can be appended per-entry.  
 </Admonition>
 
@@ -205,7 +205,7 @@ values may be a requirement for some time series. Here are a few examples.
   trade volume) is added to the time series every day.  
 #### Tags
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 A single **optional** `string` tag can be added per entry.  
 </Admonition>
 
@@ -227,7 +227,7 @@ Tags are designated to provide information regarding their entries.
     **2.** retrieve and examine the specification document referred to by each entry.  
     **3.** project to the client only values measured by Japanese devices.  
 
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     Prefer re-using a few tags many times over using many unique tags,  
     to minimize memory and storage usage and optimize time series performance.  
     </Admonition>

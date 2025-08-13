@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
    * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)  
@@ -168,7 +168,7 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 | **OpenSession()**      | `IDocumentSession`      | Open a new document session that tracks all items and their included items within the current batch.              |
 | **OpenAsyncSession()** | `IAsyncDocumentSession` | Open a new asynchronous document session that tracks all items and their included items within the current batch. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 ##### Subscription worker connectivity
 
@@ -212,7 +212,7 @@ This class represents a single item in a subscription batch results.
 | **RawMetadata**      | `BlittableJsonReaderObject` | Current batch item's underlying document metadata.                                                    |
 | **Metadata**         | `IMetadataDictionary`       | Current batch item's underlying metadata values.                                                      |
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 This class should only be used within the subscription's `Run` delegate.  
 Using it outside this scope may cause unexpected behavior.
 </Admonition>
@@ -221,7 +221,7 @@ Using it outside this scope may cause unexpected behavior.
 
 ## SubscriptionWorker&lt;T&gt;
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Methods
 
@@ -235,7 +235,7 @@ Using it outside this scope may cause unexpected behavior.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Events
 
@@ -245,7 +245,7 @@ Using it outside this scope may cause unexpected behavior.
 | **OnSubscriptionConnectionRetry** | `Action<Exception>`             | Triggered when the subscription worker attempts to reconnect to the server after a failure.<br/>The event receives as a parameter the exception that interrupted the processing. |
 | **OnDisposed**                    | `Action<SubscriptionWorker<T>>` | Triggered after the subscription worker is disposed.                                                                                                                            |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 ##### AfterAcknowledgmentAction
 
@@ -261,7 +261,7 @@ Using it outside this scope may cause unexpected behavior.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Properties
 
@@ -279,7 +279,7 @@ Using it outside this scope may cause unexpected behavior.
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
    * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
@@ -398,7 +398,7 @@ node is currently responsible for data subscriptions.
 
 <Admonition type="info" title="SubscriptionBatch&lt;T&gt;.Item" id="subscriptionbatch-lt-t-gt-item" href="#subscriptionbatch-lt-t-gt-item">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 if T is `ObjectNode`, no deserialization will take place
 </Admonition>
 
@@ -452,7 +452,7 @@ if T is `ObjectNode`, no deserialization will take place
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
    * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
@@ -514,7 +514,7 @@ All other parameters are optional and will default to their respective default v
 | **receive_buffer_size_in_bytes**         | `int`                                   | The size in bytes of the TCP socket buffer used for _receiving_ data.<br/>Default: 4096 (4 KiB).                                                                                                                                                                                                                                                                                                                   |
 | **strategy**                             | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).
 
@@ -616,7 +616,7 @@ def __init__(self):
 | **raw_metadata** (Optional)           | `Dict`                 | Current batch item underlying document metadata                                       |
 | **\_metadata** (Optional)             | `MetadataAsDictionary` | Current batch item underlying metadata values                                         |
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Usage of `raw_result`, `raw_metadata`, and `_metadata` values outside of the document processing delegate 
 is not supported.
 </Admonition>
@@ -657,7 +657,7 @@ is not supported.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * In this page:  
   * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)  
@@ -776,7 +776,7 @@ The subscription batch class contains the following public properties & methods:
 | **openSession()**             | `object`    | Open a new document session that tracks all items and their included items within the current batch.                     |
 | **openSession(options)**      | `object`    | Open a new document session - can pass [session options](../../../client-api/session/opening-a-session.mdx#session-options). |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 ##### Subscription worker connectivity
 
@@ -824,7 +824,7 @@ This class represents a single item in a subscription batch result.
 
 ## Subscription worker
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Methods
 
@@ -836,7 +836,7 @@ This class represents a single item in a subscription batch result.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Events
 
@@ -850,7 +850,7 @@ This class represents a single item in a subscription batch result.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Properties
 

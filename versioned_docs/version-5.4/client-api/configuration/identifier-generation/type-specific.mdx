@@ -42,7 +42,7 @@ To override default document identifier generation algorithms, you can register 
 | ------------- | ----- |
 | DocumentConventions | Current `DocumentConventions` instance. |
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 This method applied to both synchronous and asynchronous operations
 </Admonition>
 
@@ -331,7 +331,7 @@ await session.saveChanges();
 
 the client will associate the `employees/Bond/James` identifier with it.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 ID convention function must return a Promise since it *can* be asynchronous.
 </Admonition>
 

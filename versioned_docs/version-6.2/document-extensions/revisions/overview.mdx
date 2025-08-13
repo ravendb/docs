@@ -19,13 +19,13 @@ export const supportedLanguages = ["csharp", "python", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Document Revisions** are snapshots of documents and their extensions:
 
     * The trail of revisions created for a document can be inspected to track changes made in the document over time.
     * A document's live version can be [reverted](../../document-extensions/revisions/revert-revisions.mdx) to any of its recorded revisions.
-      <Admonition type="info" title="Info">
+      <Admonition type="info" title="">
       For example, tracking document revisions allows you to check how an employee's contract has changed over time,
       restore a single corrupted document without requiring a backup file, or conduct a full-scale audit of your data.  
       </Admonition>
@@ -60,7 +60,7 @@ export const supportedLanguages = ["csharp", "python", "nodejs"];
   You can modify this behavior and other revisions settings by applying a revisions configuration to the database.
   The revisions configuration is stored in the database record.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Conflict Revisions
 
@@ -92,7 +92,7 @@ The revisions configuration consists of default settings and/or collection-speci
 * **Collection-specific configurations**:  
   Collection-specific configurations apply only to documents of the collections they are defined for,  
   overriding the default settings for these collections.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If no default settings are applied, revisions will be **disabled** for any collection where a collection-specific configuration is not defined.
   </Admonition>
 #### Revisions configuration options
@@ -124,7 +124,7 @@ Default and collection-specific configurations are executed when -
 2. **[Enforce Configuration](../../studio/database/settings/document-revisions.mdx#enforce-configuration) is applied**.  
    Enforcing the configuration applies the defined revisions configuration immediately throughout the database, **purging** all the revisions pending purging
    according to default settings or collection-specific configurations, and **deleting** all revisions that no configuration applies to.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
     * Large databases and collections may contain numerous revisions pending purging, which Enforcing Configuration will purge all at once.
       Be aware that this operation may require substantial server resources, so time it accordingly.
     * Revisions that were created over time but to which no configuration currently applies will be deleted.  
@@ -175,7 +175,7 @@ Let's play with revisions a little to get a taste of its advantages.
    Though you deleted the document, its **audit trail** is **not lost**: all its revisions are moved to the [Revisions Bin](../../studio/database/document-extensions/revisions.mdx#revisions-bin),  
    including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
 
-     <Admonition type="info" title="Info">
+     <Admonition type="info" title="">
      * A "Delete Revision" is created only if the deleted document has revisions.
      * If a document has no revisions, a "Delete Revision" will be created only if the Revisions Configuration is set and enabled for its collection.
      </Admonition>
@@ -338,13 +338,13 @@ void ForceRevisionCreationFor(string id,
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Document Revisions** are snapshots of documents and their extensions:
 
     * The trail of revisions created for a document can be inspected to track changes made in the document over time.
     * A document's live version can be [reverted](../../document-extensions/revisions/revert-revisions.mdx) to any of its recorded revisions.
-      <Admonition type="info" title="Info">
+      <Admonition type="info" title="">
       For example, tracking document revisions allows you to check how an employee's contract has changed over time,
       restore a single corrupted document without requiring a backup file, or conduct a full-scale audit of your data.  
       </Admonition>
@@ -379,7 +379,7 @@ void ForceRevisionCreationFor(string id,
   You can modify this behavior and other revisions settings by applying a revisions configuration to the database.
   The revisions configuration is stored in the database record.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Conflict Revisions
 
@@ -411,7 +411,7 @@ The revisions configuration consists of default settings and/or collection-speci
 * **Collection-specific configurations**:  
   Collection-specific configurations apply only to documents of the collections they are defined for,  
   overriding the default settings for these collections.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If no default settings are applied, revisions will be **disabled** for any collection where a collection-specific configuration is not defined.
   </Admonition>
 #### Revisions configuration options
@@ -443,7 +443,7 @@ Default and collection-specific configurations are executed when -
 2. **[Enforce Configuration](../../studio/database/settings/document-revisions.mdx#enforce-configuration) is applied**.  
    Enforcing the configuration applies the defined revisions configuration immediately throughout the database, **purging** all the revisions pending purging
    according to default settings or collection-specific configurations, and **deleting** all revisions that no configuration applies to.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
     * Large databases and collections may contain numerous revisions pending purging, which Enforcing Configuration will purge all at once.
       Be aware that this operation may require substantial server resources, so time it accordingly.
     * Revisions that were created over time but to which no configuration currently applies will be deleted.  
@@ -494,7 +494,7 @@ Let's play with revisions a little to get a taste of its advantages.
    Though you deleted the document, its **audit trail** is **not lost**: all its revisions are moved to the [Revisions Bin](../../studio/database/document-extensions/revisions.mdx#revisions-bin),  
    including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
 
-     <Admonition type="info" title="Info">
+     <Admonition type="info" title="">
      * A "Delete Revision" is created only if the deleted document has revisions.
      * If a document has no revisions, a "Delete Revision" will be created only if the Revisions Configuration is set and enabled for its collection.
      </Admonition>
@@ -541,7 +541,7 @@ Read [here](../../document-extensions/revisions/revisions-and-other-features.mdx
 
 ## Revisions storage
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Revisions documents storage
 * The creation of a document revision stores a full version of the modified document in the revisions storage,
@@ -556,7 +556,7 @@ Read [here](../../document-extensions/revisions/revisions-and-other-features.mdx
       any text field of more than 128 bytes is compressed.
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Revisions document extensions storage
 Read [here](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-time-series) about revisions and **time series**.  
@@ -617,13 +617,13 @@ To create a revision manually via the API, use the advanced session `force_revis
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Document Revisions** are snapshots of documents and their extensions:
 
     * The trail of revisions created for a document can be inspected to track changes made in the document over time.
     * A document's live version can be [reverted](../../document-extensions/revisions/revert-revisions.mdx) to any of its recorded revisions.
-      <Admonition type="info" title="Info">
+      <Admonition type="info" title="">
       For example, tracking document revisions allows you to check how an employee's contract has changed over time,
       restore a single corrupted document without requiring a backup file, or conduct a full-scale audit of your data.  
       </Admonition>
@@ -658,7 +658,7 @@ To create a revision manually via the API, use the advanced session `force_revis
   You can modify this behavior and other revisions settings by applying a revisions configuration to the database.
   The revisions configuration is stored in the database record.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Conflict Revisions
 
@@ -690,7 +690,7 @@ The revisions configuration consists of default settings and/or collection-speci
 * **Collection-specific configurations**:  
   Collection-specific configurations apply only to documents of the collections they are defined for,  
   overriding the default settings for these collections.  
-  <Admonition type="note" title="Note">
+  <Admonition type="note" title="">
   If no default settings are applied, revisions will be **disabled** for any collection where a collection-specific configuration is not defined.
   </Admonition>
 #### Revisions configuration options
@@ -722,7 +722,7 @@ Default and collection-specific configurations are executed when -
 2. **[Enforce Configuration](../../studio/database/settings/document-revisions.mdx#enforce-configuration) is applied**.  
    Enforcing the configuration applies the defined revisions configuration immediately throughout the database, **purging** all the revisions pending purging
    according to default settings or collection-specific configurations, and **deleting** all revisions that no configuration applies to.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
     * Large databases and collections may contain numerous revisions pending purging, which Enforcing Configuration will purge all at once.
       Be aware that this operation may require substantial server resources, so time it accordingly.
     * Revisions that were created over time but to which no configuration currently applies will be deleted.  
@@ -773,7 +773,7 @@ Let's play with revisions a little to get a taste of its advantages.
    Though you deleted the document, its **audit trail** is **not lost**: all its revisions are moved to the [Revisions Bin](../../studio/database/document-extensions/revisions.mdx#revisions-bin),  
    including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
 
-     <Admonition type="info" title="Info">
+     <Admonition type="info" title="">
      * A "Delete Revision" is created only if the deleted document has revisions.
      * If a document has no revisions, a "Delete Revision" will be created only if the Revisions Configuration is set and enabled for its collection.
      </Admonition>

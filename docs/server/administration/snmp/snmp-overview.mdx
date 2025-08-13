@@ -13,13 +13,13 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # SNMP Support
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 SNMP support is available for [Enterprise](../../../start/licensing/licensing-overview.mdx#enterprise) licenses only.
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page explains how to use SNMP to monitor RavenDB and what metrics can be accessed.  
 
@@ -120,7 +120,7 @@ There are several configurable SNMP properties in RavenDB:
 * [Monitoring.Snmp.PrivacyPassword](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacypassword)  
   Privacy password.  
   Default: `"ravendb"`
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * See article [Monitoring Options](../../../server/configuration/monitoring-configuration.mdx) for the full list of **SNMP configuration keys**.
  
@@ -132,7 +132,7 @@ There are several configurable SNMP properties in RavenDB:
 
 ## The Metrics
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Access metrics via monitoring tools
 
@@ -143,7 +143,7 @@ There are several configurable SNMP properties in RavenDB:
  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Access metrics via SNMP agents
 
@@ -187,7 +187,7 @@ iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### Access metrics via HTTP
 **Access single OID value**:
@@ -256,7 +256,7 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 
 ## List of OIDs
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 

@@ -74,7 +74,7 @@ session.SaveChanges();
 
 The `Store` method operates purely in memory and only the call of `SaveChanges` will produce the actual communication with the server (a single POST by using [request batching](../../http-api/http-api-multi.mdx#batching-requests)).
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Note that the entire object graph will serialized and persisted as a *single document* on the server side, not as a set of distinct objects.
 </Admonition>	
 
@@ -97,7 +97,7 @@ By default, the HiLo algorithm is used. Whenever you create a new `DocumentStore
 
 When you store an object with no `Id` property, or with one that wasn't manually set, RavenDB will assign it with a document ID that is combined of the collection name (which by default is the entity name in its plural form) and the next available ID from the given range.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 It is important to understand that a `Collection` is merely a convention, not something that is enforced by RavenDB. There is absolutely nothing that would prevent you from saving a `Post` with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
 </Admonition>
 
@@ -109,7 +109,7 @@ RavenDB also supports the notion of Identity, for example if you need IDs to be 
 
 You can also assign an ID manually by explicitly setting the string `Id` property of your object, but then if a document already exists in your RavenDB server under the same key it will be overwritten without any warning.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 If you are going to store large number of documents with custom generated IDs, you must necessarily read the topic *Dealing with custom ID for high number of documents* presented below.
 </Admonition>
 
@@ -173,11 +173,11 @@ or if you want to register your convention for async operations then:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an identifier convention function and can be used for advanced calculation techniques.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 As of version 2.0, the `dbname` is passed to the register convention methods to allow users to make `Id` generation decision per database (e.g. default document key generator - the `MultiDatabaseHiloGenerator` - is using this parameter to prevent sharing HiLo values accross the databases)
 </Admonition>
 

@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Prior to this article, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) to learn about the `Search` method.  
 
@@ -286,7 +286,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   the index automatically includes values from ALL existing and newly added properties 
   and there is no need to update the index when the document structure changes.
 
-* <Admonition type="info" title="Info">
+* <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
 #### The index:
@@ -421,7 +421,7 @@ where search(AllValues, "tofu")
 
 * When using [Corax](../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
 Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
@@ -566,7 +566,7 @@ include explanations()
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using a custom analyzer:
 * When setting a [custom analyzer](../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
@@ -748,7 +748,7 @@ include explanations()
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using the Exact analyzer:
 When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  
@@ -1265,7 +1265,7 @@ where search(allValues, "tofu")
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
@@ -1438,7 +1438,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   the index automatically includes values from ALL existing and newly added properties
   and there is no need to update the index when the document structure changes.
 
-* <Admonition type="info" title="Info">
+* <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
 #### The index:
@@ -1518,7 +1518,7 @@ where search(all_values, "tofu")
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
@@ -1777,7 +1777,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   the index automatically includes values from ALL existing and newly added properties
   and there is no need to update the index when the document structure changes.
 
-* <Admonition type="info" title="Info">
+* <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
 #### The index:
@@ -1865,7 +1865,7 @@ where search(allValues, "tofu")
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
@@ -2034,7 +2034,7 @@ where (search(employeeData, "Manager") or search(employeeData, "French Spanish",
   the index automatically includes values from ALL existing and newly added properties
   and there is no need to update the index when the document structure changes.
 
-* <Admonition type="info" title="Info">
+* <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
 #### The index:
@@ -2119,7 +2119,7 @@ where search(AllValues, "tofu")
 
 * When using [Corax](../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
 Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
@@ -2203,7 +2203,7 @@ include explanations()
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using a custom analyzer:
 * When setting a [custom analyzer](../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
@@ -2328,7 +2328,7 @@ include explanations()
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### When using the Exact analyzer:
 When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  

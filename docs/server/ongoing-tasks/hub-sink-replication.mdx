@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Hub/Sink Replication
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 Hub/Sink replication is used to maintain a live replica of a database 
 or a chosen part of it, through a secure connection between ongoing Hub 
@@ -24,7 +24,7 @@ can collect data locally (e.g. bus GPS coordinates and books returns and
 borrows), and replicate it via local Sink tasks to the central library's 
 Hub whenever they are online.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx).  
 * You can use the Studio to define 
@@ -47,7 +47,7 @@ Hub whenever they are online.
 </Admonition>
 ## What is and is not replicated?
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 After the tasks are defined, **changed** documents whose replication is allowed by 
 both the Hub and the Sink filters will replicate.  
@@ -188,7 +188,7 @@ and configure it using a `ReplicationHubAccess` class.
     | `AllowedHubToSinkPaths` | `string[]` | Allowed paths from Hub to Sink |
     | `AllowedSinkToHubPaths` | `string[]` | Allowed paths from Sink to Hub |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 To **Remove** an existing Access, use `UnregisterReplicationHubAccessOperation`.  
 
 * **`UnregisterReplicationHubAccessOperation` definition**:
@@ -360,7 +360,7 @@ and adds to it *Sink to Hub* replication and *Replication Filtering*.
   5.1, **can** connect a Hub or a Sink defined on RavenDB 5.1 and on.  
   You do **not** need to upgrade the task's instance to keep the task operative.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Upgrade RavenDB from a version earlier than 5.1 if you want to implement 
 *Hub/Sink Replication* added features, i.e. Sink-to-Hub replication and 
 Replication Filtering.  

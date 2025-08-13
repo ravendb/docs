@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `CreateDatabaseOperation` to create a new database from the **Client API**, as described below.  
   To create a new database from the **Studio**, see [Create database](../../../studio/database/create-new-database/general-flow.mdx).
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "java"];
 </Admonition>
 ## Create new database
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example I - Create non-sharded database
 * The following simple example creates a non-sharded database with the default replication factor of 1.
@@ -90,7 +90,7 @@ await store.Maintenance.Server.SendAsync(createDatabaseOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example II - Create sharded database
 * The following example creates a sharded database with 3 shards, each with a replication factor of 2.
@@ -273,7 +273,7 @@ await store.Maintenance.Server.SendAsync(createDatabaseOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example III - Ensure database does not exist before creating
 * To ensure the database does not already exist before creating it, follow this example:
@@ -367,7 +367,7 @@ The `DatabaseRecord` is a collection of database configurations:
 | DatabaseRecord()                      | Initialize a new database record.                                  |
 | DatabaseRecord(`string` databaseName) | Initialize a new database record with the specified database name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Note:**  
 
@@ -468,7 +468,7 @@ public interface IDatabaseRecordBuilderBase
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `CreateDatabaseOperation` to create a new database from the **Client API**, as described below.  
   To create a new database from the **Studio**, see [Create database](../../../studio/database/create-new-database/general-flow.mdx).
@@ -485,7 +485,7 @@ public interface IDatabaseRecordBuilderBase
 </Admonition>
 ## Create new database
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example I - Create database
 * The following simple example creates a non-sharded database with the default replication factor of 1.
@@ -500,7 +500,7 @@ store.maintenance().server().send(new CreateDatabaseOperation(databaseRecord));
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 ##### Example II - Ensure database does not exist before creating
 * To ensure the database does not already exist before creating it, follow this example:
@@ -561,7 +561,7 @@ public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFac
 |---------------------------------------|----------------------------------|
 | DatabaseRecord(`string` databaseName) | Initialize a new database record |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 **Note:**
 

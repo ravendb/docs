@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 
 * A **default database** can be set in the Document Store.  
@@ -157,7 +157,7 @@ try (DocumentStore store = new DocumentStore(new String[]\{ "http://localhost:80
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default value of `database` property in `DocumentStore` is `null` which means that in any actions that need a database name we will have to specify the database.
 </Admonition>
 
@@ -223,7 +223,7 @@ await store.maintenance.forDatabase("AdventureWorks")
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default value of `database` property in `DocumentStore` is `null` which means that in any action requiring a database name, we will have to specify the database.
 </Admonition>
 

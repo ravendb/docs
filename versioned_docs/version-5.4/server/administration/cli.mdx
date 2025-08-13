@@ -27,7 +27,7 @@ RavenDB can operate as service/daemon without console input. It is possible to a
 
 The `rvn admin-channel` uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe), and can connect to RavenDB CLI only when running on the same machine as the server, and with appropriate privileges.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 The `rvn` executable can be found in the distribution package under **Server** directory
 </Admonition>
 
@@ -91,7 +91,7 @@ Enable (or disable) online log printing to the console.
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 If log is enabled using `rvn admin-channel`, the information will be displayed in the main console application. If RavenDB is running as a service, you will see the log output in the service log.
 </Admonition>
 
@@ -216,7 +216,7 @@ ravendb>
 </CodeBlock>
 </TabItem>
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 Running scripts can harm the database beyond recovery. Use with care.
 </Admonition>
 
@@ -283,7 +283,7 @@ Register a client certificate to be trusted on this server with `ClusterAdmin` s
 ## replaceClusterCert
 
 Replace the cluster certificate.  
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 If **replaceImmediately** is specified, RavenDB will replace the certificate by force, even if some nodes are not responding. In that case, you will have to manually replace the certificate in those nodes. Use with care.
 </Admonition>
 
@@ -376,7 +376,7 @@ Display help screen.
 
 ## lowMem
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Debugging command. Not intended for normal use.
 </Admonition>
 
@@ -393,7 +393,7 @@ Simulates low memory state in RavenDB.
 
 ## timer
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Debugging command. Not intended for normal use.
 </Admonition>
 

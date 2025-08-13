@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `PutDocumentCommand` to insert a new document to the database or update an existing document.
 
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Put document command - using the Store's request executor**:
 <Tabs groupId='languageSyntax'>
@@ -106,7 +106,7 @@ using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var c
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Put document command - using the Session's request executor**:
 <Tabs groupId='languageSyntax'>
@@ -259,7 +259,7 @@ session.advanced().getRequestExecutor().execute(command);
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `PutDocumentCommand` to insert a document to the database or update an existing document.
 
@@ -314,7 +314,7 @@ session.advanced.request_executor.execute_command(command)
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `PutDocumentCommand` to insert a document to the database or update an existing document.
 
@@ -371,7 +371,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the low-level `PutDocumentCommand` to insert a new document to the database or update an existing document.
 
@@ -389,7 +389,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 </Admonition>
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Put document command - using the Store's request executor**:
 <TabItem value="put_document_1" label="put_document_1">
@@ -422,7 +422,7 @@ assert.strictEqual(theDocumentID, "categories/999");
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Put document command - using the Session's request executor**:
 <TabItem value="put_document_2" label="put_document_2">

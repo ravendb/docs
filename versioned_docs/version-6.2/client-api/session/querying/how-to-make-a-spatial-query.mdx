@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You can use either _Dynamic spatial query_ or _Spatial index query_.  
@@ -1242,7 +1242,7 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, distances are measured in **kilometers**.
 </Admonition>
 
@@ -1250,7 +1250,7 @@ By default, distances are measured in **kilometers**.
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You can use either _Dynamic spatial query_ or _Spatial index query_.  
@@ -1787,7 +1787,7 @@ def order_by_distance_descending_wkt(
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You can use either _Dynamic spatial query_ or _Spatial index query_.  
@@ -1872,7 +1872,7 @@ where spatial.within(
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="circle"/> __Circle__:
 
@@ -1921,7 +1921,7 @@ where spatial.within(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="polygon"/> __Polygon__:
 
@@ -1978,7 +1978,7 @@ where spatial.within(
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 <a id="polygonRules"/> __Polygon rules__:
 
@@ -2001,7 +2001,7 @@ where spatial.within(
 * By default, distance in RavenDB measured in **kilometers**.  
   The distance can be rounded to a specific range.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="orderByDistance"/> __Order by distance__:
 
@@ -2054,7 +2054,7 @@ order by spatial.distance(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="orderByDistanceDesc"/> __Order by distance descending__:
 
@@ -2093,7 +2093,7 @@ order by spatial.distance(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="roundedDistance"/> __Sort results by rounded distance__:
 
@@ -2139,7 +2139,7 @@ order by spatial.distance(
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="getResultingDistance"/> __Get resulting distance__:
 
@@ -2178,7 +2178,7 @@ const longitude = spatialResults.Longitude; // The entity's longitude value
 
 
 ## Spatial API
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### spatial
 </Admonition>
 
@@ -2195,7 +2195,7 @@ spatial(field, clause);
 | __fieldName__ | `string`                                       | Path to spatial field in an index<br/>(when querying an index).                                                             |
 | __field__     | `DynamicSpatialField`                          | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query). |
 | __clause__    | `(SpatialCriteriaFactory) => SpatialCrieteria` | Spatial criteria that will be executed on a given spatial field.                                                           |
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### DynamicSpatialField
 </Admonition>
 
@@ -2218,7 +2218,7 @@ class WktField \{
 | __latitude__  | `string` | Path to the document field that contains the latitude   |
 | __longitude__ | `string` | Path to the document field that contains the longitude  |
 | __wktPath__   | `string` | Path to the document field that contains the WKT string |
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### SpatialCriteriaFactory
 </Admonition>
 
@@ -2256,7 +2256,7 @@ withinRadius(radius, latitude, longitude, radiusUnits, distErrorPercent);
 | __distErrorPercent__                      | `number` | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
 | __radius__ / __latitude__ / __longitude__ | `number` | Used to define a radius of a circle                                                                                                 |
 | __radiusUnits__ / __units__               | `string` | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br/>By default, distances are measured in kilometers. |
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### orderByDistance
 </Admonition>
 
@@ -2270,7 +2270,7 @@ orderByDistance(fieldName, shapeWkt);
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 #### orderByDistanceDescending
 </Admonition>
 

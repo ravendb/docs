@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Queries
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 
 * Akka.Persistence.Query comes with several stream-based query interfaces for querying persisted data.  
@@ -51,7 +51,7 @@ real-time updates (continuous) or a snapshot of the current state (current).
 
 ## Supported interfaces
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### IPersistenceIdsQuery & ICurrentPersistenceIdsQuery
 Use these methods to retrieve the PersistenceIds of ALL actors that have persisted events to the journal store:
@@ -107,7 +107,7 @@ allPersistenceIds.RunForeach(persistenceId =>
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### IEventsByPersistenceIdQuery & ICurrentEventsByPersistenceIdQuery
 * Use the methods below to retrieve events that have been persisted by a specific actor.
@@ -169,7 +169,7 @@ eventsSource.RunForeach(envelope =>
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### IEventsByTagQuery & ICurrentEventsByTagQuery
 * In Akka.Persistence, you can add one or more string **tags** to events.  
@@ -245,7 +245,7 @@ Note:
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 #### IAllEventsQuery & ICurrentAllEventsQuery
 * Use the methods below to retrieve all events regardless of which PersistenceId they are associated with.

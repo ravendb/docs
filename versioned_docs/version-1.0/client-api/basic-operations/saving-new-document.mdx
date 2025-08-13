@@ -151,7 +151,7 @@ By default, the HiLo algorithm is used. Whenever you create a new `DocumentStore
 
 When you store an object with no `Id` property, or with one that wasn't manually set, RavenDB will assign it with a document ID that is combined of the collection name (which by default is the entity name in its plural form) and the next available ID from the given range.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 It is important to understand that a `Collection` is merely a convention, not something that is enforced by RavenDB. There is absolutely nothing that would prevent you from saving a `Post` with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
 </Admonition>
 

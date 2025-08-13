@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Add RavenDB to an Existing Cloudflare Worker (TypeScript)
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [Cloudflare Workers](https://developers.cloudflare.com/workers/) is a serverless platform that allows 
   you to deploy workloads closer to where your users are with 200+ metro data centers in its CDN network.  
@@ -60,7 +60,7 @@ Using npm:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Support for Cloudflare Workers was added in `5.2.8+`.
 </Admonition>
 
@@ -370,7 +370,7 @@ The `DB_CERT` variable is exposed on `env` and has a single `fetch` function tha
 bound to the client certificate at runtime. Note that passing the function requires binding the `this` 
 context to the original scope, otherwise you will run into closure-related exceptions.  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The `env.DB_CERT` binding will not be available in local mode (`--local`), this is a known issue with Wrangler.  
 </Admonition>
 

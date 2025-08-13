@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __Lazy request__:
 
@@ -53,7 +53,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </Admonition>
 ## Operations that can be executed lazily
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadEntities"/> __Load entities__
 
 * [Load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
@@ -74,7 +74,7 @@ Employee employee = lazyEmployee.Value; // 'Load' operation is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadWithInclude"/> __Load entities with include__
 
 * [Load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
@@ -116,7 +116,7 @@ Supplier supplier = session.Load<Supplier>(product.SupplierId);
 </Tabs>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadStartingWith"/> __Load entities starting with__
 
 * [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
@@ -138,7 +138,7 @@ var employees = lazyEmployees.Value; // 'Load' operation is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="conditionalLoad"/> __Conditional load__
 
 * [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
@@ -184,7 +184,7 @@ using (var session2 = store.OpenSession())
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
@@ -208,7 +208,7 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getRevisions"/> __Get revisions__
 
 * All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed __lazily__.
@@ -231,7 +231,7 @@ List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
 * [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
@@ -268,7 +268,7 @@ List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed
 
 ## Multiple lazy requests 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="implicit"/> __Execute all requests - implicitly__
 
 <TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
@@ -299,7 +299,7 @@ IEnumerable<Product> products = lazyProducts.Value;
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="explicit"/> __Execute all requests - explicitly__
 
 <TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
@@ -336,7 +336,7 @@ IEnumerable<Product> products = lazyProducts.Value;
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __Lazy request__:
 
@@ -370,7 +370,7 @@ IEnumerable<Product> products = lazyProducts.Value;
 </Admonition>
 ## Operations that can be executed lazily
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadEntities"/> __Load entities__
 
 * ['load'](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
@@ -391,7 +391,7 @@ const employee = await lazyEmployee.getValue(); // 'load' operation is executed 
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadWithInclude"/> __Load entities with include__
 
 * ['load' with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
@@ -435,7 +435,7 @@ class Product {
 </Tabs>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="loadStartingWith"/> __Load entities starting with__
 
 * ['loadStartingWith'](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
@@ -457,7 +457,7 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="conditionalLoad"/> __Conditional load__
 
 * ['conditionalLoad'](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
@@ -503,7 +503,7 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
@@ -527,7 +527,7 @@ const employees = await lazyEmployees.getValue(); // Query is executed here
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getRevisions"/> __Get revisions__
 
 * All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed __lazily__.
@@ -550,7 +550,7 @@ const revisions = lazyRevisions.getValue(); // Getting revisions is executed her
 </TabItem>
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
 * [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
@@ -584,7 +584,7 @@ const cmpXchgValue =
 
 ## Multiple lazy requests 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="implicit"/> __Execute all requests - implicitly__
 
 <TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
@@ -615,7 +615,7 @@ const products = await lazyProducts.getValue();
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 <a id="explicit"/> __Execute all requests - explicitly__
 
 <TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">

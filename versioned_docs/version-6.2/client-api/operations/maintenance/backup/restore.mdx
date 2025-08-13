@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Restore
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A backed-up database can be restored to a new database, either 
   by client API methods or through the Studio.  
@@ -72,7 +72,7 @@ it to `RestoreBackupOperation` for execution.
     | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | boolean | `true` - disable ongoing tasks when Restore is complete. <br/> `false` - enable ongoing tasks when Restore is complete. <br/> **Default: `false` (Ongoing tasks will run when Restore is complete).**|
     | **SkipIndexes** <br/> (Optional -<br/> omit for default) | boolean | `true` to disable indexes import, <br/> `false` to enable indexes import. <br/> **Default: `false` restore all indexes.**|
   
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
     * Verify that RavenDB has full access to the backup-files and database folders.
     * Make sure your server has permissions to read from `BackupLocation` and write to `DataDirectory`.
     </Admonition>
@@ -206,7 +206,7 @@ You can create the cluster in advance, and restore the database to multiple node
 
 
 ## Recommended Precautions
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 When restoring a backed-up database, you may be interested only in the restored data 
 and not in any ongoing tasks that may have existed during backup.

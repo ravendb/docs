@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When set, the `ReadBalanceBehavior` configuration will be in effect according to the   
   conditional flow described in [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
@@ -41,7 +41,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </Admonition>
 ## ReadBalanceBehavior options 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`None`__ (default option)
 
@@ -53,7 +53,7 @@ __`None`__ (default option)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`RoundRobin`__
 
@@ -69,7 +69,7 @@ __`RoundRobin`__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`FastestNode`__  
 
@@ -86,7 +86,7 @@ __`FastestNode`__
 
 ## Initialize ReadBalanceBehavior on the client 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The `ReadBalanceBehavior` convention can be set __on the client__ when initializing the Document Store.  
   This will set the read balance behavior for the default database that is set on the store.  
@@ -118,7 +118,7 @@ var documentStore = new DocumentStore
 
 ## Set ReadBalanceBehavior on the server 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setByOperation"/> __Set ReadBalanceBehavior on the server - by operation__ 
 * The `ReadBalanceBehavior` configuration can be set __on the server__ by sending an [operation](../../../client-api/operations/what-are-operations.mdx).  
@@ -183,7 +183,7 @@ using (documentStore)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setFromStudio"/> __Set ReadBalanceBehavior on the server - from Studio__
 * The `ReadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  
@@ -210,7 +210,7 @@ using (documentStore)
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When set, the `readBalanceBehavior` configuration will be in effect according to the   
   conditional flow described in [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
@@ -232,7 +232,7 @@ using (documentStore)
 </Admonition>
 ## readBalanceBehavior options 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`None`__ (default option)
 
@@ -244,7 +244,7 @@ __`None`__ (default option)
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`RoundRobin`__
 
@@ -260,7 +260,7 @@ __`RoundRobin`__
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __`FastestNode`__  
 
@@ -277,7 +277,7 @@ __`FastestNode`__
 
 ## Initialize readBalanceBehavior on the client 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * The `readBalanceBehavior` convention can be set __on the client__ when initializing the Document Store.  
   This will set the read balance behavior for the default database that is set on the store.  
@@ -308,7 +308,7 @@ documentStore.initialize();
 
 ## Set readBalanceBehavior on the server 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setByOperation"/> __Set readBalanceBehavior on the server - by operation__ 
 * The `readBalanceBehavior` configuration can be set __on the server__ by sending an [operation](../../../client-api/operations/what-are-operations.mdx).  
@@ -369,7 +369,7 @@ await documentStore.maintenance.server.send(putConfigurationOp);
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="setFromStudio"/> __Set readBalanceBehavior on the server - from Studio__
 * The `readBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  

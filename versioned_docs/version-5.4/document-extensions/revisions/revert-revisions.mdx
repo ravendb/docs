@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Revert Revisions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use Revert Revisions to __revert the database to its state at a specified point in time__.   
 
@@ -72,13 +72,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The information text on the right will display the expected behavior in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 * When the revert process is executed:
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     
     Documents created __AFTER__ the specified Point in Time will be __moved to the Revision Bin__.
     
     </Admonition>  
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
 
     Documents created __BEFORE__ this time and that were modified after this time:
     
@@ -94,7 +94,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
     </Admonition>
 
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
 
     Documents created __BEFORE__ this time that were Not modified after this Time are __not reverted__.
 
@@ -117,7 +117,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The default Time Window value is 96 hours (4 days).
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 __Example__:  
 
@@ -178,7 +178,7 @@ __Example__:
 
 ## Content reverted
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * When reverting a document to one of its revisions, RavenDB actually creates a new revision for the document.  
   The content of this new revision is a copy of the historical revision content, and it becomes the current version of the document.

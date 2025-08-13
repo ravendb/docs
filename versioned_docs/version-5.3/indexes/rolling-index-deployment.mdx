@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Indexes: Rolling Index Deployment
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * When **Rolling Index Deployment** is enabled, indexing a database is performed by one node at a time.  
 * Rolling index deployment prevents parallel indexing by multiple nodes, to ensure that most cluster resources 
@@ -49,7 +49,7 @@ the scope of the required indexing, and the number of nodes concurrently indexin
 **Rolling index deployment** ensures that indexes will be created and updated while 
 the cluster remains fully available and performant.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Parallel indexing may be a better option when there is minor or no database activity.  
 </Admonition>
 
@@ -64,7 +64,7 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 2. When the assigned node finishes indexing, it sends a cluster-wide confirmation command
    that indexing is done.  
 3. The cluster assigns indexing to the next node.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    If the delivery of an **indexing completion confirmation** fails when the current node 
    finishes indexing, no other node will be able to start indexing until the confirmation 
    succeeds or indexing is initiated manually.  
@@ -127,7 +127,7 @@ Setting these properties overrides the
       2. **Edit Value** - Select Parallel or Rolling indexing deployment mode.  
       3. **Set Default** - Click 'Set Default' to select the server-wide default value.  
       4. **Save** - Apply changes.  
-         <Admonition type="warning" title="Warning">
+         <Admonition type="warning" title="">
          An edited configuration key value will become effective only after the database is reloaded.  
          </Admonition>
 ### Deployment Mode in an Index Definition
@@ -139,7 +139,7 @@ and [database](../indexes/rolling-index-deployment.mdx#database-deployment-mode)
   * `DeploymentMode = IndexDeploymentMode.Rolling`  
   * `DeploymentMode = IndexDeploymentMode.Parallel`  
   
-    <Admonition type="info" title="Info">
+    <Admonition type="info" title="">
     The deployment mode can be set for a specific index when, for example, parallel indexing 
     is preferred in general but rolling is a better option for a particularly "weighty" index.  
     </Admonition>

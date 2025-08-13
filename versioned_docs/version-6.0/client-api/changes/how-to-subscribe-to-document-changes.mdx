@@ -97,7 +97,7 @@ IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
 | ------------- | ----- |
 | IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collection name.
 </Admonition>
 
@@ -224,7 +224,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 ## Remarks
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 To get more method overloads, especially ones supporting **delegates**, please add the 
 [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
 </Admonition>
@@ -307,7 +307,7 @@ IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
 | ------------- | ----- |
 | IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with `TEntity` type uses `conventions.GetCollectionName` to get collection name.
 </Admonition>
 
@@ -519,7 +519,7 @@ store.changes().forDocumentsInCollection(clazz);
 | ------------- | ----- |
 | IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 Overload with entity type uses `conventions.getCollectionNameForType()` to get collection name.
 </Admonition>
 

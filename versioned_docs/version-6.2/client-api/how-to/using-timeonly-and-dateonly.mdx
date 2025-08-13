@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Client API: How to Use TimeOnly and DateOnly Types
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * To save storage space and streamline your process when you only need to know the date or the time, you can store and query 
   [DateOnly](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type) 
@@ -121,7 +121,7 @@ public class DateOnlyItem
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 RavenDB doesn't look for DateOnly or TimeOnly types as default during indexing
 so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
 </Admonition>
@@ -188,7 +188,7 @@ public class DateTimeItem
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
 so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
 </Admonition>

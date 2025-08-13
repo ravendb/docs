@@ -31,7 +31,7 @@ RavenDB's Client API is aware of the replication mechanism offered by the server
 
 This is caused by a failover mechanism which is turned in a document stored by default. The client can load a replication document from `/replication/topology` to learn what replication instances to use if the failover occurred.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The client by default creates requests for the replication document even if the server does not have the replication bundle enabled. In this case, the request for `/replication/topology` results in  `404` in server logs.
 </Admonition>
 
@@ -314,7 +314,7 @@ RavenDB's Client API is aware of the replication mechanism offered by the server
 
 This is caused by a failover mechanism which is turned in a document stored by default. The clinet can load a replication document from `/replication/topology` to learn what replication instances to use if the failover occurred.
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The client by default creates requests for the replication document even if the server does not have the replication bundle enabled. In this case, the request for `/replication/topology` results in  `404` in server logs.
 </Admonition>
 

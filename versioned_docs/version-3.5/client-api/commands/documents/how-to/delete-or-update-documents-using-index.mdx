@@ -57,7 +57,7 @@ To issue a batch-delete command you need to specify an index and a query to be s
 
 ### Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception.
 </Admonition>
 
@@ -205,7 +205,7 @@ operation.WaitForCompletion();
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, Set-based operations will **not work** on indexes that are stale, and the operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete.
 </Admonition>
 
@@ -254,7 +254,7 @@ public Operation deleteByIndex(String indexName, IndexQuery queryToDelete, BulkO
 
 ### Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception.
 </Admonition>
 
@@ -361,7 +361,7 @@ operation.waitForCompletion();
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, Set-based operations will **not work** on indexes that are stale, and the operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete.
 </Admonition>
 
@@ -427,7 +427,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query.mdx) object.
 
 ### Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception.
 </Admonition>
 
@@ -576,7 +576,7 @@ Set property 'FirstName' for all documents in collection 'Employees' to 'Patched
 
 ## Remarks
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 By default, Set-based operations will **not work** on indexes that are stale, and the operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete.
 </Admonition>
 

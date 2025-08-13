@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Create Map-Reduce Index
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried 
   on with very little cost, regardless of the data size.  
@@ -172,7 +172,7 @@ pattern determines which output documents will be included in each reference doc
 
 ![Figure 7. A Reference Document](./assets/create-map-reduce-index-7.png)
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ####  Artificial Documents -vs- Regular Documents  
 
 * Artificial documents are created directly by the index.  
@@ -181,14 +181,14 @@ pattern determines which output documents will be included in each reference doc
 
 * Artificial documents are updated whenever the index completes indexing a batch of documents.  
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 While artificial documents can be loaded and queried just like regular documents, it is **not** recommended 
 to edit them manually since any index results update would overwrite all manual modifications made in them.  
 </Admonition>
 
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 #### Artificial Documents Usage
 
 * You can set up indexes on top of the Artificial Documents collection, including additional MapReduce indexes,  
@@ -199,7 +199,7 @@ to edit them manually since any index results update would overwrite all manual 
   as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 ####  Limitations
 
 * RavenDB will detect and generate an error if you have a cycle of artificial documents. 

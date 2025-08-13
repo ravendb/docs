@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Anchoring Documents
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB normally selects which bucket to store a document in 
   by a [hash code](../../sharding/overview.mdx#buckets-population) 
@@ -42,7 +42,7 @@ To anchor a document, add its ID a suffix: the `$` symbol,
 followed by the ID of the anchor document.  
 &lt;`anchored document ID`&gt; + `$` + &lt;`anchor document ID`&gt;  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 To determine which bucket a document will be stored in, RavenDB 
 normally [runs a hash algorithm](../../sharding/overview.mdx#buckets-population) 
 over the entire document ID and uses the bucket pointed at by the 
@@ -70,7 +70,7 @@ in the same bucket as its anchor, `Users/4`.
   using an arbitrary name that represents no existing document.  
   E.g., `Users/1$foo` and `Users/2$foo` **will** share a bucket.  
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Please do not anchor too many documents to the same bucket, to prevent 
 the creation of an oversized bucket that cannot be split and resharded, 
 if needed, to balance the database.  

@@ -80,7 +80,7 @@ Every index is required to have a name and a Map function. The Map function is t
 
 The Reduce function is optional, and is written and executed just like the Map function, but this time on the results of the Map function. This is actually a second indexing pass, which allows us to perform aggregation operations quite cheaply, directly from the index.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 To better understand the operations of the Map/Reduce functions, it is recommended that you read the Map/Reduce chapter in the Theory section.
 </Admonition>
 
@@ -109,7 +109,7 @@ documentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Note the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings.
 </Admonition>
 

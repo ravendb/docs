@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 # Settings: Document Revisions
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use the **Document Revisions** Settings view to create and manage the 
   Revisions configuration.  
@@ -56,7 +56,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       will not be modified by this process.  
 5. **Enforce Configuration**  
    Click to [Enforce the Revisions configuration](../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    This operation may delete many revisions irrevocably and require substantial 
    server resources.  
    Please read carefully the section dedicated to it.  
@@ -133,7 +133,7 @@ created for any document collection.
       ![Maximum Number of Revisions to Purge](./assets/maximum-revisions-to-purge.png)  
       Enable to set a limit to the number of revisions that RavenDB is allowed 
       to purge per document modification.  
-      <Admonition type="info" title="Info">
+      <Admonition type="info" title="">
       RavenDB will refrain from purging more revisions than this limit allows 
       it to purge, even if the number of revisions that pend purging exceeds it.  
       Setting this limit can reserve server resources if many revisions pend 
@@ -149,7 +149,7 @@ created for any document collection.
 5. Click **OK** to keep these default settings, or **Cancel**.  
    Confirming will add the new settings to the Revisions configuration **Default** section:  
    ![Defined Default Settings](./assets/defined-default-settings.png)
-   <Admonition type="info" title="Info">
+   <Admonition type="info" title="">
    Remember to also [Save the configuration](../../../studio/database/settings/document-revisions.mdx#the-revisions-configuration) 
    to apply the new settings.  
    </Admonition>
@@ -173,7 +173,7 @@ created for any document collection.
 4. Click **OK** to keep the configuration, or **Cancel**.  
    Confirming will add the new configuration to the **Collections** section:  
    ![Defined Configuration](./assets/defined-collection-specific-configuration.png)
-   <Admonition type="info" title="Info">
+   <Admonition type="info" title="">
    Remember to also [Save the configuration](../../../studio/database/settings/document-revisions.mdx#the-revisions-configuration) 
    to apply the new settings.  
    </Admonition>
@@ -204,7 +204,7 @@ created for any document collection.
      1. when the replicated document arrived and entered a conflict state  
      2. when the local document entered a conflict state on the arrival of the replicated document  
      3. when the conflict was resolved by replacing the local document with the replicated one  
-        <Admonition type="info" title="Info">
+        <Admonition type="info" title="">
         In this exmaple, the conflict was resolved by placing the replicated version as the current document.  
         Learn more about conflict resolution [here](../../../studio/database/settings/conflict-resolution.mdx#conflict-resolution).  
         </Admonition>
@@ -238,7 +238,7 @@ created for any document collection.
    * **Enforce the Revisions configuration's default settings 
      and collection-specific configurations.**  
      All the revisions that pend purging will be **purged**.  
-     <Admonition type="info" title="Info">
+     <Admonition type="info" title="">
      Revisions that pend purging are revisions that should be purged 
      according to the default settings or the collection-specific 
      configuration that applies to them.  
@@ -248,7 +248,7 @@ created for any document collection.
      default settings are disabled), Revisions that no collection-specific 
      configuration applies to will be **deleted**.  
 * **Note**:  
-      <Admonition type="warning" title="Warning">
+      <Admonition type="warning" title="">
 
       * Large databases and collections may contain numerous revisions 
         pending purging that Enforcing Configuration will purge all at once.  

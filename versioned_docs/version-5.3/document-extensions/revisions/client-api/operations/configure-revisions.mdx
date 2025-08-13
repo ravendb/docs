@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
@@ -353,7 +353,7 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 </LanguageContent>
 <LanguageContent language="java">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * [Revisions](../../../../document-extensions/revisions/overview.mdx) are snapshots of documents that 
   are taken automatically each time a document is updated or deleted.  
@@ -508,7 +508,7 @@ documentStore.maintenance().send(new ConfigureRevisionsOperation(northwindRevCon
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  

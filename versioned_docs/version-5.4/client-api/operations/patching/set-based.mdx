@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageContent language="csharp">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Sometimes we need to update a large number of documents matching certain criteria. A simple SQL query doing that will look like this:
 
 `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`   
@@ -345,7 +345,7 @@ Each batch is handled in a separate write transaction.
 <LanguageContent language="java">
 
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 Sometimes we need to update a large number of documents matching certain criteria. A simple SQL query doing that will look like this:
 
 `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`   
@@ -602,7 +602,7 @@ Each batch is handled in a separate write transaction.
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * Set-based patch operations allow you to apply changes to a set of documents that match specific criteria instead of separately targeting each document.
 
@@ -629,7 +629,7 @@ Each batch is handled in a separate write transaction.
 </Admonition>
 ## Overview
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="defining-set-based-patching"/> __Defining set-based patching__:  
   * In other databases, a simple SQL query that updates a set of documents can look like this:  
@@ -664,7 +664,7 @@ update  \{
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="important-characteristics"/> __Important characteristics__:
 * __Transactional batches__:  
@@ -695,7 +695,7 @@ update  \{
 
 ## Examples
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-collection-query"/> __Update by collection query__:
 <TabItem value="update_whole_collection" label="update_whole_collection">
@@ -719,7 +719,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-collection-query---access-metadata"/> __Update by collection query - access metadata__:
 <TabItem value="update_collection_name" label="update_collection_name">
@@ -743,7 +743,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-dynamic-query"/> __Update by dynamic query__:
 <TabItem value="update_by_dynamic_query" label="update_by_dynamic_query">
@@ -767,7 +767,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-static-index-query"/> __Update by static index query__:
 <Tabs groupId='languageSyntax'>
@@ -806,7 +806,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </Tabs>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-all-documents"/> __Update all documents__:
 <TabItem value="update_all_documents" label="update_all_documents">
@@ -827,7 +827,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-document-id"/> __Update by document ID__:
 <TabItem value="update_by_id" label="update_by_id">
@@ -849,7 +849,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="update-by-document-id-using-parameters"/> __Update by document ID using parameters__:
 <TabItem value="update_by_id_using_parameters" label="update_by_id_using_parameters">
@@ -884,7 +884,7 @@ const operation = await documentStore.operations.send(patchByQueryOp);
 </TabItem>
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 <a id="allow-updating-stale-results"/> __Allow updating stale results__:
 * Set `allowStale` to _true_ to allow patching of stale results.

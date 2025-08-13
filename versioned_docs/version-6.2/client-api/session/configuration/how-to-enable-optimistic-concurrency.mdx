@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
   Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
@@ -44,7 +44,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
   * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Note that the `UseOptimisticConcurrency` setting only applies to documents that have been modified by the current session. 
   E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `SaveChanges`, 
@@ -56,7 +56,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 A detailed description of transactions and concurrency control in RavenDB is available here: 
 [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx)
@@ -94,7 +94,7 @@ A detailed description of transactions and concurrency control in RavenDB is ava
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted 
   if the version of the document sent in the `SaveChanges()` call matches its version from the time it was initially read (loaded from the server).
@@ -216,7 +216,7 @@ modifications in the current transaction) when trying to save a document that ha
 The `ConcurrencyException` that might be thrown upon the `saveChanges` call, needs to be handled by the caller.  
 The operation can be retried (the document needs to be reloaded since it got changed meanwhile) or handle the error in a way that is suitable in a given scenario.
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 Note that `useOptimisticConcurrency` only applies to documents that has been _modified_ by the session. Loading documents `users/1-A` and `users/2-A` in a session, modifying
 `users/1-A` and then calling `saveChanges` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
 If the session were to try to save to `users/2-A` as well with optimistic concurrency enabled, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
@@ -230,7 +230,7 @@ Setting the 'Change Vector' to an empty string will cause RavenDB to ensure that
 
 Setting optimistic concurrency per specific document overrides the use of the `useOptimisticConcurrency` field from the `advanced` session operations.
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 For a detailed description of transactions and concurrency control in RavenDB please refer to the  
 [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
 </Admonition>
@@ -262,7 +262,7 @@ For a detailed description of transactions and concurrency control in RavenDB pl
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted
   if the version of the document sent in the `saveChanges()` call matches its version from the time it was initially read (loaded from the server).
@@ -347,7 +347,7 @@ try (IDocumentSession session = store.openSession()) \{
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
   Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
@@ -372,7 +372,7 @@ try (IDocumentSession session = store.openSession()) \{
   * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
   * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Note that the `use_optimistic_concurrency` setting only applies to documents that have been modified by the current session. 
   E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `save_changes`, 
@@ -384,7 +384,7 @@ try (IDocumentSession session = store.openSession()) \{
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 A detailed description of transactions and concurrency control in RavenDB is available here: 
 [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx)
@@ -424,7 +424,7 @@ is_session_using_optimistic_concurrency = session.advanced.use_optimistic_concur
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted 
   if the version of the document sent in the `save_changes` call matches its version from the time it was initially read (loaded from the server).
@@ -524,7 +524,7 @@ with store.open_session() as session:
 </LanguageContent>
 <LanguageContent language="php">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
   Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
@@ -549,7 +549,7 @@ with store.open_session() as session:
   * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
   * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Note that the `UseOptimisticConcurrency` setting only applies to documents that have been modified by the current session. 
   E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `saveChanges`, 
@@ -561,7 +561,7 @@ with store.open_session() as session:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 A detailed description of transactions and concurrency control in RavenDB is available here: 
 [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx)
@@ -604,7 +604,7 @@ try \{
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted 
   if the version of the document sent in the `saveChanges` call matches its version from the time it was initially 
@@ -726,7 +726,7 @@ try \{
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
   Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
@@ -751,7 +751,7 @@ try \{
   * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
   * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Note that the `useOptimisticConcurrency` setting only applies to documents that have been modified by the current session. 
   E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `saveChanges`, 
@@ -763,7 +763,7 @@ try \{
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 A detailed description of transactions and concurrency control in RavenDB is available here: 
 [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx)
@@ -802,7 +802,7 @@ await session.saveChanges(); // This will throw a ConcurrencyException
 </CodeBlock>
 </TabItem>
 
-<Admonition type="warning" title="Warning">
+<Admonition type="warning" title="">
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted
   if the version of the document sent in the `saveChanges()` call matches its version from the time it was initially read (loaded from the server).

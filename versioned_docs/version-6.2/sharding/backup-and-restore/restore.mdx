@@ -13,14 +13,14 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Sharding: Restore
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * A sharded database's backup is a set of backup files that were 
   created by the database's shards.  
 * To restore a sharded database, we need to pass the restore 
   operation paths to the locations of the backup files so it 
   can retrieve and restore them.  
-   <Admonition type="warning" title="Warning">
+   <Admonition type="warning" title="">
    Shards must be restored in their 
    [original order](../../sharding/backup-and-restore/restore.mdx#restore).  
    The backup of shard 1, for example, must be restored as shard 1.
@@ -92,7 +92,7 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
     | **FolderName** | `string` | The name of the folder that holds the backup file/s. |
     | **LastFileNameToRestore** | `string` | Last incremental backup file to restore. <br/> If omitted, restore all backup files in folder. |
  
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
     When setting **ShardNumber**, please make sure that all shards are 
     given the same numbers they had when they were backed-up.  
     Giving a restored shard a number different than its original number 
@@ -101,7 +101,7 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
     E.g., a backup of shard 1 must be restored as shard 1: `ShardNumber = 1`  
     </Admonition>
 
-    <Admonition type="warning" title="Warning">
+    <Admonition type="warning" title="">
     When restoring a local shard backup, make sure that the backup file 
     resides on the node that the shard's `NodeTag` property is set to, 
     so the restore process can find the file.  
@@ -182,7 +182,7 @@ mentioned above, allowing you to set backups **encryption settings** among other
  |
     | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key) |
          
-    <Admonition type="note" title="Note">
+    <Admonition type="note" title="">
     Verify that RavenDB has full access to the backup locations and database files.  
     Make sure your server has write permission to `DataDirectory`.  
     </Admonition>

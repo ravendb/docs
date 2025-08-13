@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp", "python", "nodejs"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page contains examples of **creating a subscription**.  
   To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).  
@@ -273,7 +273,7 @@ See how to consume this type of subscription [here](../../../client-api/data-sub
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using builder**:
 
@@ -286,7 +286,7 @@ To include related documents, use method `IncludeDocuments`.
 (See the _Builder-syntax_ tab in the example above).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using RQL**:
 
@@ -301,7 +301,7 @@ The include statements can be written in two ways:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
 the include will search for the specified paths in the projected fields rather than in the original document.
@@ -496,7 +496,7 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 </LanguageContent>
 <LanguageContent language="python">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page contains examples of **creating a subscription**.  
   To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).
@@ -695,7 +695,7 @@ See how to consume this type of subscription [here](../../../client-api/data-sub
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using builder**:
 
@@ -708,7 +708,7 @@ To include related documents, use method `include_documents`.
 (See the _Builder-syntax_ tab in the example above).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using RQL**:
 
@@ -723,7 +723,7 @@ The include statements can be written in two ways:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields),
 the include will search for the specified paths in the projected fields rather than in the original document.
@@ -787,7 +787,7 @@ In this example we update the filtering query of an existing subscription named 
 `}
 </CodeBlock>
 </TabItem>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Modifying the subscription's name**:
 
@@ -816,7 +816,7 @@ store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="
 </LanguageContent>
 <LanguageContent language="nodejs">
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * This page contains examples of **creating a subscription**.  
   To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).
@@ -1029,7 +1029,7 @@ const subscriptionName = await documentStore.subscriptions.create({ query });
 </TabItem>
 </Tabs>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using builder**:
 
@@ -1044,7 +1044,7 @@ To include related documents, use method `includeDocuments`.
 (See the _Builder-syntax_ tab in the example above).
 
 </Admonition>
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 **Include using RQL**:
 
@@ -1059,7 +1059,7 @@ The include statements can be written in two ways:
 
 </Admonition>
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
 the include will search for the specified paths in the projected fields rather than in the original document.

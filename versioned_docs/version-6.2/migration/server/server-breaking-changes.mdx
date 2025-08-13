@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Migration: Server Breaking Changes
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The features listed on this page were available in former RavenDB versions.  
 In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
@@ -69,7 +69,7 @@ remains unchanged).
 * If you prefer it, you can set `ComplexFieldIndexingBehavior` to **`Skip`** to disable the 
   indexing of complex fields without throwing an exception or raising a notification.  
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 
 * The configuration option will apply only to [new static indexes](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing), 
   created after the release of RavenDB `6.2`. It will not affect older indexes.  

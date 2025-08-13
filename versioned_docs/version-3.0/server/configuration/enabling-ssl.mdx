@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Configuration: Enabling SSL
 
-<Admonition type="info" title="Info">
+<Admonition type="info" title="">
 SSL can only be enabled when RavenDB is running as a Windows Service. The certificate has to be installed in the local certificate repository [Certificates - Local Computer\Personal\Certificates] and include the private key (.pfx file), otherwise the following will not work.
 </Admonition>
 
@@ -49,7 +49,7 @@ To uninstall the certificate execute:
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for.
 </Admonition>   
 
@@ -57,6 +57,6 @@ The Studio might not work in some browsers (e.g. Firefox and Chrome) if the doma
 
 In RavenDB, we have added an option to ignore all SSL certificate validation errors. By default, `Raven/IgnoreSslCertificateErrors` configuration option is set to **None**, but it can be changed if needed.
 
-<Admonition type="danger" title="Danger">
+<Admonition type="danger" title="">
 We do not recommend setting `Raven/IgnoreSslCertificateErrors` to **All** due to safety reasons. Enabling this option is done at your own risk.
 </Admonition>

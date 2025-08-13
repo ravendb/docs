@@ -13,7 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Storage: Directory Structure
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * RavenDB keeps all data under the location specified by the [DataDir](../../server/configuration/core-configuration.mdx#datadir) configuration value.
 
@@ -25,7 +25,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The on-disk structure of RavenDB data directories is as follows:
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 
 * __&lt;data-dir&gt;__
   * `Databases`
@@ -67,7 +67,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Each Voron storage environment is composed of:  
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Temp Folder__
 
 * Holds temporary scratch & compression &lt;em&gt;*.buffers&lt;/em&gt; files.  
@@ -77,7 +77,7 @@ __Temp Folder__
 * When a transaction is written from these files to the journal file it is considered committed.
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Journals Folder__  
 
 * Contains Write-Ahead Journal files (WAJ) that are used in the hot path of a transaction commit.  
@@ -88,7 +88,7 @@ __Journals Folder__
 * The journal's transactions take part in database recovery - info is used to recover up to the same point you were at before failure.  
 </Admonition>
 
-<Admonition type="note" title="Note">
+<Admonition type="note" title="">
 __Raven.voron file__
 
 * This file contains the persisted data on disk.  
