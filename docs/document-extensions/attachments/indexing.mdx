@@ -15,7 +15,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 
-# Index Attachments
+# Index Attachments
+
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
@@ -501,8 +502,6 @@ where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
 </TabItem>
 </Tabs>
 
-
-
 ## Leveraging indexed attachments
 
 * Access to the indexed attachment content opens the door to many different applications,  
@@ -512,18 +511,16 @@ where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
   how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature.
   The resulting index allows filtering and querying based on image content.
 
-
-
 ## Syntax
 
 #### `AttachmentsFor`
 
 <TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="csharp">
-{`// Returns a list of attachment details for the specified document.
-IEnumerable<AttachmentName> AttachmentsFor(object document);
-`}
-</CodeBlock>
+    <CodeBlock language="csharp">
+        {`// Returns a list of attachment details for the specified document.
+        IEnumerable<AttachmentName> AttachmentsFor(object document);
+        `}
+    </CodeBlock>
 </TabItem>
 
 | Parameter    | Type     | Description                                                     |
@@ -531,61 +528,64 @@ IEnumerable<AttachmentName> AttachmentsFor(object document);
 | **document** | `object` | The document object whose attachments details you want to load. |
 
 <TabItem value="attachment_details" label="attachment_details">
-<CodeBlock language="csharp">
-{`// AttachmentsFor returns a list containing the following attachment details object:
-public class AttachmentName
-\{
-    public string Name;
-    public string Hash;
-    public string ContentType;
-    public long Size;
-\}
-`}
-</CodeBlock>
+    <CodeBlock language="csharp">
+        {`// AttachmentsFor returns a list containing the following attachment details object:
+        public class AttachmentName
+        \{
+        public string Name;
+        public string Hash;
+        public string ContentType;
+        public long Size;
+        \}
+        `}
+    </CodeBlock>
 </TabItem>
+
 #### `LoadAttachment`
-
+    
 <TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="csharp">
-{`public IAttachmentObject LoadAttachment(object doc, string name);
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
-`}
-</CodeBlock>
+    <CodeBlock language="csharp">
+        {`// LoadAttachment returns attachment details and methods to access its content.
+        public IAttachmentObject LoadAttachment(object document, string attachmentName);
+        `}
+    </CodeBlock>
 </TabItem>
-
+    
 | Parameter           | Type      | Description                                     |
 |---------------------|-----------|-------------------------------------------------|
 | **document**        | `object`  | The document whose attachment you want to load. |
 | **attachmentName**  | `string`  | The name of the attachment to load.             |
 
 <TabItem value="attachment_object" label="attachment_object">
-<CodeBlock language="csharp">
-{`public interface IAttachmentObject
-\{
-    public string Name \{ get; \}
-    public string Hash \{ get; \}
-    public string ContentType \{ get; \}
-    public long Size \{ get; \}
-    
-    public string GetContentAsString();
-    public string GetContentAsString(Encoding encoding);
-    public Stream GetContentAsStream();
-\}
-`}
-</CodeBlock>
+    <CodeBlock language="csharp">
+        {`public interface IAttachmentObject
+        \{
+        public string Name \{ get; \}
+        public string Hash \{ get; \}
+        public string ContentType \{ get; \}
+        public long Size \{ get; \}
+
+        public string GetContentAsString();
+        public string GetContentAsString(Encoding encoding);
+        public Stream GetContentAsStream();
+        \}
+        `}
+    </CodeBlock>
 </TabItem>
+
 #### `LoadAttachments`
 
 <TabItem value="syntax_3" label="syntax_3">
-<CodeBlock language="csharp">
-{`// Returns a list of all attachments for the specified document.
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
-`}
-</CodeBlock>
+    <CodeBlock language="csharp">
+        {`// Returns a list of ALL attachments for the specified document.
+        public IEnumerable<IAttachmentObject> LoadAttachments(object document);
+        `}
+    </CodeBlock>
 </TabItem>
 
-
-
+| Parameter      | Type      | Description                                      |
+|----------------|-----------|--------------------------------------------------|
+| **document**   | `object`  | The document whose attachments you want to load. |
 
 </LanguageContent>
 <LanguageContent language="java">
@@ -606,6 +606,7 @@ public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
   * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)  
 
 </Admonition>
+    
 ## Syntax
 
 ### Using AttachmentsFor()
@@ -1618,7 +1619,6 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 </Admonition>
 
-
 ## Leveraging indexed attachments
 
 * Access to the indexed attachment content opens the door to many different applications,  
@@ -1628,76 +1628,87 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
   how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature. 
   The resulting index allows filtering and querying based on image content.
 
-
-
 ## Syntax
 
+#### `attachmentsFor`
 <TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="js">
-{`attachmentsFor(document);
-`}
-</CodeBlock>
+    <CodeBlock language="js">
+        {`attachmentsFor(document);
+        `}
+    </CodeBlock>
 </TabItem>
-
+    
 | Parameter    | Type     | Description                                             |
 |--------------|----------|---------------------------------------------------------|
 | **document** | `object` | The document whose attachments details you want to load |
-
+    
 <TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="js">
-{`// Returns a list containing the following attachment details object:
-\{    
-    name;         // string
-    hash;         // string
-    contentType;  // string
-    size;         // number
-\}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="syntax_3" label="syntax_3">
-<CodeBlock language="js">
-{`loadAttachment(document, attachmentName);
-`}
-</CodeBlock>
+    <CodeBlock language="js">
+        {`// Returns a list containing the following attachment details object:
+        \{
+        name;         // string
+        hash;         // string
+        contentType;  // string
+        size;         // number
+        \}
+        `}
+    </CodeBlock>
 </TabItem>
 
-| Parameter           | Type      | Description                                    |
-|---------------------|-----------|------------------------------------------------|
-| **document**        | `object`  | The document whose attachment you want to load |
-| **attachmentName**  | `string`  | The name of the attachment to load             |
+#### `loadAttachment`
+
+<TabItem value="syntax_3" label="syntax_3">
+    <CodeBlock language="js">
+        {`loadAttachment(document, attachmentName);
+        `}
+    </CodeBlock>
+</TabItem>
+
+| Parameter           | Type      | Description                                     |
+|---------------------|-----------|-------------------------------------------------|
+| **document**        | `object`  | The document whose attachment you want to load. |
+| **attachmentName**  | `string`  | The name of the attachment to load.             |
 
 <TabItem value="syntax_4" label="syntax_4">
-<CodeBlock language="js">
-{`// Returns the following attachment object:
-\{
-    // Properties accessing DETAILS:
-    // =============================
-    name;         // string
-    hash;         // string
-    contentType;  // string
-    size;         // number
+    <CodeBlock language="js">
+        {`// Returns the following attachment object:
+        \{
+        // Properties accessing DETAILS:
+        // =============================
+        name;         // string
+        hash;         // string
+        contentType;  // string
+        size;         // number
+
+        // Methods accessing CONTENT:
+        // ==========================
+        getContentAsStream();
+        getContentAsString(encoding);
+        getContentAsString(); // Default encoding is "utf8"
+        \}
+        `}
+    </CodeBlock>
+</TabItem>
+
+#### `loadAttachments`
     
-    // Methods accessing CONTENT:
-    // ==========================
-    getContentAsStream();
-    getContentAsString(encoding);
-    getContentAsString(); // Default encoding is "utf8"
-\}
-`}
-</CodeBlock>
-</TabItem>
 <TabItem value="syntax_5" label="syntax_5">
-<CodeBlock language="js">
-{`loadAttachments(document);
-
-// Returns a list containing the above attachment object per attachment.
-`}
-</CodeBlock>
+    <CodeBlock language="js">
+        {`loadAttachments(document);
+        `}
+    </CodeBlock>
 </TabItem>
 
-
-
+| Parameter       | Type      | Description                                      |
+|-----------------|-----------|--------------------------------------------------|
+| **document**    | `object`  | The document whose attachments you want to load. |
+    
+<TabItem value="syntax_6" label="syntax_6">
+    <CodeBlock language="js">
+        {` // Returns a list containing the above attachment object per attachment.
+        `}
+    </CodeBlock>
+</TabItem>
 
 </LanguageContent>
 
