@@ -62,7 +62,7 @@ function UnmaintainedVersionLabel({
           }}
         >
           {
-            "This is documentation for {siteTitle} {versionLabel}."
+            "You're currently reading RavenDB {versionLabel} Documentation."
           }
         </Translate>
       </div>
