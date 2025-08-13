@@ -105,7 +105,8 @@ Versions are entirely separate, so changes made for one version will not affect 
   `}
   </CodeBlock>
   ```
-- `Admonition`: Shows callout boxes for notes, warnings, tips, etc.
+- `Admonition`: Shows styled callout boxes to highlight important content.  
+  Available types: note, warning, info, tip, danger.
   ```javascript
   <Admonition type="note" title="Important">
     Remember to back up your data before making major changes.
@@ -114,7 +115,8 @@ Versions are entirely separate, so changes made for one version will not affect 
 ## Custom components
 
 Apart from the standard Docusaurus components, this documentation uses the following custom components 
-- `LanguageSwitcher`: A component responsible for handling switching between different language versions of the documentation. Languages supported by particular document are stored in `supportedLanguages` array.
+- `LanguageSwitcher`: A component responsible for handling switching between different language versions of the documentation.  
+   Languages supported by particular document are stored in `supportedLanguages` array.
     ```javascript
     export const supportedLanguages = ["csharp", "java", "nodejs"];
   
