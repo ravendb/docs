@@ -1,0 +1,22 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for Visual Studio
+*.css      text eol=lf
+*.html     text eol=lf
+*.js       text eol=lf
+*.ts       text eol=lf
+*.tsx      text eol=lf
+*.txt      text eol=lf
+*.xml      text eol=lf
+*.sh       text eol=lf
+*.md	   text eol=lf
+*.mdx	   text eol=lf
+
+*.bmp binary
+*.gif binary
+*.ico binary
+*.jpg binary
+*.png binary
+
+* -crlf
