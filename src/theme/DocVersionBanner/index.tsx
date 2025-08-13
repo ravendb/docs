@@ -62,7 +62,7 @@ function UnmaintainedVersionLabel({
           }}
         >
           {
-            "This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained."
+            "This is documentation for {siteTitle} {versionLabel}."
           }
         </Translate>
       </div>
