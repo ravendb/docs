@@ -261,6 +261,11 @@ ul {
   list-style: revert;
 }
 
+/* Custom wrap for pre */
+pre {
+  white-space: pre-wrap;
+}
+
 /* Custom color for code */
 code {
   color: var(--ifm-color-primary-lightest);
@@ -293,4 +298,9 @@ code {
   --ifm-alert-background-color-highlight: rgba(75, 85, 99, 0.5);
   --ifm-alert-foreground-color: rgba(243, 244, 246, 0.9);
   --ifm-alert-border-color: rgba(156, 163, 175, 0.6);
+}
+
+/* Custom margin-bottom for tabs and admonitions followed by other elements */
+[class^="tabItem"]:has(+ *), .theme-admonition:has(+ *) {
+  @apply mb-4;
 }
