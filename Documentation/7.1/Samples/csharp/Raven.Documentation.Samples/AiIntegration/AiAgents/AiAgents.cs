@@ -81,23 +81,18 @@ public class AiAgents
 
     }
 
-    #region ai-agents_full-example_with-comments
-    public async Task usingHandleToRunChat()
+    public async Task createAndRunAiAgent()
     {
         var store = new DocumentStore();
 
-        // Define the connection string to OpenAI
+        // Set a connection string to OpenAI
         var connectionString = new AiConnectionString
         {
-            // Connection string name & identifier
             Name = "open-ai-cs",
-
             ModelType = AiModelType.Chat,
 
-            // OpenAI connection settings
-
             OpenAiSettings = new OpenAiSettings(
-                apiKey: "your api key",
+                apiKey: "your-api-key",
                 endpoint: "https://api.openai.com/v1",
                 // LLM model for text generation
                 model: "gpt-4.1")
@@ -110,85 +105,73 @@ public class AiAgents
         using var session = store.OpenAsyncSession();
 
         #region ai-agents_AiAgentConfiguration_example
-        // Create an agent configuration instance and start setting it by providing
-        // it with the agent name, connection string name, and system prompt.
+        // Start setting an agent configuration
         var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
             "You work for a human experience manager. " +
-            "The manager uses your services to find which employee has made the largest profit and to suggest a reward. " +
+            "The manager uses your services to find which employee earned the largest profit for the company " +
+            "and suggest a reward for this employee. " +
             "The manager provides you with the name of a country, or with the word \"everything\" to indicate all countries. " +
             "then you: " +
             "1. use a query tool to load all the orders sent to the selected countery, " +
-            "or a query tool to load all orders sent to all counteries. " +
+            "or a query tool to load all orders sent to all countries. " +
             "2. calculate which employee made the largest profit." +
-            "3. use a query tool to learn in what general area this employee lives." +
-            "4. find suitable vacations sites or other rewards based on the employee's residence area." +
+            "3. use a query tool to learn in what region the employee lives." +
+            "4. find suitable vacation sites or other rewards based on the employee's residence area." +
             "5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions." +
             "When you're done, return these details in your answer to the user as well."
             );
         #endregion
 
         #region ai-agents_agent-identifier
-        // Agent ID
+        // Set agent ID
         agent.Identifier = "reward-productive-employee";
         #endregion
 
         #region ai-agents_AiAgentParameter_function
-        // Agent parametera
+        //  Set agent parametera
         agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, " +
                                                   "or \"everywhere\" to look for orders shipped to all countries"));
         #endregion
 
-        #region ai-agents_agent_sampleObjectString
-        // Set LLM response object
-        agent.SampleObject = "{" +
-                                "\"EmployeeID\": \"embed the employee’s ID here\"," +
-                                "\"Profit\": \"embed the profit made by the employee here\"," +
-                                "\"SuggestedReward\": \"embed suggested rewards here\"" +
-                             "}";
-        #endregion
-
-
         #region ai-agents_agent_query-tool-sample
-        // Create query tools
         agent.Queries =
         [
-            // Creata a query tool that triggers the agent to retrieve all the orders that were sent to all countries
+            // Set query tool that triggers the agent to retrieve all the orders sent everywhere
             new AiAgentToolQuery
-            {
-                Name = "retrieve-orders-sent-to-all-countries",
-                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-                Query = "from Orders as O select O.Employee, O.Lines.Quantity",
-                ParametersSampleObject = "{}"
-            },
+                {
+                    Name = "retrieve-orders-sent-to-all-countries",
+                    Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+                    Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+                    ParametersSampleObject = "{}"
+                },
             
-            // Create a query tool that triggers the agent to retrieve all the orders that were sent to a specific country
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-orders-sent-to-a-specific-country",
-                Description = "a query tool that allows you to retrieve all orders sent to a specific country",
-                Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
-                ParametersSampleObject = "{}"
-            },
+                // Set query tool that triggers the agent to retrieve all the orders sent to a specific country
+                new AiAgentToolQuery
+                {
+                    Name = "retrieve-orders-sent-to-a-specific-country",
+                    Description = "a query tool that allows you to retrieve all orders sent to a specific country",
+                    Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+                    ParametersSampleObject = "{}"
+                },
 
-            // Create a query tool that triggers the agent to retrieve the performer's living region 
-            // details from the database
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-performer-living-region",
-                Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
-                Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
-                ParametersSampleObject = "{" +
-                                            "\"employeeId\": \"embed the employee's ID here\"" +
-                                         "}"
-            }
+                // Set query tool that triggers the agent to retrieve the performer's
+                // residence region details (country, city, and region) from the database
+                new AiAgentToolQuery
+                {
+                    Name = "retrieve-performer-living-region",
+                    Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+                    Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
+                    ParametersSampleObject = "{" +
+                                                "\"employeeId\": \"embed the employee's ID here\"" +
+                                             "}"
+                }
         ];
         #endregion
 
         #region ai-agents_agent_action-tool-sample
-        // Create action tools
         agent.Actions =
         [
-            // Create an action tool that triggers the client to store the performer's details
+            // Set action tool that triggers the client to store the performer's details
             new AiAgentToolAction
                 {
                     Name = "store-performer-details",
@@ -207,7 +190,11 @@ public class AiAgents
         // Set chat trimming configuration
         AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
         {
+            // When the number of tokens stored in the conversation exceeds this limit
+            // summarization of old messages will be triggered.
             MaxTokensBeforeSummarization = 32768,
+            // The maximum number of tokens that the conversation is allowed to contain
+            // after summarization. 
             MaxTokensAfterSummarization = 1024
         };
 
@@ -217,14 +204,25 @@ public class AiAgents
         #region ai-agents_MaxModelIterationsPerCall_function
         // Limit the number of times the LLM can request for tools in response to a single user prompt
         agent.MaxModelIterationsPerCall = 3;
-        #region ai-agents_CreateAgentAsync_example
+        #endregion
 
         #region ai-agents_CreateAgentAsync_example
-        var createResult = await store.AI.CreateAgentAsync(agent);
+        // Create the agent
+        // Pass it an object for its response
+        var createResult = await store.AI.CreateAgentAsync(agent, new Performer
+        {
+            employeeID = "the ID of the employee that made the largest profit",
+            profit = "the profit the employee made",
+            suggestedReward = "your suggestions for a reward"
+        });
         #endregion
 
         #region ai-agents_Conversation_example
-        // Set chat ID, prefix, and agent parameters
+        // Set the chat
+        // Pass it the agent's ID, a prefix for conversations stored in @Conversations,
+        // and agent parameters' values
+        // Here, the country is simply set to "France" for the example.
+        // A user would pick a country, or enter "everyehwre" for all countries.
         var chat = store.AI.Conversation(
             createResult.Identifier,
             "Performers/",
@@ -232,11 +230,14 @@ public class AiAgents
         #endregion
 
         #region ai-agents_Conversation_handle-for-action-tool
-        // Handle the action tool that the LLM uses to store an employee's details in the database
+        // Handle action tool.
+        // In this example, the action tool is requested to store an employee's
+        // details in the database. 
         chat.Handle("store-performer-details", (Performer performer) =>
         {
             using (var session1 = store.OpenSession())
             {
+                // These values are passed to the client by the action tool
                 Performer rewarded = new Performer
                 {
                     employeeID = performer.employeeID,
@@ -244,9 +245,12 @@ public class AiAgents
                     suggestedReward = performer.suggestedReward
                 };
 
+                // store the values in the Performers collection in the database
                 session1.Store(rewarded);
                 session1.SaveChanges();
             }
+        
+            // return to the agent an indication that the action went well.
             return "done";
         });
         #endregion
@@ -260,12 +264,12 @@ public class AiAgents
         if (LLMResponse.Status == AiConversationResult.Done)
         {
             // The LLM successfully processed the user prompt and returned its response.
-            // The performer's ID was stored in the Performers collection by the action tool.  
-            // LLM response includes the performer's ID, profit, and suggested rewards.
+            // The performer's ID, profit, and suggested rewards were stored in the Performers
+            // collection by the action tool, and are also returned in the final LLM response.
         }
         #endregion
     }
-
+ 
     #region ai-agents_Conversation_action-tool-data-object
     // An object for the LLM response
     public class Performer
@@ -277,7 +281,7 @@ public class AiAgents
     #endregion
 
     #region ai-agents-full-example
-    public async Task usingHandleToRunChat_full()
+    public async Task createAndRunAiAgent_full()
     {
         var store = new DocumentStore();
 
@@ -292,7 +296,7 @@ public class AiAgents
             // OpenAI connection settings
 
             OpenAiSettings = new OpenAiSettings(
-                apiKey: "your api key",
+                apiKey: "your-api-key",
                 endpoint: "https://api.openai.com/v1",
                 // LLM model for text generation
                 model: "gpt-4.1")
@@ -304,74 +308,65 @@ public class AiAgents
 
         using var session = store.OpenAsyncSession();
 
-        // Create an agent configuration instance and start setting it by providing
-        // it with the agent name, connection string name, and system prompt.
+         // Start setting an agent configuration
         var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
             "You work for a human experience manager. " +
-            "The manager uses your services to find which employee has made the largest profit and to suggest a reward. " +
+            "The manager uses your services to find which employee earned the largest profit for the company " +
+            "and suggest a reward for this employee. " +
             "The manager provides you with the name of a country, or with the word \"everything\" to indicate all countries. " +
             "then you: " +
             "1. use a query tool to load all the orders sent to the selected countery, " +
-            "or a query tool to load all orders sent to all counteries. " +
+            "or a query tool to load all orders sent to all countries. " +
             "2. calculate which employee made the largest profit." +
-            "3. use a query tool to learn in what general area this employee lives." +
-            "4. find suitable vacations sites or other rewards based on the employee's residence area." +
-            "5. use an action tool to store in the database the employee's ID." +
+            "3. use a query tool to learn in what region the employee lives." +
+            "4. find suitable vacation sites or other rewards based on the employee's residence area." +
+            "5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions." +
             "When you're done, return these details in your answer to the user as well."
             );
 
-        // Agent ID
+        // Set agent ID
         agent.Identifier = "reward-productive-employee";
 
-        //  Agent parametera
+        //  Set agent parametera
         agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, " +
                                                   "or \"everywhere\" to look for orders shipped to all countries"));
 
-        // Set LLM response object
-        agent.SampleObject = "{" +
-                                "\"EmployeeID\": \"embed the employee’s ID here\"," +
-                                "\"Profit\": \"embed the profit made by the employee here\"," +
-                                "\"SuggestedReward\": \"embed suggested rewards here\"" +
-                             "}";
-
-        // Create query tools
         agent.Queries =
         [
-            // Creata a query tool that triggers the agent to retrieve all the orders that were sent to all countries
+            // Set query tool that triggers the agent to retrieve all the orders sent everywhere
             new AiAgentToolQuery
-            {
-                Name = "retrieve-orders-sent-to-all-countries",
-                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-                Query = "from Orders as O select O.Employee, O.Lines.Quantity",
-                ParametersSampleObject = "{}"
-            },
+                {
+                    Name = "retrieve-orders-sent-to-all-countries",
+                    Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+                    Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+                    ParametersSampleObject = "{}"
+                },
             
-            // Create a query tool that triggers the agent to retrieve all the orders that were sent to a specific country
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-orders-sent-to-a-specific-country",
-                Description = "a query tool that allows you to retrieve all orders sent to a specific country",
-                Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
-                ParametersSampleObject = "{}"
-            },
+                // Set query tool that triggers the agent to retrieve all the orders sent to a specific country
+                new AiAgentToolQuery
+                {
+                    Name = "retrieve-orders-sent-to-a-specific-country",
+                    Description = "a query tool that allows you to retrieve all orders sent to a specific country",
+                    Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+                    ParametersSampleObject = "{}"
+                },
 
-            // Create a query tool that triggers the agent to retrieve the performer's living region 
-            // details from the database
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-performer-living-region",
-                Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
-                Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
-                ParametersSampleObject = "{" +
-                                            "\"employeeId\": \"embed the employee's ID here\"" +
-                                         "}"
-            }
+                // Set query tool that triggers the agent to retrieve the performer's
+                // residence region details (country, city, and region) from the database
+                new AiAgentToolQuery
+                {
+                    Name = "retrieve-performer-living-region",
+                    Description = "a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+                    Query = "from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
+                    ParametersSampleObject = "{" +
+                                                "\"employeeId\": \"embed the employee's ID here\"" +
+                                             "}"
+                }
         ];
 
-        // Create action tools
         agent.Actions =
         [
-            // Create an action tool that triggers the client to store the performer's details
+            // Set action tool that triggers the client to store the performer's details
             new AiAgentToolAction
                 {
                     Name = "store-performer-details",
@@ -388,7 +383,11 @@ public class AiAgents
         // Set chat trimming configuration
         AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
         {
+            // When the number of tokens stored in the conversation exceeds this limit
+            // summarization of old messages will be triggered.
             MaxTokensBeforeSummarization = 32768,
+            // The maximum number of tokens that the conversation is allowed to contain
+            // after summarization. 
             MaxTokensAfterSummarization = 1024
         };
 
@@ -397,19 +396,28 @@ public class AiAgents
         // Limit the number of times the LLM can request for tools in response to a single user prompt
         agent.MaxModelIterationsPerCall = 3;
 
-        var createResult = await store.AI.CreateAgentAsync(agent);
+        var createResult = await store.AI.CreateAgentAsync(agent, new Performer
+        {
+            employeeID = "the ID of the employee that made the largest profit",
+            profit = "the profit the employee made",
+            suggestedReward = "your suggestions for a reward"
+        });
 
-        // Set chat ID, prefix, and agent parameters
+        // Set chat ID, prefix, and agent parameters.
+        // In this example the "country" agent parameter is set to "France",
+        // to trigger a query that retrieves orders sent to a particular country.
+        // Providing "everywhere" instead, will trigger another query that retrieves all orders.
         var chat = store.AI.Conversation(
             createResult.Identifier,
             "Performers/",
             new AiConversationCreationOptions().AddParameter("country", "France"));
 
-        // Handle the action tool that the LLM uses to store an employee's details in the database
+        // Handle the action tool that the LLM uses to store the performer's details in the database
         chat.Handle("store-performer-details", (Performer performer) =>
         {
             using (var session1 = store.OpenSession())
             {
+                // These values are passed to the client by the action tool
                 Performer rewarded = new Performer
                 {
                     employeeID = performer.employeeID,
@@ -417,6 +425,7 @@ public class AiAgents
                     suggestedReward = performer.suggestedReward
                 };
 
+                // store the values in the Performers collection in the database
                 session1.Store(rewarded);
                 session1.SaveChanges();
             }
@@ -431,8 +440,8 @@ public class AiAgents
         if (LLMResponse.Status == AiConversationResult.Done)
         {
             // The LLM successfully processed the user prompt and returned its response.
-            // The performer's ID was stored in the Performers collection by the action tool.  
-            // LLM response includes the performer's ID, profit, and suggested rewards.
+            // The performer's ID, profit, and suggested rewards were stored in the Performers
+            // collection by the action tool, and are also returned in the final LLM response.
         }
     }
     #endregion
@@ -538,12 +547,13 @@ public class AiAgents
 
         /*
         #region ai-agents_CreateAgentAsync_overloads
-        // Create the agent with just the defined agent configuration
+        // Create the agent with just the defined configuration
         CreateAgentAsync(configuration);
 
+        // Create the agent with just the defined configuration
         CreateAgentAsync(AiAgentConfiguration configuration, CancellationToken token = default(CancellationToken));
         
-        // Create the agent with the agent configuration,         
+        // Create the agent while passing it a response object
         CreateAgentAsync<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject, CancellationToken token = default(CancellationToken));
         #endregion
         */
