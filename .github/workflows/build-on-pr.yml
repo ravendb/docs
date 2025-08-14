@@ -2,7 +2,7 @@ name: Build Docusaurus on PR
 
 on:
   pull_request:
-    branches: [new-docs]
+    branches: [main]
     types: [opened, synchronize, reopened]
 
 jobs:
