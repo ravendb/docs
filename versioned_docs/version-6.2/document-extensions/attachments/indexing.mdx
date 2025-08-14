@@ -543,12 +543,13 @@ public class AttachmentName
 `}
 </CodeBlock>
 </TabItem>
+    
 #### `LoadAttachment`
 
 <TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
-{`public IAttachmentObject LoadAttachment(object doc, string name);
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+{`// LoadAttachment returns attachment details and methods to access its content.
+public IAttachmentObject LoadAttachment(object document, string attachmentName);
 `}
 </CodeBlock>
 </TabItem>
@@ -574,18 +575,20 @@ public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
 `}
 </CodeBlock>
 </TabItem>
+    
 #### `LoadAttachments`
 
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
-{`// Returns a list of all attachments for the specified document.
-public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+{`// Returns a list of ALL attachments for the specified document.
+public IEnumerable<IAttachmentObject> LoadAttachments(object document);
 `}
 </CodeBlock>
 </TabItem>
 
-
-
+| Parameter      | Type      | Description                                      |
+|----------------|-----------|--------------------------------------------------|
+| **document**   | `object`  | The document whose attachments you want to load. |
 
 </LanguageContent>
 <LanguageContent language="java">
@@ -1632,6 +1635,8 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 ## Syntax
 
+#### `attachmentsFor`
+
 <TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="js">
 {`attachmentsFor(document);
@@ -1655,6 +1660,9 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 `}
 </CodeBlock>
 </TabItem>
+    
+#### `loadAttachment`    
+    
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="js">
 {`loadAttachment(document, attachmentName);
@@ -1662,10 +1670,10 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 </CodeBlock>
 </TabItem>
 
-| Parameter           | Type      | Description                                    |
-|---------------------|-----------|------------------------------------------------|
-| **document**        | `object`  | The document whose attachment you want to load |
-| **attachmentName**  | `string`  | The name of the attachment to load             |
+| Parameter           | Type      | Description                                     |
+|---------------------|-----------|-------------------------------------------------|
+| **document**        | `object`  | The document whose attachment you want to load. |
+| **attachmentName**  | `string`  | The name of the attachment to load.             |
 
 <TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="js">
@@ -1687,17 +1695,20 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 `}
 </CodeBlock>
 </TabItem>
+
+#### `loadAttachments`
+    
 <TabItem value="syntax_5" label="syntax_5">
 <CodeBlock language="js">
-{`loadAttachments(document);
-
-// Returns a list containing the above attachment object per attachment.
+{`// Returns a list containing the above attachment object per attachment.
+loadAttachments(document);
 `}
 </CodeBlock>
 </TabItem>
 
-
-
+| Parameter       | Type      | Description                                      |
+|-----------------|-----------|--------------------------------------------------|
+| **document**    | `object`  | The document whose attachments you want to load. |
 
 </LanguageContent>
 
