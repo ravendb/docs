@@ -23,7 +23,7 @@ export const supportedLanguages = ["csharp", "python", "nodejs"];
 
 * In this page:  
    * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)
-   * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;)
+   * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)
    * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
    * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
    * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
@@ -72,7 +72,7 @@ Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
 | Parameter      | Type                             | Description                                                                                                                                                                                  |
 |----------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **predicate**  | `Expression<Func<T, bool>>`      | An optional lambda expression that returns a boolean.<br/>This predicate defines the filter criteria for the subscription documents.                                                          |
-| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;)           |
+| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)           |
 | **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions) |
 | **database**   | `string`                         | The name of the database where the subscription task will be created. If `null`, the default database configured in the DocumentStore will be used.                                          |
 | **token**      | `CancellationToken`              | Cancellation token used in to halt the subscription creation process.                                                                                                                  |

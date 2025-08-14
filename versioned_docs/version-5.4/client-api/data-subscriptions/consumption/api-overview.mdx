@@ -25,9 +25,9 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
    * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)  
    * [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
    * [Run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
-   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;)  
-   * [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;item)  
-   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworker&lt;t&gt;)  
+   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+   * [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem)  
+   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Create the subscription worker
@@ -129,7 +129,7 @@ Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../c
 ## Run the subscription worker
 
 After [creating](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
-To start processing, you need to call the `Run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworker&lt;t&gt;).  
+To start processing, you need to call the `Run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).  
 
 The `Run` function takes a delegate, which is your client-side code responsible for processing the received document batches.
 
@@ -160,7 +160,7 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 
 | Member                   | Type                              | Description                                                                                                                                                            |
 |--------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;item) below. |
+| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem) below. |
 | **NumberOfItemsInBatch** | `int`                             | Number of items in the batch.                                                                                                                                          |
 
 | Method Signature       | Return value            | Description                                                                                                       |
@@ -285,8 +285,8 @@ Using it outside this scope may cause unexpected behavior.
    * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
    * [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
    * [Run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
-   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;)  
-   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworker&lt;t&gt;)  
+   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Create the subscription worker
@@ -350,7 +350,7 @@ All other parameters are optional and will default to their respective default v
 ## Run the subscription worker
 
 After [creating](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
-To start processing, you need to call the `run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworker&lt;t&gt;).
+To start processing, you need to call the `run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).
 
 The `run` function takes a delegate, which is your client-side code responsible for processing the received document batches.
 

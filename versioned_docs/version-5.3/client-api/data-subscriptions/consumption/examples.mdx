@@ -309,7 +309,7 @@ _ = subscriptionWorker.Run(batch =>
 ## Subscription that uses included documents
 
 Here we create a subscription utilizing the includes feature, by processing `Order` documents and including all `Product`s of each order.  
-When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;) object, 
+When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht) object, 
 and for each order line, we obtain the `Product` document and process it alongside with the `Order`.
 
 <TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
@@ -660,7 +660,7 @@ subscriptionWorker.run(batch -> \{
 ## Subscription that uses included documents
 
 Here we create a subscription utilizing the includes feature, by processing `Order` documents and including all `Product`s of each order.  
-When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;) object, 
+When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht) object, 
 and for each order line, we obtain the `Product` document and process it alongside with the `Order`.
 
 <TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
