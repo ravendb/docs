@@ -55,6 +55,9 @@ const config: Config = {
           changefreq: "weekly",
           priority: null
         },
+        googleTagManager: {
+            containerId: "GTM-TDH4JWF2"
+        }
       } satisfies Preset.Options,
     ],
   ],
