@@ -1,6 +1,19 @@
 # robots.txt for RavenDB Documentation
 User-agent: *
+Disallow: /5.4/
+Disallow: /5.3/
+Disallow: /5.2/
+Disallow: /5.1/
+Disallow: /5.0/
+Disallow: /4.2/
+Disallow: /4.1/
+Disallow: /4.0/
+Disallow: /3.5/
+Disallow: /3.0/
+Disallow: /2.5/
+Disallow: /2.0/
+Disallow: /1.0/
 Allow: /
 
 # Sitemaps
-Sitemap: https://test.docs.ravendb.net/sitemap.xml
+Sitemap: https://docs.ravendb.net/sitemap.xml
