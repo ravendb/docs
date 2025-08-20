@@ -99,7 +99,7 @@ if ($Versions) {
     ThrowIfEmpty $Env:WHATS_NEW_URL 'WHATS_NEW_URL env var must be set when specifying versions'
 }
 
-Process-Changelogs -VersionsToBuild $Versions
+Process-Changelogs -WhatsNewVersions $Versions
 
 Write-Host 'Installing JS dependencies (npm ci)...' -ForegroundColor Cyan
 $env:NODE_OPTIONS = '--max-old-space-size=8192'
