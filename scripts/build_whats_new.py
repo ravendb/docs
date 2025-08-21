@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""build_whats_new.py – regenerate RavenDB *What's New* pages
-
-The script lives in the project's **/scripts** folder, therefore the Docusaurus
-root is assumed to be its parent directory (``../``).
+"""build_whats_new.py – regenerate RavenDB *What's New* pages
 
 What the script does
 --------------------
 1. **Downloads** changelog entries for one or more RavenDB branches via the
    public Documentation API.
-2. **Converts** each entry's HTML body to Markdown using *markdownify*.
-3. **Sorts** the entries strictly by their ``buildDate`` field (newest → oldest).
-4. **Writes** them to ``whats-new.mdx`` files with front‑matter already in place.
+2. **Sorts** the entries strictly by their ``buildDate`` field (newest → oldest).
+3. **Writes** them to ``whats-new.mdx`` files with front-matter already in place.
+4. **Escapes** raw angle brackets outside code (inline/fenced), preserving only
+   `<hr />` (and `<hr>` / `<hr/>`) as real HTML; everything else is escaped.
+   Existing `&lt;` / `&gt;` aren’t double-escaped.
+   Also logs any tag-like snippets that were escaped.
 
 File locations
 --------------
@@ -25,7 +25,7 @@ File locations
 
 Environment variable
 --------------------
-Set your RavenDB docs API key in ``API_WEB_RAVENDB_NET_HOST`` before running.
+Set API endpoint in ``WHATS_NEW_URL`` before running.
 
 Examples
 --------
@@ -38,9 +38,9 @@ Examples
 
 from __future__ import annotations
 
-import os
 import re
 import sys
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any
@@ -59,7 +59,7 @@ if not API_BASE_URL:
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent  # «../» relative to /scripts
 
-# Docusaurus front‑matter block that prefixes every generated MDX file
+# Docusaurus front-matter block that prefixes every generated MDX file
 FRONT_MATTER = (
     "---\n"
     'title: "What\'s New"\n'
@@ -81,9 +81,7 @@ def get_api_page(branch: str, page: int = 1) -> Dict[str, Any]:
     """Return a single paginated payload from the Documentation API."""
     response = requests.get(
         API_BASE_URL,
-        headers={
-            "Accept": "application/json",
-        },
+        headers={"Accept": "application/json"},
         params={"version": branch, "page": page},
         timeout=20,
     )
@@ -115,25 +113,105 @@ def fetch_branch_entries(branch: str) -> List[Dict[str, Any]]:
     return entries
 
 # ============================================================================
+# Escaping helpers (whitelist only <hr>, log tag-like escapes)
+# ============================================================================
+
+# fenced code blocks (``` or ~~~), with optional info string
+_FENCE_RE = re.compile(r"(^|\n)(?P<fence>```|~~~)[^\n]*\n.*?\n(?P=fence)(?=\n|$)", re.DOTALL)
+# inline code spans
+_INLINE_CODE_RE = re.compile(r"`[^`]*`")
+# tag-like matcher; allows attributes, self-closing, etc.
+_HTML_TAG_RE = re.compile(r"</?\s*([A-Za-z][A-Za-z0-9:-]*)\b(?:\s+[^<>]*?)?/?>")
+# '###Server' -> '### Server'
+_HEADING_SPACE_RE = re.compile(r"(?m)^(#{1,6})(?!\s|#)")
+# whitelist: keep only <hr>, <hr/>, <hr /> (case-insensitive)
+_WHITELIST_TAGS = {"hr", "code"}
+
+# per-run log of escaped tag-like snippets
+_ESCAPED_TAG_EVENTS: list[str] = []
+
+def _log_tag_escape(snippet: str) -> None:
+    # keep the literal snippet for reporting
+    _ESCAPED_TAG_EVENTS.append(snippet)
+
+def _escape_angles(text: str) -> str:
+    return text.replace("<", "&lt;").replace(">", "&gt;")
+
+def _escape_preserving_hr_only(text: str) -> str:
+    """Escape < and > in plain text, but keep only `<hr>` variants as HTML.
+       Any other tag-like snippet (e.g., <T>, <div>, <Foo>) is escaped & logged.
+    """
+    out, last = [], 0
+    for match in _HTML_TAG_RE.finditer(text):
+        # escape plain text before the tag-like match
+        out.append(_escape_angles(text[last:match.start()]))
+
+        tag_full = match.group(0) # matched groups from regex
+        tag_name = match.group(1).lower() if match.group(1) else "" # to check if it isn't whitelisted e.g. <hr>
+
+        if tag_name in _WHITELIST_TAGS:
+            out.append(tag_full)  # keep <hr> / <hr/> / <hr />
+        else:
+            _log_tag_escape(tag_full)
+            out.append(_escape_angles(tag_full))  # escape non-whitelisted tag-like text
+
+        last = match.end()
+
+    out.append(_escape_angles(text[last:]))
+    return "".join(out)
+
+def _escape_outside_inline_code(text: str) -> str:
+    """Within non-fenced areas, escape outside inline code spans."""
+    out, last = [], 0
+    for match in _INLINE_CODE_RE.finditer(text):
+        # fix headings in the plain-text slice, then escape angles (keeping <hr>)
+        chunk = text[last:match.start()]
+        chunk = _HEADING_SPACE_RE.sub(r"\1 ", chunk)
+        out.append(_escape_preserving_hr_only(chunk))
+        out.append(match.group(0))  # keep inline code as-is
+        last = match.end()
+    # tail
+    chunk = text[last:]
+    chunk = _HEADING_SPACE_RE.sub(r"\1 ", chunk)
+    out.append(_escape_preserving_hr_only(chunk))
+    return "".join(out)
+
+def escape_angle_brackets(markdown: str) -> str:
+    """Escape < and > everywhere except inside fenced/inline code; keep only <hr>."""
+    # Protect existing entities so we don't double-escape them
+    LT, GT = "\x00LT\x00", "\x00GT\x00"
+    markdown = markdown.replace("&lt;", LT).replace("&gt;", GT)
+
+    out, last = [], 0
+    for match in _FENCE_RE.finditer(markdown):
+        out.append(_escape_outside_inline_code(markdown[last:match.start()]))  # non-fenced
+        out.append(match.group(0))                                             # keep fenced code intact
+        last = match.end()
+    out.append(_escape_outside_inline_code(markdown[last:]))
+
+    result = "".join(out)
+    return result.replace(LT, "&lt;").replace(GT, "&gt;")
+
+# ============================================================================
 # Conversion helpers
 # ============================================================================
 
 def mdx_heading(entry: Dict[str, Any]) -> str:
-    """Create a level‑2 MDX heading from an API entry."""
+    """Create a level-2 MDX heading from an API entry."""
     date_str = datetime.strptime(entry["buildDate"], API_DATE_FMT).strftime("%Y/%m/%d")
     return f"## {entry['version']} - {date_str}\n\n"
 
-
 def mdx_block(entry: Dict[str, Any]) -> str:
     """Full MDX chunk for a single changelog entry (heading + body)."""
-    return mdx_heading(entry) + entry["changelogMarkdown"]
+    safe_body = escape_angle_brackets(entry["changelogMarkdown"])
+    return mdx_heading(entry) + safe_body + "\n\n"
 
 # ============================================================================
 # Filesystem helpers
 # ============================================================================
 
 def output_path_for(branch: str, is_primary: bool) -> Path:
-    """Return where the *whats‑new.mdx* for *branch* should live."""
+    """Return where the *whats-new.mdx* for *branch* should live."""
     # We only need major.minor for the directory name – e.g. "6.2.1" → "6.2"
     major_minor = ".".join(branch.split(".")[:2])
 
@@ -141,7 +219,6 @@ def output_path_for(branch: str, is_primary: bool) -> Path:
         return PROJECT_ROOT / "docs" / "whats-new.mdx"
 
     return PROJECT_ROOT / "versioned_docs" / f"version-{major_minor}" / "whats-new.mdx"
-
 
 def write_whats_new_file(destination: Path, entries: List[Dict[str, Any]]) -> None:
     """Write an MDX file sorted by *buildDate* (newest first)."""
@@ -156,7 +233,7 @@ def write_whats_new_file(destination: Path, entries: List[Dict[str, Any]]) -> No
     destination.write_text(FRONT_MATTER + body, encoding="utf-8")
 
 # ============================================================================
-# Command‑line interface
+# Command-line interface
 # ============================================================================
 
 def main() -> None:
@@ -168,14 +245,23 @@ def main() -> None:
     requested_branches = sys.argv[1:]
 
     for branch in requested_branches:
+        # reset log for this branch
+        _ESCAPED_TAG_EVENTS.clear()
+
         is_primary = branch == primary_branch
         changelog_entries = fetch_branch_entries(branch)
         target_file = output_path_for(branch, is_primary)
         write_whats_new_file(target_file, changelog_entries)
+
         print(f"✅  Wrote {target_file.relative_to(PROJECT_ROOT)}")
 
-    print("🏁  Finished.")
+        if _ESCAPED_TAG_EVENTS:
+            counts = Counter(_ESCAPED_TAG_EVENTS)
+            # print a concise per-branch summary for safe escapes
+            summary = ", ".join(f"{tag}×{n}" for tag, n in counts.most_common())
+            print(f"   • Escaped non-whitelisted tag-like snippets: {summary}")
 
+    print("🏁  Finished.")
 
 if __name__ == "__main__":
     main()
