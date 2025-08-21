@@ -39,6 +39,7 @@ Examples
 from __future__ import annotations
 
 import re
+import os
 import sys
 from collections import Counter
 from datetime import datetime
