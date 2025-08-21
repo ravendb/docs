@@ -2,7 +2,7 @@
 title: "Schedule Document Archiving"
 hide_table_of_contents: true
 sidebar_label: Schedule Document Archiving
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
@@ -43,6 +43,9 @@ export const supportedLanguages = ["csharp"];
   * [Schedule MULTIPLE documents for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-studio)
 
 </Admonition>
+
+---
+
 ## Schedule a SINGLE document for archiving - from the Client API
 
 To schedule a single document for archival from the Client API,  
@@ -50,8 +53,8 @@ add the `@archive-at` property directly to the document metadata as follows:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Schedule_document" label="Schedule_document">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
+```csharp
+using (var session = store.OpenSession())
 {
     // Load the document to schedule for archiving
     var company = session.Load<Company>("companies/91-A");
@@ -66,12 +69,11 @@ add the `@archive-at` property directly to the document metadata as follows:
     // Save the changes
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Schedule_document_async" label="Schedule_document_async">
-<CodeBlock language="csharp">
-{`using (var asyncSession = store.OpenAsyncSession())
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
 {
     // Load the document to schedule for archiving
     var company = await asyncSession.LoadAsync<Company>("companies/91-A");
@@ -86,14 +88,13 @@ add the `@archive-at` property directly to the document metadata as follows:
     // Save the changes
     await asyncSession.SaveChangesAsync();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 Learn more about modifying the metadata of a document in [Modifying Document Metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
-
+---
 
 ## Schedule a SINGLE document for archiving - from the Studio
 
@@ -109,7 +110,7 @@ Learn more about modifying the metadata of a document in [Modifying Document Met
    E.g.: `"@archive-at": "2025-06-25T14:00:00.0000000Z"`
 2. After saving the document, the Studio displays the time remaining until the document is archived.
 
-
+---
 
 ## Schedule MULTIPLE documents for archiving - from the Client API
 
@@ -128,8 +129,8 @@ Any document matching the query is then scheduled for archival by the **patch sc
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Schedule_documents" label="Schedule_documents">
-<CodeBlock language="csharp">
-{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+```csharp
+var archiveDate = SystemTime.UtcNow.AddDays(1);
 string archiveDateString = archiveDate.ToString("o");
 
 var oldDate = SystemTime.UtcNow.AddYears(-1);
@@ -153,12 +154,11 @@ var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
     
 // Execute the operation by passing it to Operations.Send
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Schedule_documents_async" label="Schedule_documents_async">
-<CodeBlock language="csharp">
-{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+```csharp
+var archiveDate = SystemTime.UtcNow.AddDays(1);
 string archiveDateString = archiveDate.ToString("o");
 
 var oldDate = SystemTime.UtcNow.AddYears(-1);
@@ -178,12 +178,11 @@ var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
     
 // Execute the operation by passing it to Operations.SendAsync
 await store.Operations.SendAsync(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Operation_overload" label="Operation_overload">
-<CodeBlock language="csharp">
-{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+```csharp
+var archiveDate = SystemTime.UtcNow.AddDays(1);
 string archiveDateString = archiveDate.ToString("o");
 
 var oldDate = SystemTime.UtcNow.AddYears(-1);
@@ -211,12 +210,11 @@ var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
     
 // Execute the operation by passing it to Operations.Send
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Operation_overload_async" label="Operation_overload_async">
-<CodeBlock language="csharp">
-{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+```csharp
+var archiveDate = SystemTime.UtcNow.AddDays(1);
 string archiveDateString = archiveDate.ToString("o");
 
 var oldDate = SystemTime.UtcNow.AddYears(-1);
@@ -244,17 +242,16 @@ var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
     
 // Execute the operation by passing it to Operations.SendAsync
 await store.Operations.SendAsync(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 **Syntax:**
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`archived.archiveAt(doc, utcDateTimeString)
-`}
-</CodeBlock>
+```csharp
+archived.archiveAt(doc, utcDateTimeString)
+```
 </TabItem>
 
 | Parameter             | Type        | Description                                                                          |
@@ -264,7 +261,7 @@ await store.Operations.SendAsync(patchByQueryOp);
 
 To learn more about the `PatchByQueryOperation`, see [Set-based patch operations](../client-api/operations/patching/set-based.mdx).
 
-
+---
 
 ## Schedule MULTIPLE documents for archiving - from the Studio
 
@@ -284,8 +281,6 @@ performs the same operation as the [Client API example](../data-archival/schedul
 3. Click to execute the patch.
 4. You can test the patch on a sample document before executing the whole operation.  
    Learn more in [Test patch](../studio/database/documents/patch-view.mdx#test-patch).
-
-
 
 
 </LanguageContent>

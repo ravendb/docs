@@ -1,0 +1,49 @@
+---
+title: "Feature Hub / Start"
+hide_table_of_contents: true
+sidebar_label: "Feature Hub / Start"
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Data Archival: Feature Hub / Start
+
+
+## Overview
+
+Data Archival in RavenDB lets you keep documents long-term without slowing down your active database.  
+By adding an `@archive-at` timestamp to a document’s metadata, you can tell RavenDB when to move it into an archived state.  
+Archived documents are compressed, excluded from indexes and subscriptions by default, but still fully retrievable and can be unarchived at any time.
+This keeps indexes small, improves performance, and reduces storage costs while preserving history.
+
+---
+
+## Use cases
+
+A company maintains an Orders collection with millions of records, but only needs to search and process orders from the last 6 months. 
+Older orders must remain available for audits and customer service. 
+By enabling archiving older orders, RavenDB automatically compresses and excludes them from indexing and subscriptions. 
+The team gets faster queries and smaller indexes, while still being able to load any archived order if needed.
+
+---
+
+## Blog posts
+
+* [Indexing only recent data - adventures with large datasets & archiving](https://ayende.com/blog/201442-B/indexing-only-recent-data-adventures-with-large-datasets-archiving)
+
+---
+
+## Documentation articles
+
+* [Overview](../data-archival/overview) 
+* [Enable data archiving](../data-archival/enable-data-archiving) 
+* [Schedule data archiving](../data-archival/schedule-document-archiving) 
+* [Archived Documents and Other Features](../data-archival/archived-documents-and-other-features) 
+* [Unarchiving Documents](../data-archival/unarchiving-documents) 
+* [Configuration](../data-archival/configuration)
