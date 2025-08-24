@@ -13,7 +13,8 @@ git checkout main
 ```
 
 ## Contributing
-1. Open the markdown file you want to change, commit the changes, and create a pull request.
+
+1. Open the markdown file you want to change, commit the changes, and create a pull request.  
 2. Describe the changes made in the commits and pull request description.
 
 ## Installation
@@ -28,7 +29,8 @@ npm install
 npm run start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server (hot reload).
+This command starts a local development server and opens up a browser window.  
+Most changes are reflected live without having to restart the server (hot reload).
 
 ## Build
 
@@ -39,6 +41,7 @@ docusaurus build
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
 Note it may be necessary to increase Node.js max memory usage, e.g. to 8 GB  
+
 ```bash
 $env:NODE_OPTIONS="--max-old-space-size=8192"
 ```
@@ -96,7 +99,8 @@ Versions are entirely separate, so changes made for one version will not affect 
   </TabItem>
   </Tabs>
   ```
-- `CodeBlock`: Displays formatted code snippets with syntax highlighting.
+  
+- `CodeBlock`: Displays formatted code snippets with syntax highlighting:
   ```javascript
   <CodeBlock language="csharp">
   {`
@@ -105,6 +109,15 @@ Versions are entirely separate, so changes made for one version will not affect 
   `}
   </CodeBlock>
   ```
+  
+  Or use triple backticks (```) with a language identifier to create a fenced code block with syntax highlighting:
+  ````markdown
+  ```csharp
+  // Call 'Execute' directly on the index instance
+  new Orders_ByTotal().Execute(store);
+  ```
+  ````
+  
 - `Admonition`: Shows styled callout boxes to highlight important content.  
   Available types: note, warning, info, tip, danger.
   ```javascript
@@ -112,9 +125,11 @@ Versions are entirely separate, so changes made for one version will not affect 
     Remember to back up your data before making major changes.
   </Admonition>
   ```
+  
 ## Custom components
 
 Apart from the standard Docusaurus components, this documentation uses the following custom components 
+
 - `LanguageSwitcher`: A component responsible for handling switching between different language versions of the documentation.  
    Languages supported by particular document are stored in `supportedLanguages` array.
     ```javascript
@@ -122,9 +137,52 @@ Apart from the standard Docusaurus components, this documentation uses the follo
   
     <LanguageSwitcher supportedLanguages={supportedLanguages} />
     ```
+  
 - `LanguageContent`: A component that displays documentation content based on the selected language.
     ```html
     <LanguageContent language="csharp">
         <!-- Content specific to C# language -->
     </LanguageContent>
     ```
+
+## Page metadata and sidebar settings
+
+Each `.mdx` file begins with a block delimited by `---` that defines metadata used by Docusaurus for rendering, sidebar navigation, and page behavior.
+
+For example:
+
+```
+---
+title: "Enable Data Archiving"
+hide_table_of_contents: true
+sidebar_label: "Enable Data Archiving"
+sidebar_position: 1
+---
+```
+
+Key fields:  
+
+* `title`: The document’s title metadata. This is used in the browser tab and SEO,  
+     and is also shown as the main heading only if you don’t provide your own `# Heading` in the MDX body.
+* `sidebar_label`:  Sets the text displayed for this page in the left sidebar menu.
+* `sidebar_position`: Controls the article’s position in the sidebar.  
+     Use this to place the article relative to others in the same folder or section.  
+     Lower numbers appear higher in the menu.
+
+## Category metadata for subfolders
+
+When adding a new subfolder, you must create a `_category_.json` file to define how the section appears in the sidebar.
+
+Example of a `_category_.json` file:
+
+```
+{
+  "position": 4,
+  "label": "Data Archival"
+}
+```
+
+Key fields:
+
+* `label`: Sets the name of the folder as it will appear in the sidebar.
+* `position` – Controls the folder’s order relative to sibling items in the sidebar. Lower numbers appear higher.
