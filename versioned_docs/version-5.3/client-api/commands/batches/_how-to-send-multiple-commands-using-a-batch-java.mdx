@@ -1,0 +1,75 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To send **multiple commands** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `BatchCommand` should be used.
+
+## Syntax
+
+<TabItem value="batch_1" label="batch_1">
+<CodeBlock language="java">
+{`public BatchCommand(DocumentConventions conventions, List<ICommandData> commands, BatchOptions options)
+`}
+</CodeBlock>
+</TabItem>
+
+### The following commands can be sent using a batch
+
+* DeleteCommandData
+* DeletePrefixedCommandData
+* PutCommandData
+* PatchCommandData
+* DeleteAttachmentCommandData
+* PutAttachmentCommandData
+
+### Batch Options
+
+<TabItem value="batch_2" label="batch_2">
+<CodeBlock language="java">
+{`public class BatchOptions \{
+    private boolean waitForReplicas;
+    private int numberOfReplicasToWaitFor;
+    private Duration waitForReplicasTimeout;
+    private boolean majority;
+    private boolean throwOnTimeoutInWaitForReplicas;
+
+    private boolean waitForIndexes;
+    private Duration waitForIndexesTimeout;
+    private boolean throwOnTimeoutInWaitForIndexes;
+    private String[] waitForSpecificIndexes;
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example
+
+<TabItem value="batch_3" label="batch_3">
+<CodeBlock language="java">
+{`try (IDocumentSession session = documentStore.openSession()) \{
+
+    ObjectNode user3 = mapper.createObjectNode();
+    user3.put("Name", "James");
+
+    PutCommandDataWithJson user3Cmd = new PutCommandDataWithJson("users/3", null, user3);
+
+    DeleteCommandData deleteCmd = new DeleteCommandData("users/2-A", null);
+    List<ICommandData> commands = Arrays.asList(user3Cmd, deleteCmd);
+
+    BatchCommand batch = new BatchCommand(documentStore.getConventions(), commands);
+    session.advanced().getRequestExecutor().execute(batch);
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+All the commands in the batch will succeed or fail as a **transaction**. Other users will not be able to see any of the changes until the entire batch completes.
+</Admonition>
+
+

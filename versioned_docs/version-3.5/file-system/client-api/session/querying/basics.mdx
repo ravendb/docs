@@ -5,82 +5,19 @@ sidebar_label: Basics
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import BasicsCsharp from './_basics-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-## Related articles
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Basics
-
-Another great feature offered by the session is the querying support. The `Query` method is an entry point to build a query that will be used to look for files on a file system according to the specified criteria.
-
-
-
-<TabItem value="query_1" label="query_1">
-<CodeBlock language="csharp">
-{`IAsyncFilesQuery<FileHeader> Query();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ------------- |
-| **IAsyncFilesQuery&lt;FileHeader&gt;** | Instance implementing `IAsyncFilesQuery` interface containing additional query methods and extensions. |
-
-
-The `Query` method returns an object that allows you to construct a query by using available predicates and logical operators.
-In order to get the results you need to materialize the query by using one of the following methods:
-
-* `ToListAsync`
-* `FirstAsync`
-* `FirstOrDefaultAsync`
-* `SingleAsync`
-* `SingleOrDefaultAsync`
-
-<Admonition type="info" title="Async API" id="async-api" href="#async-api">
-The querying API is the same as the rest of RavenFS client methods, which means it exposes only the asynchronous methods.
-</Admonition>
-
-<Admonition type="note" title="Default page size" id="default-page-size" href="#default-page-size">
-The default value of a page size for a query is 1024 results. In order to retrieve a different number of results in a single query use the `.Take(pageSize)` method.
-</Admonition>
-
-## Example I
-
-If there are fewer than 1024 files in a file system, the below code will return all of them because the query does not contain any filtering condition. If there are more than 1024 files, it will return only the first 1024 results according to the default value of the `pageSize` parameter.
-
-<TabItem value="query_2" label="query_2">
-<CodeBlock language="csharp">
-{`List<FileHeader> files = await session.Query().ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-In this example we will get the first file that has less than 100 bytes or `null` if no such file does not exist.
-
-<TabItem value="query_3" label="query_3">
-<CodeBlock language="csharp">
-{`FileHeader file = await session
-					.Query()
-					.WhereLessThan(x => x.TotalSize, 100)
-					.FirstOrDefaultAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <BasicsCsharp />
 </LanguageContent>
+
 
 <!---
 - [Indexing](../../../indexing)

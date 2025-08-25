@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `Clear` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="clear_1" label="clear_1">
+<CodeBlock language="csharp">
+{`void Clear();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="clear_2" label="clear_2">
+<CodeBlock language="csharp">
+{`session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+session.Advanced.Clear();
+
+session.SaveChanges(); // nothing will happen
+`}
+</CodeBlock>
+</TabItem>
+
+

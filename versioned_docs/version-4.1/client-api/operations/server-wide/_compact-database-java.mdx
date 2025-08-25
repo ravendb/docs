@@ -1,0 +1,76 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="java">
+{`public CompactDatabaseOperation(CompactSettings compactSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="java">
+{`public class CompactSettings \{
+    private String databaseName;
+    private boolean documents;
+    private String[] indexes;
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | String | Name of a database to compact |
+| **Documents** | boolean | Indicates if documents should be compacted |
+| **Indexes** | String[] | List of index names to compact |
+
+## Example I
+
+<TabItem value="compact_3" label="compact_3">
+<CodeBlock language="java">
+{`CompactSettings settings = new CompactSettings();
+settings.setDatabaseName("Northwind");
+settings.setDocuments(true);
+settings.setIndexes(new String[] \{ "Orders/Totals", "Orders/ByCompany" \});
+
+Operation operation = store.maintenance().server().sendAsync(new CompactDatabaseOperation(settings));
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II
+
+<TabItem value="compact_4" label="compact_4">
+<CodeBlock language="java">
+{`// get all index names
+String[] indexNames = store.maintenance().send(new GetIndexNamesOperation(0, Integer.MAX_VALUE));
+
+CompactSettings settings = new CompactSettings();
+settings.setDatabaseName("Northwind");
+settings.setDocuments(true);
+settings.setIndexes(indexNames);
+
+// compact entire database: documents + all indexes
+Operation operation = store.maintenance().server().sendAsync(new CompactDatabaseOperation(settings));
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Remarks
+
+The compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+

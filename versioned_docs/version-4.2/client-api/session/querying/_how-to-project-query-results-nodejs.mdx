@@ -1,0 +1,351 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
+results. The projections are defined with the usage of:
+
+- [selectFields()](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)
+- [ofType()](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)
+
+## SelectFields()
+
+The most common way to perform a query with projection is to use the `selectFields()` method, which let's you specify what fields from a document you want to retrieve.
+
+### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// request name, city and country for all entities from 'Companies' collection
+const queryData = new QueryData(
+    [ "Name", "Address.City", "Address.Country"],
+    [ "Name", "City", "Country"]);
+const results = await session
+    .query({ collection: "Companies" })
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Companies
+select Name, Address.City as City, Address.Country as Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const queryData = new QueryData(
+    [ "ShipTo", "Lines[].ProductName" ],
+    [ "ShipTo", "Products" ]);
+
+const results = await session.query({ collection: "Orders" })
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Orders
+select ShipTo, Lines[].ProductName as Products
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(
+    \`from Employees as e select {
+        FullName: e.FirstName + " " + e.LastName 
+    }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Employees as e
+select {
+    fullName : e.FirstName + " " + e.LastName
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IV - Projection with `declared function`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(
+        \`declare function output(e) { 
+            var format = function(p){ return p.FirstName + " " + p.LastName; }; 
+            return { FullName : format(e) }; 
+        } 
+        from Employees as e select output(e)\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from Employees as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example V - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(\`from Orders as o select { 
+        Total : o.Lines.reduce( 
+            (acc , l) => 
+                acc += l.PricePerUnit * l.Quantity, 0) 
+    }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Orders as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VI - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(\`from Orders as o 
+    load o.Company as c 
+    select { 
+        CompanyName: c.Name,
+        ShippedAt: o.ShippedAt
+    }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Orders as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VII - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(
+        \`from Employees as e 
+        select { 
+            DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(), 
+            MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1, 
+            Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+        }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Employees as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VIII - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = session.advanced
+    .rawQuery(
+        \`from Employees as e 
+        select { 
+            Date : new Date(Date.parse(e.Birthday)), 
+            Name : e.FirstName.substr(0,3) 
+        }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Employees as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IX - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced
+    .rawQuery(
+        \`from Employees as e 
+        select {
+             Name : e.FirstName, 
+             Metadata : getMetadata(e)
+        }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Employees as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example X
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ indexName: "Companies/ByContact" })
+    .selectFields([ "Name", "Phone" ])
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="js">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+
+</Tabs>
+
+
+
+## OfType
+
+`ofType()` is a client-side projection - in JS it only sets the type of the result entries. The easiest explanation of how it works is to take the results that the server returns and assign them to instance of the type indicated by the parameter.
+
+### Example
+
+<TabItem value="projections_10" label="projections_10">
+<CodeBlock language="js">
+{`// For example - Create a document with nested objects: 
+// ====================================================
+
+class User \{
+    constructor(firstName, lastName, jobDetails, lastLogin) \{
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.jobDetails = jobDetails
+        this.lastLogin = lastLogin;
+    \}
+\}
+
+class Job \{
+    constructor(company, title) \{
+        this.company = company;
+        this.title = title;
+    \}
+\}
+
+const job = new Job("RavenDB", "CEO");
+const user = new User("Ayende", "Rahien", job, new Date(2023, 11, 12));
+
+await session.store(user, "users/1");
+await session.saveChanges();
+
+// Query the users collecions:
+// ===========================
+
+class Projection \{
+    constructor(jobDetails, lastLogin) \{
+        this.jobDetails = jobDetails;
+        this.lastLogin = lastLogin;
+    \}
+\}
+
+const projectedResults = await session.query(\{ collection: "users" \})
+     // Project selected fields:
+    .selectFields(["jobDetails", "lastLogin"], Projection)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+<Admonition type="note" title="">
+Projected entities (even named types) are not tracked by the session.
+</Admonition>
+
+<Admonition type="note" title="">
+If the projected fields are stored inside the index itself (`"Yes"` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
+</Admonition>
+
+

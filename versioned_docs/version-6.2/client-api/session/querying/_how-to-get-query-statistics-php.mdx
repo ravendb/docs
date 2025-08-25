@@ -1,0 +1,96 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.  
+  
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$stats = new QueryStatistics();
+
+$employees = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->statistics($stats)
+    ->toList();
+
+$totalResults = $stats->getTotalResults();
+$durationInMs = $stats->getDurationInMs();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Robert"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="php">
+{`public function statistics(QueryStatistics &$stats): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type              | Description                                     |
+|------------|-------------------|-------------------------------------------------|
+| **$stats** | `QueryStatistics` | An 'out' param for getting the query statistics |
+
+<br/> 
+
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="php">
+{`class QueryStatistics
+\{
+    private bool $isStale = false;
+    private int $durationInMs = 0;
+    private int $totalResults = 0;
+    private int $longTotalResults = 0;
+    private int $skippedResults = 0;
+    private ?int $scannedResults = null;
+    private ?DateTimeInterface $timestamp = null;
+    private ?string $indexName = null;
+    private ?DateTimeInterface $indexTimestamp = null;
+    private ?DateTimeInterface $lastQueryTime = null;
+    private ?int $resultEtag = null;
+    private ?string $nodeTag = null;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property                                    | Type                 | Description                                                                                                                                                                            |
+|---------------------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$isStale**                                | `bool`               | Are the results returned by the query potentially stale                                                                                                                                |
+| **$durationInMs**                           | `int`                | Query duration on the server side in Milliseconds                                                                                                                                      |
+| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                     |
+| **$timestamp**                              | `?DateTimeInterface` | The time when the query results were unstale                                                                                                                                           |
+| **$indexName**                              | `?string`            | The name of the queried index                                                                                                                                                          |
+| **$indexTimestamp**                         | `?DateTimeInterface` | The timestamp of the queried index                                                                                                                                                     |
+| **$lastQueryTime**                          | `?DateTimeInterface` | The timestamp of the last time the index was queried                                                                                                                                   |
+| **$resultEtag**                             | `?int`               | Results Etag                                                                                                                                                                           |
+| **$nodeTag**                                | `?string`            | Tag of the cluster node that responded to the query                                                                                                                                    |
+
+
+
+

@@ -1,0 +1,231 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In this section we will explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) in order to write unit tests for working with RavenDB.
+TestDriver uses an [ravendb-embedded](../server/embedded.mdx) package with the same set of [prerequisites](../server/embedded.mdx#prerequisites) to run the Server.
+
+- [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
+- [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
+- [ConfigureServer](../start/test-driver.mdx#configureserver)
+- [Unit test](../start/test-driver.mdx#unittest)
+- [Complete example](../start/test-driver.mdx#complete-example)
+
+## RavenTestDriver
+
+First, make sure you added Raven's TestDriver to your project dependencies:
+
+```
+<dependency>
+    <groupId>net.ravendb</groupId>
+    <artifactId>ravendb-test-driver</artifactId>
+    <version>4.1.3</version>
+    <scope>test</scope>
+</dependency>
+```
+
+After that, we define a class that derives from Raven's TestDriver.
+Lets start with reviewing the TestDriver's methods and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx##complete-example) of the page).
+
+### Methods
+| Signature | Description |
+| ----------| ----- |
+| **protected String getDatabaseDumpFilePath()** | Allows you to override the path to the database dump file that will be loaded when calling importDatabase. |
+| **protected InputStream getDatabaseDumpFileStream()** |  Allows you to override the stream containing the database dump that will be loaded when calling importDatabase.  |
+| **public IDocumentStore getDocumentStore()** | Gets you an IDocumentStore instance. |
+| **public IDocumentStore getDocumentStore(String database)** | Gets you an IDocumentStore instance for the requested database. |
+| **public IDocumentStore getDocumentStore(GetDocumentStoreOptions options)** | Gets you an IDocumentStore instance. |
+| **public IDocumentStore getDocumentStore(GetDocumentStoreOptions options, String database)** | Gets you an IDocumentStore instance for the requested database. |
+| **protected void preInitialize(IDocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
+| **protected void setupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
+| **protected Consumer&lt;RavenTestDriver&gt; onDriverClosed** | An event that is raised when the test driver has been closed. |
+| **public static void configureServer(ServerOptions options)** |Allows you to configure your server before running it|
+| **public static void waitForIndexing(IDocumentStore store)** | Allows you to wait for indexes to become non-stale. |
+| **public static void waitForIndexing(IDocumentStore store, String database)** | Allows you to wait for indexes to become non-stale. |
+| **public static void waitForIndexing(IDocumentStore store, String database, Duration timeout)** | Allows you to wait for indexes to become non-stale. |
+| **protected void waitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
+| **protected void openBrowser(String url)** | Allows you to open the browser. |
+| **public void close()** | Allows you to dispose of the server. |
+
+
+
+## PreInitialize
+
+Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
+
+### Example
+
+<TabItem value="test_driver_PreInitialize" label="test_driver_PreInitialize">
+<CodeBlock language="java">
+{`//This allows us to modify the conventions of the store we get from 'getDocumentStore'
+@Override
+protected void preInitialize(IDocumentStore documentStore) \{
+    documentStore.getConventions().setMaxNumberOfRequestsPerSession(50);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## UnitTest
+We'll be using [junit](https://junit.org/) for my test framework in the below example.
+Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+
+### Example
+
+<TabItem value="test_driver_MyFirstTest" label="test_driver_MyFirstTest">
+<CodeBlock language="java">
+{`@Test
+public void myFirstTest() \{
+    try (IDocumentStore store = getDocumentStore()) \{
+        store.executeIndex(new TestDocumentByName());
+
+        try (IDocumentSession session = store.openSession()) \{
+            TestDocument testDocument1 = new TestDocument();
+            testDocument1.setName("Hello world!");
+            session.store(testDocument1);
+
+            TestDocument testDocument2 = new TestDocument();
+            testDocument2.setName("Goodbye...");
+            session.store(testDocument2);
+
+            session.saveChanges();
+        \}
+
+        waitForIndexing(store); //If we want to query documents sometime we need to wait for the indexes to catch up
+        waitForUserToContinueTheTest(store); //Sometimes we want to debug the test itself, this redirect us to the studio
+
+        try (IDocumentSession session = store.openSession()) \{
+            List<TestDocument> query = session.query(TestDocument.class, TestDocumentByName.class)
+                .whereEquals("name", "hello")
+                .toList();
+
+            Assert.assertEquals(1, query.size());
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In the test we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify that the documents and index are deployed (we can remove this line once the test is working).
+At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+
+
+
+## ConfigureServer
+
+Before RavenDB server can be started, TestDriver extracts binaries to `targetServerLocation` (Default: `.`). Optionally before doing this, target directory can be cleaned up (when `cleanTargetServerLocation` option is turned on (Default: false)). 
+
+The `configureServer` method allows you to be more in control on your server. 
+You can use it with `ServerOptions` to change the target path where Raven server binaries are extracted to or to specify where your RavenDB data is stored, security, etc.
+
+<Admonition type="info" title="ServerOptions" id="serveroptions" href="#serveroptions">
+
+`ServerOptions` gives you control of how the embedded server is going to run
+with just a minor change. Here you can change your targetServerLocation.
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **targetServerLocation** | string | The temporary path used by TestDriver to extract server binary files (.dll) |
+| **logsPath** | string | Path to server logs files |
+| **dataDirectory**  | string | Path where server stores data files |
+| **cleanTargetServerLocation** | boolean | Should we remove all files from targetServerLocation before extracting server binaries? |
+
+</Admonition>
+
+### Example
+
+<TabItem value="test_driver_ConfigureServer" label="test_driver_ConfigureServer">
+<CodeBlock language="java">
+{`ServerOptions testServerOptions = new ServerOptions();
+
+// specify where ravendb server should be extracted (optional)
+testServerOptions.setTargetServerLocation("PATH_TO_TEMPORARY_SERVER_LOCATION");
+
+// Specify where ravendb data will be placed/located (optional)
+testServerOptions.setDataDirectory("PATH_TO_RAVENDB_DATADIR");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Complete Example
+
+<TabItem value="test_full_example" label="test_full_example">
+<CodeBlock language="java">
+{`public class RavenDBTestDriverFull extends RavenTestDriver \{
+
+    //This allows us to modify the conventions of the store we get from 'getDocumentStore'
+    @Override
+    protected void preInitialize(IDocumentStore documentStore) \{
+        documentStore.getConventions().setMaxNumberOfRequestsPerSession(50);
+    \}
+
+    @Test
+    public void myFirstTest() \{
+        ServerOptions serverOptions = new ServerOptions();
+        serverOptions.setDataDirectory("C:\\\\RavenDBTestDir");
+        configureServer(serverOptions);
+
+        try (IDocumentStore store = getDocumentStore()) \{
+            store.executeIndex(new TestDocumentByName());
+
+            try (IDocumentSession session = store.openSession()) \{
+                TestDocument testDocument1 = new TestDocument();
+                testDocument1.setName("Hello world!");
+                session.store(testDocument1);
+
+                TestDocument testDocument2 = new TestDocument();
+                testDocument2.setName("Goodbye...");
+                session.store(testDocument2);
+
+                session.saveChanges();
+            \}
+
+            waitForIndexing(store); //If we want to query documents sometime we need to wait for the indexes to catch up
+            waitForUserToContinueTheTest(store); //Sometimes we want to debug the test itself, this redirect us to the studio
+
+            try (IDocumentSession session = store.openSession()) \{
+                List<TestDocument> query = session.query(TestDocument.class, TestDocumentByName.class)
+                    .whereEquals("name", "hello")
+                    .toList();
+
+                Assert.assertEquals(1, query.size());
+            \}
+        \}
+    \}
+
+    public static class TestDocumentByName extends AbstractIndexCreationTask \{
+        public TestDocumentByName() \{
+            map = "from doc in docs select new \{ doc.name \}";
+            index("name", FieldIndexing.SEARCH);
+        \}
+    \}
+
+    public static class TestDocument \{
+        private String name;
+
+        public String getName() \{
+            return name;
+        \}
+
+        public void setName(String name) \{
+            this.name = name;
+        \}
+    \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+

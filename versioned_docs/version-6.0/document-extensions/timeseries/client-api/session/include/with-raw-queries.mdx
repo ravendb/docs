@@ -5,166 +5,24 @@ sidebar_label: With Raw Queries
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WithRawQueriesCsharp from './_with-raw-queries-csharp.mdx';
+import WithRawQueriesNodejs from './_with-raw-queries-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "nodejs"];
 
-
-# Include Time Series with Raw Queries
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `include timeseries` in your RQL expression in order to include time series data when making  
-  a raw query via [session.Advanced.RawQuery](../../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery).
-
-* The included time series data is stored within the session and can be provided instantly when requested  
-  without any additional server calls.
-
-* In this page:
-   * [Include time series when making a raw query](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#include-time-series-when-making-a-raw-query)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#syntax)
-
-</Admonition>
-## Include time series when making a raw query
-
-In this example, we use a raw query to retrieve a document   
-and _include_ entries from the document's "HeartRates" time series.  
-
-<TabItem value="timeseries_region_Raw-Query-Document-And-Include-TimeSeries" label="timeseries_region_Raw-Query-Document-And-Include-TimeSeries">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
-\{
-    var baseTime = DateTime.Today;
-
-    var from = baseTime;
-    var to = baseTime.AddMinutes(5);
-
-    // Define the Raw Query:
-    IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-             // Use 'include timeseries' in the RQL
-            ("from Users include timeseries('HeartRates', $from, $to)")
-             // Pass optional parameters
-            .AddParameter("from", from)
-            .AddParameter("to", to);
-
-    // Execute the query:
-    // For each document in the query results,
-    // the time series entries will be 'loaded' to the session along with the document
-    var users = query.ToList();
-
-    // The following call to 'Get' will Not trigger a server request,
-    // the entries will be retrieved from the session's cache.
-    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor(users[0], "HeartRates")
-        .Get(from, to);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-**`Advanced.RawQuery`**
-
-<TabItem value="RawQuery-definition" label="RawQuery-definition">
-<CodeBlock language="csharp">
-{`IRawDocumentQuery<T> RawQuery<T>(string query);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter | Type     | Description       |
-|-----------|----------|-------------------|
-| **query** | `string` | The raw RQL query |
-
-
-
-
+   <WithRawQueriesCsharp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* Use `include timeseries` in your RQL expression in order to include time series data when making  
-  a raw query via [session.advanced.rawQuery](../../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery).
-
-* The included time series data is stored within the session and can be provided instantly when requested  
-  without any additional server calls.
-
-* In this page:
-   * [Include time series when making a raw query](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#include-time-series-when-making-a-raw-query)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx#syntax)
-
-</Admonition>
-## Include time series when making a raw query
-
-In this example, we use a raw query to retrieve a document   
-and _include_ entries from the document's "HeartRates" time series.  
-
-<TabItem value="include_1" label="include_1">
-<CodeBlock language="js">
-{`const baseTime = new Date();
-const from = baseTime;
-const to = new Date(baseTime.getTime() + 60_000 * 5);
-
-// Define the Raw Query:
-const rawQuery = session.advanced
-     // Use 'include timeseries' in the RQL
-    .rawQuery("from users include timeseries('HeartRates', $from, $to)")
-     // Pass optional parameters
-    .addParameter("from", from)
-    .addParameter("to", to);
-
-// Execute the query:
-// For each document in the query results,
-// the time series entries will be 'loaded' to the session along with the document
-const userDocuments = await rawQuery.all();
-
-const numberOfRequests1 = session.advanced.numberOfRequests;
-
-// The following call to 'get' will Not trigger a server request,
-// the entries will be retrieved from the session's cache.
-const entries = await session.timeSeriesFor(userDocuments[0], "HeartRates")
-    .get(from, to);
-
-const entryValue = entries[0].value;
-
-const numberOfRequests2 = session.advanced.numberOfRequests;
-assert.equal(numberOfRequests1, numberOfRequests2);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-**`advanced.rawQuery`**
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`rawQuery(query, documentType?);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter          | Type     | Description                                  |
-|--------------------|----------|----------------------------------------------|
-| **query**          | `string` | The raw RQL query.                           |
-| **documentType**   | `object` | The document class type (an optional param). |
-
-
-
-
+   <WithRawQueriesNodejs />
 </LanguageContent>
+
 
 <!---
 ### Client API

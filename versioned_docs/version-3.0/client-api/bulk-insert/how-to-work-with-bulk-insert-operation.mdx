@@ -5,127 +5,24 @@ sidebar_label: How to Work With Bulk Insert Operation
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToWorkWithBulkInsertOperationCsharp from './_how-to-work-with-bulk-insert-operation-csharp.mdx';
+import HowToWorkWithBulkInsertOperationJava from './_how-to-work-with-bulk-insert-operation-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Bulk Insert: How to work with bulk insert operation?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
-
-## Syntax
-
-<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
-<CodeBlock language="csharp">
-{`BulkInsertOperation BulkInsert(string database = null, CancellationToken token = default);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | string | Name of database for which bulk operation should be performed. If `null` then `DefaultDatabase` from DocumentStore will be used. |
-| **options** | [BulkInsertOptions](../../glossary/bulk-insert-options.mdx) | Bulk operations options that should be used. |
-
-| Return Value | |
-| ------------- | ----- |
-| [BulkInsertOperation](../../glossary/bulk-insert-operation.mdx) | Instance of BulkInsertOperation used for interaction. |
-
-## Limitations
-
-There are several limitations to the API:
-
-* Entity **Id** must be provided by the client. The client by default will use the HiLo generator in order to generate the **Id**.
-* Transactions are per batch, not per operation, and DTC transactions are not supported.
-* Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../../client-api/changes/what-is-changes-api.mdx).
-* Document Updates and Reference Checking must be explicitly turned on (see `BulkInsertOptions`).
-* `AfterCommit` method in `Put Triggers` will be not executed in contrast to `AllowPut`, `AfterPut` and `OnPut`.
-* The default configuration of the bulk insert is not thread safe, ChunkedBulkInsertOptions inside BulkInsertOptions should be set to null in order to support multi threaded usage. Refer to  [BulkInsertOptions](../../glossary/bulk-insert-options.mdx)  for more details
-
-## Example
-
-<TabItem value="bulk_inserts_4" label="bulk_inserts_4">
-<CodeBlock language="csharp">
-{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
-\{
-    for (int i = 0; i < 1000 * 1000; i++)
-    \{
-        bulkInsert.Store(new Employee
-        \{
-            FirstName = "FirstName #" + i,
-            LastName = "LastName #" + i
-        \});
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithBulkInsertOperationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
-
-## Syntax
-
-<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
-<CodeBlock language="java">
-{`BulkInsertOperation bulkInsert();
-
-BulkInsertOperation bulkInsert(String database);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | String | Name of database for which bulk operation should be performed. If `null` then `DefaultDatabase` from DocumentStore will be used. |
-| **options** | [BulkInsertOptions](../../glossary/bulk-insert-options.mdx) | Bulk operations options that should be used. |
-
-| Return Value | |
-| ------------- | ----- |
-| [BulkInsertOperation](../../glossary/bulk-insert-operation.mdx) | Instance of BulkInsertOperation used for interaction. |
-
-## Limitations
-
-There are several limitations to the API:
-
-* Entity **Id** must be provided at the client side. The client by default will use the HiLo generator in order to generate the **Id**.
-* Transactions are per batch, not per operation and DTC transactions are not supported.
-* Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../../client-api/changes/what-is-changes-api.mdx).
-* Document Updates and Reference Checking must be explicitly turned on (see `BulkInsertOptions`).
-* `AfterCommit` method in `Put Triggers` will be not executed in contrast to `AllowPut`, `AfterPut` and `OnPut`.
-* The default configuration of the bulk insert is not thread safe, ChunkedBulkInsertOptions inside BulkInsertOptions should be set to null in order to support multi threaded usage. Refer to  [BulkInsertOptions](../../glossary/bulk-insert-options.mdx)  for more details
-
-## Example
-
-<TabItem value="bulk_inserts_4" label="bulk_inserts_4">
-<CodeBlock language="java">
-{`try (BulkInsertOperation bulkInsert = store.bulkInsert()) \{
-    for (int i = 0; i < 1_000_000; i++) \{
-        Employee employee = new Employee();
-        employee.setFirstName("FirstName #" + i);
-        employee.setLastName("LastName #" + i);
-        bulkInsert.store(employee);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithBulkInsertOperationJava />
 </LanguageContent>
+
 
 <!---
 - [How to subscribe to bulk insert operation changes?](../changes/how-to-subscribe-to-bulk-insert-operation-changes)

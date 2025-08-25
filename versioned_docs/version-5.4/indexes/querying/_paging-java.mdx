@@ -1,0 +1,303 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Paging**:  
+  Paging is the process of fetching a subset (a page) of results from a dataset, rather than retrieving the entire results at once.
+  This method enables processing query results one page at a time.
+
+* **Default page size**:  
+  If the client's query definition does Not explicitly specify the page size, the server will default to `int.MaxValue` (2,147,483,647).
+  In such case, all results will be returned in a single server call.
+
+* **Performance**:  
+  Using paging is beneficial when handling large result datasets, contributing to improved performance.  
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
+
+* **Paging policy**:  
+  To prevent executing queries that do not specify a page size, you can set the [ThrowIfQueryPageSizeIsNotSet](../../client-api/configuration/querying.mdx#throwifquerypagesizeisnotset) convention,
+  which can be useful during development or testing phases.
+
+* In this page:
+
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
+
+</Admonition>
+## No-paging example
+
+The queries below will return all the results available.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Paging examples
+
+#### Basic paging:
+
+Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this, we need to issue following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .skip(20) // skip 2 pages worth of products
+    .take(10) // take up to 10 products
+    .toList(); // execute query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Find total results count when paging:
+
+While paging, you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`Reference<QueryStatistics> stats = new Reference<QueryStatistics>();
+
+List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .statistics(stats)
+    .whereGreaterThan("UnitsInStock", 10)
+    .skip(20)
+    .take(10)
+    .toList();
+
+int totalResults = stats.value.getTotalResults();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
+
+
+
+## Paging and performance
+
+#### Better performance:
+
+It is recommended to explicitly set a page size when making a query that is expected to generate a significant number of results.
+This practice has several benefits:
+
+* Optimizes bandwidth usage by reducing data transfer between the server and client.
+* Prevents delays in response times caused by sending too much data over the network.
+* Avoids high memory consumption when dealing with numerous documents.
+* Ensures a more manageable user experience by not overwhelming users with massive datasets at once.
+#### Performance hints:
+
+* By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
+
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehintsmaxnumberofresults) configuration key.
+
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
+
+![Figure 1. Performance Hint](./assets/performance-hint.png)
+
+
+
+## Paging through tampered results
+
+* The `QueryStatistics` object contains the `TotalResults` property,  
+  which represents the total number of matching documents found in the query results.
+
+* The `QueryStatistics` object also contains the `SkippedResults` property.  
+  Whenever this property is greater than **0**, that implies the server has skipped that number of results from the index.
+
+* The server will skip duplicate results internally in the following two scenarios:
+
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
+
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
+
+* In those cases:
+
+    * The `SkippedResults` property from the stats object will hold the count of skipped (duplicate) results.
+
+    * The `TotalResults` property will be invalidated -  
+      it will Not deduct the number of skipped results from the total number of results.
+
+* In order to do proper paging in those scenarios:  
+  include the `SkippedResults` value when specifying the number of documents to skip for each page using:  
+  `(currentPage * pageSize) + SkippedResults`.
+
+## Examples
+
+#### A projection query with Distinct:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results;
+int pageNumber = 0;
+int pageSize = 10;
+int skippedResults = 0;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do {
+
+    results = session
+        .query(Product.class, Products_ByUnitsInStock.class)
+        .statistics(stats)
+        .skip((pageNumber * pageSize) + skippedResults)
+        .take(pageSize)
+        .whereGreaterThan("UnitsInStock", 10)
+        .distinct()
+        .toList();
+
+    skippedResults += stats.value.getSkippedResults();
+    pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+select distinct *
+limit 0, 10  // First loop will skip 0, take 10, etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Querying a Fanout index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Order> results;
+int pageNumber = 0;
+int pageSize = 50;
+int skippedResults = 0;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do {
+    results = session
+        .query(Order.class, Order_ByOrderLines_ProductName.class)
+        .statistics(stats)
+        .skip((pageNumber * pageSize) + skippedResults)
+        .take(pageSize)
+        .toList();
+
+    skippedResults += stats.value.getSkippedResults();
+    pageNumber++;
+} while (results.size() > 0);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByOrderLines_ProductName extends AbstractIndexCreationTask {
+    public Orders_ByOrderLines_ProductName() {
+        map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new {" +
+            "    Product = line.ProductName " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Order/ByOrderLines/ProductName"
+limit 0, 50  // First loop will skip 0, take 50, etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

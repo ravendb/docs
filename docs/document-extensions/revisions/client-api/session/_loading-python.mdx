@@ -1,0 +1,156 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+Use `get_for` to retrieve all of the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_1_sync" label="example_1_sync">
+<CodeBlock language="python">
+{`# Get revisions for document 'orders/1-A'
+# Revisions will be ordered by most recent revision first
+order_revisions = session.advanced.revisions.get_for("orders/1-A", Order, 0, 10)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`def get_for(self, id_: str, object_type: Type[_T] = None, start: int = 0, page_size: int = 25) -> List[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id_** | `str` | Document ID for which to retrieve revisions |
+     | **object_type** | `Type[_T]` | The type of the object whose revisions we want to retrieve |
+     | **start** | `int` | First revision to retrieve, used for paging |
+     | **page_size** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+Use `get_metadata_for` to retrieve the metadata for all the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_2_sync" label="example_2_sync">
+<CodeBlock language="python">
+{`# Get 'revisions' metadata for document 'orders/1-A'
+order_revisions_metadata = session.advanced.revisions.get_metadata_for("orders/1-A", 0, 10)
+
+# Each item returned is a revision's metadata, as can be verified in the @flags key
+metadata = order_revisions_metadata[0]
+flags_value = metadata[constants.Documents.Metadata.FLAGS]
+
+self.assertIn("Revision", flags_value)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`def get_metadata_for(self, id_: str, start: int = 0, page_size: int = 25) -> List["MetadataAsDictionary"]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id_** | `str` | Document ID for which to retrieve revisions' metadata |
+     | **start** | `int` | First revision to retrieve metadata for, used for paging |
+     | **page_size** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+Use `get_by_before_date` to retrieve a revision by its **creation time**.
+
+* **Example**:
+<TabItem value="example_3_sync" label="example_3_sync">
+<CodeBlock language="python">
+{`# Get a revision by its creation time
+revision_from_last_year = (
+    session.advanced.revisions
+    # If no revision was created at the specified time,
+    # then the first revision that precedes it will be returned
+    .get_by_before_date("orders/1-A", datetime.datetime.utcnow() - datetime.timedelta(days=365))
+)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`def get_by_before_date(self, id_: str, before_date: datetime.datetime, object_type: Type[_T] = None) -> _T: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **id_** | `str` | The ID of the document whose revisions we want to retrieve by creation time |
+     | **before_date** | `datetime.datetime` | Revision creation time |
+     | **object_type** | `Type[_T]` | The type of the object whose revisions we want to retrieve |
+
+
+
+
+## Get revisions by change vector
+
+To retrieve a revision or multiple revisions by **change vectors**, get the 
+change vector using `get_metadata_for` and the revisions using `get_by_change_vector`.  
+
+* **Example**:
+<TabItem value="example_4_sync" label="example_4_sync">
+<CodeBlock language="python">
+{`# Get revisions metadata
+revisions_metadata = session.advanced.revisions.get_metadata_for("orders/1-A", 0, 25)
+
+# Get the change-vector from the metadata
+change_vector = revisions_metadata[0][constants.Documents.Metadata.CHANGE_VECTOR]
+
+# Get the revision by its change-vector
+revision = session.advanced.revisions.get_by_change_vector(change_vector, Order)
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="python">
+{`# Get a revision by its change vector
+def get_by_change_vector(self, change_vector: str, object_type: Type[_T] = None) -> _T: ...
+
+# Get multiple revisions by their change vectors
+def get_by_change_vectors(self, change_vectors: List[str], object_type: Type[_T] = None) -> Dict[str, _T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **change_vectors** | `List[str]` | A list of change vector strings |
+     | **object_type** | `Type[_T]` | The types of the objects whose revisions we want to retrieve |
+
+
+
+

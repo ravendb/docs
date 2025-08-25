@@ -1,0 +1,123 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `ToggleDatabasesStateOperation` to enable/disable a single database or multiple databases.
+
+* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group.mdx).
+
+* In this page:
+
+    * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable/disable-database-from-the-client-api)
+        * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable-database)
+        * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database)
+        * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state.mdx#syntax)
+    * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database-via-the-file-system)
+
+</Admonition>
+## Enable/Disable database from the Client API
+
+<Admonition type="note" title="">
+
+<a id="enable-database"/> **Enable database**:  
+
+<TabItem value="enable" label="enable">
+<CodeBlock language="js">
+{`// Define the toggle state operation
+// specify the database name & pass 'false' to enable
+const enableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", false);
+
+// To enable multiple databases use:
+// const enableDatabaseOp =
+//     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], false);
+
+// Execute the operation by passing it to maintenance.server.send
+const toggleResult = await documentStore.maintenance.server.send(enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="disable-database"/> **Disable database**: 
+
+<TabItem value="disable" label="disable">
+<CodeBlock language="js">
+{`// Define the toggle state operation
+// specify the database name(s) & pass 'true' to disable
+const disableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", true);
+
+// To disable multiple databases use:
+// const disableDatabaseOp =
+//     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], true);
+
+// Execute the operation by passing it to maintenance.server.send
+const toggleResult = await documentStore.maintenance.server.send(disableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="syntax"/> **Syntax**: 
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+const enableDatabaseOp = new ToggleDatabasesStateOperation(databaseName, disable);
+const enableDatabaseOp = new ToggleDatabasesStateOperation(databaseNames, disable);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type     | Description                                                                                 |
+|-------------------|----------|---------------------------------------------------------------------------------------------|
+| **databaseName**  | `string`   | Name of database for which to toggle state                                                |
+| **databaseNames** | `string[]` | List of database names for which to toggle state                                          |
+| **disable**       | `boolean`  | `true` - request to disable the database(s)<br/>`false`- request to enable the database(s) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Executing the operation returns an object with the following properties:
+\{
+    disabled, // Is database disabled
+    name,     // Name of the database
+    success,  // Has request succeeded
+    reason    // Reason for success or failure
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Disable database via the file system
+
+It may sometimes be useful to disable a database manually, through the file system.
+
+* To **manually disable** a database:
+
+    * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure.mdx).
+    * The `disable.marker` file can be empty,  
+      and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
+
+* Attempting to use a manually disabled database will generate the following exception:
+
+         Unable to open database: '&#123;DatabaseName&#125;', 
+         it has been manually disabled via the file: '&#123;disableMarkerPath&#125;'. 
+         To re-enable, remove the disable.marker and reload the database.
+
+* To **enable** a manually disabled database:
+
+    * First, remove the `disable.marker` file from the database directory.
+    * Then, [reload the database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
+
+
+
+

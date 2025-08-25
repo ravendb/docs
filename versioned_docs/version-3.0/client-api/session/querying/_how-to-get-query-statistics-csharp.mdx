@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query statistics can provide important information about query e.g. duration, total number of results, staleness information, etc. To access statistics use `Statistics` method.
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Anne")
+     // Get query stats:
+     // * Call 'Statistics'
+     // * Pass an out 'QueryStatistics' param for getting the stats
+    .Statistics(out QueryStatistics stats)
+    .ToList();
+
+long numberOfResults = stats.TotalResults; // Get results count
+long queryDuration = stats.DurationInMs;   // Get query duration
+string indexNameUsed = stats.IndexName;    // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **stats** | [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
+
+| Return Value | |
+| ------------- | ----- |
+| [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
+
+## Example
+
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Anne")
+     // Get query stats:
+     // * Call 'Statistics'
+     // * Pass an out 'QueryStatistics' param for getting the stats
+    .Statistics(out QueryStatistics stats)
+    .ToListAsync();
+
+long numberOfResults = stats.TotalResults; // Get results count
+long queryDuration = stats.DurationInMs;   // Get query duration
+string indexNameUsed = stats.IndexName;    // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+
+

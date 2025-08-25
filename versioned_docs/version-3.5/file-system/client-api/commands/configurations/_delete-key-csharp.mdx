@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: DeleteKeyAsync
+
+**DeleteKeyAsync** is used to remove a configuration stored under the specified key.
+
+
+
+<TabItem value="delete_key_1" label="delete_key_1">
+<CodeBlock language="csharp">
+{`Task DeleteKeyAsync(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The configuration name |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous remove operation |
+
+## Example
+
+<TabItem value="delete_key_2" label="delete_key_2">
+<CodeBlock language="csharp">
+{`await store
+	.AsyncFilesCommands
+	.Configuration
+	.DeleteKeyAsync("descriptions/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,106 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* RavenDB Queries can be executed using `query` or `document_query`, or by passing 
+  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
+  via `raw_query`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+
+* In the PHP client API, `query` methods and their equivalent `documentQuery` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  The PHP documentation therefore often provides `query` usage samples without adding 
+  `documentQuery` examples as well.  
+
+* In this page:
+   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+   * [`query `and `documentQuery` equivalents](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#queryand-documentquery-equivalents)
+
+</Admonition>
+## API support
+
+* `query` and `documentQquery` queries are translated to RQL and sent to the server.  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods).  
+* Available _documentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).  
+
+
+
+## `query `and `documentQuery` equivalents
+
+#### 1. 
+
+<TabItem value="query_1a" label="query_1a">
+<CodeBlock language="php">
+{`$session->query(Order::class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_1b" label="query_1b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class)
+`}
+</CodeBlock>
+</TabItem>
+#### 2. 
+
+<TabItem value="query_2a" label="query_2a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Orders_ByShipToAndLines::class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_2b" label="query_2b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, Orders_ByShipToAndLines::class)
+`}
+</CodeBlock>
+</TabItem>
+#### 3. 
+
+<TabItem value="query_3a" label="query_3a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Query::index("Orders/ByShipToAndLines"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_3b" label="query_3b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, "Orders/ByShipToAndLines", null, false);
+`}
+</CodeBlock>
+</TabItem>
+#### 4. 
+
+<TabItem value="query_4a" label="query_4a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Query::collection("orders"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_4b" label="query_4b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, null, "orders", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

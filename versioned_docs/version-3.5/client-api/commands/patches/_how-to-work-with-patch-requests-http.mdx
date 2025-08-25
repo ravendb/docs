@@ -1,0 +1,10 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Patch** command is used to perform partial document updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities.
+
+Patching is performed using [bulk_docs endpoint](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx) with [PatchCommandData](../../../glossary/patch-command-data.mdx) as payload. 
+
+

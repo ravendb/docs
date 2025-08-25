@@ -5,70 +5,19 @@ sidebar_label: ...perform requests lazily
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PerformOperationsLazilyCsharp from './_perform-operations-lazily-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Session: How to Perform Operations Lazily
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Operation execution for operations such as `Load`, `Load with Includes`, `LoadStartingWith` and queries can be deferred till needed using **lazy session operations**. Those operations ca be accessed using `Lazily` property found in `Advanced` session operations.
-
-## Operations
-
-Available operations are:
-
-- `Load` - described [here](../../../client-api/session/loading-entities.mdx#load).
-- `Load with Includes` - described [here](../../../client-api/session/loading-entities.mdx#load-with-includes).
-- `LoadStartingWith` - described [here](../../../client-api/session/loading-entities.mdx#loadstartingwith).
-- `GetCompareExchangeValue` - described [here](../../../client-api/session/cluster-transaction.mdx#get-compare-exchange-lazily).  
-
-
-## Querying
-
-Dedicated article about lazy queries can be found [here](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
-
-## Example
-
-<TabItem value="lazy_1" label="lazy_1">
-<CodeBlock language="csharp">
-{`Lazy<Employee> employeeLazy = session
-	.Advanced
-	.Lazily
-	.Load<Employee>("employees/1-A");
-
-Employee employee = employeeLazy.Value; // load operation will be executed here
-`}
-</CodeBlock>
-</TabItem>
-
-## Executing All Pending Lazy Operations
-
-To execute all pending lazy operations use `ExecuteAllPendingLazyOperations` method from **eager session operations** found under `Eagerly` property in `Advanced` session operations.
-
-<TabItem value="lazy_2" label="lazy_2">
-<CodeBlock language="csharp">
-{`Lazy<IEnumerable<Employee>> employeesLazy = session
-	.Query<Employee>()
-	.Lazily();
-
-session.Advanced.Eagerly.ExecuteAllPendingLazyOperations(); // query will be executed here
-
-IEnumerable<Employee> employees = employeesLazy.Value;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PerformOperationsLazilyCsharp />
 </LanguageContent>
+
 
 <!---
 ### Session

@@ -1,0 +1,34 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When document is downloaded from server it contains various metadata information e.g. Id or current etag. Current etag is stored within metadata in session and available for each entity using `getEtagFor` method from `advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_etag_1" label="get_etag_1">
+<CodeBlock language="java">
+{`public <T> Etag getEtagFor(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which etag will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| ETag | Returns current etag for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
+
+## Example
+
+<TabItem value="get_etag_2" label="get_etag_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+Etag etag = session.advanced().getEtagFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+

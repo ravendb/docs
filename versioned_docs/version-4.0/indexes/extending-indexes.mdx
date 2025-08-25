@@ -5,236 +5,29 @@ sidebar_label: Extending Indexes
 sidebar_position: 29
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ExtendingIndexesCsharp from './_extending-indexes-csharp.mdx';
+import ExtendingIndexesJava from './_extending-indexes-java.mdx';
+import ExtendingIndexesNodejs from './_extending-indexes-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Indexes: Extending Indexes
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* An [index](../indexes/what-are-indexes.mdx) is defined with a mapping function that utilizes a LINQ-like syntax.  
-  
-* Writing a _complex_ LINQ expression can be a non-trivial task.  
-  You can extend your indexing processing capabilities by adding custom code to the index definition.  
-  This will enable calling the added custom functions or using external libraries logic (e.g. NodaTime) in your LINQ expression.  
-
-* The indexing process will execute the LINQ code and the invoked additional source code.  
-
-* Adding this custom code can be done from [Studio](../studio/database/indexes/create-map-index.mdx#additional-sources) or from code using the _additional sources_ feature.  
-  See [example](../indexes/extending-indexes.mdx#including-additional-sources-from-client-code) below.  
-
-* Advantages:
-  * **Readability**:   Index work logic is clearer and more readable  
-  * **Code usage**:    Code fragments are re-used  
-  * **Performance**:   Using the additional source feature can perform better then complex LINQ expressions  
-  * **Extendability**: External libraries can be included and used  
-
-</Admonition>
-## Including additional sources from client code
-
-* `AdditionalSources` is a property of the `AbstractIndexCreationTask` class.  
-* It should be defined in your index class _constructor_ which derives from `AbstractIndexCreationTask`.  
-* Example:  
-
-<TabItem value="additional_sources_1" label="additional_sources_1">
-<CodeBlock language="csharp">
-{`public class People_ByEmail : AbstractIndexCreationTask<Person>
-\{
-    public People_ByEmail()
-    \{
-        Map = people => from person in people
-                        select new
-                        \{
-                            // Calling the custom function
-                            Email = CalculatePersonEmail(person.Name, person.Age)
-                        \};
-
-        // Add your custom logic here. 
-        AdditionalSources = new Dictionary<string, string>
-        \{
-            \{
-                "PeopleUtil",
-                @"
-                using System;
-                using NodaTime; /* using an external library */
-                using static Raven.Documentation.Samples.Indexes.PeopleUtil;
-
-                namespace Raven.Documentation.Samples.Indexes
-                \{
-                    public static class PeopleUtil
-                    \{
-                        public static string CalculatePersonEmail(string name, uint age)
-                        \{
-                            return $""\{name\}.\{Instant.FromDateTimeUtc(DateTime.Now.ToUniversalTime())
-                                            .ToDateTimeUtc().Year - age\}@ayende.com"";
-                        \}
-                    \}
-                \}"
-            \}
-        \};
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-<Admonition type="note" title="Note: Deploying External DLLs" id="note-deploying-external-dlls" href="#note-deploying-external-dlls">
-
-* External DLLs that are referenced must be _manually deployed_ to the folder containing the Raven.Server executable.  
-
-</Admonition>
-
-
+   <ExtendingIndexesCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-<Admonition type="note" title="">
-
-* An [index](../indexes/what-are-indexes.mdx) is defined with a mapping function that utilizes a LINQ-like syntax.  
-  
-* Writing a _complex_ LINQ expression can be a non-trivial task.  
-  You can extend your indexing processing capabilities by adding custom code to the index definition.  
-  This will enable calling the added custom functions or using external libraries logic (e.g. NodaTime) in your LINQ expression.  
-
-* The indexing process will execute the LINQ code and the invoked additional source code.  
-
-* Adding this custom code can be done from [Studio](../studio/database/indexes/create-map-index.mdx#additional-sources) or from code using the _additional sources_ feature.  
-  See [example](../indexes/extending-indexes.mdx#including-additional-sources-from-client-code) below.  
-
-* Advantages:
-  * **Readability**:   Index work logic is clearer and more readable  
-  * **Code usage**:    Code fragments are re-used  
-  * **Performance**:   Using the additional source feature can perform better then complex LINQ expressions  
-  * **Extendability**: External libraries can be included and used  
-
-</Admonition>
-## Including additional sources from client code
-
-* `additionalSources` is a field of the `AbstractIndexCreationTask` class.  
-* It should be defined in your index class _constructor_ which derives from `AbstractIndexCreationTask`.  
-* Example:  
-
-<TabItem value="additional_sources_1" label="additional_sources_1">
-<CodeBlock language="java">
-{`public class People_ByEmail extends AbstractIndexCreationTask \{
-    public People_ByEmail() \{
-        map = "docs.People.Select(person => new \{ " +
-            "    Email = PeopleUtil.CalculatePersonEmail(person.Name, person.Age) " +
-            "\})";
-
-        additionalSources = Collections.singletonMap("PeopleUtil",
-                "  using System; " +
-                "  using NodaTime; /* using an external library */ " +
-                "  using static Raven.Documentation.Samples.Indexes.PeopleUtil; " +
-                "  namespace Raven.Documentation.Samples.Indexes " +
-                "  \{ " +
-                "      public static class PeopleUtil " +
-                "      \{ " +
-                "          public static string CalculatePersonEmail(string name, uint age) " +
-                "          \{ " +
-                "              return $\\"\{name\}.\{Instant.FromDateTimeUtc(DateTime.Now.ToUniversalTime()) " +
-                "                              .ToDateTimeUtc().Year - age\}@ayende.com\\"; " +
-                "          \} " +
-                "      \} " +
-                "  \}");
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-<Admonition type="note" title="Note: Deploying External DLLs" id="note-deploying-external-dlls" href="#note-deploying-external-dlls">
-
-* External DLLs that are referenced must be _manually deployed_ to the folder containing the Raven.Server executable.  
-
-</Admonition>
-
-
+   <ExtendingIndexesJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* An [index](../indexes/what-are-indexes.mdx) is defined with a mapping function that utilizes a LINQ-like syntax.  
-  
-* Writing a _complex_ LINQ expression can be a non-trivial task.  
-  You can extend your indexing processing capabilities by adding custom code to the index definition.  
-  This will enable calling the added custom functions or using external libraries logic (e.g. NodaTime) in your LINQ expression.  
-
-* The indexing process will execute the LINQ code and the invoked additional source code.  
-
-* Adding this custom code can be done from [Studio](../studio/database/indexes/create-map-index.mdx#additional-sources) or from code using the _additional sources_ feature.  
-  See [example](../indexes/extending-indexes.mdx#including-additional-sources-from-client-code) below.  
-
-* Advantages:
-  * **Readability**:   Index work logic is clearer and more readable  
-  * **Code usage**:    Code fragments are re-used  
-  * **Performance**:   Using the additional source feature can perform better then complex LINQ expressions  
-  * **Extendability**: External libraries can be included and used  
-
-</Admonition>
-## Including additional sources from client code
-
-* `additionalSources` is a field of the `AbstractIndexCreationTask` class.  
-* It should be defined in your index class _constructor_ which derives from `AbstractIndexCreationTask`.  
-* Example:  
-
-<TabItem value="additional_sources_1" label="additional_sources_1">
-<CodeBlock language="js">
-{`class People_ByEmail extends AbstractIndexCreationTask \{
-    constructor() \{
-        super();
-
-        this.map = "docs.People.Select(person => new \{ " +
-            "    Email = PeopleUtil.CalculatePersonEmail(person.Name, person.Age) " +
-            "\})";
-
-        this.additionalSources = 
-                \{ 
-                    "PeopleUtil":  \`using System; 
-                                  using NodaTime; /* using an external library */ 
-                                  using static Raven.Documentation.Samples.Indexes.PeopleUtil; 
-                                  namespace Raven.Documentation.Samples.Indexes 
-                                  \{ 
-                                      public static class PeopleUtil 
-                                      \{ 
-                                          public static string CalculatePersonEmail(string name, uint age) 
-                                          \{ 
-                                              return $"\{name\}.\{Instant.FromDateTimeUtc(DateTime.Now.ToUniversalTime()) 
-                                                              .ToDateTimeUtc().Year - age\}@ayende.com"; 
-                                          \} 
-                                      \} 
-                                  \}\`
-                \};
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-<Admonition type="note" title="Note: Deploying External DLLs" id="note-deploying-external-dlls" href="#note-deploying-external-dlls">
-
-* External DLLs that are referenced must be _manually deployed_ to the folder containing the Raven.Server executable.  
-
-</Admonition>
-
-
+   <ExtendingIndexesNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

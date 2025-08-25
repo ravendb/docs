@@ -1,0 +1,286 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* __Prior to this article__, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx)  
+  to learn about the `Search` method.  
+
+* __All capabilities__ provided by `Search` with a dynamic query can also be used when querying a static-index.
+
+* However, as opposed to making a dynamic search query where an auto-index is created for you,  
+  when using a __static-index__:  
+
+    * You must configure the index-field in which you want to search.  
+      See examples below.  
+      
+    * You can configure which analyzer will be used to tokenize this field.  
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+* In this page:
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+
+</Admonition>
+## Indexing single field for FTS
+
+<Admonition type="note" title="">
+
+__The index__:
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="csharp">
+{`public class Employees_ByNotes :
+    AbstractIndexCreationTask<Employee, Employees_ByNotes.IndexEntry>
+\{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    \{
+        public string EmployeeNotes \{ get; set; \}
+    \}
+
+    public Employees_ByNotes()
+    \{
+        // The 'Map' function defines the content of the index-fields
+        Map = employees => from employee in employees
+            select new IndexEntry()
+            \{
+                EmployeeNotes = employee.Notes[0]
+            \};
+
+        // Configure the index-field for FTS:
+        // Set 'FieldIndexing.Search' on index-field 'EmployeeNotes'
+        Index(x => x.EmployeeNotes, FieldIndexing.Search);
+        
+        // Optionally: Set your choice of analyzer for the index-field.
+        // Here the text from index-field 'EmployeeNotes' will be tokenized by 'WhitespaceAnalyzer'.
+        Analyze(x => x.EmployeeNotes, "WhitespaceAnalyzer");
+
+        // Note:
+        // If no analyzer is set then the default 'RavenStandardAnalyzer' is used.
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Query with Search__:
+* Use `Search` to make a full-text search when querying the index.  
+
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available __Search options__,  
+  such as using wildcards, searching for multiple terms, etc.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Query the index
+    .Query<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
+     // Call 'Search':
+     // pass the index field that was configured for FTS and the term to search for.
+    .Search(x => x.EmployeeNotes, "French")
+    .OfType<Employee>()
+    .ToList();
+
+// * Results will contain all Employee documents that have 'French' in their 'Notes' field.
+//
+// * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
+//   which preserves casing.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Query the index
+    .Query<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
+     // Call 'Search':
+     // pass the index field that was configured for FTS and the term to search for.
+    .Search(x => x.EmployeeNotes, "French")
+    .OfType<Employee>()
+    .ToListAsync();
+
+// * Results will contain all Employee documents that have 'French' in their 'Notes' field.
+// 
+// * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
+//   which preserves casing.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Query the index
+    .DocumentQuery<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
+     // Call 'Search':
+     // pass the index field that was configured for FTS and the term to search for.
+    .Search(x => x.EmployeeNotes, "French")
+    .OfType<Employee>()
+    .ToList();
+
+// * Results will contain all Employee documents that have 'French' in their 'Notes' field.
+// 
+// * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
+//   which preserves casing.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNotes"
+where search(EmployeeNotes, "French")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Indexing multiple fields for FTS
+
+<Admonition type="note" title="">
+
+__The index__:
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="csharp">
+{`public class Employees_ByEmployeeData : 
+    AbstractIndexCreationTask<Employee, Employees_ByEmployeeData.IndexEntry>
+\{
+    public class IndexEntry
+    \{
+        public object[] EmployeeData \{ get; set; \}
+    \}
+
+    public Employees_ByEmployeeData()
+    \{
+        Map = employees => from employee in employees
+            select new IndexEntry()
+            \{
+                EmployeeData = new object[]
+                \{
+                    // Multiple document-fields can be indexed
+                    // into the single index-field 'EmployeeData' 
+                    employee.FirstName,
+                    employee.LastName,
+                    employee.Title,
+                    employee.Notes
+                \}
+            \};
+
+        // Configure the index-field for FTS:
+        // Set 'FieldIndexing.Search' on index-field 'EmployeeData'
+        Index(x => x.EmployeeData, FieldIndexing.Search);
+        
+        // Note:
+        // Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Sample query__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Query the static-index
+    .Query<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
+     // A logical OR is applied between the following two Search calls:
+    .Search(x => x.EmployeeData, "Manager")
+     // A logical AND is applied between the following two terms: 
+    .Search(x => x.EmployeeData, "French Spanish", @operator: SearchOperator.And)
+    .OfType<Employee>()
+    .ToList();
+
+// * Results will contain all Employee documents that have:
+//   ('Manager' in any of the 4 document-fields that were indexed)
+//   OR 
+//   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
+//
+// * Search is case-insensitive since the default analyzer is used
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Query the static-index
+    .Query<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
+     // A logical OR is applied between the following two Search calls:
+    .Search(x => x.EmployeeData, "Manager")
+     // A logical AND is applied between the following two terms: 
+    .Search(x => x.EmployeeData, "French Spanish", @operator: SearchOperator.And)
+    .OfType<Employee>()
+    .ToListAsync();
+
+// * Results will contain all Employee documents that have:
+//   ('Manager' in any of the 4 document-fields that were indexed)
+//   OR 
+//   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
+//
+// * Search is case-insensitive since the default analyzer is used
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Query the static-index
+    .DocumentQuery<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
+    .OpenSubclause()
+     // A logical OR is applied between the following two Search calls:
+    .Search(x => x.EmployeeData, "Manager")
+     // A logical AND is applied between the following two terms: 
+    .Search(x => x.EmployeeData, "French Spanish", @operator: SearchOperator.And)
+    .CloseSubclause()
+    .OfType<Employee>()
+    .ToList();
+
+// * Results will contain all Employee documents that have:
+//   ('Manager' in any of the 4 document-fields that were indexed)
+//   OR 
+//   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
+//                                                                                                                                                                                                                                                                                                                  
+// * Search is case-insensitive since the default analyzer is used
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByEmployeeData"
+where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Boosting search results
+
+* In order to prioritize results, you can provide a boost value to the searched terms.  
+  This can be applied by either of the following:
+
+  * Add a boost value to the relevant index-field __inside the index definition__.  
+    Refer to article [indexes - boosting](../../indexes/boosting.mdx).
+
+  * Add a boost value to the queried terms __at query time__.  
+    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx).
+
+
+
+

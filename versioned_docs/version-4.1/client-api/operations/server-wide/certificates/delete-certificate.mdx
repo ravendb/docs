@@ -5,78 +5,24 @@ sidebar_label: Delete Certificate
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteCertificateCsharp from './_delete-certificate-csharp.mdx';
+import DeleteCertificateJava from './_delete-certificate-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: Server: How to delete client certificate?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-You can delete client certificate using **DeleteCertificateOperation**. 
-
-## Syntax
-
-<TabItem value="delete_cert_1" label="delete_cert_1">
-<CodeBlock language="csharp">
-{`public DeleteCertificateOperation(string thumbprint)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **thumbprint** | string | The certificate thumbprint |
-
-## Example I
-
-<TabItem value="delete_cert_2" label="delete_cert_2">
-<CodeBlock language="csharp">
-{`string thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
-store.Maintenance.Server.Send(new DeleteCertificateOperation(thumbprint));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteCertificateCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-You can delete client certificate using **DeleteCertificateOperation**. 
-
-## Syntax
-
-<TabItem value="delete_cert_1" label="delete_cert_1">
-<CodeBlock language="java">
-{`public DeleteCertificateOperation(String thumbprint);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **thumbprint** | String | The certificate thumbprint |
-
-## Example I
-
-<TabItem value="delete_cert_2" label="delete_cert_2">
-<CodeBlock language="java">
-{`String thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
-store.maintenance().server().send(new DeleteCertificateOperation(thumbprint));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteCertificateJava />
 </LanguageContent>
+
 
 <!---
 - [How to create client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate)

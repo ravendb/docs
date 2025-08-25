@@ -5,258 +5,29 @@ sidebar_label: How to Query With Exact Match
 sidebar_position: 18
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToQueryWithExactMatchCsharp from './_how-to-query-with-exact-match-csharp.mdx';
+import HowToQueryWithExactMatchJava from './_how-to-query-with-exact-match-java.mdx';
+import HowToQueryWithExactMatchNodejs from './_how-to-query-with-exact-match-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Query With Exact Match
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-By default, the `Where` method in `Query` uses a case-insensitive match.
-
-To perform a case-sensitive match you should use the `exact` parameter.
-
-### Syntax
-
-<TabItem value="query_1_0" label="query_1_0">
-<CodeBlock language="csharp">
-{`IRavenQueryable<T> Where<T>(Expression<Func<T, int, bool>> predicate, bool exact);
-
-IRavenQueryable<T> Where<T>(Expression<Func<T, bool>> predicate, bool exact);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **predicate** | Expression&lt;Func&lt;T, int, bool&gt;&gt; | Predicate with match condition |
-| **exact** | bool | Indicates if `predicate` should be matched in case-sensitive manner |
-
-### Example I - Query With Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// load all entities from 'Employees' collection
-// where FirstName equals 'Robert' (case sensitive match)
-List<Employee> employees = session
-    .Query<Employee>()
-    .Where(x => x.FirstName == "Robert", exact: true)
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// load all entities from 'Employees' collection
-// where FirstName equals 'Robert' (case sensitive match)
-List<Employee> employees = await asyncSession
-    .Query<Employee>()
-    .Where(x => x.FirstName == "Robert", exact: true)
-    .ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Employees where exact(FirstName == 'Robert')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-### Example II - Query With Inner Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// return all entities from 'Orders' collection
-// which contain at least one order line with
-// 'Singaporean Hokkien Fried Mee' product
-// perform a case-sensitive match
-List<Order> orders = session
-    .Query<Order>()
-    .Where(x => x.Lines.Any(p => p.ProductName == "Singaporean Hokkien Fried Mee"), exact: true)
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// return all entities from 'Orders' collection
-// which contain at least one order line with
-// 'Singaporean Hokkien Fried Mee' product
-// perform a case-sensitive match
-List<Order> orders = await asyncSession
-    .Query<Order>()
-    .Where(x => x.Lines.Any(p => p.ProductName == "Singaporean Hokkien Fried Mee"), exact: true)
-    .ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Orders 
-where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToQueryWithExactMatchCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-By default, the `whereXXX` methods in `query` uses a case-insensitive match.
-
-To perform a case-sensitive match you should use the `exact` parameter.
-
-### Syntax
-
-<TabItem value="query_1_0" label="query_1_0">
-<CodeBlock language="java">
-{`IDocumentQuery<T> whereEquals(String fieldName, Object value, boolean exact);
-IDocumentQuery<T> whereNotEquals(String fieldName, Object value, boolean exact);
-
-// ... rest of where methods
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **fieldName** | String | Object field to use |
-| **value** | Object | Predicate value |
-| **exact** | boolean | Indicates if `predicate` should be matched in case-sensitive manner |
-
-### Example I - Query With Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Java" label="Java">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
-// where firstName equals 'Robert' (case sensitive match)
-List<Employee> employees = session.query(Employee.class)
-    .whereEquals("FirstName", "Robert", true)
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Employees where exact(FirstName == 'Robert')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-### Example II - Query With Inner Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Java" label="Java">
-<CodeBlock language="java">
-{`// return all entities from 'Orders' collection
-// which contain at least one order line with
-// 'Singaporean Hokkien Fried Mee' product
-// perform a case-sensitive match
-List<Order> orders = session.query(Order.class)
-    .whereEquals("Lines[].ProductName", "Singaporean Hokkien Fried Mee", true)
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Orders 
-where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToQueryWithExactMatchJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-By default, the `whereXXX()` methods in `query` use a case-insensitive match.
-
-To perform a case-sensitive match you should use the `exact` parameter.
-
-### Syntax
-
-<TabItem value="query_1_0" label="query_1_0">
-<CodeBlock language="js">
-{`query.whereEquals(fieldName, value, [exact]);
-query.whereNotEquals(fieldName, value, [exact]);
-
-// ... rest of where methods
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **fieldName** | string | Object field to use |
-| **value** | any | Predicate value |
-| **exact** | boolean | Indicates if `predicate` should be matched in case-sensitive manner |
-
-### Example I - Query With Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Node.js" label="Node.js">
-<CodeBlock language="js">
-{`// load all entities from 'Employees' collection
-// where firstName equals 'Robert' (case sensitive match)
-const employees = await session.query({ collection: "Employees" })
-    .whereEquals("FirstName", "Robert", true)
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Employees where exact(FirstName == 'Robert')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-### Example II - Query With Inner Exact Match
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Node.js" label="Node.js">
-<CodeBlock language="js">
-{`// return all entities from 'Orders' collection
-// which contain at least one order line with
-// 'Singaporean Hokkien Fried Mee' product
-// perform a case-sensitive match
-const orders = await session.query({ collection: "Orders" })
-    .whereEquals("Lines[].ProductName", "Singaporean Hokkien Fried Mee", true)
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Orders 
-where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToQueryWithExactMatchNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

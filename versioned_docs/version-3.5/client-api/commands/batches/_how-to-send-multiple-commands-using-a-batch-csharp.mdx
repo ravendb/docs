@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To send **multiple operations** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `Batch` should be used.
+
+## Syntax
+
+<TabItem value="batch_1" label="batch_1">
+<CodeBlock language="csharp">
+{`BatchResult[] Batch(IEnumerable<ICommandData> commandDatas);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| An array of following commands:&lt;br /&gt;- [PutCommandData](../../../glossary/put-command-data.mdx)&lt;br /&gt;- [DeleteCommandData](../../../glossary/delete-command-data.mdx)&lt;br /&gt;- [PatchCommandData](../../../glossary/patch-command-data.mdx)&lt;br /&gt;- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx) | ICommandData | Commands to process. |
+
+| Return Value | |
+| ------------- | ----- |
+| [BatchResult](../../../glossary/batch-result.mdx)[] | An array of batch results matching **exactly** the order of commands send. |
+
+## Example
+
+<TabItem value="batch_2" label="batch_2">
+<CodeBlock language="csharp">
+{`BatchResult[] results = store
+	.DatabaseCommands
+	.Batch(new ICommandData[]
+		       \{
+			       new PutCommandData
+				       \{
+					       Key = "products/999",
+						   Document = RavenJObject.FromObject(new Product
+							\{
+								Name = "My Product",
+								Supplier = "suppliers/999"
+							\}),
+							Metadata = new RavenJObject()
+				       \}, 
+				   new PutCommandData
+					   \{
+							Key = "suppliers/999",
+							Document = RavenJObject.FromObject(new Supplier
+							\{
+								Name = "My Supplier",
+							\}),
+							Metadata = new RavenJObject()
+					   \}, 
+				   new DeleteCommandData
+					   \{
+							Key = "products/2"
+					   \}
+		       \});
+`}
+</CodeBlock>
+</TabItem>
+
+## Concurrency
+
+If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were attempted will succeed.
+
+## Transactions
+
+All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
+
+

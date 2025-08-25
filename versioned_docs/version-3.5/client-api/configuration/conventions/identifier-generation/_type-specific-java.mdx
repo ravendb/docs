@@ -1,0 +1,135 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Type-specific identifier generation
+
+[In the previous article](./global), global key generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+Now we will show how to override the default ID generation in a more granular way, that is only for particular types of entities.
+
+To override default document key generation algorithms you can register custom conventions per an entity type, where you can include your own identifier generation logic.
+
+
+
+
+<TabItem value="register_id_convention_method" label="register_id_convention_method">
+<CodeBlock language="java">
+{`public <TEntity> DocumentConvention registerIdConvention(Class<TEntity> type, IdConvention func);
+`}
+</CodeBlock>
+</TabItem>
+
+The conventions registered by this method are used for operations performed in a synchronous manner.
+
+
+<Admonition type="info" title="Database name parameter" id="database-name-parameter" href="#database-name-parameter">
+The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database 
+(e.g. default document key generator - `MultiDatabaseHiloGenerator` - uses this parameter to prevent sharing HiLo values across the databases)
+</Admonition>
+
+<Admonition type="info" title="Database commands parameter" id="database-commands-parameter" href="#database-commands-parameter">
+Note that spectrum of identifier generation abilities is very wide because `IDatabaseCommands`  object is passed into an identifier convention function and can be used for an advanced calculation techniques.
+</Admonition>
+
+### Example
+
+Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have keys like `employees/[lastName]/[firstName]`
+(for the sake of simplicity, let us not consider the uniqueness of such keys). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
+
+<TabItem value="eployees_custom_convention" label="eployees_custom_convention">
+<CodeBlock language="java">
+{`store.getConventions().registerIdConvention(Employee.class, new IdConvention() \{
+  @Override
+  public String findIdentifier(String dbName, IDatabaseCommands databaseCommands, Object employee) \{
+    Employee e = (Employee) employee;
+    return String.format("employees/%s/%s", e.getLastName(), e.getFirstName());
+  \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Now, when you store a new entity:
+
+<TabItem value="eployees_custom_convention_example" label="eployees_custom_convention_example">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+  Employee employee = new Employee();
+  employee.setFirstName("James");
+  employee.setLastName("Bond");
+  session.store(employee);
+  session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+the client will associate the `employees/Bond/James` identifier with it.
+
+## Inheritance
+
+Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree.
+
+### Example
+
+If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, then both types will use the following:
+
+<TabItem value="eployees_custom_convention_inheritance" label="eployees_custom_convention_inheritance">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+  Employee employee1 = new Employee();
+  employee1.setFirstName("Adam");
+  employee1.setLastName("Smith");
+  session.store(employee1);  // employees/Smith/Adam
+
+  EmployeeManager employeeManager = new EmployeeManager();
+  employeeManager.setFirstName("David");
+  employeeManager.setLastName("Jones");
+  session.store(employeeManager); // employees/Jones/David
+
+  session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
+
+<TabItem value="custom_convention_inheritance_2" label="custom_convention_inheritance_2">
+<CodeBlock language="java">
+{`store.getConventions().registerIdConvention(Employee.class, new IdConvention() \{
+  @Override
+  public String findIdentifier(String dbName, IDatabaseCommands databaseCommands, Object employee) \{
+    Employee e = (Employee) employee;
+    return String.format("employees/%s/%s", e.getLastName(), e.getFirstName());
+  \}
+\});
+
+store.getConventions().registerIdConvention(EmployeeManager.class, new IdConvention() \{
+  @Override
+  public String findIdentifier(String dbName, IDatabaseCommands databaseCommands, Object employee) \{
+    EmployeeManager e = (EmployeeManager) employee;
+    return String.format("managers/%s/%s", e.getLastName(), e.getFirstName());
+  \}
+\});
+
+try (IDocumentSession session = store.openSession()) \{
+  Employee employee1 = new Employee();
+  employee1.setFirstName("Adam");
+  employee1.setLastName("Smith");
+  session.store(employee1);  // employees/Smith/Adam
+
+  EmployeeManager employeeManager = new EmployeeManager();
+  employeeManager.setFirstName("David");
+  employeeManager.setLastName("Jones");
+  session.store(employeeManager); // managers/Jones/David
+
+  session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -5,154 +5,24 @@ sidebar_label: GetConflicts
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetCsharp from './_get-csharp.mdx';
+import GetHttp from './_get-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: GetConflictsAsync
-
-**GetConflictsAsync** retrieves the existing conflict items.
-
-<Admonition type="info" title="Conflicts location" id="conflicts-location" href="#conflicts-location">
-Conflicts always exist in a destination file system.
-</Admonition>
-
-
-
-<TabItem value="get_conflicts_1" label="get_conflicts_1">
-<CodeBlock language="csharp">
-{`Task<ItemsPage<ConflictItem>> GetConflictsAsync(int start = 0, int pageSize = 25);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **start** | int | The number of items to skip |
-| **pageSize** | int | The maximum number of items to get |
-
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;ItemsPage&lt;ConflictItem&gt;&gt;** | A task that represents the asynchronous get operation. The task result is the `ItemsPage` object that contains the number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item.mdx) objects that represent the synchronization conflict. |
-
-
-## Example
-
-<TabItem value="get_conflicts_2" label="get_conflicts_2">
-<CodeBlock language="csharp">
-{`ItemsPage<ConflictItem> page = await store.AsyncFilesCommands.Synchronization
-												.GetConflictsAsync(0, 128);
-
-page.Items.ForEach(x =>
-	Console.WriteLine("Synchronization of file \{0\} from \{1\} file system resulted in conflict", 
-	x.FileName, x.RemoteServerUrl));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: GetConflicts
-
-The **GET** method retrieves the existing conflict items.
-
-<Admonition type="info" title="Conflicts location" id="conflicts-location" href="#conflicts-location">
-Conflicts always exist in a destination file system.
-</Admonition>
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/synchronization/conflicts  \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **start** | No | The number of results that should be skipped |
-| **pageSize** | No | The maximum number of results that will be returned |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **JSON** | The `ItemsPage` object that contains the number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item.mdx) objects that represent the synchronization conflict. |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8081/fs/SlaveNorthwindFS/synchronization/conflicts
-< HTTP/1.1 200 OK
-\{
-    "TotalCount":1,
-    "Items":[
-        \{
-            "RemoteHistory":[
-                \{
-                    "Version":1,
-                    "ServerId":"73bf7163-d29c-4c6b-9a52-e2347d51765d"
-                \},
-                \{
-                    "Version":16385,
-                    "ServerId":"73bf7163-d29c-4c6b-9a52-e2347d51765d"
-                \},
-                \{
-                    "Version":16386,
-                    "ServerId":"73bf7163-d29c-4c6b-9a52-e2347d51765d"
-                \}
-            ],
-            "CurrentHistory":[
-                \{
-                    "Version":1,
-                    "ServerId":"73bf7163-d29c-4c6b-9a52-e2347d51765d"
-                \},
-                \{
-                    "Version":16385,
-                    "ServerId":"73bf7163-d29c-4c6b-9a52-e2347d51765d"
-                \},
-                \{
-                    "Version":1,
-                    "ServerId":"59252a06-9673-4ddb-9e07-66831f879941"
-                \}
-            ],
-            "FileName":"/books/Inside.RavenDB.3.0.pdf",
-            "RemoteServerUrl":"http://localhost:8080/fs/NorthwindFS"
-        \}
-    ]
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetHttp />
 </LanguageContent>
+
 
 <!---
 - [Synchronization conflicts](../../../../synchronization/conflicts)

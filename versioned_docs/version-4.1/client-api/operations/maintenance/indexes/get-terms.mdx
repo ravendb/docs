@@ -5,97 +5,24 @@ sidebar_label: Get Index Terms
 sidebar_position: 16
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetTermsCsharp from './_get-terms-csharp.mdx';
+import GetTermsJava from './_get-terms-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Index Terms
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The **GetTermsOperation** will retrieve stored terms for a field of an index.
-
-## Syntax
-
-<TabItem value="get_terms1" label="get_terms1">
-<CodeBlock language="csharp">
-{`public GetTermsOperation(string indexName, string field, string fromValue, int? pageSize = null)
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | string | Name of an index to get terms for |
-| **field** | string | Name of field to get terms for |
-| **fromValue** | string | Starting point for a query, used for paging |
-| **pageSize** | int? | Maximum number of terms that will be returned |
-
-| Return Value | |
-| ------------- | ----- |
-| string[] | Array of index terms. |
-
-## Example
-
-<TabItem value="get_terms2" label="get_terms2">
-<CodeBlock language="csharp">
-{`string[] terms = store.Maintenance.Send(new GetTermsOperation("Orders/Totals", "Employee", null));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetTermsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The **GetTermsOperation** will retrieve stored terms for a field of an index.
-
-## Syntax
-
-<TabItem value="get_terms1" label="get_terms1">
-<CodeBlock language="java">
-{`public GetTermsOperation(String indexName, String field, String fromValue)
-
-public GetTermsOperation(String indexName, String field, String fromValue, Integer pageSize)
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | Name of an index to get terms for |
-| **field** | String | Name of field to get terms for |
-| **fromValue** | String | Starting point for a query, used for paging |
-| **pageSize** | Integer | Maximum number of terms that will be returned |
-
-| Return Value | |
-| ------------- | ----- |
-| String[] | Array of index terms. |
-
-## Example
-
-<TabItem value="get_terms2" label="get_terms2">
-<CodeBlock language="java">
-{`String[] terms = store
-    .maintenance()
-    .send(
-        new GetTermsOperation("Orders/Totals", "Employee", null));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetTermsJava />
 </LanguageContent>
+
 
 <!---
 ### Indexes

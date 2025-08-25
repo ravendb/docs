@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
+
+<Admonition type="note" title="">
+Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx) disable index is a persistent operation, so the index remains disabled even after a server restart.
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="disable_1" label="disable_1">
+<CodeBlock language="csharp">
+{`public DisableIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to disable indexing |
+
+## Example
+
+<TabItem value="disable_2" label="disable_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new DisableIndexOperation("Orders/Totals"));
+// index is disabled at this point, new data won't be indexed
+// but you can still query on this index
+`}
+</CodeBlock>
+</TabItem>
+
+

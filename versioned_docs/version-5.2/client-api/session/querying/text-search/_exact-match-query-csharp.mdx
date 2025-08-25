@@ -1,0 +1,162 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, when making a query that filters by strings, the string comparisons are __case-insensitive__.
+
+* Use the `exact` parameter to perform a search that is __case-sensitive__.
+
+* When making a dynamic query with an exact match,  
+  the auto-index created by the server indexes the text of the document field  
+  using the [default exact analyzer](../../../../indexes/using-analyzers.mdx#ravendb) where the casing of the original text is not changed.
+
+* In this page:
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match)
+    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match---nested-object)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-query.mdx#syntax)
+
+</Admonition>
+## Query with exact match
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Make a dynamic query on 'Employees' collection    
+    .Query<Employee>()
+     // Query for all documents where 'FirstName' equals 'Robert'
+     // Pass 'exact: true' for a case-sensitive match
+    .Where(x => x.FirstName == "Robert", exact: true)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Make a dynamic query on 'Employees' collection    
+    .Query<Employee>()
+     // Query for all documents where 'FirstName' equals 'Robert'
+     // Pass 'exact: true' for a case-sensitive match
+    .Where(x => x.FirstName == "Robert", exact: true)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Make a dynamic DocumentQuery on 'Employees' collection    
+    .DocumentQuery<Employee>()
+     // Query for all documents where 'FirstName' equals 'Robert'
+     // Pass 'exact: true' for a case-sensitive match
+    .WhereEquals(x => x.FirstName, "Robert", exact: true)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where exact(FirstName == "Robert")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/ByExact(FirstName)`.
+
+* This auto-index will contain the following two index-fields:
+  
+  * `FirstName`  
+    Contains terms with the text from the indexed document field 'FirstName'.  
+    Text is lower-cased and not tokenized.  
+
+  * `exact(FirstName)`  
+    Contain terms with the original text from the indexed document field 'FirstName'.  
+    Casing is exactly the same as in the original text, and the text is not tokenized.  
+    Making an exact query targets these terms to find matching documents.
+
+
+
+## Query with exact match - nested object
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Order> orders = session
+     // Make a dynamic query on 'Orders' collection
+    .Query<Order>()
+     // Query for documents that contain at least one order line with 'Teatime Chocolate Biscuits'
+    .Where(x => x.Lines.Any(p => p.ProductName == "Teatime Chocolate Biscuits"),
+        // Pass 'exact: true' for a case-sensitive match 
+        exact: true)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Order> orders = await asyncSession
+     // Make a dynamic query on 'Orders' collection
+    .Query<Order>()
+     // Query for documents that contain at least one order line with 'Teatime Chocolate Biscuits'
+    .Where(x => x.Lines.Any(p => p.ProductName == "Teatime Chocolate Biscuits"),
+        // Pass 'exact: true' for a case-sensitive match 
+        exact: true)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Order> orders = session.Advanced
+     // Make a dynamic DocumentQuery on 'Orders' collection
+    .DocumentQuery<Order>()
+     // Query for documents that contain at least one order line with 'Teatime Chocolate Biscuits'
+    .WhereEquals("Lines.ProductName", "Teatime Chocolate Biscuits",
+         // Pass 'exact: true' for a case-sensitive match 
+         exact: true)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" 
+where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Where<T>(Expression<Func<T, bool>> predicate, bool exact);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                      | Description                                                               |
+|---------------|---------------------------|---------------------------------------------------------------------------|
+| __predicate__ | Expression&lt;Func&lt;T, bool&gt;&gt; | Predicate with match condition                                            |
+| __exact__     | bool                      | `false` - search is case-insensitive<br/>`true` - search is case-sensitive |
+
+
+
+

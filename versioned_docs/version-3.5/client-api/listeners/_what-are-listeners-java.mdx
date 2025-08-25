@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The concept of listeners provides users with a mechanism to perform custom actions, in response to operations taken in a session. 
+The listener implements an interface whose methods are called when a particular action is executed on an entity or querying is run.
+
+There are five types of available listeners:
+
+* Document Conflict listeners (IDocumentConflictListener),
+* Document Conversion listeners (IDocumentConversionListener)
+* Document Delete listeners (IDocumentDeleteListener)
+* Document Store listeners (IDocumentStoreListener)
+* Document Query listeners (IDocumentQueryListener)
+
+In order to add new listener you must register it in `DocumentStore`:
+
+<TabItem value="register_listener" label="register_listener">
+<CodeBlock language="java">
+{`store.getListeners().registerListener(new SampleDocumentStoreListener());
+`}
+</CodeBlock>
+</TabItem>
+
+You can also set all your listeners at once by the following method:
+
+<TabItem value="set_listeners" label="set_listeners">
+<CodeBlock language="java">
+{`DocumentSessionListeners listeners = new DocumentSessionListeners();
+listeners.registerListener(new SampleDocumentDeleteListener());
+listeners.registerListener(new SampleDocumentStoreListener());
+store.setListeners(listeners);
+`}
+</CodeBlock>
+</TabItem>
+
+

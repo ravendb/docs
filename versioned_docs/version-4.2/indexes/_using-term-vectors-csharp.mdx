@@ -1,0 +1,113 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A [Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document 
+  as a vector of identifiers.  
+* A term vector can be used for similarity searches, information filtering, information retrieval, and indexing.  
+* In RavenDB, features like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) leverage 
+  term vectors to accomplish their goals.
+
+* In this page:
+   * Creating an index that enables term vectors  
+
+</Admonition>
+
+
+To create an index and enable Term Vectors on a specific field we can create an index using  
+the `AbstractIndexCreationTask`, then specify the term vectors there, or define our term vectors 
+in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByTagsAndContent : AbstractIndexCreationTask<BlogPost>
+{
+    public BlogPosts_ByTagsAndContent()
+    {
+        Map = users => from doc in users
+                       select new
+                       {
+                           doc.Tags,
+                           doc.Content
+                       };
+
+        Indexes.Add(x => x.Content, FieldIndexing.Search);
+        TermVectors.Add(x => x.Content, FieldTermVector.WithPositionsAndOffsets);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`IndexDefinitionBuilder<BlogPost> indexDefinitionBuilder =
+    new IndexDefinitionBuilder<BlogPost>("BlogPosts/ByTagsAndContent")
+    {
+        Map = users => from doc in users
+                       select new
+                       {
+                           doc.Tags,
+                           doc.Content
+                       },
+        Indexes =
+        {
+            { x => x.Content, FieldIndexing.Search }
+        },
+        TermVectors =
+        {
+            { x => x.Content, FieldTermVector.WithPositionsAndOffsets }
+        }
+    };
+
+IndexDefinition indexDefinition = indexDefinitionBuilder
+    .ToIndexDefinition(store.Conventions);
+
+store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The available Term Vector options are:
+
+<TabItem value="term_vectors_3" label="term_vectors_3">
+<CodeBlock language="csharp">
+{`public enum FieldTermVector
+\{
+    /// <summary>
+    /// Do not store term vectors
+    /// </summary>
+    No,
+
+    /// <summary>
+    /// Store the term vectors of each document. A term vector is a list of the document's
+    /// terms and their number of occurrences in that document.
+    /// </summary>
+    Yes,
+
+    /// <summary>
+    /// Store the term vector + token position information
+    /// </summary>
+    WithPositions,
+
+    /// <summary>
+    /// Store the term vector + Token offset information
+    /// </summary>
+    WithOffsets,
+
+    /// <summary>
+    /// Store the term vector + Token position and offset information
+    /// </summary>
+    WithPositionsAndOffsets
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

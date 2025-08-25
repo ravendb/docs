@@ -1,0 +1,78 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
+  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
+  <Admonition type="info" title="">
+  Calling `StartIndexingOperation` on a single index will have no effect.
+  </Admonition>
+
+* When resuming indexing from the **client**:  
+  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
+
+* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
+  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* In this page:
+  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
+  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
+
+</Admonition>
+## Resume indexing example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the resume indexing operation
+var resumeIndexingOp = new StartIndexingOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(resumeIndexingOp);
+
+// At this point,
+// you can be sure that all indexes on the preferred node are 'running'
+        
+// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
+var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
+Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the resume indexing operation
+var resumeIndexingOp = new StartIndexingOperation();
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(resumeIndexingOp);
+
+// At this point,
+// you can be sure that all indexes on the preferred node are 'running'
+        
+// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
+var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
+Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`// class name has "Start", but this is ok, this is the "Resume" operation
+public StartIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

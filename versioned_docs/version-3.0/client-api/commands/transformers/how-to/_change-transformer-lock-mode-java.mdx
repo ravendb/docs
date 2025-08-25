@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+## Syntax
+
+<TabItem value="change_transformer_lock_1" label="change_transformer_lock_1">
+<CodeBlock language="java">
+{`public void setTransformerLock(String name, TransformerLockMode lockMode);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of a transformer to change lock mode for |
+| **lockMode** | TransformerLockMode | new transformer lock mode |
+
+## Example
+
+<TabItem value="change_transformer_lock_2" label="change_transformer_lock_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().setTransformerLock("Orders/Company", TransformerLockMode.LOCKED_IGNORE);
+`}
+</CodeBlock>
+</TabItem>
+
+

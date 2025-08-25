@@ -1,0 +1,45 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match regular expression,  
+use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
+
+The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// loads all products, which name
+// starts with 'N' or 'A'
+List<Product> products = session
+    .Query<Product>()
+    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// loads all products, which name
+// starts with 'N' or 'A'
+List<Product> products = await asyncSession
+    .Query<Product>()
+    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where regex(Name, '^[NA]')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Delete** from `session.advanced.attachments` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
+<CodeBlock language="python">
+{`def delete(self, entity_or_document_id, name): ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    album = session.load("albums/1")
+    session.advanced.attachments.delete(album, "001.jpg")
+    session.advanced.attachments.delete("albums/1", "002.jpg")
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+

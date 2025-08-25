@@ -1,0 +1,80 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
+By default, tokens saved in the index are available for searching. but their original field values aren't stored.
+
+Lucene allows you to store the original field text (before it is analyzed) as well. This feature is exposed in the index definition object as the `Storage` property of the `IndexFieldOptions`.
+
+Enabling field storing causes original values will be available for retrieval when doing [projections](../indexes/querying/projections.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               employee.FirstName,
+                               employee.LastName
+                           };
+
+        Stores.Add(x => x.FirstName, FieldStorage.Yes);
+        Stores.Add(x => x.LastName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store
+    .Maintenance
+    .Send(new PutIndexesOperation(
+        new IndexDefinition
+        {
+            Name = "Employees_ByFirstAndLastName",
+            Maps =
+            {
+                @"from employee in docs.Employees
+                  select new
+                  {
+                      employee.FirstName,
+                      employee.LastName
+                  }"
+            },
+            Fields = new Dictionary<string, IndexFieldOptions>
+            {
+                {"FirstName", new IndexFieldOptions
+                              {
+                                  Storage = FieldStorage.Yes
+                              }
+                },
+                {"LastName", new IndexFieldOptions
+                             {
+                                Storage = FieldStorage.Yes
+                             }
+                }
+            }
+        }));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="">
+Default `Storage` value for each field is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage.
+</Admonition>
+
+<Admonition type="info" title="Info" id="info" href="#info">
+If **the projection requires only the fields that are stored**, then the document will not be loaded from the storage and the query results will come directly from the index. This can increase query performance at the cost of disk space used.
+</Admonition>
+
+

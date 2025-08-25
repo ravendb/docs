@@ -5,126 +5,29 @@ sidebar_label: ...check for entity changes
 sidebar_position: 14
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import CheckIfEntityHasChangedCsharp from './_check-if-entity-has-changed-csharp.mdx';
+import CheckIfEntityHasChangedJava from './_check-if-entity-has-changed-java.mdx';
+import CheckIfEntityHasChangedNodejs from './_check-if-entity-has-changed-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Session: How to Check if Entity has Changed
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To check if a specific entity differs from the one downloaded from server, the `HasChanged` method from the `Advanced` session operations can be used.
-
-## Syntax
-
-<TabItem value="has_changed_1" label="has_changed_1">
-<CodeBlock language="csharp">
-{`bool HasChanged(object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Instance of entity for which changes will be checked. |
-
-| Return Value | |
-| ------------- | ----- |
-| bool | Indicated if given entity has changed. |
-
-## Example
-
-<TabItem value="has_changed_2" label="has_changed_2">
-<CodeBlock language="csharp">
-{`Employee employee = session.Load<Employee>("employees/1-A");
-bool hasChanged = session.Advanced.HasChanged(employee); // false
-employee.LastName = "Shmoe";
-hasChanged = session.Advanced.HasChanged(employee); // true
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <CheckIfEntityHasChangedCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To check if a specific entity differs from the one downloaded from server, the `hasChanged` method from the `advanced` session operations can be used.
-
-## Syntax
-
-<TabItem value="has_changed_1" label="has_changed_1">
-<CodeBlock language="java">
-{`boolean hasChanged(Object entity)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | Objec | Instance of entity for which changes will be checked. |
-
-| Return Value | |
-| ------------- | ----- |
-| boolean | Indicated if given entity has changed. |
-
-## Example
-
-<TabItem value="has_changed_2" label="has_changed_2">
-<CodeBlock language="java">
-{`Employee employee = session.load(Employee.class, "employees/1-A");
-boolean hasChanged = session.advanced().hasChanged(employee);// false
-employee.setLastName("Shmoe");
-hasChanged = session.advanced().hasChanged(employee);// true
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <CheckIfEntityHasChangedJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-To check if a specific entity differs from the one downloaded from server, the `hasChanged()` method from the `advanced` session operations can be used.
-
-## Syntax
-
-<TabItem value="has_changed_1" label="has_changed_1">
-<CodeBlock language="js">
-{`session.advanced.hasChanged(entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Entity for which changes will be checked. |
-
-| Return Value | |
-| ------------- | ----- |
-| boolean | Indicates whether given entity has changed. |
-
-## Example
-
-<TabItem value="has_changed_2" label="has_changed_2">
-<CodeBlock language="js">
-{`const employee = await session.load("employees/1-A");
-let hasChanged = session.advanced.hasChanged(employee); // false
-employee.lastName = "Shmoe";
-hasChanged = session.advanced.hasChanged(employee);       // true
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <CheckIfEntityHasChangedNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

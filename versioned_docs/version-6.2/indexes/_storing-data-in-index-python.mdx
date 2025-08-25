@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, 
+the resulting tokens created by the used analyzer are stored in the index.  
+By default, tokens saved in the index are available for searching, but their original 
+field values are not stored.  
+
+Lucene allows you to store the original field text (before it is analyzed) as well.  
+
+* In this page:
+  * [Storing Data in Index](../indexes/storing-data-in-index.mdx#storing-data-in-index)
+
+</Admonition>
+
+## Storing Data in Index
+
+Lucene's original field text storage feature is exposed in the index definition object as 
+the `storage` property of the `IndexFieldOptions`.  
+
+When the original values are stored in the index, they become available for retrieval via 
+[projections](../indexes/querying/projections.mdx).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from employee in docs.Employees select new { employee.FirstName, employee.LastName }"
+        self._store("FirstName", FieldStorage.YES)
+        self._store("LastName", FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="python">
+{`store.maintenance.send(
+    PutIndexesOperation(
+        IndexDefinition(
+            name="Employees_ByFirstAndLastName",
+            maps={
+                """
+    from employee in docs.Employees
+    select new
+    {
+        employee.FirstName,
+        employee.LastName
+    }
+    """
+            },
+            fields={
+                "FirstName": IndexFieldOptions(storage=FieldStorage.YES),
+                "LastName": IndexFieldOptions(storage=FieldStorage.YES),
+            },
+        )
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+The default `storage` value for each field is `FieldStorage.NO`.  
+Keep in mind that storing fields will increase disk space usage.  
+</Admonition>
+
+<Admonition type="info" title="">
+If **the projection requires only the fields that are stored**, the document will 
+not be loaded from the storage and the query results will be retrieved directly from the index.  
+This can increase query performance at the cost of disk space used.  
+</Admonition>
+
+
+
+

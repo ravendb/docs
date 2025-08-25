@@ -5,183 +5,29 @@ sidebar_label: Get Index Terms
 sidebar_position: 16
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetTermsCsharp from './_get-terms-csharp.mdx';
+import GetTermsJava from './_get-terms-java.mdx';
+import GetTermsNodejs from './_get-terms-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Get Index Terms Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `GetTermsOperation` to retrieve the __terms of an index-field__.  
-
-* In this page:
-    * [Get index terms example](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#get-index-terms-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#syntax)
-
-</Admonition>
-## Get index terms example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the get terms operation
-// Pass the requested index-name, index-field, start value & page size
-var getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
-
-// Execute the operation by passing it to Maintenance.Send
-string[] fieldTerms = store.Maintenance.Send(getTermsOp);
-
-// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the get terms operation
-// Pass the requested index-name, index-field, start value & page size
-var getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
-
-// Execute the operation by passing it to Maintenance.SendAsync
-string[] fieldTerms = await store.Maintenance.SendAsync(getTermsOp);
-
-// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="get_index_terms_syntax" label="get_index_terms_syntax">
-<CodeBlock language="csharp">
-{`public GetTermsOperation(string indexName, string field, string fromValue, int? pageSize = null)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-| - | - | - |
-| **indexName** | string | Name of an index to get terms for |
-| **field** | string | Name of index-field to get terms for |
-| **fromValue** | string | The starting term from which to return results.<br/>This term is not included in the results.<br/>`null` - start from first term. |
-| **pageSize** | int? | Number of terms to get.<br/>`null` - return all terms.  |
-
-| Return value of `store.Maintenance.Send(getTermsOp)` | |
-| - |- |
-| string[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
-
-
-
-
+   <GetTermsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The **GetTermsOperation** will retrieve stored terms for a field of an index.
-
-## Syntax
-
-<TabItem value="get_terms1" label="get_terms1">
-<CodeBlock language="java">
-{`public GetTermsOperation(String indexName, String field, String fromValue)
-
-public GetTermsOperation(String indexName, String field, String fromValue, Integer pageSize)
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | Name of an index to get terms for |
-| **field** | String | Name of field to get terms for |
-| **fromValue** | String | The starting term from which to return results |
-| **pageSize** | Integer | Number of terms to get |
-
-| Return Value | |
-| ------------- | ----- |
-| String[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
-
-## Example
-
-<TabItem value="get_terms2" label="get_terms2">
-<CodeBlock language="java">
-{`String[] terms = store
-    .maintenance()
-    .send(
-        new GetTermsOperation("Orders/Totals", "Employee", null));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetTermsJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* Use `GetTermsOperation` to retrieve the __terms of an index-field__.
-
-* In this page:
-    * [Get index terms example](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#get-index-terms-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#syntax)
-
-</Admonition>
-## Get index terms example
-
-<TabItem value="get_index_terms" label="get_index_terms">
-<CodeBlock language="js">
-{`// Define the get terms operation
-// Pass the requested index-name, index-field, start value & page size
-const getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
-
-// Execute the operation by passing it to maintenance.send
-const fieldTerms = await store.maintenance.send(getTermsOp);
-
-// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="get_index_terms_syntax" label="get_index_terms_syntax">
-<CodeBlock language="js">
-{`// Available overloads:
-const getTermsOp = new GetTermsOperation(indexName, field, fromValue);
-const getTermsOp = new GetTermsOperation(indexName, field, fromValue, pageSize);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-| - | - | - |
-| **indexName** | string | Name of an index to get terms for |
-| **field** | string | Name of index-field to get terms for |
-| **fromValue** | string | The starting term from which to return results.<br/>This term is not included in the results.<br/>`null` - start from first term. |
-| **pageSize** | number | Number of terms to get.<br/>`undefined/null` - return all terms.  |
-
-| Return value of `store.maintenance.send(getTermsOp)` | |
-| - |- |
-| string[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
-
-
-
-
+   <GetTermsNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

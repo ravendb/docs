@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Head** is used to retrieve document metadata from a database.
+
+## Syntax
+
+<TabItem value="head_1" label="head_1">
+<CodeBlock language="csharp">
+{`public GetDocumentsCommand(string id, string[] includes, bool metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of a document to get metadata for |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocumentMetadata](../../../../glossary/json-document-metadata.mdx) | Metadata information for document with given key. |
+
+## Example
+
+<TabItem value="head_2" label="head_2">
+<CodeBlock language="csharp">
+{`var command = new GetDocumentsCommand("orders/1-A", null, metadataOnly: true);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var result = (BlittableJsonReaderObject)command.Result.Results[0];
+var documentMetadata = (BlittableJsonReaderObject)result["@metadata"];
+
+// Print out all the metadata properties.
+foreach (var propertyName in documentMetadata.GetPropertyNames())
+\{
+    documentMetadata.TryGet<object>(propertyName, out var metaPropValue);
+    Console.WriteLine("\{0\} = \{1\}", propertyName, metaPropValue);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

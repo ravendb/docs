@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To check if a specific entity differs from the one downloaded from server, the `HasChanged` method from the `Advanced` session operations can be used.
+
+## Syntax
+
+<TabItem value="has_changed_1" label="has_changed_1">
+<CodeBlock language="csharp">
+{`bool HasChanged(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of entity for which changes will be checked. |
+
+| Return Value | |
+| ------------- | ----- |
+| bool | Indicated if given entity has changed. |
+
+## Example
+
+<TabItem value="has_changed_2" label="has_changed_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1-A");
+bool hasChanged = session.Advanced.HasChanged(employee); // false
+employee.LastName = "Shmoe";
+hasChanged = session.Advanced.HasChanged(employee); // true
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries, use the 
+`intersect` extension to allow RavenDB to perform server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="php">
+{`public function intersect(): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="php">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+/** @var array<TShirt> $tShirts */
+$tShirts = $session
+    ->query(TShirt::class, TShirts_ByManufacturerColorSizeAndReleaseYear::class)
+    ->whereEquals("manufacturer", "Raven")
+    ->intersect()
+    ->whereEquals("color", "Blue")
+    ->andAlso()
+    ->whereEquals("size", "Small")
+    ->intersect()
+    ->whereEquals("color", "Gray")
+    ->andAlso()
+    ->whereEquals("size", "Large")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

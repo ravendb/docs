@@ -1,0 +1,225 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `TimeSeriesFor.Get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+
+* Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+  Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+
+* In this page:  
+  * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+
+</Admonition>
+## `Get` usage 
+
+* Open a session.  
+* Create an instance of `TimeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="timeseries_region_Get-All-Entries-Using-Document-ID" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="csharp">
+{`// Get all time series entries
+TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRates")
+    .Get(DateTime.MinValue, DateTime.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="csharp">
+{`// Query for a document with the Name property "John" 
+// and get its HeartRates time-series values
+using (var session = store.OpenSession())
+\{
+    var baseline = DateTime.Today;
+
+    IRavenQueryable<User> query = session.Query<User>()
+        .Where(u => u.Name == "John");
+
+    var result = query.ToList();
+
+    TimeSeriesEntry[] val = session.TimeSeriesFor(result[0], "HeartRates")
+        .Get(DateTime.MinValue, DateTime.MaxValue);
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values,  
+  we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx) 
+  to make the code easier to read.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="csharp">
+{`// Use Get without a named type
+// Is the stock's closing-price rising?
+bool goingUp = false;
+
+using (var session = store.OpenSession())
+{
+    TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "StockPrices")
+        .Get();
+
+    var closePriceDay1 = val[0].Values[1];
+    var closePriceDay2 = val[1].Values[1];
+    var closePriceDay3 = val[2].Values[1];
+
+    if ((closePriceDay2 > closePriceDay1)
+        &&
+        (closePriceDay3 > closePriceDay2))
+        goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Named" label="Named">
+<CodeBlock language="csharp">
+{`goingUp = false;
+
+using (var session = store.OpenSession())
+{
+    // Call 'Get' with the custom StockPrice class type
+    TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
+        .Get();
+
+    var closePriceDay1 = val[0].Value.Close;
+    var closePriceDay2 = val[1].Value.Close;
+    var closePriceDay3 = val[2].Value.Close;
+
+    if ((closePriceDay2 > closePriceDay1)
+        &&
+        (closePriceDay3 > closePriceDay2))
+        goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `TimeSeriesFor.Get`,  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../document-extensions/timeseries/overview.mdx#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="IncludeParentAndTaggedDocuments" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="csharp">
+{`// Get all time series entries
+TimeSeriesEntry[] entries =
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Get(DateTime.MinValue, DateTime.MaxValue,
+            includes: builder => builder
+        // Include documents referred-to by entry tags
+        .IncludeTags()
+        // Include Parent Document
+        .IncludeDocument());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="TimeSeriesFor-Get-definition" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="csharp">
+{`TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null,
+    int start = 0, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="TimeSeriesFor-Get-Named-Values" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="csharp">
+{`//The stongly-typed API is used, to address time series values by name.
+TimeSeriesEntry<TValues>[] Get(DateTime? from = null, DateTime? to = null,
+int start = 0, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type        | Description                                                                                                                                      |
+|--------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from**     | `DateTime?` | Get the range of time series entries starting from this timestamp (inclusive).
+Default: `DateTime.MinValue`                                  |
+| **to**       | `DateTime?` | Get the range of time series entries ending at this timestamp (inclusive).
+Default: `DateTime.MaxValue`                                      |
+| **start**    | `int`       | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry. |
+| **pageSize** | `int`       | Paging page-size.<br/>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br/>Default: `int.MaxValue`, for all time series entries.         |
+
+**Return Values**
+ 
+* **`TimeSeriesEntry[]`** - an array of time series entry classes.
+
+<TabItem value="TimeSeriesEntry-Definition" label="TimeSeriesEntry-Definition">
+<CodeBlock language="csharp">
+{`public class TimeSeriesEntry
+\{
+    public DateTime Timestamp \{ get; set; \}
+    public double[] Values \{ get; set; \}
+    public string Tag \{ get; set; \}
+    public bool IsRollup \{ get; set; \}
+
+    public double Value;
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **`TimeSeriesEntry<TValues>[]`** - Time series values that can be referred to [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).
+
+
+
+

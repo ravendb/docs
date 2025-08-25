@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To indicate that an entity should be ignored when tracking changes, 
+use the `advanced` session `ignore_changes_for` method.  
+
+Using `load` again to retrieve this entity will not initiate a server call.  
+
+The entity will still take part in the session, but be ignored when `save_changes` is called.  
+
+See more here: [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx)
+
+## Syntax
+
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
+<CodeBlock language="python">
+{`def ignore_changes_for(self, entity: object) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **entity** | `object` | The instance of an entity for which changes will be ignored. |
+
+## Example
+
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
+<CodeBlock language="python">
+{`product = session.load("products/1-A", Product)
+session.ignore_changes_for(product)
+product.units_in_stock += 1  # this will be ignored for save_changes
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+

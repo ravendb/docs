@@ -1,0 +1,96 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+More complex text searching can be achieved by using the `search` method. This method allows you to pass one or more search terms that will be used in the searching process for a particular field (or fields).
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> search(String fieldName, String searchTerms);
+IDocumentQuery<T> search(String fieldName, String searchTerms, SearchOperator operator);
+IDocumentQuery<T> boost(double boost);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Points index field that should be used for querying. |
+| **searchTerms** | String | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. Wildcards can be specified. |
+| **boost** | double | Boost value. Default: `1`. |
+| **operator** | SearchOperator | Explicitly set relation between each Search function. One of the following: `OR`, `AND`. |
+
+## Example I - Dynamic Query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "a*")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users 
+where search(Name, 'a*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II - Query Using Static Index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<User> users = session.query(User.class, Users_ByNameAndHobbies.class)
+    .search("Name", "Adam")
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByNameAndHobbies' 
+where search(Name, 'Adam') or search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III - Boosting Usage
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class, index("Users/ByHobbies"))
+    .search("Hobbies", "I love sport")
+    .boost(10)
+    .search("Hobbies", "but also like reading books")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByHobbies' 
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition.
+</Admonition>
+
+

@@ -1,0 +1,136 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
+
+## Lazily
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="java">
+{`Lazy<List<T>> lazily();
+
+Lazy<List<T>> lazily(Consumer<List<T>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **onEval** | Consumer&lt;List&lt;TResult&gt;&gt; | An action that will be performed on the query results. |
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;List&lt;TResult&gt;&gt; | Lazy query initializer returning query results. |
+
+### Example
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="java">
+{`Lazy<List<Employee>> employeesLazy = session
+    .query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .lazily();
+
+List<Employee> employees = employeesLazy.getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Counts
+
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="java">
+{`Lazy<Integer> countLazily();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Integer&gt; | Lazy query initializer returning a count of matched documents. |
+
+### Example
+
+<TabItem value="lazy_5" label="lazy_5">
+<CodeBlock language="java">
+{`Lazy<Integer> countLazy = session
+    .query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .countLazily();
+
+Integer count = countLazy.getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggestions
+
+<TabItem value="lazy_6" label="lazy_6">
+<CodeBlock language="java">
+{`Lazy<Map<String, SuggestionResult>> executeLazy();
+
+Lazy<Map<String, SuggestionResult>> executeLazy(Consumer<Map<String, SuggestionResult>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Map&lt;String, SuggestionResult&gt;&gt; | Lazy query initializer containing a map with suggestions for matching executed query |
+
+### Example
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="java">
+{`Lazy<Map<String, SuggestionResult>> suggestLazy = session
+    .query(Employee.class, Query.index("Employees_ByFullName"))
+    .suggestUsing(builder -> builder.byField("FullName", "johne"))
+    .executeLazy();
+
+Map<String, SuggestionResult> suggest = suggestLazy.getValue(); // query will be executed here
+List<String> suggestions = suggest.get("FullName").getSuggestions();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Facets
+
+<TabItem value="lazy_8" label="lazy_8">
+<CodeBlock language="java">
+{`Lazy<Map<String, FacetResult>> executeLazy();
+
+Lazy<Map<String, FacetResult>> executeLazy(Consumer<Map<String, FacetResult>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Map&lt;String, FacetResult&gt;&gt; | Lazy query initializer containing a map with facet results matching executed query |
+
+### Example
+
+<TabItem value="lazy_9" label="lazy_9">
+<CodeBlock language="java">
+{`Lazy<Map<String, FacetResult>> facetsLazy = session
+    .query(Camera.class, Query.index("Camera/Costs"))
+    .aggregateUsing("facets/CameraFacets")
+    .executeLazy();
+
+Map<String, FacetResult> facets = facetsLazy.getValue(); // query will be executed here
+FacetResult results = facets.get("manufacturer");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

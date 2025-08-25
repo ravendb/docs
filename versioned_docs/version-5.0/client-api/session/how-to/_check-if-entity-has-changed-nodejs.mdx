@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To check if a specific entity differs from the one downloaded from server, the `hasChanged()` method from the `advanced` session operations can be used.
+
+## Syntax
+
+<TabItem value="has_changed_1" label="has_changed_1">
+<CodeBlock language="js">
+{`session.advanced.hasChanged(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity for which changes will be checked. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates whether given entity has changed. |
+
+## Example
+
+<TabItem value="has_changed_2" label="has_changed_2">
+<CodeBlock language="js">
+{`const employee = await session.load("employees/1-A");
+let hasChanged = session.advanced.hasChanged(employee); // false
+employee.lastName = "Shmoe";
+hasChanged = session.advanced.hasChanged(employee);       // true
+`}
+</CodeBlock>
+</TabItem>
+
+

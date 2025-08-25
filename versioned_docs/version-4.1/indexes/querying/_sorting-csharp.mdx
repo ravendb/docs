@@ -1,0 +1,492 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Basics
+
+Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Where(x => x.UnitsInStock > 10)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+To start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Where(x => x.UnitsInStock > 10)
+    .OrderByDescending(x => x.UnitsInStock)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .OrderByDescending(x => x.UnitsInStock)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Forcing ordering type" id="forcing-ordering-type" href="#forcing-ordering-type">
+
+By default, `OrderBy` methods will determine `OrderingType` from the property path expression (e.g. `x => x.UnitsInStock` will result in `OrderingType.Long` because property type is an integer), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `OrderBy` methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Where(x => x.UnitsInStock > 10)
+    .OrderByDescending(x => x.UnitsInStock, OrderingType.String)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .OrderByDescending("UnitsInStock", OrderingType.String)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Ordering by Score
+
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)).  
+This value is available in metadata information of the resulting query documents under `@index-score` (the higher the value, the better the match).  
+To order by this value you can use the `OrderByScore` or the `OrderByScoreDescending` methods:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Where(x => x.UnitsInStock > 10)
+    .OrderByScore()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .OrderByScore()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by score()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Chaining Orderings
+
+It is also possible to chain multiple orderings of the query results. 
+You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
+This can be achived by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStockAndName>()
+    .Where(x => x.UnitsInStock > 10)
+    .OrderBy(x => x.UnitsInStock)
+    .ThenByScore()
+    .ThenByDescending(x => x.Name)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStockAndName : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStockAndName()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock,
+                              product.Name
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStockAndName' 
+where UnitsInStock > 10
+order by UnitsInStock, score(), Name desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Random Ordering
+
+If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Customize(x => x.RandomOrdering())
+    .Where(x => x.UnitsInStock > 10)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .RandomOrdering()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by random()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Ordering When a Field is Searchable
+
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers.mdx), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable and sort by it.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Products_ByName_Search.Result, Products_ByName_Search>()
+    .Search(x => x.Name, "Louisiana")
+    .OrderByDescending(x => x.NameForSorting)
+    .OfType<Product>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByName_Search>()
+    .Search("Name", "Louisiana")
+    .OrderByDescending("NameForSorting")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByName_Search : AbstractIndexCreationTask<Product>
+{
+    public class Result
+    {
+        public string Name { get; set; }
+
+        public string NameForSorting { get; set; }
+    }
+
+    public Products_ByName_Search()
+    {
+        Map = products => from product in products
+                          select new Result
+                          {
+                              Name = product.Name,
+                              NameForSorting = product.Name
+                          };
+
+        Indexes.Add(x => x.Name, FieldIndexing.Search);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByName/Search' 
+where search(Name, 'Louisiana')
+order by NameForSorting desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## AlphaNumeric Ordering
+
+Sometimes when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+
+For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
+
+If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+
+To order in this mode you can pass the `OrderingType.AlphaNumeric` type into `OrderBy` or `OrderByDescending`:   
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Query<Product, Products_ByUnitsInStock>()
+    .Where(x => x.UnitsInStock > 10)
+    .OrderBy(x => x.Name, OrderingType.AlphaNumeric)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+    .Advanced
+    .DocumentQuery<Product, Products_ByUnitsInStock>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+    .OrderBy("Name", OrderingType.AlphaNumeric)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+                          select new
+                          {
+                              product.UnitsInStock
+                          };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock ' 
+where UnitsInStock > 10
+order by Name as alphanumeric
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Spatial Ordering
+
+If your data contains geographical locations, you might want to sort the query result by distance from a given point.
+
+This can be achieved by using the `OrderByDistance` and `OrderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Query<Event, Events_ByCoordinates>()
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .OrderByDistance(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Advanced
+    .DocumentQuery<Event, Events_ByCoordinates>()
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .OrderByDistance(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Events_ByCoordinates : AbstractIndexCreationTask<Event>
+{
+    public Events_ByCoordinates()
+    {
+        Map = events => from e in events
+                        select new
+                        {
+                            Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Events/ByCoordinates'
+where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

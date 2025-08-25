@@ -1,0 +1,455 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following query customization options are available in `IDocumentQueryCustomization` interface:
+
+- [beforeQueryExecution](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecution)
+- [customSortUsing](../../../client-api/session/querying/how-to-customize-query.mdx#customsortusing)
+- [highlight](../../../client-api/session/querying/how-to-customize-query.mdx#highlight)
+- [include](../../../client-api/session/querying/how-to-customize-query.mdx#include)
+- [noCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [noTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [randomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [relatesToShape](../../../client-api/session/querying/how-to-customize-query.mdx#relatestoshape)
+- [setAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../client-api/session/querying/how-to-customize-query.mdx#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
+- [setHighlighterTags](../../../client-api/session/querying/how-to-customize-query.mdx#sethighlightertags)
+- [showTimings](../../../client-api/session/querying/how-to-customize-query.mdx#showtimings)
+- [sortByDistance](../../../client-api/session/querying/how-to-customize-query.mdx#sortbydistance)
+- [spatial](../../../client-api/session/querying/how-to-customize-query.mdx#spatial)
+- [transformResults](../../../client-api/session/querying/how-to-customize-query.mdx#transformresults)
+- [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [waitForNonStaleResultsAsOf](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasof)
+- [waitForNonStaleResultsAsOfLastWrite](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite)
+- [waitForNonStaleResultsAsOfNow](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasofnow)
+- [withinRadiusOf](../../../client-api/session/querying/how-to-customize-query.mdx#withinradiusof)
+
+## BeforeQueryExecution
+
+Allows you to modify the index query just before it is executed.
+
+<TabItem value="customize_1_0" label="customize_1_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+IDocumentQueryCustomization removeBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Action1&lt;[IndexQuery](../../../glossary/index-query.mdx)&gt; | Action that will modify IndexQuery. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1" label="customize_1_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().addBeforeQueryExecutedListener(
+        // set 'pageSize' to 10
+        q -> q.setPageSize(10)));
+
+session.query(Employee.class).toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## CustomSortUsing
+
+Allows you to use custom sorter on the server. Dedicated article can be found [here](../../../indexes/querying/sorting.mdx#custom-sorting).
+
+<TabItem value="customize_12_0" label="customize_12_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization customSortUsing(String typeName);
+
+IDocumentQueryCustomization customSortUsing(String typeName, boolean descending);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** | String | AssemblyQualifiedName of a custom sorter available on server-side. |
+| **descending** | boolean | indicates if results should be ordered descending or ascending |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+
+
+## Highlight
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting.mdx).
+
+
+
+## Include
+
+Please check our dedicated [article](../../../indexes/querying/handling-document-relationships.mdx).
+
+
+
+## NoCaching
+
+By default, queries are cached. To disable query caching use `noCaching` customization.
+
+<TabItem value="customize_2_0" label="customize_2_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_2_1" label="customize_2_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noCaching()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoTracking
+
+To disable entity tracking by `session` use `noTracking`. Usage of this option will prevent holding query results in memory.
+
+<TabItem value="customize_3_0" label="customize_3_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_3_1" label="customize_3_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noTracking()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RandomOrdering
+
+To order results randomly use `randomOrdering` method.
+
+<TabItem value="customize_4_0" label="customize_4_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization randomOrdering();
+
+IDocumentQueryCustomization randomOrdering(String seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **seed** | String | Seed used for ordering. Useful when repeatable random queries are needed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_4_1" label="customize_4_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().randomOrdering());
+
+//result will be ordered randomly each time
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RelatesToShape
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+
+
+## SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer
+
+If set to true, multiple index entries will be send from the same document (assuming the index project them) to the result transformer function. Otherwise, those entries will be consolidate an the transformer will be called just once for each document in the result set.
+
+<TabItem value="customize_5_0" label="customize_5_0">
+<CodeBlock language="java">
+{`public IDocumentQueryCustomization setAllowMultipleIndexEntriesForSameDocumentToResultTransformer(boolean val);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **val** | boolean | Indicates if multiple index entries can be send from the same document to result transformer. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_5_1" label="customize_5_1">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .query(Employee.class)
+  .customize(
+    new DocumentQueryCustomizationFactory()
+      .setAllowMultipleIndexEntriesForSameDocumentToResultTransformer(true)
+    )
+  .where(e.firstName.eq("Robert"))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## SetHighlighterTags
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting.mdx).
+
+
+
+## ShowTimings
+
+By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
+
+<TabItem value="customize_6_0" label="customize_6_0">
+<CodeBlock language="java">
+{`public IDocumentQueryCustomization showTimings();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+Returned timings:
+
+- Query parsing
+- Lucene search
+- Loading documents
+- Transforming results
+
+### Example
+
+<TabItem value="customize_6_1" label="customize_6_1">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+Reference<RavenQueryStatistics> statsRef = new Reference<>();
+List<Employee> results = session
+  .query(Employee.class)
+  .customize(new DocumentQueryCustomizationFactory().showTimings())
+  .statistics(statsRef)
+  .where(e.firstName.eq("Robert"))
+  .toList();
+
+Map<String, Double> timings = statsRef.value.getTimingsInMilliseconds();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## SortByDistance
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+
+
+## Spatial
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+
+
+## WaitForNonStaleResults
+
+<Admonition type="note" title="">
+This methods should be used only for testing purposes and are considered **EXPERT ONLY**
+</Admonition>
+
+Queries can be 'instructed' to wait for non-stale results for specified amount of time using `waitForNonStaleResults` method. It is not advised to use this method, because on live databases indexes might never become unstale.
+
+<TabItem value="customize_8_0" label="customize_8_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization waitForNonStaleResults();
+
+IDocumentQueryCustomization waitForNonStaleResults(Duration waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | TimeSpan | Time to wait (in miliseconds) for index to return non-stale results. Default: 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_8_1" label="customize_8_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().waitForNonStaleResults());
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WaitForNonStaleResultsAsOf
+
+Queries can be 'instructed' to wait for non-stale results as of cutoff DateTime or Etag for specified amount of time using `WaitForNonStaleResultsAsOf` method.
+
+<TabItem value="customize_9_0" label="customize_9_0">
+<CodeBlock language="java">
+{`public IDocumentQueryCustomization waitForNonStaleResultsAsOf(Date cutOff);
+
+public IDocumentQueryCustomization waitForNonStaleResultsAsOf(Date cutOff, long waitTimeout);
+
+public IDocumentQueryCustomization waitForNonStaleResultsAsOf(Etag cutOffEtag);
+
+public IDocumentQueryCustomization waitForNonStaleResultsAsOf(Etag cutOffEtag, long waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **cutOff** | DateTime | Minimum modified date of last indexed document. If last indexed document modified date is greater than this value the results are considered non-stale. |
+| **cutOffEtag** | Etag | Minimum Etag of last indexed document. If last indexed document etag is greater than this value the results are considered non-stale. |
+| **waitTimeout** | long | Time to wait (in miliseconds) for index to return non-stale results. Default: 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+
+
+## WaitForNonStaleResultsAsOfLastWrite
+
+Queries can be 'instructed' to wait for non-stale results as of last write made by any session belonging to the current DocumentStore using `WaitForNonStaleResultsAsOfLastWrite` method.
+
+This method internally uses `waitForNonStaleResultsAsOf` and passes last written Etag, which DocumentStore tracks, to `cutOffEtag` parameter.
+
+<TabItem value="customize_10_0" label="customize_10_0">
+<CodeBlock language="java">
+{`public IDocumentQueryCustomization waitForNonStaleResultsAsOfLastWrite();
+
+public IDocumentQueryCustomization waitForNonStaleResultsAsOfLastWrite(long waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | long | Time to wait (in miliseconds) for index to return non-stale results. Default: 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_10_1" label="customize_10_1">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .query(Employee.class)
+  .customize(new DocumentQueryCustomizationFactory().waitForNonStaleResultsAsOfLastWrite())
+  .where(e.firstName.eq("Robert"))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WaitForNonStaleResultsAsOfNow
+
+`waitForNonStaleResultsAsOfNow` internally uses `waitForNonStaleResultsAsOf` and passes `new Date()` to `cutOff` parameter.
+
+<TabItem value="customize_11_0" label="customize_11_0">
+<CodeBlock language="java">
+{`public IDocumentQueryCustomization waitForNonStaleResultsAsOfNow();
+
+public IDocumentQueryCustomization waitForNonStaleResultsAsOfNow(long waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | long | Time to wait (in miliseconds) for index to return non-stale results. Default: 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_11_1" label="customize_11_1">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .query(Employee.class)
+  .customize(new DocumentQueryCustomizationFactory().waitForNonStaleResultsAsOfNow())
+  .where(e.firstName.eq("Robert"))
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WithinRadiusOf
+
+Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+
+

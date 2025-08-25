@@ -1,0 +1,148 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
+
+* A Session can operate Synchronously or Asynchronously.  
+  * `OpenSession()` - Open a Session for a **Synchrounous** mode of operation.  
+  * `OpenAsyncSession()` - Open a Session for **Asychrounous** mode of operation.  
+
+* Various Session options can be configured using the `SessionOptions` object.  
+
+* Be sure to wrap the Session variable with a 'using' statement to ensure proper disposal.  
+
+* If no database is specified then the Default Database (stored in the Document Store) is assumed.  
+
+* In this page:  
+  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session Options](../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Example](../../client-api/session/opening-a-session.mdx#example)
+</Admonition>
+## Syntax
+
+`OpenSession()` / `OpenAsyncSession()` have three overloads:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Open a Session for the default database configured in \`DocumentStore.Database\`
+IDocumentSession OpenSession();
+
+// Open a Session for a specified database
+IDocumentSession OpenSession(string database);
+
+// Open a Session and pass it a preconfigured SessionOptions object
+IDocumentSession OpenSession(SessionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Open a Session for the default database configured in \`DocumentStore.Database\`
+IAsyncDocumentSession OpenAsyncSession();
+
+// Open a Session for a specified database
+IAsyncDocumentSession OpenAsyncSession(string database);
+
+// Open a Session and pass it a preconfigured SessionOptions object
+IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+|-|-|-|
+| **database** | `string` | The Session will operate on this database, overriding the default database set in the document store |
+| **options** | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options) |
+
+| Return Value | Description |
+|-|-|
+| `IDocumentSession` / `IAsyncDocumentSession` | Instance of a Session object |
+
+
+
+## Session Options
+
+The `SessionOptions` object contains various options to configure the Session's behavior.
+
+| Option | Type | Description | Default Value |
+| --- | --- | --- | --- |
+| **Database** | string | The Session will operate on this database, overriding the Default Database. | `null` - the Session operates on the [Default Database](../../client-api/setting-up-default-database.mdx) |
+| **NoTracking** | boolean | Whether the Session should track changes made to all entities that it has either loaded, stored, or queried on. <br/>See [Disable Tracking Example](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false` |
+| **NoCaching** | boolean | Whether the Session should cache the server responses. <br/>See [Disable Caching Example](../../client-api/session/configuration/how-to-disable-caching.mdx) | `false` |
+| **RequestExecutor** | `RequestExecutor` | _(Advanced)_ The request executor the Session should use | `null` - the default request executor is used |
+| **TransactionMode** | `TransactionMode` | Specify the Session's transaction mode (`SingleNode` / `ClusterWide`). <br/>See [Cluster-Wide Transactions](../../server/clustering/cluster-transactions.mdx) | `SingleNode` |
+
+
+
+## Example
+
+Here is an example of opening a Session using a `SessionOptions` object:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+{
+    // Open a Session in synchronous operation mode for cluster-wide transactions
+
+    SessionOptions options = new SessionOptions
+    {
+        Database = "your_database_name",
+        TransactionMode = TransactionMode.ClusterWide
+    };
+
+    using (IDocumentSession Session = store.OpenSession(options))
+    {
+        //   Run your business logic:
+        //   
+        //   Store documents
+        //   Load and Modify documents
+        //   Query indexes & collections 
+        //   Delete documents
+        //   ... etc.
+
+        Session.SaveChanges();
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+{
+    // Open a Session in asynchronous operation mode for cluster-wide transactions
+
+    SessionOptions options = new SessionOptions
+    {
+        Database = "your_database_name",
+        TransactionMode = TransactionMode.ClusterWide
+    };
+
+    using (IAsyncDocumentSession Session = store.OpenAsyncSession(options))
+    {
+        //   Run your business logic:
+        //   
+        //   Store documents
+        //   Load and Modify documents
+        //   Query indexes & collections 
+        //   Delete documents
+        //   ... etc.
+
+        await Session.SaveChangesAsync();
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

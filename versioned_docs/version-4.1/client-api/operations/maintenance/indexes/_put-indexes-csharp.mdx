@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutIndexesOperation** is used to insert indexes into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="csharp">
+{`public PutIndexesOperation(params IndexDefinition[] indexToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexToAdd** | `params IndexDefinition[]` | Definitions of indexes |
+
+| Return Value | |
+| ------------- | ----- |
+| PutIndexResult[] | List of created indexes |
+
+### Example I
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="csharp">
+{`IndexDefinition definition = new IndexDefinition
+\{
+    Maps = new HashSet<string> \{ @"from order in docs.Orders
+                        select new 
+                        \{
+                            order.Employee,
+                            order.Company,
+                            Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+                        \}" \}
+\};
+
+store.Maintenance.Send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="put_1_2" label="put_1_2">
+<CodeBlock language="csharp">
+{`IndexDefinition definition = new IndexDefinitionBuilder<Order>
+\{
+    Map = orders => from order in orders
+                    select new
+                    \{
+                        order.Employee,
+                        order.Company,
+                        Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+                    \}
+\}
+.ToIndexDefinition(store.Conventions);
+store.Maintenance.Send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+

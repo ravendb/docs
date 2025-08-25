@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="python">
+{`# Create a new document
+doc = Category(name="My category", description="My category description")
+
+# Create metadata on the document
+doc_info = DocumentInfo(collection="Categories")
+
+# Convert your entity to a dict
+dict_doc = session.entity_to_json.convert_entity_to_json_static(doc, session.conventions, doc_info)
+
+# The put command (parameters are document ID, change vector check is None, the document to store)
+command = PutDocumentCommand("employees/1-A", None, dict_doc)
+# Request executor sends the command to the server
+session.advanced.request_executor.execute_command(command)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="python">
+{`class PutDocumentCommand(RavenCommand[PutResult]):
+    def __init__(self, key: str, change_vector: Optional[str], document: dict): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **key** | `str` | Unique ID under which document will be stored |
+| **change_vector** | `str` (optional) | Entity changeVector, used for concurrency checks (`None` to skip check) |
+| **document** | `dict` | The document to store |
+
+
+
+

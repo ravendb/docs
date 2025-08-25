@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To open synchronous session use the `OpenSession` method from `DocumentStore` or `OpenAsyncSession` if you prefer working in an asynchronous manner.
+
+## Syntax
+
+There are three overloads of `OpenSession / OpenAsyncSession` methods
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Open session for a 'default' database configured in 'DocumentStore'
+IDocumentSession OpenSession();
+
+// Open session for a specified database
+IDocumentSession OpenSession(string database);
+
+IDocumentSession OpenSession(SessionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Open session for a 'default' database configured in 'DocumentStore'
+IAsyncDocumentSession OpenAsyncSession();
+
+// Open session for a specified database
+IAsyncDocumentSession OpenAsyncSession(string database);
+
+IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The first method is an equivalent of doing
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`store.OpenSession(new SessionOptions());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`store.OpenAsyncSession(new SessionOptions());
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The second method is an equivalent of doing
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`store.OpenSession(new SessionOptions
+{
+    Database = databaseName
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`store.OpenAsyncSession(new SessionOptions
+{
+    Database = databaseName
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | `OpenSessionOptions` | Options **containing** information such as **name of database** and **RequestExecutor**. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentSession / IAsyncDocumentSession | Instance of a session object. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+{
+    // code here
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession session = store.OpenAsyncSession())
+{
+    // async code here
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+<Admonition type="danger" title="Important" id="important" href="#important">
+**Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**
+</Admonition>
+
+

@@ -1,0 +1,85 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `counters_for .increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `increment` will create it and set its initial value.  
+
+* For all other `counters_for ` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:
+  - [`increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
+
+</Admonition>
+## `increment` usage
+
+ **Flow**:  
+
+* Open a session.  
+* Create an instance of `counters_for `.  
+    * Either pass `counters_for ` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
+* Call `counters_for .increment`.
+* Call `session.save_changes` for the changes to take effect.  
+
+**Note**:
+
+* Modifying a Counter using `increment` only takes effect when `session.aave_changes()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
+
+
+
+## Example
+
+<TabItem value="counters_region_Increment" label="counters_region_Increment">
+<CodeBlock language="python">
+{`# Open a session
+with store.open_session() as session:
+    # Pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-A")
+
+    # Use 'CountersFor.increment'
+    # ===========================
+
+    # Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+    document_counters.increment("ProductLikes")
+
+    # Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+    document_counters.increment("ProductPageViews", 15)
+
+    # Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+    document_counters.increment("DaysLeftForSale", -10)
+
+    # Execute all changes by calling save_changes
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="Increment-definition" label="Increment-definition">
+<CodeBlock language="python">
+{`def increment(self, counter: str, delta: int = 1) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **counter_name** | `str` | Counter's name  |
+| **delta**        | `int` | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+

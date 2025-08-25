@@ -1,0 +1,221 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
+  You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
+
+* Use `GetMultipleTimeSeriesOperation` to retrieve entries from **multiple** time series.
+
+* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
+
+* In this page:  
+      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-single-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
+      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-multiple-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example-1)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
+
+</Admonition>
+## Get entries - from single time series
+### Example
+
+In this example, we retrieve all entries from a single time series.  
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="js">
+{`// Define the get operation
+var getTimeSeriesOp = new GetTimeSeriesOperation(
+    "employees/1-A",  // The document ID    
+    "HeartRates");    // The time series name
+
+// Execute the operation by passing it to 'operations.send'
+const timeSeriesEntries = await documentStore.operations.send(getTimeSeriesOp);
+
+// Access entries
+const firstEntryReturned = timeSeriesEntries.entries[0];
+`}
+</CodeBlock>
+</TabItem>
+### Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+// ====================
+const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries);
+const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to);
+const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, start);
+const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, start, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type      | Description                                                                                                                                                           |
+|-----------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **docId**             | `string`  | Document ID                                                                                                                                                           |
+| **timeseries**        | `string`  | Time series name                                                                                                                                                      |
+| **from**              | `Date`    | Get time series entries starting from this timestamp (inclusive).<br/> Default: The minimum date value will be used.                                                   |
+| **to**                | `Date`    | Get time series entries ending at this timestamp (inclusive).<br/> Default: The maximum date value will be used.                                                       |
+| **start**             | `number`  | The position of the first result to retrieve (for paging).<br/>Default: 0                                                                                              |
+| **pageSize**          | `number`  | Number of results per page to retrieve (for paging).<br/>Default: `2,147,483,647` (equivalent to  `int.MaxValue` in C#).                                                                             |
+
+**Return Value**: 
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`class TimeSeriesRangeResult \{
+    // Timestamp of first entry returned
+    from; // Date;
+
+    // Timestamp of last entry returned
+    to; // Date;
+
+    // The resulting entries
+    // Will be empty if requesting an entries range that does Not exist
+    entries; // TimeSeriesEntry[];
+    
+    // The number of entries returned
+    // Will be undefined if not all entries of this time series were returned
+    totalResults; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="">
+
+* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
+* If the requested time series does Not exist, a null object will be returned.
+* No exceptions are generated.
+
+</Admonition>
+
+
+
+## Get entries - from multiple time series
+### Example
+
+In this example, we retrieve entries from the specified ranges of two time series.
+
+<TabItem value="get_2" label="get_2">
+<CodeBlock language="js">
+{`const baseTime = new Date();
+
+const startTime1 = new Date(baseTime.getTime() + 60_000 * 5);
+const endTime1 = new Date(baseTime.getTime() + 60_000 * 10);
+
+const startTime2 = new Date(baseTime.getTime() + 60_000 * 15);
+const endTime2 = new Date(baseTime.getTime() + 60_000 * 20);
+
+// Define the get operation
+const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(
+    "employees/1-A",
+    [
+        \{
+            name: "ExerciseHeartRates",
+            from: startTime1,
+            to: endTime1
+        \},
+        \{
+            name: "RestHeartRates",
+            from: startTime2,
+            to: endTime2
+        \}
+    ]));
+
+// Execute the operation by passing it to 'operations.send'
+const timesSeriesEntries = await documentStore.operations.send(getMultipleTimeSeriesOp);
+
+// Access entries
+const timeSeriesEntry = timesSeriesEntries.values.get("ExerciseHeartRates")[0].entries[0];
+`}
+</CodeBlock>
+</TabItem>
+### Syntax
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`// Available overloads:
+// ====================
+const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges);
+const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges, start, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type                | Description                                                                                                                     |
+|-----------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| **docId**             | `string`            | Document ID                                                                                                                     |
+| **ranges**            | `TimeSeriesRange[]` | Provide a `TimeSeriesRange` object for each time series from which you want to retrieve data                                    |
+| **start**             | `number`            | The position of the first result to retrieve (for paging)<br/>Default: 0                                                         |
+| **pageSize**          | `number`            | Number of results per page to retrieve (for paging)<br/>Default: Default: `2,147,483,647` (equivalent to  `int.MaxValue` in C#). |
+ 
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// The TimeSeriesRange object:
+// ===========================
+\{
+    // Name of time series
+    name, // string
+    
+    // Get time series entries starting from this timestamp (inclusive).    
+    from, // Date
+
+    // Get time series entries ending at this timestamp (inclusive).
+    to  // Date
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Return Value**:
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`class TimeSeriesDetails \{
+    // The document ID
+    id; // string
+    
+    // Dictionary of time series name to the time series results 
+    values; // Map<string, TimeSeriesRangeResult[]>
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`class TimeSeriesRangeResult \{
+    // Timestamp of first entry returned
+    from; // Date;
+
+    // Timestamp of last entry returned
+    to; // Date;
+
+    // The resulting entries
+    // Will be empty if requesting an entries range that does Not exist
+    entries; // TimeSeriesEntry[];
+    
+    // The number of entries returned
+    // Will be undefined if not all entries of this time series were returned
+    totalResults; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* If any of the requested time series do not exist, the returned object will be `null`.
+
+* When an entries range that does not exist are requested,  
+  the return value for the that range is a `TimeSeriesRangeResult` object with an empty `entries` property.
+
+* No exceptions are generated.
+
+
+
+

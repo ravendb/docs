@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
+
+## Syntax
+
+<TabItem value="set_priority_1" label="set_priority_1">
+<CodeBlock language="csharp">
+{`public SetIndexesPriorityOperation(string indexName, IndexPriority priority);
+public SetIndexesPriorityOperation(Parameters parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_priority_2" label="set_priority_2">
+<CodeBlock language="csharp">
+{`public enum IndexPriority
+\{
+    Low = 0,
+    Normal = 1,
+    High = 2
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_priority_3" label="set_priority_3">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    public string[] IndexNames \{ get; set; \}
+    public IndexPriority Priority \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to change priority for |
+| **priority** | IndexingPriority | new index priority |
+| **parameters** | SetIndexesPriorityOperation.Parameters | list of indexes + new index priority |
+
+## Example I
+
+<TabItem value="set_priority_4" label="set_priority_4">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="set_priority_5" label="set_priority_5">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesPriorityOperation(new SetIndexesPriorityOperation.Parameters
+\{
+    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
+    Priority = IndexPriority.Low
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+

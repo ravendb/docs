@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store an attachment in RavenDB, you need to first create a document.  
+Then, you can attach an attachment to the document using `session.advanced.attachments.store` 
+or `session.advanced.attachments.storeFile`.  
+
+Just like documents, sttachments are a part of the session and will only be saved on the server 
+when `saveChanges` is executed (read more about saving changes in session [here](../../client-api/session/saving-changes.mdx)).
+
+## Syntax
+
+Attachments can be stored using `session.advanced.attachments.store` 
+or `session.advanced.attachments.storeFile`:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="php">
+{`public function store(object|string $idOrEntity, ?string $name, mixed $stream, ?string $contentType = null): void;
+
+public function storeFile(object|string $idOrEntity, ?string $name, string $filePath): void;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    $file1 = file_get_contents("001.jpg");
+    $file2 = file_get_contents("002.jpg");
+    $file3 = file_get_contents("003.jpg");
+    $file4 = file_get_contents("004.mp4");
+
+    $album = new Album();
+    $album->setName("Holidays");
+    $album->setDescription("Holidays travel pictures of the all family");
+    $album->setTags(["Holidays Travel", "All Family"]);
+
+    $session->store($album, "albums/1");
+
+    $session->advanced()->attachments()->store("albums/1", "001.jpg", $file1, "image/jpeg");
+    $session->advanced()->attachments()->store("albums/1", "002.jpg", $file2, "image/jpeg");
+    $session->advanced()->attachments()->store("albums/1", "003.jpg", $file3, "image/jpeg");
+    $session->advanced()->attachments()->store("albums/1", "004.mp4", $file4, "video/mp4");
+
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

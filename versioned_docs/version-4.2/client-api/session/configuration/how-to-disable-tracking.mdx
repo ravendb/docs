@@ -5,93 +5,24 @@ sidebar_label: Disable Tracking
 sidebar_position: 5
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToDisableTrackingCsharp from './_how-to-disable-tracking-csharp.mdx';
+import HowToDisableTrackingJava from './_how-to-disable-tracking-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to Disable Entities Tracking per Session
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-By default, session is tracking the changes. This means that for each document retrieved, session will start tracking it's changes allowing you to make the modifications and save the entities using the `SaveChanges` method.
-
-Sometimes it might be considered an unnecessary overhead (e.g. when session does not plan to make any changes, just retrieve the documents). This is why tracking can be turned off using `SessionOptions.NoTracking` property. When turned off, the `Store` and `SaveChanges` operations will no longer be available (exception will be throw when used) and each call to methods such as `Load` will create a new instance of a class that is being returned.
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (IDocumentSession Session = store.OpenSession(new SessionOptions
-{
-    NoTracking = true
-}))
-{
-    Employee employee1 = Session.Load<Employee>("employees/1-A");
-    Employee employee2 = Session.Load<Employee>("employees/1-A");
-
-    // because NoTracking is set to 'true'
-    // each load will create a new Employee instance
-    Assert.NotEqual(employee1, employee2);
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
-{
-    NoTracking = true
-}))
-{
-    Employee employee1 = await Session.LoadAsync<Employee>("employees/1-A");
-    Employee employee2 = await Session.LoadAsync<Employee>("employees/1-A");
-
-    // because NoTracking is set to 'true'
-    // each load will create a new Employee instance
-    Assert.NotEqual(employee1, employee2);
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToDisableTrackingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-By default, session is tracking the changes. This means that for each document retrieved, session will start tracking it's changes allowing you to make the modifications and save the entities using the `saveChanges` method.
-
-Sometimes it might be considered an unnecessary overhead (e.g. when session does not plan to make any changes, just retrieve the documents). This is why tracking can be turned off using `sessionOptions.noTracking` property. When turned off, the `store` and `saveChanges` operations will no longer be available (exception will be throw when used) and each call to methods such as `load` will create a new instance of a class that is being returned.
-
-## Example
-
-<TabItem value="open_session_tracking_1" label="open_session_tracking_1">
-<CodeBlock language="java">
-{`SessionOptions sessionOptions = new SessionOptions();
-sessionOptions.setNoTracking(true);
-try (IDocumentSession session = store.openSession()) \{
-    Employee employee1 = session.load(Employee.class, "employees/1-A");
-    Employee employee2 = session.load(Employee.class, "employees/1-A");
-
-    // because NoTracking is set to 'true'
-    // each load will create a new Employee instance
-    Assert.assertNotSame(employee1, employee2);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToDisableTrackingJava />
 </LanguageContent>
+
 
 <!---
 ### Session

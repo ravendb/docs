@@ -1,0 +1,884 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query.mdx).   
+  Can be set for both dynamic-query and for index-query.
+
+* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API.
+
+* Note:  
+  A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
+
+* Customization methods available:
+
+  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+  - [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [Timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
+
+
+</Admonition>
+## BeforeQueryExecuted
+
+* Use `BeforeQueryExecuted` to customize the query just before it is executed.
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'BeforeQueryExecuted'
+    .Customize(x => x.BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    }))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'BeforeQueryExecuted'
+    .Customize(x => x.BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    }))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'BeforeQueryExecuted'
+    .BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'BeforeQueryExecuted'
+    .BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_1_5" label="customize_1_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization BeforeQueryExecuted(Action<IndexQuery> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                     |
+|------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
+
+</Admonition>
+
+
+
+## AfterQueryExecuted
+
+* Use `AfterQueryExecuted` to access the raw query result after it is executed.
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterQueryExecuted'
+    .Customize(x => x.AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    }))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterQueryExecuted'
+    .Customize(x => x.AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    }))
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'AfterQueryExecuted'
+    .AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees'")
+     // Call 'AfterQueryExecuted'
+    .AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_2_5" label="customize_2_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization AfterQueryExecuted(Action<QueryResult> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                 |
+|------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
+
+</Admonition>
+
+
+
+## AfterStreamExecuted
+
+* Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
+
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the query
+var query = session
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterStreamExecuted'
+    .Customize(x => x.AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size));
+    
+// Call 'Stream' to execute the query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the query
+var query = asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterStreamExecuted'
+    .Customize(x => x.AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size));
+    
+// Call 'Stream' to execute the query
+var streamResults = await asyncSession.Advanced.StreamAsync(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the document query
+var query = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'AfterStreamExecuted'
+    .AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size);
+    
+// Call 'Stream' to execute the document query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the raw query
+var query = session.Advanced
+    .RawQuery<Employee>("from 'Employees'")
+     // Call 'AfterStreamExecuted'
+    .AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size);
+
+// Call 'Stream' to execute the document query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_3_5" label="customize_3_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization AfterStreamExecuted(Action<BlittableJsonReaderObject> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                                                                                  |
+|------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object.mdx) param. |
+
+</Admonition>
+
+
+
+## NoCaching
+
+* By default, query results are cached. 
+
+* You can use the `NoCaching` customization to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'NoCaching'
+    .Customize(x => x.NoCaching())
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'NoCaching'
+    .Customize(x => x.NoCaching())
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'NoCaching'
+    .NoCaching()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'NoCaching'
+    .NoCaching()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_4_5" label="customize_4_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization NoCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## NoTracking
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `NoTracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'NoTracking'
+    .Customize(x => x.NoTracking())
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'NoTracking'
+    .Customize(x => x.NoTracking())
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'NoTracking'
+    .NoTracking()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'NoTracking'
+    .NoTracking()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_5_5" label="customize_5_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization NoTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## Projection
+
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx), and projecting query results  
+  (projecting means the query returns only specific document fields instead of the full document)  
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
+
+* If the index does Not store those fields then the fields' values will be retrieved from the documents.
+
+* Use the `Projection` method to customize and modify this behavior.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+  
+  * [Project index query results](../../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<string> results = session
+    .Query<Employees_ByFullName.IndexEntry, Employees_ByFullName>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromDocumentOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => x.FullName)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<string> results = await asyncSession
+    .Query<Employees_ByFullName.IndexEntry, Employees_ByFullName>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromDocumentOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => x.FullName)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>("Employees/ByFullName")
+     // Pass the requested projection behavior to the 'SelectFields' method
+     // and specify the field that will be returned by the projection
+    .SelectFields<Employee>(ProjectionBehavior.FromDocumentOrThrow, "FullName")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+     // Define an RQL query that returns a projection
+    .RawQuery<Employee>(@"from index 'Employees/ByFullName' select FullName")
+     // Pass the requested projection behavior to the 'Projection' method
+    .Projection(ProjectionBehavior.FromDocumentOrThrow)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFullName : AbstractIndexCreationTask<Employee, Employees_ByFullName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields.
+    public class IndexEntry
+    {
+        public string FullName { get; set; }
+    }
+        
+    public Employees_ByFullName()
+    {
+        // The 'Map' function defines the content of the index-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                FullName = $"{employee.FirstName} {employee.LastName}"
+            };
+        
+        // Store field 'FullName' in the index
+        Store(x => x.FullName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the above example:  
+
+  * Field _'FullName'_ is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FromDocumentOrThrow`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the property _'FullName'_.  
+    (based on the Northwind sample data).  
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_6_5" label="customize_6_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization Projection(ProjectionBehavior projectionBehavior);
+
+public enum ProjectionBehavior \{
+    Default,
+    FromIndex,
+    FromIndexOrThrow,
+    FromDocument,
+    FromDocumentOrThrow
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+</Admonition>
+
+
+
+## RandomOrdering
+
+* Use `RandomOrdering` to order the query results randomly.  
+
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+    // Call 'Customize' with 'RandomOrdering'
+    .Customize(x => x.RandomOrdering())
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'RandomOrdering'
+    .Customize(x => x.RandomOrdering())
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'RandomOrdering'
+    .RandomOrdering()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+     // Define an RQL query that orders the results randomly
+    .RawQuery<Employee>("from 'Employees' order by random()")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_7_5" label="customize_7_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization RandomOrdering();
+IDocumentQueryCustomization RandomOrdering(string seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                              |
+|------------| ------------- |-------------------------------------------------------------------------------------------------|
+| __seed__   | `string` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## Timings
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'Timings'
+     // Provide an out param for the timings results
+    .Customize(x => x.Timings(out QueryTimings timings))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'Timings'
+     // Provide an out param for the timings results
+    .Customize(x => x.Timings(out QueryTimings timings))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'Timings'.
+     // Provide an out param for the timings results
+    .Timings(out QueryTimings timings)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'Timings'.
+     // Provide an out param for the timings results
+    .Timings(out QueryTimings timings)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_9_5" label="customize_9_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization Timings(out QueryTimings timings);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- | ----- |
+| __timings__ | `QueryTimings` | An out param that will be filled with the timings results |
+
+</Admonition>
+
+
+
+## WaitForNonStaleResults
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+
+* Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+ 
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+
+<Admonition type="note" title="">
+
+__Example__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'WaitForNonStaleResults'
+    .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(10)))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'WaitForNonStaleResults'
+    .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(10)))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'WaitForNonStaleResults'
+    .WaitForNonStaleResults(TimeSpan.FromSeconds(10))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'WaitForNonStaleResults'
+    .WaitForNonStaleResults(TimeSpan.FromSeconds(10))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Syntax__
+
+<TabItem value="customize_8_5" label="customize_8_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan? waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| __waitTimeout__ | `TimeSpan?` | Time to wait for non-stale results. <br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+## Methods return value
+
+All above customization methods return the following:
+
+| `Query` return value         | |
+|-----------------------------| ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+| `DocumentQuery` return value      | |
+|---------------------------------| ----- |
+| IQueryBase | Returns self for easier method chaining. |
+
+
+
+

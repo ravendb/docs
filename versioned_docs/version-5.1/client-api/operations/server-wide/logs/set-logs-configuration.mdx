@@ -5,78 +5,19 @@ sidebar_label: Set Logs Configuration
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SetLogsConfigurationCsharp from './_set-logs-configuration-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Operations: Server: How to Get Logs Configuration
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To set the server logs configuration, use **SetLogsConfigurationOperation** from `Maintenance.Server`. The server logs configuration is not persisted and will get back to the original value after server restart.
-
-## Syntax
-
-<TabItem value="set_logs_1" label="set_logs_1">
-<CodeBlock language="csharp">
-{`public SetLogsConfigurationOperation(Parameters parameters)
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="set_logs_2" label="set_logs_2">
-<CodeBlock language="csharp">
-{`public class Parameters
-\{
-    public LogMode Mode \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **Mode** | `LogMode`  | Logging mode (level) to be set |
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`store
-    .Maintenance
-    .Server
-    .Send(new SetLogsConfigurationOperation(
-        new SetLogsConfigurationOperation.Parameters
-        {
-            Mode = LogMode.Information
-        }));
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`await store
-    .Maintenance
-    .Server
-    .SendAsync(new SetLogsConfigurationOperation(
-        new SetLogsConfigurationOperation.Parameters
-        {
-            Mode = LogMode.Information
-        }));
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
+   <SetLogsConfigurationCsharp />
 </LanguageContent>
+
 
 <!---
 

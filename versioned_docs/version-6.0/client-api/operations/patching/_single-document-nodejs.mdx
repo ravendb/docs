@@ -1,0 +1,1540 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Patching allows **updating only parts of a document** in a single trip to the server,  
+  without having to load, modify, and save the entire document back to the database.
+ 
+* This is particularly efficient for large documents or when only a small portion of the document needs to be changed, 
+  reducing the amount of data transferred over the network.
+
+* The patching operation is executed on the server-side within a [Single write transaction](../../../client-api/faq/transaction-support.mdx).
+
+* This article covers patch operations on single documents from the Client API.  
+  To patch multiple documents that match certain criteria see [Set based patching](../../../client-api/operations/patching/set-based.mdx).  
+  Patching can also be done from the [Studio](../../../studio/database/documents/patch-view.mdx).  
+
+* In this page:  
+
+  * [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)    
+  
+  * [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+      * [Modify value of single field](../../../client-api/operations/patching/single-document.mdx#modify-value-of-single-field)  
+      * [Modify values of two fields](../../../client-api/operations/patching/single-document.mdx#modify-values-of-two-fields)  
+      * [Increment value](../../../client-api/operations/patching/single-document.mdx#increment-value)  
+      * [Add or increment](../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
+      * [Add or patch](../../../client-api/operations/patching/single-document.mdx#add-or-patch)
+      * [Add item to array](../../../client-api/operations/patching/single-document.mdx#add-item-to-array)
+      * [Add or patch an existing array](../../../client-api/operations/patching/single-document.mdx#add-or-patch-an-existing-array)  
+      * [Insert item into specific position in array](../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
+      * [Modify item in specific position in array](../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
+      * [Remove items from array](../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
+      * [Load documents in a script](../../../client-api/operations/patching/single-document.mdx#load-documents-in-a-script)  
+      * [Remove property](../../../client-api/operations/patching/single-document.mdx#remove-property)  
+      * [Rename property](../../../client-api/operations/patching/single-document.mdx#rename-property)  
+      * [Add document](../../../client-api/operations/patching/single-document.mdx#add-document)  
+      * [Clone document](../../../client-api/operations/patching/single-document.mdx#clone-document)  
+      * [Create/Increment counter](../../../client-api/operations/patching/single-document.mdx#createincrement-counter)  
+      * [Delete counter](../../../client-api/operations/patching/single-document.mdx#delete-counter)  
+      * [Get counter](../../../client-api/operations/patching/single-document.mdx#get-counter)  
+      * [Patching using inline string compilation](../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+  
+  * [Syntax](../../../client-api/operations/patching/single-document.mdx#syntax)
+      * [Session API syntax](../../../client-api/operations/patching/single-document.mdx#session-api-syntax)
+      * [Session API using defer syntax](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax)
+      * [Operations API syntax](../../../client-api/operations/patching/single-document.mdx#operations-api-syntax)
+      * [List of script methods syntax](../../../client-api/operations/patching/single-document.mdx#list-of-script-methods-syntax)
+
+</Admonition>
+## API overview
+
+Patching can be performed using either of the following interfaces (detailed syntax is provided [below](../../../client-api/operations/patching/single-document.mdx#syntax)):
+
+* **Session API**
+* **Session API using defer** 
+* **Operations API**
+<Admonition type="note" title="">
+
+#### Session API
+
+* This interface allows performing most common patch operations.
+
+* Multiple patch methods can be defined on the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
+  and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../client-api/session/saving-changes.mdx).
+
+* This API includes the following patching methods (see examples [below](../../../client-api/operations/patching/single-document.mdx#examples)):
+  * `patch`
+  * `addOrPatch`
+  * `increment`
+  * `addOrIncrement`
+  * `patchArray`
+  * `addOrPatchArray`
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Session API using defer
+
+* Use `defer` to manipulate the patch request directly without wrapper methods.  
+  Define the patch request yourself with a **script** and optional variables.  
+
+* The patch request constructs the `PatchCommandData` command,  
+  which is then added to the session using the `defer` function.
+
+* Similar to the above Session API,  
+  all patch requests done via `defer` are sent to the server for execution only when _saveChanges_ is called.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Operations API
+
+* [Operations](../../../client-api/operations/what-are-operations.mdx) allow performing ad-hoc requests directly on the document store **without** creating a session.
+
+* Similar to the above _defer_ usage, define the patch request yourself with a script and optional variables.  
+
+* The patch requests constructs the `PatchOperation`, which is sent to the server for execution only when _saveChanges_ is called.
+
+</Admonition>
+
+
+## Examples
+
+<Admonition type="note" title="">
+
+#### Modify value of single field  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert using the 'patch' method
+// ===================================================
+
+session.advanced.patch("employees/1-A", "FirstName", "Robert");        
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert using 'defer' with 'PatchCommandData'
+// ================================================================
+
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.FirstName = args.FirstName;";
+patchRequest.values = { FirstName: "Robert" };
+        
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);        
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert via 'PatchOperation' on the documentStore
+// ====================================================================
+
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.FirstName = args.FirstName;";
+patchRequest.values = { FirstName: "Robert" };
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);        
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Modify values of two fields
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert and LastName to Carter in single request
+// ===================================================================
+
+// The two Patch operations below are sent via 'saveChanges()' which complete transactionally,
+// as this call generates a single HTTP request to the database. 
+// Either both will succeed - or both will be rolled back - since they are applied within the same
+// transaction.
+
+// However, on the server side, the two Patch operations are still executed separately.
+// To achieve atomicity at the level of a single server-side operation, use 'defer' or an 'operation'.
+
+session.advanced.patch("employees/1-A", "FirstName", "Robert");
+session.advanced.patch("employees/1-A", "LastName", "Carter");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert and LastName to Carter in single request
+// ===================================================================
+
+// Note that here we do maintain the operation's atomicity
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.FirstName = args.FirstName;
+                       this.LastName = args.LastName;\`;
+patchRequest.values = { 
+    FirstName: "Robert",
+    LastName: "Carter"
+};
+ 
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Modify FirstName to Robert and LastName to Carter in single request
+// ===================================================================
+
+// Note that here we do maintain the operation's atomicity
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.FirstName = args.FirstName;
+                       this.LastName = args.LastName;\`;
+patchRequest.values = {
+    FirstName: "Robert",
+    LastName: "Carter"
+};
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Increment value
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Increment UnitsInStock property value by 10
+// ===========================================
+
+session.advanced.increment("products/1-A", "UnitsInStock", 10);
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Increment UnitsInStock property value by 10
+// ===========================================
+
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.UnitsInStock += args.UnitsToAdd;";
+patchRequest.values = {
+    UnitsToAdd: 10
+};
+
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Increment UnitsInStock property value by 10
+// ===========================================
+
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.UnitsInStock += args.UnitsToAdd;";
+patchRequest.values = {
+    UnitsToAdd: 10
+};
+
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Add or increment
+`addOrIncrement` behavior:
+
+* If document exists + has the specified field =&gt;
+    * A numeric field will be **incremented** by the specified value.
+    * A string field will be **concatenated** with the specified value.
+    * The entity passed is disregarded.
+* If document exists + does Not contain the specified field =&gt;
+    * The field will be **added** to the document with the specified value.
+    * The entity passed is disregarded.
+* If document does Not exist =&gt;
+    * A new document will be **created** from the provided entity.
+    * The value to increment by is disregarded.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// An entity that will be used in case the specified document is not found:
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.loginCount = 1;
+
+session.advanced.addOrIncrement(
+    // Specify document id on which the operation should be performed
+    "users/1",
+    // Specify an entity,
+    // if the specified document is Not found, a new document will be created from this entity
+    newUser,
+    // The field that should be incremented
+    "loginCount",
+    // Increment the specified field by this value
+    2);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="User_class" label="User_class">
+<CodeBlock language="js">
+{`class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Add or patch  
+`addOrPatch` behavior:
+
+* If document exists + has the specified field =&gt;
+    * The field will be **patched**, the specified value will replace the existing value.
+    * The entity passed is disregarded.
+* If document exists + does Not contain the specified field =&gt;
+    * The field will be **added** to the document with the specified value.
+    * The entity passed is disregarded.
+* If document does Not exist =&gt;
+    * A new document will be **created** from the provided entity.
+    * The value to patch by is disregarded.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// An entity that will be used in case the specified document is not found:
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.lastLogin = new Date(2024, 0, 1);
+
+session.advanced.addOrPatch(
+    // Specify document id on which the operation should be performed
+    "users/1",
+    // Specify an entity,
+    // if the specified document is Not found, a new document will be created from this entity
+    newUser,
+    // The field that should be patched
+    "lastLogin",
+    // Set the current date and time as the new value for the specified field
+    new Date());
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="User_class" label="User_class">
+<CodeBlock language="js">
+{`class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Add item to array  
+`patchArray` behavior:
+
+* If document exists + has the specified array =&gt;
+    * Item will be **added** to the array.
+* If document exists + does Not contain the specified array field =&gt;
+    * No exception is thrown, no patching is done, a new array is Not created.
+* If document does Not exist =&gt;
+    * No exception is thrown, no patching is done, a new document is Not created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Add a new comment to an array
+// =============================
+
+// The new comment to add:
+const newBlogComment = new BlogComment();
+newBlogComment.content = "Some content";
+newBlogComment.title = "Some title";
+
+// Call 'patchArray':
+session.advanced.patchArray(
+    "blogPosts/1",  // Document id to patch
+    "comments",     // The array to add the comment to
+    comments => {   // Adding the new comment
+        comments.push(newBlogComment); 
+    });
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Add a new comment to an array
+// =============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.push(args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Add a new comment to an array
+// =============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.push(args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+<CodeBlock language="js">
+{`class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Add or patch an existing array  
+`addOrPatchArray` behavior:
+
+* If document exists + has the specified array field =&gt;
+    * The specified values will be **added** to the existing array values.
+    * The entity passed is disregarded.
+* If document exists + does Not contain the specified array field =&gt;
+    * The array field is Not added to the document, no patching is done.
+    * The entity passed is disregarded.
+* If document does Not exist =&gt;
+    * A new document will be **created** from the provided entity.
+    * The value to patch by is disregarded.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// An entity that will be used in case the specified document is not found:
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.loginTimes = [new Date(2024, 0, 1)];
+
+session.advanced.addOrPatchArray(
+    // Specify document id on which the operation should be performed
+    "users/1",
+    // Specify an entity,
+    // if the specified document is Not found, a new document will be created from this entity
+    newUser,
+    // The array field that should be patched
+    "loginTimes",
+    // Add values to the list of the specified array field
+    a => a.push(new Date(2024, 2, 2), new Date(2024, 3, 3)));
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="User_class" label="User_class">
+<CodeBlock language="js">
+{`class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Insert item into specific position in array  
+* Inserting an item in a specific position is supported only by the _defer_ or the _operations_ syntax.  
+* No exception is thrown if either the document or the specified array does not exist.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Insert a new comment at position 1
+// ==================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(1, 0, args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Insert a new comment at position 1
+// ==================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(1, 0, args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+<CodeBlock language="js">
+{`class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Modify item in specific position in array  
+* Inserting an item in a specific position is supported only by the _defer_ or the _operations_ syntax.
+* No exception is thrown if either the document or the specified array does not exist.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Modify comment at position 3
+// ============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(3, 1, args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Modify comment at position 3
+// ============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(3, 1, args.comment);";
+patchRequest.values = {
+    comment: {
+        title: "Some title",
+        content: "Some content",
+    }
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+<CodeBlock language="js">
+{`class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Remove items from array  
+* Removing all items that match some predicate from an array is supported only by the _defer_ or the _operations_ syntax.
+* No exception is thrown if either the document or the specified array does not exist.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Remove all comments that contain the word "wrong" in their content
+// ==================================================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.comments = this.comments.filter(comment => 
+                       !comment.content.includes(args.text));\`;
+patchRequest.values = {
+    text: "wrong"
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Remove all comments that contain the word "wrong" in their content
+// ==================================================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.comments = this.comments.filter(comment => 
+                       !comment.content.includes(args.text));\`;
+patchRequest.values = {
+    text: "wrong"
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+<CodeBlock language="js">
+{`class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Load documents in a script  
+* Loading documents is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Load a related document and update a field
+// ==========================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.Lines.forEach(line => { 
+                           const productDoc = load(line.Product);
+                           line.ProductName = productDoc.Name;
+                       });\`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("orders/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Load a related document and update a field
+// ==========================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`this.Lines.forEach(line => { 
+                           const productDoc = load(line.Product);
+                           line.ProductName = productDoc.Name;
+                       });\`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("orders/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Remove property  
+* Removing a property is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Remove a document property
+// ==========================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`delete this.Address.PostalCode;\`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Remove a document property
+// ==========================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`delete this.Address.PostalCode;\`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Rename property  
+* Renaming a property is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Rename property Name to ProductName
+// ===================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`const propertyValue = this[args.currentProperty];
+                       delete this[args.currentProperty];
+                       this[args.newProperty] = propertyValue;\`;
+patchRequest.values = {
+    currentProperty: "Name",
+    newProperty: "ProductName"
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Rename property Name to ProductName
+// ===================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = \`const propertyValue = this[args.currentProperty];
+                       delete this[args.currentProperty];
+                       this[args.newProperty] = propertyValue;\`;
+patchRequest.values = {
+    currentProperty: "Name",
+    newProperty: "ProductName"
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Add document  
+* Adding a new document is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Add a new document
+// ==================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Add a new document (projects/1) to collection Projects
+// The id of the patched document (employees/1-A) is used as content for ProjectLeader property
+patchRequest.script = \`put('projects/1', { 
+                           ProjectLeader: id(this),
+                           ProjectDesc: 'Some desc..', 
+                           '@metadata': { '@collection': 'Projects'} 
+                       });\`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Add a new document
+// ==================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Add a new document (projects/1) to collection Projects
+// The id of the patched document (employees/1-A) is used as content for ProjectLeader property
+patchRequest.script = \`put('projects/1', { 
+                           ProjectLeader: id(this),
+                           ProjectDesc: 'Some desc..', 
+                           '@metadata': { '@collection': 'Projects'} 
+                       });\`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Clone document  
+* Cloning a new document is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Clone a document
+// ================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// The new document will be in the same collection as 'employees/1-A'
+// By specifying 'employees/' the server will generate a "server-side ID' to the new document
+patchRequest.script = \`put('employees/', this);\`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Clone a document
+// ================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// The new document will be in the same collection as 'employees/1-A'
+// By specifying 'employees/' the server will generate a "server-side ID' to the new document
+patchRequest.script = \`put('employees/', this);\`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+**Attachments, Counters, Time Series, and Revisions:**
+
+Attachments, counters, time series data, and revisions from the source document will Not be copied to the new document automatically.
+
+</Admonition>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Create/Increment counter  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Increment/Create counter
+// ========================
+
+// Increase counter "Likes" by 10, or create it with a value of 10 if it doesn't exist
+session.countersFor("products/1-A").increment("Likes", 10);
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Create/Increment counter
+// ========================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'incrementCounter' method to create/increment a counter 
+patchRequest.script = \`incrementCounter(this, args.counterName, args.counterValue);\`;
+patchRequest.values = {
+    counterName: "Likes",
+    counterValue: 10
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Create/Increment counter
+// ========================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'incrementCounter' method to create/increment a counter 
+patchRequest.script = \`incrementCounter(this, args.counterName, args.counterValue);\`;
+patchRequest.values = {
+    counterName: "Likes",
+    counterValue: 10
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+Learn more about Counters in this [Counters Overview](../../../document-extensions/counters/overview.mdx).
+
+</Admonition>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Delete counter  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Delete counter
+// ==============
+
+session.countersFor("products/1-A").delete("Likes");
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Delete counter
+// ==============
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'deleteCounter' method to delete a counter 
+patchRequest.script = \`deleteCounter(this, args.counterName);\`;
+patchRequest.values = {
+    counterName: "Likes"
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Delete counter
+// ==============
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'deleteCounter' method to delete a counter 
+patchRequest.script = \`deleteCounter(this, args.counterName);\`;
+patchRequest.values = {
+    counterName: "Likes"
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Get counter  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="js">
+{`// Get counter value
+// =================
+
+const counters = await session.counterFor("products/1-A").get("Likes");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="js">
+{`// Get counter value
+// =================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'counter' method to get the value of the specified counter 
+// and then put the results into a new document 'productLikes/'
+patchRequest.script = \`const numberOfLikes = counter(this, args.counterName);
+                       put('productLikes/', {ProductName: this.Name, Likes: numberOfLikes});\`;
+
+patchRequest.values = {
+    counterName: "Likes"
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="js">
+{`// Get counter value
+// =================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Use the 'counter' method to get the value of the specified counter 
+// and then put the results into a new document 'productLikes/'
+patchRequest.script = \`const numberOfLikes = counter(this, args.counterName);
+                       put('productLikes/', {ProductName: this.Name, Likes: numberOfLikes});\`;
+
+patchRequest.values = {
+    counterName: "Likes"
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Patching using inline string compilation  
+* When using a JavaScript script with the _defer_ or _operations_ syntax,  
+  you can apply logic using **inline string compilation**.
+* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration.mdx#patchingallowstringcompilation) configuration key to _true_.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Patching_usingFunction" label="Patching_usingFunction">
+<CodeBlock language="js">
+{`// Modify value using inline string compilation
+// ============================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Define the script:
+patchRequest.script = \`
+    // Give a discount if the product is low in stock:
+    const functionBody = "return doc.UnitsInStock < lowStock ? " + 
+        "doc.PricePerUnit * discount :" + 
+        "doc.PricePerUnit;";
+
+    // Define a function that processes the document and returns the price:
+    const calcPrice = new Function("doc", "lowStock", "discount", functionBody);
+
+    // Update the product's PricePerUnit based on the function:
+    this.PricePerUnit = calcPrice(this, args.lowStock, args.discount);\`;
+
+patchRequest.values = {
+    discount: "0.8",
+    lowStock: "10"
+};
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+
+// The same can be applied using the 'operations' syntax.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Patching_usingEval" label="Patching_usingEval">
+<CodeBlock language="js">
+{`// Modify value using inline string compilation
+// ============================================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+
+// Define the script:
+patchRequest.script = \`
+    // Give a discount if the product is low in stock:
+    const discountExpression = "this.UnitsInStock < args.lowStock ? " + 
+        "this.PricePerUnit * args.discount :" + 
+        "this.PricePerUnit";
+    
+    // Call 'eval', pass the string expression that contains your logic:
+    const price = eval(discountExpression);
+    
+    // Update the product's PricePerUnit:
+    this.PricePerUnit = price;\`;
+
+patchRequest.values = {
+    discount: "0.8",
+    lowStock: "10"
+};
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+
+// The same can be applied using the 'session defer' syntax.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Syntax
+### Session API syntax
+
+
+<TabItem value="patch_syntax" label="patch_syntax">
+<CodeBlock language="js">
+{`patch(id, path, value);
+patch(entity, path, value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                                                                                                       |
+|--------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**       | `string` | Document ID on which patching should be performed.                                                                                                |
+| **entity**   | `object` | Entity on which patching should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation. |
+| **Path**     | `string` | The path to the field.                                                                                                                            |
+| **value**    | `object` | Value to set.                                                                                                                                     |
+
+<TabItem value="add_or_patch_syntax" label="add_or_patch_syntax">
+<CodeBlock language="js">
+{`addOrPatch(id, entity, pathToObject, value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type     | Description                                                                              |
+|-------------|----------|------------------------------------------------------------------------------------------|
+| **id**      | `string` | Document ID on which patching should be performed.                                       |
+| **entity**  | `object` | If the specified document is Not found, a new document will be created from this entity. |
+| **Path**    | `string` | The path to the field.                                                                   |
+| **value**   | `object` | Value to set.                                                                            |
+
+<TabItem value="increment_syntax" label="increment_syntax">
+<CodeBlock language="js">
+{`increment(id, path, valueToAdd);
+increment(entity, path, valueToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type     | Description                                                                                                                                       |
+|-----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**          | `string` | Document ID on which patching should be performed.                                                                                                |
+| **entity**      | `object` | Entity on which patching should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation. |
+| **path**        | `string` | The path to the field.                                                                                                                            |
+| **valueToAdd**  | `object` | Value to increment by.<br/>Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.            |
+
+<TabItem value="add_or_increment_syntax" label="add_or_increment_syntax">
+<CodeBlock language="js">
+{`addOrIncrement(id, entity, pathToObject, valToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter      | Type     | Description                                                                              |
+|----------------|----------|------------------------------------------------------------------------------------------|
+| **id**         | `string` | Document ID on which patching should be performed.                                       |
+| **entity**     | `object` | If the specified document is Not found, a new document will be created from this entity. |
+| **path**       | `string` | The path to the field.                                                                   |
+| **valueToAdd** | `object` | Value to increment by.                                                                   |
+
+<TabItem value="patch_array_syntax" label="patch_array_syntax">
+<CodeBlock language="js">
+{`patchArray(id, pathToArray, arrayAdder);
+patchArray(entity, pathToArray, arrayAdder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type                        | Description                                                                                                                                       |
+|-----------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**          | `string`                    | Document ID on which patching should be performed.                                                                                                |
+| **entity**      | `object`                    | Entity on which patching should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation. |
+| **pathToArray** | `string`                    | The path to the array field.                                                                                                                      |
+| **arrayAdder**  | `(JavaScriptArray) => void` | Function that modifies the array.                                                                                                                 |
+
+<TabItem value="add_or_patch_array_syntax" label="add_or_patch_array_syntax">
+<CodeBlock language="js">
+{`addOrPatchArray(id, entity, pathToObject, arrayAdder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type                        | Description                                                                              |
+|-----------------|-----------------------------|------------------------------------------------------------------------------------------|
+| **id**          | `string`                    | Document ID on which patching should be performed.                                       |
+| **entity**      | `object`                    | If the specified document is Not found, a new document will be created from this entity. |
+| **pathToArray** | `string`                    | The path to the array field.                                                             |
+| **arrayAdder**  | `(JavaScriptArray) => void` | Function that modifies the array.                                                        |                                                                                                                                 |
+
+<TabItem value="class_JavaScriptArray" label="class_JavaScriptArray">
+<CodeBlock language="js">
+{`class JavaScriptArray \{
+    push(...u);      // Add a list of values to add to the array
+    removeAt(index); // Remove an item from position 'index' in the array
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Session API using defer syntax
+
+<TabItem value="defer_syntax" label="defer_syntax">
+<CodeBlock language="js">
+{`session.advanced.defer(...commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type       | Description                                                                                               |
+|--------------|------------|-----------------------------------------------------------------------------------------------------------|
+| **commands** | `object[]` | List of commands that will be executed on the server.<br/>Use the `PatchCommandData` command for patching. |
+
+<TabItem value="class_PatchCommandData" label="class_PatchCommandData">
+<CodeBlock language="js">
+{`class PatchCommandData \{
+    // ID of document to be patched
+    id; // string
+    
+    // Change vector of document to be patched, can be null.
+    // Used to verify that the document was not changed before the patch is executed.
+    changeVector // string;
+    
+    // Patch request to be performed on the document
+    patch; // A PatchRequest object
+    
+    // Patch request to perform if no document with the specified ID was found
+    patchIfMissing; // A PatchRequest object
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="class_PatchRequest" label="class_PatchRequest">
+<CodeBlock language="js">
+{`class PatchRequest \{
+    //  The JavaScript code to be run on the server
+    script; // string
+    
+    // Parameters to be passed to the script
+    values:; // Dictionary<string, object>
+
+    // It is highly recommend to use the script with the parameters. 
+    // This allows RavenDB to cache scripts and boost performance.
+    // The parameters are accessed in the script via the \`args\` object.
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Operations API syntax
+
+* Learn more about using operations in this [Operations overview](../../../client-api/operations/what-are-operations.mdx).
+
+<TabItem value="operations_syntax" label="operations_syntax">
+<CodeBlock language="js">
+{`const patchOperation = new PatchOperation(id, changeVector, patch);
+
+const patchOperation = new PatchOperation(id, changeVector, patch, patchIfMissing,
+    skipPatchIfChangeVectorMismatch);
+`}
+</CodeBlock>
+</TabItem>
+
+| Constructor                          | Type           | Description                                                                                                                                                                                                                                                                          |
+|--------------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**                               | `string`       | ID of the document to be patched.                                                                                                                                                                                                                                                    |
+| **changeVector**                     | `string`       | Change vector of the document to be patched.<br/>Used to verify that the document was not modified before the patch is executed. Can be null.                                                                                                                                         |
+| **patch**                            | `PatchRequest` | Patch request to perform on the document.                                                                                                                                                                                                                                            |
+| **patchIfMissing**                   | `PatchRequest` | Patch request to perform if the specified document is not found.<br/>Will run only if no `changeVector` was passed.<br/>Can be null.                                                                                                                                                   |
+| **skipPatchIfChangeVectorMismatch**  | `boolean`      | `true` - do not patch if the document has been modified.<br/>`false` (Default) - execute the patch even if document has been modified.<br/><br/>An exception is thrown if:<br/>this param is `false` + `changeVector` has value + document with that ID and change vector was not found. |
+### List of script methods syntax
+
+* For a complete list of JavaScript methods available in patch scripts,  
+  refer to [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+
+
+
+

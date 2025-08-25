@@ -5,161 +5,39 @@ sidebar_label: How to Customize Collection Assignment for Entities
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToCustomizeCollectionAssignmentForEntitiesCsharp from './_how-to-customize-collection-assignment-for-entities-csharp.mdx';
+import HowToCustomizeCollectionAssignmentForEntitiesJava from './_how-to-customize-collection-assignment-for-entities-java.mdx';
+import HowToCustomizeCollectionAssignmentForEntitiesPython from './_how-to-customize-collection-assignment-for-entities-python.mdx';
+import HowToCustomizeCollectionAssignmentForEntitiesPhp from './_how-to-customize-collection-assignment-for-entities-php.mdx';
+import HowToCustomizeCollectionAssignmentForEntitiesNodejs from './_how-to-customize-collection-assignment-for-entities-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-
-# Session: How to Customize Collection Assignment for Entities
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side. In order to determine the collection name that an entity belongs to
-there are special conventions which return the collection name based on the type of an entity: [`FindCollectionName` and `FindCollectionNameForDynamic`](../../configuration/identifier-generation/global.mdx#findcollectionname-and-findcollectionnamefordynamic).
-
-## Example
-
-By default a collection name is pluralized form of a name of an entity type. For example objects of type `Category` will belong to `Categories` collection. However if your intention
-is to classify them as `ProductGroups` use the following code:
-
-<TabItem value="custom_collection_name" label="custom_collection_name">
-<CodeBlock language="csharp">
-{`store.Conventions.FindCollectionName = type =>
-\{
-    if (typeof(Category).IsAssignableFrom(type))
-        return "ProductGroups";
-
-    return DocumentConventions.DefaultGetCollectionName(type);
-\};
-`}
-</CodeBlock>
-</TabItem>
-
-This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
-
-
+   <HowToCustomizeCollectionAssignmentForEntitiesCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side. In order to determine the collection name that an entity belongs to
-there is special convention which return the collection name based on the type of an entity: [`findCollectionName`](../../configuration/identifier-generation/global.mdx#findcollectionname).
-
-## Example
-
-By default a collection name is pluralized form of a name of an entity type. For example objects of type `Category` will belong to `Categories` collection. However if your intention
-is to classify them as `ProductGroups` use the following code:
-
-<TabItem value="custom_collection_name" label="custom_collection_name">
-<CodeBlock language="java">
-{`store.getConventions().setFindCollectionName(clazz -> \{
-    if (Category.class.isAssignableFrom(clazz)) \{
-        return "ProductGroups";
-    \}
-
-    return DocumentConventions.defaultGetCollectionName(clazz);
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
-
-
+   <HowToCustomizeCollectionAssignmentForEntitiesJava />
 </LanguageContent>
+
 <LanguageContent language="python">
-
-
-Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side.  
-The name of the collection that an entity belongs to can be retrieved using the `find_collection_name` convention.  
-
-## Example
-
-By default, a collection name is the pluralized form of a name of an entity type.  
-E.g., objects of type `Category` will belong to the `Categories` collection.  
-If you mean to classify them as `ProductGroups`, however, use the following code:
-
-<TabItem value="custom_collection_name" label="custom_collection_name">
-<CodeBlock language="python">
-{`def __find_collection_name(object_type: type) -> str:
-    if issubclass(object_type, Category):
-        return "ProductGroups"
-
-    return DocumentConventions.default_get_collection_name(object_type)
-
-store.conventions.find_collection_name = __find_collection_name
-`}
-</CodeBlock>
-</TabItem>
-
-This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
-
-
+   <HowToCustomizeCollectionAssignmentForEntitiesPython />
 </LanguageContent>
+
 <LanguageContent language="php">
-
-
-Entities are grouped on the server side into [collections](../../faq/what-is-a-collection.mdx).  
-A collection's name is determined by the type of the entities in it.  
-To find the name of an entity's collection, use [`findCollectionName`](../../configuration/identifier-generation/global.mdx#findcollectionname).  
-
-## Example
-
-By default, a collection name is the pluralized form of an entity's type.  
-Entities of type `Category`, for example, will belong to the `Categories` collection.  
-To modify this behavior, use `setFindCollectionName`.  
-
-<TabItem value="custom_collection_name" label="custom_collection_name">
-<CodeBlock language="php">
-{`$store->getConventions()->setFindCollectionName(function($className) \{
-    if (is_subclass_of($className, Category::class)) \{
-        return "ProductGroups";
-    \}
-
-    return DocumentConventions::defaultGetCollectionName($className);
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
-
-
+   <HowToCustomizeCollectionAssignmentForEntitiesPhp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side. In order to determine the collection name that an entity belongs to
-there is special convention which return the collection name based on the type of an entity: [`findCollectionName`](../../configuration/identifier-generation/global.mdx#findcollectionname).
-
-## Example
-
-By default a collection name is pluralized form of a name of an entity type. For example objects of type `Category` will belong to `Categories` collection. However if your intention
-is to classify them as `ProductGroups` you can use the following code:
-
-<TabItem value="custom_collection_name" label="custom_collection_name">
-<CodeBlock language="js">
-{`store.conventions.findCollectionName = clazz => \{
-    if (clazz === Category) \{
-        return "ProductGroups";
-    \}
-
-    return DocumentConventions.defaultGetCollectionName(clazz);
-\};
-`}
-</CodeBlock>
-</TabItem>
-
-This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
-
-
+   <HowToCustomizeCollectionAssignmentForEntitiesNodejs />
 </LanguageContent>
+
 
 <!---
 ### Configuration

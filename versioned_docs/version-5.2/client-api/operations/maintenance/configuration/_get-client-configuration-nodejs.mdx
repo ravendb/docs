@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* It is recommended to first refer to the __client-configuration description__ in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
+
+* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
+
+* In this page:
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
+
+</Admonition>
+## Get client-configuration
+
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="js">
+{`// Define the get client-configuration operation 
+const getClientConfigOp = new GetClientConfigurationOperation();
+
+// Execute the operation by passing it to maintenance.send
+const result = await store.maintenance.send(getClientConfigOp);
+
+const configuration = result.configuration;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const getClientConfigOp = new GetClientConfigurationOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Object returned from store.maintenance.send(getClientConfigOp):
+\{
+   etag,
+   configuration // The configution object
+\}
+
+// The configuration object:
+\{
+    identityPartsSeparator,
+    etag,
+    disabled,
+    maxNumberOfRequestsPerSession,
+    readBalanceBehavior,
+    loadBalanceBehavior,
+    loadBalancerContextSeed
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

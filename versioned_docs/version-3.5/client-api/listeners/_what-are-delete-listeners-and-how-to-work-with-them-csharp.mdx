@@ -1,0 +1,41 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`IDocumentDeleteListener` interface which needs to be implemented if a user wants to add a custom logic or an action when a delete operation is executed. 
+The interface contains only one method that is invoked before the delete request is sent to the server:
+
+<TabItem value="document_delete_interface" label="document_delete_interface">
+<CodeBlock language="csharp">
+{`public interface IDocumentDeleteListener
+\{
+	/// <summary>
+	/// Invoked before the delete request is sent to the server.
+	/// </summary>
+	/// <param name="key">The key.</param>
+	/// <param name="entityInstance">The entity instance.</param>
+	/// <param name="metadata">The metadata.</param>
+	void BeforeDelete(string key, object entityInstance, RavenJObject metadata);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+To prevent anyone from deleting documents we can create `PreventDeleteListener` with can be implemented as follows:
+
+<TabItem value="document_delete_example" label="document_delete_example">
+<CodeBlock language="csharp">
+{`public class PreventDeleteListener : IDocumentDeleteListener
+\{
+	public void BeforeDelete(string key, object entityInstance, RavenJObject metadata)
+	\{
+		throw new NotSupportedException();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+

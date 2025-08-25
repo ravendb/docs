@@ -1,0 +1,121 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Pending session operations like `store`, `delete`, and many others, will not be sent to the server until `saveChanges` is called.
+
+<Admonition type="info" title="">
+
+When `saveChanges()` is applied to send a batch of operations (e.g. `put`, `update`, and `delete`) 
+in a request, the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) 
+upon execution in the database.  
+
+Either all operations are performed as a single, atomic transaction, or none of them are.  
+Once `saveChanges()` returns successfully, it is guaranteed that all changes are persisted in the database.  
+
+</Admonition>
+
+## Syntax
+
+<TabItem value="saving_changes_1" label="saving_changes_1">
+<CodeBlock language="php">
+{`public function saveChanges(): void;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="saving_changes_2" label="saving_changes_2">
+<CodeBlock language="php">
+{`$employee = new Employee();
+$employee->setFirstName("John");
+$employee->setLastName("Doe");
+
+$session->store($employee);
+$session->saveChanges();;
+`}
+</CodeBlock>
+</TabItem>
+
+## Waiting for Indexes
+
+You can request the server to wait until the indexes are caught up with changes made within 
+the current session before `saveChanges` returns.
+
+* You can set a timeout (default: 15 seconds).
+* You can specify whether you want to throw on timeout (default: `false`).
+* You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
+by this write.
+
+<TabItem value="saving_changes_3" label="saving_changes_3">
+<CodeBlock language="php">
+{`$session->advanced()->waitForIndexesAfterSaveChanges(function ($builder) use ($session) \{
+    $builder->withTimeout(Duration::ofSeconds(30))
+        ->throwOnTimeout(true)
+        ->waitForIndexes("index/1", "index/2");
+
+    $employee = new Employee();
+    $employee->setFirstName("John");
+    $employee->setLastName("Doe");
+
+    $session->store($employee);
+
+    $session->saveChanges();
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Transaction Mode - Cluster Wide
+
+Setting `TransactionMode` to `TransactionMode.clusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
+
+With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
+
+- `store`
+- `delete`
+- `createCompareExchangeValue`
+- `updateCompareExchangeValue`
+- `deleteCompareExchangeValue`
+
+Here is an example of creating a unique user with cluster wide.
+
+<TabItem value="cluster_store_with_compare_exchange" label="cluster_store_with_compare_exchange">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    $sessionOptions = new SessionOptions();
+    // default is: TransactionMode::singleNode();
+    $sessionOptions->setTransactionMode(TransactionMode::clusterWide());
+    $session = $store->openSession($sessionOptions);
+    try \{
+        $user = new Employee();
+        $user->setFirstName("John");
+        $user->setLastName("Doe");
+
+        $session->store($user);
+
+        // this transaction is now conditional on this being
+        // successfully created (so, no other users with this name)
+        // it also creates an association to the new user's id
+        $session->advanced()->clusterTransaction()
+            ->createCompareExchangeValue("usernames/John", $user->getId());
+
+        $session->saveChanges();
+    \} finally \{
+        $session->close();
+    \}
+\} finally \{
+    $store->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

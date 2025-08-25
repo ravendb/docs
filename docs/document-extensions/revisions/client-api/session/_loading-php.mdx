@@ -1,0 +1,168 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+Use `getFor` to retrieve all of the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_1_sync" label="example_1_sync">
+<CodeBlock language="php">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+/** @var array<Order>  $orderRevisions */
+$orderRevisions = $session
+    ->advanced()
+    ->revisions()
+    ->getFor(Order::class, id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`public function getFor(?string $className, ?string $id, int $start = 0, int $pageSize = 25): array;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id** | `string` | Document ID for which to retrieve revisions |
+     | **className** | `string` | The type of the object whose revisions we want to retrieve |
+     | **start** | `int` | First revision to retrieve, used for paging |
+     | **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+Use `getMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+
+* **Example**:
+<TabItem value="example_2_sync" label="example_2_sync">
+<CodeBlock language="php">
+{`// Get revisions' metadata for document 'orders/1-A'
+/** @var array<MetadataAsDictionary> $orderRevisionsMetadata */
+$orderRevisionsMetadata = $session
+    ->advanced()
+    ->revisions()
+    ->getMetadataFor(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+$metadata = $orderRevisionsMetadata[0];
+$flagsValue = $metadata[DocumentsMetadata::FLAGS];
+
+$this->assertContains("Revision", $flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`public function getMetadataFor(?string $id, int $start = 0, int $pageSize = 25): array;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameters | Type | Description |
+     | - | - |- |
+     | **id** | `string` | Document ID for which to retrieve revisions' metadata |
+     | **start** | `int` | First revision to retrieve metadata for, used for paging |
+     | **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+Use `getBeforeDate` to retrieve a revision by its **creation time**.
+
+* **Example**:
+<TabItem value="example_3_sync" label="example_3_sync">
+<CodeBlock language="php">
+{`// Get a revision by its creation time
+$revisionFromLastYear = $session
+    ->advanced()
+    ->revisions()
+     // If no revision was created at the specified time,
+     // then the first revision that precedes it will be returned
+    ->getBeforeDate(Order::class, "orders/1-A", (new DateTime())->sub(new DateInterval("P1Y")));
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="php">
+{`function getBeforeDate(?string $className, ?string $id, DateTime $date): ?object;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **id** | `string` | The ID of the document whose revisions we want to retrieve by creation time |
+     | **date** | `DateTime` | Revision creation time |
+     | **className** | `string` | The type of the object whose revisions we want to retrieve |
+
+
+
+
+## Get revisions by change vector
+
+To retrieve a revision or multiple revisions by **change vectors** use `getMetadataFor`, 
+extract the change vector from the metadata, and `get` the revision using the change vector.  
+
+* **Example**:
+<TabItem value="example_4_sync" label="example_4_sync">
+<CodeBlock language="php">
+{`// Get revisions metadata
+/** @var array<MetadataAsDictionary> $revisionsMetadata */
+$revisionsMetadata = $session
+    ->advanced()
+    ->revisions()
+    ->getMetadataFor("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+$changeVector = $revisionsMetadata[0][DocumentsMetadata::CHANGE_VECTOR];
+
+// Get the revision by its change-vector
+$revision = $session
+    ->advanced()
+    ->revisions()
+    ->get(Order::class, $changeVector);
+`}
+</CodeBlock>
+</TabItem>
+* **Syntax**:
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="php">
+{`// Get a revision(s) by its change vector(s)
+public function get(?string $className, null|string|array|StringArray $changeVectors): mixed;
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     | - | - | - |
+     | **changeVectors** | `null` or `string` or `array` or `StringArray` | A list of change vector strings |
+     | **className** | `className` | The types of the objects whose revisions we want to retrieve |
+
+
+
+

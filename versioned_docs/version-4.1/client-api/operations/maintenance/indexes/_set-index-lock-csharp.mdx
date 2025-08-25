@@ -1,0 +1,73 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
+
+## Syntax
+
+<TabItem value="set_lock_mode_1" label="set_lock_mode_1">
+<CodeBlock language="csharp">
+{`public SetIndexesLockOperation(string indexName, IndexLockMode lockMode);
+public SetIndexesLockOperation(Parameters parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_2" label="set_lock_mode_2">
+<CodeBlock language="csharp">
+{`public enum IndexLockMode
+\{
+    Unlock = 0,
+    LockedIgnore = 1,
+    LockedError = 2
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_3" label="set_lock_mode_3">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    public string[] IndexNames \{ get; set; \}
+    public IndexLockMode Mode \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+| **parameters** | SetIndexesLockOperation.Parameters | list of indexes + new index lock mode |
+
+## Example I
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesLockOperation(new SetIndexesLockOperation.Parameters
+\{
+    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
+    Mode = IndexLockMode.LockedIgnore
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new SetIndexesLockOperation(new SetIndexesLockOperation.Parameters
+\{
+    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
+    Mode = IndexLockMode.LockedIgnore
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+

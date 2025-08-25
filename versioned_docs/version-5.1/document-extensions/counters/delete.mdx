@@ -5,151 +5,24 @@ sidebar_label: Delete Counter
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteCsharp from './_delete-csharp.mdx';
+import DeleteJava from './_delete-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Deleting a Counter  
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* All the Counters for a document are deleted when the document is deleted.  
-
-* You can also use the [CountersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`Delete` method to remove a specific Counter from a document.  
-
-* In this page:
-    - [`Delete ` Syntax](../../document-extensions/counters/delete.mdx#delete-syntax)
-    - [`Delete ` Usage](../../document-extensions/counters/delete.mdx#delete-usage)
-    - [Code Sample](../../document-extensions/counters/delete.mdx#code-sample)
-</Admonition>
-## `Delete ` Syntax
-
-<TabItem value="Delete-definition" label="Delete-definition">
-<CodeBlock language="csharp">
-{`void Delete(string counterName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter | Type | Description |
-|:-------------:|:-------------:|:-------------:|
-| `counterName` |  string | Counter's name |
-
-
-## `Delete ` Usage
-
-*  **Flow**:  
-  * Open a session  
-  * Create an instance of `CountersFor`.  
-      * Either pass `CountersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
-  * Execute `CountersFor.Delete`
-  * Execute `session.SaveChanges` for the changes to take effect  
-
-* **Note**:
-    * A Counter you deleted will be removed only after the execution of `SaveChanges()`.  
-    * Deleting a document deletes its Counters as well.  
-    * `Delete` will **not** generate an error if the Counter doesn't exist.  
-
-
-
-## Code Sample
-
-<TabItem value="counters_region_Delete" label="counters_region_Delete">
-<CodeBlock language="csharp">
-{`// 1. Open a session
-using (var session = docStore.OpenSession())
-\{
-    // 2. pass CountersFor's constructor a document ID  
-    var documentCounters = session.CountersFor("products/1-C");
-
-    // 3. Delete the "ProductLikes" Counter
-    documentCounters.Delete("ProductLikes");
-
-    // 4. Save changes to the session
-    session.SaveChanges();
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <DeleteCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-<Admonition type="note" title="">
-
-* All the Counters for a document are deleted when the document is deleted.  
-
-* You can also use the [countersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`delete` method to remove a specific Counter from a document.  
-
-* In this page:
-    - [`delete ` Syntax](../../document-extensions/counters/delete.mdx#delete-syntax)
-    - [`delete ` Usage](../../document-extensions/counters/delete.mdx#delete-usage)
-    - [Code Sample](../../document-extensions/counters/delete.mdx#code-sample)
-</Admonition>
-## `delete ` Syntax
-
-<TabItem value="Delete-definition" label="Delete-definition">
-<CodeBlock language="java">
-{`void delete(String counterName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter | Type | Description |
-|:-------------:|:-------------:|:-------------:|
-| `counterName` |  String | Counter's name |
-
-
-## `delete ` Usage
-
-*  **Flow**:  
-  * Open a session  
-  * Create an instance of `countersFor`.  
-      * Either pass `countersFor` an explicit document ID, -or-  
-      * Pass it an entity tracked by the session, e.g. a document object 
-        returned from `session.query` or from `session.load`.  
-  * Execute `countersFor.delete`
-  * Execute `session.saveChanges` for the changes to take effect  
-
-* **Note**:
-    * A Counter you deleted will be removed only after the execution of `saveChanges()`.  
-    * Deleting a document deletes its Counters as well.  
-    * `delete` will **not** generate an error if the Counter doesn't exist.  
-
-
-
-## Code Sample
-<TabItem value="counters_region_Delete" label="counters_region_Delete">
-<CodeBlock language="java">
-{`// 1. Open a session
-try (IDocumentSession session = docStore.openSession()) \{
-    // 2. pass CountersFor's constructor a document ID
-    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
-
-    // 3. Delete the "productLikes" Counter
-    documentCounters.delete("productLikes");
-
-    // 4. Save changes to the session
-    session.saveChanges();
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <DeleteJava />
 </LanguageContent>
+
 
 <!---
 ### Studio Articles

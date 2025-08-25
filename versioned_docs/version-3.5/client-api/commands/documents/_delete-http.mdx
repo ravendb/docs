@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Delete** is used to remove a document from a database.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+http://\{serverName\}/databases/\{databaseName\}/docs/\{key\} \\
+-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **key** | Yes | key of a document to be deleted |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  current document etag, used for concurrency checks |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No content |
+
+---
+
+### Example I
+
+Delete document `products/9999`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE "http://localhost:8080/databases/NorthWind/docs/products%2F9999" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+

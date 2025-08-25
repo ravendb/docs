@@ -1,0 +1,106 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+* To restore a database from its backup, use `RestoreBackupOperation`.  
+* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup.mdx).  
+
+## Syntax
+
+<TabItem value="constructor" label="constructor">
+<CodeBlock language="java">
+{`public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration);
+
+public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration, String nodeTag);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_set" label="get_set">
+<CodeBlock language="java">
+{`public abstract class RestoreBackupConfigurationBase \{
+
+
+    public String getDatabaseName() \{
+        return databaseName;
+    \}
+
+    public void setDatabaseName(String databaseName) \{
+        this.databaseName = databaseName;
+    \}
+
+    public String getLastFileNameToRestore() \{
+        return lastFileNameToRestore;
+    \}
+
+    public void setLastFileNameToRestore(String lastFileNameToRestore) \{
+        this.lastFileNameToRestore = lastFileNameToRestore;
+    \}
+
+    public String getDataDirectory() \{
+        return dataDirectory;
+    \}
+
+    public void setDataDirectory(String dataDirectory) \{
+        this.dataDirectory = dataDirectory;
+    \}
+
+    public String getEncryptionKey() \{
+        return encryptionKey;
+    \}
+
+    public void setEncryptionKey(String encryptionKey) \{
+        this.encryptionKey = encryptionKey;
+    \}
+
+    public boolean isDisableOngoingTasks() \{
+        return disableOngoingTasks;
+    \}
+
+    public void setDisableOngoingTasks(boolean disableOngoingTasks) \{
+        this.disableOngoingTasks = disableOngoingTasks;
+    \}
+
+    public boolean isSkipIndexes() \{
+        return skipIndexes;
+    \}
+
+    public void setSkipIndexes(boolean skipIndexes) \{
+        this.skipIndexes = skipIndexes;
+    \}
+
+    public BackupEncryptionSettings getBackupEncryptionSettings() \{
+        return backupEncryptionSettings;
+    \}
+
+    public void setBackupEncryptionSettings(BackupEncryptionSettings backupEncryptionSettings) \{
+        this.backupEncryptionSettings = backupEncryptionSettings;
+    \}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Database name to create during the restore operation |
+| **lastFileNameToRestore** | String | Used for partial restore |
+| **dataDirectory** | String | Optional: Database data directory |
+| **encryptionKey** | String | Encryption key used for restore |
+| **disableOngoingTasks** | boolean | Disable on doing tasks |
+| **skipIndexes** | boolean | Skip the indexes|
+
+## Example
+
+<TabItem value="example_java" label="example_java">
+<CodeBlock language="java">
+{`RestoreBackupConfiguration config = new RestoreBackupConfiguration();
+config.setBackupLocation("C:\\\\backups\\\\Northwind");
+config.setDatabaseName("Northwind");
+RestoreBackupOperation restoreOperation = new RestoreBackupOperation(config);
+store.maintenance().server().send(restoreOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+

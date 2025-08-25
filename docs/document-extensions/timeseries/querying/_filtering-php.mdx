@@ -1,0 +1,366 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to retrieve,
+  you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview.mdx#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Value" clause to filter entries by the value
+    "where Value > 75";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Value" clause to filter entries by the value
+    "where Value > 75";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Value' clause to filter by the value
+        where Value > 75
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview.mdx#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\""  .
+    "and \\"2020-05-17T00:10:00.0000000\\""  .
+    // Use the "where Tag" clause to filter entries by the tag string content"  .
+    "where Tag == \\"watches/fitbit\\";";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\""  .
+    "and \\"2020-05-17T00:10:00.0000000\\""  .
+    // Use the "where Tag" clause to filter entries by the tag string content"  .
+    "where Tag == \\"watches/fitbit\\";";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Tag' clause to filter entries by the tag string content
+        where Tag == 'watches/fitbit'
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Tag in" clause to filter by various tag options
+    "where Tag in (\\"watches/apple\\", \\"watches/samsung\\", \\"watches/xiaomi\\")";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Tag in" clause to filter by various tag options
+    "where Tag in (\\"watches/apple\\", \\"watches/samsung\\", \\"watches/xiaomi\\")";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$optionalTags = [ "watches/apple", "watches/samsung", "watches/xiaomi" ];
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Tag in' clause to filter by various tag options
+        where Tag in (\\$optionalTags)
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to)
+    ->addParameter("optionalTags", $optionalTags);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview.mdx#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$tsQueryText =
+    "from StockPrices" .
+    // Use 'load Tag' to load the employee document referenced in the tag
+    "load Tag as employeeDoc" .
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    "where employeeDoc.Title == \\"Sales Manager\\"";
+
+$query = $session->advanced()->query(Company::class)
+    // Query companies from USA
+    ->whereEquals("Address.Country", "USA")
+    ->selectTimeSeries(TimeSeriesRawResult::class, function ($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$tsQueryText =
+    "from StockPrices" .
+    // Use 'load Tag' to load the employee document referenced in the tag
+    "load Tag as employeeDoc" .
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    "where employeeDoc.Title == \\"Sales Manager\\"";
+
+$query = $session->advanced()->documentQuery(Company::class)
+    // Query companies from USA
+    ->whereEquals("Address.Country", "USA")
+    ->selectTimeSeries(TimeSeriesRawResult::class, function ($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$query = $session->advanced()->rawQuery(Company::class, "
+    from Companies
+    where Address.Country == 'USA'
+    select timeseries (
+        from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where \\<property\\>' to filter entries by the properties of the loaded document
+        where employeeDoc.Title == 'Sales Manager'
+    )"
+);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

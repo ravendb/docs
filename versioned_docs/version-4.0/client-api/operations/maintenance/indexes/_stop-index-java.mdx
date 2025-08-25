@@ -1,0 +1,34 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **StopIndexOperation** is used to stop indexing for an index. 
+
+<Admonition type="note" title="">
+Indexing will be resumed automatically after server restart.
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="java">
+{`public StopIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to stop indexing |
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+

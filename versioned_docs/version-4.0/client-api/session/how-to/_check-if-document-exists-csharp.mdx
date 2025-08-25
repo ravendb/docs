@@ -1,0 +1,39 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In order to check if a document with specific ID exists in the database, use the `Exists` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="csharp">
+{`bool Exists(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ---------- | ---------- | ----- |
+| **id** | string | ID of the document to check the existence of. |
+
+| Return Value | |
+| ------------- | ----- |
+| bool | Indicates if a document with the given ID exists. |
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="csharp">
+{`bool exists = session.Advanced.Exists("employees/1-A");
+
+if (exists)
+\{
+    //do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

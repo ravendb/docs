@@ -1,0 +1,95 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+More complex text searching can be achieved by using the `search()` method. This method allows you to pass one or more search terms that will be used in the searching process for a particular field (or fields).
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="js">
+{`query.search(fieldName, searchTerms);
+query.search(fieldName, searchTerms, operator);
+query.boost(boost);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Points index field that should be used for querying. |
+| **searchTerms** | string | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. Wildcards can be specified. |
+| **boost** | number | Boost value. Default: `1`. |
+| **operator** | `SearchOperator` | Explicitly set relation between each Search function. One of the following: `"OR"`, `"AND"`. |
+
+## Example I - Dynamic Query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const users = await session.query({ collection: "Users" })
+    .search("name", "a*")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users 
+where search(name, 'a*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II - Query Using Static Index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const users = await session.query({ indexName: "Users/ByNameAndHobbies" })
+    .search("name", "Adam")
+    .search("hobbies", "sport")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByNameAndHobbies' 
+where search(name, 'Adam') or search(hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III - Boosting Usage
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const users = await session
+    .query({ indexName: "Users/ByHobbies" })
+    .search("hobbies", "I love sport")
+    .boost(10)
+    .search("hobbies", "but also like reading books")
+    .boost(5)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByHobbies' 
+where boost(search(hobbies, 'I love sport'), 10) or boost(search(hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition.
+</Admonition>
+
+

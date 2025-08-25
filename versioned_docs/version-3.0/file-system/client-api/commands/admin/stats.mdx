@@ -5,229 +5,24 @@ sidebar_label: Statistics
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StatsCsharp from './_stats-csharp.mdx';
+import StatsHttp from './_stats-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-### Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Getting file systems stats
-
-
-
-This method returns the names of all existing file systems in the server.
-
-### Syntax
-
-<TabItem value="get_names_1" label="get_names_1">
-<CodeBlock language="csharp">
-{`Task<string[]> GetNamesAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;string[]&gt;** | A task that represents the asynchronous restore operation. The task result is the array containing file names |
-
-### Example
-
-<TabItem value="get_names_2" label="get_names_2">
-<CodeBlock language="csharp">
-{`string[] fsNames = await store.AsyncFilesCommands.Admin
-	.GetNamesAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## GetStatisticsAsync
-
-This method returns statistics of currently loaded file systems.
-
-### Syntax
-
-<TabItem value="get_stats_1" label="get_stats_1">
-<CodeBlock language="csharp">
-{`Task<FileSystemStats[]> GetStatisticsAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;FileSystemStats[]&gt;** | A task that represents the asynchronous restore operation. The task result is the array containing file names |
-
-### Example
-
-<TabItem value="get_stats_2" label="get_stats_2">
-<CodeBlock language="csharp">
-{`FileSystemStats[] fsStats = await store.AsyncFilesCommands.Admin
-									.GetStatisticsAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StatsCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Getting file systems stats
-
-
-
-The **GET** method returns the names of all existing file systems in the server.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **JSON Array** | The task result is the array containing file names |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8080/fs
-< HTTP/1.1 200 OK
-
-[
-    "NewNorthwindFS",
-    "NorthwindFS"
-]
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Stats of all file systems
-
-The **GET** method returns statistics of currently loaded file systems.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/stats \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **JSON Array** | The array containing stats of loaded file systems |
-
-
-### Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8080/fs
-< HTTP/1.1 200 OK
-
-[
-    \{
-        "Name":"NorthwindFS",
-        "FileCount":3,
-        "Metrics":\{
-            "FilesWritesPerSecond":0.0,
-            "RequestsPerSecond":0.004,
-            "Requests":\{
-                "Type":"Meter",
-                "Count":1,
-                "MeanRate":0.002,
-                "OneMinuteRate":0.016,
-                "FiveMinuteRate":0.003,
-                "FifteenMinuteRate":0.001
-            \},
-            "RequestsDuration":\{
-                "Type":"Historgram",
-                "Counter":0,
-                "Max":0.0,
-                "Min":0.0,
-                "Mean":0.0,
-                "Stdev":0.0,
-                "Percentiles":\{
-                    "50%":0.0,
-                    "75%":0.0,
-                    "95%":0.0,
-                    "99%":0.0,
-                    "99.9%":0.0,
-                    "99.99%":0.0
-                \}
-            \}
-        \},
-        "ActiveSyncs":[],
-        "PendingSyncs":[]
-    \}
-]
-`}
-</CodeBlock>
-</TabItem>
-
-
-## Stats of particular file system
-
-The **GET** method returns statistics of a selected file system.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/stats \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **JSON Array** | The file system stats |
-
-
+   <StatsHttp />
 </LanguageContent>
+
 
 <!---
 

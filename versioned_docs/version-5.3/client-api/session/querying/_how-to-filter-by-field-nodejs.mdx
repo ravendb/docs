@@ -1,0 +1,85 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use method `whereExists()` to query for documents that contain a particular field.  
+
+* A document that doesn't contain the specified field will be excluded from the query results.
+
+* In this page:  
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
+
+</Admonition>
+## Filter by field name 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Only documents that contain field 'firstName' will be returned
+
+await session.query({ collection: "Employees" })
+    .whereExists("firstName");
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain field 'firstName' will be returned
+
+from Employees
+where exists("firstName")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by field path 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Only documents that contain the 'latitude' property in the specified path will be returned
+
+await session.query({ collection: "Employees" })
+    .whereExists("address.location.latitude");
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain the 'latitude' property in the specified path will be returned
+
+from Employees
+where exists("address.location.latitude")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
+<CodeBlock language="js">
+{`whereExists(fieldName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters           | Type                         | Description                                        |
+|----------------------|------------------------------|----------------------------------------------------|
+| **fieldName**        | `string`                     | The name / path of the document field to filter by |
+
+
+
+

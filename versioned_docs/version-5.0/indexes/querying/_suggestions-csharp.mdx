@@ -1,0 +1,176 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+RavenDB has an indexing mechanism built upon the Lucene engine which has a great suggestions feature. This capability allows a significant improvement of search functionalities enhancing the overall user experience of the application.
+
+Let's consider an example where the users have the option to look for products by their name. The index and query would appear as follows:
+
+<TabItem value="suggestions_1" label="suggestions_1">
+<CodeBlock language="csharp">
+{`0
+                    // Define the suggestion request for multiple terms
+                    var suggestionRequest = new SuggestionWithTerms("ProductName")
+                    \{
+                        // Looking for terms from index-field 'ProductName' that are similar to 'chokolade' OR 'syrop'  
+                        Terms = new[] \{ "chokolade", "syrop"\}
+                    \};
+
+                    // Query the index for suggestions 
+                    Dictionary<string, SuggestionResult> suggestions = session
+                        .Query<Products_ByName.IndexEntry, Products_ByName>()
+                         // Call 'SuggestUsing' - pass the suggestion request
+                        .SuggestUsing(suggestionRequest)
+                        .Execute();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="suggestions_2" label="suggestions_2">
+<CodeBlock language="csharp">
+{`// This query on index 'Products/ByName' has NO resulting documents
+List<Product> products = session
+    .Query<Products_ByName.IndexEntry, Products_ByName>()
+    .Search(x => x.ProductName, "chokolade")
+    .OfType<Product>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+If our database has `Northwind` samples deployed then it will not return any results. However, we can ask RavenDB for help:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`if (product == null)
+{
+    Dictionary<string, SuggestionResult> suggestionResult = session
+        .Query<Product, Products_ByName>()
+        .SuggestUsing(builder => builder.ByField(x => x.Name, "chaig"))
+        .Execute();
+
+    Console.WriteLine("Did you mean?");
+
+    foreach (string suggestion in suggestionResult["Name"].Suggestions)
+    {
+        Console.WriteLine("\\t{0}", suggestion);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`if (product == null)
+{
+    Dictionary<string, SuggestionResult> suggestionResult = session.Advanced
+        .DocumentQuery<Product, Products_ByName>()
+        .SuggestUsing(builder => builder.ByField(x => x.Name, "chaig"))
+        .Execute();
+
+    Console.WriteLine("Did you mean?");
+
+    foreach (string suggestion in suggestionResult["Name"].Suggestions)
+    {
+        Console.WriteLine("\\t{0}", suggestion);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByName' 
+select suggest('Name', 'chaig')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It will produce these suggestions:
+
+    Did you mean?
+        chang
+        chai
+
+<Admonition type="note" title="Client API" id="client-api" href="#client-api">
+
+The `SuggestUsing` method is an extension contained in the `Raven.Client.Documents` namespace. You can read more about it in our [Client API](../../client-api/session/querying/how-to-work-with-suggestions.mdx) article. 
+
+</Admonition>
+
+## Suggest Over Multiple Words
+
+RavenDB allows you to perform a suggestion query over multiple words.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var resultsByMultipleWords = session
+    .Query<Product, Products_ByName>()
+    .SuggestUsing(builder => builder
+        .ByField(x => x.Name, new[] { "chaig", "tof" })
+        .WithOptions(new SuggestionOptions
+        {
+            Accuracy = 0.4f,
+            PageSize = 5,
+            Distance = StringDistanceTypes.JaroWinkler,
+            SortMode = SuggestionSortMode.Popularity
+        }))
+    .Execute();
+
+Console.WriteLine("Did you mean?");
+
+foreach (string suggestion in resultsByMultipleWords["Name"].Suggestions)
+{
+    Console.WriteLine("\\t{0}", suggestion);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var resultsByMultipleWords = session.Advanced
+    .DocumentQuery<Product, Products_ByName>()
+    .SuggestUsing(builder => builder
+        .ByField(x => x.Name, new[] { "chaig", "tof" })
+        .WithOptions(new SuggestionOptions
+        {
+            Accuracy = 0.4f,
+            PageSize = 5,
+            Distance = StringDistanceTypes.JaroWinkler,
+            SortMode = SuggestionSortMode.Popularity
+        }))
+    .Execute();
+
+Console.WriteLine("Did you mean?");
+
+foreach (string suggestion in resultsByMultipleWords["Name"].Suggestions)
+{
+    Console.WriteLine("\\t{0}", suggestion);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will produce the following results:
+
+    Did you mean?
+        chai
+        chang
+        chartreuse
+        chef
+        tofu
+
+## Remarks
+
+<Admonition type="warning" title="Increased indexing time" id="increased-indexing-time" href="#increased-indexing-time">
+
+Indexes with turned on suggestions tend to use a lot more CPU power than other indexes. This can impact indexing speed (querying is not impacted).
+
+</Admonition>
+
+

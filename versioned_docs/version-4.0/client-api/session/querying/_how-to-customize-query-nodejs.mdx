@@ -1,0 +1,278 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The following query customization options are available:
+
+- ["beforeQueryExecuted" event](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- ["afterQueryExecuted" event](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- ["afterStreamExecuted" event](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [noCaching()](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [noTracking()](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [randomOrdering()](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [waitForNonStaleResults()](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+
+Query is an `EventEmitter`. It emits few events allowing you to customize its behavior.
+
+## BeforeQueryExecuted
+
+Allows you to modify the index query just before it's executed.
+
+<TabItem value="customize_1_0" label="customize_1_0">
+<CodeBlock language="js">
+{`const results = await session
+     // Query an index
+    .query(BlogPost, BlogPosts_ByTag)
+     // Provide a callback for the 'beforeQueryExecuted' event 
+    .on("beforeQueryExecuted", query => \{
+        // Can modify query parameters
+        query.skipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`Query to be executed is: $\{query.query\}\`);
+    \})
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | function | Action on the index query |
+
+| Return Value | |
+| ------------- | ----- |
+| query | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1" label="customize_1_1">
+<CodeBlock language="js">
+{`on("beforeQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterQueryExecuted
+
+Allows you to retrieve a raw query result after it's executed.
+
+<TabItem value="customize_1_0_0" label="customize_1_0_0">
+<CodeBlock language="js">
+{`query.on("afterQueryExecuted", action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | function | Action on the query result |
+
+| Return Value | |
+| ------------- | ----- |
+| query | Returns self for easier method chaining |
+
+### Example
+
+<TabItem value="customize_1_1_0" label="customize_1_1_0">
+<CodeBlock language="js">
+{`let queryDuration;
+
+await session.query(Employee)
+    .on("afterQueryExecuted", result => \{
+        queryDuration = result.durationInMs;
+    \})
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterStreamExecuted
+
+Allows you to retrieve a raw result of the streaming query.
+
+<TabItem value="customize_1_0_1" label="customize_1_0_1">
+<CodeBlock language="js">
+{`query.on("afterStreamExecuted", action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | function | Action on a single query result |
+
+| Return Value | |
+| ------------- | ----- |
+| query | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1_1" label="customize_1_1_1">
+<CodeBlock language="js">
+{`let totalStreamedResultsSize;
+
+await session.query(Employee)
+    .on("afterStreamExecuted", result => \{
+        totalStreamedResultsSize += result.size;
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoCaching
+
+By default, queries are cached. To disable query caching use the `noCaching()` customization.
+
+<TabItem value="customize_2_0" label="customize_2_0">
+<CodeBlock language="js">
+{`let queryDuration = 0;
+
+const results = await session
+    .query(\{ collection: "employees" \})
+     // Provide a callback for the 'afterQueryExecuted' event 
+    .on("afterQueryExecuted", rawResult => \{
+        // Can access the raw query result
+        queryDuration = rawResult.durationInMs
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`$\{rawResult.lastQueryTime\}\`);
+     \})
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_2_1" label="customize_2_1">
+<CodeBlock language="js">
+{`on("afterQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoTracking
+
+To disable entity tracking by `session` use `noTracking()`. Usage of this option will prevent holding the query results in memory.
+
+<TabItem value="customize_3_0" label="customize_3_0">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+     // Add a call to 'noCaching'
+    .noCaching()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_3_1" label="customize_3_1">
+<CodeBlock language="js">
+{`noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RandomOrdering
+
+To order results randomly, use the `randomOrdering()` method.
+
+<TabItem value="customize_4_0" label="customize_4_0">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+    // Add a call to 'noTrcking'
+    .noTracking()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **seed** | string | Seed used for ordering. Useful when repeatable random queries are needed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_4_1" label="customize_4_1">
+<CodeBlock language="js">
+{`noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WaitForNonStaleResults
+
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults()` method. If the query won't be able to return 
+non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
+
+<Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">
+If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
+It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
+
+If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
+</Admonition>
+
+
+<TabItem value="customize_8_0" label="customize_8_0">
+<CodeBlock language="js">
+{`const results = await session.query(\{ collection: "Products" \})
+    .whereEquals("firstName", "Robert")
+     // Call 'waitForNonStaleResults', 
+     // Optionally, pass the time to wait. Default is 15 seconds.
+    .waitForNonStaleResults(10_000)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | number | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| query | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_8_1" label="customize_8_1">
+<CodeBlock language="js">
+{`waitForNonStaleResults();
+waitForNonStaleResults(waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

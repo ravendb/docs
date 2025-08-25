@@ -1,0 +1,82 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to download attachment metadata from a database:   
+- [HeadAttachment](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only.mdx#head)   
+- [GetAttachmentHeadersStartingWith](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only.mdx#getattachmentheadersstartingwith)   
+
+## **HeadAttachment**
+
+**HeadAttachment** can be used to download attachment metadata for a single attachment.
+
+### Syntax
+
+<TabItem value="head_1_0" label="head_1_0">
+<CodeBlock language="java">
+{`@Deprecated
+public Attachment headAttachment(String key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key of the attachment you want to download metadata for |
+
+| Return Value | |
+| ------------- | ----- |
+| [Attachment](../../../../glossary/attachment.mdx) | Object that represents attachment. |
+
+### Example
+
+<TabItem value="head_1_1" label="head_1_1">
+<CodeBlock language="java">
+{`Attachment attachment = store.getDatabaseCommands().headAttachment("albums/holidays/sea.jpg"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **GetAttachmentHeadersStartingWith**
+
+**GetAttachmentHeadersStartingWith** can be used to download attachment metadata for a multiple attachments.
+
+### Syntax
+
+<TabItem value="head_2_0" label="head_2_0">
+<CodeBlock language="java">
+{`@Deprecated
+public List<Attachment> getAttachmentHeadersStartingWith(String idPrefix, int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | String | prefix for which attachments should be returned |
+| **start** | int | number of attachments that should be skipped |
+| **pageSize** | int | maximum number of attachments that will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| List&lt;[AttachmentInformation](../../../../glossary/attachment-information.mdx)&gt; | Object that represents attachment metadata information. |
+
+### Example
+
+<TabItem value="head_2_1" label="head_2_1">
+<CodeBlock language="java">
+{`List<Attachment> attachments = store.getDatabaseCommands().getAttachmentHeadersStartingWith("albums/holidays/", 0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+**getData()**  in `Attachment` will throw for the above methods.
+
+

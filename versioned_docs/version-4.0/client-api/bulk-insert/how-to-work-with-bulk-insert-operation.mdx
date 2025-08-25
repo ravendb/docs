@@ -5,238 +5,29 @@ sidebar_label: How to Work With Bulk Insert Operation
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToWorkWithBulkInsertOperationCsharp from './_how-to-work-with-bulk-insert-operation-csharp.mdx';
+import HowToWorkWithBulkInsertOperationJava from './_how-to-work-with-bulk-insert-operation-java.mdx';
+import HowToWorkWithBulkInsertOperationNodejs from './_how-to-work-with-bulk-insert-operation-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Bulk Insert: How to Work With Bulk Insert Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
-
-## Syntax
-
-<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
-<CodeBlock language="csharp">
-{`BulkInsertOperation BulkInsert(string database = null, CancellationToken token = default);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | string | Name of database for which bulk operation should be performed. If `null` then the `Database` from DocumentStore will be used. |
-
-| Return Value | |
-| ------------- | ----- |
-| BulkInsertOperation| Instance of BulkInsertOperation used for interaction. |
-
-# BulkInsertOperation
-
-### Methods
-
-| Signature | Description |
-| ----------| ----- |
-| **void Abort()** | Abort the operation |
-| **void Store(object entity, IMetadataDictionary metadata = null)** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
-| **void Store(object entity, string id, IMetadataDictionary metadata = null)** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
-| **void StoreAsync(object entity, IMetadataDictionary metadata = null)** | store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
-| **void StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
-| **void Dispose()** | Dispose an object |
-| **void DisposeAsync()** | Dispose an object in an async manner |
-
-## Limitations
-
-There are a couple limitations to the API:
-
-* The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
-* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported also the use in an async context is supported.
-
-## Example
-
-### Create bulk insert
-
-Here we create a bulk insert operation and inserting a million documents of type Employee
-<Tabs groupId='languageSyntax'>
-<TabItem value="sync" label="sync">
-<CodeBlock language="csharp">
-{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
-{
-    for (int i = 0; i < 1000 * 1000; i++)
-    {
-        bulkInsert.Store(new Employee
-        {
-            FirstName = "FirstName #" + i,
-            LastName = "LastName #" + i
-        });
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="async" label="async">
-<CodeBlock language="csharp">
-{`BulkInsertOperation bulkInsert = null;
-try
-{
-    bulkInsert = store.BulkInsert();
-    for (int i = 0; i < 1000 * 1000; i++)
-    {
-        await bulkInsert.StoreAsync(new Employee
-        {
-            FirstName = "FirstName #" + i,
-            LastName = "LastName #" + i
-        });
-    }
-}
-finally
-{
-    if (bulkInsert != null)
-    {
-        await bulkInsert.DisposeAsync().ConfigureAwait(false);
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToWorkWithBulkInsertOperationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
-
-## Syntax
-
-<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
-<CodeBlock language="java">
-{`BulkInsertOperation bulkInsert();
-
-BulkInsertOperation bulkInsert(String database);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | String | Name of database for which bulk operation should be performed. If `null` then the `Database` from DocumentStore will be used. |
-
-| Return Value | |
-| ------------- | ----- |
-| BulkInsertOperation| Instance of BulkInsertOperation used for interaction. |
-
-# BulkInsertOperation
-
-### Methods
-
-| Signature | Description |
-| ----------| ----- |
-| **void abort()** | Abort the operation |
-| **void store(Object entity, IMetadataDictionary metadata = null)** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
-| **void store(Object entity, String id, IMetadataDictionary metadata = null)** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
-| **void close()** | Close an object |
-
-## Limitations
-
-There are a couple limitations to the API:
-
-* The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
-* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported also the use in an async context is supported.
-
-## Example
-
-### Create bulk insert
-
-Here we create a bulk insert operation and inserting a million documents of type Employee
-
-<TabItem value="bulk_inserts_4" label="bulk_inserts_4">
-<CodeBlock language="java">
-{`try (BulkInsertOperation bulkInsert = store.bulkInsert()) \{
-    for (int i = 0; i < 1_000_000; i++) \{
-        Employee employee = new Employee();
-        employee.setFirstName("FirstName #" + i);
-        employee.setLastName("LastName #" + i);
-        bulkInsert.store(employee);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithBulkInsertOperationJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
-
-## Syntax
-
-<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
-<CodeBlock language="js">
-{`documentStore.bulkInsert([database]);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | string | Name of database for which bulk operation should be performed. If `null` then the `database` from DocumentStore will be used. |
-
-| Return Value | |
-| ------------- | ----- |
-| `BulkInsertOperation` | Instance of BulkInsertOperation used for interaction. |
-
-# BulkInsertOperation
-
-### Methods
-
-| Signature | Description |
-| ----------| ----- |
-| **async abort()** | Aborts the bulk insert operation. Returns a `Promise`. |
-| **async store(entity, [metadata], [callback])** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. Returns a `Promise`. |
-| **async store(entity, id, [metadata], [callback])** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity. Returns a `Promise`. |
-| **async finish()** | Finish bulk insert and flush everything to the server. Returns a `Promise`. |
-
-## Limitations
-
-There are a couple limitations to the API:
-
-* The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
-
-## Example
-
-### Create bulk insert
-
-Here we create a bulk insert operation and inserting a million documents of type Employee
-
-<TabItem value="bulk_inserts_4" label="bulk_inserts_4">
-<CodeBlock language="js">
-{`\{
-    const bulkInsert = documentStore.bulkInsert();
-    for (let i = 0; i < 1000000; i++) \{
-        const employee = new Employee("FirstName #" + i, "LastName #" + i);
-        await bulkInsert.store(employee);
-    \}
-
-    await bulkInsert.finish();
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithBulkInsertOperationNodejs />
 </LanguageContent>
+
 
 <!---
 ### Document Store

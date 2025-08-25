@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **EnableIndexOperation** is used to turn on the indexing for a given index.
+
+
+## Syntax
+
+<TabItem value="enable_1" label="enable_1">
+<CodeBlock language="csharp">
+{`public EnableIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to enable indexing |
+
+## Example
+
+<TabItem value="enable_2" label="enable_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new EnableIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
+
+<Admonition type="note" title="">
+`NOT` operator cannot be used alone without succeeding predicate.
+</Admonition>
+
+## Example I
+
+<TabItem value="not_1" label="not_1">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+List<Employee> employees = session
+    .advanced()
+    .documentQuery(Employee.class)
+    .not()
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="not_2" label="not_2">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+// and lastName NOT equals 'King'
+List<Employee> employees = session
+    .advanced()
+    .documentQuery(Employee.class)
+    .not()
+    .openSubclause()
+    .whereEquals("FirstName", "Robert")
+    .andAlso()
+    .whereEquals("LastName", "King")
+    .closeSubclause()
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="not_3" label="not_3">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+// and lastName NOT equals 'King'
+// identical to 'Example II' but 'whereNotEquals' is used
+List<Employee> employees = session
+    .advanced()
+    .documentQuery(Employee.class)
+    .whereNotEquals("FirstName", "Robert")
+    .andAlso()
+    .whereNotEquals("LastName", "King")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+

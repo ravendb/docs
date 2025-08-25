@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether a document contains a certain attachment,  
+  use the method `Exists()` from the `Advanced.Attachments` session operations.  
+
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities.mdx) the document or the attachment to the session,  
+  and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool exists = session
+    .Advanced
+    .Attachments
+    .Exists("categories/1-A", "image.jpg");
+
+if (exists)
+{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`bool exists = await asyncSession
+    .Advanced
+    .Attachments
+    .ExistsAsync("categories/1-A", "image.jpg");
+
+if (exists)
+{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool Exists(string documentId, string attachmentName);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<bool> ExistsAsync(string documentId, string attachmentName, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **documentId** | `string` | The ID of the document you want to check |
+| **attachmentName** | `string` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - The specified attachment exists on the document<br/>`false` - The attachment does not exist on the document |
+
+
+
+

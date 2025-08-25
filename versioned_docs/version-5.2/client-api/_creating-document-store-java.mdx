@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Do not open a `DocumentStore` using URL addresses that point to nodes outside your cluster.
+</Admonition>
+
+<TabItem value="document_store_creation" label="document_store_creation">
+<CodeBlock language="java">
+{`try (IDocumentStore store = new DocumentStore( new String[]\{ "http://localhost:8080" \}, "Northwind")) \{
+    store.initialize();
+
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This will instantiate a communication channel between your application and the local RavenDB server instance.
+
+## Initialization
+
+To be able to work on the `DocumentStore`, you will have to call the `initialize` method to get the fully initialized instance of `IDocumentStore`.
+
+<Admonition type="note" title="Conventions" id="conventions" href="#conventions">
+
+The conventions are frozen after `DocumentStore` initialization so they need to be set before `initialize` is called.
+
+</Admonition>
+
+## Singleton
+
+Because the document store is a heavyweight object, there should only be one instance created per application (singleton). The document store is a thread safe object and its typical
+initialization looks like the following:
+
+<TabItem value="document_store_holder" label="document_store_holder">
+<CodeBlock language="java">
+{`public static class DocumentStoreHolder \{
+
+    private static IDocumentStore store;
+
+    static \{
+        store = new DocumentStore(new String[]\{ "http://localhost:8080" \}, "Northwind");
+    \}
+
+    public static IDocumentStore getStore() \{
+        return store;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+If you use more than one instance of `DocumentStore` you should dispose it after use.
+</Admonition>
+
+

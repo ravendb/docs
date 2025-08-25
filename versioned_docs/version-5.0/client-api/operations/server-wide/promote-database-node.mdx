@@ -5,50 +5,19 @@ sidebar_label: Promote Database Node
 sidebar_position: 7
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PromoteDatabaseNodeCsharp from './_promote-database-node-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Operations: Server: How to Promote a Database Node?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-This operation is used to promote a database node. After promotion, the node is considered as a `Member`. 
-
-## Syntax
-
-<TabItem value="promote_1" label="promote_1">
-<CodeBlock language="csharp">
-{`public PromoteDatabaseNodeOperation(string databaseName, string node)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **databaseName** | string | Name of a database |
-| **node** | string | Node tag to promote into database group `Member` |
-
-## Example
-
-<TabItem value="promote_2" label="promote_2">
-<CodeBlock language="csharp">
-{`PromoteDatabaseNodeOperation promoteOperation = new PromoteDatabaseNodeOperation("Northwind", "C");
-store.Maintenance.Server.Send(promoteOperation);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <PromoteDatabaseNodeCsharp />
 </LanguageContent>
+
 
 <!---
 - [Explanation of Node Types](../../../studio/server/cluster/cluster-view#cluster-nodes-types)

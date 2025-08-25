@@ -5,74 +5,19 @@ sidebar_label: Add Database Node
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import AddDatabaseNodeCsharp from './_add-database-node-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Operations: Server: How to add database node?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**AddDatabaseNodeOperation** allows you to add extra node to database group.
-
-## Syntax
-
-<TabItem value="add_1" label="add_1">
-<CodeBlock language="csharp">
-{`// Create the AddDatabaseNodeOperation
-// Add a random node to 'Northwind' database-group
-var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
-
-// Execute the operation by passing it to Maintenance.Server.Send
-DatabasePutResult result = store.Maintenance.Server.Send(addDatabaseNodeOp);
-
-// Can access the new topology
-var numberOfReplicas = result.Topology.AllNodes.Count();
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **databaseName** | string | Name of a database to add node |
-| **node** | string | Cluster node tag to extent database to. Default: random node tag. |
-
-| Return Value | |
-| ------------- | ----- |
-| `DatabasePutResult` | Database put result |
-
-## Example I
-
-<TabItem value="add_2" label="add_2">
-<CodeBlock language="csharp">
-{`// Create the AddDatabaseNodeOperation
-// Add node C to 'Northwind' database-group
-var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C");
-
-// Execute the operation by passing it to Maintenance.Server.Send
-DatabasePutResult result = store.Maintenance.Server.Send(addDatabaseNodeOp);
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="add_3" label="add_3">
-<CodeBlock language="csharp">
-{`// add node C to 'Northwind' database group
-store.Maintenance.Server.Send(new AddDatabaseNodeOperation("Northwind", "C"));
-`}
-</CodeBlock>
-</TabItem>
-
+   <AddDatabaseNodeCsharp />
 </LanguageContent>
+
 
 <!---
 

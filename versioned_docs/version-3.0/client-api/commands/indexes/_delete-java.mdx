@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**DeleteIndex** is used to remove an index from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`public void deleteIndex(final String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to delete |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().deleteIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+

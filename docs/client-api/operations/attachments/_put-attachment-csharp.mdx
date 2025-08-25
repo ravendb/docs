@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to put an attachment to a document. 
+
+## Syntax
+
+<TabItem value="put_attachment_syntax" label="put_attachment_syntax">
+<CodeBlock language="csharp">
+{`public PutAttachmentOperation(string documentId, 
+        string name, 
+        Stream stream, 
+        string contentType = null, 
+        string changeVector = null)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="put_attachment_return_value" label="put_attachment_return_value">
+<CodeBlock language="csharp">
+{`public class AttachmentDetails : AttachmentName
+\{
+    public string ChangeVector;
+    public string DocumentId;
+\}
+
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |        |                                                                         |
+|------------------|--------|-------------------------------------------------------------------------|
+| **documentId**   | string | ID of a document which will contain an attachment                       |
+| **name**         | string | Name of an attachment                                                   |
+| **stream**       | Stream | Stream contains attachment raw bytes                                    |
+| **contentType**  | string | MIME type of attachment                                                 |
+| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value     |                                     |
+|------------------|-------------------------------------|
+| **ChangeVector** | Change vector of created attachment |
+| **DocumentId**   | ID of document                      |
+| **Name**         | Name of created attachment          |
+| **Hash**         | Hash of created attachment          |
+| **ContentType**  | MIME content type of attachment     |
+| **Size**         | Size of attachment                  |
+
+## Example
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`AttachmentDetails attachmentDetails =
+    store.Operations.Send(
+        new PutAttachmentOperation("orders/1-A",
+            "invoice.pdf",
+            stream,
+            "application/pdf"));
+`}
+</CodeBlock>
+</TabItem>
+
+

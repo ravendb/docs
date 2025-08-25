@@ -1,0 +1,255 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetDocumentsCommand` to retrieve documents from the database.
+
+* In this page:
+   - [Get single document](../../../client-api/commands/documents/get.mdx#get-single-document)   
+   - [Get multiple documents](../../../client-api/commands/documents/get.mdx#get-multiple-documents)   
+   - [Get paged documents](../../../client-api/commands/documents/get.mdx#get-paged-documents)   
+   - [Get documents by ID prefix](../../../client-api/commands/documents/get.mdx#get-documents-by-id-prefix)  
+
+</Admonition>
+## Get single document
+
+**GetDocumentsCommand** can be used to retrieve a single document
+
+#### Syntax:
+
+<TabItem value="get_interface_single" label="get_interface_single">
+<CodeBlock language="php">
+{`public static function forSingleDocument(string $id, StringArray|array|null $includes = null, bool $metadataOnly = false): GetDocumentsCommand;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **id** | `string` | ID of the documents to get |
+| **includes** | `StringArray` or `array` or `null` | Related documents to fetch along with the document |
+| **metadataOnly** | `bool` | Whether to fetch the whole document or just its metadata. |
+#### Example:
+
+<TabItem value="get_sample_single" label="get_sample_single">
+<CodeBlock language="php">
+{`$command = GetDocumentsCommand::forSingleDocument("orders/1-A", null, false);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $documentsResult */
+$documentsResult = $command->getResult();
+$order = $documentsResult->getResults()[0];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get multiple documents
+
+**GetDocumentsCommand** can also be used to retrieve a list of documents.
+
+#### Syntax:
+
+<TabItem value="get_interface_multiple" label="get_interface_multiple">
+<CodeBlock language="php">
+{`public static function forMultipleDocuments(StringArray|array|null $ids, StringArray|array|null $includes, bool $metadataOnly = false): GetDocumentsCommand;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **ids** | `StringArray` or `array` or `null` | IDs of the documents to get |
+| **includes** | `StringArray` or `array` or `null` | Related documents to fetch along with the documents |
+| **metadataOnly** | `bool` | Whether to fetch whole documents or just the metadata |
+#### Example I
+
+<TabItem value="get_sample_multiple" label="get_sample_multiple">
+<CodeBlock language="php">
+{`$command = GetDocumentsCommand::forMultipleDocuments(["orders/1-A", "employees/3-A"], null, false);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$order = $result->getResults()[0];
+$employee = $result->getResults()[1];
+`}
+</CodeBlock>
+</TabItem>
+
+#### Example II - Using Includes
+
+<TabItem value="get_sample_includes" label="get_sample_includes">
+<CodeBlock language="php">
+{`// Fetch employees/5-A and his boss.
+$command = GetDocumentsCommand::forSingleDocument("employees/5-A", [ "ReportsTo" ], false);
+$session->advanced()->getRequestExecutor()->execute($command);
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$employee = $result->getResults()[0];
+if (array_key_exists("ReportsTo", $employee)) \{
+    $bossId = $employee["ReportsTo"];
+
+    $boss = $result->getIncludes()[$bossId];
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Example III - Missing Documents
+
+<TabItem value="get_sample_missing" label="get_sample_missing">
+<CodeBlock language="php">
+{`// Assuming that products/9999-A doesn't exist.
+$command = GetDocumentsCommand::forMultipleDocuments([ "products/1-A", "products/9999-A", "products/3-A" ], null, false);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$products = $result->getResults(); // products/1-A, null, products/3-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get paged documents
+
+**GetDocumentsCommand** can also be used to retrieve a paged set of documents.
+
+#### Syntax:
+
+<TabItem value="get_interface_paged" label="get_interface_paged">
+<CodeBlock language="php">
+{`public static function withStartAndPageSize(int $start, int $pageSize): GetDocumentsCommand;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+#### Example:
+
+<TabItem value="get_sample_paged" label="get_sample_paged">
+<CodeBlock language="php">
+{`$command = GetDocumentsCommand::withStartAndPageSize(0, 128);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$firstDocs = $result->getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get documents by ID prefix
+
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified ID prefix.
+
+#### Syntax:
+
+<TabItem value="get_interface_startswith" label="get_interface_startswith">
+<CodeBlock language="php">
+{`public static function withStartWith(
+    ?string $startWith,
+    ?string $startAfter,
+    ?string $matches,
+    ?string $exclude,
+    int $start,
+    int $pageSize,
+    bool $metadataOnly
+): GetDocumentsCommand;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **startWith** | `?string` | prefix for which documents should be returned |
+| **startAfter** | `?string` | skip 'document fetching' until the given ID is found, and return documents after that ID (default: None) |
+| **matches** | `?string` | pipe ('&#124;') separated values for which document IDs (after `startWith`) should be matched ('?' any single character, '*' any characters) |
+| **exclude** | `?string` | pipe ('&#124;') separated values for which document IDs (after `startWith`) should **not** be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **metadataOnly** | `bool` | specifies whether or not only document metadata should be returned |
+#### Example I
+
+<TabItem value="get_sample_startswith" label="get_sample_startswith">
+<CodeBlock language="php">
+{`// return up to 128 documents with key that starts with 'products'
+$command = GetDocumentsCommand::withStartWith(
+    startWith: "products",
+    startAfter: null,
+    matches: null,
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$products = $result->getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+#### Example II
+
+<TabItem value="get_sample_startswith_matches" label="get_sample_startswith_matches">
+<CodeBlock language="php">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+$command = GetDocumentsCommand::withStartWith(
+    startWith: "products",
+    startAfter: null,
+    matches: "1*|2*",
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$products = $result->getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+#### Example III
+
+<TabItem value="get_sample_startswith_matches_end" label="get_sample_startswith_matches_end">
+<CodeBlock language="php">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key have length of 3, begins and ends with "1"
+// and contains any character at 2nd position e.g. products/101, products/1B1
+$command = GetDocumentsCommand::withStartWith(
+    startWith: "products",
+    startAfter: null,
+    matches: "1?1",
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+
+$session->advanced()->getRequestExecutor()->execute($command);
+
+/** @var GetDocumentsResult $result */
+$result = $command->getResult();
+$products = $result->getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,272 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.
+
+They in turn, are built on top of the notion of Operations and Commands.
+
+Operations are an encapsulation of a set of low level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
+
+They are available in the DocumentStore under the **Operations**, **Maintenance**, and **Maintenance.Server** properties.
+
+## Common Operations
+
+Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based.mdx) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query.mdx)).  
+There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview.mdx) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment.mdx) and [Counters](../../client-api/operations/counters/counter-batch.mdx).
+
+### How to Send an Operation
+
+In order to excecute an operation, you will need to use the `Send` or `SendAsync` methods. Avaliable overloads are:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`void Send(IOperation operation, SessionInfo sessionInfo = null);
+
+TResult Send<TResult>(IOperation<TResult> operation, SessionInfo sessionInfo = null);
+
+Operation Send(IOperation<OperationIdResult> operation, SessionInfo sessionInfo = null);
+
+PatchStatus Send(PatchOperation operation);
+
+PatchOperation.Result<TEntity> Send<TEntity>(PatchOperation<TEntity> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task SendAsync(IOperation operation, CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+
+Task<TResult> SendAsync<TResult>(IOperation<TResult> operation, CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+
+Task<Operation> SendAsync(IOperation<OperationIdResult> operation, CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+
+Task<PatchStatus> SendAsync(PatchOperation operation, CancellationToken token = default(CancellationToken));
+
+Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> operation, CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following operations are available:
+
+#### Compare Exchange
+
+* [CompareExchange](../../client-api/operations/compare-exchange/overview.mdx)   
+
+#### Attachments
+
+* [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)
+* [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)
+* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)
+
+#### Patching
+
+* [PatchByQueryOperation](../../client-api/operations/patching/set-based.mdx)   
+* [PatchOperation](../../client-api/operations/patching/single-document.mdx)   
+
+#### Counters
+
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx)   
+* [GetCountersOperation](../../client-api/operations/counters/get-counters.mdx)   
+
+#### Misc
+
+* [DeleteByQueryOperation](../../client-api/operations/delete-by-query.mdx)   
+
+### Example - Get Attachment
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (AttachmentResult fetchedAttachment = documentStore.Operations.Send(new GetAttachmentOperation("users/1", "file.txt", AttachmentType.Document, null)))
+{
+    //do stuff with the attachment stream --> fetchedAttachment.Stream                                       
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (AttachmentResult fetchedAttachment = await documentStore.Operations.SendAsync(new GetAttachmentOperation("users/1", "file.txt", AttachmentType.Document, null)))
+{
+    //do stuff with the attachment stream --> fetchedAttachment.Stream                                       
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Maintenance Operations
+
+Maintenance operations include operations for changing the configuration at runtime and for management of index operations.
+
+### How to Send an Operation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`void Send(IMaintenanceOperation operation);
+
+TResult Send<TResult>(IMaintenanceOperation<TResult> operation);
+
+Operation Send(IMaintenanceOperation<OperationIdResult> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task SendAsync(IMaintenanceOperation operation, CancellationToken token = default(CancellationToken));
+
+Task<TResult> SendAsync<TResult>(IMaintenanceOperation<TResult> operation, CancellationToken token = default(CancellationToken));
+
+Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation, CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following maintenance operations are available:
+
+#### Client Configuration
+
+* [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)   
+* [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)   
+
+#### ETL
+
+* [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl.mdx)
+
+#### Indexes
+
+* [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index.mdx)   
+* [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index.mdx)   
+* [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index.mdx)   
+* [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index.mdx)   
+* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
+* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority.mdx)   
+* [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index.mdx)   
+* [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
+* [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index.mdx)   
+* [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
+* [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
+* [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index.mdx)   
+* [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
+* [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms.mdx)   
+* [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
+* [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
+
+#### Misc
+
+* [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-collection-statistics.mdx)   
+* [GetStatisticsOperation](../../client-api/operations/maintenance/get-statistics.mdx)     
+* [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities.mdx)   
+
+### Example - Stop Index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`documentStore.Maintenance.Send(new StopIndexOperation("Orders/ByCompany"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await documentStore.Maintenance.SendAsync(new StopIndexOperation("Orders/ByCompany"));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Server Operations
+
+These type of operations contain various administrative and miscellaneous configuration operations.
+
+### How to Send an Operation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`void Send(IServerOperation operation);
+
+TResult Send<TResult>(IServerOperation<TResult> operation);
+
+Operation Send(IServerOperation<OperationIdResult> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task SendAsync(IServerOperation operation, CancellationToken token = default(CancellationToken));
+
+Task<TResult> SendAsync<TResult>(IServerOperation<TResult> operation, CancellationToken token = default(CancellationToken));
+
+Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation, CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following server-wide operations are available:
+
+#### Client Certificates
+
+* [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
+* [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates.mdx)   
+* [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate.mdx)   
+* [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
+
+#### Server-wide Configuration
+
+* [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration.mdx)   
+* [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx)   
+
+#### Cluster Management
+
+* [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node.mdx)   
+* [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx)   
+* [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database.mdx)   
+* [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node.mdx)   
+* [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state.mdx)   
+* [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members.mdx)   
+
+#### Miscellaneous
+
+* [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number.mdx)   
+* [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names.mdx)   
+
+### Example - Get Build Number
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var getBuildNumberResult = documentStore.Maintenance.Server.Send(new GetBuildNumberOperation());
+Console.WriteLine(getBuildNumberResult.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var buildNumber = await documentStore.Maintenance.Server.SendAsync(new GetBuildNumberOperation());
+Console.WriteLine(buildNumber.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Remarks
+
+<Admonition type="note" title="">
+By default, operations available in `store.Operations` or `store.Maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx)** method.
+</Admonition>
+
+

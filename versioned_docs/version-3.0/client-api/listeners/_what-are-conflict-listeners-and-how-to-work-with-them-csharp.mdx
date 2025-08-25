@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener.
+To create your own listener of this type, just implement IDocumentConflictListener interface.
+
+<TabItem value="document_conflict_listener" label="document_conflict_listener">
+<CodeBlock language="csharp">
+{`public interface IDocumentConflictListener
+\{
+	bool TryResolveConflict(string key, JsonDocument[] conflictedDocs, 
+							out JsonDocument resolvedDocument);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+This example shows how to create an automatic conflict resolver by using `IDocumentConflictListener`, which will pick the newest item from the list of conflicted documents:
+
+<TabItem value="document_conflict_example" label="document_conflict_example">
+<CodeBlock language="csharp">
+{`public class ResolveInFavourOfNewest : IDocumentConflictListener
+\{
+	public bool TryResolveConflict(
+		string key,
+		JsonDocument[] conflictedDocs,
+		out JsonDocument resolvedDocument)
+	\{
+		DateTime? maxDate = conflictedDocs.Max(x => x.LastModified);
+		resolvedDocument = conflictedDocs
+							.FirstOrDefault(x => x.LastModified == maxDate);
+
+		if (resolvedDocument == null)
+			return false;
+
+		resolvedDocument.Metadata.Remove("@id");
+		resolvedDocument.Metadata.Remove("@etag");
+		return true;
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

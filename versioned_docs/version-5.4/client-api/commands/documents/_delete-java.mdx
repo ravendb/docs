@@ -1,0 +1,32 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="java">
+{`public DeleteDocumentCommand(String id, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | ID of a document to be deleted |
+| **changeVector** | `String` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_sample" label="delete_sample">
+<CodeBlock language="java">
+{`DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
+session.advanced().getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+

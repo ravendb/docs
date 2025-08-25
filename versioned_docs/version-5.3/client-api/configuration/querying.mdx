@@ -5,166 +5,24 @@ sidebar_label: Querying
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import QueryingCsharp from './_querying-csharp.mdx';
+import QueryingJava from './_querying-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Conventions: Querying
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-## FindPropertyNameForIndex and FindPropertyNameForDynamicIndex
-
-These two conventions specify functions that are used to find the indexed property name for a static index or a dynamic one. This can be useful when you are indexing nested properties 
-of complex types. Their default implementations are:
-
-<TabItem value="find_prop_name" label="find_prop_name">
-<CodeBlock language="csharp">
-{`FindPropertyNameForIndex = (indexedType, indexName, path, prop) =>
-    (path + prop).Replace(",", "_").Replace(".", "_"),
-
-FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path + prop,
-`}
-</CodeBlock>
-</TabItem>
-
-The arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
-
-## FindProjectedPropertyNameForIndex
-
-This convention specifies a function that is used to find the projected property name for a static index.  
-This can be useful when you want to use a static index to project nested properties which are not [`Stored`](../../indexes/storing-data-in-index.mdx).
-
-<TabItem value="find_projected_prop_name" label="find_projected_prop_name">
-<CodeBlock language="csharp">
-{`public Func<Type, string, string, string, string> FindProjectedPropertyNameForIndex
-`}
-</CodeBlock>
-</TabItem>
-
-Same as in the two conventions above, the arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
-
-By default `FindProjectedPropertyNameForIndex` is set to `null`.  
-When `FindProjectedPropertyNameForIndex` is `null` (or returns `null`), the `FindPropertyNameForIndex` convention is used instead.
-
-### Example
-Consider we have the following index, and we want to project `School.Id`:
-<TabItem value="users_index" label="users_index">
-<CodeBlock language="csharp">
-{`private class UsersIndex : AbstractIndexCreationTask<User>
-\{
-    public UsersIndex()
-    \{
-        Map = users => from user in users
-            select new
-            \{
-                SchoolId = user.School.Id
-            \};
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-Without setting `FindProjectedPropertyNameForIndex`, `FindPropertyNameForIndex` will be used :
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var query = session.Query<User, UsersIndex>()
-    .Where(u => u.School.Id != null)
-    .Select(u => u.School.Id)
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index 'UsersIndex'
-where School_Id != null
-select School_Id
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-`School_Id` is indexed but not `Stored`, meaning that we will try to
-fetch `School_Id` from the document - which doesn't have this property.
-
-Setting the `FindProjectedPropertyNameForIndex` convention can solve this issue:
-<TabItem value="find_projected_prop_usage" label="find_projected_prop_usage">
-<CodeBlock language="csharp">
-{`Conventions =
-\{
-    FindProjectedPropertyNameForIndex = (indexedType, indexName, path, prop) => path + prop
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var query = session.Query<User, UsersIndex>()
-    .Where(u => u.School.Id != null)
-    .Select(u => u.School.Id)
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index 'UsersIndex'
-where School_Id != null
-select School.Id
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-## ThrowIfQueryPageSizeIsNotSet
-
-Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `ThrowIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
-should prevent from executing queries if their page size is not explicitly set. 
-
-Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
-
-<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
-<CodeBlock language="csharp">
-{`ThrowIfQueryPageSizeIsNotSet = true
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <QueryingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-## ThrowIfQueryPageSizeIsNotSet
-
-Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `ThrowIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
-should prevent from executing queries if their page size is not explicitly set. 
-
-Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
-
-<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
-<CodeBlock language="java">
-{`store.getConventions().setThrowIfQueryPageSizeIsNotSet(true);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <QueryingJava />
 </LanguageContent>
+
 
 <!---
 ### Conventions

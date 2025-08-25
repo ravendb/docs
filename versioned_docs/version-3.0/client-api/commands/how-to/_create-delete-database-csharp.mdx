@@ -1,0 +1,125 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This article will describe the following commands (and extensions) that enable you to manage databases on a server:   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#deletedatabase)   
+- [EnsureDatabaseExists](../../../client-api/commands/how-to/create-delete-database.mdx#ensuredatabaseexists---extension-method)   
+
+## **CreateDatabase**
+
+This method is used to create a new database on a server.
+
+### Syntax
+
+<TabItem value="create_database_1" label="create_database_1">
+<CodeBlock language="csharp">
+{`void CreateDatabase(DatabaseDocument databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
+
+### Example
+
+<TabItem value="create_database_2" label="create_database_2">
+<CodeBlock language="csharp">
+{`// create database 'NewDatabase' with 'PeriodicExport' bundle enabled
+store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(new DatabaseDocument
+		                \{
+			                Id = "NewDatabase", 
+							Settings =
+								\{
+									\{ "Raven/ActiveBundles", "PeriodicExport" \},
+                                                \{ "Raven/DataDir", @"~\\Databases\\NewDatabase" \}
+                                            \}
+		                \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **DeleteDatabase**
+
+This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
+
+### Syntax
+
+<TabItem value="delete_database_1" label="delete_database_1">
+<CodeBlock language="csharp">
+{`void DeleteDatabase(string dbName, bool hardDelete = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **dbName** | string | Name of a database to delete |
+| **hardDelete** | bool | Should all data be removed (data files, indexing files, etc.). Default: `false` |
+
+### Example
+
+<TabItem value="delete_database_2" label="delete_database_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.GlobalAdmin.DeleteDatabase("NewDatabase", hardDelete: true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **EnsureDatabaseExists - extension method**
+
+This extension method creates database on a server with **default configuration and indexes** if that database does not exist.
+
+### Syntax
+
+<TabItem value="ensure_database_exists_2" label="ensure_database_exists_2">
+<CodeBlock language="csharp">
+{`// required namespace in usings
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="ensure_database_exists_1" label="ensure_database_exists_1">
+<CodeBlock language="csharp">
+{`public static void EnsureDatabaseExists(
+	this IGlobalAdminDatabaseCommands self,
+	string name,
+	bool ignoreFailures = false)
+\{
+	throw new CodeOmitted();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a database that will be created if it does not exist |
+| **ignoreFailures** | bool | Ignore any exceptions that could heve occurred during database creation. Default: `false` |
+
+### Example
+
+<TabItem value="ensure_database_exists_3" label="ensure_database_exists_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.EnsureDatabaseExists("NewDatabase", ignoreFailures: false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

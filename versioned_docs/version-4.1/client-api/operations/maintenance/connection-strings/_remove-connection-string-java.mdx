@@ -1,0 +1,45 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can remove a connection string by using **RemoveConnectionStringOperation**.
+
+## Syntax
+
+<TabItem value="remove_connection_string" label="remove_connection_string">
+<CodeBlock language="java">
+{`public RemoveConnectionStringOperation(T connectionString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **connectionString** | `T` | Connection string to remove: `RavenConnectionString` or `SqlConnectionString` |
+
+## Example - Remove Raven Connection String
+
+<TabItem value="remove_raven_connection_string" label="remove_raven_connection_string">
+<CodeBlock language="java">
+{`RemoveConnectionStringOperation<RavenConnectionString> operation =
+    new RemoveConnectionStringOperation<>(connectionString);
+
+store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Remove Sql Connection String
+
+<TabItem value="remove_sql_connection_string" label="remove_sql_connection_string">
+<CodeBlock language="java">
+{`RemoveConnectionStringOperation<SqlConnectionString> operation =
+    new RemoveConnectionStringOperation<>(connectionString);
+
+store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+

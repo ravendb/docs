@@ -1,0 +1,1230 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The __Patch__ operation is used to perform _partial_ document updates with __one trip to the server__, 
+  instead of loading, modifying, and saving a full document.  
+  The whole operation is executed on the server-side and is useful as a performance enhancement or for 
+  updating denormalized data in entities.
+
+* Since the operation is executed in a single request to the database,  
+  the patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support.mdx).  
+
+* The current page covers patch operations on single documents.
+
+* Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), 
+[Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), 
+and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+
+* Patching can be done from the [client API](../../../client-api/operations/patching/single-document.mdx#examples) as well as in the [studio](../../../studio/database/documents/patch-view.mdx).  
+
+In this page:  
+
+* [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Session API](../../../client-api/operations/patching/single-document.mdx#session-api)
+  * [Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer)
+  * [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api)
+  * [List of script methods](../../../client-api/operations/patching/single-document.mdx#list-of-script-methods)
+* [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+  * [Change value of single field](../../../client-api/operations/patching/single-document.mdx#change-value-of-single-field)  
+  * [Change values of two fields](../../../client-api/operations/patching/single-document.mdx#change-values-of-two-fields)  
+  * [Increment value](../../../client-api/operations/patching/single-document.mdx#increment-value)  
+  * [Add or increment](../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
+  * [Add or patch](../../../client-api/operations/patching/single-document.mdx#add-or-patch)  
+  * [Add or patch to an existing array](../../../client-api/operations/patching/single-document.mdx#add-or-patch-to-an-existing-array)  
+  * [Add item to array](../../../client-api/operations/patching/single-document.mdx#add-item-to-array)  
+  * [Insert item into specific position in array](../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
+  * [Modify item in specific position in array](../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
+  * [Remove items from array](../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
+  * [Loading documents in a script](../../../client-api/operations/patching/single-document.mdx#loading-documents-in-a-script)  
+  * [Remove property](../../../client-api/operations/patching/single-document.mdx#remove-property)  
+  * [Rename property](../../../client-api/operations/patching/single-document.mdx#rename-property)  
+  * [Add document](../../../client-api/operations/patching/single-document.mdx#add-document)  
+  * [Clone document](../../../client-api/operations/patching/single-document.mdx#clone-document)  
+  * [Increment counter](../../../client-api/operations/patching/single-document.mdx#increment-counter)  
+  * [Delete counter](../../../client-api/operations/patching/single-document.mdx#delete-counter)  
+  * [Get counter](../../../client-api/operations/patching/single-document.mdx#get-counter)  
+  * [Patching using inline string compilation](../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+
+</Admonition>
+
+## API Overview
+
+## Session API
+
+A type-safe session interface that allows performing the most common patch operations.  
+The patch request will be sent to the server only when calling `SaveChanges`.  
+This way it's possible to perform multiple operations in one request to the server.  
+
+<Admonition type="note" title="">
+
+### Increment field value
+`Session.Advanced.Increment`
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
+<CodeBlock language="csharp">
+{`void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
+
+void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to be added. |
+
+* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
+`Session.Advanced.AddOrIncrement`
+<TabItem value="add_or_increment_generic" label="add_or_increment_generic">
+<CodeBlock language="csharp">
+{`void AddOrIncrement<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU valToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **TU** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **valToAdd** | `U` | Value to be added. |
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Set field value
+`Session.Advanced.Patch`
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
+<CodeBlock language="csharp">
+{`void Patch<T, U>(string id, Expression<Func<T, U>> fieldPath, U value);
+
+void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to set. |
+`Session.Advanced.AddOrPatch`
+
+<TabItem value="add_or_patch_generic" label="add_or_patch_generic">
+<CodeBlock language="csharp">
+{`void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **TU** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **value** | `U` | Value to set. |
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Array manipulation
+`Session.Advanced.Patch`
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
+<CodeBlock language="csharp">
+{`void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> fieldPath,
+    Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
+
+void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
+    Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters                   | Type | Description |
+|------------------------------| ------------- | ----- |
+| **T**                        | `Type` | Entity type |
+| **U**                        | `Type` | Field type|
+| **entity**                   | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id**                | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath**                | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **arrayModificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+`Session.Advanced.AddOrPatch`
+<TabItem value="add_or_patch_array_generic" label="add_or_patch_array_generic">
+<CodeBlock language="csharp">
+{`void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, List<TU>>> path, 
+    Expression<Func<JavaScriptArray<TU>, object>> arrayAdder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **TU** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **Expression&lt;Func&lt;JavaScriptArray&gt;** | `Expression<Func<JavaScriptArray<TU>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+| **arrayAdder** | `Add()` | Values to add to array. |
+
+<Admonition type="info" title="JavaScriptArray" id="javascriptarray" href="#javascriptarray">
+
+`JavaScriptArray` allows building lambdas representing array manipulations for patches.  
+
+| Method Signature| Return Type | Description |
+|--------|:-----|-------------| 
+| **Put(T item)** | `JavaScriptArray` | Allows adding `item` to an array. |
+| **Put(params T[] items)** | `JavaScriptArray` | Items to be added to the array. |
+| **RemoveAt(int index)** | `JavaScriptArray` | Removes item in position `index` in array. |
+| **RemoveAll(Func&lt;T, bool&gt; predicate)** | `JavaScriptArray` | Removes all the items in the array that satisfy the given predicate. |
+
+</Admonition>
+
+</Admonition>
+
+
+
+## Session API using Defer
+
+The non-typed Session API for patches uses the `Session.Advanced.Defer` function which allows registering one or more commands.  
+One of the possible commands is the `PatchCommandData`, describing single document patch command.  
+The patch request will be sent to the server only when calling `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+
+`Session.Advanced.Defer`
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
+<CodeBlock language="csharp">
+{`void Defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="">
+
+#### PatchCommandData
+
+| Constructor        | Type           | Description                                                                                                                              |
+|--------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**             | `string`       | ID of the document to be patched.                                                                                                        |
+| **changeVector**   | `string`       | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch**          | `PatchRequest` | Patch request to be performed on the document.                                                                                           |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found.                                                  |
+
+</Admonition>
+
+<Admonition type="info" title="">
+
+#### PatchRequest
+
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. 
+Parameters can be accessed in the script through the `args` object and passed using PatchRequest's "Values" parameter.
+
+| Property   | Type                         | Description                                                                                                                                                                        |
+|------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Script** | `string`                     | The patching script, written in JavaScript.                                                                                                                                        |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script.<br/>The parameters can be accessed using the '$' prefix.<br/>Parameter starting with a '$' will be used as is, without further concatenation. |
+
+</Admonition>
+
+
+
+## Operations API
+
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
+
+`Raven.Client.Documents.Operations.Send`  
+`Raven.Client.Documents.Operations.SendAsync`  
+
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
+<CodeBlock language="csharp">
+{`PatchStatus Send(PatchOperation operation);
+
+Task<PatchStatus> SendAsync(PatchOperation operation, 
+                            SessionInfo sessionInfo = null, 
+                            CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="PatchOperation" id="patchoperation" href="#patchoperation">
+
+| Constructor                         | Type           | Description                                                                                                                                                                                                                                                                          |
+|-------------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**                              | `string`       | ID of the document to be patched.                                                                                                                                                                                                                                                    |
+| **changeVector**                    | `string`       | Change vector of the document to be patched.<br/>Used to verify that the document was not modified before the patch reached it.<br/>Can be `null`.                                                                                                                                     |
+| **patch**                           | `PatchRequest` | Patch request to perform on the document.                                                                                                                                                                                                                                            |
+| **patchIfMissing**                  | `PatchRequest` | Patch request to perform if the specified document is not found.<br/>Will run only if no `changeVector` was passed.<br/>Can be `null`.                                                                                                                                                 |
+| **skipPatchIfChangeVectorMismatch** | `bool`         | `true` - do not patch if the document has been modified.<br/>`false` (Default) - execute the patch even if document has been modified.<br/><br/>An exception is thrown if:<br/>this param is `false` + `changeVector` has value + document with that ID and change vector was not found. |
+
+</Admonition>
+
+
+
+## List of script methods
+
+This is a list of a few of the javascript methods that can be used in patch scripts.  
+See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+
+| Method               | Arguments                                           | Description                                                                                                                                                                                                                                            |
+|----------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **load**             | `string` or `string[]`                              | Loads one or more documents into the context of the script by their document IDs                                                                                                                                                                       |
+| **loadPath**         | A document and a path to an ID within that document | Loads a related document by the path to its ID                                                                                                                                                                                                         |
+| **del**              | Document ID; change vector                          | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted.                                                                                |
+| **put**              | Document ID; document; change vector                | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg**          | Key                                                 | Load a compare exchange value into the context of the script using its key                                                                                                                                                                             |
+| **getMetadata**      | Document                                            | Returns the document's metadata                                                                                                                                                                                                                        |
+| **id**               | Document                                            | Returns the document's ID                                                                                                                                                                                                                              |
+| **lastModified**     | Document                                            | Returns the `DateTime` of the most recent modification made to the given document                                                                                                                                                                      |
+| **counter**          | Document; counter name                              | Returns the value of the specified counter in the specified document                                                                                                                                                                                   |
+| **counterRaw**       | Document; counter name                              | Returns the specified counter in the specified document as a key-value pair                                                                                                                                                                            |
+| **incrementCounter** | Document; counter name                              | Increases the value of the counter by one                                                                                                                                                                                                              |
+| **deleteCounter**    | Document; counter name                              | Deletes the counter                                                                                                                                                                                                                                    |
+| **spatial.distance** | Two points by latitude and longitude; spatial units | Find the distance between to points on the earth                                                                                                                                                                                                       |
+| **timeseries**       | Document; the time series' name                     | Returns the specified time series object                                                                                                                                                                                                               |
+
+
+
+## Examples
+
+### Change value of single field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+session.Advanced.Patch<Employee, string>(
+    "employees/1",
+    x => x.FirstName, "Robert");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Change values of two fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`// Modify FirstName to Robert and LastName to Carter in single request
+// ===================================================================
+
+// The two Patch operations below are sent via 'SaveChanges()' which complete transactionally,
+// as this call generates a single HTTP request to the database.
+// Either both will succeed or both will be rolled back since they are applied within the same transaction.
+// However, on the server side, the two Patch operations are still executed separately.
+// To achieve atomicity at the level of a single server-side operation, use 'Defer' or the operations syntax.
+
+session.Advanced.Patch<Employee, string>("employees/1", x => x.FirstName, "Robert");
+session.Advanced.Patch<Employee, string>("employees/1", x => x.LastName, "Carter");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// Change FirstName to Robert and LastName to Carter in single request
+// Note that here we do maintain the atomicity of the operation
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"
+                this.FirstName = args.UserName.FirstName;
+                this.LastName = args.UserName.LastName;",
+        Values =
+        {
+            {
+                "UserName", new
+                {
+                    FirstName = "Robert",
+                    LastName = "Carter"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// Change FirstName to Robert and LastName to Carter in single request
+// Note that here we do maintain the atomicity of the operation
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"
+                this.FirstName = args.UserName.FirstName;
+                this.LastName = args.UserName.LastName;",
+        Values =
+        {
+            {
+                "UserName", new
+                {
+                    FirstName = "Robert",
+                    LastName = "Carter"
+                }
+            }
+        }
+    }, patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Increment value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`// increment UnitsInStock property value by 10
+session.Advanced.Increment<Product, int>("products/1-A", x => x.UnitsInStock, 10);
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.UnitsInStock += args.UnitsToAdd;",
+        Values =
+        {
+            {"UnitsToAdd", 10}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.UnitsInStock += args.UnitsToAdd;",
+        Values =
+        {
+            {"UnitsToAdd", 10}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Add or increment
+
+`AddOrIncrement` increments an existing field or adds a new one in documents where they didn't exist.
+
+<TabItem value="Add_Or_Increment_Sample" label="Add_Or_Increment_Sample">
+<CodeBlock language="csharp">
+{`// While running AddOrIncrement specify <entity type, field type>
+session.Advanced.AddOrIncrement<User, int>(
+
+        // Specify document id and entity on which the operation should be performed.
+        id,
+        new User
+        \{
+            FirstName = "John",
+            LastName = "Doe",
+            LoginCount = 1
+
+        // The path to the field and value to be added.
+        \}, x => x.LoginCount, 1);
+
+    session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+### Add or patch
+
+`AddOrPatch` adds or edits field(s) in a single document.  
+
+If the document doesn't yet exist, this operation adds the document but doesn't patch it.  
+
+<TabItem value="Add_Or_Patch_Sample" label="Add_Or_Patch_Sample">
+<CodeBlock language="csharp">
+{`// While running AddOrPatch specify <entity type, field type>
+session.Advanced.AddOrPatch<User, DateTime>(
+
+// Specify document id and entity on which the operation should be performed.
+    id,
+    new User
+    \{
+        FirstName = "John",
+        LastName = "Doe",
+        LastLogin = DateTime.Now
+    \},
+    // The path to the field and value to set.
+    x => x.LastLogin, new DateTime(2021, 9, 12));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+### Add or patch to an existing array
+
+This sample shows how to patch an existing array or add it to documents where it doesn't yet exist.
+
+<TabItem value="Add_Or_Patch_Array_Sample" label="Add_Or_Patch_Array_Sample">
+<CodeBlock language="csharp">
+{`// While running AddOrPatch specify <entity type, field type>
+session.Advanced.AddOrPatch<User, DateTime>(
+
+    // Specify document id and entity on which the operation should be performed.
+    id,
+    new User
+    \{
+        FirstName = "John",
+        LastName = "Doe",
+        LoginTimes =
+        new List<DateTime>
+        \{
+                DateTime.UtcNow
+        \}
+    \},
+    // The path to the field
+    x => x.LoginTimes,
+    // Modifies the array
+    u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+### Add item to array
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+session.Advanced.Patch<BlogPost, BlogComment>("blogposts/1",
+    x => x.Comments,
+    comments => comments.Add(new BlogComment
+    {
+        Content = "Lore ipsum",
+        Title = "Some title"
+    }));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Insert item into specific position in array
+
+Inserting item into specific position is supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// insert a new comment at position 1 to Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(1, 0, args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(1, 0, args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Modify item in specific position in array
+
+Inserting item into specific position is supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// modify a comment at position 3 in Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(3, 1, args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// modify a comment at position 3 in Comments
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(3, 1, args.Comment);",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Remove items from array
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents 
+session.Advanced.Patch<BlogPost, BlogComment>("blogposts/1",
+    x => x.Comments,
+    comments => comments.RemoveAll(y => y.Content.Contains("wrong")));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents 
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Comments = this.Comments.filter(comment=>
+                 !comment.Content.includes(args.Text));",
+        Values =
+        {
+            {"Text", "wrong"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Comments = this.Comments.filter(comment=>
+                 !comment.Content.includes(args.Text));",
+        Values =
+        {
+            {"Text", "wrong"}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Loading documents in a script
+
+Loading documents is supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// update product names in order, according to loaded product documents
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Lines.forEach(line=> { 
+                var productDoc = load(line.Product);
+                line.ProductName = productDoc.Name;
+                });"
+    }, patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// update product names in order, according to loaded product documents
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Lines.forEach(line=> { 
+                var productDoc = load(line.Product);
+                line.ProductName = productDoc.Name;
+                });"
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Remove property
+
+Removing property supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// remove property Age
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"delete this.Age;"
+    },
+    patchIfMissing: null));
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`// remove property Age
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"delete this.Age;"
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Rename property
+
+Renaming property supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`// rename FirstName to Name
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName;",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName;",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Add document
+
+Adding a new document is supported only by the non-typed APIs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+    new PatchRequest
+    {
+        Script = "put('orders/', { Employee: id(this) });",
+    }, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+{
+    Script = "put('orders/', { Employee: id(this) });",
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Clone document
+
+To clone a document via patching, use the `put` method within the patching script as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+    new PatchRequest
+    {
+        Script = "put('employees/', this);",
+    }, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+{
+    Script = "put('employees/', this);",
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+**Attachments, Counters, Time Series, and Revisions:**
+
+  * When cloning a document via patching, only the document's fields are copied to the new document.  
+    Attachments, counters, time series data, and revisions from the source document will Not be copied automatically. 
+  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
+    [Counters methods](../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../server/kb/javascript-engine.mdx#time-series-operations).  
+  * Note: When [Cloning a document via the Studio](../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+    attachments, counters, time Series, and revisions will be copied automatically.
+
+**Archived documents:**
+
+  * If the source document is archived, the cloned document will Not be archived.  
+    To learn more about archived documents, see [Data archival overview](../../../data-archival/overview.mdx).
+
+</Admonition>
+### Increment counter
+
+In order to increment or create a counter use &lt;code&gt;incrementCounter&lt;/code&gt; method as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`var order = session.Load<Order>("orders/1-A");
+session.CountersFor(order).Increment("Likes", 1);
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("orders/1-A", null,
+    new PatchRequest
+    {
+        Script = "incrementCounter(this, args.name, args.val);",
+        Values =
+        {
+            { "name", "Likes" },
+            { "val", 20 }
+        }
+    }, null));
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("orders/1-A", null, new PatchRequest
+{
+    Script = "incrementCounter(this, args.name, args.val);",
+    Values =
+    {
+        { "name", "Likes" },
+        { "val", -1 }
+    }
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Method overloading & value restrictions" id="method-overloading-value-restrictions" href="#method-overloading-value-restrictions">
+
+The method can be called by document ID or by document reference and the value can be negative.
+
+</Admonition>
+### Delete counter
+
+In order to delete a counter use &lt;code&gt;deleteCounter&lt;/code&gt; method as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`session.CountersFor("orders/1-A").Delete("Likes");
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("products/1-A", null,
+    new PatchRequest
+    {
+        Script = "deleteCounter(this, args.name);",
+        Values =
+        {
+            { "name", "Likes" },
+        }
+    }, null));
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation_syntax" label="Operation_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("products/1-A", null, new PatchRequest
+{
+    Script = "deleteCounter(this, args.name);",
+    Values =
+    {
+        { "name", "Likes" },
+    }
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Method overloading" id="method-overloading" href="#method-overloading">
+
+The method can be called by document ID or by document reference
+
+</Admonition>
+### Get counter
+
+In order to get a counter while patching use &lt;code&gt;counter&lt;/code&gt; method as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+<CodeBlock language="csharp">
+{`var order = session.Load<Order>("orders/1-A");
+var counters = session.Advanced.GetCountersFor(order);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("orders/1-A", null,
+    new PatchRequest
+    {
+        Script = @"var likes = counter(this.Company, args.name);
+                   put('result/', {company: this.Company, likes: likes});",
+        Values =
+        {
+            { "name", "Likes" },
+        }
+    }, null));
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("orders/1-A", null, new PatchRequest
+{
+    Script = @"var likes = counter(this.Company, args.name);
+               put('result/', {company: this.Company, likes: likes});",
+    Values =
+    {
+        { "name", "Likes" },
+    }
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Method overloading" id="method-overloading" href="#method-overloading">
+
+The method can be called by document ID or by document reference.
+
+</Admonition>
+### Patching using inline string compilation
+
+* When using a JavaScript script with the _defer_ or _operations_ syntax,  
+  you can apply logic using **inline string compilation**.
+
+* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration.mdx#patchingallowstringcompilation) configuration key to _true_.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Patching_usingFunction" label="Patching_usingFunction">
+<CodeBlock language="csharp">
+{`// Modify value using inline string compilation
+// ============================================
+
+session.Advanced.Defer(new PatchCommandData(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"
+            // Give a discount if the product is low in stock:
+            const functionBody = 'return doc.UnitsInStock < lowStock ? ' + 
+                'doc.PricePerUnit * discount :' + 
+                'doc.PricePerUnit;';
+        
+            // Define a function that processes the document and returns the price:
+            const calcPrice = new Function('doc', 'lowStock', 'discount', functionBody);
+        
+            // Update the product's PricePerUnit based on the function:
+            this.PricePerUnit = calcPrice(this, args.LowStock, args.Discount);",
+        
+        Values = {
+            {"LowStock", "10"},
+            {"Discount", "0.8"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+
+// The same can be applied using the 'operations' syntax.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Patching_usingEval" label="Patching_usingEval">
+<CodeBlock language="csharp">
+{`// Modify value using inline string compilation
+// ============================================
+
+store.Operations.Send(new PatchOperation("products/1-A", null, new PatchRequest
+{
+    Script = @"
+        // Give a discount if the product is low in stock:
+        const discountExpression = 'this.UnitsInStock < args.LowStock ? ' + 
+            'this.PricePerUnit * args.Discount :' + 
+            'this.PricePerUnit';
+        
+        // Call 'eval', pass the string expression that contains your logic:
+        const price = eval(discountExpression);
+        
+        // Update the product's PricePerUnit:
+        this.PricePerUnit = price;",
+    
+    Values = {
+        {"LowStock", "10"},
+        {"Discount", "0.8"}
+    }
+}));
+
+// The same can be applied using the 'session defer' syntax.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

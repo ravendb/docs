@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Lucene flavored syntax can be used with the `WhereLucene` method, a part of the filtering methods available in `IDocumentQuery`.
+
+## Syntax
+
+<TabItem value="lucene_1" label="lucene_1">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> WhereLucene(string fieldName, string whereClause);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Name of a field in an index (default field) |
+| **whereClause** | string | Lucene-syntax based clause |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<Company> results = session
+    .Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bistro")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<Company> results = await asyncSession
+    .Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bistro")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies 
+where lucene(Name, 'bistro')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced Usage
+
+The `fieldName` argument corresponds to Lucene's default field convention. It is mandatory to pass it to the `.WhereLucene` but the `whereClause` can contain clause that omits the field entirely giving you the opportunity to pass a complex expression e.g. `.WhereLucene("Name", "Name:bistro OR Phone:981-443655")`. It is advised to use this approach against Static Index where all fields are known, because there is no guarantee that a proper Auto Index will be created or used.
+
+

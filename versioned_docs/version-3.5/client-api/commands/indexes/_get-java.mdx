@@ -1,0 +1,109 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to retrieve an index from a database:   
+- [GetIndex](../../../client-api/commands/indexes/get.mdx#getindex)   
+- [GetIndexes](../../../client-api/commands/indexes/get.mdx#getindexes)   
+- [GetIndexNames](../../../client-api/commands/indexes/get.mdx#getindexnames)   
+
+## GetIndex
+
+**GetIndex** is used to retrieve an index definition from a database.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="java">
+{`public IndexDefinition getIndex(String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index |
+
+| Return Value | |
+| ------------- | ----- |
+| [IndexDefinition](../../../glossary/index-definition.mdx) | Instance of IndexDefinition representing index. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="java">
+{`IndexDefinition index = store.getDatabaseCommands().getIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetIndexes
+
+**GetIndexes** is used to retrieve multiple index definitions from a database.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="java">
+{`public Collection<IndexDefinition> getIndexes(int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | String | Number of indexes that should be skipped |
+| **pageSize** | int | Maximum number of indexes that will be retrieved  |
+
+| Return Value | |
+| ------------- | ----- |
+| Collection&lt;[IndexDefinition](../../../glossary/index-definition.mdx)&gt; | Collection of IndexDefinitions. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="java">
+{`Collection<IndexDefinition> indexes = store.getDatabaseCommands().getIndexes(0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetIndexNames
+
+**GetIndexNames** is used to retrieve multiple index names from a database.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="java">
+{`public Collection<String> getIndexNames(int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | String | Number of index names that should be skipped |
+| **pageSize** | int | Maximum number of index names that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| Collection&lt;String&gt; | This methods returns an array of index **name** as a result. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="java">
+{`Collection<String> indexNames = store.getDatabaseCommands().getIndexNames(0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

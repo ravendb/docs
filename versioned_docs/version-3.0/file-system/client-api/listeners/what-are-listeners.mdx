@@ -5,56 +5,19 @@ sidebar_label: What are listeners?
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WhatAreListenersCsharp from './_what-are-listeners-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#What are listeners?
-
-The concept of listeners provides users with a mechanism to perform custom actions, in response to operations taken in a session. 
-The listener implements an interface whose methods are called when a particular action is executed on an file.
-
-The main object is `FilesSessionListeners` exposed by `IFilesStore`. It aggregates listeners of the following types:
-
-* file delete listeners (IFilesDeleteListener),
-* file metadata change listeners (IMetadataChangeListener),
-* file conflicts listeners (IFilesConflictListener).
-
-You can register any number of listeners for a given type. You can either set the whole collection of listeners at once by calling:
-
-<TabItem value="set_listeners" label="set_listeners">
-<CodeBlock language="csharp">
-{`store.SetListeners(new FilesSessionListeners
-\{
-	DeleteListeners = new IFilesDeleteListener[] \{ /* ... */ \},
-	ConflictListeners = new IFilesConflictListener[] \{ /* ... */ \},
-	MetadataChangeListeners = new IMetadataChangeListener[] \{ /* ... */ \}
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-or register a particular listener by the following method:
-
-<TabItem value="register_listener" label="register_listener">
-<CodeBlock language="csharp">
-{`store.Listeners.RegisterListener(new SampleListener());
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <WhatAreListenersCsharp />
 </LanguageContent>
+
 
 <!---
 

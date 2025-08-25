@@ -1,0 +1,61 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store entities inside the **session** object, use one of the three `store` methods.
+
+## Syntax
+
+First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="java">
+{`void store(Object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+Second overload: Stores the entity in a session with given ID.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="java">
+{`void store(Object entity, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="java">
+{`void store(Object entity, String changeVector, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Entity that will be stored |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **id** | String | Entity will be stored under this ID, (`null` to generate automatically) |
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="java">
+{`Employee employee = new Employee();
+employee.setFirstName("John");
+employee.setLastName("Doe");
+
+// generate Id automatically
+session.store(employee);
+
+// send all pending operations to server, in this case only \`Put\` operation
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

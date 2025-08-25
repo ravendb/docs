@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can get the number of revisions a document has by using the advance session method `GetCountFor`.
+
+* In this page:  
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
+
+</Admonition>
+## Get revisions count
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get the number of revisions for document 'companies/1-A"
+var revisionsCount = session.Advanced.Revisions.GetCountFor("companies/1-A");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get the number of revisions for document 'companies/1-A"
+var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync("companies/1-A");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`long GetCountFor(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which revisions are counted |
+
+| Return value | |
+| - | - |
+| `long` | The number of revisions for the specified document |
+
+
+
+

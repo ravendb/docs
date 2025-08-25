@@ -1,0 +1,82 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+Entities passed to an index can be converted to JSON using the `AsJson` method.  
+It is also possible to access metadata for a specified object using the `MetadataFor` method.  
+
+* In this Page:  
+   * [AsJson - Converting to JSON](../indexes/converting-to-json-and-accessing-metadata.mdx#asjson---converting-to-json)  
+   * [MetadataFor - Accessing Metadata](../indexes/converting-to-json-and-accessing-metadata.mdx#metadatafor---accessing-metadata)  
+
+</Admonition>
+## AsJson - Converting to JSON
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="js">
+{`class Products_AllProperties extends AbstractIndexCreationTask \{
+
+    constructor() \{
+        super();
+        this.map = "docs.Products.Select(product => new \{\\n" +
+            // convert product to JSON and select all properties from it
+            "    Query = this.AsJson(product).Select(x => x.Value)\\n" +
+            "\})";
+
+        // mark 'query' field as analyzed which enables full text search operations
+        this.index("Query", "Search");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ indexName: "Products/AllProperties" \})
+    .whereEquals("Query", "Chocolade")
+    .ofType(Product)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## MetadataFor - Accessing Metadata
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="js">
+{`class Products_WithMetadata extends AbstractIndexCreationTask \{
+    constructor() \{
+        super();
+        this.map = "docs.Products.Select(product => new \{\\n" +
+            "    Product = product,\\n" +
+            "    Metadata = this.MetadataFor(product)\\n" +
+            "\}).Select(this_0 => new \{\\n" +
+            "       LastModified = this_0.Metadata.Value<DateTime>(\\'Last-Modified'\\)\\n"+
+            "   \})";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ indexName: "Products/WithMetadata" \})
+    .orderByDescending("LastModified")
+    .ofType(Product)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

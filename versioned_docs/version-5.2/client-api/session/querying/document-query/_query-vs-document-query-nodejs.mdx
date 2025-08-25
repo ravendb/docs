@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Node.js client provides a __unified API__ for querying documents via the `session.query()` method.  
+  All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query.mdx#query-api).
+
+* The `query` method is essentially a shorthand for invoking the `documentQuery` method.  
+  Examples of those equivalent calls are listed below. 
+
+
+</Admonition>
+<TabItem value="query_1" label="query_1">
+<CodeBlock language="js">
+{`// This collection query:
+session.query(Order);
+
+// is equivalent to this documentQuery:    
+session.advanced.documentQuery(Order);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="query_2" label="query_2">
+<CodeBlock language="js">
+{`// This collection query:
+session.query(\{ collection: "orders" \});
+
+// is equivalent to this documentQuery
+session.advanced.documentQuery(\{
+    collection: "orders",
+    indexName: null,
+    isMapReduce: false
+\});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="query_3" label="query_3">
+<CodeBlock language="js">
+{`// This index query:
+session.query(\{ indexName: "Orders/ByShipToAndLines" \});
+
+// is equivalent to this documentQuery:
+session.advanced.documentQuery(\{ indexName: "Orders/ByShipToAndLines" \});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="query_4" label="query_4">
+<CodeBlock language="js">
+{`// This index query:
+session.query(\{ indexName: "Orders/ByShipToAndLines" \});
+
+// is equivalent to this documentQuery:
+session.advanced.documentQuery(\{
+    indexName: "Orders/ByShipToAndLines",
+    isMapReduce: false,
+    collection: null
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+

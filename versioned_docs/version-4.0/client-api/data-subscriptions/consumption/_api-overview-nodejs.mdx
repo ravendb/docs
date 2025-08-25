@@ -1,0 +1,119 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+In this page:  
+
+[Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
+[Running subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
+
+</Admonition>
+## Subscription worker generation
+
+Subscription worker generation is accessible through the `DocumentStore`'s `subscriptions` property, of type `DocumentSubscriptions`:
+<TabItem value="subscriptionWorkerGeneration" label="subscriptionWorkerGeneration">
+<CodeBlock language="js">
+{`store.subscriptions.getSubscriptionWorker(options, [database]);
+store.subscriptions.getSubscriptionWorker(subscriptionName, [database]);
+
+store.subscriptions.getSubscriptionWorkerForRevisions(options, [database]);
+store.subscriptions.getSubscriptionWorkerForRevisions(subscriptionName, [database]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **subscriptionName** | string | The subscription's name. This parameter appears in more simple overloads allowing to start processing without creating a `SubscriptionCreationOptions` instance, relying on the default values |
+| **options** | `SubscriptionWorkerOptions` | Contains subscription worker, affecting the interaction of the specific worker with the subscription, but does not affect the subscription's definition |
+| *subscriptionName* | string | Returns the subscription name passed to the constructor. This name will be used by the server side to identify the subscription in question. |
+| *timeToWaitBeforeConnectionRetry* | number | Time to wait before reconnecting, in the case of non-aborting failure during the subscription processing. Default: 5 seconds. |
+| *ignoreSubscriberErrors* | boolean | If true, will not abort subscription processing if client code, passed to the `run` function, throws an unhandled exception. Default: false. |
+| *strategy* | `SubscriptionOpeningStrategy`(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OPEN_IF_FREE`. |
+| *maxDocsPerBatch* | number | Maximum amount of documents that the server will try sending in a batch. If the server will not find "enough" documents, it won't wait and send the amount it found. Default: 4096. |
+| *closeWhenNoDocsLeft* | boolean | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. An error of type `SubscriptionClosedException` is going to be emitted. Default: false. |
+| **database** | string | Name of the database to look for the data subscription. If `null`, the default database configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| `SubscriptionWorker` | A created data subscription worker.  |
+
+
+## Running subscription worker
+
+After obtaining a subscription worker instance, it's going to connect asynchronously when the `"batch"` event listener is registered. Once connected it's going to emit events allowing the user to process batches and handle errors.
+
+<TabItem value="subscriptionWorkerRunning" label="subscriptionWorkerRunning">
+<CodeBlock language="js">
+{`subscriptionWorker.on("batch", (batch, callback) => \{ \});
+subscriptionWorker.on("error", (error) => \{\});
+subscriptionWorker.on("end", () => \{\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## SubscriptionBatch
+
+| Member | Type | Description |
+|--------|:-----|-------------| 
+| **items** | `SubscriptionBatchItem` | Batch's items list. |
+| **numberOfItemsInBatch** | `number` | Amount of items in the batch. |
+
+<Admonition type="info" title="SubscriptionBatchItem" id="subscriptionbatchitem" href="#subscriptionbatchitem">
+
+| Member | Type | Description |
+|--------|:-----|-------------| 
+| **result** | object | Current batch item. |
+| **exceptionMessage** | string | Message of the exception thrown during current document processing in the server side. |
+| **id** | string | Current batch item's underlying document ID. |
+| **changeVector** | string | Current batch item's underlying document change vector of the current document. |
+| **rawResult** | object | Current batch item - no types revived. |
+| **rawMetadata** | object | Current batch item's underlying document metadata. |
+| **metadata** | object | Current batch item's underlying metadata values. |
+
+</Admonition>
+
+
+
+## SubscriptionWorker
+
+<Admonition type="note" title="Methods" id="methods" href="#methods">
+
+| Method Signature| Return Type | Description |
+|--------|:-----|-------------| 
+| **dispose()** | `void` | Aborts subscription worker operation. |
+
+</Admonition>
+
+<Admonition type="note" title="Events" id="events" href="#events">
+
+| Events | Listener signature | |
+| ------------- | ------------- | ----- |
+| **"batch"** | `(batch, callback) => void` | Client-side batch processing. Once processing is done, `callback` *must  be called* in order to continue batches' emission. |
+| **"error"** | `(error) => void` | Emitted on subscription errors |
+| **"connectionRetry"** | `(error) => void` | Emitted on connection retry. |
+| **"end"** | `(error) => void` | Emitted when subscription is finished. No more batches are going to be emitted. |
+
+</Admonition>
+
+<Admonition type="note" title="Properties" id="properties" href="#properties">
+
+| Member | Type\Return type | Description |
+|--------|:-----|-------------| 
+| **currentNodeTag** | string | Returns current processing RavenDB server's node tag. |
+| **subscriptionName** | string | Returns processed subscription's name. |
+
+</Admonition>
+
+
+
+

@@ -1,0 +1,47 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* For a general revisions overview see: [Revisions Overview](../../../document-extensions/revisions/overview.mdx).  
+
+* Document revisions can be managed using [Studio](../../../studio/database/settings/document-revisions.mdx) or from the **Client API**.  
+
+* Find below a list of methods that revisions can be configured and managed by.  
+    * [Store Operations](../../../document-extensions/revisions/client-api/overview.mdx#revisions-store-operations)  
+    * [Session Methods](../../../document-extensions/revisions/client-api/overview.mdx#revisions-session-methods)  
+
+</Admonition>
+## Revisions `store` Operations
+
+* [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) - apply a revision configuration
+* [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions.mdx) - get revisions
+
+
+
+## Revisions `session` methods
+
+#### Get revisions:  
+
+* Use [get_for](../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions) 
+  to retrieve **all** revisions kept for a document.  
+* Use [get_metadata_for](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata) 
+  to retrieve **metadata** for all revisions kept for a document.  
+* Use [get_by_before_date ](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time) 
+  to retrieve revisions by **change vector** or **creation time**.  
+* Read [here](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions) 
+  about **lazy versions** of `get_for`, `get_metadata_for`, and `get_by_before_date`.  
+#### Count revisions:  
+
+Use [get_count_for](../../../document-extensions/revisions/client-api/session/counting.mdx#getcountfor) 
+to get the number of revisions kept for a document.  
+#### Force revision creation:
+
+Read [here](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-api) 
+about creating a revision even if revision configuration is disabled.  
+
+
+
+

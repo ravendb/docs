@@ -1,0 +1,17 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, each session tracks the changes made in all the entities it has ever stored, loaded, or queried for.  
+  All changes are then persisted when `saveChanges` is called.
+
+* To ignore entity changes when calling `saveChanges`, **disable entity tracking** by any of the following:
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+</Admonition>
+

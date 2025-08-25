@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query results can be transformed on the  server-side by passing the name and parameters (if necessary) of a transformer, along with the query. The following examples will demonstrate how to do this using commands:
+
+## Example I
+
+<TabItem value="query_transformer_1" label="query_transformer_1">
+<CodeBlock language="csharp">
+{`// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+// and transform results using 'Order/Statistics' transformer
+QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Orders/Totals",
+		new IndexQuery
+		\{
+			Query = "Company:companies/1",
+			ResultsTransformer = "Order/Statistics"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="query_transformer_2" label="query_transformer_2">
+<CodeBlock language="csharp">
+{`// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+// and transform results using 'Order/Statistics' transformer
+// stream the results
+QueryHeaderInformation queryHeaderInfo;
+IEnumerator<RavenJObject> result = store
+	.DatabaseCommands
+	.StreamQuery(
+		"Orders/Totals",
+		new IndexQuery
+		\{
+			Query = "Company:companies/1",
+			ResultsTransformer = "Order/Statistics"
+		\},
+		out queryHeaderInfo);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="query_transformer_3" label="query_transformer_3">
+<CodeBlock language="csharp">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index, search only field 'Body'
+// and transform results using 'Articles/NoComments' transformer
+QueryHeaderInformation queryHeaderInfo;
+MultiLoadResult result = store
+	.DatabaseCommands
+	.MoreLikeThis(
+		new MoreLikeThisQuery
+		\{
+			IndexName = "Articles/MoreLikeThis",
+			DocumentId = "articles/1",
+			Fields = new[] \{ "Body" \},
+			ResultsTransformer = "Articles/NoComments"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+

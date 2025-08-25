@@ -5,159 +5,24 @@ sidebar_label: Misc
 sidebar_position: 6
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import MiscCsharp from './_misc-csharp.mdx';
+import MiscJava from './_misc-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Miscellaneous conventions
-
-
-
-Disable all [profiling support](../../how-to/enable-profiling.mdx) which has been enabled by the `DocumentStore.InitializeProfiling()` call.
-
-<TabItem value="disable_profiling" label="disable_profiling">
-<CodeBlock language="csharp">
-{`Conventions.DisableProfiling = true;
-`}
-</CodeBlock>
-</TabItem>
-
-### EnlistInDistributedTransactions
-
-It determines whether RavenDB client should automatically enlist in distributed transactions or not. Default: `true`.
-
-<TabItem value="enlist_in_dist_tx" label="enlist_in_dist_tx">
-<CodeBlock language="csharp">
-{`Conventions.EnlistInDistributedTransactions = true;
-`}
-</CodeBlock>
-</TabItem>
-
-### MaxNumberOfRequestsPerSession
-
-The max number of requests per session. See the [related article](../../session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx) for details.
-
-<TabItem value="max_number_of_requests_per_session" label="max_number_of_requests_per_session">
-<CodeBlock language="csharp">
-{`Conventions.MaxNumberOfRequestsPerSession = 30;
-`}
-</CodeBlock>
-</TabItem>
-
-### SaveEnumsAsIntegers
-
-It determines if C# `enum` types should be saved as integers or strings and instruct the Linq provider to query enums as integer values. Default: `false`.
-
-<TabItem value="save_enums_as_integers" label="save_enums_as_integers">
-<CodeBlock language="csharp">
-{`Conventions.SaveEnumsAsIntegers = false;
-`}
-</CodeBlock>
-</TabItem>
-
-### DefaultUseOptimisticConcurrency
-
-This convention allows to enable optimistic concurrency for all opened sessions. More about optimistic concurrency you will find [here](../../session/configuration/how-to-enable-optimistic-concurrency.mdx).
-By default concurrency checks are turned off:
-
-<TabItem value="use_optimistic_concurrency_by_default" label="use_optimistic_concurrency_by_default">
-<CodeBlock language="csharp">
-{`Conventions.DefaultUseOptimisticConcurrency = false;
-`}
-</CodeBlock>
-</TabItem>
-
-### PrettifyGeneratedLinqExpressions
-
-It determines if it should attempt to prettify the generated Linq expressions in definitions of indexes and transformers (used by the following classes: `AbstractIndexCreationTask`, `AbstractMultiMapIndexCreationTask`, `AbstractTransformerCreationTask` and `IndexDefinitionBuilder`).
-
-<TabItem value="prettify_generated_linq_expressions" label="prettify_generated_linq_expressions">
-<CodeBlock language="csharp">
-{`Conventions.PrettifyGeneratedLinqExpressions = true;
-`}
-</CodeBlock>
-</TabItem>
-
-### IndexAndTransformerReplicationMode
-
-This conventions determines if index and transformer definitions should be replicated to destination servers when indexes and transformers are deployed using the `AbstractIndexCreationTask` and `AbstractTransformerCreationTask`. 
-
-Possible values are:
-
-- `None`,
-- `Indexes`,
-- `Transformers`
-
-with default set to `Indexes | Transformers`.
-
-<TabItem value="index_and_transformer_replication_mode" label="index_and_transformer_replication_mode">
-<CodeBlock language="csharp">
-{`Conventions.IndexAndTransformerReplicationMode = IndexAndTransformerReplicationMode.Indexes
-                                                 | IndexAndTransformerReplicationMode.Transformers;
-`}
-</CodeBlock>
-</TabItem>
-
+   <MiscCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-#Miscellaneous conventions
-
-
-
-Disable all [profiling support](../../how-to/enable-profiling.mdx) which has been enabled by the `DocumentStore.initializeProfiling()` call.
-
-<TabItem value="disable_profiling" label="disable_profiling">
-<CodeBlock language="java">
-{`conventions.setDisableProfiling(true);
-`}
-</CodeBlock>
-</TabItem>
-
-### MaxNumberOfRequestsPerSession
-
-The max number of requests per session. See the [related article](../../session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx) for details.
-
-<TabItem value="max_number_of_requests_per_session" label="max_number_of_requests_per_session">
-<CodeBlock language="java">
-{`conventions.setMaxNumberOfRequestsPerSession(10);
-`}
-</CodeBlock>
-</TabItem>
-
-### SaveEnumsAsIntegers
-
-It determines if java `enum` types should be saved as integers or strings and instruct the query provider to query enums as integer values. Default: `false`.
-
-<TabItem value="save_enums_as_integers" label="save_enums_as_integers">
-<CodeBlock language="java">
-{`conventions.setSaveEnumsAsIntegers(false);
-`}
-</CodeBlock>
-</TabItem>
-
-### DefaultUseOptimisticConcurrency
-
-This convention allows to enable optimistic concurrency for all opened sessions. More about optimistic concurrency you will find [here](../../session/configuration/how-to-enable-optimistic-concurrency.mdx).
-By default concurrency checks are turned off:
-
-<TabItem value="use_optimistic_concurrency_by_default" label="use_optimistic_concurrency_by_default">
-<CodeBlock language="java">
-{`conventions.setDefaultUseOptimisticConcurrency(false);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <MiscJava />
 </LanguageContent>
+
 
 <!---
 

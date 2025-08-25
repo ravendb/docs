@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetServerWideClientConfigurationOperation** is used to return a server-wide client configuration which is saved on the server and overrides the client behavior. 
+
+<Admonition type="note" title="">
+`ClientConfiguration` defined at the database level overrides server-wide client configurations.
+</Admonition>
+
+## Syntax
+
+<TabItem value="config_1_0" label="config_1_0">
+<CodeBlock language="csharp">
+{`public GetServerWideClientConfigurationOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ---- |
+| `ClientConfiguration` | Configuration which will be used by the RavenDB Client |
+
+## Example
+
+<TabItem value="config_1_2" label="config_1_2">
+<CodeBlock language="csharp">
+{`ClientConfiguration clientConfiguration =
+    store.Maintenance.Server.Send(new GetServerWideClientConfigurationOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+

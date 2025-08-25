@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetDetailedStatisticsOperation** will retrieve the same database statistics as [GetStatisticsOperation](../../../client-api/operations/maintenance/get-statistics.mdx) plus total count of identities and counters. 
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="csharp">
+{`public GetDetailedStatisticsOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `DetailedDatabaseStatistics` | Detailed database statistics |
+
+## Example
+
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="csharp">
+{`DetailedDatabaseStatistics stats = store.Maintenance.Send(new GetDetailedStatisticsOperation());
+long countOfDocuments = stats.CountOfDocuments;
+long countOfIndexes = stats.CountOfIndexes;
+long countOfCompareExchange = stats.CountOfCompareExchange;
+long countOfIdentities = stats.CountOfIdentities;
+bool isStale = stats.Indexes[0].IsStale;
+`}
+</CodeBlock>
+</TabItem>
+
+

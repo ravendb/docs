@@ -1,0 +1,82 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To filter documents by whether they contain a particular field, use the LINQ extension method `whereExists()` accessible 
+from the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
+
+* If a document doesn't contain the specified field, it is excluded from the query results.
+
+* In this page:  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)  
+  * [Examples](../../../client-api/session/querying/how-to-filter-by-field.mdx#examples)  
+
+</Admonition>
+## Syntax
+
+<TabItem value="whereexists_1" label="whereexists_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> whereExists(String fieldName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **fieldName** | `String` | The name or path to the field you want to filter by |
+
+
+
+## Examples
+
+#### Filter by Field Name  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> results = session
+        .advanced()
+        .documentQuery(Employee.class)
+        .whereExists("FirstName")
+        .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+where exists("FirstName")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+#### Filter by the Path to a Field  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> results = session
+  .advanced()
+  .documentQuery(Employee.class)
+  .whereExists("Address.Location.Latitude")
+  .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+where exists("Address.Location.Latitude")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

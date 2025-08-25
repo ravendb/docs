@@ -1,0 +1,26 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIdentitiesOperation** is used to return a dictionary which maps from the collection name to the identity value.
+
+## Syntax
+
+<TabItem value="sample_1" label="sample_1">
+<CodeBlock language="csharp">
+{`public GetIdentitiesOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="sample_2" label="sample_2">
+<CodeBlock language="csharp">
+{`Dictionary<string, long> identities = store.Maintenance.Send(new GetIdentitiesOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+

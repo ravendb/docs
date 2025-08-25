@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx) article for general knowledge.
+
+* Use `GetServerWideClientConfigurationOperation` to get the current server-wide Client-Configuration set on the server.
+
+* In this page:
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
+
+</Admonition>
+## Get client-configuration
+
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="js">
+{`// Define the get client-configuration operation
+const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
+
+// Execute the operation by passing it to maintenance.server.send
+const config = await documentStore.maintenance.server.send(getServerWideClientConfigOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Executing the operation returns the client-configuration object: 
+\{
+    identityPartsSeparator,
+    etag,
+    disabled,
+    maxNumberOfRequestsPerSession,
+    readBalanceBehavior,
+    loadBalanceBehavior,
+    loadBalancerContextSeed
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

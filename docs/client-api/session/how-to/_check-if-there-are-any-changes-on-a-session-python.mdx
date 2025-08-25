@@ -1,0 +1,180 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `save_changes` is called.
+
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
+ 
+* In this page:
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
+
+</Admonition>
+## Check for session changes 
+
+* The advanced session `has_changes` property indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The `has_changes` property is cleared (reset to `False`) after calling `save_changes`.
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # No changes made yet - 'has_changes' will be False
+    self.assertFalse(session.has_changes())
+
+    # Store a new entity within the session
+    session.store(Employee(first_name="John", last_name="Doe"))
+
+    # 'has_changes' will now be True
+    self.assertTrue(session.has_changes())
+
+    # 'has_changes' will reset to False after saving changes
+    session.save_changes()
+    self.assertFalse(session.has_changes())
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes 
+
+* Use the session's advanced method `what_changed` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:  
+  * The name and path of the changed field   
+  * Its old and new values  
+  * The type of change  
+
+* Note: `what_changed` reports changes made prior to calling `save_changes`.  
+  Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
+##### Example I
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Store (add) new entities, they will be tracked by the session
+    session.store(Employee(first_name="John", last_name="Doe"), "employees/1-A")
+    session.store(Employee(first_name="Jane", last_name="Doe"), "employees/2-A")
+
+    # Call 'what_changed' to get all changes in the session
+    changes = session.advanced.what_changed()
+    self.assertEquals(2, len(changes))  # 2 entites were added
+
+    # Get the change details for an entity, specify the entity ID
+    changes_for_employee = changes["employees/1-A"]
+    self.assertEquals(1, len(changes_for_employee))  # a single change for this entity (adding)
+
+    # Get the change type
+    change_type = changes_for_employee[0].change
+    self.assertEquals(DocumentsChanges.ChangeType.DOCUMENT_ADDED, change_type)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="changes_3" label="changes_3">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Load the entities, they will be tracked by the session
+    employee_1 = session.load("employees/1-A", Employee)
+    employee_2 = session.load("employees/2-A", Employee)
+
+    # Modify entities
+    employee_1.first_name = "Jim"
+    employee_1.last_name = "Brown"
+    employee_2.last_name = "Smith"
+
+    # Delete an entity
+    session.delete(employee_2)
+
+    # Call 'what_changed' to get all changes in the session
+    changes = session.advanced.what_changed()
+
+    # Get the change details for an entity, specify the entity ID
+    changes_for_employee = changes["employees/1-A"]
+
+    self.assertEquals("FirstName", changes_for_employee[0].field_name)  # Field name
+    self.assertEquals("Jim", changes_for_employee[0].field_new_value)  # New value
+    self.assertEquals(
+        DocumentsChanges.ChangeType.FIELD_CHANGED, changes_for_employee[0].change
+    )  # Change type
+
+    self.assertEquals("LastName", changes_for_employee[1].field_name)  # Field name
+    self.assertEquals("Brown", changes_for_employee[1].field_new_value)  # New value
+    self.assertEquals(
+        DocumentsChanges.ChangeType.FIELD_CHANGED, changes_for_employee[1].change
+    )  # Change type
+
+    # Note: for employee2 - even though the LastName was changed to 'Smith',
+    # the only reported change is the latest modification, which is the delete action.
+    changes_for_employee = changes["employees/2-A"]
+    self.assertEquals(DocumentsChanges.ChangeType.DOCUMENT_DELETED, changes_for_employee[0].change)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`# has_changes
+def has_changes(self) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`# what_changed
+def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value                        |                                                       |
+|-------------------------------------|-------------------------------------------------------|
+| `Dict[str, List[DocumentsChanges]]` | Dictionary containing list of changes per document ID |
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`class DocumentsChanges:
+
+    def __init__(
+        self,
+        field_old_value: object,
+        field_new_value: object,
+        change: DocumentsChanges.ChangeType,
+        field_name: str = None,
+        field_path: str = None,
+    ): ...
+
+    class ChangeType(Enum):
+        DOCUMENT_DELETED = "DocumentDeleted"
+        DOCUMENT_ADDED = "DocumentAdded"
+        FIELD_CHANGED = "FieldChanged"
+        NEW_FIELD = "NewField"
+        REMOVED_FIELD = "RemovedField"
+        ARRAY_VALUE_CHANGED = "ArrayValueChanged"
+        ARRAY_VALUE_ADDED = "ArrayValueAdded"
+        ARRAY_VALUE_REMOVED = "ArrayValueRemoved"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

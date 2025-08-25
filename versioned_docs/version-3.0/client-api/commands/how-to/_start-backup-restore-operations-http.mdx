@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## StartBackup
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/admin/backup?incremental=\{incremental\} \\
+	-X POST 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload | Description |
+| ------- | - | 
+| **BackupLocation** | Location of backup |
+| **DatabaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.&lt;br /&gt;**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **incremental** | No | Indicates if backup is incremental. |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `201` | OK |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \\
+ -d "\{\\"BackupLocation\\":\\"c:\\\\temp\\\\backup\\\\Northwind\\\\\\",\\"DatabaseDocument\\":\{\\"SecuredSettings\\":\{\},\\"Settings\\":\{\},\\"Disabled\\":false,\\"Id\\":null\}\}"
+< HTTP/1.1 201 Created
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartRestore
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/restore \\
+	-X POST
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| [DatabaseRestoreRequest](../../../glossary/database-restore-request.mdx) |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **OperationId** | Operation id |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/admin/restore" \\
+ -d "\{\\"DatabaseName\\":\\"NewNorthwind\\",\\"BackupLocation\\":\\"c:\\\\temp\\\\backup\\\\Northwind\\\\\\",\\"IndexesLocation\\":null,\\"RestoreStartTimeout\\":null,\\"DatabaseLocation\\":\\"~\\\\Databases\\\\NewNorthwind\\\\\\",\\"Defrag\\":false,\\"JournalsLocation\\":null\}"
+< HTTP/1.1 200 OK
+\{"OperationId":2\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+

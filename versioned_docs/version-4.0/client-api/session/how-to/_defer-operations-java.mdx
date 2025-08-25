@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Operations can be deferred till `saveChanges` is called by using `defer` method in `advanced` session operations. There are three types of commands that can be deferred:
+
+- PutCommandData
+- DeleteCommandData
+- DeletePrefixedCommandData
+- PatchCommandData
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
+
+## Syntax
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="java">
+{`void defer(ICommandData command, ICommandData... commands);
+
+void defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| `ICommandData` | Command to be executed. |
+| `ICommandData[]` | Array of commands implementing `ICommandData` interface. |
+
+## Example
+
+<TabItem value="defer_2" label="defer_2">
+<CodeBlock language="java">
+{`Map<String, Object> value1 = new HashMap<>();
+value1.put("Name", "My Product");
+value1.put("Supplier", "suppliers/999-A");
+value1.put("@metadata", Collections.singletonMap("@collection", "Users"));
+
+PutCommandDataWithJson putCommand1 =
+    new PutCommandDataWithJson("products/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value1));
+
+HashMap<String, Object> value2 = new HashMap<>();
+value2.put("Name", "My Product");
+value2.put("Supplier", "suppliers/999-A");
+value2.put("@metadata", Collections.singletonMap("@collection", "Suppliers"));
+
+PutCommandDataWithJson putCommand2 =
+    new PutCommandDataWithJson("suppliers/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value2));
+
+DeleteCommandData command3 = new DeleteCommandData("products/1-A", null);
+
+session.advanced().defer(putCommand1, putCommand2, command3);
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,342 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+
+* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
+ 
+* This article is a basic overview of how to query a **static index** using **code**.  
+   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
+
+* In this page:  
+   * [Query an index by `Query`](../../indexes/querying/query-index.mdx#query-an-index-by-query) (using API)
+   * [Query an index by `RawQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery) (using RQL)
+
+</Admonition>
+## Query an index by `Query`
+
+* The following examples **query an index** using the session's `query` method.  
+
+* Customize your query with these [API methods](../../client-api/session/querying/how-to-query.mdx#query-api).
+
+**Query index - no filtering**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - without filtering
+// (Open the 'Index' tab to view the index class definition)
+
+const employees = await session
+     // Pass the index name as a parameter
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .query({ indexName: "Employees/ByName" })
+     // Execute the query
+    .all();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'firstName' and\\or 'lastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - without filtering
+
+const employees = await session
+     // Pass the queried collection as the first param
+     // Pass the index class as the second param
+    .query(Employee, Employees_ByName)
+     // Execute the query
+    .all();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'firstName' and\\or 'lastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query index - with filtering:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+const employees = await session
+     // Pass the index name as a parameter
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .query({ indexName: "Employees/ByName" })
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .whereEquals("lastName", "King")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+const employees = await session
+     // Pass the queried collection as the first param
+     // Pass the index class as the second param
+    .query(Employee, Employees_ByName)
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .whereEquals("lastName", "King")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* An exception will be thrown when filtering by fields that are Not defined in the index.
+
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+#### Query index - with paging:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+const employees = await session
+    .query({ indexName: "Employees/ByName" })
+    .whereEquals("lastName", "King")
+    .skip(5)  // Skip first 5 results
+    .take(10) // Retrieve up to 10 documents
+    .all();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+const employees = await session
+    .query(Employee, Employees_ByName)
+    .whereEquals("lastName", "King")
+    .skip(5)  // Skip first 5 results
+    .take(10) // Retrieve up to 10 documents
+    .all();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+limit 5, 10 // skip 5, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Read more about paging [here](../../indexes/querying/paging.mdx).
+
+
+
+## Query an index by `RawQuery`
+
+* Queries defined with [query](../../indexes/querying/query-index.mdx#sessionquery) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx) when sent to the server.
+
+* The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
+
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// Query with RawQuery - filter by INDEX-field
+
+const results = await session
+     // Provide RQL to rawQuery
+    .advanced.rawQuery("from index 'Employees/ByName' where lastName == 'King'")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
+
+## Syntax
+
+<TabItem value="bulk_inserts_1" label="bulk_inserts_1">
+<CodeBlock language="java">
+{`BulkInsertOperation bulkInsert();
+
+BulkInsertOperation bulkInsert(String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | String | Name of database for which bulk operation should be performed. If `null` then the `Database` from DocumentStore will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| BulkInsertOperation| Instance of BulkInsertOperation used for interaction. |
+
+# BulkInsertOperation
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **void abort()** | Abort the operation |
+| **void store(Object entity, IMetadataDictionary metadata = null)** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void store(Object entity, String id, IMetadataDictionary metadata = null)** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void close()** | Close an object |
+
+## Limitations
+
+There are a couple limitations to the API:
+
+* The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
+* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported also the use in an async context is supported.
+
+## Example
+
+### Create bulk insert
+
+Here we create a bulk insert operation and inserting a million documents of type Employee
+
+<TabItem value="bulk_inserts_4" label="bulk_inserts_4">
+<CodeBlock language="java">
+{`try (BulkInsertOperation bulkInsert = store.bulkInsert()) \{
+    for (int i = 0; i < 1_000_000; i++) \{
+        Employee employee = new Employee();
+        employee.setFirstName("FirstName #" + i);
+        employee.setLastName("LastName #" + i);
+        bulkInsert.store(employee);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

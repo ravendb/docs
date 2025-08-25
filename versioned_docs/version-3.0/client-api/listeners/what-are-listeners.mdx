@@ -5,99 +5,24 @@ sidebar_label: What are listeners?
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WhatAreListenersCsharp from './_what-are-listeners-csharp.mdx';
+import WhatAreListenersJava from './_what-are-listeners-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Listeners: What are listeners?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The concept of listeners provides users with a mechanism to perform custom actions, in response to operations taken in a session. 
-The listener implements an interface whose methods are called when a particular action is executed on an entity or querying is run.
-
-There are five types of available listeners:
-
-* Document Conflict listeners (IDocumentConflictListener),
-* Document Conversion listeners (IDocumentConversionListener)
-* Document Delete listeners (IDocumentDeleteListener)
-* Document Store listeners (IDocumentStoreListener)
-* Document Query listeners (IDocumentQueryListener)
-
-In order to add new listener you must register it in `DocumentStore`:
-
-<TabItem value="register_listener" label="register_listener">
-<CodeBlock language="csharp">
-{`store.RegisterListener(new SampleDocumentStoreListener());
-`}
-</CodeBlock>
-</TabItem>
-
-You can also set all your listeners at once by the following method:
-
-<TabItem value="set_listeners" label="set_listeners">
-<CodeBlock language="csharp">
-{`store.SetListeners(new DocumentSessionListeners()
-\{
-	StoreListeners = new IDocumentStoreListener[]
-	\{
-		new SampleDocumentStoreListener()
-	\},
-	DeleteListeners = new IDocumentDeleteListener[]
-	\{
-		new SampleDocumentDeleteListener()
-	\}
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreListenersCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The concept of listeners provides users with a mechanism to perform custom actions, in response to operations taken in a session. 
-The listener implements an interface whose methods are called when a particular action is executed on an entity or querying is run.
-
-There are five types of available listeners:
-
-* Document Conflict listeners (IDocumentConflictListener),
-* Document Conversion listeners (IDocumentConversionListener)
-* Document Delete listeners (IDocumentDeleteListener)
-* Document Store listeners (IDocumentStoreListener)
-* Document Query listeners (IDocumentQueryListener)
-
-In order to add new listener you must register it in `DocumentStore`:
-
-<TabItem value="register_listener" label="register_listener">
-<CodeBlock language="java">
-{`store.getListeners().registerListener(new SampleDocumentStoreListener());
-`}
-</CodeBlock>
-</TabItem>
-
-You can also set all your listeners at once by the following method:
-
-<TabItem value="set_listeners" label="set_listeners">
-<CodeBlock language="java">
-{`DocumentSessionListeners listeners = new DocumentSessionListeners();
-listeners.registerListener(new SampleDocumentDeleteListener());
-listeners.registerListener(new SampleDocumentStoreListener());
-store.setListeners(listeners);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreListenersJava />
 </LanguageContent>
+
 
 <!---
 

@@ -1,0 +1,88 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+Entities passed to an index can be converted to JSON using the `AsJson` method.  
+It is also possible to access metadata for a specified object using the `MetadataFor` method.  
+
+* In this Page:  
+   * [AsJson - Converting to JSON](../indexes/converting-to-json-and-accessing-metadata.mdx#asjson---converting-to-json)  
+   * [MetadataFor - Accessing Metadata](../indexes/converting-to-json-and-accessing-metadata.mdx#metadatafor---accessing-metadata)  
+
+</Admonition>
+## AsJson - Converting to JSON
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="python">
+{`class Products_AllProperties(AbstractIndexCreationTask):
+    class Result:
+        def __init__(self, query: str = None):
+            self.query = query
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "docs.Products.Select(product => new \{ "
+            # convert product to JSON and select all properties from it
+            "    query = this.AsJson(product).Select(x => x.Value) "
+            "\})"
+        )
+
+        # mark 'query' field as analyzed which enables full text search operations
+        self._index("query", FieldIndexing.SEARCH)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Products_AllProperties, Products_AllProperties.Result)
+    .where_equals("query", "Chocolade")
+    .of_type(Product)
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## MetadataFor - Accessing Metadata
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="python">
+{`class Products_WithMetadata(AbstractIndexCreationTask):
+    class Result:
+        def __init__(self, last_modified: datetime.datetime = None):
+            self.last_modified = last_modified
+
+    def __init__(self):
+        super().__init__()
+        self.map = """
+                   docs.Products.Select(product => new \{ 
+                       Product = Product, 
+                       Metadata = this.MetadataFor(product) 
+                   \}).Select(this0 => new \{ 
+                       last_modified = this0.metadata.Value<DateTime>("Last-Modified") 
+                   \})"""
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Products_WithMetadata, Products_WithMetadata.Result)
+    .order_by_descending("LastModified")
+    .of_type(Product)
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

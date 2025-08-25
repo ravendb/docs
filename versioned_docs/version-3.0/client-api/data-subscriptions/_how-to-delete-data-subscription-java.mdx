@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#How to delete a data subscription?
+
+The data subscription is never deleted unless you explicitly drop it. This is the method to do it:
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`void delete(long id);
+
+void delete(long id, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Subscription identifier. |
+| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+
+
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="java">
+{`store.subscriptions().delete(id);
+`}
+</CodeBlock>
+</TabItem>

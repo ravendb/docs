@@ -5,104 +5,24 @@ sidebar_label: Query for Suggestions
 sidebar_position: 16
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToWorkWithSuggestionsCsharp from './_how-to-work-with-suggestions-csharp.mdx';
+import HowToWorkWithSuggestionsJava from './_how-to-work-with-suggestions-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: Querying: How to work with suggestions?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Session `Query` method contains extensions (`Suggest`) that allow you to use suggestion feature.
-
-## Syntax
-
-<TabItem value="suggest_1" label="suggest_1">
-<CodeBlock language="csharp">
-{`// This dynamic query on the 'Products' collection has NO resulting documents
-List<Product> products = session
-    .Query<Product>()
-    .Where(x => x.Name == "chaig")
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **query** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
-
-| Return Value | |
-| ------------- | ----- |
-| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing array of all suggestions for executed query. |
-
-## Example
-
-<TabItem value="suggest_2" label="suggest_2">
-<CodeBlock language="csharp">
-{`// Query for suggested terms for single term:
-// ==========================================
-
-Dictionary<string, SuggestionResult> suggestions = session
-     // Make a dynamic query on collection 'Products'
-    .Query<Product>()
-     // Call 'SuggestUsing'
-    .SuggestUsing(builder => builder
-         // Request to get terms from field 'Name' that are similar to 'chaig' 
-        .ByField(x => x.Name, "chaig"))
-    .Execute();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithSuggestionsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Session `query` allows you to use suggestion feature.
-
-## Syntax
-
-<TabItem value="suggest_1" label="suggest_1">
-<CodeBlock language="java">
-{`ISuggestionDocumentQuery<T> suggestUsing(SuggestionBase suggestion);
-
-ISuggestionDocumentQuery<T> suggestUsing(Consumer<ISuggestionBuilder<T>> builder);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **query** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
-
-| Return Value | |
-| ------------- | ----- |
-| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing array of all suggestions for executed query. |
-
-## Example
-
-<TabItem value="suggest_2" label="suggest_2">
-<CodeBlock language="java">
-{`ISuggestionOperations<T> byField(String fieldName, String term);
-
-ISuggestionOperations<T> byField(String fieldName, String[] terms);
-
-ISuggestionOperations<T> withOptions(SuggestionOptions options);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithSuggestionsJava />
 </LanguageContent>
+
 
 <!---
 - [Indexes : Suggestions](../../../indexes/querying/suggestions)

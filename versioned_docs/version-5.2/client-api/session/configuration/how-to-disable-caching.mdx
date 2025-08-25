@@ -5,74 +5,24 @@ sidebar_label: Disable Caching
 sidebar_position: 6
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToDisableCachingCsharp from './_how-to-disable-caching-csharp.mdx';
+import HowToDisableCachingJava from './_how-to-disable-caching-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to Disable Caching per Session
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To reduce the overhead of sending the documents over the network, client library is caching the HTTP responses and sends only ETags to Server. If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` without any content data or sending the up-to-date results, this will update the cache. This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions.mdx#maxhttpcachesize)), but can also be changed per session basing using the `SessionOptions.NoCaching` property.
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (IDocumentSession Session = store.OpenSession(new SessionOptions
-{
-    NoCaching = true
-}))
-{
-    // code here
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
-{
-    NoCaching = true
-}))
-{
-    // async code here
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToDisableCachingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To reduce the overhead of sending the documents over the network, client library is caching the HTTP responses and sends only ETags to Server. If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` without any content data or sending the up-to-date results, this will update the cache. This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions.mdx#maxhttpcachesize)), but can also be changed per session basing using the `sessionOptions.noCaching` property.
-
-## Example
-
-<TabItem value="open_session_caching_1" label="open_session_caching_1">
-<CodeBlock language="java">
-{`SessionOptions sessionOptions = new SessionOptions();
-sessionOptions.setNoCaching(true);
-try (IDocumentSession session = store.openSession()) \{
-    // code here
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToDisableCachingJava />
 </LanguageContent>
+
 
 <!---
 ### Session

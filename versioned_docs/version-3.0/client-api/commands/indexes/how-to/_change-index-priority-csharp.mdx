@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetIndexPriority** method allows you to change index priority for a given index.
+
+## Syntax
+
+<TabItem value="change_index_priority_1" label="change_index_priority_1">
+<CodeBlock language="csharp">
+{`void SetIndexPriority(string name, IndexingPriority priority);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="change_index_priority_2" label="change_index_priority_2">
+<CodeBlock language="csharp">
+{`[Flags]
+private enum IndexingPriority
+\{
+	None = 0,
+	Normal = 1,
+	Disabled = 2,
+	Idle = 4,
+	Abandoned = 8,
+	Error = 16,
+	Forced = 512,
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to change priority for |
+| **priority** | IndexingPriority | new index priority |
+
+## Example
+
+<TabItem value="change_index_priority_3" label="change_index_priority_3">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.SetIndexPriority("Orders/Totals", IndexingPriority.Disabled);
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,203 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics about your database and collections can be retrieved.  
+
+* By default, you get stats for the database defined in your Document Store.   
+  To get database and collection stats for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-stats)
+    * [Get detailed collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-stats)
+    * [Get database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)
+    * [Get detailed database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)
+    * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
+</Admonition>
+## Get collection stats
+<Admonition type="note" title="">
+Use `GetCollectionStatisticsOperation` to get __collection stats__.
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
+CollectionStatistics stats =
+    store.Maintenance.Send(new GetCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="csharp">
+{`// Collection stats results:
+public class CollectionStatistics
+\{
+    // Total # of documents in all collections
+    public long CountOfDocuments \{ get; set; \}
+    // Total # of conflicts
+    public long CountOfConflicts \{ get; set; \}
+    // Total # of documents per collection
+    public Dictionary<string, long> Collections \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get detailed collection stats
+<Admonition type="note" title="">
+Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stats__.
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store 
+DetailedCollectionStatistics stats =
+    store.Maintenance.Send(new GetDetailedCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="csharp">
+{`// Detailed collection stats results:
+public class DetailedCollectionStatistics
+\{
+    // Total # of documents in all collections
+    public long CountOfDocuments \{ get; set; \}
+    // Total # of conflicts
+    public long CountOfConflicts \{ get; set; \}
+    // Collection details per collection
+    public Dictionary<string, CollectionDetails> Collections \{ get; set; \}
+\}
+
+// Details per collection
+public class CollectionDetails
+\{        
+    public string Name \{ get; set; \}
+    public long CountOfDocuments \{ get; set; \}
+    public Size Size \{ get; set; \}
+    public Size DocumentsSize \{ get; set; \}
+    public Size TombstonesSize \{ get; set; \}
+    public Size RevisionsSize \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get database stats
+<Admonition type="note" title="">
+Use `GetStatisticsOperation` to get __database stats__.
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetStatisticsOperation\` to the store 
+DatabaseStatistics stats =
+    store.Maintenance.Send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="csharp">
+{`// Database stats results:
+public class DatabaseStatistics
+\{
+    public long? LastDocEtag \{ get; set; \}      // Last document etag in database
+    public long? LastDatabaseEtag \{ get; set; \} // Last database etag
+    
+    public int CountOfIndexes \{ get; set; \}     // Total # of indexes in database
+    public long CountOfDocuments \{ get; set; \}  // Total # of documents in database
+    public long CountOfRevisionDocuments \{ get; set; \}  // Total # of revision documents in database
+    public long CountOfDocumentsConflicts \{ get; set; \} // Total # of documents conflicts in database
+    public long CountOfTombstones \{ get; set; \}         // Total # of tombstones in database
+    public long CountOfConflicts \{ get; set; \}          // Total # of conflicts in database
+    public long CountOfAttachments \{ get; set; \}        // Total # of attachments in database
+    public long CountOfUniqueAttachments \{ get; set; \}  // Total # of unique attachments in database
+    public long CountOfCounterEntries \{ get; set; \}     // Total # of counter-group entries in database
+    public long CountOfTimeSeriesSegments \{ get; set; \} // Total # of time-series segments in database
+    
+    // List of stale index names in database
+    public string[] StaleIndexes => Indexes?.Where(x => x.IsStale).Select(x => x.Name).ToArray();
+    // Statistics for each index in database
+    public IndexInformation[] Indexes \{ get; set; \}
+    
+    public string DatabaseChangeVector \{ get; set; \} // Global change vector of the database
+    public string DatabaseId \{ get; set; \}           // Database identifier
+    public bool Is64Bit \{ get; set; \}                // Indicates if process is 64-bit
+    public string Pager \{ get; set; \}                // Component handling the memory-mapped files
+    public DateTime? LastIndexingTime \{ get; set; \}  // Last time of indexing an item
+    public Size SizeOnDisk \{ get; set; \}             // Database size on disk
+    public Size TempBuffersSizeOnDisk \{ get; set; \}  // Temp buffers size on disk
+    public int NumberOfTransactionMergerQueueOperations \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get detailed database stats
+<Admonition type="note" title="">
+Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
+DetailedDatabaseStatistics stats =
+    store.Maintenance.Send(new GetDetailedStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="csharp">
+{`// Detailed database stats results:
+public class DetailedDatabaseStatistics : DatabaseStatistics
+\{
+    // Total # of identities in database
+    public long CountOfIdentities \{ get; set; \}
+    // Total # of compare-exchange items in database
+    public long CountOfCompareExchange \{ get; set; \}
+    // Total # of cmpXchg tombstones in database
+    public long CountOfCompareExchangeTombstones \{ get; set; \}
+    // Total # of TS deleted ranges values in database
+    public long CountOfTimeSeriesDeletedRanges \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get stats for another database
+<Admonition type="note" title="">
+
+* By default, you get stats for the database defined in your Document Store.  
+* Use `ForDatabase` to get database & collection stats for another database.  
+* 'ForDatabase' can be used with __any__ of the above stats options.
+
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="csharp">
+{`// Get stats for 'AnotherDatabase':
+DatabaseStatistics stats =
+    store.Maintenance.ForDatabase("AnotherDatabase").Send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Admonition>
+
+
+

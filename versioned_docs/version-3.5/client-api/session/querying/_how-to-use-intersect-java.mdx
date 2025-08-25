@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries we have introduced `intersect` extension that enables us to do server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> intersect();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods. |
+
+## Example
+
+<TabItem value="intersect_2" label="intersect_2">
+<CodeBlock language="java">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+List<TShirt> tShirts = session
+    .query(TShirt.class, TShirts_ByManufacturerColorSizeAndReleaseYear.class)
+    .whereEquals("manufacturer", "Raven")
+    .intersect()
+    .whereEquals("color", "Blue")
+    .andAlso()
+    .whereEquals("size", "Small")
+    .intersect()
+    .whereEquals("color", "Gray")
+    .andAlso()
+    .whereEquals("size", "Large")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+

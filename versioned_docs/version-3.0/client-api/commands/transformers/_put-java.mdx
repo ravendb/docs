@@ -1,0 +1,46 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutTransformer** is used to add a transformer to a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="java">
+{`public String putTransformer(String name, TransformerDefinition transformerDef);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of a transformer |
+| **transformerDef** | [TransformerDefinition](../../../glossary/transformer-definition.mdx) | definition of a transformer |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Transformer **name**. |
+
+## Example
+
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="java">
+{`TransformerDefinition transformerDefinition = new TransformerDefinition();
+transformerDefinition.setTransformResults("from order in orders " +
+  "select new " +
+  "\{ " +
+  "    order.OrderedAt, " +
+  "    order.Status, " +
+  "    order.CustomerId, " +
+  "    CustomerName = LoadDocument<Customer>(order.CustomerId).Name, " +
+  "    LinesCount = order.Lines.Count " +
+  "\}");
+
+String transformerName = store.getDatabaseCommands().putTransformer("Order/Statistics", transformerDefinition);
+`}
+</CodeBlock>
+</TabItem>
+
+

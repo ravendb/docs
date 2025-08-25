@@ -1,0 +1,63 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The following options are available to **count query results**:
+
+    * [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
+  
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
+
+</Admonition>
+## Count
+
+* Call `count` to get the number of items in the query results.
+
+* Method `longCount`, which is also available, produces exactly the same results as `count`.  
+  It is only included to be consistent with the .NET client.
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const numberOfOrders = await session
+    .query({ collection: "Orders" })
+    .whereEquals("ShipTo.Country", "UK")
+     // Call 'count' to get the number of results
+    .count();
+
+// The query returns the NUMBER of orders shipped to UK
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get count from query stats
+
+
+* When executing a query, you can retrieve the query statistics, which include the total number of results.
+
+* The total number of results is available in the `totalResults` property of the `QueryStatistics` object.  
+  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx).
+
+
+
+

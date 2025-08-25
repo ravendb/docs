@@ -1,0 +1,116 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To open synchronous session use `OpenSession` method from `DocumentStore` or `OpenAsyncSession` if you prefer working in asynchronous manner.
+
+## Syntax
+
+There are three overloads of `OpenSession` method
+
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="csharp">
+{`// Open a Session for the default database configured in \`DocumentStore.Database\`
+IDocumentSession OpenSession();
+
+// Open a Session for a specified database
+IDocumentSession OpenSession(string database);
+
+// Open a Session and pass it a preconfigured SessionOptions object
+IDocumentSession OpenSession(SessionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+First method is a equivalent of doing
+
+<TabItem value="open_session_2" label="open_session_2">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // The first overload -
+    store.OpenSession();
+    // - is equivalent to:
+    store.OpenSession(new SessionOptions());
+
+    // The second overload -
+    store.OpenSession("your_database_name");
+    // - is equivalent to:
+    store.OpenSession(new SessionOptions
+    \{
+        Database = "your_database_name"
+    \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Second method is a equivalent of doing
+
+<TabItem value="open_session_3" label="open_session_3">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // Open a Session in synchronous operation mode for cluster-wide transactions
+
+    SessionOptions options = new SessionOptions
+    \{
+        Database = "your_database_name",
+        TransactionMode = TransactionMode.ClusterWide
+    \};
+
+    using (IDocumentSession Session = store.OpenSession(options))
+    \{
+        //   Run your business logic:
+        //   
+        //   Store documents
+        //   Load and Modify documents
+        //   Query indexes & collections 
+        //   Delete documents
+        //   ... etc.
+
+        Session.SaveChanges();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | [OpenSessionOptions](../../glossary/open-session-options.mdx) | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentSession | Instance of a session object that implements `IDocumentSession` interface. |
+
+## Example I
+
+<TabItem value="open_session_4" label="open_session_4">
+<CodeBlock language="csharp">
+{`using (IDocumentSession Session = store.OpenSession())
+\{
+    // code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="open_session_5" label="open_session_5">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession Session = store.OpenAsyncSession())
+\{
+    // async code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.
+
+

@@ -1,0 +1,34 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetDestinations
+
+The list of destination file systems are stored as the configuration under `Raven/Synchronization/Destinations`. You can retrieve it by executing [the appropriate GET](../../configurations/get-key.mdx) method.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/config?name=Raven/Synchronization/Destinations
+< HTTP/1.1 200 OK
+
+\{
+    "Destinations":
+    [
+        \{
+            "ServerUrl":"http://localhost:8081",
+            "Username":null,
+            "Password":null,
+            "Domain":null,
+            "ApiKey":null,
+            "FileSystem":"SlaveNorthwindFS",
+            "Enabled":true
+        \}
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

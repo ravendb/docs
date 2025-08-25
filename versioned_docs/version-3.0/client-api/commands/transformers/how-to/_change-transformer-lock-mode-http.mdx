@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/transformers/\{transformerName\}?op=lockModeChange&mode=\{lockMode\} \\
+	-X POST \\
+	-d ""
+`}
+</CodeBlock>
+</TabItem>
+
+| Payload |
+| ------- |
+| Empty |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **transformerName** | Yes | Name of an transformer |
+| **lockMode** | Yes | Transformer lock mode: Unlock or LockedIgnore |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+| `404` | Transformer not found |
+
+| Return Value | Description |
+| ------------- | ----- |
+| None | - |
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/Northwind/transformers/Orders/Company?op=lockModeChange&mode=LockedIgnore" -d ""
+< HTTP/1.1 201 Created
+`}
+</CodeBlock>
+</TabItem>
+
+

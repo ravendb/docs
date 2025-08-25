@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In order to mark an entity as one that should be ignored for change tracking purposes, use the `IgnoreChangesFor` method from the `Advanced` session operations.  
+
+Unlike the `Evict` method, performing another `Load` of that entity won't create a call to the server.  
+
+The entity will still take part in the session, but will be ignored for `SaveChanges`.  
+
+## Syntax
+
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
+<CodeBlock language="csharp">
+{`void IgnoreChangesFor(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of entity for which changes will be ignored. |
+
+## Example
+
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
+<CodeBlock language="csharp">
+{`Product product = session.Load<Product>("products/1-A");
+session.Advanced.IgnoreChangesFor(product);
+product.UnitsInStock += 1; //this will be ignored for SaveChanges
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

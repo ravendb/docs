@@ -5,155 +5,19 @@ sidebar_label: OpenAI & Compatible Providers
 sidebar_position: 5
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import OpenAiCsharp from './_open-ai-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Connection String to OpenAI and  OpenAI-Compatible Providers
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* This article explains how to define a connection string to the [OpenAI Service](https://platform.openai.com/docs/guides/embeddings),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx) with the OpenAI's API.
-
-* Use this connection string format to connect RavenDB to **any OpenAI-compatible provider** offering a similar API for embedding generation.
-  As long as the provider follows the OpenAI API format, RavenDB will be able to generate and query vector embeddings using the connection string defined here.
-
-* In this article:
-  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-studio)
-  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-client-api)
-  * [Syntax](../../ai-integration/connection-strings/open-ai.mdx#syntax) 
-    
-</Admonition>
-## Define the connection string - from the Studio
-
-![connection string to open ai](./assets/open-ai.png)
-
-1. **Name**  
-   Enter a name for this connection string.
-
-2. **Identifier** (optional)  
-   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
-
-3. **Connector**  
-   Select **OpenAI** from the dropdown menu.
-
-4. **API key**  
-   Enter the API key used to authenticate requests to OpenAI or any OpenAI-compatible provider.
-
-5. **Endpoint**  
-   Select or enter the endpoint used to generate embeddings from text.  
-   This can be an endpoint provided by OpenAI or any OpenAI-compatible provider.
-
-6. **Model**  
-   Select or enter the text embedding model to use, as provided by OpenAI or any OpenAI-compatible provider.
-
-7. **Organization ID** (optional)  
-   * Set the organization ID to use for the `OpenAI-Organization` request header.
-   * Users belonging to multiple organizations can set this value to specify which organization is used for an API request. 
-     Usage from these API requests will count against the specified organization's quota.
-   * If not specified, the header will be omitted, and the default organization will be billed.  
-     You can change your default organization in your user settings.  
-   * Learn more in [Setting up your organization](https://platform.openai.com/docs/guides/production-best-practices/setting-up-your-organization#setting-up-your-organization)
-
-8. **Project ID** (optional)  
-   * Set the project ID to use for the `OpenAI-Project` request header.  
-   * Users who are accessing their projects through their legacy user API key can set this value to specify which project is used for an API request.
-     Usage from these API requests will count as usage for the specified project.
-   * If not specified, the header will be omitted, and the default project will be accessed.
- 
-9. **Dimensions** (optional)  
-   * Specify the number of dimensions for the output embeddings.  
-     Supported only by _text-embedding-3_ and later models.
-   * If not specified, the model's default dimensionality is used.
-
-10. **Max concurrent query batches**: (optional)
-    * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
-      Requests to generate such query embeddings via the AI provider are sent in batches.
-    * This parameter defines the maximum number of these batches that can be processed concurrently.  
-      You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches) configuration key.
-
-11. Click **Test Connection** to confirm the connection string is set up correctly.
-
-12. Click **Save** to store the connection string or **Cancel** to discard changes.
-
-
-
-## Define the connection string - from the Client API
-
-<TabItem value="create_connection_string_open_ai" label="create_connection_string_open_ai">
-<CodeBlock language="csharp">
-{`using (var store = new DocumentStore())
-\{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    \{
-        // Connection string name & identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings(
-            apiKey: "your-api-key",
-            endpoint: "https://api.openai.com/v1",
-            model: "text-embedding-3-small")
-    \};
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.OpenAiSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="open_ai_settings" label="open_ai_settings">
-<CodeBlock language="csharp">
-{`public class AiConnectionString
-\{
-    public string Name \{ get; set; \}
-    public string Identifier \{ get; set; \}
-    public OpenAiSettings OpenAiSettings \{ get; set; \}
-\}
-
-public class OpenAiSettings : AbstractAiSettings
-\{
-    public string ApiKey \{ get; set; \}
-    public string Endpoint \{ get; set; \}
-    public string Model \{ get; set; \}
-    public int? Dimensions \{ get; set; \}
-    public string OrganizationId \{ get; set; \}
-    public string ProjectId \{ get; set; \}
-\}
-
-public class AbstractAiSettings
-\{
-    public int? EmbeddingsMaxConcurrentBatches \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <OpenAiCsharp />
 </LanguageContent>
+
 
 <!---
 ### Vector Search

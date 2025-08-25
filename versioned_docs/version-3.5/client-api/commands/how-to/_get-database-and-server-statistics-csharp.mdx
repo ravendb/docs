@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are two types of statistics available. First type of statistics returns server-wide information, the second one returns statistics for particular database.
+
+## Database statistics
+
+Database statistics can be downloaded using `GetStatistics` method in the commands.
+
+### Syntax
+
+<TabItem value="database_statistics_1" label="database_statistics_1">
+<CodeBlock language="csharp">
+{`DatabaseStatistics GetStatistics();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| [DatabaseStatistics](../../../glossary/database-statistics.mdx) | Current statistics for a database that commands work on |
+
+### Example
+
+<TabItem value="database_statistics_2" label="database_statistics_2">
+<CodeBlock language="csharp">
+{`DatabaseStatistics statistics = store.DatabaseCommands.GetStatistics();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Server statistics
+
+Server statistics can be downloaded using `GetStatistics` method in `GlobalAdmin` commands.
+
+### Syntax
+
+<TabItem value="server_statistics_1" label="server_statistics_1">
+<CodeBlock language="csharp">
+{`AdminStatistics GetStatistics();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| [AdminStatistics](../../../glossary/admin-statistics.mdx) | Current statistics for a server |
+
+### Example
+
+<TabItem value="server_statistics_2" label="server_statistics_2">
+<CodeBlock language="csharp">
+{`AdminStatistics serverStatistics = store
+	.DatabaseCommands
+	.GlobalAdmin
+	.GetStatistics();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

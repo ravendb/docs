@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To compact a database, please use `compactDatabase` command available in `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="java">
+{`public Operation compactDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database to compact |
+
+## Example
+
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="java">
+{`Operation operation = store.getDatabaseCommands().getGlobalAdmin().compactDatabase("Northwind");
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+

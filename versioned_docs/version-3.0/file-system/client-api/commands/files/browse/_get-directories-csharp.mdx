@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetDirectoriesAsync
+
+The **GetDirectoriesAsync** method is designated to retrieve the paths of subdirectories of a specified directory. 
+
+
+
+<TabItem value="get_directories_1" label="get_directories_1">
+<CodeBlock language="csharp">
+{`Task<string[]> GetDirectoriesAsync(string from = null, int start = 0, int pageSize = 1024);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **from** | string | The directory path (default: `null` means the root directory)|
+| **start** | int | The number of results that should be skipped (for paging purposes) |
+| **pageSize** | int | The max number of results to get |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;string[]&gt;** | A task that represents the asynchronous operation. The task result is the array of subdirectory paths. |
+
+## Example
+
+<TabItem value="get_directories_2" label="get_directories_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.UploadAsync("text-files/txt/a.txt", content);
+re.AsyncFilesCommands.UploadAsync("text-files/doc/a.doc", content);
+re.AsyncFilesCommands.UploadAsync("text-files/doc/drafts/a.doc", content);
+re.AsyncFilesCommands.UploadAsync("image-files/a.jpg", content);
+
+dirs;
+
+ait store.AsyncFilesCommands.GetDirectoriesAsync(); // will return "/image-files" and "/text-files"
+
+ait store.AsyncFilesCommands.GetDirectoriesAsync("/text-files"); // will return "/text-files/doc" and "/text-files/txt"
+
+ait store.AsyncFilesCommands.GetDirectoriesAsync("/image-files"); // will return empty array
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,109 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When making a query,   
+  you can request to get detailed stats of the time spent by RavenDB on each part of the query.  
+  E.g. duration of search, loading documents, transforming results, total duration, etc.
+
+* By default, the timings stats are Not included in the query results, to avoid the measuring overhead.
+
+* **To include the query timings** in the query results:  
+  add a call to the `timings()` method in your query code, or add `include timings()` to an RQL query.  
+  See examples below.
+
+* In this page:
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+
+</Admonition>
+## Include timings in a query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`timings: Optional[QueryTimings] = None
+
+# Prepare a callback
+def timings_callback(timings_from_server: QueryTimings):
+    timings = timings_from_server
+
+results = list(
+    session.advanced.document_query(object_type=Product)
+    # Call timings, provide a callback function that will be called with result timings
+    .timings(timings_callback)
+    # Define query criteria
+    # i.e. search for docs containing Syrup -or- Lager in their Name field
+    .search("Name", "Syrup Lager")
+    # Execute the query
+)
+
+# Get total query duration:
+# =========================
+total_query_duration = timings.duration_in_ms
+
+# Get specific parts duration:
+# ============================
+timings_dictionary = timings.timings
+optimizer_duration = timings_dictionary["Optimizer"].duration_in_ms
+lucene_duration = timings_dictionary["Query"].timings["lucene"].duration_in_ms
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where search(Name, "Syrup") or search(Name, "Lager")
+include timings()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## View timings
+
+* The detailed timings can be viewed from Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
+
+* Running an RQL query with `include timings()` will show an additional **Timings Tab**  
+  with a graphical representation of the time spent in each query part.
+
+![Figure 1. Include timings graphical results](./assets/include-timings.png)
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type           | Description   |
+|-------------|----------------|---------------|
+| **timings_callback** | `Callable[[QueryTimings], None]` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`class QueryTimings:
+    def __init__(self, duration_in_ms: int = None, timings: Dict[str, QueryTimings] = None):
+        self.duration_in_ms = duration_in_ms
+        self.timings = timings or \{\}
+`}
+</CodeBlock>
+</TabItem>
+
+| `QueryTimings`   |                                     |                                                   |
+|------------------|-------------------------------------|---------------------------------------------------|
+| **duration_in_ms** | `int` | Total duration |
+| **timings**      | `Dict[str, QueryTimings]` | Dictionary with `QueryTimings` info per time part |
+
+
+

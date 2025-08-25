@@ -5,80 +5,24 @@ sidebar_label: Saving changes
 sidebar_position: 6
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SavingChangesCsharp from './_saving-changes-csharp.mdx';
+import SavingChangesJava from './_saving-changes-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: Saving changes
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
-
-## Syntax
-
-<TabItem value="saving_changes_1" label="saving_changes_1">
-<CodeBlock language="csharp">
-{`void SaveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-<TabItem value="saving_changes_2" label="saving_changes_2">
-<CodeBlock language="csharp">
-{`// storing new entity
-session.Store(new Employee
-\{
-    FirstName = "John",
-    LastName = "Doe"
-\});
-
-session.SaveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SavingChangesCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Pending session operations e.g. `store`, `delete` and many others will not be send to server till `saveChanges` is called.
-
-## Syntax
-
-<TabItem value="saving_changes_1" label="saving_changes_1">
-<CodeBlock language="java">
-{`void saveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-<TabItem value="saving_changes_2" label="saving_changes_2">
-<CodeBlock language="java">
-{`Employee employee = new Employee();
-employee.setFirstName("John");
-employee.setLastName("Doe");
-
-session.store(employee);
-session.saveChanges();;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SavingChangesJava />
 </LanguageContent>
+
 
 <!---
 - [Opening a session](./opening-a-session)

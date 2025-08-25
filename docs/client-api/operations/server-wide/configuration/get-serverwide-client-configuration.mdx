@@ -5,133 +5,24 @@ sidebar_label: Get Server Wide Client Configuration
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetServerwideClientConfigurationCsharp from './_get-serverwide-client-configuration-csharp.mdx';
+import GetServerwideClientConfigurationNodejs from './_get-serverwide-client-configuration-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "nodejs"];
 
-
-# Get Client Configuration Operation (Server-Wide)
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx) article for general knowledge.
-
-* Use `GetServerWideClientConfigurationOperation` to get the current server-wide Client-Configuration set on the server.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the get client-configuration operation 
-var getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
-
-// Execute the operation by passing it to Maintenance.Server.Send
-ClientConfiguration config = store.Maintenance.Server.Send(getServerWideClientConfigOp);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the get client-configuration operation 
-var getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
-
-// Execute the operation by passing it to Maintenance.Server.SendAsync
-ClientConfiguration config = 
-    await store.Maintenance.Server.SendAsync(getServerWideClientConfigOp);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`public GetServerWideClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value          |                                                |
-|-----------------------|------------------------------------------------|
-| `ClientConfiguration` | Configuration which will be used by the Client |
-
-
-
-
+   <GetServerwideClientConfigurationCsharp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx) article for general knowledge.
-
-* Use `GetServerWideClientConfigurationOperation` to get the current server-wide Client-Configuration set on the server.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<TabItem value="get_config" label="get_config">
-<CodeBlock language="js">
-{`// Define the get client-configuration operation
-const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
-
-// Execute the operation by passing it to maintenance.server.send
-const config = await documentStore.maintenance.server.send(getServerWideClientConfigOp);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="js">
-{`const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="js">
-{`// Executing the operation returns the client-configuration object: 
-\{
-    identityPartsSeparator,
-    etag,
-    disabled,
-    maxNumberOfRequestsPerSession,
-    readBalanceBehavior,
-    loadBalanceBehavior,
-    loadBalancerContextSeed
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <GetServerwideClientConfigurationNodejs />
 </LanguageContent>
+
 
 <!---
 - [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)

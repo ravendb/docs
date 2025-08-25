@@ -1,0 +1,328 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To run a dynamic query that aggregates data, use the `group_by()` method.  
+
+* Data can be grouped by a single or by multiple fields, and further aggregated 
+  by **sum**, **type**, or **count**.  
+
+* RavenDB's query optimizer supports dynamic grouping by query, by automatically 
+  creating auto map-reduce indexes.  
+
+* In This Page:  
+   * [Group By a Single Field](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-a-single-field)  
+   * [Group By Multiple Fields](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-multiple-fields)  
+   * [Select Composite GroupBy Key](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#select-composite-groupby-key)  
+   * [Group By Array](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-array)  
+      * [By Array Values](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)  
+      * [By Array Content](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)  
+   * [Sorting](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#sorting)  
+      * [By Count](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-count)  
+      * [By Sum](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-sum)  
+
+</Admonition>
+## Group By a Single Field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_1@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`orders = list(
+    session.query(object_type=Order)
+    .group_by("ship_to.country")
+    .select_key("ship_to.country", "country")
+    .select_sum(GroupByField("lines[].quantity", "ordered_quantity"))
+    .of_type(CountryAndQuantity)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by ShipTo.City
+select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Multiple Fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_2@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by("employee", "company")
+    .select_key("employee", "employee_identifier")
+    .select_key("company")
+    .select_count()
+    .of_type(CountByCompanyAndEmployee)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by Employee, Company
+select Employee as EmployeeIdentifier, Company, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Select Composite GroupBy Key
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_3@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`orders = list(
+    session.query(object_type=Order)
+    .group_by("employee", "company")
+    .select_key("key()", "employee_company_pair")
+    .select_count("count")
+    .of_type(CountOfEmployeeAndCompanyPairs)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Employee, Company
+select key() as EmployeeCompanyPair, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Array
+
+### By Array Values
+
+The following query will group by the `lines[]` array `product` property 
+and calculate the count per product.  
+Behind the scenes, an auto map-reduce index is created to handle the query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_4@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`products = list(
+    session.query(object_type=Order)
+    .group_by(GroupBy.array("lines[].product"))
+    .select_key("key()", "products")
+    .select_count()
+    .of_type(ProductsInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product
+select Lines[].Product, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It is possible to group by the values of an array field **and** by the value of an additional property.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_5@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`products = list(
+    session.advanced.document_query(object_type=Order)
+    .group_by("lines[].product", "ship_to.country")
+    .select_key("lines[].product", "product")
+    .select_key("ship_to.country", "country")
+    .select_count()
+    .of_type(ProductInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, ShipTo.Country 
+select Lines[].Product as Product, ShipTo.Country as Country, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by values of multiple fields of **the same** array is supported as well.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_6@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by(GroupBy.array("lines[].product"), GroupBy.array("lines[].quantity"))
+    .select_key("lines[].product", "product")
+    .select_key("lines[].quantity", "quantity")
+    .select_count()
+    .of_type(ProductInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, Lines[].Quantity 
+select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### By Array Content
+
+Another option is to group by array **content**.  
+The creation of the reduction key will be based on the content of the array field specified by `group_by`.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_7@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by(GroupBy.array("lines[].product"))
+    .select_key("key()", "products")
+    .select_count()
+    .of_type(ProductsInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by array(Lines[].Product)
+select key() as Products, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It is possible to group by the content of an array field **and** by that of a field of an additional property.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_8@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by(GroupBy.array("lines[].product"), GroupBy.field("ship_to.country"))
+    .select_key("lines[].product", "products")
+    .select_key("ship_to.country", "country")
+    .select_count()
+    .of_type(ProductsInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), ShipTo.Country 
+select Lines[].Product as Products, ShipTo.Country as Country, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by multiple fields of **the same** array is also supported.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python group_by_9@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by(GroupBy.array("lines[].product"), GroupBy.array("lines[].quantity"))
+    .select_key("lines[].product", "products")
+    .select_key("lines[].quantity", "quantities")
+    .select_count()
+    .of_type(ProductsInfo)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), array(Lines[].Quantity) 
+select Lines[].Product as Products, Lines[].Quantity as Quantities, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Sorting
+
+The results of a dynamic group_by query can be sorted by an aggregation function used in the query.  
+The results can be ordered by the aggregation operations `count` and `sum`.  
+
+#### By Count
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python order_by_count@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by("employee")
+    .select_key("key()", "employee")
+    .select_count()
+    .order_by("count")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Employee 
+order by count() as long 
+select Employee, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### By Sum
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python order_by_sum@clientapi\session\querying\howtoperformgroupbyquery.py /}">
+{`results = list(
+    session.query(object_type=Order)
+    .group_by("employee")
+    .select_key("key()", "employee")
+    .select_sum(GroupByField("freight", "sum"))
+    .order_by("sum")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Employee 
+order by sum(Freight) as double 
+select key() as Employee, sum(Freight) as Sum
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

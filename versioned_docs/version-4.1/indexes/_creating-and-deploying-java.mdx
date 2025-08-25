@@ -1,0 +1,224 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
+
+<Admonition type="info" title="Remember" id="remember" href="#remember">
+
+Indexes created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
+
+Indexes created explicitly by the user are called `static`.
+
+</Admonition>
+
+## **Static indexes**
+
+There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). 
+
+---
+
+### Using AbstractIndexCreationTask
+
+AbstractIndexCreationTask let you avoid hard-coding index names in every query.
+
+<Admonition type="note" title="">
+We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages.
+</Admonition>
+
+#### Naming Convention
+
+There is only one naming convention: each `_` in the class name will be translated to `/` in the index name.
+
+e.g.
+
+In the `Northwind` samples, there is a index called `Orders/Totals`. To get such a index name, we need to create a class called `Orders_Totals`.
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="java">
+{`public class Orders_Totals extends AbstractIndexCreationTask \{
+    /// ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Sending to Server
+
+There is not much use from an index if it is not deployed to the server. To do so, we need to create an instance of our class that inherits from `AbstractIndexCreationTask` and use `execute` method.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="java">
+{`// deploy index to database defined in \`DocumentStore.getDatabase\` method
+// using default DocumentStore \`conventions\`
+new Orders_Totals().execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="java">
+{`// deploy index to \`Northwind\` database
+// using default DocumentStore \`conventions\`
+new Orders_Totals().execute(store, store.getConventions(), "Northwind");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch.
+</Admonition>
+
+#### Example
+
+<TabItem value="indexes_8" label="indexes_8">
+<CodeBlock language="java">
+{`public static class Orders_Totals extends AbstractIndexCreationTask \{
+    public static class Result \{
+        private String employee;
+        private String company;
+        private double total;
+
+        public String getEmployee() \{
+            return employee;
+        \}
+
+        public void setEmployee(String employee) \{
+            this.employee = employee;
+        \}
+
+        public String getCompany() \{
+            return company;
+        \}
+
+        public void setCompany(String company) \{
+            this.company = company;
+        \}
+
+        public double getTotal() \{
+            return total;
+        \}
+
+        public void setTotal(double total) \{
+            this.total = total;
+        \}
+    \}
+
+    public Orders_Totals() \{
+        map = "docs.Orders.Select(order => new \{ " +
+            "    Employee = order.Employee, " +
+            "    Company = order.Company, " +
+            "    Total = Enumerable.Sum(order.Lines, l => ((decimal)((((decimal) l.Quantity) * l.PricePerUnit) * (1M - l.Discount)))) " +
+            "\})";
+    \}
+
+    public static void main(String[] args) \{
+        try (IDocumentStore store = new DocumentStore(new String[]\{ "http://localhost:8080" \}, "Northwind")) \{
+            store.initialize();
+
+            new Orders_Totals().execute(store);
+
+            try (IDocumentSession session = store.openSession()) \{
+                List<Order> orders = session
+                    .query(Result.class, Orders_Totals.class)
+                    .whereGreaterThan("Total", 100)
+                    .ofType(Order.class)
+                    .toList();
+            \}
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+### Using Maintenance Operations
+
+The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/operations/maintenance/indexes/put-indexes.mdx)) can be used also to send index(es) to the server.
+
+The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. You will have to use string-based names of indexes when querying.
+
+<TabItem value="indexes_5" label="indexes_5">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Orders/Totals");
+indexDefinition.setMaps(Collections.singleton(
+    "from order in docs.Orders " +
+    " select new " +
+    " \{ " +
+    "    order.employee, " +
+    "    order.company, " +
+    "    total = order.lines.Sum(l => (l.quantity * l.pricePerUnit) * (1 - l.discount)) " +
+    "\}"
+));
+
+store
+    .maintenance()
+    .send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Remarks
+
+<Admonition type="info" title="Side-by-Side" id="side-by-side" href="#side-by-side">
+
+Since RavenDB 4.0, **all** index updates are side-by-side by default. The new index will replace the existing one once it becomes non-stale. If you want to force an index to swap immediately, you can use the Studio for that.
+
+</Admonition>
+
+### Index Naming Constraints  
+
+* An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+* Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
+* The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
+* If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
+  `./`, `/.`, and `/../` are all invalid.  
+
+
+
+## **Auto indexes**
+
+Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
+
+### Naming Convention
+
+Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also contains the name of a collection that was queried, and list of fields that were required to find valid query results.
+
+For instance, issuing a query like this
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+    .whereEquals("firstName", "Robert")
+    .andAlso()
+    .whereEquals("lastName", "King")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where FirstName = 'Robert' and LastName = 'King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will result in a creation of a index named `Auto/Employees/ByFirstNameAndLastName`.
+
+### Auto Indexes and Indexing State
+
+To reduce the server load, if auto-indexes are not queried for a certain amount of time defined in `Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin` setting (30 minutes by default), then they will be marked as `Idle`. You can read more about the implications of marking index as `Idle` [here](../server/administration/index-administration.mdx#index-prioritization).
+
+Setting this configuration option to a high value may result in performance degradation due to the possibility of having a high amount of unnecessary work that is all redundant and not needed by indexes to perform. This is _not_ a recommended configuration.
+
+
+
+

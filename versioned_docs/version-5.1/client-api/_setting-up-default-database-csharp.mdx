@@ -1,0 +1,83 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+
+* A **default database** can be set in the Document Store.  
+The default database is used when accessing the Document Store methods without explicitly specifying a database.  
+
+* You can pass a different database when accessing the Document Store methods.  
+This database will override the default database for that method action only.  
+The default database value itself will Not change.  
+
+* When accessing the Document Store methods, an exception will be thrown if a default database is Not set and if No other database was 
+explicitly passed.  
+
+* In this page:  
+  * [Example - Without a Default Database](../client-api/setting-up-default-database.mdx#example---without-a-default-database)  
+  * [Example - With a Default Database](../client-api/setting-up-default-database.mdx#example---with-a-default-database)  
+</Admonition>
+## Example - Without a Default Database
+
+<TabItem value="default_database_1" label="default_database_1">
+<CodeBlock language="csharp">
+{`using (IDocumentStore store = new DocumentStore
+\{
+    Urls = new[] \{ "http://your_RavenDB_server_URL" \}
+    // Default database is not set
+\}.Initialize())
+\{
+    // Specify the 'Northwind' database when opening a Session
+    using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
+    \{
+        // Session will operate on the 'Northwind' database
+    \}
+
+    // Specify the 'Northwind' database when sending an Operation
+    store.Maintenance.ForDatabase("Northwind").Send(new DeleteIndexOperation("NorthWindIndex"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Example - With a Default Database
+
+The default database is defined in the Document Store's `Database` property.
+<TabItem value="default_database_2" label="default_database_2">
+<CodeBlock language="csharp">
+{`using (IDocumentStore store = new DocumentStore
+\{
+    Urls = new[] \{ "http://your_RavenDB_server_URL" \},
+    // Default database is set to 'Northwind'
+    Database = "Northwind"
+\}.Initialize())
+\{
+    // Using the default database
+    using (IDocumentSession northwindSession = store.OpenSession())
+    \{
+        // Session will operate on the default 'Northwind' database
+    \}
+
+    // Operation for default database
+    store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
+
+    // Specify the 'AdventureWorks' database when opening a Session
+    using (IDocumentSession adventureWorksSession = store.OpenSession(database: "AdventureWorks"))
+    \{
+        // Session will operate on the specifed 'AdventureWorks' database
+    \}
+
+    // Specify the 'AdventureWorks' database when sending an Operation
+    store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

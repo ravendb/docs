@@ -1,0 +1,45 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: DeleteKey
+
+The **DELETE** method is used to remove a configuration stored under the specified key.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/config?name=\{name\}  \\
+	-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The configuration name |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | NoContent |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X DELETE http://localhost:8080/fs/NorthwindFS/config?name=descriptions/intro.avi
+< HTTP/1.1 204 NoContent
+`}
+</CodeBlock>
+</TabItem>
+

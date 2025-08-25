@@ -1,0 +1,47 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Head** is used to retrieve document metadata from a database.
+
+## Syntax
+
+<TabItem value="head_1" label="head_1">
+<CodeBlock language="java">
+{`public GetDocumentsCommand(String id, String[] includes, boolean metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key of a document to get metadata for |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocumentMetadata](../../../../glossary/json-document-metadata.mdx) | Metadata information for document with given key. |
+
+## Example
+
+<TabItem value="head_2" label="head_2">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand("orders/1-A", null, true);
+session.advanced().getRequestExecutor().execute(command);
+
+JsonNode result = command.getResult().getResults().get(0);
+ObjectNode documentMetadata = (ObjectNode) result.get("@metadata");
+
+// Print out all the metadata properties.
+Iterator<String> fieldIterator = documentMetadata.fieldNames();
+
+while (fieldIterator.hasNext()) \{
+    String field = fieldIterator.next();
+    JsonNode value = documentMetadata.get(field);
+    System.out.println(field + " = " + value);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

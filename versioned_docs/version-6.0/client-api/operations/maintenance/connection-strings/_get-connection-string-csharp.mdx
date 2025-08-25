@@ -1,0 +1,176 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+* Get a connection string's properties using the [**GetConnectionStringsOperation**](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#getconnectionstringsoperation) method.
+
+* To learn how to **Create** a connection string see: [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)
+
+
+In this page:
+
+* [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#getconnectionstringsoperation)  
+* [Definitions](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#definitions)
+* [Code Samples](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#code-samples)
+
+## `GetConnectionStringsOperation`
+
+<TabItem value="get_connection_strings" label="get_connection_strings">
+<CodeBlock language="csharp">
+{`public GetConnectionStringsOperation()
+public GetConnectionStringsOperation(string connectionStringName, ConnectionStringType type)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Data Type | Description |
+| ------------- | ----- | ---- |
+| **connectionStringName** | `string` | Connection string name |
+| **type** | `ConnectionStringType` | Connection string type: `Raven`, `Sql`, `Olap`, or `ElasticSearch`|
+
+
+| Type | Return Value | Return Value Type | Description |
+| ---- | ------------- | ----- | --- |
+| Sql | `SqlConnectionStrings` | Dictionary&lt;string, SqlConnectionString&gt; | Dictionary that maps sql connection string name to definition |
+| Raven | `RavenConnectionStrings` | Dictionary&lt;string, RavenConnectionString&gt; | Dictionary that maps raven connection string name to definition |
+| Olap | `OlapConnectionStrings` |  Dictionary&lt;string, OlapConnectionString&gt; | Dictionary that maps olap connection string name to definition |
+| ElasticSearch | `ElasticsearchConnectionStrings` |  Dictionary&lt;string, ElasticsearchConnectionString&gt; | Dictionary that maps elasticsearch connection string name to definition |
+
+
+
+## Definitions
+
+#### `RavenConnectionString`
+
+A Raven connection string definition:
+
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="csharp">
+{`public class RavenConnectionString : ConnectionString
+\{
+    public string Database \{ get; set; \} // target database name
+    public string[] TopologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType Type => ConnectionStringType.Raven;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### `SqlConnectionString`
+
+An Sql connection string definition:
+
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="csharp">
+{`public class SqlConnectionString : ConnectionString
+\{
+    public string ConnectionString \{ get; set; \}
+
+    public string FactoryName \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.Sql;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### `OlapConnectionString`
+
+An Olap connection string definition:
+
+<TabItem value="olap_connection_string_config" label="olap_connection_string_config">
+<CodeBlock language="csharp">
+{`public class OlapConnectionString : ConnectionString
+\{
+    public string Name \{ get; set; \}
+    public LocalSettings LocalSettings \{ get; set; \}
+    public S3Settings S3Settings \{ get; set; \}
+    public AzureSettings AzureSettings \{ get; set; \}
+    public GlacierSettings GlacierSettings \{ get; set; \}
+    public GoogleCloudSettings GoogleCloudSettings \{ get; set; \}
+    public FtpSettings FtpSettings \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.Olap;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### `ElasticsearchConnectionString`
+
+An Elasticsearch connection string definition:
+
+<TabItem value="elasticsearch_connection_string_config" label="elasticsearch_connection_string_config">
+<CodeBlock language="csharp">
+{`public class ElasticsearchConnectionString : ConnectionString
+\{
+    public string Name \{ get; set; \}
+    public string Nodes \{ get; set; \}
+    public string Authentication \{ get; set; \}
+    public string Basic \{ get; set; \}
+    public string Username \{ get; set; \}
+    public string Password \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.ElasticSearch;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### `ConnectionString`
+
+A generic connection string definition:
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="csharp">
+{`public class ConnectionString
+\{
+    public string Name \{ get; set; \} // name of connection string        
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Code Samples
+
+#### Get all Connection Strings
+
+<TabItem value="get_all_connection_strings" label="get_all_connection_strings">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    GetConnectionStringsOperation operation = new GetConnectionStringsOperation();
+    GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
+    Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = connectionStrings.RavenConnectionStrings;
+    Dictionary<string, OlapConnectionString> olapConnectionStrings = connectionStrings.OlapConnectionStrings;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Get Connection String By Name and Type
+
+<TabItem value="get_connection_string_by_name" label="get_connection_string_by_name">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    GetConnectionStringsOperation operation =
+        new GetConnectionStringsOperation("local_mysql", ConnectionStringType.Sql);
+    GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
+    Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
+    SqlConnectionString mysqlConnectionString = sqlConnectionStrings["local_mysql"];
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

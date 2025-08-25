@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities does not have to contain Id property or field. In case of such an entity and a need of knowing under what Id it is stored on server `getDocumentId` method has been created.
+
+## Syntax
+
+<TabItem value="get_document_id_1" label="get_document_id_1">
+<CodeBlock language="java">
+{`String getDocumentId(Object entity)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Instance of an entity for which Id will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Returns Id for specified entity. Method may return `null` if `entity` is **null, isn't tracked or Id will be generated on the server**. |
+
+## Example
+
+<TabItem value="get_document_id_3" label="get_document_id_3">
+<CodeBlock language="java">
+{`public class Comment \{
+    private String author;
+    private String message;
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getMessage() \{
+        return message;
+    \}
+
+    public void setMessage(String message) \{
+        this.message = message;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_document_id_2" label="get_document_id_2">
+<CodeBlock language="java">
+{`String commentId = session
+    .advanced()
+    .getDocumentId(comment);// e.g. comments/1-A
+`}
+</CodeBlock>
+</TabItem>
+
+

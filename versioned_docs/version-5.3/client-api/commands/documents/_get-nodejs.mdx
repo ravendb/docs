@@ -1,0 +1,253 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to retrieve documents from a database:   
+
+- [Get single document](../../../client-api/commands/documents/get.mdx#get-single-document)   
+- [Get multiple documents](../../../client-api/commands/documents/get.mdx#get-multiple-documents)   
+- [Get paged documents](../../../client-api/commands/documents/get.mdx#get-paged-documents)   
+- [Get documents by starts with](../../../client-api/commands/documents/get.mdx#get-by-starts-with)  
+
+## Get single document
+
+**GetDocumentsCommand** can be used to retrieve a single document
+
+### Syntax
+
+<TabItem value="get_interface_single" label="get_interface_single">
+<CodeBlock language="js">
+{`new GetDocumentsCommand(\{
+    id,
+    includes,
+    metadataOnly,
+    conventions
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | object | |
+| &nbsp;&nbsp;*id* | string | ID of the document to get |
+| &nbsp;&nbsp;*includes* | string[] | Related documents to fetch along with the document |
+| &nbsp;&nbsp;*metadataOnly* | boolean | Whether to fetch the whole document or just the metadata. |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
+
+### Example
+
+<TabItem value="get_sample_single" label="get_sample_single">
+<CodeBlock language="js">
+{`const command = new GetDocumentsCommand(\{ id: "orders/1-A" \});
+await session.advanced.getRequestExecutor().execute(command);
+const order = command.result.results[0];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get multiple documents
+
+**GetDocumentsCommand** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_interface_multiple" label="get_interface_multiple">
+<CodeBlock language="js">
+{`new GetDocumentsCommand(\{
+    ids,
+    includes,
+    metadataOnly,
+    conventions
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | object | |
+| &nbsp;&nbsp;*ids* | string[] | IDs of the documents to get |
+| &nbsp;&nbsp;*includes* | string[] | Related documents to fetch along with the documents |
+| &nbsp;&nbsp;*metadataOnly* | boolean | Whether to fetch whole documents or just the metadata |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
+
+### Example I
+
+<TabItem value="get_sample_multiple" label="get_sample_multiple">
+<CodeBlock language="js">
+{`const command = new GetDocumentsCommand(\{
+    ids: [ "orders/1-A", "employees/3-A" ]
+\});
+await session.advanced.getRequestExecutor().execute(command);
+const order = command.result.results[0];
+const employee = command.result.results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - Using Includes
+
+<TabItem value="get_sample_includes" label="get_sample_includes">
+<CodeBlock language="js">
+{`// Fetch emploees/5-A and his boss.
+const command = new GetDocumentsCommand(\{
+    id: "employees/5-A", 
+    includes: [ "ReportsTo" ]
+\});
+await session.advanced.getRequestExecutor().execute(command);
+
+const employee = command.result.results[0];
+const bossId = employee.ReportsTo;
+const boss = command.result.includes[bossId];
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - Missing Documents
+
+<TabItem value="get_sample_missing" label="get_sample_missing">
+<CodeBlock language="js">
+{`// Assuming that products/9999-A doesn't exist.
+const command = new GetDocumentsCommand(\{
+    ids: [ "products/1-A", "products/9999-A", "products/3-A" ]
+\});
+await session.advanced.getRequestExecutor().execute(command);
+const products = command.result.results; // products/1-A, null, products/3-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get paged documents
+
+**GetDocumentsCommand** can also be used to retrieve a paged set of documents.
+
+### Syntax
+
+<TabItem value="get_interface_paged" label="get_interface_paged">
+<CodeBlock language="js">
+{`new GetDocumentsCommand(\{
+    start,
+    pageSize,
+    conventions
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | object | |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
+
+### Example
+
+<TabItem value="get_sample_paged" label="get_sample_paged">
+<CodeBlock language="js">
+{`const command = new GetDocumentsCommand(\{
+    start: 0, 
+    pageSize: 128
+\});
+await session.advanced.getRequestExecutor().execute(command);
+const firstDocs = command.result.results;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get by starts with
+
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified ID prefix.
+
+### Syntax
+
+<TabItem value="get_interface_startswith" label="get_interface_startswith">
+<CodeBlock language="js">
+{`new GetDocumentsCommand(\{
+    start,
+    pageSize,
+    startsWith,
+    startsAfter,
+    matches,
+    exclude,
+    metadataOnly,
+    conventions
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | object | |
+| &nbsp;&nbsp;*startsWith* | string | prefix for which documents should be returned |
+| &nbsp;&nbsp;*startAfter* | string | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
+| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*exclude* | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*metadataOnly* | boolean | specifies whether or not only document metadata should be returned |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
+
+### Example I
+
+<TabItem value="get_sample_startswith" label="get_sample_startswith">
+<CodeBlock language="js">
+{`const command = new GetDocumentsCommand(\{
+    startsWith: "products",  
+    start: 0, 
+    pageSize: 128
+\});
+
+await session.advanced.getRequestExecutor().execute(command);
+const products = command.result.results;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_sample_startswith_matches" label="get_sample_startswith_matches">
+<CodeBlock language="js">
+{`// return up to 128 documents  with key that starts with 'products/'
+// and rest of the key begins with "1" or "2", eg. products/10, products/25
+const command = new GetDocumentsCommand(\{
+    startsWith: "products", 
+    matches: "1*|2*", 
+    start: 0, 
+    pageSize: 128
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_sample_startswith_matches_end" label="get_sample_startswith_matches_end">
+<CodeBlock language="js">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key have length of 3, begins and ends with "1"
+// and contains any character at 2nd position e.g. products/101, products/1B1
+const command = new GetDocumentsCommand(\{
+    startsWith: "products",
+    matches: "1?1",
+    start: 0,
+    pageSize: 128
+\});
+await session.advanced.getRequestExecutor().execute(command);
+const products = command.result.results;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

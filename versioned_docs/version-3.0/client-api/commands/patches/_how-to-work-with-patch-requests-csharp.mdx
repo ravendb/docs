@@ -1,0 +1,342 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Patch** command is used to perform partial document updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities.
+
+## Syntax
+
+<TabItem value="patch_1" label="patch_1">
+<CodeBlock language="csharp">
+{`/// <summary>
+/// Sends a patch request for a specific document, ignoring document's Etag and if it is missing
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patches">Array of patch requests</param>
+RavenJObject Patch(string key, PatchRequest[] patches);
+
+/// <summary>
+/// Sends a patch request for a specific document, ignoring the document's Etag
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patches">Array of patch requests</param>
+/// <param name="ignoreMissing">true if the patch request should ignore a missing document, false to throw DocumentDoesNotExistException</param>
+RavenJObject Patch(string key, PatchRequest[] patches, bool ignoreMissing);
+
+/// <summary>
+/// Sends a patch request for a specific document
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patches">Array of patch requests</param>
+/// <param name="etag">Require specific Etag [null to ignore]</param>
+RavenJObject Patch(string key, PatchRequest[] patches, Etag etag);
+
+/// <summary>
+/// Sends a patch request for a specific document which may or may not currently exist
+/// </summary>
+/// <param name="key">Id of the document to patch</param>
+/// <param name="patchesToExisting">Array of patch requests to apply to an existing document</param>
+/// <param name="patchesToDefault">Array of patch requests to apply to a default document when the document is missing</param>
+/// <param name="defaultMetadata">The metadata for the default document when the document is missing</param>
+RavenJObject Patch(string key, PatchRequest[] patchesToExisting, PatchRequest[] patchesToDefault, RavenJObject defaultMetadata);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**
+
+<TabItem value="patchrequest" label="patchrequest">
+<CodeBlock language="csharp">
+{`public class PatchRequest
+\{
+	/// <summary>
+	/// Type of the operation
+	/// </summary>
+	public PatchCommandType Type \{ get; set; \}
+
+	/// <summary>
+	/// Gets or sets the previous value, which is compared against the current value to verify a
+	/// change isn't overwriting new values.
+	/// If the value is null, the operation is always successful
+	/// </summary>
+	public RavenJToken PrevVal \{ get; set; \}
+
+	/// <summary>
+	/// Value that will be applied
+	/// </summary>
+	public RavenJToken Value \{ get; set; \}
+
+	/// <summary>
+	/// Gets or sets the nested operations to perform. This is only valid when the <see cref="Type"/> is <see cref="PatchCommandType.Modify"/>.
+	/// </summary>
+	public PatchRequest[] Nested \{ get; set; \}
+
+	/// <summary>
+	/// Name of the property that will be patched
+	/// </summary>
+	public string Name \{ get; set; \}
+
+	/// <summary>
+	/// Position in array that will be patched
+	/// </summary>
+	public int? Position \{ get; set; \}
+
+	/// <summary>
+	/// Set this property to true if you want to modify all items in an collection.
+	/// </summary>
+	public bool? AllPositions \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="patchcommandtype" label="patchcommandtype">
+<CodeBlock language="csharp">
+{`public enum PatchCommandType
+\{
+	/// <summary>
+	/// Set a property
+	/// </summary>
+	Set,
+	/// <summary>
+	/// Unset (remove) a property
+	/// </summary>
+	Unset,
+	/// <summary>
+	/// Add an item to an array
+	/// </summary>
+	Add,
+	/// <summary>
+	/// Append an item to an array
+	/// </summary>
+	Insert,
+	/// <summary>
+	/// Remove an item from an array at a specified position
+	/// </summary>
+	Remove,
+	/// <summary>
+	/// Modify a property value by providing a nested set of patch operation
+	/// </summary>
+	Modify,
+	/// <summary>
+	/// Increment a property by a specified value
+	/// </summary>
+	Inc,
+	/// <summary>
+	/// Copy a property value to another property
+	/// </summary>
+	Copy,
+	/// <summary>
+	/// Rename a property
+	/// </summary>
+	Rename
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="patch_2" label="patch_2">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Set, 
+					Name = "FirstName", 
+					Value = "Robert"
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="patch_1_0" label="patch_1_0">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert and LastName to Carter in single request
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Set, 
+					Name = "FirstName", 
+					Value = "Robert"
+				\},
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Set, 
+					Name = "LastName", 
+					Value = "Carter"
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="patch_3" label="patch_3">
+<CodeBlock language="csharp">
+{`// add new property Age with value of 30
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Set, 
+					Name = "Age", 
+					Value = 30
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IV
+
+<TabItem value="patch_4" label="patch_4">
+<CodeBlock language="csharp">
+{`// increment Age property value by 10
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Inc, 
+					Name = "Age", 
+					Value = 10
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example V
+
+<TabItem value="patch_5" label="patch_5">
+<CodeBlock language="csharp">
+{`// remove property Age
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Unset, 
+					Name = "Age"
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VI
+
+<TabItem value="patch_6" label="patch_6">
+<CodeBlock language="csharp">
+{`// rename FirstName to First
+store.DatabaseCommands.Patch(
+	"employees/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Rename, 
+					Name = "FirstName",
+					Value = "First"
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VII
+
+<TabItem value="patch_7" label="patch_7">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+store.DatabaseCommands.Patch(
+	"blogposts/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Add, 
+					Name = "Comments",
+					Value = RavenJObject.FromObject(new BlogComment
+						                                \{
+															Content = "Lore ipsum",
+															Title = "Some title"
+						                                \})
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VIII
+
+<TabItem value="patch_8" label="patch_8">
+<CodeBlock language="csharp">
+{`// insert a new comment at position 0 to Comments
+store.DatabaseCommands.Patch(
+	"blogposts/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Insert, 
+					Position = 0,
+					Name = "Comments",
+					Value = RavenJObject.FromObject(new BlogComment
+						                                \{
+							                                Content = "Lore ipsum",
+															Title = "Some title"
+						                                \})
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IX
+
+<TabItem value="patch_9" label="patch_9">
+<CodeBlock language="csharp">
+{`// modify a comment at position 3 in Comments
+store.DatabaseCommands.Patch(
+	"blogposts/1",
+	new[]
+		\{
+			new PatchRequest
+				\{
+					Type = PatchCommandType.Modify, 
+					Position = 3,
+					Name = "Comments",
+					Nested = new []
+						         \{
+							         new PatchRequest
+								         \{
+									         Type = PatchCommandType.Set,
+											 Name = "Title",
+											 Value = "New title"
+								         \}
+						         \}
+				\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+

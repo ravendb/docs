@@ -1,0 +1,544 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
+
+* Index queries can be executed using -  
+   * [query_index_type](../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
+   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
+
+* The examples in this page demonstrate how filtering is applied by each of these methods.  
+
+* In this page:
+   * [`whereEquals` - Where equals](../../indexes/querying/filtering.mdx#whereequals---where-equals)
+   * [`whereGreaterThan` - Numeric property](../../indexes/querying/filtering.mdx#wheregreaterthan---numeric-property)
+   * [`whereGreaterThan` - Nested property](../../indexes/querying/filtering.mdx#wheregreaterthan---nested-property)
+   * [`whereIn` - Single -vs- Multiple values](../../indexes/querying/filtering.mdx#wherein---single--vs--multiple-values)
+   * [`containsAny` - Any value from specified collection](../../indexes/querying/filtering.mdx#containsany---any-value-from-specified-collection)
+   * [`containsAll` - All values from specified collection](../../indexes/querying/filtering.mdx#containsall---all-values-from-specified-collection)
+   * [`whereStartsWith` - All records with given prefix](../../indexes/querying/filtering.mdx#wherestartswith---all-records-with-given-prefix)
+   * [`whereEndsWith` - All records with given suffix](../../indexes/querying/filtering.mdx#whereendswith---all-records-with-given-suffix)
+   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [`whereExists` - Where exists or doesn't exist](../../indexes/querying/filtering.mdx#whereexists---where-exists-or-doesn)
+
+</Admonition>
+
+## `whereEquals` - Where equals 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $results */
+$results = $session
+        ->query(Employee::class, Employees_ByFirstAndLastName::class)                // query 'Employees/ByFirstAndLastName' index
+        ->whereEquals("FirstName", "Robert")
+        ->andAlso()
+        ->whereEquals("LastName", "King")    // filtering predicates
+        ->toList();                                                      // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Employee::class, Employees_ByFirstAndLastName::class)    // query 'Employees/ByFirstAndLastName' index
+    ->whereEquals("FirstName", "Robert")                    // filtering predicates
+    ->andAlso()                                                  // by default OR is between each condition
+    ->whereEquals("LastName", "King")                       // filtering predicates
+    ->toList();                                                  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new {" .
+            "    FirstName = employee.FirstName," .
+            "    LastName = employee.LastName" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert' and LastName = 'King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereGreaterThan` - Numeric property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Product> $results */
+$results = $session
+    ->query(Product::class, Products_ByUnitsInStock::class)  // query 'Products/ByUnitsInStock' index
+    ->whereGreaterThan("UnitsInStock", 50)            // filtering predicates
+    ->toList();                                  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Product::class, Products_ByUnitsInStock::class)  // query 'Products/ByUnitsInStock' index
+    ->whereGreaterThan("UnitsInStock", 50)          // filtering predicates
+    ->toList();                                          // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new {" .
+            "        UnitsInStock = product.UnitsInStock" .
+            "    })";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock'
+where UnitsInStock > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereGreaterThan` - Nested property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// return all orders that were shipped to 'Albuquerque'
+/** @var array<Order> $results */
+$results = $session
+    ->query(Order::class)
+    ->whereEquals("ShipTo_City", "Albuquerque")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// return all orders that were shipped to 'Albuquerque'
+$results = $session
+    ->advanced()
+    ->documentQuery(Order::class)
+    ->whereEquals("ShipTo_City", "Albuquerque")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where ShipTo.City = 'Albuquerque'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Order> $results */
+$results = $session
+    ->query(Order::class, Order_ByOrderLinesCount::class)  // query 'Order/ByOrderLinesCount' index
+    ->whereGreaterThan("Lines_Count", 50)                               // filtering predicates
+    ->toList();                                                                       // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Order> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Order::class, Order_ByOrderLinesCount::class) // query 'Order/ByOrderLinesCount' index
+    ->whereGreaterThan("Lines_Count", 50)                                   // filtering predicates
+    ->toList();                                                                           // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Order_ByOrderLinesCount extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Orders.Select(order => new {" .
+            "    Lines_Count = order.Lines.Count" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Order/ByOrderLinesCount'
+where Lines.Count > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereIn` - Single -vs- Multiple values
+
+When you want to check a single value against multiple values, `whereIn` can become handy.  
+To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $results */
+$results = $session
+    ->query(Employee::class, Employees_ByFirstAndLastName::class)    // query 'Employees/ByFirstAndLastName' index
+    ->whereIn("FirstName", ["Robert", "Nancy"])    // filtering predicates (remember to add \`Raven.Client.Linq\` namespace to usings)
+    ->toList();                                             // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Employee::class, Employees_ByFirstAndLastName::class)    // query 'Employees/ByFirstAndLastName' index
+    ->whereIn("FirstName", [ "Robert", "Nancy" ])       // filtering predicates
+    ->toList();                                                  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new {" .
+            "    FirstName = employee.FirstName," .
+            "    LastName = employee.LastName" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName IN ('Robert', 'Nancy')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `containsAny` - Any value from specified collection
+
+To check if enumeration contains **any** of the values from a specified collection, 
+use the `containsAny` method.
+
+For example, if you want to return all `BlogPosts` that contain any of the specified `Tags`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<BlogPost> $results */
+$results = $session
+    ->query(BlogPost::class, BlogPosts_ByTags::class) // query 'BlogPosts/ByTags' index
+    ->containsAny("Tags", [ "Development", "Research" ])                // filtering predicates
+    ->toList();                                                                  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<BlogPost> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(BlogPost::class, BlogPosts_ByTags::class) // query 'BlogPosts/ByTags' index
+    ->containsAny("Tags", [ "Development", "Research" ])                     // filtering predicates
+    ->toList();                                                                       // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class BlogPosts_ByTags extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.BlogPosts.Select(post => new {" .
+            "    tags = post.tags" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `containsAll` - All values from specified collection
+
+To check if an enumeration contains **all** of the values from a specified collection, 
+use the `containsAll` method.
+
+For example, if you want to return all the `BlogPosts` that contain all of the specified `Tags`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<BlogPost> $results */
+$results = $session
+    ->query(BlogPost::class, BlogPosts_ByTags::class) // query 'BlogPosts/ByTags' index
+    ->containsAll("Tags", [ "Development", "Research" ])                // filtering predicates
+    ->toList();                                                                  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<BlogPost> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(BlogPost::class, BlogPosts_ByTags::class)    // query 'BlogPosts/ByTags' index
+    ->containsAll("Tags", [ "Development", "Research" ])                        // filtering predicates
+    ->toList();                                                                          // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class BlogPosts_ByTags extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.BlogPosts.Select(post => new {" .
+            "    tags = post.tags" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags ALL IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereStartsWith` - All records with given prefix
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// return all products which name starts with 'ch'
+/** @var array<Product> $results */
+$results = $session
+    ->query(Product::class)
+    ->whereStartsWith("Name", "ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// return all products which name starts with 'ch'
+/** @var array<Product> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Product::class)
+    ->whereStartsWith("Name", "ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where startsWith(Name, 'ch')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereEndsWith` - All records with given suffix
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// return all products which name ends with 'ra'
+/** @var array<Product> $results */
+$results = $session
+    ->query(Product::class)
+    ->whereEndsWith("Name", "ra")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// return all products which name ends with 'ra'
+/** @var array<Product> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Product::class)
+    ->whereEndsWith("Name", "ra")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where endsWith(Name, 'ra')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - Identifier Property
+
+Once a property used in the `whereEquals` clause is recognized as an identity property of a given entity type 
+(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
+and there aren't any other fields involved in the query, then it is called a "collection query". 
+Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
+and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
+It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
+loading documents using [`session->load`](../../client-api/session/loading-entities.mdx).  
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var Order $order */
+$order = $session
+    ->query(Order::class)
+    ->whereEquals("Id", "orders/1-A")
+    ->firstOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var Order $order */
+$order = $session
+    ->advanced()
+    ->documentQuery(Order::class)
+    ->whereEquals("Id", "orders/1-A")
+    ->firstOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where id() = 'orders/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Order> $orders */
+$orders = $session
+    ->query(Order::class)
+    ->whereStartsWith("Id", "orders/1")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Order> $orders */
+$orders = $session
+    ->advanced()
+    ->documentQuery(Order::class)
+    ->whereStartsWith("Id", "orders/1")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where startsWith(id(), 'orders/1')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `whereExists` - Where exists or doesn't exist
+
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+
+
+
+

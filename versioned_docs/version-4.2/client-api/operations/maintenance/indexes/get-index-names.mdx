@@ -5,89 +5,24 @@ sidebar_label: Get Index Names
 sidebar_position: 15
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetIndexNamesCsharp from './_get-index-names-csharp.mdx';
+import GetIndexNamesJava from './_get-index-names-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Index Names
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetIndexNamesOperation** is used to retrieve multiple index names from a database.
-
-### Syntax
-
-<TabItem value="get_3_0" label="get_3_0">
-<CodeBlock language="csharp">
-{`public GetIndexNamesOperation(int start, int pageSize);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **start** | int | Number of index names that should be skipped |
-| **pageSize** | int | Maximum number of index names that will be retrieved |
-
-| Return Value | |
-| ------------- | ----- |
-| string[] | This methods returns an array of index **name** as a result. |
-
-### Example
-
-<TabItem value="get_3_1" label="get_3_1">
-<CodeBlock language="csharp">
-{`string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, 10));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetIndexNamesCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetIndexNamesOperation** is used to retrieve multiple index names from a database.
-
-### Syntax
-
-<TabItem value="get_3_0" label="get_3_0">
-<CodeBlock language="java">
-{`public GetIndexNamesOperation(int start, int pageSize)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **start** | int | Number of index names that should be skipped |
-| **pageSize** | int | Maximum number of index names that will be retrieved |
-
-| Return Value | |
-| ------------- | ----- |
-| String[] | This methods returns an array of index **name** as a result. |
-
-### Example
-
-<TabItem value="get_3_1" label="get_3_1">
-<CodeBlock language="java">
-{`String[] indexNames
-    = store.maintenance()
-        .send(new GetIndexNamesOperation(0, 10));
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <GetIndexNamesJava />
 </LanguageContent>
+
 
 <!---
 ### Indexes

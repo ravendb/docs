@@ -5,78 +5,24 @@ sidebar_label: How to delete a data subscription?
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToDeleteDataSubscriptionCsharp from './_how-to-delete-data-subscription-csharp.mdx';
+import HowToDeleteDataSubscriptionJava from './_how-to-delete-data-subscription-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#How to delete a data subscription?
-
-The data subscription is never deleted unless you explicitly drop it. This is the method to do it:
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="csharp">
-{`//	void Delete(long id, string database = null);
-//
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | long | Subscription identifier. |
-| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
-
-
-
-<TabItem value="delete_2" label="delete_2">
-<CodeBlock language="csharp">
-{`//	store.Subscriptions.Delete(id);
-//
-`}
-</CodeBlock>
-</TabItem>
-
-<Admonition type="warning" title="">
-Deleting a subscription will kill the connection if it's active.
-</Admonition>
+   <HowToDeleteDataSubscriptionCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-#How to delete a data subscription?
-
-The data subscription is never deleted unless you explicitly drop it. This is the method to do it:
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="java">
-{`void delete(long id);
-
-void delete(long id, String database);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | long | Subscription identifier. |
-| **database** | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
-
-
-
-<TabItem value="delete_2" label="delete_2">
-<CodeBlock language="java">
-{`store.subscriptions().delete(id);
-`}
-</CodeBlock>
-</TabItem>
+   <HowToDeleteDataSubscriptionJava />
 </LanguageContent>
+
 
 <!---
 

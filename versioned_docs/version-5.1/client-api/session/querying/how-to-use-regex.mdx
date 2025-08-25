@@ -5,123 +5,29 @@ sidebar_label: How to Use Regex
 sidebar_position: 17
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToUseRegexCsharp from './_how-to-use-regex-csharp.mdx';
+import HowToUseRegexJava from './_how-to-use-regex-java.mdx';
+import HowToUseRegexNodejs from './_how-to-use-regex-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Using Regex
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To return only documents that match regular expression, use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = session
-    .Query<Product>()
-    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = await asyncSession
-    .Query<Product>()
-    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
-    .ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToUseRegexCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To return only documents that match regular expression, use the `regex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Java" label="Java">
-<CodeBlock language="java">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = session.query(Product.class)
-    .whereRegex("Name", "^[NA]")
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToUseRegexJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-To return only documents that match a given regular expression, use the `regex()` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Node.js" label="Node.js">
-<CodeBlock language="js">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-const products = await session.query({ collection: "Products" })
-    .whereRegex("name", "^[NA]")
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <HowToUseRegexNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

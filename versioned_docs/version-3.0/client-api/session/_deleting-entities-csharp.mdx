@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities can be marked for deletion by using `Delete` method, but will not be removed from server until `SaveChanges` is called.
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="csharp">
+{`void Delete<T>(T entity);
+
+void Delete(string id);
+
+void Delete(string id, string expectedChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** or **id** | T, ValueType or string | instance of entity to delete or entity Id |
+
+## Example 1
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+
+session.Delete(employee);
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="csharp">
+{`session.Delete("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new DeleteCommandData("employees/1", changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+</Admonition>
+
+

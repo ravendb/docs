@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to delete databases from a server, with a possibility to remove all the data from hard drive.
+
+## Syntax
+
+<TabItem value="delete_database_syntax" label="delete_database_syntax">
+<CodeBlock language="csharp">
+{`public DeleteDatabasesOperation(
+    string databaseName,
+    bool hardDelete,
+    string fromNode = null,
+    TimeSpan? timeToWaitForConfirmation = null)
+\{
+\}
+
+public DeleteDatabasesOperation(DeleteDatabasesOperation.Parameters parameters)
+\{
+\}
+
+public class Parameters
+\{
+    public string[] DatabaseNames \{ get; set; \}
+
+    public bool HardDelete \{ get; set; \}
+
+    public string[] FromNodes \{ get; set; \}
+
+    public TimeSpan? TimeToWaitForConfirmation \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | string | Name of a database to delete |
+| **HardDelete** | bool | Should all data be removed (data files, indexing files, etc.). |
+| **FromNode** | string | Remove the database just from a specific node. Default: `null` which would delete from all |
+| **TimeToWaitForConfirmation** | TimeSpan | Time to wait for confirmation. Default: `null` will user server default (15 seconds) |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var parameters = new DeleteDatabasesOperation.Parameters
+{
+    DatabaseNames = new[] { "MyNewDatabase", "OtherDatabaseToDelete" },
+    HardDelete = true,
+    FromNodes = new[] { "A", "C" },     // optional
+    TimeToWaitForConfirmation = TimeSpan.FromSeconds(30)    // optional
+};
+store.Maintenance.Server.Send(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var parameters = new DeleteDatabasesOperation.Parameters
+{
+    DatabaseNames = new[] { "MyNewDatabase", "OtherDatabaseToDelete" },
+    HardDelete = true,
+    FromNodes = new[] { "A", "C" },   // optional
+    TimeToWaitForConfirmation = TimeSpan.FromSeconds(30)    // optional
+};
+await store.Maintenance.Server.SendAsync(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+In order to delete just one database from a server, you can also use this simplified constructor
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`store.Maintenance.Server.Send(new DeleteDatabasesOperation("MyNewDatabase", hardDelete: true, fromNode: null, timeToWaitForConfirmation: null));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await store.Maintenance.Server.SendAsync(new DeleteDatabasesOperation("MyNewDatabase", hardDelete: true, fromNode: null, timeToWaitForConfirmation: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+

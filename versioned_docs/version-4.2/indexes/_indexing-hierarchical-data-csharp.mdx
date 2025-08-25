@@ -1,0 +1,137 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`private class BlogPost
+\{
+    public string Author \{ get; set; \}
+    public string Title \{ get; set; \}
+    public string Text \{ get; set; \}
+
+    // Blog post readers can leave comments
+    public List<BlogPostComment> Comments \{ get; set; \}
+\}
+
+public class BlogPostComment
+\{
+    public string Author \{ get; set; \}
+    public string Text \{ get; set; \}
+
+    // Comments can be left recursively
+    public List<BlogPostComment> Comments \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+
+The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
+{
+    public class Result
+    {
+        public IEnumerable<string> Authors { get; set; }
+    }
+
+    public BlogPosts_ByCommentAuthor()
+    {
+        Map = posts => from post in posts
+                       select new Result
+                       {
+                           Authors = Recurse(post, x => x.Comments).Select(x => x.Author)
+                       };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutIndexesOperation(
+    new IndexDefinition
+    {
+        Name = "BlogPosts/ByCommentAuthor",
+        Maps =
+        {
+            @"from post in docs.Posts
+              from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.Comments))
+              select new
+              {
+                  Author = comment.Author
+              }"
+        }
+    }));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByCommentAuthor : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string[] Authors { get; set; }
+
+    }
+
+    public BlogPosts_ByCommentAuthor()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('BlogPosts', function(b){
+                var names = [];
+                b.Comments.forEach(x => getNames(x, names));
+                return {
+                    Authors : names
+                };})"
+        };
+        AdditionalSources = new Dictionary<string, string>
+        {
+            ["The Script"] = @"function getNames(x, names){
+                                names.push(x.Author);
+                                x.Comments.forEach(x => getNames(x, names));
+                         }"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+    .Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
+    .Where(x => x.Authors.Any(a => a == "Ayende Rahien"))
+    .OfType<BlogPost>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+    .Advanced
+    .DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
+    .WhereEquals("Authors", "Ayende Rahien")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

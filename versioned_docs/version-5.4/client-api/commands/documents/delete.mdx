@@ -5,230 +5,39 @@ sidebar_label: Delete Document
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteCsharp from './_delete-csharp.mdx';
+import DeleteJava from './_delete-java.mdx';
+import DeletePython from './_delete-python.mdx';
+import DeletePhp from './_delete-php.mdx';
+import DeleteNodejs from './_delete-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-
-# Commands: Delete Document
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-<Admonition type="note" title="">
-
-* Use `DeleteDocumentCommand` to remove a document from the database.
-
-* In this page:
-
-    * [Example](../../../client-api/commands/documents/delete.mdx#example)
-    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
-
-</Admonition>
-## Example
-
-<TabItem value="delete_sample" label="delete_sample">
-<CodeBlock language="csharp">
-{`var command = new DeleteDocumentCommand("employees/1-A", null);
-session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
-## Syntax
-
-<TabItem value="delete_interface" label="delete_interface">
-<CodeBlock language="csharp">
-{`public DeleteDocumentCommand(string id, string changeVector)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-|------------|------|-------------|
-| **id**           | `string` | ID of a document to be deleted |
-| **changeVector** | `string` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
-
-
-
-
+   <DeleteCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**Delete** is used to remove a document from a database.
-
-## Syntax
-
-<TabItem value="delete_interface" label="delete_interface">
-<CodeBlock language="java">
-{`public DeleteDocumentCommand(String id, String changeVector)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | `String` | ID of a document to be deleted |
-| **changeVector** | `String` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
-
-## Example
-
-<TabItem value="delete_sample" label="delete_sample">
-<CodeBlock language="java">
-{`DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
-session.advanced().getRequestExecutor().execute(command);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteJava />
 </LanguageContent>
+
 <LanguageContent language="python">
-
-
-<Admonition type="note" title="">
-
-* Use `DeleteDocumentCommand` to remove a document from the database.
-
-* In this page:
-
-    * [Example](../../../client-api/commands/documents/delete.mdx#example)
-    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
-
-</Admonition>
-## Example
-
-<TabItem value="delete_sample" label="delete_sample">
-<CodeBlock language="python">
-{`command = DeleteDocumentCommand("employees/1-A", None)
-session.advanced.request_executor.execute_command(command)
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
-## Syntax
-
-<TabItem value="delete_interface" label="delete_interface">
-<CodeBlock language="python">
-{`class DeleteDocumentCommand(VoidRavenCommand):
-    def __init__(self, key: str, change_vector: Optional[str] = None): ...
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-|------------|------|-------------|
-| **key**           | `str` | ID of a document to be deleted |
-| **change_vector** | `str` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
-
-
-
-
+   <DeletePython />
 </LanguageContent>
+
 <LanguageContent language="php">
-
-
-<Admonition type="note" title="">
-
-* Use `DeleteDocumentCommand` to remove a document from the database.
-
-* In this page:
-
-    * [Example](../../../client-api/commands/documents/delete.mdx#example)
-    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
-
-</Admonition>
-## Example
-
-<TabItem value="delete_sample" label="delete_sample">
-<CodeBlock language="php">
-{`$command = new DeleteDocumentCommand("employees/1-A", null);
-$session->advanced()->getRequestExecutor()->execute($command);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
-## Syntax
-
-<TabItem value="delete_interface" label="delete_interface">
-<CodeBlock language="php">
-{`DeleteDocumentCommand(?string $idOrCopy, ?string $changeVector = null);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-|------------|------|-------------|
-| **idOrCopy** | `string` | ID of a document to be deleted |
-| **changeVector** | `string` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
-
-
-
-
+   <DeletePhp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-<Admonition type="note" title="">
-
-* Use `DeleteDocumentCommand` to remove a document from the database.
-
-* In this page:
-
-    * [Example](../../../client-api/commands/documents/delete.mdx#example)
-    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
-
-</Admonition>
-## Example
-
-<TabItem value="delete" label="delete">
-<CodeBlock language="js">
-{`_document_1
-        // Define the Delete Command
-        // Pass the document ID & whether to make a concurrency check
-        const command = new DeleteDocumentCommand("employees/1-A", null);
-
-        // Send the command to the server using the Store's Request Executor
-        await documentStore.getRequestExecutor().execute(command);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`DeleteDocumentCommand(id, changeVector);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter        | Type     | Description                                                             |
-|------------------|----------|-------------------------------------------------------------------------|
-| **id**           | `string` | ID of a document to be deleted                                          |
-| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
-
-
-
-
+   <DeleteNodejs />
 </LanguageContent>
+
 
 <!---
 ### Commands

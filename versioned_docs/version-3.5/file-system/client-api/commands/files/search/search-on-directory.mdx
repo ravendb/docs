@@ -5,115 +5,24 @@ sidebar_label: SearchOnDirectory
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SearchOnDirectoryCsharp from './_search-on-directory-csharp.mdx';
+import SearchOnDirectoryHttp from './_search-on-directory-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: SearchOnDirectoryAsync
-
-The **SearchOnDirectoryAsync** method returns files located in a given directory and matching specified file name search pattern. 
-
-
-
-<TabItem value="search_on_directory_1" label="search_on_directory_1">
-<CodeBlock language="csharp">
-{`Task<SearchResults> SearchOnDirectoryAsync(string folder, FilesSortOptions options = FilesSortOptions.Default, 
-										string fileNameSearchPattern = "", int start = 0, int pageSize = 1024);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **folder** | string | The directory path to look for files |
-| **options** | FilesSortOptions | It determines the sorting options when returning results |
-| **fileNameSearchPattern** | string | The pattern that a file name has to match ('?' any single character, '*' any characters, default: empty string - means that a matching file name is skipped) |
-| **start** | int | The number of files that should be skipped |
-| **pageSize** | int | The maximum number of files that will be returned |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;SearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`SearchResults`](../../../../../glossary/search-results.mdx) object which represents results of a specified query. |
-
-## Example
-
-<TabItem value="search_on_directory_2" label="search_on_directory_2">
-<CodeBlock language="csharp">
-{`await store.AsyncFilesCommands.UploadAsync("1.doc", stream);
-await store.AsyncFilesCommands.UploadAsync("2.txt", stream);
-await store.AsyncFilesCommands.UploadAsync("3.toc", stream);
-await store.AsyncFilesCommands.UploadAsync("/backups/1.doc", stream);
-
-SearchResults result = await store
-	.AsyncFilesCommands
-	.SearchOnDirectoryAsync(
-		"/", 
-		FilesSortOptions.Name | FilesSortOptions.Desc,
-		"*.?oc"
-	); // will return 3.toc and 1.doc
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SearchOnDirectoryCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: SearchOnDirectory
-
-In order to look for files located in a given directory use the standard [search method](./search) with `__directoryName` and `__level` [terms](../../../../indexing.mdx)
-specified in the query parameter.
-
-
-
-Download all files located in `/movies` directory which names end with `.avi`:
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8080/fs/NorthwindFS/search?query=__directory:/movies%20AND%20__level:2%20AND%20__rfileName:iva.*
-< HTTP/1.1 200 OK
-\{
-    "Files":[
-        \{
-            "Metadata":\{
-                // ...
-            \},
-            "OriginalMetadata":\{
-                // ...
-            \},
-            "TotalSize":1338,
-            "UploadedSize":1338,
-            "LastModified":"2015-04-14T08:08:22.8144527+00:00",
-            "CreationDate":"2015-04-14T08:08:22.6054409+00:00",
-            "Etag":"00000000-0000-0001-0000-000000000008",
-            "FullPath":"/movies/intro.avi",
-            "Name":"intro.avi",
-            "Extension":".avi",
-            "Directory":"/movies",
-            "IsTombstone":false,
-            "HumaneTotalSize":"1.31 KBytes"
-        \}
-    ],
-    "FileCount":1,
-    "Start":0,
-    "PageSize":25
-\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <SearchOnDirectoryHttp />
 </LanguageContent>
+
 
 <!---
 - [Indexing](../../../../indexing)

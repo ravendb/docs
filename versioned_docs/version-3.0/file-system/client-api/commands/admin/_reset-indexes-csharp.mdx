@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: ResetIndexes
+
+**ResetIndexes** forces RavenFS to rebuild Lucene indexes from scratch.
+
+
+
+<TabItem value="reset_indexes_1" label="reset_indexes_1">
+<CodeBlock language="csharp">
+{`Task ResetIndexes(string filesystemName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filesystemName** | string | The name of the file system |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** |  A task that represents the asynchronous restore operation |
+
+## Example
+
+<TabItem value="reset_indexes_2" label="reset_indexes_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Admin
+	.ResetIndexes("NorthwindFS");
+`}
+</CodeBlock>
+</TabItem>
+

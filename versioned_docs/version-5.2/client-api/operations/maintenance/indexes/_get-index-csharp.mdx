@@ -1,0 +1,80 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetIndexOperation` to retrieve an index definition from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  However, the index definition returned is taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get the index state on the local node use `GetIndexStatisticsOperation`.
+
+* In this page:
+    * [Get index example](../../../../client-api/operations/maintenance/indexes/get-index.mdx#get-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index.mdx#syntax)
+
+</Admonition>
+## Get index example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get index operation, pass the index name
+var getIndexOp = new GetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+IndexDefinition index = store.Maintenance.Send(getIndexOp);
+
+// Access the index definition
+var state = index.State;
+var lockMode = index.LockMode;
+var deploymentMode = index.DeploymentMode;
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get index operation, pass the index name
+var getIndexOp = new GetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.SendAsync
+IndexDefinition index = await store.Maintenance.SendAsync(getIndexOp);
+
+// Access the index definition
+var state = index.State;
+var lockMode = index.LockMode;
+var deploymentMode = index.DeploymentMode;
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="get_index_syntax" label="get_index_syntax">
+<CodeBlock language="csharp">
+{`public GetIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| __indexName__ | string | Name of index to get |
+
+| Return value of `store.Maintenance.Send(getIndexOp)` | |
+|- | - |
+| `IndexDefinition` | An instance of class [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) |
+
+
+
+

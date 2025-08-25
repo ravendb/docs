@@ -1,0 +1,186 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Overview
+
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with few easy steps.
+
+<TabItem value="embedded_example" label="embedded_example">
+<CodeBlock language="java">
+{`EmbeddedServer.INSTANCE.startServer();
+
+try (IDocumentStore store = EmbeddedServer.INSTANCE.getDocumentStore("Embedded")) \{
+    try (IDocumentSession session = store.openSession()) \{
+        // your code here
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Prerequisites
+
+There is one prerequsite and one recommendation for the Embedded package:
+
+Prerequsite:
+
+- **.NET Core runtime** must be installed manually
+
+<Admonition type="note" title=".NET Core Runtime" id="net-core-runtime" href="#net-core-runtime">
+
+RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
+
+By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+
+We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
+
+</Admonition>
+
+
+
+## Getting Started
+
+### Installation
+
+* Create a new project 
+* Add package [net.ravendb:ravendb-embedded](https://search.maven.org/search?q=a:ravendb-embedded) as dependency
+
+### Starting the Server
+
+RavenDB Embedded Server is available under `EmbeddedServer.INSTANCE`. In order to start it call `startServer` method.
+
+<TabItem value="start_server" label="start_server">
+<CodeBlock language="java">
+{`// Start RavenDB Embedded Server with default options
+EmbeddedServer.INSTANCE.startServer();
+`}
+</CodeBlock>
+</TabItem>
+
+For more control on how to start the server just pass to `startServer` method a `ServerOptions` object and that`s it.
+
+<Admonition type="info" title="ServerOptions" id="serveroptions" href="#serveroptions">
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **frameworkVersion** | String | The .NET Core framework version to run the server with |
+| **dataDirectory** | String | Indicates where your data should be stored |
+| **dotNetPath** | String | The path to exec `dotnet` (if it is in PATH, leave it)|
+| **targetServerLocation** | String | The path to extract server binaries |
+| **acceptEula** |  boolean | If set to `false`, will ask to accept our terms & conditions |
+| **erverUrl** | String | What address we want to start our server (default `127.0.0.1:0`) |
+| **maxServerStartupTimeDuration** | `Duration` | The timeout for the server to start |
+| **commandLineArgs** | `List&lt;String&gt;` | The [command lines arguments](../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
+
+</Admonition>
+
+<TabItem value="start_server_with_options" label="start_server_with_options">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+// target location of RavenDB data
+serverOptions.setDataDirectory("C:\\\\RavenData");
+serverOptions.setServerUrl("http://127.0.0.1:8080");
+
+// location where server binaries will be extracted
+serverOptions.setTargetServerLocation("c:\\\\RavenServer");
+EmbeddedServer.INSTANCE.startServer(serverOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`
+</Admonition>
+
+### Security
+
+RavenDB Embedded support running a secured server.
+Just run `secured` method in `ServerOptions` object.
+
+We have two overloads to `secured`:
+<TabItem value="security" label="security">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+serverOptions.secured("PathToCertificate", "CertificatePassword");
+`}
+</CodeBlock>
+</TabItem>
+
+The first way to enable authentication is to set certificate with the path to your .pfx 
+server certificate. You may supply the certificate password using certPassword.
+
+<TabItem value="security2" label="security2">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+serverOptions.secured("powershell",
+    "c:\\\\secrets\\\\give_me_cert.ps1",
+    "a909502dd82ae41433e6f83886b00d4277a32a7b",
+    clientCertificate,
+    "PathToCaCertificateFile");
+`}
+</CodeBlock>
+</TabItem>
+
+This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. 
+RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
+RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+In this options you can control on your client certificate and to use in a different certificate for your client.
+
+### Document Store
+
+After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
+Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `getDocumentStore` with the name of the database you like to work with. 
+
+<TabItem value="get_document_store" label="get_document_store">
+<CodeBlock language="java">
+{`EmbeddedServer.INSTANCE.getDocumentStore("Embedded");
+`}
+</CodeBlock>
+</TabItem>
+
+For more control on the process you can call the methods with `DatabaseOptions` object.
+
+<Admonition type="info" title="DatabaseOptions" id="databaseoptions" href="#databaseoptions">
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **DatabaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
+| **SkipCreatingDatabase** | boolean | If set to true, will skip try creating the database  |
+
+</Admonition>
+
+<TabItem value="get_document_store_with_database_options" label="get_document_store_with_database_options">
+<CodeBlock language="java">
+{`DatabaseRecord databaseRecord = new DatabaseRecord();
+databaseRecord.setDatabaseName("Embedded");
+DatabaseOptions databaseOptions = new DatabaseOptions(databaseRecord);
+EmbeddedServer.INSTANCE.getDocumentStore(databaseOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+### Get Server URL
+
+The `getServerUri` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
+The URL can be used for example for creating a custom document store, omitting the `getDocumentStore` method entirely.
+
+<TabItem value="get_server_url" label="get_server_url">
+<CodeBlock language="java">
+{`String serverUri = EmbeddedServer.INSTANCE.getServerUri();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+* You can have only one instance of `EmbeddedServer`
+* Method `EmbeddedServer.INTANCE.openStudioInBrowser()` can be used to open an browser instance with Studio
+
+
+

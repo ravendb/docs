@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **StartIndexOperation** is used to resume indexing for an index.
+
+### Syntax
+
+<TabItem value="start_1" label="start_1">
+<CodeBlock language="java">
+{`public StartIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to start indexing |
+
+### Example
+
+<TabItem value="start_2" label="start_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StartIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+

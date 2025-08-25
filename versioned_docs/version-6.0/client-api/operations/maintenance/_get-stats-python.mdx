@@ -1,0 +1,195 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics can be retrieved for the database and for collections.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [for_database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
+</Admonition>
+## Get collection statistics
+
+To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="python">
+{`# Pass an instance of class 'GetCollectionStatisticsOperation' to the store
+stats = store.maintenance.send(GetCollectionStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="python">
+{`class CollectionStatistics:
+    def __init__(
+        self,
+        count_of_documents: Optional[int] = None,
+        count_of_conflicts: Optional[int] = None,
+        collections: Optional[Dict[str, int]] = None,
+    ): ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed collection statistics
+
+To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="python">
+{`# Pass an instance of class 'GetDetailedCollectionStatisticsOperation' to the store
+stats = store.maintenance.send(GetDetailedCollectionStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="python">
+{`class Size:
+    def __init__(self, size_in_bytes: int = None, human_size: str = None): ...
+
+class CollectionDetails:
+    def __init__(
+        self,
+        name: str = None,
+        count_of_documents: int = None,
+        size: Size = None,
+        documents_size: Size = None,
+        tombstones_size: Size = None,
+        revisions_size: Size = None,
+    ): ...
+
+class DetailedCollectionStatistics:
+    def __init__(
+        self,
+        count_of_documents: int = None,
+        count_of_conflicts: int = None,
+        collections: Dict[str, CollectionDetails] = None,
+    ) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get database statistics
+
+To get **database statistics**, use `GetStatisticsOperation`:  
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="python">
+{`# Pass an instance of class 'GetStatisticsOperation' to the store
+stats = store.maintenance.send(GetStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="python">
+{`class DatabaseStatistics:
+    def __init__(
+        self,
+        last_doc_etag: int = None,
+        last_database_etag: int = None,
+        count_of_indexes: int = None,
+        count_of_documents: int = None,
+        count_of_revision_documents: int = None,
+        count_of_documents_conflicts: int = None,
+        count_of_tombstones: int = None,
+        count_of_conflicts: int = None,
+        count_of_attachments: int = None,
+        count_of_unique_attachments: int = None,
+        count_of_counter_entries: int = None,
+        count_of_time_series_segments: int = None,
+        indexes: List[IndexInformation] = None,
+        database_change_vector: str = None,
+        database_id: str = None,
+        is_64_bit: bool = None,
+        pager: str = None,
+        last_indexing_time: datetime.datetime = None,
+        size_on_disk: Size = None,
+        temp_buffers_size_on_disk: Size = None,
+        number_of_transaction_merger_queue_operations: int = None,
+    ): ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed database statistics
+
+To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="python">
+{`# Pass an instance of class 'GetDetailedStatisticsOperation' to the store
+stats = store.maintenance.send(GetDetailedStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="python">
+{`class DetailedDatabaseStatistics(DatabaseStatistics):
+    def __init__(
+        self,
+        last_doc_etag: int = None,
+        last_database_etag: int = None,
+        count_of_indexes: int = None,
+        count_of_documents: int = None,
+        count_of_revision_documents: int = None,
+        count_of_documents_conflicts: int = None,
+        count_of_tombstones: int = None,
+        count_of_conflicts: int = None,
+        count_of_attachments: int = None,
+        count_of_unique_attachments: int = None,
+        count_of_counter_entries: int = None,
+        count_of_time_series_segments: int = None,
+        indexes: List[IndexInformation] = None,
+        database_change_vector: str = None,
+        database_id: str = None,
+        is_64_bit: bool = None,
+        pager: str = None,
+        last_indexing_time: datetime.datetime = None,
+        size_on_disk: Size = None,
+        temp_buffers_size_on_disk: Size = None,
+        number_of_transaction_merger_queue_operations: int = None,
+        count_of_identities: int = None,  # Total # of identities in database
+        count_of_compare_exchange: int = None,  # Total # of compare-exchange items in database
+        count_of_compare_exchange_tombstones: int = None,  # Total # of cmpXchg tombstones in database
+    ): ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get statistics for another database
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `for_database` to get database and collection statistics for another database.  
+* `for_database` can be used with **any** of the above statistics options.
+
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="python">
+{`# Get stats for 'AnotherDatabase'
+stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+
+
+

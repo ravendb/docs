@@ -1,0 +1,170 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Query execution can be deferred.  
+  You can __define a query as lazy__ and execute it later when query results are actually needed.
+
+* This article contains lazy queries examples.  
+  __Prior to this article__, please refer to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx)  for general knowledge about  
+  RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
+
+* In this page:
+    * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)
+    * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+    * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)
+    * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)
+    * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
+
+</Admonition>
+## Lazy query
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="js">
+{`// Define a lazy query
+const lazyEmployees = session
+    .query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+     // Add a call to 'lazily'
+    .lazily();
+
+const employees = await lazyEmployees.getValue(); // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
+
+
+
+## Lazy count query
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="js">
+{`// Define a lazy count query
+const lazyCount = session
+    .query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+     // Add a call to 'countLazily'
+    .countLazily();
+
+const count = await lazyCount.getValue(); // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy suggestions query
+
+<TabItem value="lazy_3" label="lazy_3">
+<CodeBlock language="js">
+{`// Define a lazy suggestion query
+const lazySuggestions = session
+    .query(\{ collection: "Products" \})
+    .suggestUsing(builder => builder.byField("Name", "chaig"))
+     // Add a call to 'executeLazy'
+    .executeLazy();
+
+const suggestResult = await lazySuggestions.getValue(); // Query is executed here
+const suggestions = suggestResult["Name"].suggestions;
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
+
+
+
+## Lazy facets query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Lazy_query" label="Lazy_query">
+<CodeBlock language="js">
+{`// The facets definition used in the facets query:
+// ===============================================
+const categoryNameFacet = new Facet();
+
+categoryNameFacet.fieldName = "categoryName";
+categoryNameFacet.displayFieldName = "Product Category";
+
+const rangeFacet = new RangeFacet();
+rangeFacet.ranges = [
+    "pricePerUnit < " + 25,
+    "pricePerUnit >= " + 25 + " and pricePerUnit < " + 50,
+    "pricePerUnit >= " + 50 + " and pricePerUnit < " + 100,
+    "pricePerUnit >= " + 100
+];
+rangeFacet.displayFieldName = 'Price per Unit';
+
+const facetsDefinition = [categoryNameFacet, rangeFacet];
+
+// The lazy factes query:
+// ======================
+const lazyFacets = session
+    .query({ indexName: "Products/ByCategoryAndPrice" })
+    .aggregateBy(...facetsDefinition)
+     // Add a call to 'executeLazy'
+    .executeLazy();
+
+const facets = await lazyFacets.getValue(); // Query is executed here
+
+const categoryResults = facets["Product Category"];
+const priceResults = facets["Price per Unit"];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index_definition" label="Index_definition">
+<CodeBlock language="js">
+{`// The index definition used in the facets query:
+class Products_ByCategoryAndPrice extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        const { load } = this.mapUtils();
+
+        this.map("Products", product => {
+            return {
+                categoryName: load(product.Category, "Categories").Name,
+                pricePerUnit: product.PricePerUnit
+            }
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`lazily();
+lazily(onEval);
+
+countLazily();
+
+executeLazy();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                 | Description                                                                          |
+|------------|----------------------|--------------------------------------------------------------------------------------|
+| __onEval__ | `(object[]) => void` | An action that will be performed on the query results<br/>when the query is executed. |
+
+| Return Value |                                                                  |
+|--------------|------------------------------------------------------------------|
+| __object__   | A `Lazy` instance that will evaluate the query only when needed. |
+
+
+
+

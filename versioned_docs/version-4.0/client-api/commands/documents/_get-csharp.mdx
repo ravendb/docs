@@ -1,0 +1,222 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to retrieve documents from a database:   
+
+- [Get single document](../../../client-api/commands/documents/get.mdx#get-single-document)   
+- [Get multiple documents](../../../client-api/commands/documents/get.mdx#get-multiple-documents)   
+- [Get paged documents](../../../client-api/commands/documents/get.mdx#get-paged-documents)   
+- [Get documents by starts with](../../../client-api/commands/documents/get.mdx#get-by-starts-with)  
+
+## Get single document
+
+**GetDocumentsCommand** can be used to retrieve a single document
+
+### Syntax
+
+<TabItem value="get_interface_single" label="get_interface_single">
+<CodeBlock language="csharp">
+{`public GetDocumentsCommand(string id, string[] includes, bool metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** string | ID of the documents to get |
+| **includes** | string[] | Related documents to fetch along with the document |
+| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
+
+### Example
+
+<TabItem value="get_sample_single" label="get_sample_single">
+<CodeBlock language="csharp">
+{`var command = new GetDocumentsCommand("orders/1-A", null, false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var order = (BlittableJsonReaderObject)command.Result.Results[0];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get multiple documents
+
+**GetDocumentsCommand** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_interface_multiple" label="get_interface_multiple">
+<CodeBlock language="csharp">
+{`public GetDocumentsCommand(string[] ids, string[] includes, bool metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **ids** string[] | IDs of the documents to get |
+| **includes** | string | Related documents to fetch along with the documents |
+| **metadataOnly** | boolean | Whether to fetch whole documents or just the metadata |
+
+### Example I
+
+<TabItem value="get_sample_multiple" label="get_sample_multiple">
+<CodeBlock language="csharp">
+{`var command = new GetDocumentsCommand(new[] \{ "orders/1-A", "employees/3-A" \}, null, false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var order = (BlittableJsonReaderObject)command.Result.Results[0];
+var employee = (BlittableJsonReaderObject)command.Result.Results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - Using Includes
+
+<TabItem value="get_sample_includes" label="get_sample_includes">
+<CodeBlock language="csharp">
+{`// Fetch employees/5-A and his boss.
+var command = new GetDocumentsCommand("employees/5-A", includes: new[] \{ "ReportsTo" \}, metadataOnly: false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var employee = (BlittableJsonReaderObject)command.Result.Results[0];
+if (employee.TryGet<string>("ReportsTo", out var bossId))
+\{
+    var boss = command.Result.Includes[bossId];
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - Missing Documents
+
+<TabItem value="get_sample_missing" label="get_sample_missing">
+<CodeBlock language="csharp">
+{`// Assuming that products/9999-A doesn't exist.
+var command = new GetDocumentsCommand(new[] \{ "products/1-A", "products/9999-A", "products/3-A" \}, null, false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var products = command.Result.Results; // products/1-A, null, products/3-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get paged documents
+
+**GetDocumentsCommand** can also be used to retrieve a paged set of documents.
+
+### Syntax
+
+<TabItem value="get_interface_paged" label="get_interface_paged">
+<CodeBlock language="csharp">
+{`public GetDocumentsCommand(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+
+### Example
+
+<TabItem value="get_sample_paged" label="get_sample_paged">
+<CodeBlock language="csharp">
+{`var command = new GetDocumentsCommand(start: 0, pageSize: 128);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var firstDocs = command.Result.Results;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get by starts with
+
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified ID prefix.
+
+### Syntax
+
+<TabItem value="get_interface_startswith" label="get_interface_startswith">
+<CodeBlock language="csharp">
+{`public GetDocumentsCommand(string startWith, string startAfter, string matches, string exclude, int start, int pageSize, bool metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **startsWith** | string | prefix for which documents should be returned |
+| **startAfter** | string | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | bool | specifies whether or not only document metadata should be returned |
+
+### Example I
+
+<TabItem value="get_sample_startswith" label="get_sample_startswith">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products'
+var command = new GetDocumentsCommand(
+    startWith: "products",
+    startAfter: null,
+    matches: null,
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var products = command.Result.Results;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_sample_startswith_matches" label="get_sample_startswith_matches">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+var command = new GetDocumentsCommand(
+    startWith: "products",
+    startAfter: null,
+    matches: "1*|2*",
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var products = command.Result.Results;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_sample_startswith_matches_end" label="get_sample_startswith_matches_end">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key have length of 3, begins and ends with "1" 
+// and contains any character at 2nd position e.g. products/101, products/1B1
+var command = new GetDocumentsCommand(
+    startWith: "products",
+    startAfter: null,
+    matches: "1?1",
+    exclude: null,
+    start: 0,
+    pageSize: 128,
+    metadataOnly: false);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+var products = command.Result.Results;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

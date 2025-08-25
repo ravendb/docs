@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutIndexesOperation** is used to insert indexes into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="java">
+{`PutIndexesOperation(IndexDefinition... indexToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexToAdd** | `IndexDefinition...` | Definitions of indexes |
+
+| Return Value | |
+| ------------- | ----- |
+| PutIndexResult[] | List of created indexes |
+
+### Example I
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setMaps(Collections.singleton("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="put_1_2" label="put_1_2">
+<CodeBlock language="java">
+{`IndexDefinitionBuilder builder = new IndexDefinitionBuilder();
+builder.setMap("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}");
+
+IndexDefinition definition = builder.toIndexDefinition(store.getConventions());
+store.maintenance()
+    .send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+

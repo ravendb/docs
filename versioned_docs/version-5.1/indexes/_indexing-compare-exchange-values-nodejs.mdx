@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Compare exchange values can be loaded within an index using the value's key.  
+
+* The index will update when the compare exchange value is updated, as well 
+as when documents are modified in the indexed collection(s).  
+
+* In this page:  
+  * [Syntax](../indexes/indexing-compare-exchange-values.mdx#syntax)  
+  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
+  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
+
+</Admonition>
+## Syntax
+For javascript indexes, use the method `Cmpxchg(<key>)`.
+
+| Parameter | Type | Description |
+| - | - | - |
+| **key** | `string` | The key of a particular compare exchange value. |
+
+
+### Examples
+
+These indexes map the rooms in a hotel, as well as compare exchange values 
+representing the guests in those rooms.  
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
+{`class Compare_Exchange_Index extends AbstractCsharpIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map = \`docs.HotelRooms.Select(room => new \{ 
+                         RoomID = room.RoomID,     
+                         Guests = cmpxchg(room.RoomID)
+                    \})\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Querying the Index
+
+<TabItem value="query_2" label="query_2">
+<CodeBlock language="js">
+{`const VIPRooms = await session
+    .advanced.rawQuery<HotelRoom>(
+    "   from Hotelrooms as room\\n"+
+    "   where room.Guests == cmpxchg('VIP')"
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,182 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The following options are available to **count query results**:
+
+    * [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
+  
+    * [LongCount](../../../client-api/session/querying/how-to-count-query-results.mdx#longcount)
+  
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
+
+</Admonition>
+## Count
+
+* When the number of resulting items is expected to be an **`Int32`** variable,  
+  use `Count` in a synchronous session (or `CountAsync` in an async session).  
+  
+* `Count` is implemented in `System.Linq`.  
+  `CountAsync` is implemented in `Raven.Client.Documents`.  
+
+* An `OverflowException` will be thrown if the number of items exceeds **`Int32.MaxValue`**. 
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// using System.Linq;
+// ==================
+
+int numberOfOrders = session
+    .Query<Order>()
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'Count' from System.Linq
+    .Count();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+int numberOfOrders = await asyncSession
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'CountAsync' from Raven.Client.Documents
+    .CountAsync();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents.Session;
+// =====================================
+
+int numberOfOrders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(order => order.ShipTo.Country, "UK")
+     // Calling 'Count' from Raven.Client.Documents.Session
+    .Count();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## LongCount
+
+* When the number of resulting items is expected to be an **`Int64`** variable,  
+  use `LongCount` in a synchronous session (or `LongCountAsync` in an async session).
+  
+* `LongCount` is implemented in both `Raven.Client.Documents` & `System.Linq` (use as needed).  
+  `LongCountAsync` is implemented in `Raven.Client.Documents`.
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+long numberOfOrders = session
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'LongCount' from Raven.Client.Documents
+    .LongCount();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+long numberOfOrders = await asyncSession
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'LongCountAsync' from Raven.Client.Documents
+    .LongCountAsync();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents.Session;
+// =====================================
+
+long numberOfOrders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(order => order.ShipTo.Country, "UK")
+     // Calling 'LongCount' from  Raven.Client.Documents.Session
+    .LongCount();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get count from query stats
+
+* When executing a query,  
+  you can retrieve the query statistics which include the total number of results.
+
+* The number of results is available in the `QueryStatistics` object as:  
+  * `TotalResults` - an Int32 value  
+  * `LongTotalResults` - an Int64 value  
+
+* Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx). 
+
+
+
+

@@ -1,0 +1,309 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Patch** command is used to perform partial document updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities.
+
+## Syntax
+
+<TabItem value="patch_1" label="patch_1">
+<CodeBlock language="java">
+{`/**
+ * Sends a patch request for a specific document, ignoring document's Etag and if it is missing
+ * @param key Key of the document to patch
+ * @param patches Array of patch requests
+ * @return
+ */
+public RavenJObject patch(String key, PatchRequest[] patches);
+
+/**
+ * Sends a patch request for a specific document, ignoring the document's Etag
+ * @param key Key of the document to patch
+ * @param patches Array of patch requests
+ * @param ignoreMissing true if the patch request should ignore a missing document, false to throw DocumentDoesNotExistException
+ * @return
+ */
+public RavenJObject patch(String key, PatchRequest[] patches, boolean ignoreMissing);
+
+/**
+ * Sends a patch request for a specific document
+ * @param key Key of the document to patch
+ * @param patches Array of patch requests
+ * @param etag Require specific Etag [null to ignore]
+ * @return
+ */
+public RavenJObject patch(String key, PatchRequest[] patches, Etag etag);
+
+/**
+ * Sends a patch request for a specific document which may or may not currently exist
+ * @param key Id of the document to patch
+ * @param patchesToExisting Array of patch requests to apply to an existing document
+ * @param patchesToDefault Array of patch requests to apply to a default document when the document is missing
+ * @param defaultMetadata The metadata for the default document when the document is missing
+ * @return
+ */
+public RavenJObject patch(String key, PatchRequest[] patchesToExisting, PatchRequest[] patchesToDefault, RavenJObject defaultMetadata);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**
+
+<TabItem value="patchrequest" label="patchrequest">
+<CodeBlock language="java">
+{`public class PatchRequest \{
+  private PatchCommandType type = PatchCommandType.SET;
+  private RavenJToken prevVal;
+  private RavenJToken value;
+  private PatchRequest[] nested;
+  private String name;
+  private Integer position;
+  private Boolean allPositions;
+
+  public PatchRequest() \{
+    super();
+  \}
+  public PatchRequest(PatchCommandType type, String name, RavenJToken value) \{
+    super();
+    this.type = type;
+    this.name = name;
+    this.value = value;
+  \}
+
+  public PatchCommandType getType() \{
+    return type;
+  \}
+
+  public void setType(PatchCommandType type) \{
+    this.type = type;
+  \}
+
+  public RavenJToken getPrevVal() \{
+    return prevVal;
+  \}
+
+  public void setPrevVal(RavenJToken prevVal) \{
+    this.prevVal = prevVal;
+  \}
+
+  public RavenJToken getValue() \{
+    return value;
+  \}
+
+  public void setValue(RavenJToken value) \{
+    this.value = value;
+  \}
+
+  public PatchRequest[] getNested() \{
+    return nested;
+  \}
+
+  public void setNested(PatchRequest[] nested) \{
+    this.nested = nested;
+  \}
+
+  public String getName() \{
+    return name;
+  \}
+
+  public void setName(String name) \{
+    this.name = name;
+  \}
+
+  public Integer getPosition() \{
+    return position;
+  \}
+
+  public void setPosition(Integer position) \{
+    this.position = position;
+  \}
+
+  public Boolean getAllPositions() \{
+    return allPositions;
+  \}
+
+  public void setAllPositions(Boolean allPositions) \{
+    this.allPositions = allPositions;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="patchcommandtype" label="patchcommandtype">
+<CodeBlock language="java">
+{`public enum PatchCommandType \{
+
+  /**
+   * Set a property
+   */
+  SET,
+  /**
+   * Unset (remove) a property
+   */
+  UNSET,
+
+  /**
+   * Add an item to an array
+   */
+  ADD,
+
+  /**
+   *  Insert an item to an array at a specified position
+   */
+  INSERT,
+
+  /**
+   * Remove an item from an array at a specified position
+   */
+  REMOVE,
+
+  /**
+   *  Modify a property value by providing a nested set of patch operation
+   */
+  MODIFY,
+
+  /**
+   *  Increment a property by a specified value
+   */
+  INC,
+
+  /**
+   * Copy a property value to another property
+   */
+  COPY,
+
+  /**
+   * Rename a property
+   */
+  RENAME;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="patch_2" label="patch_2">
+<CodeBlock language="java">
+{`// change FirstName to Robert
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.SET, "FirstName", RavenJToken.fromObject("Robert"))
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="patch_1_0" label="patch_1_0">
+<CodeBlock language="java">
+{`// change FirstName to Robert and LastName to Carter in single request
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.SET, "FirstName", RavenJToken.fromObject("Robert")),
+  new PatchRequest(PatchCommandType.SET, "LastName", RavenJToken.fromObject("Carter")),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="patch_3" label="patch_3">
+<CodeBlock language="java">
+{`// add new property Age with value of 30
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.ADD, "Age", RavenJToken.fromObject(30)),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IV
+
+<TabItem value="patch_4" label="patch_4">
+<CodeBlock language="java">
+{`// increment Age property value by 10
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.INC, "Age", RavenJToken.fromObject(10)),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example V
+
+<TabItem value="patch_5" label="patch_5">
+<CodeBlock language="java">
+{`// remove property Age
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.UNSET, "Age", null),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VI
+
+<TabItem value="patch_6" label="patch_6">
+<CodeBlock language="java">
+{`// rename FirstName to First
+store.getDatabaseCommands().patch("employees/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.RENAME, "FirstName", RavenJToken.fromObject("First")),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VII
+
+<TabItem value="patch_7" label="patch_7">
+<CodeBlock language="java">
+{`// add a new comment to Comments
+BlogComment blogComment = new BlogComment();
+blogComment.setContent("Lore ipsum");
+blogComment.setTitle("Some title");
+store.getDatabaseCommands().patch("blogposts/1", new PatchRequest[] \{
+  new PatchRequest(PatchCommandType.ADD, "Comments", RavenJToken.fromObject(blogComment)),
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VIII
+
+<TabItem value="patch_8" label="patch_8">
+<CodeBlock language="java">
+{`// insert a new comment at position 0 to Comments
+BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+PatchRequest patchRequest = new PatchRequest(PatchCommandType.INSERT, "Comments", RavenJToken.fromObject(comment));
+patchRequest.setPosition(0);
+store.getDatabaseCommands().patch("blogposts/1", new PatchRequest[] \{
+  patchRequest
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IX
+
+<TabItem value="patch_9" label="patch_9">
+<CodeBlock language="java">
+{`// modify a comment at position 3 in Comments
+PatchRequest subPatch = new PatchRequest(PatchCommandType.SET, "Title", RavenJToken.fromObject("New title"));
+PatchRequest mainPatch = new PatchRequest();
+mainPatch.setType(PatchCommandType.MODIFY);
+mainPatch.setPosition(3);
+mainPatch.setName("Comments");
+mainPatch.setNested(new PatchRequest[] \{ subPatch \});
+store.getDatabaseCommands().patch("blogposts/1", new PatchRequest[] \{
+  mainPatch
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+

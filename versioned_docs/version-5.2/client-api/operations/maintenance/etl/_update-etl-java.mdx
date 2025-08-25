@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can modify ETL task by using **UpdateEtlOperation**.
+
+## Syntax
+
+<TabItem value="update_etl_operation" label="update_etl_operation">
+<CodeBlock language="java">
+{`public UpdateEtlOperation(long taskId, EtlConfiguration<T> configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **taskId** | Long | Current ETL task ID | 
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+## Example
+
+<TabItem value="update_etl_example" label="update_etl_example">
+<CodeBlock language="java">
+{`//store.maintenance().send(new AddEtlOperation<RavenConnectionString>(...));
+
+RavenEtlConfiguration etlConfiguration = new RavenEtlConfiguration();
+etlConfiguration.setConnectionStringName("raven-connection-string-name");
+etlConfiguration.setName("Employees ETL");
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setCollections(Arrays.asList("Employees"));
+transformation.setScript("loadToEmployees (\{\\n" +
+    "                        Name: this.FirstName + ' ' + this.LastName,\\n" +
+    "                            Title: this.Title\\n" +
+    "                    \});");
+
+etlConfiguration.setTransforms(Arrays.asList(transformation));
+
+UpdateEtlOperation<RavenConnectionString> operation = new UpdateEtlOperation<>(
+    addEtlResult.getTaskId(), etlConfiguration);
+UpdateEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+

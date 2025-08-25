@@ -5,127 +5,29 @@ sidebar_label: Delete
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteCsharp from './_delete-csharp.mdx';
+import DeleteJava from './_delete-java.mdx';
+import DeleteHttp from './_delete-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Attachments: Delete
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**DeleteAttachment** is used to remove an attachment from a database.
-
-## Syntax
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="csharp">
-{`void DeleteAttachment(string key, Etag etag);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | key of an attachment to delete |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
-
-## Example
-
-<TabItem value="delete_2" label="delete_2">
-<CodeBlock language="csharp">
-{`store
-	.DatabaseCommands
-	.DeleteAttachment("albums/holidays/sea.jpg", null);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**DeleteAttachment** is used to remove an attachment from a database.
-
-## Syntax
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="java">
-{`@Deprecated
-public void deleteAttachment(String key, Etag etag);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | String | key of an attachment to delete |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
-
-## Example
-
-<TabItem value="delete_2" label="delete_2">
-<CodeBlock language="java">
-{`store.getDatabaseCommands().deleteAttachment("albums/holidays/sea.jpg", null);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-**DeleteAttachment** is used to remove an attachment from a database.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/static/\{key\} \\
-	-X DELETE
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required |  Description |
-| ------------- | -- | ---- |
-| **key** | Yes | key of an attachment to delete |
-
-| Header | Required | Description |
-| --------| ------- | --- |
-| **If-None-Match** | No | current attachment etag, used for concurrency checks |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `204` | No content |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X DELETE "http://localhost:8080/databases/sample/static/sea.jpg" 
-< HTTP/1.1 204 No Content
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteHttp />
 </LanguageContent>
+
 
 <!---
 - [GetAttachment](../../../client-api/commands/attachments/get)

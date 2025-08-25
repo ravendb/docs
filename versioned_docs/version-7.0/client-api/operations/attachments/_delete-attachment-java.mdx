@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to delete an attachment from a document. 
+
+## Syntax
+
+<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
+<CodeBlock language="java">
+{`DeleteAttachmentOperation(String documentId, String name)
+
+DeleteAttachmentOperation(String documentId, String name, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |        |                                                                         |
+|------------------|--------|-------------------------------------------------------------------------|
+| **documentId**   | String | ID of a document containing an attachment                               |
+| **name**         | String | Name of an attachment                                                   |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`store.operations().send(
+    new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
+`}
+</CodeBlock>
+</TabItem>
+
+

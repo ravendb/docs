@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To take advantage of a suggestion feature use the **Suggest** endpoint.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/suggest/\{indexName\}? \\
+		&term=\{term\} \\
+		&field=\{field\} \\
+		&max=\{max\} \\
+		&popularity=\{popularity\} \\
+		&distance=\{distance\} \\
+		&accuracy=\{accuracy\} \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **index** | Yes | A name of an index to query. |
+| **term** | Yes | term used to compute suggestions |
+| **field** | Yes | field used for suggestions |
+| **max** | No | maximum number of suggestions |
+| **popularity** | No | sort results by popularity |
+| **distance** | No | method used for computing distance |
+| **accuracy** | No | accuracy level |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Suggestions** | array of suggestions |
+
+| Header | Description |
+| -------- | - |
+| **ETag** | index etag |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/suggest/Users/ByFullName?term=johne&field=FullName&max=10&popularity=false&distance=Levenshtein" 
+
+< HTTP/1.1 200 OK
+\{ "Suggestions" : [ "john", "jones", "johnson" ] \}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="js">
+{`class BlogPost \{
+    constructor(title, author, text, comments) \{
+        this.title = title;
+        this.author = author;
+        this.text = text;
+        this.comments = comments;
+    \}
+\}
+
+class BlogPostComment \{
+    constructor(author, text, comments) \{
+        this.author = author;
+        this.text = text;
+        this.comments = comments;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+
+The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="js">
+{`class BlogPosts_ByCommentAuthor extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
+        this.map = "docs.BlogPosts.Select(post => new {\\n" +
+            "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author)\\n" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="js">
+{`const indexDefinition = new IndexDefinition();
+indexDefinition.name = "BlogPosts/ByCommentAuthor";
+indexDefinition.maps = new Set([
+        "from post in docs.Posts" +
+        "  from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.comments)) " +
+        "  select new " +
+        "  { " +
+        "      author = comment.author " +
+        "  }"
+]);
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="js">
+{`const results = session
+    .query(\{ indexName: "BlogPosts/ByCommentAuthor" \})
+    .whereEquals("authors", "Ayende Rahien")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+

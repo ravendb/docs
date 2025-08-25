@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetSynchronizationStatusForAsync
+
+**GetSynchronizationStatusForAsync** returns a report that contains the information about the synchronization of a specified file.
+
+<Admonition type="info" title="The actual server to ask" id="the-actual-server-to-ask" href="#the-actual-server-to-ask">
+This method is intended to ask the destination file system about the performed synchronization report. It means that the actual request should be sent there (not to the source server which pushed the data there).
+</Admonition>
+
+
+
+<TabItem value="get_sync_status_1" label="get_sync_status_1">
+<CodeBlock language="csharp">
+{`Task<SynchronizationReport> GetSynchronizationStatusForAsync(string filename);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The full file name |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous get operation. The task result is an [`SynchronizationReport`](../../../../../glossary/synchronization-report.mdx). |
+
+## Example
+
+<TabItem value="get_sync_status_2" label="get_sync_status_2">
+<CodeBlock language="csharp">
+{`SynchronizationReport report = await store.AsyncFilesCommands.Synchronization
+	.GetSynchronizationStatusForAsync("/documentation/readme.txt");
+
+if (report.Exception == null)
+	Console.WriteLine("The file \{0\} has been synchronized successfully. The synchronization type: \{1\}",
+		report.FileName, report.Type);
+else
+	Console.WriteLine("The synchronization of the file \{0\} failed. The exception message: \{1\}", 
+		report.FileName, report.Exception.Message);
+`}
+</CodeBlock>
+</TabItem>
+

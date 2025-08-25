@@ -1,0 +1,144 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Stable releases
+
+Simply put ravendb dependency to your pom:
+
+<TabItem value="xml" label="xml">
+<CodeBlock language="xml">
+{`<dependency>
+  <groupId>net.ravendb</groupId>
+  <artifactId>ravendb-client</artifactId>
+  <version>3.2.1</version>
+</dependency>
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Create new maven project
+
+Sample pom:
+
+<TabItem value="xml" label="xml">
+<CodeBlock language="xml">
+{`<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>ravendb-example</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.ravendb</groupId>
+      <artifactId>ravendb-client</artifactId>
+      <version>3.2.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+	  <plugins>
+		<plugin>
+		  <groupId>com.mysema.maven</groupId>
+		  <artifactId>apt-maven-plugin</artifactId>
+		  <version>1.1.1</version>
+		  <executions>
+			<execution>
+			  <goals>
+				<goal>process</goal>
+			  </goals>
+			  <configuration>
+				<outputDirectory>target/generated-sources/java</outputDirectory>
+				<processor>net.ravendb.querydsl.RavenDBAnnotationProcessor</processor>
+				<options>
+				  <querydsl.entityAccessors>true</querydsl.entityAccessors>
+				</options>
+			  </configuration>
+			</execution>
+		  </executions>
+		</plugin>
+	</plugins>
+  </build>
+</project>
+`}
+</CodeBlock>
+</TabItem>
+
+Please note that plugins section contains `net.ravendb.querydsl.RavenDBAnnotationProcessor`. 
+As Java does not have LINQ, all definitions of indexes/transformers must be created using strings.
+Alternatively, you can use the Studio to create indexes/transformers, yet you can also use QueryDSL for strongly-typed querying. In order to use QueryDSL you have to mark your entities with `@QueryEntity` 
+annotation and enable code generation in `pom.xml`. 
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`@QueryEntity
+public class Category \{
+  private String id;
+  private String name;
+  private String description;
+  public String getId() \{
+    return id;
+  \}
+  public void setId(String id) \{
+    this.id = id;
+  \}
+  public String getName() \{
+    return name;
+  \}
+  public void setName(String name) \{
+    this.name = name;
+  \}
+  public String getDescription() \{
+    return description;
+  \}
+  public void setDescription(String description) \{
+    this.description = description;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+After doing this you can use strongly-typed syntax. 
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`QCategory c = QCategory.category;
+   List<Category> candies = session
+     .query(Category.class)
+     .where(c.name.eq("Candy"))
+     .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Unstable releases
+
+RavenDB Client Unstable is available as snapshot in daily-builds S3 maven repository.
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Embedding repositories in pom is not a good practice, although it allows a quick start. Please consider moving repositories into `~/.m2/settings.xml`.
+More information can be found [here](http://maven.apache.org/guides/mini/guide-multiple-repositories.html). 
+</Admonition>
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`<repositories>
+  <repository>
+      <id>snapshots-repo</id>
+      <url>http://ravendb-maven.s3.amazonaws.com/snapshots/</url>
+      <releases>
+         <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+   </repository>
+</repositories>
+`}
+</CodeBlock>
+</TabItem>

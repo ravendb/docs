@@ -5,216 +5,29 @@ sidebar_label: How to Use NOT Operator
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToUseNotOperatorCsharp from './_how-to-use-not-operator-csharp.mdx';
+import HowToUseNotOperatorJava from './_how-to-use-not-operator-java.mdx';
+import HowToUseNotOperatorNodejs from './_how-to-use-not-operator-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Session: Querying: How to Use NOT Operator
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
-
-<Admonition type="note" title="">
-`NOT` operator cannot be used alone without succeeding predicate.
-</Admonition>
-
-## Example I
-
-<TabItem value="not_1" label="not_1">
-<CodeBlock language="csharp">
-{`// load all entities from 'Employees' collection
-// where FirstName NOT equals 'Robert'
-List<Employee> employees = session
-    .Advanced
-    .DocumentQuery<Employee>()
-    .Not
-    .WhereEquals(x => x.FirstName, "Robert")
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="not_2" label="not_2">
-<CodeBlock language="csharp">
-{`// load all entities from 'Employees' collection
-// where FirstName NOT equals 'Robert'
-// and LastName NOT equals 'King'
-List<Employee> employees = session
-    .Advanced
-    .DocumentQuery<Employee>()
-    .Not
-    .OpenSubclause()
-    .WhereEquals(x => x.FirstName, "Robert")
-    .AndAlso()
-    .WhereEquals(x => x.LastName, "King")
-    .CloseSubclause()
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example III
-
-<TabItem value="not_3" label="not_3">
-<CodeBlock language="csharp">
-{`// load all entities from 'Employees' collection
-// where FirstName NOT equals 'Robert'
-// and LastName NOT equals 'King'
-// identical to 'Example II' but 'WhereNotEquals' is used
-List<Employee> employees = session
-    .Advanced
-    .DocumentQuery<Employee>()
-    .WhereNotEquals(x => x.FirstName, "Robert")
-    .AndAlso()
-    .WhereNotEquals(x => x.LastName, "King")
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToUseNotOperatorCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
-
-<Admonition type="note" title="">
-`NOT` operator cannot be used alone without succeeding predicate.
-</Admonition>
-
-## Example I
-
-<TabItem value="not_1" label="not_1">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-List<Employee> employees = session
-    .advanced()
-    .documentQuery(Employee.class)
-    .not()
-    .whereEquals("FirstName", "Robert")
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="not_2" label="not_2">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-// and lastName NOT equals 'King'
-List<Employee> employees = session
-    .advanced()
-    .documentQuery(Employee.class)
-    .not()
-    .openSubclause()
-    .whereEquals("FirstName", "Robert")
-    .andAlso()
-    .whereEquals("LastName", "King")
-    .closeSubclause()
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example III
-
-<TabItem value="not_3" label="not_3">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-// and lastName NOT equals 'King'
-// identical to 'Example II' but 'whereNotEquals' is used
-List<Employee> employees = session
-    .advanced()
-    .documentQuery(Employee.class)
-    .whereNotEquals("FirstName", "Robert")
-    .andAlso()
-    .whereNotEquals("LastName", "King")
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToUseNotOperatorJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
-
-<Admonition type="note" title="">
-`NOT` operator cannot be used alone without succeeding predicate.
-</Admonition>
-
-## Example I
-
-<TabItem value="not_1" label="not_1">
-<CodeBlock language="js">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-const employees = await session.advanced
-    .documentQuery(\{ collection: "Employees" \})
-    .not()
-    .whereEquals("FirstName", "Robert")
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="not_2" label="not_2">
-<CodeBlock language="js">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-// and lastName NOT equals 'King'
-const employees = await session.advanced
-    .documentQuery(\{ collection: "Employees" \})
-    .not()
-    .openSubclause()
-    .whereEquals("FirstName", "Robert")
-    .andAlso()
-    .whereEquals("LastName", "King")
-    .closeSubclause()
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example III
-
-<TabItem value="not_3" label="not_3">
-<CodeBlock language="js">
-{`// load all entities from 'Employees' collection
-// where firstName NOT equals 'Robert'
-// and lastName NOT equals 'King'
-// identical to 'Example II' but 'whereNotEquals' is used
-const employees = await session.advanced
-    .documentQuery(\{ collection: "Employees" \})
-    .whereNotEquals("FirstName", "Robert")
-    .andAlso()
-    .whereNotEquals("LastName", "King")
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToUseNotOperatorNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

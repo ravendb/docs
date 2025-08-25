@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `getMetadataFor` method from the `advanced` session operations.
+
+## Get the Metadata
+
+<TabItem value="get_metadata_1" label="get_metadata_1">
+<CodeBlock language="java">
+{`<T> IMetadataDictionary getMetadataFor(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which metadata will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| IMetadataDictionary | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
+
+### Example
+
+<TabItem value="get_metadata_2" label="get_metadata_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");
+IMetadataDictionary metadata = session.advanced().getMetadataFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Modify the Metadata
+After getting the metadata from `session.advanced().getMetadataFor` you can modify it just like any other map.
+<Admonition type="note" title="">
+Keys in the metadata that starting with @ are reserved for RavenDB use
+</Admonition>
+
+### Example I
+<TabItem value="modify_metadata_1" label="modify_metadata_1">
+<CodeBlock language="java">
+{`User user = new User();
+user.setName("Idan");
+
+session.store(user);
+
+IMetadataDictionary metadata = session.advanced().getMetadataFor(user);
+metadata.put("Permissions", "READ_ONLY");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+<TabItem value="modify_metadata_2" label="modify_metadata_2">
+<CodeBlock language="java">
+{`User user = session.load(User.class, "users/1-A");
+IMetadataDictionary metadata = session.advanced().getMetadataFor(user);
+metadata.put("Permissions", "READ_AND_WRITE");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

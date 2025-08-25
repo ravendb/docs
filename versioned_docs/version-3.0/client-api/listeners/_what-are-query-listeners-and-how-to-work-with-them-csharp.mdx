@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The reason we have document query listeners is to apply query customizations globally. In order to do this the user need to create their own implementation of the `IDocumentQueryListener`.
+
+<TabItem value="document_query_listener" label="document_query_listener">
+<CodeBlock language="csharp">
+{`public interface IDocumentQueryListener
+\{
+	/// <summary>
+	/// Allow to customize a query globally
+	/// </summary>
+	void BeforeQueryExecuted(IDocumentQueryCustomization queryCustomization);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+If we want to disable caching of all query results, you can implement `DisableCachingQueryListener` which will add `NoCaching` customization to each performed query.
+
+<TabItem value="document_query_example" label="document_query_example">
+<CodeBlock language="csharp">
+{`public class DisableCachingQueryListener : IDocumentQueryListener
+\{
+	public void BeforeQueryExecuted(IDocumentQueryCustomization customization)
+	\{
+		customization.NoCaching();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

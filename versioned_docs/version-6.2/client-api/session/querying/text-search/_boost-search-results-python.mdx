@@ -1,0 +1,124 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* Providing a boost value to some fields allows you to prioritize the resulting documents.  
+  The boost value is integrated with the basic score, making the document rank higher.  
+
+* Boosting can be achieved in the following ways:  
+
+    * **At query time**:  
+      Apply a boost factor to searched terms at query time - as described in this article.
+
+    * **Via index definition**:  
+      Apply a boost factor in your index definition - see this [boosting](../../../../indexes/boosting.mdx) indexing article.
+
+* The automatic ordering of the results by the score is configurable.  
+  Learn more here: [automatic score-based ordering](../../../../indexes/boosting.mdx#automatic-score-based-ordering)  
+
+* The calculated score details of the results can be retrieved if needed.  
+  Learn more here: [get resulting score](../../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)  
+
+* In this page:
+
+  * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-querying-with-where-clause)  
+
+</Admonition>
+## Boost results - when making a full-text search
+
+To apply boosting while running a full-text search, use the 
+`boost()` method to prioritize the preceding `search()` results.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session
+    # Make a dynamic full-text search Query on 'Employees' collection
+    .query(object_type=Employee)
+    # This search predicate will use the default boost value of 1
+    .search("Notes", "English")
+    # This search predicate will use a boost value of 10
+    .search("Notes", "Italian")
+    # Call 'boost' to set the boost value to previous 'search' call
+    .boost(10)
+)
+
+# * Results will contain all Employee documents that have
+#   EITHER 'English' OR 'Italian' in their 'Notes' field.
+#
+# * Matching documents with 'Italian' will be listed FIRST in the results,
+#   before those with 'English'.
+#
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Boost results - when querying with where clause
+
+`boost()` can be used to give different priorities to the results 
+returned by different `where` clauses.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.advanced
+    # Make a dynamic DocumentQuery on 'Companies' collection
+    .document_query(object_type=Company)
+    # Define a 'where' condition
+    .where_starts_with("Name", "O")
+    # Call 'boost' to set the boost value of the previous 'where' predicate
+    .boost(10)
+    # Call 'or_else' so that OR operator will be used between statements
+    .or_else()
+    .where_starts_with("Name", "P")
+    .boost(50)
+    .or_else()
+    .where_ends_with("Name", "OP")
+    .boost(90)
+)
+
+# * Results will contain all Company documents that either
+#   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
+#
+# * Matching documents the end-with 'OP' will be listed FIRST.
+#   Matching documents that start-with 'P' will then be listed.
+#   Matching documents that start-with 'O' will be listed LAST.
+#
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" where
+boost(startsWith(Name, "O"), 10) or
+boost(startsWith(Name, "P"), 50) or
+boost(endsWith(Name, "OP"), 90)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+All transformer changes can be tracked using `forAllTransformers` method.
+
+## Syntax
+
+<TabItem value="transformer_changes_1" label="transformer_changes_1">
+<CodeBlock language="java">
+{`public IObservable<TransformerChangeNotification> forAllTransformers();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[TransformerChangeNotification](../../glossary/transformer-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all transformers. |
+
+Type: IObservable&lt;[TransformerChangeNotification](../../glossary/transformer-change-notification.mdx)&gt;   
+Observable that allows to add subscriptions to notifications for all transformers.
+
+## Example
+
+<TabItem value="transformer_changes_2" label="transformer_changes_2">
+<CodeBlock language="java">
+{`store
+  .changes()
+  .forAllTransformers()
+  .subscribe(Observers.create(new Action1<TransformerChangeNotification>() \{
+    @Override
+    public void apply(TransformerChangeNotification change) \{
+      switch (change.getType()) \{
+        case TRANSFORMER_ADDED:
+          // do something
+          break;
+        case TRANSFORMER_REMOVED:
+          // do something
+          break;
+        default:
+          break;
+      \}
+    \}
+  \}));
+`}
+</CodeBlock>
+</TabItem>
+
+

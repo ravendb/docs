@@ -1,0 +1,95 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **When deploying an index**:  
+  * If the new index definition is **different** from the current index definition on the server,  
+    the current index will be overwritten and data will be re-indexed according to the new index definition.
+  * If the new index definition is the **same** as the one currently deployed on the server,  
+    it will not be overwritten and re-indexing will not occur upon deploying the index.
+
+* **Prior to deploying an index:**,  
+  * Use `IndexHasChangedOperation` to check if the new index definition differs from the one  
+    on the server to avoid any unwanted changes to the existing indexed data.  
+
+* In this page:
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
+
+</Admonition>
+## Check if index has changed
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Some index definition
+var indexDefinition = new IndexDefinition
+{
+    Name = "UsersByName",
+    Maps = { "from user in docs.Users select new { user.Name }"}
+};
+
+// Define the has-changed operation, pass the index definition
+var indexHasChangedOp = new IndexHasChangedOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.Send
+bool indexHasChanged = store.Maintenance.Send(indexHasChangedOp);
+
+// Return values:
+// false: The definition of the index passed is the SAME as the one deployed on the server  
+// true:  The definition of the index passed is DIFFERENT than the one deployed on the server
+//        Or - index does not exist
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Some index definition
+var indexDefinition = new IndexDefinition
+{
+    Name = "UsersByName",
+    Maps = { "from user in docs.Users select new { user.Name }"}
+};
+
+// Define the has-changed operation, pass the index definition
+var indexHasChangedOp = new IndexHasChangedOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
+
+// Return values:
+// false: The definition of the index passed is the SAME as the one deployed on the server  
+// true:  The definition of the index passed is DIFFERENT than the one deployed on the server
+//        Or - index does not exist
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public IndexHasChangedOperation(IndexDefinition definition)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
+
+| Return Value | Description |
+| - | - |
+| `true` | When the index **does not exist** on the server<br/>or -<br/>When the index definition **is different** from the one deployed on the server  |
+| `false` | When the index definition is **the same** as the one deployed on the server |
+
+
+
+

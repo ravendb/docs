@@ -1,0 +1,21 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## ThrowIfQueryPageSizeIsNotSet
+
+Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `ThrowIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
+should prevent from executing queries if their page size is not explicitly set. 
+
+Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
+
+<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
+<CodeBlock language="java">
+{`store.getConventions().setThrowIfQueryPageSizeIsNotSet(true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+

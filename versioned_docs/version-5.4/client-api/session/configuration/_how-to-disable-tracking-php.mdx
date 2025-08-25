@@ -1,0 +1,191 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, each session tracks changes to all entities it has either stored, loaded, or queried for.  
+  All changes are then persisted when `saveChanges` is called.  
+
+* **Tracking can be disabled** by any of the following:  
+    * [Disable tracking for a specific entity in a session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-a-specific-entity-in-a-session)
+    * [Disable tracking for all entities in a session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-all-entities-in-a-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+</Admonition>
+## Disable tracking for a specific entity in a session
+
+* Tracking can be disabled for a specific entity in the session.  
+* Once tracking is disabled for the entity -  
+  * Any changes made to this entity will be ignored for `saveChanges`.  
+  * Performing another `load` for this entity will Not generate another call to the server.
+  
+**Example**
+
+<TabItem value="disable_tracking_1" label="disable_tracking_1">
+<CodeBlock language="php">
+{`// Load a product entity - the session will track the entity by default
+/** @var Product $product */
+$product = $session->load(Product::class, "products/1-A");
+
+// Call 'ignoreChangesFor' to instruct the session to ignore changes made to this entity
+$session->advanced()->ignoreChangesFor($product);
+
+// The following change will be ignored by saveChanges - it will not be persisted
+$product->setUnitsInStock($product->getUnitsInStock() + 1);
+
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disable tracking for all entities in a session
+
+* Tracking can be disabled for all entities in the session's options.  
+* When tracking is disabled for the session:  
+  * Method `store` will Not be available (an exception will be thrown if used).
+  * Calling `load` or `query` will generate a call to the server and create new entities instances.  
+
+<TabItem value="disable_tracking_2" label="disable_tracking_2">
+<CodeBlock language="php">
+{`$sessionOptions = new SessionOptions();
+// Disable tracking for all entities in the session's options
+$sessionOptions->setNoTracking(true);
+
+$session = $store->openSession($sessionOptions);
+try \{
+    // Load any entity, it will Not be tracked by the session
+    /** @var Employee $employee1 */
+    $employee1 = $session->load(Employee::class, "employees/1-A");
+
+    // Loading again from same document will result in a new entity instance
+    $employee2 = $session->load(Employee::class, "employees/1-A");
+
+    // Entities instances are not the same
+    $this->assertNotEquals($employee1, $employee2);
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disable tracking for query results
+
+* Tracking can be disabled for all entities resulting from a query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    // Define a query
+    /** @var array<Employee> $employeesResults */
+    $employeesResults = $session->query(Employee::class)
+        // Set NoTracking, all resulting entities will not be tracked
+        ->noTracking()
+        ->whereEquals("FirstName", "Robert")
+        ->toList();
+
+    // The following modification will not be tracked for SaveChanges
+    $firstEmployee = $employeesResults[0];
+    $firstEmployee->setLastName("NewName");
+
+    // Change to 'firstEmployee' will not be persisted
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    // Define a query
+    /** @var array<Employee> $employeesResults */
+    $employeesResults = $session->advanced()->documentQuery(Employee::class)
+        // Set NoTracking, all resulting entities will not be tracked
+        ->noTracking()
+        ->whereEquals("FirstName", "Robert")
+        ->toList();
+
+    // The following modification will not be tracked for SaveChanges
+    $firstEmployee = $employeesResults[0];
+    $firstEmployee->setLastName("NewName");
+
+    // Change to 'firstEmployee' will not be persisted
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Customize tracking in conventions
+
+* You can further customize and fine-tune which entities will not be tracked  
+  by configuring the `ShouldIgnoreEntityChanges` convention method on the document store.
+* This customization will apply to all sessions opened for this document store.
+* Use the `setShouldIgnoreEntityChanges` method to do so.  
+
+#### Example:
+
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
+<CodeBlock language="php">
+{`// Define the 'ignore' convention on your document store
+$conventions = new DocumentConventions();
+$conventions->setShouldIgnoreEntityChanges(
+// Define for which entities tracking should be disabled
+// Tracking will be disabled ONLY for entities of type Employee whose FirstName is Bob
+    function ($session, $entity, $id) \{
+        return $entity instanceof Employee && $entity->getFirstName() == "Bob";
+    \}
+);
+
+$store = new DocumentStore();
+$store->setConventions($conventions);
+$store->initialize();
+try \{
+    $session = $store->openSession();
+    try \{
+        $employee1 = new Employee();
+        $employee1->setId("employees/1");
+        $employee1->setFirstName("Alice");
+
+        $employee2 = new Employee();
+        $employee2->setId("employees/2");
+        $employee2->setFirstName("Bob");
+
+        $session->store($employee1);      // This entity will be tracked
+        $session->store($employee2);      // Changes to this entity will be ignored
+
+        $session->saveChanges();          // Only employee1 will be persisted
+
+        $employee1->setFirstName("Bob");  // Changes to this entity will now be ignored
+        $employee2->setFirstName("Alice");// This entity will now be tracked
+
+        $session->saveChanges();          // Only employee2 is persisted
+    \} finally \{
+        $session->close();
+    \}
+\} finally \{
+    $store->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

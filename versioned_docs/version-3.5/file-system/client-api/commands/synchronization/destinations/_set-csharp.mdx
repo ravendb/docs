@@ -1,0 +1,42 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: SetDestinationsAsync
+
+**SetDestinationsAsync** is used to setup the servers where files should be synchronized.
+
+
+
+<TabItem value="set_destinations_1" label="set_destinations_1">
+<CodeBlock language="csharp">
+{`Task SetDestinationsAsync(params SynchronizationDestination[] destinations);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **destinations** | SynchronizationDestination[] | The array of `SynchronizationDestination` objects representing destination file systems |
+
+&lt;hr/&gt;
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous set operation |
+
+### Example
+
+<TabItem value="set_destinations_2" label="set_destinations_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Synchronization.SetDestinationsAsync(new SynchronizationDestination
+\{
+	ServerUrl = "http://localhost:8080/",
+	FileSystem = "BackupFS"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+

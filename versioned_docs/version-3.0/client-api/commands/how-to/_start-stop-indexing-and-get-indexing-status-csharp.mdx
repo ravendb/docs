@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following commands have been created to enable user to toggle indexing and retrieve indexing status:   
+- [StartIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#startindexing)   
+- [StopIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#stopindexing)   
+- [GetIndexingStatus](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#getindexingstatus)
+
+## StartIndexing
+
+This methods starts indexing, if it was previously stopped.
+
+### Syntax
+
+<TabItem value="start_indexing_1" label="start_indexing_1">
+<CodeBlock language="csharp">
+{`void StartIndexing(int? maxNumberOfParallelIndexTasks = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **maxNumberOfParallelIndexTasks** | int? | if set then maximum number of parallel indexing tasks will be set to this value |
+
+### Example
+
+<TabItem value="start_indexing_2" label="start_indexing_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.Admin.StartIndexing();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StopIndexing
+
+This methods stops indexing, if it was running.
+
+### Syntax
+
+<TabItem value="stop_indexing_1" label="stop_indexing_1">
+<CodeBlock language="csharp">
+{`void StopIndexing();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="stop_indexing_2" label="stop_indexing_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.Admin.StopIndexing();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetIndexingStatus
+
+This methods retrieves current status of the indexing.
+
+### Syntax
+
+<TabItem value="get_indexing_status_1" label="get_indexing_status_1">
+<CodeBlock language="csharp">
+{`IndexingStatus GetIndexingStatus();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| string | `"Indexing"` if the indexing is running, `"Paused"` otherwise. |
+
+### Example
+
+<TabItem value="get_indexing_status_2" label="get_indexing_status_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.Admin.StopIndexing();
+IndexingStatus status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Paused"
+store.DatabaseCommands.Admin.StartIndexing();
+status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Indexing"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

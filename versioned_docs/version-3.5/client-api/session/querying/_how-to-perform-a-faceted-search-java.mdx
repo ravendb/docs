@@ -1,0 +1,183 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To execute facet query using session `query` method use `toFacets` method.
+
+## Syntax
+
+<TabItem value="facet_1" label="facet_1">
+<CodeBlock language="java">
+{`IAggregationDocumentQuery<T> aggregateBy(Consumer<IFacetBuilder<T>> builder);
+
+IAggregationDocumentQuery<T> aggregateBy(FacetBase facet);
+
+IAggregationDocumentQuery<T> aggregateBy(Facet... facet);
+
+IAggregationDocumentQuery<T> aggregateUsing(String facetSetupDocumentId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **start** | int | number of results that should be skipped. Default: `0`. |
+| **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results with query `duration` and list of `results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+
+## Example I
+
+<TabItem value="facet_2" label="facet_2">
+<CodeBlock language="java">
+{`_1
+                FacetOptions facetOptions = new FacetOptions();
+                facetOptions.setTermSortMode(FacetTermSortMode.COUNT_DESC);
+
+                Facet facet1 = new Facet();
+                facet1.setFieldName("manufacturer");
+                facet1.setOptions(facetOptions);
+
+                RangeFacet facet2 = new RangeFacet();
+                facet2.setRanges(Arrays.asList(
+                    "cost < 200",
+                    "cost between 200 and 400",
+                    "cost between 400 and 600",
+                    "cost between 600 and 800",
+                    "cost >= 800"
+                ));
+                facet2.setAggregations(Collections.singletonMap(FacetAggregation.AVERAGE, "cost"));
+
+                RangeFacet facet3 = new RangeFacet();
+                facet3.setRanges(Arrays.asList(
+                    "megapixels < 3",
+                    "megapixels between 3 and 7",
+                    "megapixels between 7 and 10",
+                    "megapixels >= 10"
+                ));
+
+                Map<String, FacetResult> facets = session
+                    .query(Camera.class, Query.index("Camera/Costs"))
+                    .aggregateBy(facet1)
+                    .andAggregateBy(facet2)
+                    .andAggregateBy(facet3)
+                    .execute();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="facet_3" label="facet_3">
+<CodeBlock language="java">
+{`_1
+                FacetOptions options = new FacetOptions();
+                options.setTermSortMode(FacetTermSortMode.COUNT_DESC);
+
+                RangeBuilder<Integer> costBuilder = RangeBuilder.forPath("cost");
+                RangeBuilder<Integer> megapixelsBuilder = RangeBuilder.forPath("megapixels");
+
+                Map<String, FacetResult> facetResult = session
+                    .query(Camera.class, Query.index("Camera/Costs"))
+                    .aggregateBy(builder -> builder
+                        .byField("manufacturer")
+                        .withOptions(options))
+                    .andAggregateBy(builder -> builder
+                        .byRanges(
+                            costBuilder.isLessThan(200),
+                            costBuilder.isGreaterThanOrEqualTo(200).isLessThan(400),
+                            costBuilder.isGreaterThanOrEqualTo(400).isLessThan(600),
+                            costBuilder.isGreaterThanOrEqualTo(600).isLessThan(800),
+                            costBuilder.isGreaterThanOrEqualTo(800))
+                        .averageOn("cost"))
+                    .andAggregateBy(builder -> builder
+                        .byRanges(
+                            megapixelsBuilder.isLessThan(3),
+                            megapixelsBuilder.isGreaterThanOrEqualTo(3).isLessThan(7),
+                            megapixelsBuilder.isGreaterThanOrEqualTo(7).isLessThan(10),
+                            megapixelsBuilder.isGreaterThanOrEqualTo(10)
+                        ))
+                    .execute();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Converting Query into FacetQuery
+
+<TabItem value="facet_4" label="facet_4">
+<CodeBlock language="java">
+{`_1
+                FacetSetup facetSetup = new FacetSetup();
+
+                Facet facetManufacturer = new Facet();
+                facetManufacturer.setFieldName("manufacturer");
+                facetSetup.setFacets(Arrays.asList(facetManufacturer));
+
+                RangeFacet cameraFacet = new RangeFacet();
+                cameraFacet.setRanges(Arrays.asList(
+                    "cost < 200",
+                    "cost between 200 and 400",
+                    "cost between 400 and 600",
+                    "cost between 600 and 800",
+                    "cost >= 800"
+                ));
+
+                RangeFacet megapixelsFacet = new RangeFacet();
+                megapixelsFacet.setRanges(Arrays.asList(
+                    "megapixels < 3",
+                    "megapixels between 3 and 7",
+                    "megapixels between 7 and 10",
+                    "megapixels >= 10"
+                ));
+
+                facetSetup.setRangeFacets(Arrays.asList(cameraFacet, megapixelsFacet));
+
+                session.store(facetSetup, "facets/CameraFacets");
+                session.saveChanges();
+
+                Map<String, FacetResult> facets = session
+                    .query(Camera.class, Query.index("Camera/Costs"))
+                    .aggregateUsing("facets/CameraFacets")
+                    .execute();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **start** | int | number of results that should be skipped. Default: `0`. |
+| **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetQuery](../../../glossary/facet-query.mdx) | Instance of FacetQuery containing all options set in `query`. Can be used with `multiFacetedSearch` from `advanced` session operations or with `commands` directly. |
+
+### Example
+
+<TabItem value="facet_5" label="facet_5">
+<CodeBlock language="java">
+{`FacetQuery facetQuery1 = session.query(Camera.class)
+  .toFacetQuery("facets/CameraFacets1");
+
+FacetQuery facetQuery2 = session.query(Camera.class)
+  .toFacetQuery("facets/CameraFacets2");
+
+FacetResults[] results = session.advanced()
+  .multiFacetedSearch(facetQuery1, facetQuery2);
+
+FacetResults facetResults1 = results[0];
+FacetResults facetResults2 = results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+
+

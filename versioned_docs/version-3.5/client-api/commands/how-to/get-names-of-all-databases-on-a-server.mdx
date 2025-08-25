@@ -5,138 +5,29 @@ sidebar_label: ...get names of all databases on a server
 sidebar_position: 12
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetNamesOfAllDatabasesOnAServerCsharp from './_get-names-of-all-databases-on-a-server-csharp.mdx';
+import GetNamesOfAllDatabasesOnAServerJava from './_get-names-of-all-databases-on-a-server-java.mdx';
+import GetNamesOfAllDatabasesOnAServerHttp from './_get-names-of-all-databases-on-a-server-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: How to get names of all databases on a server?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To download all available database names from a server, use the `GetDatabaseNames` command from `GlobalAdmin`.
-
-## Syntax
-
-<TabItem value="get_database_names_1" label="get_database_names_1">
-<CodeBlock language="csharp">
-{`string[] GetDatabaseNames(int pageSize, int start = 0);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **pageSize** | int | Maximum number of records that will be downloaded |
-| **start** | int | Number of records that should be skipped. Default: `0` |
-
-| Return Value | |
-| ------------- | ----- |
-| string[] | Names of all databases on a server |
-
-## Example
-
-<TabItem value="get_database_names_2" label="get_database_names_2">
-<CodeBlock language="csharp">
-{`string[] databaseNames = store
-	.DatabaseCommands
-	.GlobalAdmin
-	.GetDatabaseNames(10);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetNamesOfAllDatabasesOnAServerCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To download all available database names from a server, use the `getDatabaseNames` command from `GlobalAdmin`.
-
-## Syntax
-
-<TabItem value="get_database_names_1" label="get_database_names_1">
-<CodeBlock language="java">
-{`public String[] getDatabaseNames(int pageSize);
-
-public String[] getDatabaseNames(int pageSize, int start);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **pageSize** | int | Maximum number of records that will be downloaded |
-| **start** | int | Number of records that should be skipped. Default: `0` |
-
-| Return Value | |
-| ------------- | ----- |
-| String[] | Names of all databases on a server |
-
-## Example
-
-<TabItem value="get_database_names_2" label="get_database_names_2">
-<CodeBlock language="java">
-{`String[] databaseNames =
-  store.getDatabaseCommands().getGlobalAdmin().getDatabaseNames(10);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetNamesOfAllDatabasesOnAServerJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/?pageSize=\{pageSize\}&start=\{start\} \\
-	-X GET 
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **pageSize** | No | Maximum number of records that will be downloaded |
-| **start** | No | Number of records that should be skipped. Default: `0` |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| payload | array of database names |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X GET "http://localhost:8080/databases?pageSize=8&start=0" 
-< HTTP/1.1 200 OK
-["db2","disabled","Documentation","http","NewNorthwind","NorthWind","rep1","sample"]
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetNamesOfAllDatabasesOnAServerHttp />
 </LanguageContent>
+
 
 <!---
 - [How to create or delete database?](../../../client-api/commands/how-to/create-delete-database)

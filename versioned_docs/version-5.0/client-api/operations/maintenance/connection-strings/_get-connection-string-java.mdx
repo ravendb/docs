@@ -1,0 +1,107 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can get connection strings by using **GetConnectionStringsOperation**.
+
+## Syntax
+
+<TabItem value="get_connection_strings" label="get_connection_strings">
+<CodeBlock language="java">
+{`public GetConnectionStringsOperation()
+public GetConnectionStringsOperation(String connectionStringName, ConnectionStringType type)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **connectionStringName** | `String` | Connection string name |
+| **type** | `ConnectionStringType` | Connection string type: `RAVEN` or `SQL` |
+
+
+| Return Value | | |
+| ------------- | ----- | --- |
+| `sqlConnectionStrings` | Map&lt;String, SqlConnectionString&gt; | Map which maps sql connection string name to definition |
+| `ravenConnectionStrings` | Map&lt;String, RavenConnectionString&gt; | Map which maps raven connection string name to definition |
+
+
+#### RavenConnectionString 
+
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="java">
+{`public class RavenConnectionString extends ConnectionString \{
+    private String database; // target database name
+    private String[] topologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.RAVEN;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### SqlConnectionString
+
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="java">
+{`public class SqlConnectionString extends ConnectionString \{
+    private String connectionString;
+    private String factoryName;
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.SQL;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### ConnectionString
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="java">
+{`public class ConnectionString \{
+    private String name; // name of connection string
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Get all Connection Strings
+
+<TabItem value="get_all_connection_strings" label="get_all_connection_strings">
+<CodeBlock language="java">
+{`GetConnectionStringsOperation operation = new GetConnectionStringsOperation();
+GetConnectionStringsResult connectionStrings = store.maintenance().send(operation);
+Map<String, SqlConnectionString> sqlConnectionStrings =
+    connectionStrings.getSqlConnectionStrings();
+Map<String, RavenConnectionString> ravenConnectionStrings =
+    connectionStrings.getRavenConnectionStrings();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Get Connection String By Name and Type
+
+<TabItem value="get_connection_string_by_name" label="get_connection_string_by_name">
+<CodeBlock language="java">
+{`GetConnectionStringsOperation operation = new GetConnectionStringsOperation(
+    "local_mysql", ConnectionStringType.SQL);
+GetConnectionStringsResult connectionStrings = store.maintenance().send(operation);
+Map<String, SqlConnectionString> sqlConnectionStrings =
+    connectionStrings.getSqlConnectionStrings();
+SqlConnectionString mysqlConnectionString = sqlConnectionStrings.get("local_mysql");
+`}
+</CodeBlock>
+</TabItem>
+
+

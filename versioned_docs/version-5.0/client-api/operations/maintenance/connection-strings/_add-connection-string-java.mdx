@@ -1,0 +1,103 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can add a connection string by using **PutConnectionStringOperation**.
+
+## Syntax
+
+<TabItem value="add_connection_string" label="add_connection_string">
+<CodeBlock language="java">
+{`public PutConnectionStringOperation(T connectionString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
+
+#### RavenConnectionString 
+
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="java">
+{`public class RavenConnectionString extends ConnectionString \{
+    private String database; // target database name
+    private String[] topologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.RAVEN;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### SqlConnectionString
+
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="java">
+{`public class SqlConnectionString extends ConnectionString \{
+    private String connectionString;
+    private String factoryName;
+
+    public ConnectionStringType getType() \{
+        return ConnectionStringType.SQL;
+    \}
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### ConnectionString
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="java">
+{`public class ConnectionString \{
+    private String name; // name of connection string
+
+    // getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Raven Connection String
+
+<TabItem value="add_raven_connection_string" label="add_raven_connection_string">
+<CodeBlock language="java">
+{`RavenConnectionString connectionString = new RavenConnectionString();
+connectionString.setName("raven2");
+connectionString.setDatabase("Northwind2");
+connectionString.setTopologyDiscoveryUrls(new String[]\{"http://rvn2:8080"\});
+
+PutConnectionStringOperation<RavenConnectionString> operation =
+    new PutConnectionStringOperation<>(connectionString);
+PutConnectionStringResult connectionStringResult =
+    store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Sql Connection String
+
+<TabItem value="add_sql_connection_string" label="add_sql_connection_string">
+<CodeBlock language="java">
+{`SqlConnectionString connectionString = new SqlConnectionString();
+connectionString.setName("local_mysql");
+connectionString.setFactoryName("MySql.Data.MySqlClient");
+connectionString.setConnectionString("host=127.0.0.1;user=root;database=Northwind");
+PutConnectionStringOperation<SqlConnectionString> operation
+    = new PutConnectionStringOperation<>(connectionString);
+
+PutConnectionStringResult connectionStringResult = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+

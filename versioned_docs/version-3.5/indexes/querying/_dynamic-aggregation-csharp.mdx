@@ -1,0 +1,143 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This feature is an another way to do aggregations and in contrast to [Map-Reduce](../../indexes/map-reduce-indexes.mdx) indexes, it allows to create much more complex queries. It gives you more options for reporting applications, dynamic selection and complex aggregation with additional filtering. 
+
+When working with a map/reduce index we are able to do only limited amount of queries. Let's imagine a sample SQL query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`select sum(Total) from Orders where Total > 500 group by Product
+`}
+</CodeBlock>
+</TabItem>
+
+In order give you the ability to query like this, we introduced the dynamic aggregation feature. Thanks this you can build the following query:
+
+<TabItem value="dynamic_aggregation_1" label="dynamic_aggregation_1">
+<CodeBlock language="csharp">
+{`FacetResults facetResults = session
+	.Query<Order, Orders_All>()
+	.Where(x => x.Total > 500)
+	.AggregateBy(x => x.Product)
+		.SumOn(x => x.Total)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Assuming that your classes look like this:
+
+<TabItem value="currency" label="currency">
+<CodeBlock language="csharp">
+{`public enum Currency
+\{
+	EUR,
+	USD
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="order" label="order">
+<CodeBlock language="csharp">
+{`public class Order
+\{
+	public double Total \{ get; set; \}
+
+	public string Product \{ get; set; \}
+
+	public Currency Currency \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The _Orders/All_ index used in the query is a simple map-only index. The only difference is that you **have to** specify sort options for numeric fields used in the query. This is needed for recognizing by RavenDB types of numeric fields when such a query will come in.
+
+<TabItem value="dynamic_aggregation_index_def" label="dynamic_aggregation_index_def">
+<CodeBlock language="csharp">
+{`public class Orders_All : AbstractIndexCreationTask<Order>
+\{
+	public Orders_All()
+	\{
+		Map = orders => from order in orders
+				select new
+				\{
+					order.Total,
+					order.Product,
+					Concurrency = order.Currency
+				\};
+
+		Sort(x => x.Total, SortOptions.Double);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="">
+Not specifying appropriate `SortOptions` for numerical fields will result in an **exception** when aggregation query is executed.
+</Admonition>
+
+<Admonition type="note" title="">
+Results of a dynamic aggregation query are calculated on the fly, while results of map/reduce index are precomputed. Most cases is fast enough but note that you can hit a lot of data. This feature should be used only for complex aggregate queries that cannot be done by using standard map/reduce.
+</Admonition>
+
+## Extended faceted search
+
+Under the covers this is [a faceted search](../../indexes/querying/faceted-search.mdx) with an extended support for doing aggregations. For example you can aggregate ranges:
+
+<TabItem value="dynamic_aggregation_range" label="dynamic_aggregation_range">
+<CodeBlock language="csharp">
+{`FacetResults facetResults = session.Query<Order, Orders_All>()
+				.AggregateBy(x => x.Product)
+				.AddRanges(
+					x => x.Total < 100,
+					x => x.Total >= 100 && x.Total < 500,
+					x => x.Total >= 500 && x.Total < 1500,
+					x => x.Total >= 1500
+				)
+				.SumOn(x => x.Total)
+				.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+It also supports an aggregation on multiple levels:
+
+<TabItem value="dynamic_aggregation_multiple_items" label="dynamic_aggregation_multiple_items">
+<CodeBlock language="csharp">
+{`FacetResults facetResults = session.Query<Order, Orders_All>()
+				.AggregateBy(x => x.Product)
+					.SumOn(x => x.Total)
+					.CountOn(x => x.Total)
+				.AndAggregateOn(x => x.Currency)
+					.MinOn(x => x.Total)
+				.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Another example is an aggregation on different fields based on same facet:
+
+<TabItem value="dynamic_aggregation_different_fieldss" label="dynamic_aggregation_different_fieldss">
+<CodeBlock language="csharp">
+{`FacetResults facetResults = session.Query<Order, Orders_All>()
+				.AggregateBy(x => x.Product)
+					.MaxOn(x => x.Total)
+					.MinOn(x => x.Currency)
+				.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="warning" title="">
+`AggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values.
+</Admonition>
+
+

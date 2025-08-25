@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, optimistic concurrency checks are turned **off**, which means that changes made outside our session object will be overwritten.
+Checks can be turned on by setting `UseOptimisticConcurrency` property from `Advanced` session operations to `true` and may cause `ConcurrencyExceptions` to be thrown.   
+
+Another option is to control optimistic concurrency per specific document.   
+To enable it, you can [supply an ETag to Store](../storing-entities.mdx). If you don't supply an ETag or if the ETag is null, then optimistic concurrency will be disabled. 
+If you need to check concurrency when inserting a new document you must use `Etag.Empty`. It will cause to throw `ConcurrencyException` if the document already exists.
+Note that setting optimistic concurrency per specific document overrides the use of `UseOptimisticConcurrency` property from `Advanced` session operations.
+## Example I
+
+<TabItem value="optimistic_concurrency_1" label="optimistic_concurrency_1">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+    // Enable optimistic concurrency for this session
+    session.Advanced.UseOptimisticConcurrency = true;
+
+    // Save a document in this session
+    Product product = new Product \{ Name = "Some Name" \};
+    session.Store(product, "products/999");
+    session.SaveChanges();
+
+    // Modify the document 'externally' by another session 
+    using (IDocumentSession otherSession = store.OpenSession())
+    \{
+        Product otherProduct = otherSession.Load<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        otherSession.SaveChanges();
+    \}
+
+    // Trying to modify the document without reloading it first will throw
+    product.Name = "Better Name";
+    session.SaveChanges(); // This will throw a ConcurrencyException
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The above example shows how to enable optimistic concurrency for a particular session. However that can be also turned on globally, that is for all opened sessions 
+by using the convention `DefaultUseOptimisticConcurrency`.
+
+## Example II
+
+<TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
+<CodeBlock language="csharp">
+{`// Enable for all sessions that will be opened within this document store
+store.Conventions.UseOptimisticConcurrency = true;
+
+using (IDocumentSession session = store.OpenSession())
+\{
+    bool isSessionUsingOptimisticConcurrency = session.Advanced.UseOptimisticConcurrency; // will return true
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Optimistic Concurrency and Replication" id="optimistic-concurrency-and-replication" href="#optimistic-concurrency-and-replication">
+
+When Optimistic Concurrency is used with Replication then we advise to set `ForceReadFromMaster` when only read operations are load-balanced (FailoverBehavior.ReadFromAllServers) and you want to perform document update.
+
+<TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+    // Store document 'products/999'
+    session.Store(new Product \{ Name = "Some Name" \}, id: "products/999");
+    session.SaveChanges();
+\}
+
+using (IDocumentSession session = store.OpenSession())
+\{
+    // Enable optimistic concurrency for the session
+    session.Advanced.UseOptimisticConcurrency = true;
+
+    // Store the same document
+    // Pass 'null' as the changeVector to turn OFF optimistic concurrency for this document
+    session.Store(new Product \{ Name = "Some Other Name" \}, changeVector: null, id: "products/999");
+    
+    // This will NOT throw a ConcurrencyException, and the document will be saved
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+

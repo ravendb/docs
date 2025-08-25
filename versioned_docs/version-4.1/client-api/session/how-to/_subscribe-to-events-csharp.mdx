@@ -1,0 +1,163 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
+
+The event is invoked when a particular action is executed on an entity or querying is performed.
+
+<Admonition type="info" title="Subscribing to an event" id="subscribing-to-an-event" href="#subscribing-to-an-event">
+Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.Advanced` which will overwrite the existing event for the current session. 
+</Admonition>
+
+## OnBeforeStore
+
+This event is invoked as a part of `SaveChanges` but before it is actually sent to the server.
+
+It takes the argument `BeforeStoreEventArgs` that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+Say we want to discontinue all of the products that are not in stock. 
+
+<TabItem value="on_before_store_event" label="on_before_store_event">
+<CodeBlock language="csharp">
+{`private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args)
+\{
+    var product = args.Entity as Product;
+    if (product?.UnitsInStock == 0)
+    \{
+        product.Discontinued = true;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+After we subscribe to the event, every stored entity will invoke the method.
+
+<TabItem value="store_session" label="store_session">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+session.Advanced.OnBeforeStore += OnBeforeStoreEvent;
+
+session.Store(new Product
+\{
+    Name = "RavenDB v3.5",
+    UnitsInStock = 0
+\});
+session.Store(new Product
+\{
+    Name = "RavenDB v4.0",
+    UnitsInStock = 1000
+\});
+
+session.SaveChanges(); // Here the method is invoked
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## OnBeforeDelete
+
+This event is invoked as a part of `SaveChanges`, but before it actually sends the deleted entities to the server.
+
+It takes the argument `BeforeDeleteEventArgs`, that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+To prevent anyone from deleting entities we can create a method as follows:
+
+<TabItem value="on_before_delete_event" label="on_before_delete_event">
+<CodeBlock language="csharp">
+{`private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args)
+\{
+    throw new NotSupportedException();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and subscribe it to the session:
+
+<TabItem value="delete_session" label="delete_session">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+session.Advanced.OnBeforeDelete += OnBeforeDeleteEvent;
+
+var product = session.Load<Product>("products/1-A");
+var product2 = session.Load<Product>("products/2-A");
+
+// OnBeforeDelete is triggered whether you
+// call Delete() on an entity or on its ID
+session.Delete(product);
+session.SaveChanges(); // NotSupportedException will be thrown
+
+session.Delete("products/2-A");
+session.SaveChanges(); // NotSupportedException will be thrown
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## OnAfterSaveChanges
+
+This event is invoked after the `SaveChanges` is returned. It takes the argument `AfterSaveChangesEventArgs` that consists of the `Session` entity's ID and the entity itself with the updated metadata from the server.
+
+### Example
+
+If we want to log each entity that was saved, we can create a method as follows:
+
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
+<CodeBlock language="csharp">
+{`private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args)
+\{
+    if (Log.IsInfoEnabled)
+        Log.Info($"Document '\{args.DocumentId\}' was saved.");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## OnBeforeQuery
+
+This event is invoked just before the query is sent to the server.
+
+It takes the argument `BeforeQueryEventArgs`, that consists of the `Session` and the `IDocumentQueryCustomization`.
+
+### Example I
+
+If you want to disable caching of all query results, you can implement the method as follows:
+
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
+<CodeBlock language="csharp">
+{`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
+\{
+    args.QueryCustomization.NoCaching();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:
+
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
+<CodeBlock language="csharp">
+{`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
+\{
+    args.QueryCustomization.WaitForNonStaleResults(TimeSpan.FromSeconds(30));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

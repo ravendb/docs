@@ -1,0 +1,198 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [`_add_map`](../indexes/multi-map-indexes.mdx#_add_map)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
+
+</Admonition>
+
+## `_add_map`
+
+The `_add_map` method is used to map fields from a single collection, e.g. `Dogs`.  
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="python">
+{`class Dog(Animal): ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="python">
+{`class Cat(Animal): ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="python">
+{`class Animal(ABC):
+    def __init__(self, name: str = None):
+        self.name = name
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+We can define our index using `_add_map` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="_add_map" label="_add_map">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractMultiMapIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self._add_map("from c in docs.Cats select new { c.name }")
+        self._add_map("from d in docs.Dogs select new { d.name }")
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})",
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(session.query_index_type(Animals_ByName, Animal).where_equals("name", "Mitzy"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
+<CodeBlock language="python">
+{`class Smart_Search(AbstractMultiMapIndexCreationTask):
+    class Result:
+        def __init__(
+            self, Id: str = None, display_name: str = None, collection: object = None, content: List[str] = None
+        ):
+            self.Id = Id
+            self.display_name = display_name
+            self.collection = collection
+            self.content = content
+
+    class Projection:
+        def __init__(self, Id: str = None, display_name: str = None, collection: str = None):
+            self.Id = Id
+            self.display_name = display_name
+            self.collection = collection
+
+    def __init__(self):
+        super().__init__()
+        self._add_map(
+            "from c in docs.Companies select new \{"
+            "Id = c.Id,"
+            "content = new[]"
+            "\{"
+            "    c.name"
+            "\},"
+            "display_name=  c.name, "
+            'collection = MetadataFor(c)["@collection"]'
+            "\}"
+        )
+
+        self._add_map(
+            "from p in docs.Products select new \{"
+            "Id = p.Id,"
+            "content = new[]"
+            "\{"
+            "    p.name"
+            "\},"
+            "display_name = p.name,"
+            'collection = MetadataFor(p)["@collection"]'
+            "\}"
+        )
+
+        self._add_map(
+            "from e in docs.Employees select new \{"
+            "Id = e.Id,"
+            "content = new[]"
+            "\{"
+            "    e.first_name,"
+            "    e.last_name"
+            "\},"
+            'display_name = e.first_name + " " + e.last_name,'
+            'collection = MetadataFor(e)["@collection"]'
+            "\}"
+        )
+
+        # mark 'content' field as analyzed which enables full text search operations
+        self._index("content", FieldIndexing.SEARCH)
+
+        # storing fields so when projection (e.g. ProjectInto) requests only those fields,
+        # data will come from index only, not from storage
+        self._store("Id", FieldStorage.YES)
+        self._store("display_name", FieldStorage.YES)
+        self._store("collection", FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Smart_Search, Smart_Search.Result)
+    .search("content", "Lau*")
+    .select_fields(Smart_Search.Projection)
+)
+
+for result in results:
+    print(f"\{result.collection\}: \{result.display_name\}")
+    # Companies: Laughing Bacchus Wine Cellars
+    # Products: Laughing Lumberjack Lager
+    # Employees: Laura Callahan
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+

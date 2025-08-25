@@ -1,0 +1,28 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, session is tracking the changes. This means that for each document retrieved, session will start tracking it's changes allowing you to make the modifications and save the entities using the `saveChanges` method.
+
+Sometimes it might be considered an unnecessary overhead (e.g. when session does not plan to make any changes, just retrieve the documents). This is why tracking can be turned off using `sessionOptions.noTracking` property. When turned off, the `store` and `saveChanges` operations will no longer be available (exception will be throw when used) and each call to methods such as `load` will create a new instance of a class that is being returned.
+
+## Example
+
+<TabItem value="open_session_tracking_1" label="open_session_tracking_1">
+<CodeBlock language="java">
+{`SessionOptions sessionOptions = new SessionOptions();
+sessionOptions.setNoTracking(true);
+try (IDocumentSession session = store.openSession()) \{
+    Employee employee1 = session.load(Employee.class, "employees/1-A");
+    Employee employee2 = session.load(Employee.class, "employees/1-A");
+
+    // because NoTracking is set to 'true'
+    // each load will create a new Employee instance
+    Assert.assertNotSame(employee1, employee2);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

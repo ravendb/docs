@@ -1,0 +1,89 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can generate a client certificate using **CreateClientCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="cert_1_1" label="cert_1_1">
+<CodeBlock language="java">
+{`public CreateClientCertificateOperation(String name,
+                                        Map<String, DatabaseAccess> permissions,
+                                        SecurityClearance clearance)
+
+public CreateClientCertificateOperation(String name,
+                                        Map<String, DatabaseAccess> permissions,
+                                        SecurityClearance clearance,
+                                        String password)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_2" label="cert_1_2">
+<CodeBlock language="java">
+{`public enum SecurityClearance \{
+    CLUSTER_ADMIN,
+    CLUSTER_NODE,
+    OPERATOR,
+    VALID_USER
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_3" label="cert_1_3">
+<CodeBlock language="java">
+{`public enum DatabaseAccess \{
+    READ,
+    READ_WRITE,
+    ADMIN
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of a certificate |
+| **permissions** | Map&lt;String, DatabaseAccess&gt; | Map with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+| **password** | String | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="cert_1_4" label="cert_1_4">
+<CodeBlock language="java">
+{`// With user role set to Cluster Administrator or Operator the user of this certificate
+// is going to have access to all databases
+
+CreateClientCertificateOperation operation = new CreateClientCertificateOperation("admin",
+    null, SecurityClearance.OPERATOR);
+CertificateRawData certificateRawData = store.maintenance().server().send(operation);
+byte[] certificatesZipped = certificateRawData.getRawData();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="cert_1_5" label="cert_1_5">
+<CodeBlock language="java">
+{`// when security clearance is ValidUser, you need to specify per database permissions
+CreateClientCertificateOperation operation = new CreateClientCertificateOperation("user1",
+    Collections.singletonMap("Northwind", DatabaseAccess.ADMIN),
+    SecurityClearance.VALID_USER,
+    "myPassword");
+
+CertificateRawData certificateRawData = store.maintenance().server().send(operation);
+byte[] certificateZipped = certificateRawData.getRawData();
+`}
+</CodeBlock>
+</TabItem>
+
+

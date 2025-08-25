@@ -1,0 +1,238 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
+
+- [RavenServerLocator](../start/test-driver.mdx#ravenserverlocator)
+- [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
+- [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
+- [Unit test](../start/test-driver.mdx#unittest)
+- [Complete example](../start/test-driver.mdx#complete-example)
+
+## RavenServerLocator
+
+The first thing we need to implement is a class derived from `RavenServerLocator`
+
+<TabItem value="RavenServerLocator" label="RavenServerLocator">
+<CodeBlock language="java">
+{`public abstract class RavenServerLocator \{
+    /**
+     * Allows to fetch the server path
+     * @return server path
+     */
+    public abstract String getServerPath();
+
+    /**
+     * Allows to fetch the command used to invoke the server.
+     * @return command
+     */
+    public abstract String getCommand();
+
+    /**
+     * Allows to fetch the command arguments.
+     * @return command line arguments
+     */
+    public String[] getCommandArguments() \{
+        return new String[0];
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="test_driver_5" label="test_driver_5">
+<CodeBlock language="java">
+{`public class MyRavenDBLocator extends RavenServerLocator \{
+    @Override
+    public String getServerPath() \{
+        return "/opt/RavenDB/Server/Raven.Server";
+    \}
+
+    @Override
+    public String getCommand() \{
+        return getServerPath();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RavenTestDriver
+
+Now that we learned how to implement a server locator we can define a class that derives from Raven's TestDriver.
+Lets start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx##complete-example) of the page).
+
+### Properties and Methods
+| Signature | Description |
+| ----------| ----- |
+| **public IDocumentStore getDocumentStore()** | Gets you an IDocumentStore instance with random database name |
+| **public IDocumentStore getDocumentStore(String database)** | Gets you an IDocumentStore instance for the requested database. |
+| **protected virtual void customizeStore(DocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
+| **public void waitForIndexing(IDocumentStore store)** | Allows you to wait for indexes to become non-stale. |
+| **public void waitForIndexing(IDocumentStore store, String database)** | Allows you to wait for indexes to become non-stale. |
+| **public void waitForIndexing(IDocumentStore store, String database, Duration timeout)** | Allows you to wait for indexes to become non-stale. |
+| **public void waitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
+| **public void close()** | Allows you to dispose of the server. |
+
+
+
+## PreInitialize
+
+Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
+
+### Example
+
+<TabItem value="test_driver_3" label="test_driver_3">
+<CodeBlock language="java">
+{`//This allows us to modify the conventions of the store we get from 'getDocumentStore'
+@Override
+protected void customizeStore(DocumentStore store) \{
+    store.getConventions().setMaxNumberOfRequestsPerSession(50);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## UnitTest
+Finally we can write down a simple test, note that I'm using JUnit for my test framework in the below example.
+Also note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx##complete-example)
+
+### Example
+
+<TabItem value="test_driver_4" label="test_driver_4">
+<CodeBlock language="java">
+{`@Test
+public void myFirstTest() throws Exception \{
+    try (IDocumentStore store = getDocumentStore()) \{
+        store.executeIndex(new TestDocumentByName());
+
+        try (IDocumentSession session = store.openSession()) \{
+            TestDocument document1 = new TestDocument();
+            document1.setName("Hello world!");
+
+            TestDocument document2 = new TestDocument();
+            document2.setName("Goodbye...");
+
+            session.store(document1);
+            session.store(document2);
+            session.saveChanges();
+        \}
+
+        waitForIndexing(store);  //If we want to query documents sometime we need to wait for the indexes to catch up
+        waitForUserToContinueTheTest(store); //Sometimes we want to debug the test itself, this redirect us to the studio
+
+        try (IDocumentSession session = store.openSession()) \{
+            List<TestDocument> query = session.query(TestDocument.class, TestDocumentByName.class)
+                .whereEquals("name", "hello")
+                .toList();
+
+            Assert.assertEquals(1, query.size());
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In the test we get an IDocumentStore to our test database, deploy an index and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify the documents and index are deployed (we can remove this line once the test is working).
+At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+
+
+
+## Complete Example
+
+<TabItem value="test_driver_1" label="test_driver_1">
+<CodeBlock language="java">
+{`public class MyRavenDBTestDriver extends RavenTestDriver \{
+    public MyRavenDBTestDriver(RavenServerLocator locator, RavenServerLocator securedLocator) \{
+        super(new MyRavenDBLocator(), null);
+    \}
+
+    //This allows us to modify the conventions of the store we get from 'getDocumentStore'
+    @Override
+    protected void customizeStore(DocumentStore store) \{
+        store.getConventions().setMaxNumberOfRequestsPerSession(50);
+    \}
+
+    @Test
+    public void myFirstTest() throws Exception \{
+        try (IDocumentStore store = getDocumentStore()) \{
+            store.executeIndex(new RavenDBTestDriver.TestDocumentByName());
+
+            try (IDocumentSession session = store.openSession()) \{
+                TestDocument document1 = new TestDocument();
+                document1.setName("Hello world!");
+
+                TestDocument document2 = new TestDocument();
+                document2.setName("Goodbye...");
+
+                session.store(document1);
+                session.store(document2);
+                session.saveChanges();
+            \}
+
+            waitForIndexing(store);  //If we want to query documents sometime we need to wait for the indexes to catch up
+            waitForUserToContinueTheTest(store); //Sometimes we want to debug the test itself, this redirect us to the studio
+
+            try (IDocumentSession session = store.openSession()) \{
+                List<RavenDBTestDriver.TestDocument> query = session
+                        .query(
+                            RavenDBTestDriver.TestDocument.class,
+                            RavenDBTestDriver.TestDocumentByName.class
+                        )
+                    .whereEquals("name", "hello")
+                    .toList();
+
+                Assert.assertEquals(1, query.size());
+            \}
+        \}
+    \}
+\}
+
+public class MyRavenDBLocator extends RavenServerLocator \{
+    @Override
+    public String getServerPath() \{
+        return "/opt/RavenDB/Server/Raven.Server";
+    \}
+
+    @Override
+    public String getCommand() \{
+        return getServerPath();
+    \}
+\}
+
+public static class TestDocumentByName extends AbstractIndexCreationTask \{
+    public TestDocumentByName() \{
+        map = "from doc in docs select new \{ doc.name \}";
+        index("name", FieldIndexing.SEARCH);
+    \}
+\}
+
+public class TestDocument \{
+    private String name;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

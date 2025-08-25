@@ -5,172 +5,24 @@ sidebar_label: ResolveConflict
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ResolveCsharp from './_resolve-csharp.mdx';
+import ResolveHttp from './_resolve-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: ResolveConflictAsync
-
-**ResolveConflictAsync** resolves the conflict according to the specified conflict resolution strategy.   
-**ResolveConflictsAsync** resolves all the conflicts according to the specified conflict resolution strategy.
-
-
-
-<TabItem value="resolve_conflict_1" label="resolve_conflict_1">
-<CodeBlock language="csharp">
-{`Task ResolveConflictAsync(string filename, ConflictResolutionStrategy strategy);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **filename** | string | The file path |
-| **strategy** | ConflictResolutionStrategy | The strategy - CurrentVersion or RemoteVersion |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task** | A task that represents the asynchronous resolve operation |
-
-
-<TabItem value="resolve_conflicts_1" label="resolve_conflicts_1">
-<CodeBlock language="csharp">
-{`Task ResolveConflictsAsync(ConflictResolutionStrategy strategy);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **strategy** | ConflictResolutionStrategy | The strategy - CurrentVersion or RemoteVersion |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task** | A task that represents the asynchronous resolve operation |
-
-## Example I
-
-If you want to keep the destination file version, you need to resolve the conflict by using a `CurrentVersion` strategy. 
-That will force the history of remote file to be incorporated into the local one, so the next attempt to synchronize the file will result in no operation, as it will appear that the file was already synchronized.
-
-<TabItem value="resolve_conflict_2" label="resolve_conflict_2">
-<CodeBlock language="csharp">
-{`await store.AsyncFilesCommands.Synchronization
-	.ResolveConflictAsync("/documents/file.bin", ConflictResolutionStrategy.CurrentVersion);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="resolve_conflicts_2" label="resolve_conflicts_2">
-<CodeBlock language="csharp">
-{`await store.AsyncFilesCommands.Synchronization
-    .ResolveConflictsAsync(ConflictResolutionStrategy.CurrentVersion);
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-The second option is to resolve the conflict in favor of the source file version. In this case, you need to set a `RemoveVersion` strategy.
-In contrast to the usage of the `CurrentVersion` strategy, the conflict will not disappear right after applying the `RemoveVersion` resolution, as the destination file system never requests any data from the source file system.
-
-This operation will simply add an appropriate metadata record to the conflicted file (`Raven-Synchronization-Conflict-Resolution`) to allow the source file system to synchronize its version in next synchronization run (periodic or triggered manually).
-
-<TabItem value="resolve_conflict_3" label="resolve_conflict_3">
-<CodeBlock language="csharp">
-{`await store.AsyncFilesCommands.Synchronization
-    .ResolveConflictAsync("/documents/file.bin", ConflictResolutionStrategy.RemoteVersion);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="resolve_conflicts_3" label="resolve_conflicts_3">
-<CodeBlock language="csharp">
-{`await store.AsyncFilesCommands.Synchronization
-    .ResolveConflictsAsync(ConflictResolutionStrategy.RemoteVersion);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ResolveCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: ResolveConflict
-
-The **PATCH** method resolves the conflict according to the specified conflict resolution strategy.
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/synchronization/ResolveConflict/\{fileName\}?strategy=\{strategy\}  \\
-	-X PATCH 
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **fileName** | Yes | The file path |
-| **strategy** | Yes | The strategy -  `1` (RemoteVersion) or `2` (CurrentVersion) |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `204` | NoContent |
-
----
-
-
-## Example I
-
-If you want to keep the destination file version, you need to resolve the conflict by using a `CurrentVersion` strategy. 
-That will force the history of remote file to be incorporated into the local one, so the next attempt to synchronize the file will result in no operation, as it will appear that the file was already synchronized.
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X PATCH http://localhost:8081/fs/SlaveNorthwindFS/synchronization/ResolveConflict/books/Inside.RavenDB.3.0.pdf?strategy=2
-< HTTP/1.1 204 NoContent
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-The second option is to resolve the conflict in favor of the source file version. In this case, you need to set a `RemoveVersion` strategy.
-In contrast to the usage of the `CurrentVersion` strategy, the conflict will not disappear right after applying the `RemoveVersion` resolution, as the destination file system never requests any data from the source file system.
-
-This operation will simply add an appropriate metadata record to the conflicted file (`Raven-Synchronization-Conflict-Resolution`) to allow the source file system to synchronize its version in next synchronization run (periodic or triggered manually).
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X PATCH http://localhost:8081/fs/SlaveNorthwindFS/synchronization/ResolveConflict/books/Inside.RavenDB.3.0.pdf?strategy=1
-< HTTP/1.1 204 NoContent
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ResolveHttp />
 </LanguageContent>
+
 
 <!---
 - [Synchronization conflicts](../../../../synchronization/conflicts)

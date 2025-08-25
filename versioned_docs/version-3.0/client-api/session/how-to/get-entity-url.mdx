@@ -5,94 +5,24 @@ sidebar_label: ...get entity url
 sidebar_position: 8
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetEntityUrlCsharp from './_get-entity-url-csharp.mdx';
+import GetEntityUrlJava from './_get-entity-url-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to get entity url?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-`GetDocumentUrl` is a method in `Advanced` session operations that returns full url for a given entity.
-
-## Syntax
-
-<TabItem value="get_entity_url_1" label="get_entity_url_1">
-<CodeBlock language="csharp">
-{`string GetDocumentUrl(object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Instance of an entity for which url will be returned. |
-
-| Return Value | |
-| ------------- | ----- |
-| string | Full url for a given `entity`. |
-
-## Example
-
-<TabItem value="get_entity_url_2" label="get_entity_url_2">
-<CodeBlock language="csharp">
-{`Employee employee = session.Load<Employee>("employees/1");
-// http://localhost:8080/databases/Northwind/docs/employees/1
-string url = session.Advanced.GetDocumentUrl(employee);
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-If the entity is transient (not attached) this method will throw `InvalidOperationException`.
-
+   <GetEntityUrlCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-`getDocumentUrl` is a method in `advanced()` session operations that returns full url for a given entity.
-
-## Syntax
-
-<TabItem value="get_entity_url_1" label="get_entity_url_1">
-<CodeBlock language="java">
-{`public String getDocumentUrl(Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | Object | Instance of an entity for which url will be returned. |
-
-| Return Value | |
-| ------------- | ----- |
-| String | Full url for a given `entity`. |
-
-## Example
-
-<TabItem value="get_entity_url_2" label="get_entity_url_2">
-<CodeBlock language="java">
-{`Employee employee = session.load(Employee.class, "employees/1");
-// http://localhost:8080/databases/Northwind/docs/employees/1
-String url = session.advanced().getDocumentUrl(employee);
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-If the entity is transient (not attached) this method will throw `IllegalStateException`.
-
+   <GetEntityUrlJava />
 </LanguageContent>
+
 
 <!---
 

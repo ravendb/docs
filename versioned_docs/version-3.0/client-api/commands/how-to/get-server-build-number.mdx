@@ -5,176 +5,29 @@ sidebar_label: ...get server build number
 sidebar_position: 11
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetServerBuildNumberCsharp from './_get-server-build-number-csharp.mdx';
+import GetServerBuildNumberJava from './_get-server-build-number-java.mdx';
+import GetServerBuildNumberHttp from './_get-server-build-number-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: How to get server build number?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To check with what version of server commands you are working use `GetBuildNumber` command from `GlobalAdmin`.
-
-## Syntax
-
-<TabItem value="build_number_1" label="build_number_1">
-<CodeBlock language="csharp">
-{`BuildNumber GetBuildNumber();
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="buildnumber" label="buildnumber">
-<CodeBlock language="csharp">
-{`public class BuildNumber
-\{
-	public string ProductVersion \{ get; set; \}
-
-	public string BuildVersion \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | BuildNumber | Information about current product (server) version and build number. |
-| ------------- | ------------- | ----- |
-| **ProductVersion** | string | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
-| **BuildVersion** | string | String indicating current build version e.g. `"3260"` |
-
-## Example
-
-<TabItem value="build_number_2" label="build_number_2">
-<CodeBlock language="csharp">
-{`BuildNumber buildNumber = store
-	.DatabaseCommands
-	.GlobalAdmin
-	.GetBuildNumber();
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-`BuildVersion` for custom builds is `"13"`
-
+   <GetServerBuildNumberCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To check with what version of server commands you are working use `getBuildNumber` command from `GlobalAdmin`.
-
-## Syntax
-
-<TabItem value="build_number_1" label="build_number_1">
-<CodeBlock language="java">
-{`BuildNumber getBuildNumber();
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="buildnumber" label="buildnumber">
-<CodeBlock language="java">
-{`public class BuildNumber \{
-  private String productVersion;
-  private String buildVersion;
-
-  public String getProductVersion() \{
-    return productVersion;
-  \}
-
-  public void setProductVersion(String productVersion) \{
-    this.productVersion = productVersion;
-  \}
-
-  public String getBuildVersion() \{
-    return buildVersion;
-  \}
-
-  public void setBuildVersion(String buildVersion) \{
-    this.buildVersion = buildVersion;
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | BuildNumber | Information about current product (server) version and build number. |
-| ------------- | ------------- | ----- |
-| **ProductVersion** | String | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
-| **BuildVersion** | String | String indicating current build version e.g. `"3260"` |
-
-## Example
-
-<TabItem value="build_number_2" label="build_number_2">
-<CodeBlock language="java">
-{`net.ravendb.abstractions.data.BuildNumber buildNumber =
-   store.getDatabaseCommands().getGlobalAdmin().getBuildNumber();
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-`BuildVersion` for custom builds is `"13"`
-
+   <GetServerBuildNumberJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-To check with what version of server you are working use `build/version` endpoint.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/build/version \\
-	-X GET 
-`}
-</CodeBlock>
-</TabItem>
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **ProductVersion** | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
-| **BuildVersion** |  String indicating current build version e.g. `"3260"` |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X GET "http://localhost:8080/databases/NorthWind/build/version" 
-< HTTP/1.1 200 OK
-\{"ProductVersion":"3.0.0 / cdc39ac / ","BuildVersion":"13"\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-## Remarks
-
-`BuildVersion` for custom builds is `"13"`
-
+   <GetServerBuildNumberHttp />
 </LanguageContent>
+
 
 <!---
 

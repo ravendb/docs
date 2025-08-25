@@ -5,88 +5,24 @@ sidebar_label: ...mark entity as readonly
 sidebar_position: 11
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import MarkEntityAsReadonlyCsharp from './_mark-entity-as-readonly-csharp.mdx';
+import MarkEntityAsReadonlyJava from './_mark-entity-as-readonly-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to mark entity as readonly?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Entities can be marked as read-only using `MarkReadOnly`. This operation is equal to adding to entity metadata a key `Raven-Read-Only` with value set to `True`.   
-
-Implications of setting entity as read-only are as follows:   
-
-- change tracking won't apply to such entity
-- forcing updates or deletes (e.g. using `Commands`) will throw `OperationVetoedException`
-
-## Syntax
-
-<TabItem value="mark_as_readonly_1" label="mark_as_readonly_1">
-<CodeBlock language="csharp">
-{`void MarkReadOnly(object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Instance of an entity that will be marked as read-only. |
-
-## Example
-
-<TabItem value="mark_as_readonly_2" label="mark_as_readonly_2">
-<CodeBlock language="csharp">
-{`Employee employee = session.Load<Employee>("employees/1");
-session.Advanced.MarkReadOnly(employee);
-session.SaveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
+   <MarkEntityAsReadonlyCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Entities can be marked as read-only using `markReadOnly`. This operation is equal to adding to entity metadata a key `Raven-Read-Only` with value set to `True`.   
-
-Implications of setting entity as read-only are as follows:   
-
-- change tracking won't apply to such entity
-- forcing updates or deletes (e.g. using `Commands`) will throw `OperationVetoedException`
-
-## Syntax
-
-<TabItem value="mark_as_readonly_1" label="mark_as_readonly_1">
-<CodeBlock language="java">
-{`public void markReadOnly(Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | Object | Instance of an entity that will be marked as read-only. |
-
-## Example
-
-<TabItem value="mark_as_readonly_2" label="mark_as_readonly_2">
-<CodeBlock language="java">
-{`Employee employee = session.load(Employee.class, "employees/1");
-session.advanced().markReadOnly(employee);
-session.saveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
+   <MarkEntityAsReadonlyJava />
 </LanguageContent>
+
 
 <!---
 

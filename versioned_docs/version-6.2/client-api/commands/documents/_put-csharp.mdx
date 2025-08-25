@@ -1,0 +1,202 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the low-level `PutDocumentCommand` to insert a new document to the database or update an existing document.
+
+* When using `PutDocumentCommand`, you must explicitly **specify the collection** to which the document will belong, 
+  otherwise, the document will be placed in the `@empty` collection. See how this is done in the example below.
+
+* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities.mdx).  
+  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities.mdx).
+
+* In this page:
+
+   * [Examples](../../../client-api/commands/documents/put.mdx#examples)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="">
+
+**Put document command - using the Store's request executor**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Put_document" label="Put_document">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    // Define the document to 'put' as a blittable object
+    var blittableDocument = context.ReadObject(new DynamicJsonValue()
+    {
+        ["@metadata"] = new DynamicJsonValue()
+        {
+            ["@collection"] = "Categories"
+        },
+        ["Name"] = "My category",
+        ["Description"] = "My category description"
+    }, "categories/999");
+    
+    // Define the PutDocumentCommand
+    var command = new PutDocumentCommand(store.Conventions,
+        "categories/999", null, blittableDocument);
+  
+    // Call 'Execute' on the Store Request Executor to send the command to the server
+    store.GetRequestExecutor().Execute(command, context);
+
+    // Access the command result
+    var putResult = command.Result;
+    var theDocumentID = putResult.Id;
+    var theDocumentCV = putResult.ChangeVector;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Put_document_async" label="Put_document_async">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    // Define the document to 'put' as a blittable object
+    var blittableDocument = context.ReadObject(new DynamicJsonValue()
+    {
+        ["@metadata"] = new DynamicJsonValue()
+        {
+            ["@collection"] = "Categories"
+        },
+        ["Name"] = "My category",
+        ["Description"] = "My category description"
+    }, "categories/999");
+    
+    // Define the PutDocumentCommand
+    var command = new PutDocumentCommand(store.Conventions,
+        "categories/999", null, blittableDocument);
+  
+    // Call 'ExecuteAsync' on the Store Request Executor to send the command to the server
+    await store.GetRequestExecutor().ExecuteAsync(command, context);
+
+    // Access the command result
+    var putResult = command.Result;
+    var theDocumentID = putResult.Id;
+    var theDocumentCV = putResult.ChangeVector;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+**Put document command - using the Session's request executor**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Put_document" label="Put_document">
+<CodeBlock language="csharp">
+{`// Create a new document entity
+var doc = new Category
+{
+    Name = "My category",
+    Description = "My category description"
+};
+
+// Specify the collection to which the document will belong
+var docInfo = new DocumentInfo
+{
+    Collection = "Categories"
+};
+
+// Convert your entity to a BlittableJsonReaderObject
+var blittableDocument = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
+
+// Define the PutDocumentCommand
+var command = new PutDocumentCommand(store.Conventions,
+    "categories/999", null, blittableDocument);
+
+// Call 'Execute' on the Session Request Executor to send the command to the server
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+
+// Access the command result
+var putResult = command.Result;
+var theDocumentID = putResult.Id;
+var theDocumentCV = putResult.ChangeVector;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Put_document_async" label="Put_document_async">
+<CodeBlock language="csharp">
+{`// Create a new document entity
+var doc = new Category
+{
+    Name = "My category",
+    Description = "My category description"
+};
+
+// Specify the collection to which the document will belong
+var docInfo = new DocumentInfo
+{
+    Collection = "Categories"
+};
+
+// Convert your entity to a BlittableJsonReaderObject
+var blittableDocument = asyncSession.Advanced.JsonConverter.ToBlittable(doc, docInfo);
+
+// Define the PutDocumentCommand
+var command = new PutDocumentCommand(store.Conventions,
+    "categories/999", null, blittableDocument);
+
+// Call 'Execute' on the Session Request Executor to send the command to the server
+await asyncSession.Advanced.RequestExecutor.ExecuteAsync(
+    command, asyncSession.Advanced.Context);
+
+// Access the command result
+var putResult = command.Result;
+var theDocumentID = putResult.Id;
+var theDocumentCV = putResult.ChangeVector;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`public PutDocumentCommand(DocumentConventions conventions,
+        string id, string changeVector, BlittableJsonReaderObject document)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type                        | Description                                                                                                                                                                                                                                          |
+|------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**           | `string`                    | Unique ID under which document will be stored.                                                                                                                                                                                                       |
+| **changeVector** | `string`                    | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
+| **document**     | `BlittableJsonReaderObject` | The document to store. Use:<br/>`session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`.                                                                                                  |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`// The \`PutDocumentCommand\` result:
+// ================================
+
+public class PutResult
+\{
+    /// The ID under which document was stored 
+    public string Id \{ get; set; \}
+
+    // The changeVector that was assigned to the stored document
+    public string ChangeVector \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -5,131 +5,29 @@ sidebar_label: Delete Attachment
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteAttachmentCsharp from './_delete-attachment-csharp.mdx';
+import DeleteAttachmentJava from './_delete-attachment-java.mdx';
+import DeleteAttachmentNodejs from './_delete-attachment-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Delete Attachment Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-This operation is used to delete an attachment from a document. 
-
-## Syntax
-
-<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
-<CodeBlock language="csharp">
-{`public DeleteAttachmentOperation(string documentId, string name, string changeVector = null)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter        |        |                                                                         |
-|------------------|--------|-------------------------------------------------------------------------|
-| **documentId**   | string | ID of a document containing an attachment                               |
-| **name**         | string | Name of an attachment                                                   |
-| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-
-## Example
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="csharp">
-{`store.Operations.Send(new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteAttachmentCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-This operation is used to delete an attachment from a document. 
-
-## Syntax
-
-<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
-<CodeBlock language="java">
-{`DeleteAttachmentOperation(String documentId, String name)
-
-DeleteAttachmentOperation(String documentId, String name, String changeVector)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter        |        |                                                                         |
-|------------------|--------|-------------------------------------------------------------------------|
-| **documentId**   | String | ID of a document containing an attachment                               |
-| **name**         | String | Name of an attachment                                                   |
-| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
-
-## Example
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="java">
-{`store.operations().send(
-    new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteAttachmentJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* Use the `DeleteAttachmentOperation` to delete an attachment from a document.
-
-* In this page:
-
-    * [Delete attachment example](../../../client-api/operations/attachments/delete-attachment.mdx#delete-attachment-example)
-    * [Syntax](../../../client-api/operations/attachments/delete-attachment.mdx#syntax)
-
-</Admonition>
-## Delete attachment example
-
-<TabItem value="delete_attachment" label="delete_attachment">
-<CodeBlock language="js">
-{`// Define the delete attachment operation
-const deleteAttachmentOp = new DeleteAttachmentOperation("employees/1-A", "photo.jpg");
-
-// Execute the operation by passing it to operations.send
-await documentStore.operations.send(deleteAttachmentOp);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`// Available overloads:
-const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name);
-const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name, changeVector);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter        | Type     | Description                                                                       |
-|------------------|----------|-----------------------------------------------------------------------------------|
-| __documentId__   | `string` | ID of document from which attachment will be removed                              |
-| __name__         | `string` | Name of attachment to delete                                                      |
-| __changeVector__ | `string` | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |
-
-
-
-
+   <DeleteAttachmentNodejs />
 </LanguageContent>
+
 
 <!---
 ### Operations

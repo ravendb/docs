@@ -1,0 +1,327 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. There are couple of ways to do this. 
+
+The following examples demonstrate how to add simple conditions to a query using all of those methods.
+
+## Where
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> results = session
+    .query(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
+    .whereEquals("FirstName", "Robert") // filtering predicates
+    .andAlso()   // by default OR is between each condition
+    .whereEquals("LastName", "King") // materialize query by sending it to server for processing
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert' and LastName = 'King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - Numeric Property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class) // query 'Products/ByUnitsInStock' index
+    .whereGreaterThan("UnitsInStock", 50) // filtering predicates
+    .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "        UnitsInStock = product.UnitsInStock" +
+            "    })";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock'
+where UnitsInStock > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - Nested Property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`// return all orders that were shipped to 'Albuquerque'
+List<Order> results = session
+    .query(Order.class)
+    .whereEquals("ShipTo_city", "Albuquerque")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where ShipTo.City = 'Albuquerque'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Order> results = session
+    .query(Order.class, Order_ByOrderLinesCount.class) // query 'Order/ByOrderLinesCount' index
+    .whereGreaterThan("Lines_count", 50) // filtering predicates
+    .toList();   // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class Order_ByOrderLinesCount extends AbstractIndexCreationTask {
+    public Order_ByOrderLinesCount() {
+        map = "docs.Orders.Select(order => new {" +
+            "    Lines_count = order.Lines.Count" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Order/ByOrderLinesCount'
+where Lines.Count > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + Any
+
+`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on values from this collection. For example, let's retrieve all orders that contain an `OrderLine` with a given product.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`session
+    .query(Order.class, Order_ByOrderLines_ProductName.class) // query 'Order/ByOrderLines/ProductName' index
+    .whereEquals("Lines_productName", "Teatime Chocolate Biscuits") // filtering predicates
+    .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class Order_ByOrderLines_ProductName extends AbstractIndexCreationTask {
+    public Order_ByOrderLines_ProductName() {
+        map = "docs.Orders.Select(order => new {" +
+            "    Lines_productName = order.Lines.Select(x => x.ProductName)" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Order/ByOrderLinesCount'
+where Lines_ProductName = 'Teatime Chocolate Biscuits'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + In
+
+When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> results = session
+    .query(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
+    .whereIn("FirstName", Arrays.asList("Robert", "Nancy")) // filtering predicates
+    .toList();// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName IN ('Robert', 'Nancy')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + ContainsAny
+
+To check if enumeration contains **any** of the values from a specified collection, you can use the `containsAny` method.
+
+Let's assume that we want to return all `BlogPosts` that contain any of the specified `tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<BlogPost> results = session
+    .query(BlogPost.class, BlogPosts_ByTags.class)  // query 'BlogPosts/ByTags' index
+    .containsAny("tags", Arrays.asList("Development", "Research")) // filtering predicates
+    .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class BlogPosts_ByTags extends AbstractIndexCreationTask {
+    public BlogPosts_ByTags() {
+        map = "docs.BlogPosts.Select(post => new {" +
+            "    tags = post.tags" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + ContainsAll
+
+To check if an enumeration contains **all** of the values from a specified collection, you can use the `containsAll` method.
+
+Let's assume that we want to return all the `BlogPosts` that contain all of the specified `tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<BlogPost> results = session
+    .query(BlogPost.class, BlogPosts_ByTags.class) // query 'BlogPosts/ByTags' index
+    .containsAll("tags", Arrays.asList("Development", "Research")) // filtering predicates
+    .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public class BlogPosts_ByTags extends AbstractIndexCreationTask {
+    public BlogPosts_ByTags() {
+        map = "docs.BlogPosts.Select(post => new {" +
+            "    tags = post.tags" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags ALL IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`// return all products which name starts with 'ch'
+List<Product> results = session
+    .query(Product.class)
+    .whereStartsWith("Name", "ch")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where startsWith(Name, 'ch')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - EndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`// return all products which name ends with 'ra'
+List<Product> results = session
+    .query(Product.class)
+    .whereEndsWith("Name", "ra")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where endsWith(Name, 'ra')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="">
+Underneath, `Query` is converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**.
+</Admonition>
+
+

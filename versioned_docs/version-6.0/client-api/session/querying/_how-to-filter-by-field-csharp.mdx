@@ -1,0 +1,121 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To query for documents that contain a particular field,  
+  use extension method `WhereExists()` which is accessible from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
+
+* A document that doesn't contain the specified field will be excluded from the query results.
+
+* In this page:  
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
+
+</Admonition>
+## Filter by field name 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Only documents that contain field 'FirstName' will be returned
+
+List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereExists("FirstName")
+     // Or use lambda expression: .WhereExists(x => x.FirstName)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Only documents that contain field 'FirstName' will be returned
+
+List<Employee> results = await asyncSession
+    .Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereExists("FirstName")
+     // Or use lambda expression: .WhereExists(x => x.FirstName)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain field 'FirstName' will be returned
+
+from Employees
+where exists("FirstName")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by field path 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Only documents that contain the 'Latitude' property in the specified path will be returned
+
+List<Employee> results = session
+    .Advanced
+    .DocumentQuery<Employee>()
+    .WhereExists("Address.Location.Latitude")
+     // Or use lambda expression: .WhereExists(x => x.Address.Location.Latitude)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Only documents that contain the 'Latitude' property in the specified path will be returned
+
+List<Employee> results = await asyncSession
+    .Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereExists("Address.Location.Latitude")
+     // Or use lambda expression: .WhereExists(x => x.Address.Location.Latitude)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain the 'Latitude' property in the specified path will be returned
+
+from Employees
+where exists("Address.Location.Latitude")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> WhereExists(string fieldName);
+
+IDocumentQuery<T> WhereExists<TValue>(Expression<Func<T, TValue>> propertySelector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters           | Type                         | Description                                                           |
+|----------------------|------------------------------|-----------------------------------------------------------------------|
+| **fieldName**        | `string`                     | The name / path of the document field to filter by                    |
+| **propertySelector** | `Expression<Func<T,TValue>>` | Lambda expression with name / path of the document field to filter by |
+
+
+
+

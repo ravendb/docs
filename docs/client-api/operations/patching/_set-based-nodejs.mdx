@@ -1,0 +1,402 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Set-based patch operations allow you to apply changes to a set of documents that match specific criteria instead of separately targeting each document.
+
+* To perform patch operations on a single document see [Single Document Patch Operations](../../../client-api/operations/patching/single-document.mdx).  
+  Set-based patching can also be done from the [Studio](../../../studio/database/documents/patch-view.mdx).
+
+* In this page: 
+  * [Overview](../../../client-api/operations/patching/set-based.mdx#overview)
+      * [Defining set-based patching](../../../client-api/operations/patching/set-based.mdx#defining-set-based-patching)
+      * [Important characteristics](../../../client-api/operations/patching/set-based.mdx#important-characteristics)
+  * [Examples](../../../client-api/operations/patching/set-based.mdx#examples)
+      * [Update by collection query](../../../client-api/operations/patching/set-based.mdx#update-by-collection-query)
+      * [Update by collection query - access metadata](../../../client-api/operations/patching/set-based.mdx#update-by-collection-query---access-metadata)
+      * [Update by dynamic query](../../../client-api/operations/patching/set-based.mdx#update-by-dynamic-query)
+      * [Update by static index query](../../../client-api/operations/patching/set-based.mdx#update-by-static-index-query)
+      * [Update all documents](../../../client-api/operations/patching/set-based.mdx#update-all-documents)
+      * [Update by document ID](../../../client-api/operations/patching/set-based.mdx#update-by-document-id)
+      * [Update by document ID using parameters](../../../client-api/operations/patching/set-based.mdx#update-by-document-id-using-parameters)
+      * [Allow updating stale results](../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results)
+  * [Syntax](../../../client-api/operations/patching/set-based.mdx#syntax)  
+      * [Send syntax](../../../client-api/operations/patching/set-based.mdx#send-syntax)  
+      * [PatchByQueryOperation syntax](../../../client-api/operations/patching/set-based.mdx#syntax)  
+
+</Admonition>
+## Overview
+
+<Admonition type="note" title="">
+
+<a id="defining-set-based-patching"/> __Defining set-based patching__:  
+  * In other databases, a simple SQL query that updates a set of documents can look like this:  
+    `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`  
+
+  * To achieve that in RavenDB, define the following two components within a `PatchByQueryOperation`:  
+  
+      1. __The query__:  
+         An [RQL](../../../client-api/session/querying/what-is-rql.mdx) query that defines the set of documents to update.  
+         Use the exact same syntax as you would when querying the database/indexes for usual data retrieval.  
+    
+      2. __The update__:  
+         A JavaScript clause that defines the updates to perform on the documents resulting from the query.  
+
+  * When sending the `PatchByQueryOperation` to the server, the server will run the query and perform the requested update on the query results.
+  
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`// A "query & update" sample
+// Update the set of documents from the Orders collection that match the query criteria:
+// =====================================================================================
+
+// The RQL part:
+from Orders where Freight < 10
+
+// The UPDATE part:
+update  \{
+    this.Freight += 10;
+\} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="important-characteristics"/> __Important characteristics__:
+* __Transactional batches__:  
+  The patching of documents matching a specified query is run in batches of size 1024.  
+  Each batch is handled in a separate write transaction.
+
+* __Dynamic behavior__:  
+  During the patching process, documents that are added/modified after the patching operation has started  
+  may also be patched if they match the query criteria.
+
+* __Concurrency__:  
+  RavenDB doesn't perform concurrency checks during the patching process so it can happen that a document  
+  has been modified or deleted while patching is in progress.
+
+* __Patching stale indexes__:  
+  By default, set-based patch operations will only succeed if the index is Not [stale](../../../indexes/stale-indexes.mdx).  
+  For indexes that are frequently updated, you can explicitly allow patching on stale results if needed.  
+  An example can be seen in the [Allow updating stale results](../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results) example.
+
+* __Manage lengthy patch operations__:  
+  The set-based patch operation (`PatchByQueryOperation`) runs in the server background may take a long time to complete.  
+  Executing the operation via the `Send` method return an object that can be __awaited for completion__ or __aborted__ (killed). 
+  Learn more about this and see dedicated examples in [Manage length operations](../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+
+</Admonition>
+
+
+
+## Examples
+
+<Admonition type="note" title="">
+
+<a id="update-by-collection-query"/> __Update by collection query__:
+<TabItem value="update_whole_collection" label="update_whole_collection">
+<CodeBlock language="js">
+{`// Update all documents in a collection
+// ====================================
+
+// Define the Patch by Query Operation, pass the "query & update" string:
+const patchByQueryOp = new PatchByQueryOperation(
+    \`from Orders as o
+     update
+     \{
+         // Increase the Freight in ALL documents in the Orders collection:
+         o.Freight += 10;
+     \}\`);
+
+// Execute the operation by passing it to operations.send:
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-by-collection-query---access-metadata"/> __Update by collection query - access metadata__:
+<TabItem value="update_collection_name" label="update_collection_name">
+<CodeBlock language="js">
+{`// Update the collection name for all documents in the collection
+// ==============================================================
+
+// Delete the document before recreating it with a different collection name:
+const patchByQueryOp = new PatchByQueryOperation(
+    \`from Orders as c
+     update
+     \{
+         del(id(c));
+         this["@metadata"]["@collection"] = "New_Orders";
+         put(id(c), this);
+     \}\`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-by-dynamic-query"/> __Update by dynamic query__:
+<TabItem value="update_by_dynamic_query" label="update_by_dynamic_query">
+<CodeBlock language="js">
+{`// Update all documents matching a dynamic query
+// =============================================
+
+// Update the Discount in all orders that match the dynamic query predicate:
+const patchByQueryOp = new PatchByQueryOperation(\`from Orders as o
+                                                  where o.Employee = 'employees/4-A'
+                                                  update
+                                                  \{
+                                                      o.Lines.forEach(line=> line.Discount = 0.3);
+                                                  \}\`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+
+// Note: An AUTO-INDEX will be created when the dynamic query is executed on the server.
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-by-static-index-query"/> __Update by static index query__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Update_by_static_index_query" label="Update_by_static_index_query">
+<CodeBlock language="js">
+{`// Update all documents matching a static index query
+// ==================================================
+
+// Modify the Supplier to 'suppliers/13-A' for all products that have 'suppliers/12-A': 
+const patchByQueryOp = new PatchByQueryOperation(\`from index 'Products/BySupplier' as p
+                                                  where p.Supplier = 'suppliers/12-A'
+                                                  update
+                                                  {
+                                                      p.Supplier = 'suppliers/13-A'
+                                                  }\`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_BySupplier extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Define the index-fields 
+        this.map("Products", p => ({
+            Supplier : e.Supplier
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-all-documents"/> __Update all documents__:
+<TabItem value="update_all_documents" label="update_all_documents">
+<CodeBlock language="js">
+{`// Update all documents matching an @all_docs query
+// ================================================
+
+// Patch the 'Updated' field to ALL documents (query is using the @all_docs keyword):
+const patchByQueryOp = new PatchByQueryOperation(\`from @all_docs
+                                                  update
+                                                  \{
+                                                      this.Updated = true;
+                                                  \}\`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-by-document-id"/> __Update by document ID__:
+<TabItem value="update_by_id" label="update_by_id">
+<CodeBlock language="js">
+{`// Update all documents matching a query by ID
+// ===========================================
+
+// Patch the 'Updated' field to all documents that have the specified IDs:
+const patchByQueryOp = new PatchByQueryOperation(\`from @all_docs as d
+                                                  where id() in ('orders/1-A', 'companies/1-A')
+                                                  update
+                                                  \{
+                                                      d.Updated = true;
+                                                  \}\`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="update-by-document-id-using-parameters"/> __Update by document ID using parameters__:
+<TabItem value="update_by_id_using_parameters" label="update_by_id_using_parameters">
+<CodeBlock language="js">
+{`// Update all documents matching a query by ID using query parmeters
+// =================================================================
+
+// Define an IndexQuery object:
+const indexQuery = new IndexQuery();
+
+// Define the "query & update" string
+// Patch the 'Updated' field to all documents that have the specified IDs
+// Parameter ($ids) contains the listed IDs:
+indexQuery.query = \`from @all_docs as d 
+                    where id() in ($ids)
+                    update \{
+                        d.Updated = true
+                    \}\`;
+
+// Define the parameters for the script:
+indexQuery.queryParameters = \{
+    ids: ["orders/830-A", "companies/91-A"]
+\};
+
+// Pass the indexQuery to the operation definition
+const patchByQueryOp = new PatchByQueryOperation(indexQuery);
+
+// Execute the operation
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="allow-updating-stale-results"/> __Allow updating stale results__:
+* Set `allowStale` to _true_ to allow patching of stale results.
+
+* The RQL in this example is using an auto-index.  
+  Use _allowStale_ in exactly the same way when querying a static-index.
+
+<TabItem value="update_stale_results" label="update_stale_results">
+<CodeBlock language="js">
+{`// Update documents matching a dynamic query even if auot-index is stale
+// =====================================================================
+
+// Define an IndexQuery object:
+const indexQuery = new IndexQuery();
+
+// Define the "query & update" string
+// Modify company to 'companies/13-A' for all orders that have 'companies/12-A':
+indexQuery.query = \`from Orders as o
+                    where o.Company = 'companies/12-A'
+                    update
+                    \{
+                        o.Company = 'companies/13-A'
+                    \}\`;
+
+// Define query options:
+const queryOptions = \{
+    // The query uses an auto-index (index is created if it doesn't exist yet).
+    // Allow patching on all matching documents even if the auto-index is still stale.
+    allowStale: true
+\};
+
+// Pass indexQuery & queryOptions to the operation definition
+const patchByQueryOp = new PatchByQueryOperation(indexQuery, queryOptions);
+
+// Execute the operation
+const operation = await documentStore.operations.send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Syntax
+#### Send syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`await send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                    | Description                                                         |
+|---------------|-------------------------|---------------------------------------------------------------------|
+| __operation__ | `PatchByQueryOperation` | The operation object describing the query and the patch to perform. |
+
+| Return value                          |                                                                                         |
+|---------------------------------------|-----------------------------------------------------------------------------------------|
+| `Promise<OperationCompletionAwaiter>` | A promise that resolves to an object that allows waiting for the operation to complete. |
+#### PatchByQueryOperation syntax
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Available overload:
+// ===================
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate);
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate, options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type         | Description                                                                                                                                                                               |
+|-------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __queryToUpdate__ | `string`     | The query & patch definition.<br/>The RQL query starts as any other RQL query with a "from" statement.<br/>It continues with an "update" clause that contains the Javascript patching code. | 
+| __queryToUpdate__ | `IndexQuery` | Object containing the query & the patching string,<br/>with the option to use parameters.                                                                                                  | 
+| __options__       | `object`     | Options for the _PatchByQueryOperation_.                                                                                                                                                  |
+
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`class IndexQuery \{
+    query;           // string
+    queryParameters; // Record<string, object>
+\}        
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// Options for 'PatchByQueryOperation'
+\{
+    // Limit the amount of base operation per second allowed.
+    maxOpsPerSecond; // number
+
+    // Indicate whether operations are allowed on stale indexes.
+    allowStale;      // boolean
+
+    // If AllowStale is set to false and index is stale, 
+    // then this is the maximum timeout to wait for index to become non-stale. 
+    // If timeout is exceeded then exception is thrown.
+    staleTimeout;    // number
+
+    // Set whether operation details about each document should be returned by server.
+    retrieveDetails; // boolean
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

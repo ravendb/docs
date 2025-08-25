@@ -1,0 +1,39 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`GetDocumentUrl` is a method in `Advanced` session operations that returns full url for a given entity.
+
+## Syntax
+
+<TabItem value="get_entity_url_1" label="get_entity_url_1">
+<CodeBlock language="csharp">
+{`string GetDocumentUrl(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity for which url will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Full url for a given `entity`. |
+
+## Example
+
+<TabItem value="get_entity_url_2" label="get_entity_url_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+// http://localhost:8080/databases/Northwind/docs/employees/1
+string url = session.Advanced.GetDocumentUrl(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+If the entity is transient (not attached) this method will throw `InvalidOperationException`.
+

@@ -1,0 +1,61 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Use **Query** method to fetch results of a selected index according to a specified query.
+
+## Syntax
+
+<TabItem value="query_database_1" label="query_database_1">
+<CodeBlock language="java">
+{`public QueryResult query(String index, IndexQuery query);
+
+public QueryResult query(String index, IndexQuery query, String[] includes);
+
+public QueryResult query(String index, IndexQuery query, String[] includes, boolean metadataOnly);
+
+public QueryResult query(String index, IndexQuery query, String[] includes, boolean metadataOnly, boolean indexEntriesOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | A name of an index to query |
+| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
+| **includes** | String[] | An array of relative paths that specify related documents ids which should be included in a query result. (default: `null`) |
+| **metadataOnly** | boolean | True if returned documents should include only metadata without a document body. (default: `false`) |
+| **indexEntriesOnly** | boolean | True if query results should contain only index entries. (default: `false`) |
+
+| Return Value | |
+| ------------- | ----- |
+| [QueryResult](../../../glossary/query-result.mdx) | Object which represents results of a specified query. |
+
+## Example I
+
+A sample **Query** method call that returns orders for a company specified:
+
+<TabItem value="query_database_2" label="query_database_2">
+<CodeBlock language="java">
+{`result = store.getDatabaseCommands().query("Orders/Totals", new IndexQuery("Company:companies/1"));
+
+List<RavenJObject> users = result.getResults(); // documents resulting from this query - orders
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+If a model of your documents is such that they reference others and you want to retrieve them together in a single query request, then you need to specify paths to properties that contain IDs of referenced documents:
+
+<TabItem value="query_database_3" label="query_database_3">
+<CodeBlock language="java">
+{`result = store.getDatabaseCommands().query("Orders/Totals", new IndexQuery(), new String[] \{ "Company", "Employee" \});
+
+Collection<RavenJObject> referencedDocs = result.getIncludes(); // included documents - companies and employees
+`}
+</CodeBlock>
+</TabItem>
+
+

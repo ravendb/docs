@@ -1,0 +1,775 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are couple of ways to perform projections in RavenDB:
+
+- projections using [Select](../../indexes/querying/projections.mdx#select)
+- using [SelectFields](../../indexes/querying/projections.mdx#selectfields)
+- using [ProjectInto](../../indexes/querying/projections.mdx#projectinto)
+- using [OfType (As)](../../indexes/querying/projections.mdx#oftype-(as))
+
+## What are Projections and When to Use Them
+
+When performing a query, we usually pull the full document back from the server.
+
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking 
+just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce 
+the amount of traffic on the network.   
+
+The savings can be very significant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company 
+is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of 
+the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to 
+rename some fields, load external documents, and perform transformations on the results. 
+
+## Projections are Applied as the Last Stage in the Query
+
+It is important to understand that projections are applied after the query has been processed, filtered, 
+sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results 
+that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately 
+after. It also means that we cannot do any filtering work as part of the projection. You can filter what will 
+be returned, but not which documents will be returned. That has already been determined earlier in the query 
+pipeline.  
+
+## The Cost of Running a Projection
+
+Another consideration to take into account is the cost of running the projection. It is possible to make the 
+projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the 
+projection, and exceeding these (quite generous) limits will fail the query.
+
+## Projections and Stored Fields
+
+If a projection function only requires fields that are stored, then the document will not be loaded from 
+storage and all data will come from the index directly. This can increase query performance (by the cost 
+of disk space used) in many situations when whole document is not needed. You can read more about field 
+storing [here](../../indexes/storing-data-in-index.mdx).
+
+## Select
+The most basic projection can be done using LINQ `Select` method:
+
+### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Select(x => new
+    {
+        FirstName = x.FirstName,
+        LastName = x.LastName
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that 
+index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index 
+entry matches our query predicate, then we will try to extract all requested fields from that particular entry. 
+If all requested fields are available in there, then we do not download it from storage. 
+The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, 
+so the documents will be fetched from storage.
+
+### Example II - Projecting Stored Fields
+
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, 
+then **the data will come from the index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstAndLastNameWithStoredFields>()
+    .Select(x => new
+    {
+        FirstName = x.FirstName,
+        LastName = x.LastName
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastNameWithStoredFields : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastNameWithStoredFields()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+        StoreAllFields(FieldStorage.Yes); // FirstName and LastName fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastNameWithStoredFields'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Order, Orders_ByShipToAndLines>()
+    .Select(x => new
+    {
+        ShipTo = x.ShipTo,
+        Products = x.Lines.Select(y => y.ProductName),
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByShipToAndLines : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByShipToAndLines()
+    {
+        Map = orders => from order in orders
+                        select new
+                        {
+                            ShipTo = order.ShipTo,
+                            Lines = order.Lines
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select 
+{ 
+    ShipTo: o.ShipTo, 
+    Products : o.Lines.map(function(y){return y.ProductName;}) 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IV - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Select(x => new
+    {
+        FullName = x.FirstName + " " + x.LastName
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e
+select 
+{ 
+    FullName : e.FirstName + " " + e.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example V - Projection with `let`
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = (from e in session.Query<Employee, Employees_ByFirstAndLastName>()
+               let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
+               select new
+               {
+                   FullName = format(e)
+               }).ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from index 'Employees/ByFirstAndLastName' as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VI - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Order, Orders_ByShipToAndLines>()
+    .Select(x => new
+    {
+        Total = x.Lines.Sum(l => l.PricePerUnit * l.Quantity)
+
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByShipToAndLines : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByShipToAndLines()
+    {
+        Map = orders => from order in orders
+                        select new
+                        {
+                            ShipTo = order.ShipTo,
+                            Lines = order.Lines
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VII - Projection With a Count() Predicate
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = (from o in session.Query<Order>()
+                let c = RavenQuery.Load<Company>(o.Company)
+    select new
+    {
+        CompanyName = c.Name,
+        ShippedAt = o.ShippedAt,
+        TotalProducts = o.Lines.Count(), //both empty syntax and with a predicate is supported
+        TotalDiscountedProducts = o.Lines.Count(x => x.Discount > 0)
+    }).ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByShippedAtAndCompany : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByShippedAtAndCompany()
+    {
+        Map = orders => from order in orders
+                        select new
+                        {
+                            ShippedAt = order.ShippedAt,
+                            Company = order.Company
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Orders as o 
+load o.Company as c 
+select 
+{ 
+    CompanyName : c.Name, 
+    ShippedAt : o.ShippedAt, 
+    TotalProducts : o.Lines.length, 
+    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+### Example VIII - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = (from o in session.Query<Order, Orders_ByShippedAtAndCompany>()
+               let c = RavenQuery.Load<Company>(o.Company)
+               select new
+               {
+                   CompanyName = c.Name,
+                   ShippedAt = o.ShippedAt
+               }).ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByShippedAtAndCompany : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByShippedAtAndCompany()
+    {
+        Map = orders => from order in orders
+                        select new
+                        {
+                            ShippedAt = order.ShippedAt,
+                            Company = order.Company
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShippedAtAndCompany' as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IX - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstNameAndBirthday>()
+    .Select(e => new
+    {
+        DayOfBirth = e.Birthday.Day,
+        MonthOfBirth = e.Birthday.Month,
+        Age = DateTime.Today.Year - e.Birthday.Year
+    }).ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstNameAndBirthday : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstNameAndBirthday()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               Birthday = employee.Birthday
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example X - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstNameAndBirthday>()
+    .Select(e => new
+    {
+        Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
+        Name = RavenQuery.Raw(e.FirstName, "substr(0,3)")
+    }).ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstNameAndBirthday : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstNameAndBirthday()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               Birthday = employee.Birthday
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example XI - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Select(e => new
+    {
+        Name = e.FirstName,
+        Metadata = RavenQuery.Metadata(e),
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## SelectFields
+
+The `SelectFields` method can only be used with the 
+[Document Query](../../client-api/session/querying/document-query/what-is-document-query.mdx). 
+It has two overloads:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// 1) By array of fields
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
+// 2) By projection type
+IDocumentQuery<TProjection> SelectFields<TProjection>();
+`}
+</CodeBlock>
+</TabItem>
+
+1) The fields of the projection are specified as a `string` array of field names. 
+It also takes the type of the projection as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var fields = new string[]{
+    "Name",
+    "Phone"
+};
+
+var results = session
+    .Advanced
+    .DocumentQuery<Company, Companies_ByContact>()
+    .SelectFields<ContactDetails>(fields)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContact : AbstractIndexCreationTask<Company>
+{
+    public Companies_ByContact()
+    {
+        Map = companies => companies
+            .Select(x => new
+            {
+                Name = x.Contact.Name,
+                x.Phone
+            });
+
+        StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="csharp">
+{`public class ContactDetails
+{
+    public string Name { get; set; }
+
+    public string Phone { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+2) The projection is defined by simply passing the projection type as the generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+.Advanced
+.DocumentQuery<Company, Companies_ByContact>()
+.SelectFields<ContactDetails>()
+.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContact : AbstractIndexCreationTask<Company>
+{
+    public Companies_ByContact()
+    {
+        Map = companies => companies
+            .Select(x => new
+            {
+                Name = x.Contact.Name,
+                x.Phone
+            });
+
+        StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="csharp">
+{`public class ContactDetails
+{
+    public string Name { get; set; }
+
+    public string Phone { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### Projection Behavior
+
+The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
+determines whether the query should retrieve indexed data or directly retrieve 
+document data, and what to do when the data can't be retrieved. Learn more 
+[here](../../client-api/session/querying/how-to-customize-query.mdx#projection).  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
+                                                      params string[] fields);
+
+IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ProjectInto
+
+This extension method retrieves all public fields and properties of the type given in generic and uses 
+them to perform projection to the requested type.
+
+You can use this method instead of using `Select` together with all fields of the projection class.
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session.Query<Company, Companies_ByContact>()
+    .ProjectInto<ContactDetails>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_2" label="RQL_2">
+<CodeBlock language="csharp">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContact : AbstractIndexCreationTask<Company>
+{
+    public Companies_ByContact()
+    {
+        Map = companies => companies
+            .Select(x => new
+            {
+                Name = x.Contact.Name,
+                x.Phone
+            });
+
+        StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+
+</Tabs>
+
+
+
+## OfType (As)
+
+`OfType` or `As` is a client-side projection. You can read more about it 
+[here](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection).
+
+
+
+## Projections and the Session
+Because you are working with projections and not directly with documents, they are _not_ tracked by the session. 
+Modifications to a projection will not modify the document when SaveChanges is called.
+
+

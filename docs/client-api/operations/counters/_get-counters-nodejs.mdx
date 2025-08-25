@@ -1,0 +1,259 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to get counters' values for a specific document.  
+It can be used to get the value of a single counter, multiple counters' values, or all counters' values.
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Get single counter
+const getCountersOp = new GetCountersOperation(docId, counter);
+const getCountersOp = new GetCountersOperation(docId, counter, returnFullResults = false);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Get multiple counters
+const getCountersOp = new GetCountersOperation(docId, counters);
+const getCountersOp = new GetCountersOperation(docId, counters, returnFullResults = false);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`// Get all counters of a document
+const getCountersOp = new GetCountersOperation(docId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type     | Description                                                                                                           |
+|-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| **docId**             | string   | The ID of the document that holds the counters                                                                        |
+| **counter**           | string   | The name of the counter to get                                                                                        |
+| **counters**          | string[] | The list of counter names to get                                                                                     |
+| **returnFullResults** | boolean  | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
+
+<Admonition type="info" title="">
+
+**The full results flag:**  
+
+If RavenDB is running in a distributed cluster, and the database resides on several nodes,  
+then a counter can have a different *local* value on each database node.  
+The total counter value is the sum of all the local values of this counter from each node.  
+To get the counter values per database node, set the `returnFullResults` flag to `true`.
+
+</Admonition>
+
+
+
+## Return Value
+
+The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// The CounterDetails object:
+// ==========================
+\{
+    // A list of "CounterDetail" objects;
+    counters;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// The CounterDetail object:
+// =========================
+\{
+    // ID of the document that holds the counter;
+    documentId; // string
+    
+    // The counter name
+    counterName; //string
+
+    // Total counter value
+    totalValue; // number
+    
+    // A dictionary of counter values per database node
+    counterValues?; 
+    
+    // Etag of counter
+    etag?; // number;
+
+    // Change vector of counter
+    changeVector?; // string
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+Assume we have a `users/1` document that holds 3 counters:  
+`Likes`, `Dislikes` and `Downloads` -  with values 10, 20 and 30 (respectively)
+### Example #1 : Get single counter
+
+<TabItem value="example_1" label="example_1">
+<CodeBlock language="js">
+{`// Define the get counters operation
+const getCountersOp = new GetCountersOperation("users/1", "Likes");
+
+// Execute the operation by passing it to operations.send
+const result = await documentStore.operations.send(getCountersOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 10,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #2 : Get multiple counters 
+
+<TabItem value="example_2" label="example_2">
+<CodeBlock language="js">
+{`const getCountersOp = new GetCountersOperation("users/1", ["Likes", "Dislikes"]);
+
+const result = await documentStore.operations.send(getCountersOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 10,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/1",
+			"counterName"   : "Dislikes",
+			"totalValue"    : 20,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #3 : Get all counters 
+
+<TabItem value="example_3" label="example_3">
+<CodeBlock language="js">
+{`const getCountersOp = new GetCountersOperation("users/1");
+
+const result = await documentStore.operations.send(getCountersOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 10,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/1",
+			"counterName"   : "Dislikes",
+			"totalValue"    : 20,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/1",
+			"counterName"   : "Downloads",
+			"totalValue"    : 30,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #4 : Include full values in the result
+
+<TabItem value="example_4" label="example_4">
+<CodeBlock language="js">
+{`const getCountersOp = new GetCountersOperation("users/1", "Likes", true);
+
+const result = await documentStore.operations.send(getCountersOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 10,
+			"counterValues" : 
+            \{
+                "A:35-UuCp420vs0u+URADcGVURA" : 5,
+                "B:83-SeCFU29daUOxfjUcAlLiJw" : 3,
+                "C:27-7i7GP8bOOkGYLNflO/rSeg" : 2,
+            \}
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

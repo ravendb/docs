@@ -1,0 +1,169 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Indexes are used by RavenDB to satisfy queries.
+
+## Query-Flow
+
+Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-rql.mdx), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+
+1. `from index | collection` 
+  - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
+
+2. `where` 
+  - When we have our index, we scan it for records that match the query predicate.
+
+3. `load`
+  - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+
+3. `select`
+  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index.mdx) by default).   
+
+  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+
+  - If a query indicates that [projection](../../indexes/querying/projections.mdx) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+
+4. `include` 
+  - If any [includes](../../client-api/how-to/handle-document-relationships.mdx#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+
+5. Return results.
+
+## Querying
+
+RavenDB Client supports querying for data. This functionality can be accessed using the session `query()` method, and is the most common and basic method for querying the database.
+
+### Example I
+
+Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store.mdx) and [opened session](../../client-api/session/opening-a-session.mdx) and specify a [collection](../../client-api/faq/what-is-a-collection.mdx) type that we want to query (in our case `Employees`) by passing `Employee` as a first parameter to the `query()` method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+const results = await session
+    .query(Employee)
+    .all(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+By specifying `Employee` class as a parameter, we are also defining a result type.
+
+### Example II - Filtering
+
+To filter the results, use the suitable method, like `whereEquals()`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where 'FirstName' is 'Robert'
+const results = await session
+    .query(Employee)
+    .whereEquals("FirstName", "Robert")
+    .all(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where firstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// load up entity from 'Employees' collection
+// with ID matching 'employees/1-A'
+const result = await session
+    .query(Employee)
+    .whereEquals("Id", "employees/1-A")
+    .firstOrNull();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where id() == 'employees/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+You can read more about filtering [here](../../indexes/querying/filtering.mdx).
+
+### Example III - Paging
+
+Paging is very simple. The methods `take()` and `skip()` can be used:
+
+<TabItem value="basics_0_2" label="basics_0_2">
+<CodeBlock language="js">
+{`// load up to 10 entities from 'Products' collection
+// where there are more than 10 units in stock
+// skip first 5 results
+const results = await session
+    .query(Product)
+    .whereGreaterThan("UnitsInStock", 10)
+    .skip(5)
+    .take(10)
+    .all(); //send query
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about paging [here](../../indexes/querying/paging.mdx).
+
+### Example IV - Querying a Specified Index
+
+In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying.mdx).
+
+In order to specify an index, we need to pass the index name as a parameter to `query()` method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where 'FirstName' is 'Robert'
+// using 'Employees/ByFirstName' index
+const results = await session
+    .query({ indexName: "Employees/ByFirstName" })
+    .whereEquals("FirstName", "Robert")
+    .all(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstName' 
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Remember" id="remember" href="#remember">
+If you are filtering by fields that are not present in an index, an exception will be thrown.
+</Admonition>
+
+### Remarks
+
+<Admonition type="info" title="">
+You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query.mdx).
+</Admonition>
+
+

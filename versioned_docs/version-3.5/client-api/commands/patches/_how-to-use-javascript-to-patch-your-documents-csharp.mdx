@@ -1,0 +1,301 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Patch** command is used to perform partial document updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities.
+
+## Syntax
+
+<TabItem value="patch_1" label="patch_1">
+<CodeBlock language="csharp">
+{`/// <summary>
+/// Sends a patch request for a specific document, ignoring document's Etag and if it is missing
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patch">The patch request to use (using JavaScript)</param>
+RavenJObject Patch(string key, ScriptedPatchRequest patch);
+
+/// <summary>
+/// Sends a patch request for a specific document, ignoring the document's Etag
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patch">The patch request to use (using JavaScript)</param>
+/// <param name="ignoreMissing">true if the patch request should ignore a missing document, false to throw DocumentDoesNotExistException</param>
+RavenJObject Patch(string key, ScriptedPatchRequest patch, bool ignoreMissing);
+
+/// <summary>
+/// Sends a patch request for a specific document
+/// </summary>
+/// <param name="key">Key of the document to patch</param>
+/// <param name="patch">The patch request to use (using JavaScript)</param>
+/// <param name="etag">Require specific Etag [null to ignore]</param>
+RavenJObject Patch(string key, ScriptedPatchRequest patch, Etag etag);
+
+/// <summary>
+/// Sends a patch request for a specific document which may or may not currently exist
+/// </summary>
+/// <param name="key">Id of the document to patch</param>
+/// <param name="patchExisting">The patch request to use (using JavaScript) to an existing document</param>
+/// <param name="patchDefault">The patch request to use (using JavaScript)  to a default document when the document is missing</param>
+/// <param name="defaultMetadata">The metadata for the default document when the document is missing</param>
+RavenJObject Patch(string key, ScriptedPatchRequest patchExisting, ScriptedPatchRequest patchDefault, RavenJObject defaultMetadata);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**
+
+<TabItem value="scriptedpatchrequest" label="scriptedpatchrequest">
+<CodeBlock language="csharp">
+{`public class ScriptedPatchRequest
+\{
+	/// <summary>
+	/// JavaScript function that will patch a document
+	/// </summary>
+	/// <value>The type.</value>
+	public string Script \{ get; set; \}
+
+	/// <summary>
+	/// Additional values that will be passed to function
+	/// </summary>
+	public Dictionary<string, object> Values \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Methods, objects and variables
+
+Before we will move to the examples, let's look at the methods, objects, and variables available:
+
+| ------ |:------:| ------ |
+| `__document_id` | variable | Id for current document |
+| `this` | object | Current document (with metadata) |
+| `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script. See `Raven/AdditionalStepsForScriptBasedOnDocumentSize` [here](../../../server/configuration/configuration-options.mdx#javascript-parser). |
+| `PutDocument(key, data, metadata)` | method | Allows document putting, returns generated key |
+| `IncreaseNumberOfAllowedStepsBy(number)` | method | Will increase the maximum allowed number of steps in script by given value. Only available if `Raven/AllowScriptsToAdjustNumberOfSteps` is set to `true`. |
+| `_` | object | [Lo-Dash 4.13.1](https://github.com/lodash/lodash/blob/4.13.1/doc/README.md) |
+| `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
+| `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
+| `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_indexofarray-value-fromindex0) |
+| `filter(...)` | Array.prototype | wrapper for [_.filter](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_filtercollection-callbackidentity-thisarg) |
+| `Map(...)` | Array.prototype | wrapper for [_.map](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_mapcollection-callbackidentity-thisarg) |
+| `Where(...)` | Array.prototype | wrapper for [_.filter](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_filtercollection-callbackidentity-thisarg) |
+| `RemoveWhere(...)` | Array.prototype | wrapper for [_.remove](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_removearray-callbackidentity-thisarg) returning Array for easier chaining |
+| `Remove(...)` | Array.prototype | wrapper for [_.pull](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_pullarray-value) returning Array for easier chaining |
+
+## Custom functions
+
+Beside built-in functions, custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions.mdx) page if you want to know how to add custom functions.
+
+## Example I
+
+<TabItem value="patch_2" label="patch_2">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+			\{
+				Script = "this.FirstName = 'Robert';"
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="patch_3" label="patch_3">
+<CodeBlock language="csharp">
+{`// trim FirstName
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = "this.FirstName = this.FirstName.trim();"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="patch_4" label="patch_4">
+<CodeBlock language="csharp">
+{`// add new property Age with value of 30
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = "this.Age = 30;"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IV
+
+<TabItem value="patch_5" label="patch_5">
+<CodeBlock language="csharp">
+{`// add new property Age with value of 30 using LoDash
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = "_.extend(this, \{ 'Age': '30'\});"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example V
+
+<TabItem value="patch_6" label="patch_6">
+<CodeBlock language="csharp">
+{`// passing data and loading different document
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"
+						var employee = LoadDocument(differentEmployeeId);
+						this.FirstName = employee.FirstName;",
+			Values = new Dictionary<string, object>
+				         \{
+					         \{ "differentEmployeeId", "employees/2" \}
+				         \}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VI
+
+<TabItem value="patch_7" label="patch_7">
+<CodeBlock language="csharp">
+{`// accessing metadata (added ClrType property with value from @metadata)
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"this.ClrType = this['@metadata']['Raven-Clr-Type'];"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VII
+
+<TabItem value="patch_8" label="patch_8">
+<CodeBlock language="csharp">
+{`// creating new document with auto-assigned key e.g. 'Comments/100'. Document key will be returned by PutDocument.
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"var commentKey = PutDocument('Comments/', \{ 'Author': this.LastName \}, \{ \});"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VIII
+
+<TabItem value="patch_9" label="patch_9">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+store
+	.DatabaseCommands
+	.Patch(
+		"blogposts/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"this.Comments.push(\{ 'Title': 'Some title', 'Content': 'Lore ipsum' \});"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IX
+
+<TabItem value="patch_1_0" label="patch_1_0">
+<CodeBlock language="csharp">
+{`// removing comments with 'Some title' as a title
+store
+	.DatabaseCommands
+	.Patch(
+		"blogposts/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"
+						this.Comments.RemoveWhere(function(comment) \{
+							return comment.Title == 'Some title';
+						\});"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example X
+
+<TabItem value="patch_1_1" label="patch_1_1">
+<CodeBlock language="csharp">
+{`// modifying each comment
+store
+	.DatabaseCommands
+	.Patch(
+		"blogposts/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"
+						this.Comments.Map(function(comment) \{
+							comment.Title = 'New title';
+							return comment;
+						\});"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example XI
+
+<TabItem value="patch_1_2" label="patch_1_2">
+<CodeBlock language="csharp">
+{`// increasing maximum number of allowed steps
+store
+	.DatabaseCommands
+	.Patch(
+		"employees/1",
+		new ScriptedPatchRequest
+		\{
+			Script = @"
+						var employee = LoadDocument(differentEmployeeId);
+						if (employee) \{
+							IncreaseNumberOfAllowedStepsBy(10);
+							this.FirstName = employee.FirstName;
+						\}",
+			Values = new Dictionary<string, object>
+				         \{
+					         \{ "differentEmployeeId", "employees/2" \}
+				         \}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+

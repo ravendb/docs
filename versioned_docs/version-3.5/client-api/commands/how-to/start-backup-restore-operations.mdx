@@ -5,257 +5,29 @@ sidebar_label: ...start backup or restore operations
 sidebar_position: 9
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StartBackupRestoreOperationsCsharp from './_start-backup-restore-operations-csharp.mdx';
+import StartBackupRestoreOperationsJava from './_start-backup-restore-operations-java.mdx';
+import StartBackupRestoreOperationsHttp from './_start-backup-restore-operations-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: How to start backup or restore operations?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To start or restore backup use `StartBackup` or `StartRestore` operations respectively.
-
-## StartBackup
-
-<TabItem value="backup_restore_1" label="backup_restore_1">
-<CodeBlock language="csharp">
-{`Operation StartBackup(
-          string backupLocation, 
-          DatabaseDocument databaseDocument, 
-          bool incremental, 
-          string databaseName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **backupLocation** | string | Path to directory where backup will be stored. |
-| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | Database configuration document that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.&lt;br /&gt;**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
-| **incremental** | bool | Indicates if backup is incremental. |
-| **databaseName** | string | Name of a database that will be backed up. |
-
-### Example
-
-<TabItem value="backup_restore_3" label="backup_restore_3">
-<CodeBlock language="csharp">
-{`store
-	.DatabaseCommands
-	.GlobalAdmin
-	.StartBackup(
-		@"C:\\temp\\backup\\Northwind\\",
-		new DatabaseDocument(),
-		incremental: false,
-		databaseName: "Northwind");
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## StartRestore
-
-<TabItem value="backup_restore_2" label="backup_restore_2">
-<CodeBlock language="csharp">
-{`Operation StartRestore(DatabaseRestoreRequest restoreRequest);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **restoreRequest** | [DatabaseRestoreRequest](../../../glossary/database-restore-request.mdx) | Restore information |
-
-## Example
-
-<TabItem value="backup_restore_4" label="backup_restore_4">
-<CodeBlock language="csharp">
-{`store
-	.DatabaseCommands
-	.GlobalAdmin
-	.StartRestore(
-		new DatabaseRestoreRequest
-			\{
-				BackupLocation = @"C:\\temp\\backup\\Northwind\\",
-				DatabaseLocation = @"~\\Databases\\NewNorthwind\\",
-				DatabaseName = "NewNorthwind"
-			\});
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartBackupRestoreOperationsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To start or restore backup use `startBackup` or `startRestore` operations respectively.
-
-## StartBackup
-
-<TabItem value="backup_restore_1" label="backup_restore_1">
-<CodeBlock language="java">
-{`public void startBackup(String backupLocation, DatabaseDocument databaseDocument, boolean incremental, String databaseName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **backupLocation** | String | Path to directory where backup will be stored. |
-| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | Database configuration document that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.&lt;br /&gt;**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
-| **incremental** | boolean | Indicates if backup is incremental. |
-| **databaseName** | String | Name of a database that will be backed up. |
-
-### Example
-
-<TabItem value="backup_restore_3" label="backup_restore_3">
-<CodeBlock language="java">
-{`store.getDatabaseCommands().getGlobalAdmin().startBackup(
-  "c:\\\\temp\\\\backup\\\\Northwind\\\\",
-  new DatabaseDocument(),
-  false,
-  "Northwind"
-  );
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## StartRestore
-
-<TabItem value="backup_restore_2" label="backup_restore_2">
-<CodeBlock language="java">
-{`public Operation startRestore(DatabaseRestoreRequest restoreRequest);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **restoreRequest** | [DatabaseRestoreRequest](../../../glossary/database-restore-request.mdx) | Restore information |
-
-## Example
-
-<TabItem value="backup_restore_4" label="backup_restore_4">
-<CodeBlock language="java">
-{`DatabaseRestoreRequest restoreRequest = new DatabaseRestoreRequest();
-restoreRequest.setBackupLocation("c:\\\\temp\\\\backup\\\\Northwind\\\\");
-restoreRequest.setDatabaseLocation("~\\\\Databases\\\\NewNorthwind\\\\");
-restoreRequest.setDatabaseName("NewNorthwind");
-Operation operation = store.getDatabaseCommands().getGlobalAdmin().startRestore(restoreRequest);
-operation.waitForCompletion();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartBackupRestoreOperationsJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-## StartBackup
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/admin/backup?incremental=\{incremental\} \\
-	-X POST 
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload | Description |
-| ------- | - | 
-| **BackupLocation** | Location of backup |
-| **DatabaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.&lt;br /&gt;**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **incremental** | No | Indicates if backup is incremental. |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `201` | OK |
-
----
-
-### Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \\
- -d "\{\\"BackupLocation\\":\\"c:\\\\temp\\\\backup\\\\Northwind\\\\\\",\\"DatabaseDocument\\":\{\\"SecuredSettings\\":\{\},\\"Settings\\":\{\},\\"Disabled\\":false,\\"Id\\":null\}\}"
-< HTTP/1.1 201 Created
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## StartRestore
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/admin/restore \\
-	-X POST
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| [DatabaseRestoreRequest](../../../glossary/database-restore-request.mdx) |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **OperationId** | Operation id |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X POST "http://localhost:8080/admin/restore" \\
- -d "\{\\"DatabaseName\\":\\"NewNorthwind\\",\\"BackupLocation\\":\\"c:\\\\temp\\\\backup\\\\Northwind\\\\\\",\\"IndexesLocation\\":null,\\"RestoreStartTimeout\\":null,\\"DatabaseLocation\\":\\"~\\\\Databases\\\\NewNorthwind\\\\\\",\\"Defrag\\":false,\\"JournalsLocation\\":null\}"
-< HTTP/1.1 200 OK
-\{"OperationId":2\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
-
+   <StartBackupRestoreOperationsHttp />
 </LanguageContent>
+
 
 <!---
 - [How to create or delete database?](../../../client-api/commands/how-to/create-delete-database)

@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `advanced.getTimeSeriesFor` to get the names of all time series for the specified entity.
+
+* In this page:   
+  * [`GetTimeSeriesFor` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#gettimeseriesfor-usage)
+  * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names.mdx#syntax)
+
+</Admonition>
+## `getTimeSeriesFor` usage
+
+**Flow**:  
+
+* Open a session.
+* Load an entity to the session either using [session.load](../../../../../client-api/session/loading-entities.mdx#load) 
+  or by querying for the document via [session.query](../../../../../client-api/session/querying/how-to-query.mdx).  
+  In both cases, the resulting entity will be tracked by the session.
+* Call `advanced.getTimeSeriesFor`, pass the tracked entity.
+
+**Note**:  
+
+* If the entity is Not tracked by the session, an `ArgumentException` exception is thrown.
+
+
+
+## Example
+
+<TabItem value="get_names" label="get_names">
+<CodeBlock language="js">
+{`// Open a session
+const session = documentStore.openSession();
+
+// Load a document entity to the session
+const user = await session.load("users/john");
+
+// Call getTimeSeriesFor, pass the entity
+const tsNames = session.advanced.getTimeSeriesFor(user);
+
+// Results will include the names of all time series associated with document 'users/john'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`getTimeSeriesFor(instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                         |
+|--------------|----------|-----------------------------------------------------|
+| **instance** | `object` | The entity whose time series names you want to get. |
+
+| Return value |                                                                                                       |
+|--------------|-------------------------------------------------------------------------------------------------------|
+| `string[]`   | A list of names of all the time series associated with the entity, sorted alphabetically by the name. |
+
+
+
+

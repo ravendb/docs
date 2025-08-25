@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: StartCompact
+
+**StartCompact** initializes the compaction of the indicated file system. This operation makes the file system offline for the time of compaction.
+
+
+
+<TabItem value="start_compact_1" label="start_compact_1">
+<CodeBlock language="csharp">
+{`Task<long> StartCompact(string filesystemName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filesystemName** | string | The name of a file system to compact |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;long&gt;** | A task that represents the asynchronous restore operation. The task result is the operation identifier. |
+
+
+## Example
+
+<TabItem value="start_compact_2" label="start_compact_2">
+<CodeBlock language="csharp">
+{`long compactOperationId = await store.AsyncFilesCommands.Admin
+									.StartCompact("NorthwindFS");
+`}
+</CodeBlock>
+</TabItem>
+
+If you need to wait until the operation finishes, you will have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
+
+<TabItem value="start_compact_3" label="start_compact_3">
+<CodeBlock language="csharp">
+{`using (var sysDbStore = new DocumentStore
+\{
+	Url = "http://localhost:8080/"
+\}.Initialize())
+\{
+	await new Operation((AsyncServerClient)sysDbStore.AsyncDatabaseCommands, compactOperationId)
+				.WaitForCompletionAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+

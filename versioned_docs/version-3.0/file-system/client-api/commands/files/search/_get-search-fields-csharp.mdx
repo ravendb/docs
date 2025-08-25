@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetSearchFieldsAsync
+
+**GetSearchFieldsAsync** is used to retrieve the list of all available field names to build a query.
+
+
+
+<TabItem value="get_search_fields_1" label="get_search_fields_1">
+<CodeBlock language="csharp">
+{`Task<string[]> GetSearchFieldsAsync(int start = 0, int pageSize = 1024);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of results that should be skipped |
+| **pageSize** | int | The maximum number of results that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;string[]&gt;** | A task that represents the asynchronous operation. The task result is the array of indexed field names. |
+
+## Example
+
+**GetSearchFieldsAsync** method returns all the indexed fields, so all the keys of built-in metadata (e.g. `Etag`), metadata provided by a user (e.g. `Owner`) and the [default indexing fields](../../../../indexing.mdx) (e.g `__key` or `__fileName`) will be included.
+
+<TabItem value="get_search_fields_2" label="get_search_fields_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.UploadAsync("intro.txt", stream, new RavenJObject() \{ \{ "Owner", "James" \} \});
+
+var terms = await store.AsyncFilesCommands.GetSearchFieldsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+

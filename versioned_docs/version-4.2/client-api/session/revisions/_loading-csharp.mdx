@@ -1,0 +1,157 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to download revisions from a database:   
+
+- **session.Advanced.Revisions.GetFor** 
+    - can be used to return all previous revisions for a specified document   
+- **session.Advanced.Revisions.GetMetadataFor**
+    - can be used to return metadata of all previous revisions for a specified document  
+- **session.Advanced.Revisions.Get**
+    - can be used to retrieve a revision(s) using a change vector(s)  
+
+## GetFor
+
+### Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`List<T> GetFor<T>(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | document ID for which the revisions will be returned for |
+| **start** | int | used for paging |
+| **pageSize** | int | used for paging |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<Order> orderRevisions = session
+    .Advanced
+    .Revisions
+    .GetFor<Order>(
+        id: "orders/1-A",
+        start: 0,
+        pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<Order> orderRevisions = await asyncSession
+    .Advanced
+    .Revisions
+    .GetForAsync<Order>(
+        id: "orders/1-A",
+        start: 0,
+        pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## GetMetadataFor
+
+### Syntax
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> GetMetadataFor(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | document ID for which the revisions will be returned for |
+| **start** | int | used for paging |
+| **pageSize** | int | used for paging |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> orderRevisionsMetadata =
+    session
+        .Advanced
+        .Revisions
+        .GetMetadataFor(
+            id: "orders/1-A",
+            start: 0,
+            pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> orderRevisionsMetadata =
+    await asyncSession
+        .Advanced
+        .Revisions
+        .GetMetadataForAsync(
+            id: "orders/1-A",
+            start: 0,
+            pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get
+
+### Syntax
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`T Get<T>(string changeVector);
+
+Dictionary<string, T> Get<T>(IEnumerable<string> changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **changeVector** or **changeVectors**| string or `IEnumerable<string>` | one or many revision change vectors |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Order orderRevision =
+    session
+        .Advanced
+        .Revisions
+        .Get<Order>(orderRevisionChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Order orderRevision =
+    await asyncSession
+        .Advanced
+        .Revisions
+        .GetAsync<Order>(orderRevisionChangeVector);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

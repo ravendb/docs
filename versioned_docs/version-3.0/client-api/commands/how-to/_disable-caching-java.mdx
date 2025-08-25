@@ -1,0 +1,56 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To disable caching in Commands use `disableAllCaching` method.
+
+## Syntax
+
+<TabItem value="disable_caching_1" label="disable_caching_1">
+<CodeBlock language="java">
+{`public AutoCloseable disableAllCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| AutoCloseable | Method that will re-enable caching when disposed. |
+
+## Example
+
+<TabItem value="disable_caching_2" label="disable_caching_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().put("employees/1", null, new RavenJObject(), new RavenJObject());
+store.getDatabaseCommands().put("employees/2", null, new RavenJObject(), new RavenJObject());
+
+store.getDatabaseCommands().get("employees/1"); // Response: '200 OK'
+assertEquals(0, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
+assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
+
+store.getDatabaseCommands().get("employees/1"); // Response: '304 Not Modified'
+assertEquals(1, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
+assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
+
+store.getDatabaseCommands().get("employees/1"); // Response: '304 Not Modified'
+assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
+assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
+
+try (AutoCloseable disableCache = store.getDatabaseCommands().disableAllCaching()) \{
+  store.getDatabaseCommands().get("employees/2"); // Response: '200 OK'
+  assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
+  assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
+  store.getDatabaseCommands().get("employees/2"); // Response: '200 OK'
+  assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
+  assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
+\}
+
+store.getDatabaseCommands().get("employees/2"); // Response: '304 Not Modified'
+assertEquals(3, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
+assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
+`}
+</CodeBlock>
+</TabItem>
+
+

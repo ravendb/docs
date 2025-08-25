@@ -1,0 +1,577 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Use the `Search()` extension method to perform a full-text search on a particular field. `Search()` accepts a string containing the 
+desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
+
+An index's terms are derived from the values of the documents' textual fields. These 
+values were converted into one or more terms depending on which 
+[Lucene analyzer](../../indexes/using-analyzers.mdx) the index used.  
+
+Here is a code sample that uses the `Search` extension to get users with the name *John* or *Steve*:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "John Steve")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Name, "John Steve")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'John Steve')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Each of the search terms (separated by space character) will be checked independently. The result documents must match one or more of the passed terms.
+
+In the same way, you can also look for users that have some hobby:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Hobbies, "looking for someone who likes sport books computers")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Hobbies, "looking for someone who likes sport books computers")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'looking for someone who likes sport books computers')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The results will include users that are interested in *sport*, *books* or *computers*.
+
+## Multiple Fields
+
+By using the `Search` extension, you are also able to look for multiple indexed fields. In order to search using both `Name` and `Hobbies` properties, you need to issue the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'Steve') or search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Boosting
+
+Indexing in RavenDB is built upon the Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+RavenDB also supports that, in order to improve your searching mechanism and provide the users with much more accurate results you can specify the boost argument. 
+
+For example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Hobbies, "I love sport", boost: 10)
+    .Search(x => x.Hobbies, "but also like reading books", boost: 5)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Hobbies, "I love sport")
+    .Boost(10)
+    .Search(x => x.Hobbies, "but also like reading books")
+    .Boost(5)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This search will promote users who do sports before book readers and they will be placed at the top of the results list.
+
+## Search Options
+
+In order to specify the logic of a search expression, specify the `options` argument of the `Search` method. It is a `SearchOptions` enum with the following values:
+
+* `Or`
+* `And`
+* `Not`
+* `Guess` (default)
+
+By default, RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise the AND semantic will be used.
+
+The following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Hobbies, "computers")
+    .Search(x => x.Name, "James")
+    .Where(x => x.Age == 20)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Hobbies, "computers")
+    .Search(x => x.Name, "James")
+    .WhereEquals(x => x.Age, 20)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will be translated into
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Hobbies, 'computers') or search(Name, 'James') and Age = 20
+`}
+</CodeBlock>
+</TabItem>
+
+You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport", options: SearchOptions.And)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Name, "Steve")
+    .AndAlso()
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will result in the following RQL query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Name, 'Steve') and search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+
+If you want to negate the term use `SearchOptions.Not`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "James", options: SearchOptions.Not)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Not
+    .Search(x => x.Name, "James")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+According to RQL syntax it will be transformed into the query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where exists(Name) and not search(Name, 'Steve')
+`}
+</CodeBlock>
+</TabItem>
+
+You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values,
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "Steve")
+    .Search(x => x.Hobbies, "sport", options: SearchOptions.Not | SearchOptions.And)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search(x => x.Name, "Steve")
+    .AndAlso()
+    .Not
+    .Search(x => x.Hobbies, "sport")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It will produce the following RQL query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Name, 'Steve') and (exists(Hobbies) and not search(Hobbies, 'sport'))
+`}
+</CodeBlock>
+</TabItem>
+
+## Search Operator
+
+The argument `@operator` determines the operator between different terms of the same search, and can be set to:
+
+* `SearchOperator.Or` (the default value)
+* `SearchOperator.And`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "John Steve", 1, SearchOptions.Guess, @operator: SearchOperator.Or)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search("Name", "John Steve", @operator: SearchOperator.Or)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'John Steve', or)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This query retrieves documents with a field `Name` that contains 'John' _or_ 'Steve' - or both.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "John Steve", 1, SearchOptions.Guess, @operator: SearchOperator.And)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search("Name", "John Steve", @operator: SearchOperator.And)
+
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'John Steve', and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This query only retrieves documents with a field `Name` that contains both 'John' _and_ 'Steve'.
+
+## Using Wildcards
+
+When the beginning or ending of a search term is unknown, wildcards can be used to add additional power to the searching feature. RavenDB supports both suffix and postfix wildcards.
+
+### Example I - Using Postfix Wildcards
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "Jo* Ad*")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search("Name", "Jo* Ad*")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'Jo* Ad*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Using Suffix and Postfix Wildcards
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, "*oh* *da*")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User>()
+    .Search("Name", "*oh* *da*")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, '*oh* *da*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+RavenDB allows you to search by using such queries, but you have to be aware that **leading wildcards drastically slow down searches**.
+
+Consider if you really need to find substrings. In most cases, looking for whole words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+</Admonition>
+
+## Static Indexes
+
+All of the previous examples demonstrated searching capabilities by executing dynamic 
+queries and were using auto indexes underneath. The same set of queries can be done when 
+static indexes are used, and also those capabilities can be customized by changing the 
+[analyzer](../using-analyzers.mdx) or setting up full text search on multiple fields.
+
+### Example I - Basics
+
+To be able to search you need to set `Indexing` to `Search` on a desired field.
+
+<TabItem value="search_20_2" label="search_20_2">
+<CodeBlock language="csharp">
+{`public class Users_ByName : AbstractIndexCreationTask<User>
+\{
+    public Users_ByName()
+    \{
+        Map = users => from user in users
+                       select new
+                       \{
+                           Name = user.Name
+                       \};
+
+        Index(x => x.Name, FieldIndexing.Search);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Query<User, Users_ByName>()
+    .Search(x => x.Name, "John")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User, Users_ByName>()
+    .Search("Name", "John")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByName'
+where search(Name, 'John')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - FullTextSearch
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var users = session
+    .Query<Users_Search.Result, Users_Search>()
+    .Search(x => x.Query, "John")
+    .As<User>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<User> users = session
+    .Advanced
+    .DocumentQuery<User, Users_Search>()
+    .Search("Query", "John")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Users_Search : AbstractIndexCreationTask<User, Users_Search.Result>
+{
+    public class Result
+    {
+        public object Query;
+    }
+
+    public Users_Search()
+    {
+        Map = users => from user in users
+                       select new Result
+                       {
+                           Query = new object[]
+                           {
+                                user.Name,
+                                user.Hobbies,
+                                user.Age
+                           }
+                       };
+
+        Index("Query", FieldIndexing.Search);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/Search'
+where search(Query, 'John')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

@@ -1,0 +1,74 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether the database contains a certain document,  
+  use the method `Exists()` from the `Advanced` session operations.  
+
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities.mdx) the document entity to the session,  
+  and the session will not track it. 
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
+</Admonition>
+## Check if document exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool exists = session.Advanced.Exists("employees/1-A");
+
+if (exists)
+{
+    // document 'employees/1-A exists
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`bool exists = await asyncSession.Advanced.ExistsAsync("employees/1-A");
+
+if (exists)
+{
+    // document 'employees/1-A exists
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool Exists(string id);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<bool> ExistsAsync(string documentId, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | The ID of the document to check |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - the document exists in the database.<br/>`false` - The document does Not exist in the database |
+
+
+
+

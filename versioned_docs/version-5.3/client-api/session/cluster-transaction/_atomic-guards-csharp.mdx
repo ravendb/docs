@@ -1,0 +1,191 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Atomic-Guards** are [compare exchange](../../../client-api/operations/compare-exchange/overview.mdx) 
+  key/value items that RavenDB creates and manages automatically to guarantee 
+  [ACID](../../../server/clustering/cluster-transactions.mdx#cluster-transaction-properties) 
+  transactions in cluster-wide sessions.  
+  Each document will be associated with its own unique Atomic-Guard item.
+
+* Atomic-Guards coordinate work between sessions that try to write on a document at the same time.  
+  Saving a document is prevented if another session has incremented the Atomic-Guard Raft index, 
+  which is triggered by changing the document.
+
+* Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
+  administer compare-exchange entries explicitly. You can still do that if you wish by 
+  [disabling](../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards) 
+  the automatic usage of atomic-guards in a session and defining and managing compare exchange 
+  key/value pairs 
+  [yourself](../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation) 
+  where needed.  
+  * **We strongly recommend not managing atomic-guards manually** unless you _truly_ know what you're doing. 
+    Doing so could cancel RavenDB's ACID transaction guarantees.  
+
+* In this page:
+  * [How Atomic Guards Work](../../../client-api/session/cluster-transaction/atomic-guards.mdx#how-atomic-guards-work)  
+  * [Atomic Guard Transaction Scope](../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-transaction-scope)  
+  * [Syntax and Usage](../../../client-api/session/cluster-transaction/atomic-guards.mdx#syntax-and-usage)  
+  * [Disabling Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards)  
+  * [When are Atomic Guards Removed](../../../client-api/session/cluster-transaction/atomic-guards.mdx#when-are-atomic-guards-removed)  
+
+</Admonition>
+## How Atomic Guards Work
+
+Atomic-Guards are created and managed by default __only when the session's transaction mode is set to [ClusterWide](../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)__.
+The Atomic-Guards are managed as follows:
+ 
+* __New document__:  
+  A new Atomic-Guard is created when successfully saving a new document.  
+  
+* __Existing document that doesn't have an Atomic-Guard__:  
+  A new Atomic-Guard is created when modifying an existing document that does not yet have an associated Atomic-Guard.
+
+* __Existing document that already has an Atomic-Guard__:  
+
+    * Whenever one session modifies a document that already has an associated Atomic-Guard,  
+      the value of its related Atomic-Guard increases.  
+      This allows RavenDB to detect that changes were made to this document.
+  
+    * If other sessions have loaded the document before the version changed,  
+      they will not be able to modify it if trying to save after the first session already saved it,  
+      and a `ConcurrencyException` will be thrown.
+
+    * If the session `SaveChanges()` fails, the entire session is rolled-back and the Atomic-Guard is not created.  
+      Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.
+
+
+
+## Atomic Guard Transaction Scope
+
+* Atomic-Guards are local to the database they were defined on.  
+
+* Since Atomic-Guards are implemented as compare-exchange items,  
+  they are Not externally replicated to another database by any ongoing replication task.  
+  Learn more in [why compare-exhange items are not replicated](../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases).
+
+
+
+## Syntax and Usage
+
+In the code sample below, an Atomic-Guard is automatically created upon the creation of a new document,  
+and then used when two sessions compete on changing the document.  
+
+<TabItem value="atomic-guards-enabled" label="atomic-guards-enabled">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenAsyncSession(new SessionOptions
+       \{
+           // Open a cluster-wide session
+           TransactionMode = TransactionMode.ClusterWide
+       \}))
+\{
+    await session.StoreAsync(new User(), "users/johndoe");
+    await session.SaveChangesAsync();
+    // An atomic-guard is now automatically created for the new document "users/johndoe".
+\}
+
+// Open two more cluster-wide sessions
+using (var session1 = store.OpenAsyncSession(
+       new SessionOptions 
+       \{TransactionMode = TransactionMode.ClusterWide\}))
+using (var session2 = store.OpenAsyncSession(
+       new SessionOptions 
+       \{TransactionMode = TransactionMode.ClusterWide\}))
+\{
+    // The two sessions will load the same document at the same time
+    var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
+    loadedUser1.Name = "jindoe";
+
+    var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
+    loadedUser2.Name = "jandoe";
+
+    // Session1 will save changes first, which triggers a change in the 
+    // version number of the associated atomic-guard.
+    await session1.SaveChangesAsync();
+
+    // session2.saveChanges() will be rejected with ConcurrencyException
+    // since session1 already changed the atomic-guard version,
+    // and session2 saveChanges uses the document version that it had when it loaded the document.
+    await session2.SaveChangesAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+After running the above example, the Atomic-Guard that was automatically created can be viewed in the Studio,  
+in the [Compare-Exchange view](../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view):
+
+![Atomic Guard](./assets/atomic-guard.png)
+
+The generated Atomic-Guard key name is composed of:
+
+  * The prefix `rvn-atomic`
+  * The ID of the document that it is associated with
+
+
+
+## Disabling Atomic Guards
+
+To **disable** the automatic creation & usage of Atomic-Guards in a session, set the session 
+`DisableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.  
+
+In the sample below, the session uses **no Atomic-Guards**.  
+<TabItem value="atomic-guards-disabled" label="atomic-guards-disabled">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenAsyncSession(new SessionOptions
+       \{
+           TransactionMode = TransactionMode.ClusterWide,
+           // Disable atomic-guards
+           DisableAtomicDocumentWritesInClusterWideTransaction = true
+       \}))
+\{
+    await session.StoreAsync(new User(), "users/johndoe");
+
+    // No atomic-guard will be created upon saveChanges
+    await session.SaveChangesAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+
+* To enable **ACIDity in cluster-wide transactions** when Atomic-Guards are disabled,  
+  you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview.mdx) 
+  the required compare exchange key/value pairs.  
+
+* Only disable and edit Atomic-Guards if you truly know what you're doing as it can negatively 
+  impact ACID transaction guarantees.  
+
+* **Do not remove or edit** Atomic-Guards manually while a session is using them.  
+  A session that is currently using these removed Atomic-Guards will not be able to save 
+  their related documents resulting in an error.  
+  * If you accidentally remove an active Atomic-Guard that is associated with an existing document, 
+    recreate or save the document again in a cluster-wide session which will re-create the Atomic-Guard.  
+</Admonition>
+
+
+
+## When are Atomic Guards Removed
+
+Atomic guards expire on the expiration of the documents they are used for and are automatically 
+removed by a RavenDB cleanup task. You do not need to handle the cleanup yourself.  
+
+<Admonition type="note" title="">
+Since different cleanup tasks handle the removal of deleted and expired documents 
+and the removal of expired Atomic-Guards, it may happen that Atomic-Guards of removed 
+documents would linger in the compare exchange entries list a short while longer before 
+they are removed.  
+
+* You do **not** need to remove such Atomic-Guards yourself, they will be removed by 
+  the cleanup task.  
+* You **can** re-create expired documents whose Atomic-Guards haven't been removed yet.  
+  RavenDB will create new Atomic-Guards for such documents, and expire the old ones.  
+</Admonition>
+
+
+
+

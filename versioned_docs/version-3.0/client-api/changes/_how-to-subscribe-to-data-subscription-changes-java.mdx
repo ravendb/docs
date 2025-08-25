@@ -1,0 +1,97 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+All subscription changes can be tracked by using `forAllDataSubscriptions` and `forDataSubscription` methods.
+
+## Syntax
+
+## ForAllDataSubscriptions
+<TabItem value="data_subscription_changes_1" label="data_subscription_changes_1">
+<CodeBlock language="java">
+{`IObservable<DataSubscriptionChangeNotification> forAllDataSubscriptions();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all data subscription changes. |
+
+
+
+## ForDataSubscription
+
+<TabItem value="data_subscription_changes_3" label="data_subscription_changes_3">
+<CodeBlock language="java">
+{`IObservable<DataSubscriptionChangeNotification> forDataSubscription(long id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | long | Id of a data subscription for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[DataSubscriptionChangeNotification](../../glossary/data-subscription-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for a specified data subscription changes. |
+
+
+
+## Example I
+
+<TabItem value="data_subscription_changes_2" label="data_subscription_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store.
+        changes()
+        .forAllDataSubscriptions()
+        .subscribe(Observers.create(new Action1<DataSubscriptionChangeNotification>() \{
+            @Override
+            public void apply(DataSubscriptionChangeNotification change) \{
+                long subscriptionId = change.getId();
+
+                switch (change.getType()) \{
+                    case SUBSCRIPTION_OPENED:
+                        // do something
+                        break;
+                    case SUBSCRIPTION_RELEASED:
+                        // do something
+                        break;
+                \}
+            \}
+        \}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="data_subscription_changes_4" label="data_subscription_changes_4">
+<CodeBlock language="java">
+{`int subscriptionId = 3;
+
+CleanCloseable subscription2 = store.
+        changes()
+        .forDataSubscription(3)
+        .subscribe(Observers.create(new Action1<DataSubscriptionChangeNotification>() \{
+            @Override
+            public void apply(DataSubscriptionChangeNotification change) \{
+                long subscriptionId = change.getId();
+
+                switch (change.getType()) \{
+                    case SUBSCRIPTION_OPENED:
+                        // do something
+                        break;
+                    case SUBSCRIPTION_RELEASED:
+                        // do something
+                        break;
+                \}
+            \}
+        \}));
+`}
+</CodeBlock>
+</TabItem>
+
+

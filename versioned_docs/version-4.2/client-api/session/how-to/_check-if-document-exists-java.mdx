@@ -1,0 +1,51 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether the database contains a certain document, use the method `exists()` from the `advanced` session operations.  
+
+* This does not [load](../../../client-api/session/loading-entities.mdx) the document from the server or cause the session to 
+track it.  
+
+* In this page:  
+  * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)  
+  * [Example](../../../client-api/session/how-to/check-if-document-exists.mdx#example)  
+</Admonition>
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="java">
+{`boolean exists(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `String` | The ID of the document you want to check the database for |
+
+| Return Value | Description |
+| - | - |
+| `boolean` | Indicates whether a document with the specified ID exists in the database |
+
+
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="java">
+{`boolean exists = session.advanced().exists("employees/1-A");
+
+if (exists) \{
+    // do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

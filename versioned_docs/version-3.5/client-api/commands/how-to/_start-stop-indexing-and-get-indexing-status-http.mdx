@@ -1,0 +1,126 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following endpoints have been created to enable user to toggle indexing and retrieve indexing status:   
+- [StartIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#startindexing)   
+- [StopIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#stopindexing)   
+- [GetIndexingStatus](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status.mdx#getindexingstatus)
+
+## StartIndexing
+
+Starts indexing, if it was previously stopped.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/admin/startIndexing? \\
+	&concurrency=\{concurrency\} \\
+	-X POST 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **concurrency** | No | if set then maximum number of parallel indexing tasks will be set to this value |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/NorthWind/admin/StartIndexing" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StopIndexing
+
+Stops indexing, if it was running.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/admin/StopIndexing \\
+	-X POST 
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/NorthWind/admin/StopIndexing" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetIndexingStatus
+
+Retrieves current status of the indexing.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET http://\{serverName\}/databases/\{databaseName\}/admin/IndexingStatus
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **IndexingStatus** | `Indexing` or `Paused` |
+
+---
+
+### Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/admin/IndexingStatus" 
+< HTTP/1.1 200 OK
+\{"IndexingStatus":"Indexing"\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

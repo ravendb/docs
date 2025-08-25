@@ -1,0 +1,32 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+ETL is processing documents from the point where the last batch finished. To start the processing from the very beginning you can reset the ETL by using **ResetEtlOperation**.
+
+## Syntax
+
+<TabItem value="reset_etl_1" label="reset_etl_1">
+<CodeBlock language="java">
+{`public ResetEtlOperation(String configurationName, String transformationName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configurationName** | String | ETL configuration name |
+| **transformationName** | String | Name of ETL transformation |
+
+## Example
+
+<TabItem value="reset_etl_2" label="reset_etl_2">
+<CodeBlock language="java">
+{`ResetEtlOperation resetEtlOperation = new ResetEtlOperation("OrdersExport", "script1");
+store.maintenance().send(resetEtlOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+

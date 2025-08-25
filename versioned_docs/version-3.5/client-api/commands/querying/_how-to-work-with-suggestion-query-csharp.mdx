@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To take advantage of a suggestion feature use the **Suggest** method from the commands.
+
+## Syntax
+
+<TabItem value="suggest_1" label="suggest_1">
+<CodeBlock language="csharp">
+{`SuggestionQueryResult Suggest(string index, SuggestionQuery suggestionQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | A name of an index to query. |
+| **suggestionQuery** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
+
+| Return Value | |
+| ------------- | ----- |
+| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing an array of all suggestions for executed query |
+
+## Example
+
+<TabItem value="suggest_2" label="suggest_2">
+<CodeBlock language="csharp">
+{`// Get suggestions for 'johne' using 'FullName' field in 'Users/ByFullName' index
+SuggestionQueryResult result = store
+	.DatabaseCommands
+	.Suggest(
+		"Users/ByFullName",
+		new SuggestionQuery
+			\{
+				Field = "FullName",
+				Term = "johne",
+				MaxSuggestions = 10
+			\});
+
+Console.WriteLine("Did you mean?");
+
+foreach (string suggestion in result.Suggestions)
+\{
+	Console.WriteLine("\\t\{0\}", suggestion);
+\}
+
+// Did you mean?
+//		john
+//		jones
+//		johnson
+`}
+</CodeBlock>
+</TabItem>
+
+

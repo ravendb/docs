@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query results can be transformed on the server-side by passing the name and parameters (if necessary) of a transformer, along with the query. The following examples will demonstrate how to do this using commands:
+
+## Example I
+
+<TabItem value="query_transformer_1" label="query_transformer_1">
+<CodeBlock language="java">
+{`// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+// and transform results using 'Order/Statistics' transformer
+IndexQuery indexQuery = new IndexQuery();
+indexQuery.setQuery("Company:companies/1");
+indexQuery.setResultsTransformer("Order/Statistics");
+QueryResult result = store.getDatabaseCommands().query("Orders/Totals", indexQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="query_transformer_2" label="query_transformer_2">
+<CodeBlock language="java">
+{`// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+// and transform results using 'Order/Statistics' transformer
+// stream the results
+Reference<QueryHeaderInformation> queryHeaderInfoRef = new Reference<QueryHeaderInformation>();
+IndexQuery indexQuery = new IndexQuery();
+indexQuery.setQuery("Company:companies/1");
+indexQuery.setResultsTransformer("Order/Statistics");
+CloseableIterator<RavenJObject> result = store.getDatabaseCommands().streamQuery("Orders/Totals", indexQuery, queryHeaderInfoRef);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="query_transformer_3" label="query_transformer_3">
+<CodeBlock language="java">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index, search only field 'Body'
+// and transform results using 'Articles/NoComments' transformer
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+moreLikeThisQuery.setResultsTransformer("Articles/NoComments");
+MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+

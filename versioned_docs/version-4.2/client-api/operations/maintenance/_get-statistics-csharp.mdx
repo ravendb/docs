@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetStatisticsOperation** will retrieve database statistics like: count of documents, indexes, attachments, and more.
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="csharp">
+{`public GetStatisticsOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `DatabaseStatistics` | Database statistics |
+
+## Example
+
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="csharp">
+{`DatabaseStatistics stats = store.Maintenance.Send(new GetStatisticsOperation());
+long countOfDocuments = stats.CountOfDocuments;
+long countOfIndexes = stats.CountOfIndexes;
+bool isStale = stats.Indexes[0].IsStale;
+`}
+</CodeBlock>
+</TabItem>
+
+

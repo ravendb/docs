@@ -1,0 +1,66 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Highlighting** can be a great feature for increasing search UX. To take leverage of it use `highlight` method which is a part of query customizations available from `customize`.
+
+## Syntax
+
+<TabItem value="highlight_1" label="highlight_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> highlight(String fieldName,
+                            int fragmentLength,
+                            int fragmentCount,
+                            Reference<Highlightings> highlightings);
+
+IDocumentQuery<T> highlight(String fieldName,
+                            int fragmentLength,
+                            int fragmentCount,
+                            HighlightingOptions options,
+                            Reference<Highlightings> highlightings);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Name of a field to highlight. |
+| **fragmentLength** | int | Maximum length of text fragments that will be returned. |
+| **fragmentCount** | int | Maximum number of fragments that will be returned. |
+| **fragmentsField** | String | Field in returned results containing highlight fragments (mutually exclusive with 'highlightings'). |
+| **highlightings** | [FieldHighlightings](../../../glossary/field-highlightings.mdx) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+| [FieldHighlightings](../../../glossary/field-highlightings.mdx) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
+
+## Example
+
+<TabItem value="highlight_2" label="highlight_2">
+<CodeBlock language="java">
+{`Reference<Highlightings> highlightingsRef = new Reference<>();
+List<SearchItem> results = session
+    .query(SearchItem.class, ContentSearchIndex.class)
+    .highlight("text", 128, 1, highlightingsRef)
+    .search("text", "raven")
+    .toList();
+
+StringBuilder builder = new StringBuilder();
+builder.append("<ul>");
+
+for (SearchItem result : results) \{
+    String[] fragments = highlightingsRef.value.getFragments(result.getId());
+    builder.append("<li>")
+        .append(fragments[0])
+        .append("</li>");
+\}
+
+builder.append("</ul>");
+String ul = builder.toString();
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,121 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions.mdx) 
+by which entities are serialized as they are sent by the client to the server.  
+
+* In this page:  
+  * [CustomizeJsonSerializer](../../client-api/configuration/serialization.mdx#customizejsonserializer)  
+  * [JsonContractResolver](../../client-api/configuration/serialization.mdx#jsoncontractresolver)  
+  * [BulkInsert.TrySerializeEntityToJsonStream](../../client-api/configuration/serialization.mdx#bulkinserttryserializeentitytojsonstream)  
+  * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../client-api/configuration/serialization.mdx#ignorebyrefmembers-and-ignoreunsafemembers)  
+
+</Admonition>
+## Serialization
+
+## CustomizeJsonSerializer
+
+* The `JsonSerializer` object is used by the client to serialize entities 
+  sent by the client to the server.  
+* Use the `CustomizeJsonSerializer ` convention to modify `JsonSerializer` 
+  by registering a serialization customization action.  
+
+<TabItem value="customize_json_serializer" label="customize_json_serializer">
+<CodeBlock language="csharp">
+{`Serialization = new NewtonsoftJsonSerializationConventions
+\{
+    CustomizeJsonSerializer = serializer => throw new CodeOmitted()
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## JsonContractResolver
+
+* The default `JsonContractResolver` convention used by RavenDB will serialize 
+  **all** properties and **all** public fields.  
+* Change this behavior by providing your own implementation of the `IContractResolver` 
+  interface.  
+
+<TabItem value="json_contract_resolver" label="json_contract_resolver">
+<CodeBlock language="csharp">
+{`Serialization = new NewtonsoftJsonSerializationConventions
+\{
+    JsonContractResolver = new CustomJsonContractResolver()
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="custom_json_contract_resolver" label="custom_json_contract_resolver">
+<CodeBlock language="csharp">
+{`public class CustomJsonContractResolver : IContractResolver
+\{
+    public JsonContract ResolveContract(Type type)
+    \{
+        throw new CodeOmitted();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* You can also customize the behavior of the **default resolver** by inheriting 
+  from `DefaultRavenContractResolver` and overriding specific methods.  
+
+<TabItem value="custom_json_contract_resolver_based_on_default" label="custom_json_contract_resolver_based_on_default">
+<CodeBlock language="csharp">
+{`public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+\{
+    public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+    \{
+    \}
+
+    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+    \{
+        throw new CodeOmitted();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## BulkInsert.TrySerializeEntityToJsonStream
+
+* Adjust [Bulk Insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) 
+  behavior by using the `TrySerializeEntityToJsonStream` convention to register a custom 
+  serialization implementation.  
+
+<TabItem value="TrySerializeEntityToJsonStream" label="TrySerializeEntityToJsonStream">
+<CodeBlock language="csharp">
+{`BulkInsert =
+\{
+    TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## IgnoreByRefMembers and IgnoreUnsafeMembers
+
+* By default, if you try to store an entity with `ref` or unsafe members, 
+  the Client will throw an exception when [`session.SaveChanges()`](../../client-api/session/saving-changes.mdx) 
+  is called.  
+* Set the `IgnoreByRefMembers` convention to `true` to simply ignore `ref` 
+  members when an attempt to store an entity with `ref` members is made.  
+  The entity will be uploaded to the server with all non-`ref` members without 
+  throwing an exception.  
+  The document structure on the server-side will not contain fields for those 
+  `ref` members.  
+* Set the `IgnoreUnsafeMembers` convention to `true` to ignore all pointer 
+  members in the same manner.  
+* `IgnoreByRefMembers` default value: `false`  
+* `IgnoreUnsafeMembers` default value: `false`  
+
+
+
+

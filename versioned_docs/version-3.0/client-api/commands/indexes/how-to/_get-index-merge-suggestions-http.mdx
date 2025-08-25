@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIndexMergeSuggestions** will retrieve all suggestions for an index merging.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/debug/suggest-index-merge \\
+	-X GET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | [IndexMergeResults](../../../../glossary/index-merge-results.mdx) |
+
+---
+
+### Example I
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases/NorthWind/debug/suggest-index-merge" 
+< HTTP/1.1 200 OK
+\{
+	"Unmergables":
+	\{
+		"Raven/DocumentsByEntityName":"Cannot merge indexes that are using a let clause",
+		"Orders/ByCompany":"Cannot merge map/reduce indexes",
+		"Product/Sales":"Cannot merge map/reduce indexes"
+	\},
+	"Suggestions":
+	[
+		\{
+			"CanMerge":["Orders/Total2s","Orders/Totals"],
+			"Collection":"Orders",
+			"MergedIndex":  \{mergedIndexDefinition\} 
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

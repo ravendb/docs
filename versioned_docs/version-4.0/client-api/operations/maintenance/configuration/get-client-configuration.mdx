@@ -5,119 +5,24 @@ sidebar_label: Get Client Configuration
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetClientConfigurationCsharp from './_get-client-configuration-csharp.mdx';
+import GetClientConfigurationJava from './_get-client-configuration-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Client Configuration
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetClientConfigurationOperation** is used to return a client configuration, which is saved on the server and overrides client behavior. 
-
-## Syntax
-
-<TabItem value="config_1_0" label="config_1_0">
-<CodeBlock language="csharp">
-{`public GetClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="config_1_1" label="config_1_1">
-<CodeBlock language="csharp">
-{`public class Result
-\{
-    public long Etag \{ get; set; \}
-
-    public ClientConfiguration Configuration \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **Etag** | string | Etag of configuration |
-| **Configuration** | `ClientConfiguration` | configuration which will be used by the client API |
-
-## Example
-
-<TabItem value="config_1_2" label="config_1_2">
-<CodeBlock language="csharp">
-{`GetClientConfigurationOperation.Result config = store.Maintenance.Send(new GetClientConfigurationOperation());
-ClientConfiguration clientConfiguration = config.Configuration;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetClientConfigurationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetClientConfigurationOperation** is used to return a client configuration, which is saved on the server and overrides client behavior. 
-
-## Syntax
-
-<TabItem value="config_1_0" label="config_1_0">
-<CodeBlock language="java">
-{`GetClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="config_1_1" label="config_1_1">
-<CodeBlock language="java">
-{`public static class Result \{
-    private long etag;
-    private ClientConfiguration configuration;
-
-    public long getEtag() \{
-        return etag;
-    \}
-
-    public void setEtag(long etag) \{
-        this.etag = etag;
-    \}
-
-    public ClientConfiguration getConfiguration() \{
-        return configuration;
-    \}
-
-    public void setConfiguration(ClientConfiguration configuration) \{
-        this.configuration = configuration;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **Etag** | String | Etag of configuration |
-| **Configuration** | `ClientConfiguration` | configuration which will be used by the client API |
-
-## Example
-
-<TabItem value="config_1_2" label="config_1_2">
-<CodeBlock language="java">
-{`GetClientConfigurationOperation.Result config
-    = store.maintenance().send(new GetClientConfigurationOperation());
-ClientConfiguration clientConfiguration = config.getConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetClientConfigurationJava />
 </LanguageContent>
+
 
 <!---
 ### Studio

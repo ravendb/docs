@@ -1,0 +1,60 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
+  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
+  <Admonition type="info" title="">
+  Calling `StartIndexingOperation` on a single index will have no effect.
+  </Admonition>
+
+* When resuming indexing from the **client**:  
+  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
+
+* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
+  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* In this page:
+  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
+  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
+
+</Admonition>
+## Resume indexing example
+
+<TabItem value="resume_indexing" label="resume_indexing">
+<CodeBlock language="python">
+{`# Define the resume indexing operation
+resume_index_op = StartIndexingOperation()
+
+# Execute the operation by passing it to maintenance.send
+store.maintenance.send(resume_index_op)
+
+# At this point:
+# you can be sure that all indexes on the preferred node are 'running'
+
+# Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+indexing_status = store.maintenance.send(GetIndexingStatusOperation())
+
+self.assertEqual(indexing_status.status, IndexRunningStatus.RUNNING)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`class StartIndexingOperation(VoidMaintenanceOperation):
+    def __init__(self): ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

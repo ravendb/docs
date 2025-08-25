@@ -1,0 +1,272 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Spatial indexes can be queried using the `spatial` method which contains a full spectrum of spatial methods. The following article will cover these methods:
+
+- [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
+- [OrderByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)
+- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistancedescending)
+
+## Spatial
+
+<TabItem value="spatial_1" label="spatial_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> spatial(String fieldName, Function<SpatialCriteriaFactory, SpatialCriteria> clause);
+
+IDocumentQuery<T> spatial(DynamicSpatialField field, Function<SpatialCriteriaFactory, SpatialCriteria> clause);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Path to spatial field in an index |
+| **field** | DynamicSpatialField  | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **clause** | Function&lt;SpatialCriteriaFactory, SpatialCriteria&gt; | Spatial criteria |
+
+### DynamicSpatialField  
+
+<TabItem value="spatial_2" label="spatial_2">
+<CodeBlock language="java">
+{`public PointField(String latitude, String longitude)
+
+public WktField(String wkt)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **latitude** or **longitude** or **wkt** | String | Path to the field in a document containing either longitude, latitude or WKT |
+
+### SpatialCriteriaFactory
+
+<TabItem value="spatial_3" label="spatial_3">
+<CodeBlock language="java">
+{`SpatialCriteria relatesToShape(String shapeWkt, SpatialRelation relation);
+
+SpatialCriteria relatesToShape(String shapeWkt, SpatialRelation relation, double distErrorPercent);
+
+SpatialCriteria intersects(String shapeWkt);
+
+SpatialCriteria intersects(String shapeWkt, double distErrorPercent) ;
+
+SpatialCriteria contains(String shapeWkt);
+
+SpatialCriteria contains(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria disjoint(String shapeWkt);
+
+SpatialCriteria disjoint(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria within(String shapeWkt);
+
+SpatialCriteria within(String shapeWkt, double distErrorPercent);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude, SpatialUnits radiusUnits);
+
+SpatialCriteria withinRadius(double radius, double latitude, double longitude, SpatialUnits radiusUnits, double distErrorPercent);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **shapeWkt** | String | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used in operation |
+| **relation** | SpatialRelation | Shape relation. Can be `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS` |
+| **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
+| **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
+| **radiusUnits** | SpatialUnits | Determines if circle should be calculated in `KILOMETERS` or `MILES` units |
+
+<Admonition type="info" title="Polygons" id="polygons" href="#polygons">
+When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
+in a counter-clockwise order:  
+
+
+
+![NoSQL DB - Query a Spatial Index](./assets/spatial_1.png)
+</Admonition>
+
+### Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.withinRadius(10, 32.1234, 23.4321))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// this equals to WithinRadius(10, 32.1234, 23.4321)
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.relatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.WITHIN)
+    )
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(32.1234 23.4321 d=10.0000)'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## OrderByDistance
+
+To sort by distance from given point use the `orderByDistance` method. The closest results will come first.
+
+<TabItem value="spatial_6" label="spatial_6">
+<CodeBlock language="java">
+{`IDocumentQuery<T> orderByDistance(DynamicSpatialField field, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistance(DynamicSpatialField field, String shapeWkt);
+
+IDocumentQuery<T> orderByDistance(String fieldName, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistance(String fieldName, String shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Path to spatial field in index |
+| **field** | DynamicSpatialField | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **shapeWkt** | String | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.withinRadius(10, 32.1234, 23.4321)
+    )
+    .orderByDistance(
+        new PointField("latitude", "longtude"),
+        32.12324, 23.4321)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## OrderByDistanceDescending
+
+To sort by distance from given point use the `OrderByDistanceDescending` method. The farthest results will come first.
+
+<TabItem value="spatial_8" label="spatial_8">
+<CodeBlock language="java">
+{`IDocumentQuery<T> orderByDistanceDescending(DynamicSpatialField field, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistanceDescending(DynamicSpatialField field, String shapeWkt);
+
+IDocumentQuery<T> orderByDistanceDescending(String fieldName, double latitude, double longitude);
+
+IDocumentQuery<T> orderByDistanceDescending(String fieldName, String shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Path to spatial field in index |
+| **field** | DynamicSpatialField | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **shapeWkt** | String | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+List<House> results = session
+    .query(House.class)
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f -> f.withinRadius(10, 32.1234, 23.4321)
+    )
+    .orderByDistanceDescending(
+        new PointField("latitude", "longtude"),
+        32.12324, 23.4321)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321)) desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Remarks
+
+<Admonition type="note" title="">
+By default, distances are measured in **kilometers**.
+</Admonition>
+
+

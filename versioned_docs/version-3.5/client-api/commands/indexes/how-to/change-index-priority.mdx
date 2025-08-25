@@ -5,121 +5,24 @@ sidebar_label: ...change index priority
 sidebar_position: 5
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ChangeIndexPriorityCsharp from './_change-index-priority-csharp.mdx';
+import ChangeIndexPriorityJava from './_change-index-priority-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: Indexes: How to change index priority?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**SetIndexPriority** method allows you to change index priority for a given index.
-
-## Syntax
-
-<TabItem value="change_index_priority_1" label="change_index_priority_1">
-<CodeBlock language="csharp">
-{`void SetIndexPriority(string name, IndexingPriority priority);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="change_index_priority_2" label="change_index_priority_2">
-<CodeBlock language="csharp">
-{`[Flags]
-private enum IndexingPriority
-\{
-	None = 0,
-	Normal = 1,
-	Disabled = 2,
-	Idle = 4,
-	Abandoned = 8,
-	Error = 16,
-	Forced = 512,
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of an index to change priority for |
-| **priority** | IndexingPriority | new index priority |
-
-## Example
-
-<TabItem value="change_index_priority_3" label="change_index_priority_3">
-<CodeBlock language="csharp">
-{`store.DatabaseCommands.SetIndexPriority("Orders/Totals", IndexingPriority.Disabled);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ChangeIndexPriorityCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**setIndexPriority** method allows you to change index priority for a given index.
-
-## Syntax
-
-<TabItem value="change_index_priority_1" label="change_index_priority_1">
-<CodeBlock language="java">
-{`public void setIndexPriority(String name, IndexingPriority priority);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="change_index_priority_2" label="change_index_priority_2">
-<CodeBlock language="java">
-{`@UseSharpEnum
-public static enum IndexingPriority \{
-  NONE(0),
-  NORMAL(1),
-  DISABLED(2),
-  IDLE(4),
-  ABANDONED(8),
-  ERROR(16),
-  FORCED(512);
-
-  private int code;
-
-  private IndexingPriority(int code) \{
-    this.code = code;
-  \}
-
-  public int getCode() \{
-    return code;
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of an index to change priority for |
-| **priority** | IndexingPriority | new index priority |
-
-## Example
-
-<TabItem value="change_index_priority_3" label="change_index_priority_3">
-<CodeBlock language="java">
-{`store.getDatabaseCommands().setIndexPriority("Orders/Totals", IndexingPriority.DISABLED);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ChangeIndexPriorityJava />
 </LanguageContent>
+
 
 <!---
 - [How to change index lock mode?](../../../../client-api/commands/indexes/how-to/change-index-lock-mode)

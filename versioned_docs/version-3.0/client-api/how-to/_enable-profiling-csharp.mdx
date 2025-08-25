@@ -1,0 +1,54 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#How to enable profiling?
+
+The document store is able to automatically gather profiling information by tracking the requests sent within a session. By default the profiling is disabled. In order to
+activate this feature you need to call:
+
+<TabItem value="initialize_profiling" label="initialize_profiling">
+<CodeBlock language="csharp">
+{`documentStore.InitializeProfiling();
+`}
+</CodeBlock>
+</TabItem>
+
+If the profiling has been initialized then you can control whether info should be grabbed by changing the value of `DisableProfiling` [convention](../configuration/conventions/misc.mdx#disableprofiling).
+
+Another profiling method used to retrieve the profiling info associated with a particular session is:
+
+<TabItem value="get_profiling_info" label="get_profiling_info">
+<CodeBlock language="csharp">
+{`ProfilingInformation profilingInformation = documentStore.GetProfilingInformationFor(id);
+`}
+</CodeBlock>
+</TabItem>
+
+where the `id` is the id of the session you want to profile. In result you will get `ProfilingInformation` object which has the following fields:
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Id** | Guid | The relavant session id |
+| **Requests** | List&lt;RequestResultArgs&gt; | The requests made by this session (url, method, status, duration etc.) |
+| **At** | DateTime | The time when the session was created |
+| **DurationMilliseconds** | double | The duration of a session |
+| **Context** | IDictionary&lt;string, string&gt; | Additional information added by extension |
+
+
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`Guid sesionId;
+using (IDocumentSession session = documentStore.OpenSession())
+\{
+	sesionId = ((DocumentSession)session).Id;
+
+	session.Load<Employee>("employees/1");
+\}
+
+ProfilingInformation sessionProfilingInfo = documentStore.GetProfilingInformationFor(sesionId);
+`}
+</CodeBlock>
+</TabItem>

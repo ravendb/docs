@@ -1,0 +1,172 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`moreLikeThis` is available through query extension methods and will return similar documents according to the provided criteria and options.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="php">
+{`/**
+ * Usage:
+ *   - moreLikeThis(MoreLikeThisBase $moreLikeThis);
+ *   - moreLikeThis(function(MoreLikeThisBuilder($builder) \{...\});
+ *
+ * @param MoreLikeThisBase|Closure|null $moreLikeThisOrBuilder
+ * @return DocumentQueryInterface
+ */
+public function moreLikeThis(null|MoreLikeThisBase|Closure $moreLikeThisOrBuilder): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **$moreLikeThisOrBuilder** | `null`<br/>`MoreLikeThisBase`<br/>`Closure` | Defines the type of MoreLikeThis that should be executed |
+
+### Builder
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="php">
+{`/**
+ * Usage:
+ *   - usingDocument();
+ *   - usingDocument(string $documentJson);
+ *   - usingDocument(function(MoreLikeThisBuilder $build) \{...\});
+ *
+ * @param string|Closure|null $documentJsonOrBuilder
+ * @return MoreLikeThisOperationsInterface
+ */
+function usingDocument(null|string|Closure $documentJsonOrBuilder): MoreLikeThisOperationsInterface;
+
+function usingDocumentWithJson(?string $documentJson): MoreLikeThisOperationsInterface; // same as calling usingDocument(string $documentJson)
+
+function usingDocumentWithBuilder(?Closure $builder): MoreLikeThisOperationsInterface; // same as calling usingDocument(function($builder) \{...\});
+
+function withOptions(MoreLikeThisOptions $options): MoreLikeThisOperationsInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **$documentJsonOrBuilder** | `null`<br/>`string`<br/>`Closure` | Builder or Inline JSON document to be used as a base for the operation |
+| **$documentJson** | ?string | Inline JSON document to be used as a base for the operation |
+| **$builder** | `?Closure` | Builder with fluent API that constructs the `MoreLikeThisOperationsInterface` instance |
+| **$options** | `MoreLikeThisOptions` | Available operation options (see below) |
+
+### Options
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="php">
+{`public const DEFAULT_MAXIMUM_NUMBER_OF_TOKENS_PARSED = 5000;
+public const DEFAULT_MINIMUM_TERM_FREQUENCY = 2;
+public const DEFAULT_MINIMUM_DOCUMENT_FREQUENCY = 5;
+public const DEFAULT_MAXIMUM_DOCUMENT_FREQUENCY = PhpClient::INT_MAX_VALUE;
+public const DEFAULT_BOOST = false;
+public const DEFAULT_BOOST_FACTOR = 1;
+public const DEFAULT_MINIMUM_WORD_LENGTH = 0;
+public const DEFAULT_MAXIMUM_WORD_LENGTH = 0;
+public const DEFAULT_MAXIMUM_QUERY_TERMS = 25;
+
+private ?int $minimumTermFrequency = null;
+private ?int $maximumQueryTerms = null;
+private ?int $maximumNumberOfTokensParsed = null;
+private ?int $minimumWordLength = null;
+private ?int $maximumWordLength = null;
+private ?int $minimumDocumentFrequency = null;
+private ?int $maximumDocumentFrequency = null;
+private ?int $maximumDocumentFrequencyPercentage = null;
+private ?bool $boost = null;
+private ?float $boostFactor = null;
+private ?string $stopWordsDocumentId = null;
+private ?array $fields = null;
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **$minimumTermFrequency** | `?int` | Ignores terms with less than this frequency in the source doc |
+| **$maximumQueryTerms** | `?int` | Returns a query with no more than this many terms |
+| **$maximumNumberOfTokensParsed** | `?int` | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
+| **$minimumWordLength** | `?int` | Ignores words less than this length or, if 0, then this has no effect |
+| **$maximumWordLength** | `?int` | Ignores words greater than this length or if 0 then this has no effect |
+| **$minimumDocumentFrequency** | `?int` | Ignores words which do not occur in at least this many documents |
+| **$maximumDocumentFrequency** | `?int` | Ignores words which occur in more than this many documents |
+| **$maximumDocumentFrequencyPercentage** | `int?` | Ignores words which occur in more than this percentage of documents |
+| **$boost** | `?bool` | Boost terms in query based on score |
+| **$boostFactor** | `?float` |  Boost factor when boosting based on score |
+| **$stopWordsDocumentId** | `?string` | Document ID containing custom stop words |
+| **$fields** | `?array` | Fields to compare |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="php">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+$options = new MoreLikeThisOptions();
+$options->setFields([ "body" ]);
+
+/** @var array<Article> $articles */
+$articles = $session
+    ->query(Article::class, Query::index("Articles/MoreLikeThis"))
+    ->moreLikeThis(function($builder) use ($options) {
+        $builder
+            ->usingDocument(function ($x) {
+                $x->whereEquals("id()", "articles/1");
+            })
+            ->withOptions($options);
+    })
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="php">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+// where article category is 'IT'
+$options = new MoreLikeThisOptions();
+$options->setFields([ "body" ]);
+/** @var array<Article> $articles */
+$articles = $session
+    ->query(Article::class, Query::index("Articles/MoreLikeThis"))
+    ->moreLikeThis(function($builder) use ($options) {
+        $builder
+            ->usingDocument(function ($x) {
+                $x->whereEquals("id()", "articles/1");
+            })
+            ->withOptions($options);
+    })
+    ->whereEquals("category", "IT")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }') and Category == 'IT'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Saving Changes
+
+Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFileDeletion` or metadata changes) will not be sent to the server until the `SaveChangesAsync` is called.
+
+
+
+<TabItem value="save_changes_1" label="save_changes_1">
+<CodeBlock language="csharp">
+{`Task SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous save operation |
+
+
+## Applying Changes
+
+The RavenFS session, in contrast to the [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx), does not send changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
+
+If the exception occurs when the file change is applied, the exception will be thrown by the `SaveChangesAsync` and any pending modifications will be canceled.
+
+## Example
+
+<TabItem value="save_changes_2" label="save_changes_2">
+<CodeBlock language="csharp">
+{`await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+

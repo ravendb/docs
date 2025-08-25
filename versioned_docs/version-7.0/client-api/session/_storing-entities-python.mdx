@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store entities inside the **session** object, use the `store` method.
+
+## Syntax
+
+Stores the entity in a session, then extracts the ID from the entity or if not available generates a new one.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="python">
+{`def store(self, entity: object, key: Optional[str] = None, change_vector: Optional[str] = None) -> None:
+    ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | `object` | Entity that will be stored |
+| **change_vector** | `str` | Entity change vector, used for concurrency checks (`None` to skip check) |
+| **key** | `str` | Entity will be stored under this ID, (`None` to generate automatically) |
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="python">
+{`session.store(Employee(first_name="John", last_name="Doe"))
+
+# send all pending operations to server, in this case only 'Put' operation
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+

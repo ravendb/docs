@@ -1,0 +1,427 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [Static](../../studio/database/indexes/indexes-overview.mdx#index-types) time series indexes can be created from your client application or from the Studio.
+
+* Indexing allows for fast retrieval of the indexed time series data when querying a time series.
+
+* In this page:  
+  * [Time series indexes vs Document indexes](../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
+      * [Map index - index all time series from single collection](../../document-extensions/timeseries/indexing.mdx#map-index---index-all-time-series-from-single-collection)
+      * [Map index - index all time series from all collections](../../document-extensions/timeseries/indexing.mdx#map-index---index-all-time-series-from-all-collections)
+      * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
+  * [Syntax](../../document-extensions/timeseries/indexing.mdx#syntax)
+
+</Admonition>
+## Time series indexes vs Document indexes
+
+#### Auto-Indexes:
+
+* Time series index:  
+  Dynamic time series indexes are Not created in response to queries.
+
+* Document index:  
+  [Auto-indexes](../../studio/database/indexes/indexes-overview.mdx#indexes-types) are created in response to dynamic queries.
+#### Data source:
+
+* Time series index:
+
+    * Time series indexes process **[segments](../../document-extensions/timeseries/design.mdx#segmentation)** that contain time series entries.  
+      The entries are indexed through the segment they are stored in.
+    * The following items can be indexed per index-entry in a time series index:
+        * Values & timestamp of a time series entry
+        * The entry tag
+        * Content from a document referenced by the tag
+        * Properties of the containing segment (see **[segment properties](../../document-extensions/timeseries/indexing.mdx#segment-properties)**)
+
+* Document index:
+
+    * The index processes fields from your JSON documents.  
+      Documents are indexed through the collection they belong to.
+#### Query results:
+
+* Time series index:  
+  When [querying](../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+
+* Document index:  
+  The resulting objects are the document entities (unless results are [projected](../../indexes/querying/projections.mdx)).
+
+
+
+## Ways to create a time series index
+
+There are two main ways to create a time series index:
+
+1. Create a class that inherits from the abstract index class [`AbstractRawJavaScriptTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing.mdx#section).
+
+2. Create a [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing.mdx#section-1) 
+   and deploy the time series index definition via [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx).
+
+
+
+## Examples of time series indexes
+
+#### Map index - index single time series from single collection:
+
+* In this index, we index data from the "StockPrices" time series entries in the "Companies" collection (`tradeVolume`, `date`).   
+
+* In addition, we index the containing document id (`documentID`), which is obtained from the segment,  
+  and some content from the document referenced by the entry's Tag (`employeeName`).
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="js">
+{`class StockPriceTimeSeriesFromCompanyCollection extends
+    AbstractRawJavaScriptTimeSeriesIndexCreationTask {
+    
+    constructor() {
+        super();
+
+        this.maps.add(\`
+            // Call timeSeries.map(), pass:
+            // * The collection to index
+            // * The time series name
+            // * The fuction that defines the index-entries
+            // ============================================
+            timeSeries.map("Companies", "StockPrices", function (segment) {
+                 
+                 // Return the index-entries:
+                 // =========================
+                 return segment.Entries.map(entry => {
+                      let employee = load(entry.Tag, "Employees");
+                 
+                     // Define the index-fields per entry:
+                     // ==================================
+                     
+                     return {
+                         // Retrieve content from the time series ENTRY:
+                         tradeVolume: entry.Values[4],
+                         date: new Date(entry.Timestamp),
+                         
+                         // Retrieve content from the SEGMENT:
+                         companyID: segment.DocumentId,
+                         
+                         // Retrieve content from the loaded DOCUMENT:
+                         employeeName: employee.FirstName + " " + employee.LastName
+                     };
+                 });
+            })
+        \`);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+<CodeBlock language="js">
+{`const timeSeriesIndexDefinition = new TimeSeriesIndexDefinition();
+
+timeSeriesIndexDefinition.name = "StockPriceTimeSeriesFromCompanyCollection";
+
+timeSeriesIndexDefinition.maps = new Set([\`
+    from segment in timeSeries.Companies.StockPrices
+    from entry in segment.Entries
+
+    let employee = LoadDocument(entry.Tag, "Employees")
+
+    select new
+    {
+        tradeVolume = entry.Values[4],
+        date = entry.Timestamp.Date,
+        companyID = segment.DocumentId,
+        employeeName = employee.FirstName + " " + employee.LastName
+    }\`
+]);
+
+// Deploy the index to the server via 'PutIndexesOperation'
+await documentStore.maintenance.send(new PutIndexesOperation(timeSeriesIndexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+* Querying this index, you can retrieve the indexed time series data while filtering by any of the index-fields.
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query_example_1" label="Query_example_1">
+<CodeBlock language="js">
+{`const results = await session
+     // Retrieve time series data for the specified company:
+     // ====================================================
+    .query({ indexName: "StockPriceTimeSeriesFromCompanyCollection" })
+    .whereEquals("companyID", "Companies/91-A")
+    .all();
+
+// Results will include data from all 'StockPrices' entries in document 'Companies/91-A'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "companyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="js">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "companyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_2" label="RQL_2">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "tradeVolume" > 150_000_000
+select distinct companyID
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+#### Map index - index all time series from single collection:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="js">
+{`class AllTimeSeriesFromCompanyCollection extends AbstractRawJavaScriptTimeSeriesIndexCreationTask {
+
+    constructor() {
+        super();
+     
+        this.maps.add(\`
+            // Call timeSeries.map(), pass:
+            // * The collection to index and the function that defines the index-entries
+            // * No time series is specified - so ALL time series from the collection will be indexed
+            // ======================================================================================
+            timeSeries.map("Companies", function (segment) {
+                 
+                 return segment.Entries.map(entry => ({
+                     value: entry.Value,
+                     date: new Date(entry.Timestamp)
+                 }));
+            })
+        \`);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Map index - index all time series from all collections:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="js">
+{`class AllTimeSeriesFromAllCollections extends AbstractRawJavaScriptTimeSeriesIndexCreationTask {
+
+    constructor() {
+        super();
+
+        this.maps.add(\`
+            // No collection and time series are specified -
+            // so ALL time series from ALL collections will be indexed
+            // =======================================================
+            timeSeries.map(function (segment) {
+                 
+                 return segment.Entries.map(entry => ({
+                     value: entry.Value,
+                     date: new Date(entry.Timestamp),
+                     documentID: segment.DocumentId,
+                 }));
+            })
+        \`);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Multi-Map index - index time series from several collections:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Multi_Map_index" label="Multi_Map_index">
+<CodeBlock language="js">
+{`class Vehicles_ByLocation  extends AbstractRawJavaScriptTimeSeriesIndexCreationTask {
+    
+    constructor() {
+        super();
+
+        // Call 'timeSeries.map()' for each collection you wish to index
+        // =============================================================
+        
+        this.maps.add(\`
+            timeSeries.map("Planes", "GPS_Coordinates", function (segment) {
+                 
+                 return segment.Entries.map(entry => ({
+                      latitude: entry.Values[0],
+                      longitude: entry.Values[1],
+                      date: new Date(entry.Timestamp),
+                      documentID: segment.DocumentId
+                 }));
+            })
+        \`);
+
+        this.maps.add(\`
+            timeSeries.map("Ships", "GPS_Coordinates", function (segment) {
+                 
+                 return segment.Entries.map(entry => ({
+                      latitude: entry.Values[0],
+                      longitude: entry.Values[1],
+                      date: new Date(entry.Timestamp),
+                      documentID: segment.DocumentId
+                 }));
+            })
+        \`);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Map-Reduce index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce_index" label="Map_Reduce_index">
+<CodeBlock language="js">
+{`class TradeVolume_PerDay_ByCountry extends AbstractRawJavaScriptTimeSeriesIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the Map part:
+        this.maps.add(\`
+            timeSeries.map("Companies", "StockPrices", function (segment) {
+                 
+                 return segment.Entries.map(entry => {
+                      let company = load(segment.DocumentId, "Companies");
+                     
+                     return {
+                         date: new Date(entry.Timestamp),
+                         country: company.Address.Country,
+                         totalTradeVolume: entry.Values[4],
+                     };
+                 });
+            })
+        \`);
+
+        // Define the Reduce part:
+        this.reduce = \`
+            groupBy(x => ({date: x.date, country: x.country}))
+                .aggregate(g => {
+                    return {
+                        date: g.key.date,
+                        country: g.key.country,
+                        totalTradeVolume: g.values.reduce((sum, x) => x.totalTradeVolume + sum, 0)
+                    };
+                })
+        \`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+### `AbstractRawJavaScriptTimeSeriesIndexCreationTask`
+ 
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// To define a raw JavaScript index extend the following class:
+// ============================================================
+abstract class AbstractRawJavaScriptTimeSeriesIndexCreationTask
+\{    
+    // The set of JavaScript map functions for this index
+    maps; // Set<string>
+
+    // The JavaScript reduce function
+    reduce; // string
+\}
+`}
+</CodeBlock>
+</TabItem>
+### `TimeSeriesIndexDefinition`
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`class TimeSeriesIndexDefinition extends IndexDefinition
+`}
+</CodeBlock>
+</TabItem>
+
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular [`IndexDefinition`](../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) class from which it inherits,
+it is recommended to use `TimeSeriesIndexDefinition` when creating a time series index definition in case additional functionality is added in future versions of RavenDB.
+### Segment properties
+
+* Segment properties include the entries data and aggregated values that RavenDB automatically updates in the segment's header.
+
+* **Unlike the C# client**, class `TimeSeriesSegment` is Not defined in the Node.js client.  
+  However, the following are the segment properties that can be indexed from your raw javascript index definition which the server recognizes:  
+  
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// The ID of the document this time series belongs to
+DocumentId; // string
+
+// The name of the time series this segment belongs to
+Name; // string
+
+// The smallest values from all entries in the segment
+// The first array item is the Min of all first values, etc.
+Min; // number[]
+
+// The largest values from all entries in the segment
+// The first array item is the Max of all first values, etc.
+Max; // number[]
+
+// The sum of all values from all entries in the segment
+// The first array item is the Sum of all first values, etc.
+Sum; // number[]
+
+// The number of entries in the segment
+Count; // number
+
+// The timestamp of the first entry in the segment
+Start; // Date
+
+// The timestamp of the last entry in the segment
+End; // Date
+
+// The segment's entries themselves
+Entries; // TimeSeriesEntry[]
+`}
+</CodeBlock>
+</TabItem>
+
+* These are the properties of a `TimeSeriesEntry` which can be indexed:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`class TimeSeriesEntry
+\{
+    timestamp; // Date
+    tag;       // string
+    values;    // number[]
+
+    // This is equivalent to values[0]
+    value;     // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

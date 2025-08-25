@@ -1,0 +1,98 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the low-level `DeleteDocumentCommand` to remove a document from the database.
+
+* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities.mdx).
+
+* In this page:
+
+    * [Examples](../../../client-api/commands/documents/delete.mdx#examples)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="">
+
+**Delete document command - using the Store's request executor**:
+<TabItem value="delete_document_1" label="delete_document_1">
+<CodeBlock language="js">
+{`// Define the Delete Command
+// Pass the document ID & whether to make a concurrency check
+const command = new DeleteDocumentCommand("employees/1-A", null);
+
+// Send the command to the server using the Store's Request Executor
+await documentStore.getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+**Delete document command - using the Session's request executor**:
+<TabItem value="delete_document_2" label="delete_document_2">
+<CodeBlock language="js">
+{`const command = new DeleteDocumentCommand("employees/1-A", null);
+
+// Send the command to the server using the Session's Request Executor
+await session.advanced.requestExecutor.execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+**Delete document command - with concurrency check**:
+<TabItem value="delete_document_3" label="delete_document_3">
+<CodeBlock language="js">
+{`// Load a document
+const employeeDocument = await session.load('employees/2-A');
+const cv = session.advanced.getChangeVectorFor(employeeDocument);
+
+// Modify the document content and save changes
+// The change-vector of the stored document will change
+employeeDocument.Title = "Some new title";
+await session.saveChanges();
+
+try  \{
+    // Try to delete the document with the previous change-vector
+    const command = new DeleteDocumentCommand("employees/2-A", cv);
+    await session.advanced.requestExecutor.execute(command);
+\}
+catch (err) \{
+    // A concurrency exception is thrown 
+    // since the change-vector of the document in the database
+    // does not match the change-vector specified in the delete command
+    assert.equal(err.name, "ConcurrencyException");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`DeleteDocumentCommand(id, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                                                                                                                                                                                             |
+|------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+
+
+
+

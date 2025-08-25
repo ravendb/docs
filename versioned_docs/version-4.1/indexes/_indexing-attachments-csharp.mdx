@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The `AttachmentsFor` method returns a list of [attachments](../client-api/session/attachments/what-are-attachments.mdx) in a given document as well as basic information like `Name` or `Size` about each of them.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AttachmentsFor" label="AttachmentsFor">
+<CodeBlock language="csharp">
+{`IEnumerable<AttachmentName> AttachmentsFor(object doc);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AttachmentName" label="AttachmentName">
+<CodeBlock language="csharp">
+{`public string Name;
+
+public string Hash;
+
+public string ContentType;
+
+public long Size;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Creating an index using `AttachmentsFor()`
+
+The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
+
+<TabItem value="index" label="index">
+<CodeBlock language="csharp">
+{`public class Employees_ByAttachmentNames : AbstractIndexCreationTask<Employee>
+\{
+    public class Result
+    \{
+        public string[] AttachmentNames \{ get; set; \}
+    \}
+
+    public Employees_ByAttachmentNames()
+    \{
+        Map = employees => from e in employees
+                           let attachments = AttachmentsFor(e)
+                           select new Result
+                           \{
+                               AttachmentNames = attachments.Select(x => x.Name).ToArray()
+                           \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Querying the index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`//return all employees that have an attachment called "cv.pdf"
+List<Employee> employees = session
+    .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
+    .Where(x => x.AttachmentNames.Contains("cv.pdf"))
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`//return all employees that have an attachment called "cv.pdf"
+List<Employee> employees = await asyncSession
+    .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
+    .Where(x => x.AttachmentNames.Contains("cv.pdf"))
+    .OfType<Employee>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`//return all employees that have an attachment called "cv.pdf"
+List<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employee, Employees_ByAttachmentNames>()
+    .ContainsAny("AttachmentNames", new[] { "cv.pdf" })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

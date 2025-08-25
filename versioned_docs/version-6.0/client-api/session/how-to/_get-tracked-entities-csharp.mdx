@@ -1,0 +1,129 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `SaveChanges()` is called.
+
+* You can use the session's advanced `GetTrackedEntities()` method  
+  to retrieve the **list of all entities tracked by the session**.
+
+* To check what is the actual type of change made to the entities, see:  
+  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes), or
+  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes).
+ 
+* In this page:
+  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx#get-tracked-entities)
+  * [Syntax](../../../client-api/session/how-to/get-tracked-entities.mdx#syntax)
+
+</Admonition>
+## Get tracked entities 
+
+**Tracking stored entities**:
+<TabItem value="get_tracked_entities_1" label="get_tracked_entities_1">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Store entities within the session:
+    Employee employee1 = new Employee \{FirstName = "John", LastName = "Doe"\};
+    Employee employee2 = new Employee \{FirstName = "David", LastName = "Brown"\};
+    Employee employee3 = new Employee \{FirstName = "Tom", LastName = "Miller"\};
+    session.Store(employee1, "employees/1-A");
+    session.Store(employee2, "employees/2-A");
+    session.Store(employee3, "employees/3-A");
+
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+
+    // The session tracks the 3 new stored entities:
+    Assert.Equal(3, trackedEntities.Keys.Count);
+    var entityInfo = trackedEntities["employees/1-A"];
+    Assert.Equal("employees/1-A", entityInfo.Id);
+    Assert.True(entityInfo.Entity is Employee);
+    
+    // Save changes:
+    session.SaveChanges();
+    
+    // The session keeps tracking the entities even after SaveChanges is called:
+    trackedEntities = session.Advanced.GetTrackedEntities();
+    Assert.Equal(3, trackedEntities.Keys.Count);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking loaded and deleted entities**:
+<TabItem value="get_tracked_entities_2" label="get_tracked_entities_2">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Load entity:
+    Employee employee1 = session.Load<Employee>("employees/1-A");
+    
+    // Delete entity:
+    session.Delete("employees/3-A");
+    
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+    
+    // The session tracks the 2 entities:
+    Assert.Equal(2, trackedEntities.Keys.Count);
+    
+    // Note the 'IsDeleted' property that is set for deleted entities:
+    var entityInfo = trackedEntities["employees/3-A"];
+    Assert.True(entityInfo.IsDeleted);
+    
+    // Save changes:
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking queried entities**:
+<TabItem value="get_tracked_entities_3" label="get_tracked_entities_3">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Query for all employees:
+    var employees = session.Query<Employee>().ToList();
+    
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+    
+    // The session tracks the entities loaded via the query:
+    Assert.Equal(2, trackedEntities.Keys.Count); 
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`IDictionary<string, EntityInfo> GetTrackedEntities();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class EntityInfo
+\{
+    public string Id \{ get; set; \}
+    public object Entity \{ get; set; \}
+    public bool IsDeleted \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

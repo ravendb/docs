@@ -1,0 +1,107 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are two methods that allow you to send a Facet query to a database:   
+- [GetFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
+- [GetMultiFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
+
+## GetFacets
+
+There are few overloads for the **GetFacets** method and the main difference between them is a source of the facets. In one facets are passed as a parameter, in the other user must provide a `key` to a `facet setup` document.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/facets/\{indexName\}? \\
+		&facetDoc=\{facetSetupDoc\} \\
+		&facetStart=\{start\} \\
+		&facetPageSize=\{pageSize\} \\
+		&facets=\{facets\}
+		[Other indexQuery parameters] \\
+	-X GET 
+ 
+curl \\
+	http://\{serverName\}/databases/\{databaseName\}/facets/\{indexName\}? \\
+		&facetStart=\{start\} \\
+		&facetPageSize=\{pageSize\} \\
+		[Other indexQuery parameters] \\
+	-X POST \\
+	-d @facets.txt
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="IndexQuery parameters" id="indexquery-parameters" href="#indexquery-parameters">
+This endpoint accepts [IndexQuery](../../../glossary/index-query.mdx) object. All possible [IndexQuery](../../../glossary/index-query.mdx) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database.mdx#indexquery-parameters)
+</Admonition>
+
+### Request
+
+| Method | Description |
+| -------| - |
+| `GET` | serialized facets length &lt; 1024 |
+| `PUT` | serialized facets length &gt; 1024 (pass facets as payload) |
+
+| Payload |
+| ------- |
+| Facets data (for `GET` only) |
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | A name of an index to query |
+| **facets** | Yes | Serialized list of [facets](../../../glossary/facet.mdx) required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | Yes | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **start** | No | number of results that should be skipped.|
+| **pageSize** | No | maximum number of results that will be retrieved. |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ----- |
+| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup](../../../glossary/facet-setup.mdx) document or passed in parameters. |
+
+
+
+## GetMultiFacets
+
+Sending multiple facet queries is achievable by using `/facets/multisearch` endpoint.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/facets/multisearch \\
+	-X POST \\
+	-d @facets.txt
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| Serialized list of [FacetQuery](../../../glossary/facet-query.mdx) |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Results** | list of [FacetResults](../../../glossary/facet-results.mdx) |
+
+
+
+

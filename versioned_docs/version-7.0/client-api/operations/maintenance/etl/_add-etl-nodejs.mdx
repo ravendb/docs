@@ -1,0 +1,130 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `AddEtlOperation` method to add a new ongoing ETL task to your database.
+
+* To learn about ETL (Extract, Transfer, Load) ongoing tasks, see article [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
+  To learn how to manage ETL tasks from the Studio, see [Ongoing tasks - overview](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
+
+* In this page:
+    * [Example - add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-raven-etl)
+    * [Example - add SQL ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-sql-etl)
+    * [Example - add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-olap-etl)
+    * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl.mdx#syntax)
+
+</Admonition>
+## Example - add Raven ETL
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="js">
+{`const etlConfigurationRvn = Object.assign(new RavenEtlConfiguration(), \{
+    connectionStringName: "raven-connection-string-name",
+    disabled: false,
+    name: "etlRvn"
+\});
+
+const transformationRvn = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+etlConfigurationRvn.transforms = [transformationRvn];
+
+const operationRvn = new AddEtlOperation(etlConfigurationRvn);
+const etlResultRvn = await store.maintenance.send(operationRvn);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Example - add SQL ETL
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="js">
+{`const transformation = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+const table1 = \{
+    documentIdColumn: "Id",
+    insertOnlyMode: false,
+    tableName: "Users"
+\};
+
+const etlConfigurationSql = Object.assign(new SqlEtlConfiguration(), \{
+    connectionStringName: "sql-connection-string-name",
+    disabled: false,
+    name: "etlSql",
+    transforms: [transformation],
+    sqlTables: [table1]
+\});
+
+const operationSql = new AddEtlOperation(etlConfigurationSql);
+const etlResult = await store.maintenance.send(operationSql);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Example - add OLAP ETL
+
+<TabItem value="add_olap_etl" label="add_olap_etl">
+<CodeBlock language="js">
+{`const transformationOlap = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+const etlConfigurationOlap = Object.assign(new OlapEtlConfiguration(), \{
+    connectionStringName: "olap-connection-string-name",
+    disabled: false,
+    name: "etlOlap",
+    transforms: [transformationOlap],
+\});
+
+const operationOlap = new AddEtlOperation(etlConfigurationOlap);
+const etlResultOlap = await store.maintenance.send(operationOlap);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="js">
+{`const operation = new AddEtlOperation(etlConfiguration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                      | Description                       |
+|-------------------|---------------------------|-----------------------------------|
+| **configuration** | `EtlConfiguration` object | The ETL task configuration to add |
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`class EtlConfiguration \{
+    taskId?;     // number
+    name;        // string
+    mentorNode?: // string
+    connectionStringName; // string
+    transforms;  // Transformation[]
+    disabled?;   // boolean
+    allowEtlOnNonEncryptedChannel?; // boolean 
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

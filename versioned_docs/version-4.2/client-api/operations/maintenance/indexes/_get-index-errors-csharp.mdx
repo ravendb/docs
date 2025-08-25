@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIndexErrorsOperation** is used to return errors encountered during document indexing. 
+
+## Syntax
+
+<TabItem value="errors_1" label="errors_1">
+<CodeBlock language="csharp">
+{`public GetIndexErrorsOperation()
+
+public GetIndexErrorsOperation(string[] indexNames)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="errors_2" label="errors_2">
+<CodeBlock language="csharp">
+{`public class IndexErrors
+\{
+    public string Name \{ get; set; \}
+    public IndexingError[] Errors \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="errors_3" label="errors_3">
+<CodeBlock language="csharp">
+{`public class IndexingError
+\{
+    public string Error \{ get; set; \}
+    public DateTime Timestamp \{ get; set; \}
+    public string Document \{ get; set; \}
+    public string Action \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ----- | ---- |
+| **Name** | string | Index name |
+| **Errors** | IndexingError\[\] | List of indexing errors |
+
+## Example I
+
+<TabItem value="errors_4" label="errors_4">
+<CodeBlock language="csharp">
+{`// gets errors for all indexes
+IndexErrors[] indexErrors = store.Maintenance.Send(new GetIndexErrorsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="errors_5" label="errors_5">
+<CodeBlock language="csharp">
+{`// gets errors only for 'Orders/Totals' index
+IndexErrors[] indexErrors = store.Maintenance.Send(new GetIndexErrorsOperation(new[] \{ "Orders/Totals" \}));
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,46 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `DeleteDocumentCommand` to remove a document from the database.
+
+* In this page:
+
+    * [Example](../../../client-api/commands/documents/delete.mdx#example)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="delete_sample" label="delete_sample">
+<CodeBlock language="python">
+{`command = DeleteDocumentCommand("employees/1-A", None)
+session.advanced.request_executor.execute_command(command)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Syntax
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="python">
+{`class DeleteDocumentCommand(VoidRavenCommand):
+    def __init__(self, key: str, change_vector: Optional[str] = None): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **key**           | `str` | ID of a document to be deleted |
+| **change_vector** | `str` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
+
+
+
+

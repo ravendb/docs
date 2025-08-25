@@ -1,0 +1,489 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Time series data can be effectively queried in RavenDB, 
+  allowing users to access and analyze information based on specific time intervals.
+  
+* Time series queries can be made using:  
+  * The `query` method 
+  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql.mdx),
+    which can be provided to a `rawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
+
+* In this page:  
+    * [Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
+        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
+        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
+        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
+    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
+        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
+        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
+        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
+    
+</Admonition>
+
+<Admonition type="info" title="">
+Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+</Admonition>
+## Query
+
+### Query usage
+
+* Open a session  
+* Call `session.query`:
+  * Provide a query predicate to locate documents whose time series you want to query  
+  * Use `selectTimeSeries` to choose a time series and project time series data
+  * Execute the query
+* Results will be in the form:
+  * `TimeSeriesRawResult` for non-aggregated data, or -  
+  * `TimeSeriesAggregationResult` for aggregated data  
+* Note:  
+  The RavenDB client translates the query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+### Query examples
+
+* This query filters users by their age and retrieves their HeartRates time series.
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define the time series query part (expressed in RQL):
+const tsQueryText = \`
+    from HeartRates
+    where Tag == "watches/fitbit"\`;
+
+// Define the high-level query:
+const query = session.query({ collection: "users" })
+    .whereLessThan("age", 30)
+     // Call 'selectTimeSeries' and pass it:
+     // * the time series query text
+     // * the \`TimeSeriesRawResult\` return type
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+rawResults = results[0];
+assert.equal((rawResults instanceof TimeSeriesRawResult), true);
+
+const tsEntry = rawResults.results[0];
+assert.equal((tsEntry instanceof TimeSeriesEntry), true);
+
+const tsValue = tsEntry.value;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "users"
+where age < 30
+select timeseries(
+    from "HeartRates"
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, we select a 5-minute range from the HeartRates time series.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 5 * 60_000);
+
+// Define the time series query text:
+const tsQueryText = \`
+    from HeartRates
+    between $start and $end\`;
+
+// Define the query:
+const query = session.query({ collection: "users" })
+     // Call 'selectTimeSeries' and pass it:
+     // * the time series query text
+     // * the \`TimeSeriesRawResult\` return type
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
+     // Add the parameters content
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+// Execute the query:
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Users"
+select timeseries(
+    from "HeartRates"
+    between "2024-05-19T18:13:17.466Z" and "2024-05-19T18:18:17.466Z"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, we retrieve a company's stock trade data.  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+  This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="js">
+{`const oneDay = 24 * 60 * 60 * 1000;
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 3 * oneDay);
+
+// Note: the 'where' clause must come after the 'between' clause
+const tsQueryText = \`
+    from StockPrices
+    between $start and $end
+    where Tag == "AppleTech"\`;
+
+const query = session.query({ collection: "companies" })
+    .whereEquals("address.city", "New York")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+const tsEntries = results[0].results;
+
+const volumeDay1 = tsEntries[0].values[4];
+const volumeDay2 = tsEntries[1].values[4];
+const volumeDay3 = tsEntries[2].values[4];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Named" label="Named">
+<CodeBlock language="js">
+{`const oneDay = 24 * 60 * 60 * 1000;
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 3 * oneDay);
+
+// Note: the 'where' clause must come after the 'between' clause
+const tsQueryText = \`
+    from StockPrices
+    between $start and $end
+    where Tag == "AppleTech"\`;
+
+const query = session.query({ collection: "companies" })
+    .whereEquals("address.city", "New York")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+const tsEntries = results[0].results;
+
+// Call 'asTypedEntry' to be able to access the entry's values by their names
+// Pass the class type (StockPrice)
+const volumeDay1 = tsEntries[0].asTypedEntry(StockPrice).value.volume;
+const volumeDay2 = tsEntries[1].asTypedEntry(StockPrice).value.volume;
+const volumeDay3 = tsEntries[2].asTypedEntry(StockPrice).value.volume;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "companies"
+where address.city == "New York"
+select timeseries(
+    from StockPrices
+    between $start and $end
+    where Tag == "AppleTech"
+)
+{"start":"2024-05-20T07:54:07.259Z","end":"2024-05-23T07:54:07.259Z"}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, we group heart-rate data of people above the age of 72 into 1-day groups,
+  For each group, we retrieve the number of measurements, the minimum, maximum, and average heart rate.
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="js">
+{`const oneDay = 24 * 60 * 60 * 1000;
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 10 * oneDay);
+
+const tsQueryText = \`from HeartRates between $start and $end
+    where Tag == "watches/fitbit"
+    group by "1 day"
+    select count(), min(), max(), avg()\`;
+
+const query = session.query({ collection: "users" })
+    .whereGreaterThan("age", 72)
+     // Call 'selectTimeSeries' and pass it:
+     // * the time series query text
+     // * the \`TimeSeriesAggregationResult\` return type
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesAggregationResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+// Execute the query:
+const results = await query.all();
+const aggregatedResults = results[0].results;
+
+const averageForDay1 = aggregatedResults[0].average[0];
+const averageForDay2 = aggregatedResults[1].average[0];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "users"
+where age > 72
+select timeseries(
+    from HeartRates between $start and $end
+    where Tag == "watches/fitbit"
+    group by '1 day'
+    select count(), min(), max(), avg()
+)
+{"start":"2024-05-20T09:32:58.951Z","end":"2024-05-30T09:32:58.951Z"}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### Query syntax
+
+The `session.query` syntax is available [here](../../../../client-api/session/querying/how-to-query.mdx#syntax).
+
+Extend the `session.query` method with `selectTimeSeries()`.
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`selectTimeSeries(timeSeriesQuery, projectionClass);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type                | Description                                                                     |
+|-----------------------|---------------------|---------------------------------------------------------------------------------|
+| **timeSeriesQuery**   | `(builder) => void` | The time series query builder                                                   |
+| **projectionClass**   | `object`            | The query result type<br/>`TimeSeriesRawResult` or `TimeSeriesAggregationResult` |
+
+The time series query builder has one method:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`raw(queryText);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter      | Type     | Description                                   |
+|----------------|----------|-----------------------------------------------|
+| **queryText**  | `string` | The time series query part, expressed in RQL. |
+
+| Return value                    | Description                                                                                                               |
+|---------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `TimeSeriesRawResult[]`         | The returned value for non-aggregated data                                                                                |
+| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) |
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`class TimeSeriesRawResult \{
+    results; // TimeSeriesEntry[]
+    asTypedResult>(clazz);
+\}
+
+class TimeSeriesAggregationResult extends TimeSeriesQueryResult \{
+    results; // TimeSeriesRangeAggregation[];
+    asTypedEntry(clazz);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RawQuery
+
+### RawQuery usage
+
+* Open a session  
+* Call `session.advanced.rawQuery`, pass it the raw RQL that will be sent to the server 
+* Results will be in the form:  
+    * `TimeSeriesRawResult` for non-aggregated data, or -
+    * `TimeSeriesAggregationResult` for aggregated data
+* Note:  
+  The raw query transmits the provided RQL to the server as is, without checking or altering its content.
+### RawQuery examples
+
+* In this example, we retrieve all HearRates time series for all users under 30.
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const rql = \`from users where age < 30
+     select timeseries(
+        from HeartRates
+     )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from users where age < 30
+select timeseries(
+    from HeartRates
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, a raw RQL query retrieves 24 hours of heart rate data from users under 30.  
+  The query does not aggregate data, so results are in the form of a `TimeSeriesRawResult` list.  
+  We define an **offset**, to adjust retrieved results to the client's local time-zone.
+<Tabs groupId='languageSyntax'>
+<TabItem value="Declare-Syntax" label="Declare-Syntax">
+<CodeBlock language="js">
+{`const rql = \`
+    declare timeseries getHeartRates(user) 
+    {
+        from user.HeartRates 
+            between $start and $end
+            offset "03:00"
+    }
+    
+    from users as u where age < 30
+    select getHeartRates(u)\`;
+
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Select-Syntax" label="Select-Syntax">
+<CodeBlock language="js">
+{`const rql = \`
+    from Users as u where Age < 30
+    select timeseries (
+        from HeartRates 
+            between $start and $end
+            offset "03:00"
+    )\`;
+
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// declare syntax
+// ==============
+
+declare timeseries getHeartRates(user)
+{
+    from user.HeartRates
+    between $start and $end
+    offset '03:00'
+}
+
+from users as u where age < 30
+select getHeartRates(u)
+{"start":"2024-05-20T11:52:22.316Z","end":"2024-05-21T11:52:22.316Z"}
+
+// select syntax
+// =============
+
+from Users as u where Age < 30
+select timeseries (
+    from HeartRates 
+        between $start and $end
+        offset "03:00"
+)
+{"start":"2024-05-20T11:55:56.701Z","end":"2024-05-21T11:55:56.701Z"}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, the query aggregates 7 days of HeartRates entries into 1-day groups.  
+  From each group, two values are selected and projected to the client:  
+  the **min** and **max** hourly HeartRates values.  
+  The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const rql = \`
+    from users as u
+    select timeseries(
+        from HeartRates between $start and $end
+        group by '1 day'
+        select min(), max()
+        offset "03:00"
+    )\`;
+
+const oneDay = 24 * 60 * 60 * 1000;
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 7 * oneDay);
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from users as u
+select timeseries(
+    from HeartRates between $start and $end
+    group by '1 day'
+    select min(), max()
+    offset "03:00"
+)
+{"start":"2024-05-20T12:06:40.595Z","end":"2024-05-27T12:06:40.595Z"}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+### RawQuery syntax
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`session.rawQuery(query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type     | Description          |
+|------------|----------|----------------------|
+|  **query** | `string` | The RQL query string |
+
+The return value is the same as listed under the [query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax).
+
+
+
+

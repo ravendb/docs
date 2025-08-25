@@ -1,0 +1,601 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* __Conventions__ in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
+ 
+* In this page:  
+  * [How to set conventions](../../client-api/configuration/conventions.mdx#how-to-set-conventions)  
+  * [Conventions:](../../client-api/configuration/conventions.mdx#conventions:)  
+      [customFetch](../../client-api/configuration/conventions.mdx#customfetch)  
+      [disableAtomicDocumentWritesInClusterWideTransaction](../../client-api/configuration/conventions.mdx#disableatomicdocumentwritesinclusterwidetransaction)  
+      [disableTopologyUpdates](../../client-api/configuration/conventions.mdx#disabletopologyupdates)  
+      [findCollectionName](../../client-api/configuration/conventions.mdx#findcollectionname)  
+      [findJsType](../../client-api/configuration/conventions.mdx#_findjstype)  
+      [findJsTypeName](../../client-api/configuration/conventions.mdx#_findjstypename)  
+      [firstBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
+      [identityPartsSeparator](../../client-api/configuration/conventions.mdx#identitypartsseparator)  
+      [loadBalanceBehavior](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [loadBalancerContextSeed](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [loadBalancerPerSessionContextSelector](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [maxHttpCacheSize](../../client-api/configuration/conventions.mdx#maxhttpcachesize)  
+      [maxNumberOfRequestsPerSession](../../client-api/configuration/conventions.mdx#maxnumberofrequestspersession)  
+      [readBalanceBehavior](../../client-api/configuration/conventions.mdx#readbalancebehavior)  
+      [requestTimeout](../../client-api/configuration/conventions.mdx#requesttimeout)  
+      [secondBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout)  
+      [sendApplicationIdentifier](../../client-api/configuration/conventions.mdx#sendapplicationidentifier)  
+      [shouldIgnoreEntityChanges](../../client-api/configuration/conventions.mdx#shouldignoreentitychanges)  
+      [storeDatesInUtc](../../client-api/configuration/conventions.mdx#storedatesinutc)  
+      [storeDatesWithTimezoneInfo](../../client-api/configuration/conventions.mdx#storedateswithtimezoneinfo)  
+      [syncJsonParseLimit](../../client-api/configuration/conventions.mdx#syncjsonparselimit)  
+      [throwIfQueryPageSizeIsNotSet](../../client-api/configuration/conventions.mdx#throwifquerypagesizeisnotset)  
+      [transformClassCollectionNameToDocumentIdPrefix](../../client-api/configuration/conventions.mdx#transformclasscollectionnametodocumentidprefix)  
+      [useCompression](../../client-api/configuration/conventions.mdx#usecompression)  
+      [useJsonlStreaming](../../client-api/configuration/conventions.mdx#usejsonlstreaming)  
+      [useOptimisticConcurrency](../../client-api/configuration/conventions.mdx#useoptimisticconcurrency)  
+      [waitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforindexesaftersavechangestimeout)  
+      [waitForNonStaleResultsTimeout](../../client-api/configuration/conventions.mdx#waitfornonstaleresultstimeout)  
+      [waitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforreplicationaftersavechangestimeout)  
+
+</Admonition>
+## How to set conventions
+
+* Access the conventions via the `conventions` property of the `DocumentStore` object.
+
+* The conventions set on a Document Store will apply to ALL [sessions](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../client-api/operations/what-are-operations.mdx) associated with that store.
+ 
+* Customizing the conventions can only be set __before__ calling `documentStore.initialize()`.  
+  Trying to do so after calling _initialize()_ will throw an exception.
+
+<TabItem value="conventions_1" label="conventions_1">
+<CodeBlock language="js">
+{`const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
+
+// Set conventions HERE, e.g.:
+documentStore.conventions.maxNumberOfRequestsPerSession = 50;
+documentStore.conventions.disableTopologyUpdates = true;
+
+documentStore.initialize();
+
+// * Here you can interact with the RavenDB store:
+//   open sessions, create or query for documents, perform operations, etc.
+
+// * Conventions CANNOT be set here after calling initialize()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Conventions:
+
+<Admonition type="note" title="">
+
+#### customFetch
+* Use the `customFetch` convention to override the default _fetch_ method.  
+  This method is useful to enable RavenDB Node.js client on CloudFlare Workers.
+
+* DEFAULT: undefined
+
+<TabItem value="customFetchSyntax" label="customFetchSyntax">
+<CodeBlock language="js">
+{`// Returns an object
+get customFetch();
+// Set an object bound to worker with type: mtls_certificate
+set customFetch(customFetch);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### disableAtomicDocumentWritesInClusterWideTransaction
+* EXPERT ONLY:   
+  Use the `disableAtomicDocumentWritesInClusterWideTransaction` convention to disable automatic  
+  atomic writes with cluster write transactions.
+
+* When set to `true`, will only consider explicitly added compare exchange values to validate cluster wide transactions.
+
+* DEFAULT: `false`
+
+<TabItem value="disableAtomicDocumentWritesInClusterWideTransactionSyntax" label="disableAtomicDocumentWritesInClusterWideTransactionSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean value
+get disableAtomicDocumentWritesInClusterWideTransaction();
+// Set a boolean value
+set disableAtomicDocumentWritesInClusterWideTransaction(
+    disableAtomicDocumentWritesInClusterWideTransaction
+);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### disableTopologyUpdates
+* When setting the `disableTopologyUpdates` convention to `true`,  
+  no database topology updates will be sent from the server to the client (e.g. adding or removing a node).
+ 
+* DEFAULT: `false`
+
+<TabItem value="disableTopologyUpdatesSyntax" label="disableTopologyUpdatesSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean value
+get disableTopologyUpdates();
+// Set a boolean value
+set disableTopologyUpdates(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### findCollectionName
+* Use the `findCollectionName` convention to define a function that will customize the collection name  
+  from given type.
+
+* DEFAULT: The collection name will be the plural form of the type name.
+
+<TabItem value="findCollectionNameSyntax" label="findCollectionNameSyntax">
+<CodeBlock language="js">
+{`// Returns a method
+get findCollectionName();
+// Set a method
+set findCollectionName(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### findJsType
+* Use the `findJsType` convention to define a function that finds the class of a document (if exists).
+
+* The type is retrieved from the `Raven-Node-Type` property under the `@metadata` key in the document.
+
+* DEFAULT: `null`
+
+<TabItem value="findJsTypeSyntax" label="findJsTypeSyntax">
+<CodeBlock language="js">
+{`// Returns a method
+get findJsType();
+// Set a method
+set findJsType(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### findJsTypeName
+* Use the `findJsTypeName` convention to define a function that returns the class type name from a given type.
+
+* The class name will be stored in the entity metadata.
+
+* DEFAULT: `null`
+
+<TabItem value="findJsTypeNameSyntax" label="findJsTypeNameSyntax">
+<CodeBlock language="js">
+{`// Returns a method
+get findJsTypeName();
+// Set a method
+set findJsTypeName(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### firstBroadcastAttemptTimeout
+* Use the `firstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.  
+ 
+* In the first attempt, the request executor will send a single request to the selected node.  
+  Learn about the "selected node" in: [Client logic for choosing a node](../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+ 
+* A [second attempt](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout) will be held upon failure.
+ 
+* DEFAULT: `5 seconds`
+
+<TabItem value="firstBroadcastAttemptTimeoutSyntax" label="firstBroadcastAttemptTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get firstBroadcastAttemptTimeout();
+// Set a number
+set firstBroadcastAttemptTimeout(firstBroadcastAttemptTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### identityPartsSeparator
+* Use the `identityPartsSeparator` convention to set the default **ID separator** for automatically-generated document IDs.
+ 
+* DEFAULT: `/` (forward slash)  
+ 
+* The value can be any `char` except `|` (pipe).
+ 
+* Changing the separator affects these ID generation strategies:  
+  * [Server-Side ID](../../server/kb/document-identifier-generation.mdx#strategy--2)
+  * [Identity](../../server/kb/document-identifier-generation.mdx#strategy--3)
+  * [HiLo Algorithm](../../server/kb/document-identifier-generation.mdx#strategy--4)
+
+<TabItem value="identityPartsSeparatorSyntax" label="identityPartsSeparatorSyntax">
+<CodeBlock language="js">
+{`// Returns a string
+get identityPartsSeparator();
+// Set a string
+set identityPartsSeparator(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### loadBalanceBehavior
+#### loadBalancerPerSessionContextSelector
+#### loadBalancerContextSeed
+* Configure the __load balance behavior__ by setting the following conventions:
+  * `loadBalanceBehavior`
+  * `loadBalancerPerSessionContextSelector`
+  * `loadBalancerContextSeed`
+
+* Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### maxHttpCacheSize
+* Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.  
+  This setting will affect all the databases accessed by the Document Store.
+ 
+* DEFAULT: `128 MB`
+
+* __Disabling Caching__:
+
+    * To disable caching globally, set `MaxHttpCacheSize` to zero.
+    * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
+
+* Note: RavenDB also supports Aggressive Caching.  
+  Learn more about that in article [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching.mdx).
+
+<TabItem value="maxHttpCacheSizeSyntax" label="maxHttpCacheSizeSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get maxHttpCacheSize();
+// Set a number
+set maxHttpCacheSize(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### maxNumberOfRequestsPerSession
+* Use the `maxNumberOfRequestsPerSession` convention to set the maximum number of requests per session.
+ 
+* DEFAULT: `30`
+ 
+<TabItem value="maxNumberOfRequestsPerSessionSyntax" label="maxNumberOfRequestsPerSessionSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get maxNumberOfRequestsPerSession();
+// Set a number
+set maxNumberOfRequestsPerSession(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### readBalanceBehavior
+* Configure the __read request behavior__ by setting the `readBalanceBehavior` convention.
+
+* Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### requestTimeout
+* Use the `requestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
+ 
+* DEFAULT: `null` (the default HTTP client timout will be applied - 12h)
+
+<TabItem value="requestTimeoutSyntax" label="requestTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get requestTimeout();
+// Set a number
+set requestTimeout(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### secondBroadcastAttemptTimeout
+* Use the `secondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
+ 
+* Upon failure of the [first attempt](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout) the request executor will resend the command to all nodes simultaneously.
+ 
+* DEFAULT: `30 seconds`
+
+<TabItem value="secondBroadcastAttemptTimeoutSyntax" label="secondBroadcastAttemptTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get secondBroadcastAttemptTimeout();
+// Set a number
+set secondBroadcastAttemptTimeout(timeout);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### sendApplicationIdentifier
+* Use the `sendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
+
+* Setting to _true_ allows the server to issue performance hint notifications to the client, 
+  e.g. during robust topology update requests which could indicate a Client API misuse impacting the overall performance.
+
+* DEFAULT: `true`
+
+<TabItem value="sendApplicationIdentifierSyntax" label="sendApplicationIdentifierSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get sendApplicationIdentifier();
+// Set a boolean
+set sendApplicationIdentifier(sendApplicationIdentifier)
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### shouldIgnoreEntityChanges
+* Set the `shouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.  
+ 
+* Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### storeDatesInUtc
+* When setting the `storeDatesInUtc` convention to `true`,  
+  DateTime values will be stored in the database in UTC format.
+
+* DEFAULT: `false`
+
+<TabItem value="storeDatesInUtcSyntax" label="storeDatesInUtcSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get storeDatesInUtc();
+// Set a boolean
+set storeDatesInUtc(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### storeDatesWithTimezoneInfo
+* When setting the `storeDatesWithTimezoneInfo` to `true`,  
+  DateTime values will be stored in the database with their time zone information included.
+
+* DEFAULT: `false`
+
+<TabItem value="storeDatesWithTimezoneInfoSyntax" label="storeDatesWithTimezoneInfoSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get storeDatesWithTimezoneInfo();
+// Set a boolean
+set storeDatesWithTimezoneInfo(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### syncJsonParseLimit
+* Use the `syncJsonParseLimit` convention to define the maximum size for the _sync_ parsing of the JSON data responses received from the server.  
+  For data exceeding this size, the client switches to _async_ parsing.
+
+* DEFAULT: `2 * 1_024 * 1_024`
+
+<TabItem value="syncJsonParseLimitSyntax" label="syncJsonParseLimitSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get syncJsonParseLimit();
+// Set a number
+set syncJsonParseLimit(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### throwIfQueryPageSizeIsNotSet
+* When setting the `throwIfQueryPageSizeIsNotSet` convention to `true`,  
+  an exception will be thrown if a query is performed without explicitly setting a page size.
+
+* This can be useful during development to identify potential performance bottlenecks
+  since there is no limitation on the number of results returned from the server.
+
+* DEFAULT: `false`
+
+<TabItem value="throwIfQueryPageSizeIsNotSetSyntax" label="throwIfQueryPageSizeIsNotSetSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get throwIfQueryPageSizeIsNotSet();
+// Set a boolean
+set throwIfQueryPageSizeIsNotSet(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### transformClassCollectionNameToDocumentIdPrefix
+* Use the `transformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
+  customize the document ID prefix from the the collection name.
+
+* DEFAULT:  
+  By default, the document id prefix is determined as follows:
+
+| Number of uppercase letters in collection name   | Document ID prefix                                          |
+|--------------------------------------------------|-------------------------------------------------------------|
+| `<= 1`                                           | Use the collection name with all lowercase letters          |
+| `> 1`                                            | Use the collection name as is, preserving the original case |
+
+<TabItem value="transformClassCollectionNameToDocumentIdPrefixSyntax" label="transformClassCollectionNameToDocumentIdPrefixSyntax">
+<CodeBlock language="js">
+{`// Returns a method
+get transformClassCollectionNameToDocumentIdPrefix();
+// Set a method
+set transformClassCollectionNameToDocumentIdPrefix(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### useCompression
+* Set the `useCompression` convention to true in order to accept the __response__ in compressed format and the automatic decompression of the HTTP response content.
+
+* A `Gzip` compression is always applied when sending content in an HTTP request.
+ 
+* DEFAULT: `true`  
+
+<TabItem value="useCompressionSyntax" label="useCompressionSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get useCompression();
+// Set a boolean
+set useCompression(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### useJsonlStreaming
+* Set the `useJsonlStreaming` convention to `true` when streaming query results as JSON Lines (JSONL) format.
+
+* DEFAULT: `true`
+
+<TabItem value="useJsonlStreamingSyntax" label="useJsonlStreamingSyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get useJsonlStreaming();
+// Set a boolean
+set useJsonlStreaming(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### useOptimisticConcurrency
+* When setting the `useOptimisticConcurrency` convention to `true`,  
+  Optimistic Concurrency checks will be applied for all sessions opened from the Document Store. 
+
+* Learn more about Optimistic Concurrency and the various ways to enable it in article  
+  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+
+* DEFAULT: `false`  
+
+<TabItem value="useOptimisticConcurrencySyntax" label="useOptimisticConcurrencySyntax">
+<CodeBlock language="js">
+{`// Returns a boolean
+get useOptimisticConcurrency();
+// Set a boolean
+set useOptimisticConcurrency(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### waitForIndexesAfterSaveChangesTimeout
+* Use the `waitForIndexesAfterSaveChangesTimeout` convention to set the default timeout for the 
+  `documentSession.advanced.waitForIndexesAfterSaveChanges` method.  
+ 
+* DEFAULT: 15 Seconds
+
+<TabItem value="waitForIndexesAfterSaveChangesTimeoutSyntax" label="waitForIndexesAfterSaveChangesTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get waitForIndexesAfterSaveChangesTimeout();
+// Set a number
+set waitForIndexesAfterSaveChangesTimeout(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### waitForNonStaleResultsTimeout
+* Use the `waitForNonStaleResultsTimeout` convention to set the default timeout used by the  
+  `waitForNonStaleResults` method when querying.  
+ 
+* DEFAULT: 15 Seconds  
+
+<TabItem value="waitForNonStaleResultsTimeoutSyntax" label="waitForNonStaleResultsTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get waitForNonStaleResultsTimeout();
+// Set a number
+set waitForNonStaleResultsTimeout(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### waitForReplicationAfterSaveChangesTimeout
+* Use the `waitForReplicationAfterSaveChangesTimeout` convention to set the default timeout for the  
+  `documentSession.advanced.waitForReplicationAfterSaveChanges`method.  
+ 
+* DEFAULT: 15 Seconds  
+
+<TabItem value="waitForReplicationAfterSaveChangesTimeoutSyntax" label="waitForReplicationAfterSaveChangesTimeoutSyntax">
+<CodeBlock language="js">
+{`// Returns a number
+get waitForReplicationAfterSaveChangesTimeout();
+// Set a number
+set waitForReplicationAfterSaveChangesTimeout(value);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+

@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
+
+## Syntax
+
+<TabItem value="database_configuration_1" label="database_configuration_1">
+<CodeBlock language="java">
+{`RavenJObject getDatabaseConfiguration();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| **RavenJObject** | Database configuration in JSON format |
+
+## Example
+
+<TabItem value="database_configuration_2" label="database_configuration_2">
+<CodeBlock language="java">
+{`RavenJObject configuration = store
+	.getDatabaseCommands()
+		.getAdmin()
+		.getDatabaseConfiguration();
+`}
+</CodeBlock>
+</TabItem>
+
+

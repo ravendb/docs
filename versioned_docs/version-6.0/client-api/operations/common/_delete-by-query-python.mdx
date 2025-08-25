@@ -1,0 +1,204 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
+
+* **Dynamic behavior**:   
+  The deletion of documents matching the specified query is performed in batches of size 1024.  
+  During the deletion process, documents that are added/modified **after** the delete operation has started  
+  may also be deleted if they match the query criteria.
+
+* **Background operation**:  
+  This operation is performed in the background on the server.  
+
+* **Operation scope**:  
+  `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
+  if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) will Not be deleted.
+
+    * To avoid issues when recreating such documents using a cluster-wide session,
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+    * To learn more about the differences between transaction types,
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction).
+* In this article:  
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+
+</Admonition>
+
+## Delete by dynamic query
+
+<Admonition type="note" title="">
+
+##### Delete all documents in a collection
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
+<CodeBlock language="python">
+{`# Define the delete by query operation, pass an RQL querying a collection
+delete_by_query_op = DeleteByQueryOperation("from 'Orders'")
+
+# Execute the operation by passing it to Operation.send_async
+operation = store.operations.send_async(delete_by_query_op)
+
+# All documents in collection 'Orders' will be deleted from the server
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Delete with filtering  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
+<CodeBlock language="python">
+{`# Define the delete by query operation, pass an RQL querying a collection
+delete_by_query_op = DeleteByQueryOperation("from 'Orders' where Freight > 30")
+
+# Execute the operation by passing it to Operation.send_async
+operation = store.operations.send_async(delete_by_query_op)
+
+# * All documents matching the specified RQL will be deleted from the server.
+#
+# * Since the dynamic query was made with a filtering condition,
+#   an auto-index is generated (if no other matching auto-index already exists).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" where Freight > 30
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Delete by index query
+
+* `DeleteByQueryOperation` can only be performed on a **Map-index**.  
+  An exception is thrown when executing the operation on a Map-Reduce index.  
+
+* A few overloads are available, see the following examples:
+<Admonition type="note" title="">
+
+##### A sample Map-index
+
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="python">
+{`# The index definition:
+# =====================
+class ProductsByPrice(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, price: int):
+            self.price = price
+
+    def __init__(self):
+        super().__init__()
+        self.map = "from product in products select new \{price = product.PricePerUnit\}"
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Delete documents via an index query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Define the delete by query operation, pass an RQL querying the index
+delete_by_query_op = DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10")
+
+# Execute the operation by passing it to Operation.send_async
+operation = store.operations.send_async(delete_by_query_op)
+
+# All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexQuery" label="IndexQuery">
+<CodeBlock language="python">
+{`# Define the delete by query operation
+delete_by_query_op = DeleteByQueryOperation(
+    IndexQuery(query="from index 'Products/ByPrice' where Price > 10")
+)
+
+# Execute the operation by passing it to Operation.send_async
+operation = store.operations.send_async(delete_by_query_op)
+
+# All documents with document-field PricePerUnit > 10 will be deleted from the server.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Delete with options
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="QueryOperationOptions" label="QueryOperationOptions">
+<CodeBlock language="python">
+{`# Define the delete by query operation
+delete_by_query_op = DeleteByQueryOperation(
+    # QUERY: Specify the query
+    IndexQuery(query="from index 'Products/ByPrice' where Price > 10"),
+    # OPTIONS: Specify the options for the operations
+    # (See all other available options in the Syntax section below)
+    QueryOperationOptions(
+        # Allow the operation to operate even if index is stale
+        allow_stale=True,
+        # Get info in the operation result about documents that were deleted
+        retrieve_details=True,
+    ),
+)
+
+# Execute the operation by passing it to Operations.send_async
+operation = store.operations.send_async(delete_by_query_op)
+
+# * All documents with document-field PricePerUnit > 10 will be deleted from the server
+
+# * Details about deleted documents are available:
+details = result.details
+document_id_that_was_deleted = details[0]["Id"]
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByPrice" where Price > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Specifying `QueryOperationOptions` is also supported by the other overload methods, see the Syntax section below.
+
+</Admonition>
+
+
+

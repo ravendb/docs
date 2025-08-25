@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To download all available database names from a server, use the `getDatabaseNames` command from `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="get_database_names_1" label="get_database_names_1">
+<CodeBlock language="java">
+{`public String[] getDatabaseNames(int pageSize);
+
+public String[] getDatabaseNames(int pageSize, int start);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped. Default: `0` |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | Names of all databases on a server |
+
+## Example
+
+<TabItem value="get_database_names_2" label="get_database_names_2">
+<CodeBlock language="java">
+{`String[] databaseNames =
+  store.getDatabaseCommands().getGlobalAdmin().getDatabaseNames(10);
+`}
+</CodeBlock>
+</TabItem>
+
+

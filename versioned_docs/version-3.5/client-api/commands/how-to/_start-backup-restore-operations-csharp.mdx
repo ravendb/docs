@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To start or restore backup use `StartBackup` or `StartRestore` operations respectively.
+
+## StartBackup
+
+<TabItem value="backup_restore_1" label="backup_restore_1">
+<CodeBlock language="csharp">
+{`Operation StartBackup(
+          string backupLocation, 
+          DatabaseDocument databaseDocument, 
+          bool incremental, 
+          string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **backupLocation** | string | Path to directory where backup will be stored. |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | Database configuration document that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.&lt;br /&gt;**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
+| **incremental** | bool | Indicates if backup is incremental. |
+| **databaseName** | string | Name of a database that will be backed up. |
+
+### Example
+
+<TabItem value="backup_restore_3" label="backup_restore_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.StartBackup(
+		@"C:\\temp\\backup\\Northwind\\",
+		new DatabaseDocument(),
+		incremental: false,
+		databaseName: "Northwind");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartRestore
+
+<TabItem value="backup_restore_2" label="backup_restore_2">
+<CodeBlock language="csharp">
+{`Operation StartRestore(DatabaseRestoreRequest restoreRequest);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **restoreRequest** | [DatabaseRestoreRequest](../../../glossary/database-restore-request.mdx) | Restore information |
+
+## Example
+
+<TabItem value="backup_restore_4" label="backup_restore_4">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.StartRestore(
+		new DatabaseRestoreRequest
+			\{
+				BackupLocation = @"C:\\temp\\backup\\Northwind\\",
+				DatabaseLocation = @"~\\Databases\\NewNorthwind\\",
+				DatabaseName = "NewNorthwind"
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

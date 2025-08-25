@@ -5,124 +5,24 @@ sidebar_label: SetKey
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SetKeyCsharp from './_set-key-csharp.mdx';
+import SetKeyHttp from './_set-key-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: SetKeyAsync
-
-**SetKeyAsync** is used to store any object as [a configuration item](../../../configurations.mdx) under the specified key.
-
-
-
-<TabItem value="set_key_1" label="set_key_1">
-<CodeBlock language="csharp">
-{`Task SetKeyAsync<T>(string key, T data);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | The configuration name |
-| **data** | T | The stored object that will be serialized to JSON and saved as a configuration. |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task** | A task that represents the asynchronous set operation |
-
-## Example
-
-Let's assume that we need to store file descriptions for some files but we don't want to add such information to their metadata. The file description is represented by the `FileDescription` class:
-
-<TabItem value="set_key_2" label="set_key_2">
-<CodeBlock language="csharp">
-{`public class FileDescription
-\{
-	 /* ... */
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-We can achieve that simply by setting such an object under the selected key:
-
-<TabItem value="set_key_3" label="set_key_3">
-<CodeBlock language="csharp">
-{`await store
-	.AsyncFilesCommands
-	.Configuration
-	.SetKeyAsync("descriptions/intro.avi", new FileDescription \{ /* ... */ \});
-`}
-</CodeBlock>
-</TabItem>
-
+   <SetKeyCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: SetKey
-
-The **PUT** operation is used to store a JSON formatted object as [a configuration item](../../../configurations.mdx) under the specified key. 
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/config?name=\{name\}  \\
-	-X PUT \\
-	-d "\{json-data\}"
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| JSON formatted object |
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **name** | Yes | The name under which the configuration item will be stored |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `201` | Created |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **None** | The request does not return any message |
-
----
-
-## Example
-
-Put a file under name `/movies/intro.avi` with `AllowRead` metadata:
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X PUT http://localhost:8080/fs/NorthwindFS/config?name=descriptions/intro.avi \\
-    -d "\{Author: 'Hibernathing Rhinos'\}"
-< HTTP/1.1 201 Created
-`}
-</CodeBlock>
-</TabItem>
-
+   <SetKeyHttp />
 </LanguageContent>
+
 
 <!---
 

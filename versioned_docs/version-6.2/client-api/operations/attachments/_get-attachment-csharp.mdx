@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to get an attachment from a document. 
+
+## Syntax
+
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
+<CodeBlock language="csharp">
+{`public GetAttachmentOperation(string documentId, string name, AttachmentType type, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
+<CodeBlock language="csharp">
+{`public class AttachmentResult
+\{
+    public Stream Stream;
+    public AttachmentDetails Details;
+\}
+
+public class AttachmentDetails : AttachmentName
+\{
+    public string ChangeVector;
+    public string DocumentId;
+\}
+
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |                | |
+|------------------|----------------| ----- |
+| **documentId**   | string         | ID of a document which will contain an attachment |
+| **name**         | string     | Name of an attachment |
+| **type**         | AttachmentType | Specify whether getting an attachment from a document or from a revision.<br/>(`Document` or `Revision`). |
+| **changeVector** | string         | The ChangeVector of the document or the revision to which the attachment belongs.<br/>Mandatory when getting an attachment from a revision.<br/>Used for concurrency checks (use `null` to skip the check). |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | Stream containing an attachment |
+| **ChangeVector** | Change vector of document |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new GetAttachmentOperation("orders/1-A",
+    "invoice.pdf",
+    AttachmentType.Document,
+    changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+

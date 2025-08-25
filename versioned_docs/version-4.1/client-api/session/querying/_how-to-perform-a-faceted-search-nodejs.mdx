@@ -1,0 +1,246 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To execute facet (aggregation) query using the session `query()` method, use the `aggregateBy()` or `aggregateUsing()` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using a straightforward and fluent API.
+
+## Syntax
+
+<TabItem value="facet_1" label="facet_1">
+<CodeBlock language="js">
+{`query.aggregateBy(facetBuilder);
+query.aggregateBy(facet);
+query.aggregateBy(...facets);
+query.aggregateUsing(facetSetupDocumentId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facet** | `FacetBase` | `FacetBase` implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
+| **facets** | `...FacetBase` | Items containing `FacetBase` implementations |
+| **facetBuilder** | `(builder) => void` | Builder with a fluent API that constructs a `FacetBase` instance |
+| **facetSetupDocumentId** | string | ID of a document containing `FacetSetup` | 
+
+### Facet & RangeFacet
+
+<Admonition type="info" title="Facet vs RangeFacet" id="facet-vs-rangefacet" href="#facet-vs-rangefacet">
+`RangeFacet` allows you to split the results of the calculations into several ranges, in contrast to `Facet` where whole spectrum of results will be used to generate a single outcome.
+</Admonition>
+
+`FacetAggregation` is one of the following:
+
+* `"None"` 
+
+* `"Max"` 
+
+* `"Min"` 
+
+* `"Average"`
+
+* `"Sum"`
+
+#### Facet
+
+| Fields | |
+| ------------- | ------------- |
+| **fieldName** | string |
+| **options** | `FacetOptions` |
+| **aggregrations** | `Map<FieldAggregration, string>` |
+| **displayFieldName** | string |
+
+#### RangeFacet
+
+| Fields | |
+| ------------- | ------------- |
+| **ranges** | string[] |
+| **options** | `FacetOptions` |
+| **aggregrations** | `Map<FieldAggregration, string>` |
+| **displayFieldName** | string |
+
+### Builder
+
+<TabItem value="facet_7_1" label="facet_7_1">
+<CodeBlock language="js">
+{`facetBuilder.byRanges(range, ...ranges);
+facetBuilder.byField(fieldName);
+
+facetBuilder.withDisplayName(displayName);
+
+facetBuilder.withOptions(options);
+
+facetBuilder.sumOn(path);
+facetBuilder.minOn(path);
+facetBuilder.maxOn(path);
+facetBuilder.averageOn(path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | Points to the index field that should be used for operation (`byRanges()`, `byField()`) or to document field that should be used for aggregation (`sumOn()`, `minOn()`, `maxOn()`, `averageOn()`) |
+| **fieldName** | string | Points to the index field that should be used for operation (`byRanges()`, `byField()`) or to document field that should be used for aggregation (`sumOn()`, `minOn()`, `maxOn()`, `averageOn()`) |
+| **displayName** | string | If set, results of a facet will be returned under this name |
+| **options** | object | Non-default options that should be used for operation |
+| &nbsp;&nbsp;**termSortMode** | string | Indicates how terms should be sorted (`ValueAsc`, `ValueDesc`, `CountAsc`, `CountDesc`) |
+| &nbsp;&nbsp;**includeRemainingTerms** | boolean | Indicates if remaining terms should be included in results |
+| &nbsp;&nbsp;**start** | number | Used to skip given number of facet results in the outcome |
+| &nbsp;&nbsp;**pageSize** | number | Used to limit facet results to the given value |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const facetOptions = {
+    termSortMode: "CountDesc"
+};
+
+const facet1 = new Facet();
+facet1.fieldName = "manufacturer";
+facet1.options = facetOptions;
+
+const facet2 = new RangeFacet();
+facet2.ranges = [ 
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800"
+];
+facet2.aggregations = new Map([["Average", "cost"]]);
+
+const facet3 = new RangeFacet();
+facet3.ranges = [ 
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10"
+];
+
+const facets = await session
+    .query({ indexName: "Camera/Costs" })
+    .aggregateBy(facet1)
+    .andAggregateBy(facet2)
+    .andAggregateBy(facet3)
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 AND cost < 400, cost >= 400 AND cost < 600, cost >= 600 AND cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const options = { termSortMode: "CountDesc" };
+
+const costBuilder = RangeBuilder.forPath("cost");
+const megapixelsBuilder = RangeBuilder.forPath("megapixels");
+
+const facetResult = await session
+    .query({ indexName: "Camera/Costs" })
+    .aggregateBy(builder => builder
+        .byField("manufacturer")
+        .withOptions(options))
+    .andAggregateBy(builder => builder
+        .byRanges(
+            costBuilder.isLessThan(200),
+            costBuilder.isGreaterThanOrEqualTo(200).isLessThan(400),
+            costBuilder.isGreaterThanOrEqualTo(400).isLessThan(600),
+            costBuilder.isGreaterThanOrEqualTo(600).isLessThan(800),
+            costBuilder.isGreaterThanOrEqualTo(800))
+        .averageOn("cost"))
+    .andAggregateBy(builder => builder
+        .byRanges(
+            megapixelsBuilder.isLessThan(3),
+            megapixelsBuilder.isGreaterThanOrEqualTo(3).isLessThan(7),
+            megapixelsBuilder.isGreaterThanOrEqualTo(7).isLessThan(10),
+            megapixelsBuilder.isGreaterThanOrEqualTo(10)
+        ))
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 and cost < 400, cost >= 400 and cost < 600, cost >= 600 and cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const facetSetup = new FacetSetup();
+
+const facetManufacturer = new Facet();
+facetManufacturer.fieldName = "manufacturer";
+facetSetup.facets = [ facetManufacturer ];
+
+const cameraFacet = new RangeFacet();
+cameraFacet.ranges = [
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800"
+];
+
+const megapixelsFacet = new RangeFacet();
+megapixelsFacet.ranges = [
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10"
+];
+
+facetSetup.rangeFacets = [ cameraFacet, megapixelsFacet ];
+
+await session.store(facetSetup, "facets/CameraFacets");
+await session.saveChanges();
+
+const facets = await session
+    .query({ indexName: "Camera/Costs" })
+    .aggregateUsing("facets/CameraFacets")
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select facet(id('facets/CameraFacets'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="warning" title="">
+`aggregateBy()` only supports aggregation by a single field. If you want to aggregate by multiple fields, you need to emit a single field that contains all values.
+</Admonition>
+
+

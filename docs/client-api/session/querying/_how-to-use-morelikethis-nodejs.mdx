@@ -1,0 +1,112 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`MoreLikeThis` is available through query methods and will return similar documents according to the provided criteria and options.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="js">
+{`query.moreLikeThis(moreLikeThis);
+
+query.moreLikeThis(builder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed |
+| **builder** | `function` | Builder with fluent API that constructs the `MoreLikeThisBase` instance |
+
+### Builder
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="js">
+{`builder.usingAnyDocument();
+
+builder.usingDocument(documentJson);
+
+builder.usingDocument(filterBuilder);
+
+builder.withOptions(options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentJson** | string | Inline JSON document that will be used as a base for operation |
+| **builder** | `(filterBuilder) => void` | Filtering expression utilized to find a document that will be used as a base for operation |
+| **options** | object | Non-default options that should be used for operation |
+| &nbsp;&nbsp;&nbsp;*minimumTermFrequency* | number | Ignores terms with less than this frequency in the source doc |
+| &nbsp;&nbsp;&nbsp;*maximumQueryTerms* | number | Returns a query with no more than this many terms |
+| &nbsp;&nbsp;&nbsp;*maximumNumberOfTokensParsed* | number | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
+| &nbsp;&nbsp;&nbsp;*minimumWordLength* | number | Ignores words less than this length or, if 0, then this has no effect |
+| &nbsp;&nbsp;&nbsp;*maximumWordLength* | number | Ignores words greater than this length or if 0 then this has no effect |
+| &nbsp;&nbsp;&nbsp;*minimumDocumentFrequency* | number | Ignores words which do not occur in at least this many documents |
+| &nbsp;&nbsp;&nbsp;*maximumDocumentFrequency* | number | Ignores words which occur in more than this many documents |
+| &nbsp;&nbsp;&nbsp;*maximumDocumentFrequencyPercentage* | number | Ignores words which occur in more than this percentage of documents |
+| &nbsp;&nbsp;&nbsp;*boost* | boolean | Boost terms in query based on score |
+| &nbsp;&nbsp;&nbsp;*boostFactor* | number |  Boost factor when boosting based on score |
+| &nbsp;&nbsp;&nbsp;*stopWordsDocumentId* | string | Document ID containing custom stop words |
+| &nbsp;&nbsp;&nbsp;*fields* | string[] | Fields to compare |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+const options = { fields: [ "body" ] };
+
+const articles = await session
+    .query({ indexName:  "Articles/MoreLikeThis" })
+    .moreLikeThis(builder => builder
+        .usingDocument(x => x.whereEquals("id()", "articles/1"))
+        .withOptions(options))
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "body" ] }')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+// where article category is 'IT'
+const options = { fields: [ "body" ] };
+const articles = await session
+    .query({ indexName: "Articles/MoreLikeThis" })
+    .moreLikeThis(builder => builder
+        .usingDocument(x => x.whereEquals("id()", "articles/1"))
+        .withOptions(options))
+    .whereEquals("category", "IT")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "body" ] }') and category == 'IT'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

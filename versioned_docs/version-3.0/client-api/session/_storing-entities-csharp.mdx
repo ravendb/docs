@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store entities inside session object use one of the four `Store` methods.
+
+## Syntax
+
+First overload stores entity in session, extracts Id from entity using `Conventions` or generates new one if it is not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="csharp">
+{`void Store(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+Second overload stores entity in session, extracts Id from entity using `Conventions` or generates new one if it is not available and forces concurrency check with given Etag.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="csharp">
+{`void Store(object entity, string changeVector, string id);
+`}
+</CodeBlock>
+</TabItem>
+
+Third overload stores entity in session with given id.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="csharp">
+{`void Store(object entity, string id);
+`}
+</CodeBlock>
+</TabItem>
+
+Fourth overload stores entity in session with given id and forces concurrency check with given Etag.
+
+<TabItem value="store_entities_4" label="store_entities_4">
+<CodeBlock language="csharp">
+{`void Store(object entity, Etag etag, string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity that will be stored |
+| **etag** | Etag | Current entity etag, used for concurrency checks (`null` to skip check) |
+| **id** | string | Entity will be stored under this key, (`null` to generate automatically) |
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="csharp">
+{`// generate Id automatically
+session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+// send all pending operations to server, in this case only \`Put\` operation
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

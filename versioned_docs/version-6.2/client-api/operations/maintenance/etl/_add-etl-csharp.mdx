@@ -1,0 +1,298 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `AddEtlOperation` method to add a new ongoing ETL task to your database.  
+
+* To learn about ETL (Extract, Transfer, Load) ongoing tasks, see article [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
+  To learn how to manage ETL tasks from the Studio, see [Ongoing tasks - overview](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx).  
+
+* In this page:
+
+  * [Add RavenDB ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-ravendb-etl-task)  
+  * [Add SQL ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-sql-etl-task)  
+  * [Add OLAP ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-olap-etl-task)  
+  * [Add Elasticsearch ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-elasticsearch-etl-task)  
+  * [Add Kafka ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-kafka-etl-task)  
+  * [Add RabbitMQ ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-rabbitmq-etl-task)  
+  * [Add Azure Queue Storage ETL task](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-azure-queue-storage-etl-task)
+  * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl.mdx#syntax)
+
+</Admonition>
+## Add RavenDB ETL task
+
+* Learn about the RavenDB ETL task in article **[RavenDB ETL task](../../../../server/ongoing-tasks/etl/raven.mdx)**.
+* Learn how to define a connection string for the RavenDB ETL task in section **[Add a RavenDB connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-ravendb-connection-string)**.
+* To manage the RavenDB ETL task from the Studio, see **[Studio: RavenDB ETL task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx)**.
+The following example adds a RavenDB ETL task:
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="csharp">
+{`// Define the RavenDB ETL task configuration object
+// ================================================
+var ravenEtlConfig = new RavenEtlConfiguration
+\{
+    Name = "task-name",
+    ConnectionStringName = "raven-connection-string-name",
+    Transforms =
+    \{
+        new Transformation
+        \{
+            // The script name
+            Name = "script-name",
+            
+            // RavenDB collections the script uses
+            Collections = \{ "Employees" \},
+            
+            // The transformation script
+            Script = @"loadToEmployees (\{
+                       Name: this.FirstName + ' ' + this.LastName,
+                       Title: this.Title
+                     \});"
+        \}
+    \},
+
+    // Do not prevent task failover to another node (optional) 
+    PinToMentorNode = false
+\};
+
+// Define the AddEtlOperation
+// ==========================
+var operation = new AddEtlOperation<RavenConnectionString>(ravenEtlConfig);
+
+// Execute the operation by passing it to Maintenance.Send
+// =======================================================
+AddEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add SQL ETL task
+
+* Learn about the SQL ETL task in article **[SQL ETL task](../../../../server/ongoing-tasks/etl/sql.mdx)**.
+* Learn how to define a connection string for the SQL ETL task in section **[Add a SQL connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)**.
+The following example adds an SQL ETL task:
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="csharp">
+{`// Define the SQL ETL task configuration object
+// ============================================
+var sqlEtlConfig = new SqlEtlConfiguration
+\{
+    Name = "task-name",
+    ConnectionStringName = "sql-connection-string-name",
+    SqlTables =
+    \{
+        new SqlEtlTable \{TableName = "Orders", DocumentIdColumn = "Id", InsertOnlyMode = false\},
+        new SqlEtlTable \{TableName = "OrderLines", DocumentIdColumn = "OrderId", InsertOnlyMode = false\},
+    \},
+    Transforms =
+    \{
+        new Transformation
+        \{
+            Name = "script-name",
+            Collections = \{ "Orders" \},
+            Script = @"var orderData = \{
+                                Id: id(this),
+                                OrderLinesCount: this.Lines.length,
+                                TotalCost: 0
+                            \};
+
+                            for (var i = 0; i < this.Lines.length; i++) \{
+                                var line = this.Lines[i];
+                                orderData.TotalCost += line.PricePerUnit;
+                                
+                                // Load to SQL table 'OrderLines'
+                                loadToOrderLines(\{
+                                    OrderId: id(this),
+                                    Qty: line.Quantity,
+                                    Product: line.Product,
+                                    Cost: line.PricePerUnit
+                                \});
+                            \}
+                            orderData.TotalCost = Math.round(orderData.TotalCost  * 100) / 100;
+
+                            // Load to SQL table 'Orders'
+                            loadToOrders(orderData)"
+        \}
+    \},
+
+    // Do not prevent task failover to another node (optional) 
+    PinToMentorNode = false
+\};
+
+// Define the AddEtlOperation
+// ===========================
+var operation = new AddEtlOperation<SqlConnectionString>(sqlEtlConfig);
+
+// Execute the operation by passing it to Maintenance.Send
+// =======================================================
+AddEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add OLAP ETL task
+
+* Learn about the OLAP ETL task in article **[OLAP ETL task](../../../../server/ongoing-tasks/etl/olap.mdx)**.
+* Learn how to define a connection string for the OLAP ETL task in section **[Add an OLAP connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)**.
+* To manage the OLAP ETL task from the Studio, see **[Studio: OLAP ETL task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx)**.
+The following example adds an OLAP ETL task:
+
+<TabItem value="add_olap_etl" label="add_olap_etl">
+<CodeBlock language="csharp">
+{`// Define the OLAP ETL task configuration object
+// =============================================
+var olapEtlConfig = new OlapEtlConfiguration
+\{
+    Name = "task-name",
+    ConnectionStringName = "olap-connection-string-name",
+    Transforms =
+    \{
+        new Transformation
+        \{
+            Name = "script-name",
+            Collections = \{"Orders"\},
+            Script = @"var orderDate = new Date(this.OrderedAt);
+                           var year = orderDate.getFullYear();
+                           var month = orderDate.getMonth();
+                           var key = new Date(year, month);
+                           loadToOrders(key, \{
+                               Company : this.Company,
+                               ShipVia : this.ShipVia
+                           \})"
+        \}
+    \}
+\};
+
+// Define the AddEtlOperation
+// ==========================
+var operation = new AddEtlOperation<OlapConnectionString>(olapEtlConfig);
+
+// Execute the operation by passing it to Maintenance.Send
+// =======================================================
+AddEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add Elasticsearch ETL task
+
+* Learn about the Elasticsearch ETL task in article **[Elasticsearch ETL task](../../../../server/ongoing-tasks/etl/elasticsearch.mdx)**.
+* Learn how to define a connection string for the Elasticsearch ETL task in section **[Add an Elasticsearch connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-elasticsearch-connection-string)**.
+* To manage the Elasticsearch ETL task from the Studio, see **[Studio: Elasticsearch ETL task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx)**.
+The following example adds an Elasticsearch ETL task:
+
+<TabItem value="add_elasticsearch_etl" label="add_elasticsearch_etl">
+<CodeBlock language="csharp">
+{`// Define the Elasticsearch ETL task configuration object
+// ======================================================
+var elasticsearchEtlConfig = new ElasticSearchEtlConfiguration
+\{
+    Name = "task-name",
+    ConnectionStringName = "elasticsearch-connection-string-name",
+    ElasticIndexes =
+    \{
+        // Define Elasticsearch Indexes
+        new ElasticSearchIndex
+        \{
+            // Elasticsearch Index name
+            IndexName = "orders",
+            // The Elasticsearch document property that will contain the source RavenDB document id.
+            // Make sure this property is also defined inside the transform script.
+            DocumentIdProperty = "DocId",
+            InsertOnlyMode = false
+        \},
+        new ElasticSearchIndex
+        \{
+            IndexName = "lines",
+            DocumentIdProperty = "OrderLinesCount",
+            // If true, don't send _delete_by_query before appending docs
+            InsertOnlyMode = true
+        \}
+    \},
+    Transforms =
+    \{
+        new Transformation()
+        \{
+            Collections = \{ "Orders" \},
+            Script = @"var orderData = \{
+                       DocId: id(this),
+                       OrderLinesCount: this.Lines.length,
+                       TotalCost: 0
+                       \};
+
+                       // Write the \`orderData\` as a document to the Elasticsearch 'orders' index
+                       loadToOrders(orderData);",
+
+            Name = "script-name"
+        \}
+    \}
+\};
+
+// Define the AddEtlOperation
+// ==========================
+var operation = new AddEtlOperation<ElasticSearchConnectionString>(elasticsearchEtlConfig);
+
+// Execute the operation by passing it to Maintenance.Send
+// =======================================================
+store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add Kafka ETL task
+
+* Learn about the Kafka ETL task in article **[Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx)**.
+* Learn how to define a connection string for the Kafka ETL task in section **[Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)**.
+* To manage the Kafka ETL task from the Studio, see **[Studio: Kafka ETL task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx)**.
+* Examples showing how to add a Kafka ETL task are available in section **[Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)**. 
+
+
+
+## Add RabbitMQ ETL task
+
+* Learn about the RabbitMQ ETL task in article **[RabbitMQ ETL task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx)**.
+* Learn how to define a connection string for the RabbitMQ ETL task in section **[Add a RabbitMQ connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-connection-string)**.
+* To manage the RabbitMQ ETL task from the Studio, see **[Studio: RabbitMQ ETL task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)**.
+* Examples showing how to add a RabbitMQ ETL task are available in section **[Add a RabbitMQ ETL task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-etl-task)**.
+
+
+
+## Add Azure Queue Storage ETL task
+
+* Learn about the Azure Queue Storage ETL task in article **[Azure Queue Storage ETL task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx)**.
+* Learn how to define a connection string for the Azure Queue Storage ETL task in section  
+  **[Add an Azure Queue Storage connection string](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#add-an-azure-queue-storage-connection-string)**.
+* To manage the Azure Queue Storage ETL task from the Studio, see **[Studio: Azure Queue Storage ETL task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx)**.
+* Examples showing how to add an Azure Queue Storage ETL task are available in section **[Add a Azure Queue Storage ETL task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#add-an-azure-queue-storage-etl-task)**.
+
+
+
+## Syntax
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="csharp">
+{`public AddEtlOperation(EtlConfiguration<T> configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                  | Description                                                          |
+|-------------------|-----------------------|----------------------------------------------------------------------|
+| **configuration** | `EtlConfiguration<T>` | The ETL configuration object where `T` is the connection string type |
+
+
+
+

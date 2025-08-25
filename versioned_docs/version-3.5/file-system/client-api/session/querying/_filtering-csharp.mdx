@@ -1,0 +1,262 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Filtering
+
+To retrieve the files you are interested in, you need to define a set of conditions that they should match. To build a query with filtering criteria, you can use a bunch of available methods.
+
+
+
+The first method to create a conditional query is `Where` which takes a string parameter. You need to manually define the whole query according to the [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html), the same as for the [`SearchAsync` command](../../commands/files/search/search.mdx). This approach enjoys the full support of the Lucene search functionality. You can query the [built-in RavenFS fields](../../../indexing.mdx) as well as the custom files' metadata.
+
+<TabItem value="filtering_1" label="filtering_1">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.Where("__fileName:readme* AND Copyright:HR")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## WhereEquals
+
+It allows you to find the exact match on a file property or metadata. The following query will return all files that have the `Copyright` metadata with `HR` value.
+
+<TabItem value="filtering_5" label="filtering_5">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereEquals("Copyright", "HR")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereIn
+
+Can be used to check a single value against the multiple values. For example, to get all the files that name is either `readme.txt` or `help.doc`, you can issue the following query:
+
+<TabItem value="filtering_8" label="filtering_8">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereIn(x => x.Name, new[] \{ "readme.txt", "help.doc" \})
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereStartsWith
+
+In order to find the files that have metadata value starting with the specified prefix, use the `WhereStartsWith` method. The below code will return all the files located in the `/movies/ravenfs` directory and its subdirectories.
+
+<TabItem value="filtering_11" label="filtering_11">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereStartsWith(x => x.FullPath, "/movies/ravenfs")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereEndsWith
+
+Analogously, you can build a query that will look for the files with a given suffix value. For example, this can be used to find files of the same type by using file extensions.
+
+<TabItem value="filtering_4" label="filtering_4">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereEndsWith(x => x.Name, ".txt")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereLessThan and WhereLessThanOrEqual
+
+While querying numeric metadata values, methods such as `WhereLess` or `WhereBetween` come in handy. You can use them to determine a file size as well as to query the numeric custom metadata fields.
+
+<TabItem value="filtering_9" label="filtering_9">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereLessThan(x => x.TotalSize, 1024)
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="filtering_10" label="filtering_10">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereLessThanOrEqual("Downloaded", 5)
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereGreaterThan and WhereGreaterThanOrEqual
+
+Note that you can even apply such query on a string field - then values will be compared lexicographically.
+
+<TabItem value="filtering_6" label="filtering_6">
+<CodeBlock language="csharp">
+{`session.RegisterUpload("test.file", stream);
+session.RegisterUpload("test.fil", stream);
+session.RegisterUpload("test.fi", stream);
+session.RegisterUpload("test.f", stream);
+
+await session.SaveChangesAsync();
+
+List<FileHeader> results = await session.Query()
+	.WhereGreaterThan(x => x.Name, "test.fi") // will return 'test.fil' and 'test.file'
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="filtering_7" label="filtering_7">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereGreaterThanOrEqual("Download-Ratio", 7.3)
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## WhereBetween and WhereBetweenOrEqual
+
+Use the `WhereBetween` method to find files that fulfill a range criteria.
+
+<TabItem value="filtering_2" label="filtering_2">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereBetween(x => x.TotalSize, 1024 * 1024, 5 * 1024 * 1024) // size has to be > 1KB but < 5KB
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="filtering_3" label="filtering_3">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereBetweenOrEqual("NumberOfDownloads", 5, 10)
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## ContainsAll and ContainsAny
+
+Note that under a single metadata key, there can be multiple values stored as an array. For example, you can store multiple attributes in the metadata:
+
+<TabItem value="filtering_12" label="filtering_12">
+<CodeBlock language="csharp">
+{`session.RegisterUpload("git.bin", content, new RavenJObject()
+\{
+	\{"Attributes", new RavenJArray(new object[]\{ "r", "w" \}) \}
+\});
+
+session.RegisterUpload("svn.bin", content, new RavenJObject()
+\{
+	\{"Attributes", new RavenJArray(new object[]\{ "w", "x" \}) \}
+\});
+
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+In order to allow queries execution against array values, you can use `ContainsAll` to determine that all provided values have to be in the array:
+
+<TabItem value="filtering_13" label="filtering_13">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.ContainsAll("Attributes", new[] \{ "r", "w" \}) // will return git.bin
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+The `ContainsAny` method checks just for an occurrence of any value from the specified collection:
+
+<TabItem value="filtering_14" label="filtering_14">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.ContainsAny("Attributes", new[] \{ "r", "x" \}) // will return git.bin and svn.bin
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## AndAlso and OrElse
+
+So far we have considered queries with a single condition. However, you may want to build a more complex query by providing multiple predicates.
+Let's take a look at the example:
+
+<TabItem value="filtering_15" label="filtering_15">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereStartsWith(x => x.Name, "readme")
+	.WhereEquals("Copyright", "HR")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+It will send the following query to the server:
+
+`__fileName:readme* Copyright:HR`
+
+Note that between these two conditions there is no logical operator. In that case, the *OR* operator will be used, as it is the default Lucene conjunction operator.
+
+However, if your intention is to retrieve files that match both conditions, you should explicitly indicate that by using the `AndAlso` operator.
+
+<TabItem value="filtering_16" label="filtering_16">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereStartsWith(x => x.Name, "readme")
+	.AndAlso()
+	.WhereEquals("Copyright", "HR")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+Then the query sent to the server will look as follows:
+
+`__fileName:readme* AND Copyright:HR`
+
+Sometimes you may need to explicitly indicate that you want to join criteria by using *OR* operator. In that case, join your predicates using the `OrElse` method:
+
+<TabItem value="filtering_17" label="filtering_17">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.WhereIn(x => x.Name, new[] \{ "help.txt", "documentation.doc" \})
+	.OrElse()
+	.WhereStartsWith(x => x.Name, "readme")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+The actual query will be:
+
+`@in<__fileName>:(help.txt,documentation.doc)  OR __fileName:readme*`
+
+## OnDirectory
+
+This method is used to indicate the directory where the search should be performed. Additionally, you can determine whether the search operation should be run only against this directory or also its subfolders.
+
+<TabItem value="filtering_18" label="filtering_18">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+	.OnDirectory("/documents/wallpapers", recursive: true)
+	.WhereEndsWith(x => x.Name, "1920x1080.jpg")
+	.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+

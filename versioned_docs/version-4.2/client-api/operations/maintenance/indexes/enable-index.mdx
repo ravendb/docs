@@ -5,78 +5,24 @@ sidebar_label: Enable Index
 sidebar_position: 7
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import EnableIndexCsharp from './_enable-index-csharp.mdx';
+import EnableIndexJava from './_enable-index-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Enable an Index
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The **EnableIndexOperation** is used to turn on the indexing for a given index.
-
-
-## Syntax
-
-<TabItem value="enable_1" label="enable_1">
-<CodeBlock language="csharp">
-{`public EnableIndexOperation(string indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | string | name of an index to enable indexing |
-
-## Example
-
-<TabItem value="enable_2" label="enable_2">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new EnableIndexOperation("Orders/Totals"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <EnableIndexCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The **EnableIndexOperation** is used to turn on the indexing for a given index.
-
-
-## Syntax
-
-<TabItem value="enable_1" label="enable_1">
-<CodeBlock language="java">
-{`public EnableIndexOperation(String indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | name of an index to enable indexing |
-
-## Example
-
-<TabItem value="enable_2" label="enable_2">
-<CodeBlock language="java">
-{`store.maintenance().send(new EnableIndexOperation("Orders/Totals"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <EnableIndexJava />
 </LanguageContent>
+
 
 <!---
 ### Indexes

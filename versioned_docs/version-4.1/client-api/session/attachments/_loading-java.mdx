@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to download attachments from a database:   
+
+**session.advanced().attachments().get** can be used to download an attachment.   
+**session.advanced().attachments().getNames** can be used to download all attachment names that are attached to a document.   
+**session.advanced().attachments().getRevision** can be used to download an attachment of a revision document.   
+**session.advanced().attachments().exists** can be used to determine if an attachment exists on a document.   
+
+## Syntax
+
+<TabItem value="GetSyntax" label="GetSyntax">
+<CodeBlock language="java">
+{`AttachmentName[] getNames(Object entity);
+
+boolean exists(String documentId, String name);
+
+CloseableAttachmentResult get(String documentId, String name);
+
+CloseableAttachmentResult get(Object entity, String name);
+
+CloseableAttachmentResult getRevision(String documentId, String name, String changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="GetAttachment" label="GetAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Album album = session.load(Album.class, "albums/1");
+
+    try (CloseableAttachmentResult file1 = session
+            .advanced().attachments().get(album, "001.jpg");
+        CloseableAttachmentResult file2 = session
+            .advanced().attachments().get("albums/1", "002.jpg")) \{
+
+        InputStream inputStream = file1
+            .getData();
+
+        AttachmentDetails attachmentDetails = file1.getDetails();
+        String name = attachmentDetails.getName();
+        String contentType = attachmentDetails.getContentType();
+        String hash = attachmentDetails.getHash();
+        long size = attachmentDetails.getSize();
+        String documentId = attachmentDetails.getDocumentId();
+        String changeVector = attachmentDetails.getChangeVector();
+    \}
+
+    AttachmentName[] attachmentNames = session.advanced().attachments().getNames(album);
+    for (AttachmentName attachmentName : attachmentNames) \{
+
+        String name = attachmentName.getName();
+        String contentType = attachmentName.getContentType();
+        String hash = attachmentName.getHash();
+        long size = attachmentName.getSize();
+    \}
+
+    boolean exists = session.advanced().attachments().exists("albums/1", "003.jpg");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -5,128 +5,24 @@ sidebar_label: UpdateMetadata
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import UpdateMetadataCsharp from './_update-metadata-csharp.mdx';
+import UpdateMetadataHttp from './_update-metadata-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: UpdateMetadataAsync
-
-**UpdateMetadataAsync** is used if you need to change just the file's metadata without any modification to its content.
-
-
-
-<TabItem value="update_metadata_1" label="update_metadata_1">
-<CodeBlock language="csharp">
-{`Task UpdateMetadataAsync(string filename, RavenJObject metadata, Etag etag = null);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **filename** | string | The modified file name |
-| **metadata** | RavenJObject | New file metadata |
-| **etag** | Etag | The current file Etag, used for concurrency checks (`null` skips check) |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task** | A task that represents the asynchronous metadata update operation. |
-
-## Example
-
-<TabItem value="update_metadata_2" label="update_metadata_2">
-<CodeBlock language="csharp">
-{`await store
-	.AsyncFilesCommands
-	.UpdateMetadataAsync(
-		"/movies/intro.avi",
-		new RavenJObject()
-		\{
-			\{
-				"AllowRead", "None"
-			\}
-		\});
-`}
-</CodeBlock>
-</TabItem>
-
+   <UpdateMetadataCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: UpdateMetadata
-
-The **POST** operation is used if you need to change just the file's metadata without any modification to its content. 
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/files/\{name\}  \\
-	-X POST \\
-    --header "Content-Length:0"
-	--header "anyKey:anyValue" \\
-    --header "If-None-Match:\{etag\}"
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| Empty |
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **name** | Yes | The name of modified file |
-
-| Header | Required | Description |
-| --------| ------- | --- |
-| **Content-Length** | Yes |  Needed to accomplish the `POST` request |
-| **If-None-Match** | No |  Used to pass the file `Etag` |
-| Any other header | No | Used to pass metadata records |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `204` | No Content status means that operation completed successfully |
-| `405` | The concurrency exception occurred |
-| `420` | The synchronization exception occurred |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **None** | The request does not return any message |
-
----
-
-## Example
-
-In order to change metadata of `/movies/intro.avi` by setting `AllowRead` to `None` value, create the `POST` request as follow:
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X POST http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi  \\
-	--header "Content-Length:0" \\
-    --header "AllowRead:None"
-< HTTP/1.1 204 NoContent
-`}
-</CodeBlock>
-</TabItem>
-
+   <UpdateMetadataHttp />
 </LanguageContent>
+
 
 <!---
 

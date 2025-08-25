@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIndexesOperation** is used to retrieve multiple index definitions from a database.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`public GetIndexesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Number of indexes that should be skipped |
+| **pageSize** | int | Maximum number of indexes that will be retrieved  |
+
+| Return Value | |
+| ------------- | ----- |
+| `IndexDefinition` | Instance of IndexDefinition representing index. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="csharp">
+{`IndexDefinition[] indexes = store.Maintenance.Send(new GetIndexesOperation(0, 10));
+`}
+</CodeBlock>
+</TabItem>
+
+

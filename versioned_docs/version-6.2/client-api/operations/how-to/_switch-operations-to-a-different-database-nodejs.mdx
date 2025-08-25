@@ -1,0 +1,101 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, all operations work on the default database defined in the [document store](../../../client-api/creating-document-store.mdx).
+
+* **To operate on a different database**, use the `forDatabase` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `operations.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-operationsfordatabase)
+    * [Maintenance operation: `maintenance.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenancefordatabase)
+</Admonition>
+## Common operation: `operations.forDatabase`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
+
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="js">
+{`// Define default database on the store
+const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
+documentStore.initialize();
+
+// Use 'forDatabase', get operation executor for another database
+ const opExecutor = documentStore.operations.forDatabase("AnotherDB");
+
+// Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+const revisionsInAnotherDB =
+    await opExecutor.send(new GetRevisionsOperation("Orders/1-A"));
+
+// Without 'forDatabase', the operation is executed "DefaultDB"
+const revisionsInDefaultDB =
+   await documentStore.operations.send(new GetRevisionsOperation("Company/1-A"));
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`store.operations.forDatabase(databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `maintenance.forDatabase`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
+
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="js">
+{`// Define default database on the store
+const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
+documentStore.initialize();
+
+// Use 'forDatabase', get maintenance operation executor for another database
+const opExecutor = documentStore.maintenance.forDatabase("AnotherDB");
+
+// Send the maintenance operation, e.g. get database stats for "AnotherDB"
+const statsForAnotherDB =
+    await opExecutor.send(new GetStatisticsOperation());
+
+// Without 'forDatabase', the stats are retrieved for "DefaultDB"
+const statsForDefaultDB =
+    await documentStore.maintenance.send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`store.maintenance.forDatabase(databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+

@@ -1,0 +1,45 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx) can be executed at once using `MultiFacetedSearch` method from `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="multi_facet_1" label="multi_facet_1">
+<CodeBlock language="csharp">
+{`FacetResults[] MultiFacetedSearch(params FacetQuery[] queries);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **queries** | params [FacetQuery](../../../glossary/facet-query.mdx) | Array of FacetQueries that will be executed on server. |
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResult](../../../glossary/facet-results.mdx#facetresult)[] | Array of FacetResults. Each matching its FacetQuery position from `queries` parameter. |
+
+## Example
+
+<TabItem value="multi_facet_2" label="multi_facet_2">
+<CodeBlock language="csharp">
+{`FacetQuery facetQuery1 = session.Query<Camera>()
+	.ToFacetQuery("facets/CameraFacets1");
+
+FacetQuery facetQuery2 = session.Query<Camera>()
+	.ToFacetQuery("facets/CameraFacets2");
+
+FacetResults[] results = session
+	.Advanced
+	.MultiFacetedSearch(facetQuery1, facetQuery2);
+
+FacetResults facetResults1 = results[0];
+FacetResults facetResults2 = results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+

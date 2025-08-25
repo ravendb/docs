@@ -5,292 +5,39 @@ sidebar_label: Resume Indexing
 sidebar_position: 11
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StartIndexingCsharp from './_start-indexing-csharp.mdx';
+import StartIndexingJava from './_start-indexing-java.mdx';
+import StartIndexingPython from './_start-indexing-python.mdx';
+import StartIndexingPhp from './_start-indexing-php.mdx';
+import StartIndexingNodejs from './_start-indexing-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-
-# Resume Indexing Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
-  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
-  <Admonition type="info" title="">
-  Calling `StartIndexingOperation` on a single index will have no effect.
-  </Admonition>
-
-* When resuming indexing from the **client**:  
-  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
-  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
-
-* In this page:
-  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
-
-</Admonition>
-## Resume indexing example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the resume indexing operation
-var resumeIndexingOp = new StartIndexingOperation();
-
-// Execute the operation by passing it to Maintenance.Send
-store.Maintenance.Send(resumeIndexingOp);
-
-// At this point,
-// you can be sure that all indexes on the preferred node are 'running'
-        
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
-Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the resume indexing operation
-var resumeIndexingOp = new StartIndexingOperation();
-
-// Execute the operation by passing it to Maintenance.SendAsync
-await store.Maintenance.SendAsync(resumeIndexingOp);
-
-// At this point,
-// you can be sure that all indexes on the preferred node are 'running'
-        
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
-Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// class name has "Start", but this is ok, this is the "Resume" operation
-public StartIndexingOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartIndexingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**StartIndexingOperation** is used to resume indexing for entire database. 
-
-### Syntax
-
-<TabItem value="start_1" label="start_1">
-<CodeBlock language="java">
-{`public StartIndexingOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-<TabItem value="start_2" label="start_2">
-<CodeBlock language="java">
-{`store.maintenance().send(new StartIndexingOperation());
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StartIndexingJava />
 </LanguageContent>
+
 <LanguageContent language="python">
-
-<Admonition type="note" title="">
-
-* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
-  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
-  <Admonition type="info" title="">
-  Calling `StartIndexingOperation` on a single index will have no effect.
-  </Admonition>
-
-* When resuming indexing from the **client**:  
-  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
-  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
-
-* In this page:
-  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
-
-</Admonition>
-## Resume indexing example
-
-<TabItem value="resume_indexing" label="resume_indexing">
-<CodeBlock language="python">
-{`# Define the resume indexing operation
-resume_index_op = StartIndexingOperation()
-
-# Execute the operation by passing it to maintenance.send
-store.maintenance.send(resume_index_op)
-
-# At this point:
-# you can be sure that all indexes on the preferred node are 'running'
-
-# Can verify the index status on the preferred node by sending GetIndexingStatusOperation
-indexing_status = store.maintenance.send(GetIndexingStatusOperation())
-
-self.assertEqual(indexing_status.status, IndexRunningStatus.RUNNING)
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="python">
-{`class StartIndexingOperation(VoidMaintenanceOperation):
-    def __init__(self): ...
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartIndexingPython />
 </LanguageContent>
+
 <LanguageContent language="php">
-
-<Admonition type="note" title="">
-
-* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
-  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
-  <Admonition type="info" title="">
-  Calling `StartIndexingOperation` on a single index will have no effect.
-  </Admonition>
-
-* When resuming indexing from the **client**:  
-  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
-  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
-
-* In this page:
-  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
-
-</Admonition>
-## Resume indexing example
-
-<TabItem value="resume_indexing" label="resume_indexing">
-<CodeBlock language="php">
-{`// Define the resume indexing operation
-$resumeIndexingOp = new StartIndexingOperation();
-
-// Execute the operation by passing it to Maintenance.Send
-$store->maintenance()->send($resumeIndexingOp);
-
-// At this point,
-// you can be sure that all indexes on the preferred node are 'running'
-
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-/** @var IndexingStatus $indexingStatus */
-$indexingStatus = $store->maintenance()->send(new GetIndexingStatusOperation());
-$this->assertTrue($indexingStatus->getStatus()->isPaused());
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="php">
-{`// class name prefix is "Start", but this is still the "Resume" operation
-public StartIndexingOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartIndexingPhp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
-  use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
-  <Admonition type="info" title="">
-  Calling `StartIndexingOperation` on a single index will have no effect.
-  </Admonition>
-
-* When resuming indexing from the **client**:  
-  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
-  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
-
-* In this page:
-  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
-
-</Admonition>
-## Resume indexing example
-
-<TabItem value="resume_indexing" label="resume_indexing">
-<CodeBlock language="js">
-{`// Define the resume indexing operation 
-const resumeIndexingOp = new StartIndexingOperation();
-
-// Execute the operation by passing it to maintenance.send
-await store.maintenance.send(resumeIndexingOp);
-
-// At this point,
-// you can be sure that all indexes on the preferred node are 'running'
-
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-const indexingStatus = await store.maintenance.send(new GetIndexingStatusOperation());
-assert.strictEqual(indexingStatus.status, "Running");
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`// class name has "Start", but this is ok, this is the "Resume" operation
-const resumeIndexingOp = new StartIndexingOperation();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StartIndexingNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

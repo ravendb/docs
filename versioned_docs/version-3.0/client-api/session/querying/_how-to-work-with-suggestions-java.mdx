@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Session `query` allows you to use suggestion feature.
+
+## Syntax
+
+<TabItem value="suggest_1" label="suggest_1">
+<CodeBlock language="java">
+{`ISuggestionDocumentQuery<T> suggestUsing(SuggestionBase suggestion);
+
+ISuggestionDocumentQuery<T> suggestUsing(Consumer<ISuggestionBuilder<T>> builder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
+
+| Return Value | |
+| ------------- | ----- |
+| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing array of all suggestions for executed query. |
+
+## Example
+
+<TabItem value="suggest_2" label="suggest_2">
+<CodeBlock language="java">
+{`ISuggestionOperations<T> byField(String fieldName, String term);
+
+ISuggestionOperations<T> byField(String fieldName, String[] terms);
+
+ISuggestionOperations<T> withOptions(SuggestionOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+

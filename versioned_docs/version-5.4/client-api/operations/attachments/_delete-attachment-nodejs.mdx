@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `DeleteAttachmentOperation` to delete an attachment from a document.
+
+* In this page:
+
+    * [Delete attachment example](../../../client-api/operations/attachments/delete-attachment.mdx#delete-attachment-example)
+    * [Syntax](../../../client-api/operations/attachments/delete-attachment.mdx#syntax)
+
+</Admonition>
+## Delete attachment example
+
+<TabItem value="delete_attachment" label="delete_attachment">
+<CodeBlock language="js">
+{`// Define the delete attachment operation
+const deleteAttachmentOp = new DeleteAttachmentOperation("employees/1-A", "photo.jpg");
+
+// Execute the operation by passing it to operations.send
+await documentStore.operations.send(deleteAttachmentOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name);
+const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                       |
+|------------------|----------|-----------------------------------------------------------------------------------|
+| __documentId__   | `string` | ID of document from which attachment will be removed                              |
+| __name__         | `string` | Name of attachment to delete                                                      |
+| __changeVector__ | `string` | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |
+
+
+
+

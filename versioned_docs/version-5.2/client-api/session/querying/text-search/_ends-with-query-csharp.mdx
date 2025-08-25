@@ -1,0 +1,191 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can query for documents having a field that ends with some specified string.
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* __Note__:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query.mdx), which is much faster.
+
+* In this page:
+    * [EndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx#endswith)
+    * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query.mdx#endswith-(case-sensitive))
+    * [Negate EndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx#negate-endswith)
+
+</Admonition>
+## EndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager"))
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager"))
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## EndsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .Where(x => x.Name.EndsWith("Lager"), exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .Where(x => x.Name.EndsWith("Lager"), exact: true)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .WhereEndsWith(x => x.Name, "Lager", exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate EndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager") == false)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager") == false)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'Not' to negate the next predicate
+    .Not
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

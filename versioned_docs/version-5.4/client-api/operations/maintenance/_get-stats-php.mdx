@@ -1,0 +1,211 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics can be retrieved for the database and for collections.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
+</Admonition>
+## Get collection statistics
+
+To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="php">
+{`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store
+/** @var  CollectionStatistics $stats */
+$stats = $store->maintenance()->send((new GetCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="php">
+{`// Collection stats results:
+class CollectionStatistics
+\{
+    // Total # of documents in all collections
+    private ?int $countOfDocuments = null;
+    // Total # of conflicts
+    private ?int $countOfConflicts = null;
+    // Total # of documents per collection
+    private array $collections = [];
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed collection statistics
+
+To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="php">
+{`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store
+/** @var DetailedCollectionStatistics $stats */
+$stats = $store->maintenance()->send(new GetDetailedCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="php">
+{`// Detailed collection stats results:
+public class DetailedCollectionStatistics
+\{
+    // Total # of documents in all collections
+    public long CountOfDocuments \{ get; set; \}
+    // Total # of conflicts
+    public long CountOfConflicts \{ get; set; \}
+    // Collection details per collection
+    public Dictionary<string, CollectionDetails> Collections \{ get; set; \}
+\}
+
+// Details per collection
+class CollectionDetails
+\{
+    private ?string $name = null;
+    private ?int $countOfDocuments = null;
+    private ?Size $size = null;
+    private ?Size $documentsSize = null;
+    private ?Size $tombstonesSize = null;
+    private ?Size $revisionsSize = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get database statistics
+
+To get **database statistics**, use `GetStatisticsOperation`:  
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="php">
+{`// Pass an instance of class \`GetStatisticsOperation\` to the store
+/** @var DatabaseStatistics $stats */
+$stats = $store->maintenance()->send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="php">
+{`// Database stats results:
+class DatabaseStatistics implements ResultInterface
+\{
+    private ?int $lastDocEtag = null;               // Last document etag in database
+    private ?int $lastDatabaseEtag = null;          // Last database etag
+
+    private ?int $countOfIndexes = null;            // Total # of indexes in database
+    private ?int $countOfDocuments = null;          // Total # of documents in database
+    private ?int $countOfRevisionDocuments = null;  // Total # of revision documents in database
+    private ?int $countOfDocumentsConflicts = null; // Total # of documents conflicts in database
+    private ?int $countOfTombstones = null;         // Total # of tombstones in database
+    private ?int $countOfConflicts = null;          // Total # of conflicts in database
+    private ?int $countOfAttachments = null;        // Total # of attachments in database
+    private ?int $countOfUniqueAttachments = null;  // Total # of unique attachments in database
+    private ?int $countOfCounterEntries = null;     // Total # of counter-group entries in database
+    private ?int $countOfTimeSeriesSegments = null; // Total # of time-series segments in database
+
+    // List of stale index names in database
+    public function getStaleIndexes(): IndexInformationArray
+    \{
+        return IndexInformationArray::fromArray(
+            array_map(
+                function (IndexInformation $index) \{
+                    return $index->isStale();
+                \},
+            $this->indexes->getArrayCopy())
+        );
+    \}
+
+    // Statistics for each index in database
+    private ?IndexInformationArray $indexes = null;
+
+    private ?string $databaseChangeVector = null;           // Global change vector of the database
+    private ?string $databaseId = null;                     // Database identifier
+    private bool $is64Bit = false;                          // Indicates if process is 64-bit
+    private ?string $pager = null;                          // Component handling the memory-mapped files
+    private ?DateTimeInterface $lastIndexingTime = null;    // Last time of indexing an item
+    private ?Size $sizeOnDisk = null;                       // Database size on disk
+    private ?Size $tempBuffersSizeOnDisk = null;            // Temp buffers size on disk
+    private ?int $numberOfTransactionMergerQueueOperations = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed database statistics
+
+To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="php">
+{`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store
+/** @var DetailedDatabaseStatistics $stats */
+$stats = $store->maintenance()->send(new GetDetailedStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="php">
+{`// Detailed database stats results:
+class DetailedDatabaseStatistics extends DatabaseStatistics implements ResultInterface
+\{
+    // Total # of identities in database
+    private ?int $countOfIdentities = null;
+    // Total # of compare-exchange items in database
+    private ?int $countOfCompareExchange = null;
+    // Total # of cmpXchg tombstones in database
+    private ?int $countOfCompareExchangeTombstones = null;
+    // Total # of TS deleted ranges values in database
+    private ?int $countOfTimeSeriesDeletedRanges = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get statistics for another database
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection statistics for another database.  
+* `forDatabase` can be used with **any** of the above statistics options.
+
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="php">
+{`// Get stats for 'AnotherDatabase':
+/** @var DatabaseStatistics $stats */
+$stats = $store->maintenance()->forDatabase("AnotherDatabase")->send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+
+
+

@@ -1,0 +1,260 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Indexing attachments allows you to query for documents based on their attachments' details and content.
+
+* **Static indexes**:   
+  Both attachments' details and content can be indexed within a static-index definition.
+
+* **Auto-indexes**:  
+  Auto-indexing attachments via dynamic queries is not available at this time.
+
+
+* In this page:  
+  * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)  
+  * [Examples](../../document-extensions/attachments/indexing.mdx#examples)  
+  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)  
+
+</Admonition>
+## Syntax
+
+### Using `AttachmentsFor`
+
+The `AttachmentsFor` method returns information about each attachment that extends 
+a specified document, including their names, sizes, and content type.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Method" label="Method">
+<CodeBlock language="python">
+{`IEnumerable<AttachmentName> AttachmentsFor(object doc);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Result" label="Result">
+<CodeBlock language="python">
+{`public string Name;
+public string Hash;
+public string ContentType;
+public long Size;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
+
+### Using `LoadAttachment`/`LoadAttachments`
+
+`LoadAttachment` loads an attachment to the index by document and attachment name.  
+`LoadAttachments` loads all the attachments of a given document.  
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`public IAttachmentObject LoadAttachment(object doc, string name);
+public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **doc** | A server-side document, an entity | The document whose attachments you want to load |
+| **name** | `string` | The name of the attachment you want to load |
+
+#### `GetContentAs` Methods
+
+To access the attachment content itself, use `GetContentAsStream`. To 
+convert the content into a `string`, use `GetContentAsString` with 
+the desired character encoding.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public Stream GetContentAsStream();
+public string GetContentAsString(Encoding encoding);
+public string GetContentAsString(); // Default: UTF-8
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+#### Indexes with `AttachmentsFor`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="python">
+{`class Employees_ByAttachmentNames(AbstractIndexCreationTask):
+    class Result:
+        def __init__(self, attachment_names: List[str] = None):
+            self.attachment_names = attachment_names
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from e in employees "
+            "let attachments = AttachmentsFor(e) "
+            "select new "
+            "{"
+            "    attachment_names = attachments.Select(x => x.Name).ToArray()"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="python">
+{`class Employees_ByAttachmentNames_JS(AbstractJavaScriptIndexCreationTask):
+    class Result:
+        def __init__(self, attachment_names: List[str] = None):
+            self.attachment_names = attachment_names
+
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Employees', function (e) {
+                var attachments = attachmentsFor(e);
+                return {
+                    attachment_names: attachments.map(
+                        function(attachment) {
+                            return attachment.Name;
+                        }
+                };
+            })
+            """
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### Indexes with `LoadAttachment`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="python">
+{`class Companies_With_Attachments(AbstractJavaScriptIndexCreationTask):
+    class Result:
+        def __init__(self, attachment_names: List[str] = None):
+            self.attachment_names = attachment_names
+
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Employees', function (e) {
+                var attachments = attachmentsFor(e);
+                return {
+                    attachment_names: attachments.map(
+                        function(attachment) {
+                            return attachment.Name;
+                        }
+                };
+            })
+            """
+        }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="python">
+{`class Companies_With_Attachments_JavaScript(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Companies', function (company) {
+                var attachment = loadAttachment(company, company.ExternalId);
+                return {
+                    company_name: company.Name,
+                    attachment_name: attachment.Name,
+                    attachment_content_type: attachment.ContentType,
+                    attachment_hash: attachment.Hash,
+                    attachment_size: attachment.Size,
+                    attachment_content: attachment.getContentAsString('utf8')
+                };
+            })
+            """
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### Indexes with `LoadAttachments`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="python">
+{`class Companies_With_All_Attachments(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from company in companies "
+            "let attachments = LoadAttachments(company)"
+            "from attachment in attachments"
+            "select new"
+            "{"
+            "    attachment_name = attachment.Name,"
+            "    attachment_content = attachment.GetContentAsString(Encoding.UTF8)"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="python">
+{`class Companies_With_All_Attachments_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Companies', function (company) {
+                var attachments = loadAttachments(company);
+                return attachments.map(attachment => ({
+                    attachment_name: attachment.Name,
+                    attachment_content: attachment.getContentAsString('utf8')
+                }));
+            })
+            """
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### Querying the Index
+
+<TabItem value="query1" label="query1">
+<CodeBlock language="python">
+{`# return all employees that have an attachment called "cv.pdf"
+employees = list(
+    session.query_index_type(
+        Employees_ByAttachmentNames, Employees_ByAttachmentNames.Result
+    ).contains_any("attachment_names", ["cv.pdf"])
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Leveraging indexed attachments
+
+* Access to the indexed attachment content opens a door to many different applications,  
+  including ones that can be integrated directly into RavenDB.
+
+* In this [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb),
+  Oren Eini demonstrates how image recognition can be applied to indexed attachments using the 
+  [additional sources](../../indexes/extending-indexes.mdx) feature.  
+  The resulting index allows filtering and querying based on image content.  
+
+
+
+

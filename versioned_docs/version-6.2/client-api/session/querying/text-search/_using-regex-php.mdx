@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match a regular expression ("regex"),  
+use the `whereRegex` method which enables RavenDB to perform server-side pattern matching queries. 
+
+The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
+
+## Example
+
+Load all products whose name starts with 'N' or 'A'.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Php" label="Php">
+<CodeBlock language="php regex_1@clientapi\session\querying\textsearch\usingregex.php /}">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    ->whereRegex("Name", "^[NA]")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where regex(Name, '^[NA]')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="php">
+{`function whereRegex(?string $fieldName, ?string $pattern): FilterDocumentQueryBaseInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type  | Description                                                                   |
+|---------------|-------|-------------------------------------------------------------------------------|
+| **$fieldName** | `?string` | Name of the field to query |
+| **$pattern** | `?string` | Pattern to query for |
+
+

@@ -1,0 +1,244 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to retrieve documents from a database:   
+- [Get](../../../client-api/commands/documents/get.mdx#get)   
+- [Get - multiple documents](../../../client-api/commands/documents/get.mdx#get---multiple-documents)   
+- [GetDocuments](../../../client-api/commands/documents/get.mdx#getdocuments)   
+- [StartsWith](../../../client-api/commands/documents/get.mdx#startswith)  
+
+## Get
+
+**Get** can be used to retrieve a single document.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`JsonDocument Get(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the document you want to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing the retrieved document. |
+
+### Example
+
+<TabItem value="get_1_2" label="get_1_2">
+<CodeBlock language="csharp">
+{`JsonDocument document = store.DatabaseCommands.Get("products/1"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get - multiple documents
+
+**Get** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`MultiLoadResult Get(
+	string[] ids,
+	string[] includes,
+	string transformer = null,
+	Dictionary<string, RavenJToken> transformerParameters = null,
+	bool metadataOnly = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | string[] | array of keys of the documents you want to retrieve |
+| **includes** | string[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary&lt;string, RavenJToken&gt; | parameters that will be passed to transformer |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
+
+---
+
+<TabItem value="multiloadresult" label="multiloadresult">
+<CodeBlock language="csharp">
+{`public class MultiLoadResult
+\{
+	public List<RavenJObject> Results \{ get; set; \}
+
+	public List<RavenJObject> Includes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
+| **Includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
+
+### Example I
+
+<TabItem value="get_2_2" label="get_2_2">
+<CodeBlock language="csharp">
+{`MultiLoadResult resultsWithoutIncludes = store
+	.DatabaseCommands
+	.Get(new[] \{ "products/1", "products/2" \}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - using includes
+
+<TabItem value="get_2_3" label="get_2_3">
+<CodeBlock language="csharp">
+{`MultiLoadResult resultsWithIncludes = store
+	.DatabaseCommands
+	.Get(
+		new[] \{ "products/1", "products/2" \},
+		new[] \{ "Category" \});
+
+List<RavenJObject> results = resultsWithIncludes.Results; // products/1, products/2
+List<RavenJObject> includes = resultsWithIncludes.Includes; // categories/1
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - missing documents
+
+<TabItem value="get_2_4" label="get_2_4">
+<CodeBlock language="csharp">
+{`// assuming that 'products/9999' does not exist
+MultiLoadResult resultsWithIncludes = store
+	.DatabaseCommands
+	.Get(
+		new[] \{ "products/1", "products/9999", "products/3" \},
+		null);
+
+List<RavenJObject> results = resultsWithIncludes.Results; // products/1, null, products/3
+List<RavenJObject> includes = resultsWithIncludes.Includes; // empty
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetDocuments
+
+**GetDocuments** can be used to retrieve multiple documents.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="csharp">
+{`JsonDocument[] GetDocuments(int start, int pageSize, bool metadataOnly = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |  
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="csharp">
+{`JsonDocument[] documents = store.DatabaseCommands.GetDocuments(0, 10, metadataOnly: false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartsWith
+
+**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+
+### Syntax
+
+<TabItem value="get_4_0" label="get_4_0">
+<CodeBlock language="csharp">
+{`JsonDocument[] StartsWith(
+	string keyPrefix, 
+	string matches,
+	int start,
+	int pageSize,
+	RavenPagingInformation pagingInformation = null,
+	bool metadataOnly = false,
+	string exclude = null,
+	string transformer = null,
+	Dictionary<string, RavenJToken> transformerParameters = null,
+	string skipAfter = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keyPrefix** | string | prefix for which documents should be returned |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side  |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
+| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary&lt;string, RavenJToken&gt; | parameters that will be passed to transformer |
+| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example I
+
+<TabItem value="get_4_1" label="get_4_1">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products'
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_4_2" label="get_4_2">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1*|2*", 0, 128); 
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_4_3" label="get_4_3">
+<CodeBlock language="csharp">
+{`// return up to 128 documents with key that starts with 'products/' 
+// and rest of the key have length of 3, begins and ends with "1" 
+// and contains any character at 2nd position e.g. products/101, products/1B1
+JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1?1", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

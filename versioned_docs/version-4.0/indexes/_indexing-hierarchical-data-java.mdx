@@ -1,0 +1,142 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="java">
+{`public static class BlogPost \{
+    private String author;
+    private String title;
+    private String text;
+    private List<BlogPostComment> comments;
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getTitle() \{
+        return title;
+    \}
+
+    public void setTitle(String title) \{
+        this.title = title;
+    \}
+
+    public String getText() \{
+        return text;
+    \}
+
+    public void setText(String text) \{
+        this.text = text;
+    \}
+
+    public List<BlogPostComment> getComments() \{
+        return comments;
+    \}
+
+    public void setComments(List<BlogPostComment> comments) \{
+        this.comments = comments;
+    \}
+\}
+
+public static class BlogPostComment \{
+    private String author;
+    private String text;
+    private List<BlogPostComment> comments;
+
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getText() \{
+        return text;
+    \}
+
+    public void setText(String text) \{
+        this.text = text;
+    \}
+
+    public List<BlogPostComment> getComments() \{
+        return comments;
+    \}
+
+    public void setComments(List<BlogPostComment> comments) \{
+        this.comments = comments;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+
+The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByCommentAuthor extends AbstractIndexCreationTask {
+    public static class Result {
+        private String[] authors;
+
+        public String[] getAuthors() {
+            return authors;
+        }
+
+        public void setAuthors(String[] authors) {
+            this.authors = authors;
+        }
+    }
+
+    public BlogPosts_ByCommentAuthor() {
+        map = "docs.BlogPosts.Select(post => new { " +
+            "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author) " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("BlogPosts/ByCommentAuthor");
+indexDefinition.setMaps(Collections.singleton(
+    "from post in docs.Posts" +
+        "  from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.comments)) " +
+        "  select new " +
+        "  { " +
+        "      author = comment.author " +
+        "  }"
+));
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="java">
+{`List<BlogPost> results = session
+    .query(BlogPost.class, BlogPosts_ByCommentAuthor.class)
+    .whereEquals("authors", "Ayende Rahien")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+

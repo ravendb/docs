@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`PutResult Put(string key, Etag etag, RavenJObject document, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | unique key under which document will be stored |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+| **document** | RavenJObject | document data |
+| **metadata** | RavenJObject | document metadata |
+
+---
+
+<TabItem value="putresult" label="putresult">
+<CodeBlock language="csharp">
+{`public class PutResult
+\{
+	public string Key \{ get; set; \}
+
+	public Etag ETag \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Key** | string | unique key under which document was stored |
+| **Etag** | Etag | stored document etag |
+
+## Example
+
+<TabItem value="put_3" label="put_3">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.Put(
+		"categories/999",
+		null,
+		RavenJObject.FromObject(new Category
+		\{
+			Name = "My Category",
+			Description = "My Category description"
+		\}),
+		new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+

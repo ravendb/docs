@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`includeExplanations` allows to investigate details related to score assigned for each query result.
+
+## Syntax
+
+
+<TabItem value="explain_1" label="explain_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> includeExplanations(Reference<Explanations> explanations);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`Reference<Explanations> explanationRef = new Reference<>();
+List<Product> syrups = session.advanced().documentQuery(Product.class)
+    .includeExplanations(explanationRef)
+    .search("Name", "Syrup")
+    .toList();
+
+String[] scoreDetails = explanationRef.value.getExplanations(syrups.get(0).getId());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products" 
+where search(Name, "Syrup")
+include explanations()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+Sample explanation:
+
+```
+4.650658 = (MATCH) fieldWeight(search(Name):syrup in 2), product of:
+  1 = tf(termFreq(search(Name):syrup)=1)
+  4.650658 = idf(docFreq=1, maxDocs=77)
+  1 = fieldNorm(field=search(Name), doc=2)
+```
+

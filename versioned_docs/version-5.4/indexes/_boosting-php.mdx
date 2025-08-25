@@ -1,0 +1,291 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When querying with some filtering conditions, a basic **score** is 
+  calculated by the underlying engine for each document in the results.  
+
+* Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
+  The boos value is integrated with the basic score, increasing the document rank.  
+
+* The automatic ordering of results by their score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).  
+
+* Boosting can be achieved in the following ways:
+
+    * **At query time**:  
+      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results.mdx)).  
+
+    * **Via index definition**:  
+      By applying a boost factor in the index definition, as described in this article.  
+ 
+* In this page:
+    * [Assign a boost factor to an index-field](../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](../indexes/boosting.mdx#automatic-score-based-ordering)
+
+</Admonition>
+## Assign a boost factor to an index-field
+
+Applying a boost value to an index-field allows prioritization of matching documents based on an index-field.
+##### The index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ_index" label="LINQ_index">
+<CodeBlock language="php">
+{`class Orders_ByCountries_BoostByField_IndexEntry
+{
+    // Index-field 'ShipToCountry' will be boosted in the map definition below
+    public ?string $shipToCountry = null;
+    public ?string $companyCountry = null;
+
+    public function getShipToCountry(): ?string
+    {
+        return $this->shipToCountry;
+    }
+
+    public function setShipToCountry(?string $shipToCountry): void
+    {
+        $this->shipToCountry = $shipToCountry;
+    }
+
+    public function getCompanyCountry(): ?string
+    {
+        return $this->companyCountry;
+    }
+
+    public function setCompanyCountry(?string $companyCountry): void
+    {
+        $this->companyCountry = $companyCountry;
+    }
+}
+
+class Orders_ByCountries_BoostByField extends AbstractIndexCreationTask
+{
+        public function __construct()
+        {
+            parent::__construct();
+
+            // Boost index-field 'ShipToCountry':
+            // * Use method 'Boost', pass a numeric value to boost by
+            // * Documents that match the query criteria for this field will rank higher
+            $this->map =
+                "docs.Orders.Select(order => new { " .
+                "   ShipToCountry = order.ShipTo.Country.Boost(10), " .
+                "   CompanyCountry = this.LoadDocument(order.Company, \\"Companies\\").Address.Country " .
+                "})";
+        }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript_index" label="JavaScript_index">
+<CodeBlock language="php">
+{`class Orders_ByCountries_BoostByField_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps(["map('Orders', function (order) {\\n" .
+            "   let company = load(order.Company, 'Companies')\\n" .
+            "   return {\\n" .
+            "       ShipToCountry: boost(order.ShipTo.Country, 10),\\n" .
+            "       CompanyCountry: company.Address.Country\\n" .
+            "   }\\n" .
+            "})"]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### The query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$orders = $session
+     // Query the index
+    ->query(Orders_ByCountries_BoostByField_IndexEntry::class, Orders_ByCountries_BoostByField::class)
+    ->whereEquals("ShipToCountry", "Poland")
+    ->orElse()
+    ->whereEquals("CompanyCountry", "Portugal")
+    ->ofType(Order::class)
+    ->toList();
+
+// Because index-field 'ShipToCountry' was boosted (inside the index definition),
+// then documents containing 'Poland' in their 'ShipTo.Country' field will get a higher score than
+// documents containing a company that is located in 'Portugal'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`$orders = $session->advanced()
+     // Query the index
+    ->documentQuery(Orders_ByCountries_BoostByField_IndexEntry::class, Orders_ByCountries_BoostByField::class)
+    ->whereEquals("ShipToCountry", "Poland")
+    ->orElse()
+    ->whereEquals("CompanyCountry", "Portugal")
+    ->ofType(Order::class)
+    ->toList();
+
+// Because index-field 'ShipToCountry' was boosted (inside the index definition),
+// then documents containing 'Poland' in their 'ShipTo.Country' field will get a higher score than
+// documents containing a company that is located in 'Portugal'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCountries/BoostByField"
+where ShipToCountry == "poland" or CompanyCountry == "portugal"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Assign a boost factor to the index-entry
+
+Applying a boost value to the whole index-entry allows prioritization of matching documents by content from the document.
+##### The index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ_index" label="LINQ_index">
+<CodeBlock language="php">
+{`class Orders_ByCountries_BoostByIndexEntry_IndexEntry
+{
+    public ?string $shipToCountry = null;
+    public ?string $companyCountry = null;
+
+    public function getShipToCountry(): ?string
+    {
+        return $this->shipToCountry;
+    }
+
+    public function setShipToCountry(?string $shipToCountry): void
+    {
+        $this->shipToCountry = $shipToCountry;
+    }
+
+    public function getCompanyCountry(): ?string
+    {
+        return $this->companyCountry;
+    }
+
+    public function setCompanyCountry(?string $companyCountry): void
+    {
+        $this->companyCountry = $companyCountry;
+    }
+}
+
+class Orders_ByCountries_BoostByIndexEntry extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Boost the whole index-entry:
+        // * Use method 'Boost'
+        // * Pass a document-field that will set the boost level dynamically per document indexed.
+        // * The boost level will vary from one document to another based on the value of this field.
+
+        $this->map =
+            "docs.Orders.Select(order => new { " .
+            "   ShipToCountry = order.ShipTo.Country, " .
+            "   CompanyCountry = this.LoadDocument(order.Company, \\"Companies\\").Address.Country " .
+            "}.Boost((float) order.Freight))";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript_index" label="JavaScript_index">
+<CodeBlock language="php">
+{`class Orders_ByCountries_BoostByIndexEntry_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+
+        $this->setMaps(["map('Orders', function (order) {\\n" .
+            "   let company = load(order.Company, 'Companies')\\n" .
+            "   return boost({\\n" .
+            "       ShipToCountry: order.ShipTo.Country,\\n" .
+            "       CompanyCountry: company.Address.Country\\n" .
+            "   }, order.Freight)\\n" .
+            "})"]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### The query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$orders = $session
+     // Query the index
+    ->query(Orders_ByCountries_BoostByIndexEntry_IndexEntry::class, Orders_ByCountries_BoostByIndexEntry::class)
+    ->whereEquals("ShipToCountry", "Poland")
+    ->orElse()
+    ->whereEquals("CompanyCountry", "Portugal")
+    ->ofType(Order::class)
+    ->toList();
+
+// The resulting score per matching document is affected by the value of the document-field 'Freight'.
+// Documents with a higher 'Freight' value will rank higher.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`$orders = $session->advanced()
+     // Query the index
+    ->documentQuery(Orders_ByCountries_BoostByIndexEntry_IndexEntry::class, Orders_ByCountries_BoostByIndexEntry::class)
+    ->whereEquals("ShipToCountry", "Poland")
+    ->orElse()
+    ->whereEquals("CompanyCountry", "Portugal")
+    ->ofType(Order::class)
+    ->toList();
+
+// The resulting score per matching document is affected by the value of the document-field 'Freight'.
+// Documents with a higher 'Freight' value will rank higher.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCountries/BoostByIndexEntry"
+where ShipToCountry == "poland" or CompanyCountry == "portugal"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Automatic score-based ordering
+
+* By default, whenever boosting is applied, either via dynamic querying or when querying an index 
+  that has a boosting factor in its definition, the results will be automatically ordered by the score.  
+
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexingorderbyscoreautomaticallywhenboostingisinvolved)  
+  configuration key.  
+
+* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results.mdx#get-resulting-score) 
+  section to learn how to retrieve the calculated score of each result.  
+
+
+
+

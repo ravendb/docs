@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `DeleteIndexOperation` to remove an index from the database.
+
+* The index will be deleted from all the database-group nodes.
+
+* In this page:
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
+
+</Admonition>
+## Delete index example
+
+<TabItem value="delete_index" label="delete_index">
+<CodeBlock language="python">
+{`# Define the delete index operation, specify the index name
+delete_index_op = DeleteIndexOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+store.maintenance.send(delete_index_op)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`class DeleteIndexOperation(VoidMaintenanceOperation):
+    def __init__(self, index_name: str): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters    | Type | Description |
+|- | - | - |
+| **index_name** | `str` | Name of index to delete |
+
+
+
+

@@ -1,0 +1,187 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `timeSeriesFor.append` to:
+   * **Create a new time series**  
+     Appending an entry to a time series that doesn't exist yet  
+     will create the time series and add it the new entry.
+   * **Create a new time series entry**  
+     Appending a new entry to an existing time series  
+     will add the entry to the series at the specified timestamp.
+   * **Modify an existing time series entry**  
+     Use `append` to update the data of an existing entry with the specified timestamp.
+
+* To append multiple entries in a single transaction you can:  
+   * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx).  
+
+* In this page:
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+
+</Admonition>
+## Usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.append` and pass it the time series entry details.
+* Call `session.saveChanges` for the action to take effect on the server.
+
+**Note**:
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `saveChanges` is executed.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="append" label="append">
+<CodeBlock language="php">
+{`$baseTime = DateUtils::today();
+
+// Append 10 HeartRate values
+$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    $tsf = $session->timeSeriesFor("users/john", "HeartRates");
+
+    for ($i = 0; $i < 10; $i++)
+    {
+        $tsf->append((clone $baseTime)->add(new DateInterval("PT" . $i . "S")), [ 67 ], "watches/fitbit");
+    }
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by naming the values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P1D")),
+        [ 52, 54, 63.5, 51.4, 9824 ],
+        "companies/kitchenAppliances"
+    );
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P2D")),
+            [ 54, 55, 61.5, 49.4, 8400 ],
+            "companies/kitchenAppliances"
+        );
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P3D")),
+        [ 55, 57, 65.5, 50, 9020 ],
+        "companies/kitchenAppliances"
+    );
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    // Call 'Append' with the custom StockPrice class
+    $sp = new StockPrice();
+    $sp->setOpen(52);
+    $sp->setClose(54);
+    $sp->setHigh(63.5);
+    $sp->setLow(51.4);
+    $sp->setVolume(9824);
+
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P1D")),
+        $sp,
+        "companies/kitchenAppliances"
+    );
+
+    $sp = new StockPrice();
+    $sp->setOpen(54);
+    $sp->setClose(55);
+    $sp->setHigh(61.5);
+    $sp->setLow(49.4);
+    $sp->setVolume(8400);
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P2D")),
+            $sp,
+            "companies/kitchenAppliances"
+        );
+
+    $sp = new StockPrice();
+    $sp->setOpen(55);
+    $sp->setClose(57);
+    $sp->setHigh(65.5);
+    $sp->setLow(50);
+    $sp->setVolume(9020);
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P3D")),
+            $sp,
+            "companies/kitchenAppliances"
+        );
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

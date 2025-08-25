@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
+
+## Syntax
+
+<TabItem value="update_1" label="update_1">
+<CodeBlock language="java">
+{`@Deprecated
+public void updateAttachmentMetadata(String key, Etag etag, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key under which attachment is stored |
+| **etag** | Etag | current attachment Etag, used for concurrency checks (`null` to skip check) |
+| **metadata** | RavenJObject | attachment metadata |
+
+## Example
+
+<TabItem value="update_2" label="update_2">
+<CodeBlock language="java">
+{`JsonDocumentMetadata attachment = store.getDatabaseCommands().head("albums/holidays/sea.jpg");
+RavenJObject metadata = attachment.getMetadata();
+metadata.add("Description", "Holidays 2012");
+
+store.getDatabaseCommands().updateAttachmentMetadata("albums/holidays/sea.jpg", attachment.getEtag(), metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+

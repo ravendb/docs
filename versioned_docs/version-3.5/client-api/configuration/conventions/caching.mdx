@@ -5,108 +5,24 @@ sidebar_label: Caching
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import CachingCsharp from './_caching-csharp.mdx';
+import CachingJava from './_caching-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Conventions related to caching
-
-
-
-Use this convention to determine if the client should cache the request for the given URL. By default all requests are cached:
-
-<TabItem value="should_cache" label="should_cache">
-<CodeBlock language="csharp">
-{`Conventions.ShouldCacheRequest = url => true;
-`}
-</CodeBlock>
-</TabItem>
-
-### ShouldAggressiveCacheTrackChanges
-
-It decides whether the client being in [the aggressive cache](../../how-to/setup-aggressive-caching.mdx) mode should use [Changes API](../../changes/what-is-changes-api.mdx) to monitor notifications and rebuild the cache based on them.
-If the notification arrives then an outdated item from cache will be revalidated. 
-
-<TabItem value="should_aggressive_cache_track_changes" label="should_aggressive_cache_track_changes">
-<CodeBlock language="csharp">
-{`Conventions.ShouldAggressiveCacheTrackChanges = true;
-`}
-</CodeBlock>
-</TabItem>
-
-Note that it is still possible to get a stale result because of the time needed to receive the notification and checking for cached data.
-
-### ShouldSaveChangesForceAggressiveCacheCheck
-
-In addition to the use of notifications, the aggressive cache also revalidates the cache after calling `session.SaveChanges()`. 
-This behavior is configurable by the following convention:
-
-<TabItem value="should_save_changes_force_aggressive_cache_check" label="should_save_changes_force_aggressive_cache_check">
-<CodeBlock language="csharp">
-{`Conventions.ShouldSaveChangesForceAggressiveCacheCheck = true;
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <CachingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-#Conventions related to caching
-
-
-
-Use this convention to determine if the client should cache the request for the given URL. By default all requests are cached:
-
-<TabItem value="should_cache" label="should_cache">
-<CodeBlock language="java">
-{`conventions.setShouldCacheRequest(new RequestCachePolicy() \{
-  @Override
-  public Boolean shouldCacheRequest(String url) \{
-    return Boolean.TRUE;
-  \}
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-### ShouldAggressiveCacheTrackChanges
-
-It decides whether the client being in [the aggressive cache](../../how-to/setup-aggressive-caching.mdx) mode should use [Changes API](../../changes/what-is-changes-api.mdx) to monitor notifications and rebuild the cache based on them.
-If the notification arrives then an outdated item from cache will be revalidated. 
-
-<TabItem value="should_aggressive_cache_track_changes" label="should_aggressive_cache_track_changes">
-<CodeBlock language="java">
-{`conventions.setShouldAggressiveCacheTrackChanges(true);
-`}
-</CodeBlock>
-</TabItem>
-
-Note that it is still possible to get a stale result because of the time needed to receive the notification and checking for cached data.
-
-### ShouldSaveChangesForceAggressiveCacheCheck
-
-In addition to the use of notifications, the aggressive cache also revalidates the cache after calling `session.saveChanges()`. 
-This behavior is configurable by the following convention:
-
-<TabItem value="should_save_changes_force_aggressive_cache_check" label="should_save_changes_force_aggressive_cache_check">
-<CodeBlock language="java">
-{`conventions.setShouldSaveChangesForceAggressiveCacheCheck(true);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <CachingJava />
 </LanguageContent>
+
 
 <!---
 - [Commands : How to disable caching?](../../commands/how-to/disable-caching)

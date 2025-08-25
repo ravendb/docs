@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To get the server logs configuration, use **GetLogsConfigurationOperation** from `Maintenance.Server`
+
+## Syntax
+
+<TabItem value="get_logs_1" label="get_logs_1">
+<CodeBlock language="csharp">
+{`public GetLogsConfigurationOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The result of executing GetLogsConfigurationOperation is a **GetLogsConfigurationResult** object: 
+
+<TabItem value="get_logs_2" label="get_logs_2">
+<CodeBlock language="csharp">
+{`public class GetLogsConfigurationResult
+\{
+    public LogMode CurrentMode \{ get; set; \}
+
+    public LogMode Mode \{ get; set; \}
+
+    public string Path \{ get; set; \}
+
+    public bool UseUtcTime \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| ------------- |----- |
+| **CurrentMode** | Current mode that is active |
+| **Mode** | Mode that is written in the configuration file and which will be used after a server restart |
+| **Path** | Path to which logs will be written |
+| **UseUtcTime** | Indicates if logs will be written in UTC or in server local time |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`GetLogsConfigurationResult logsConfiguration = store
+    .Maintenance
+    .Server
+    .Send(new GetLogsConfigurationOperation());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`GetLogsConfigurationResult logsConfiguration = await store
+    .Maintenance
+    .Server
+    .SendAsync(new GetLogsConfigurationOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+

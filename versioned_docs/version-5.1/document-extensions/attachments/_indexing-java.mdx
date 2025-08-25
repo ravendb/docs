@@ -1,0 +1,92 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The `AttachmentsFor` method returns a list of 
+[attachments](../document-extensions/attachments/what-are-attachments.mdx) 
+in a given document as well as basic information like `name` or `size` 
+about each of them.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AttachmentsFor" label="AttachmentsFor">
+<CodeBlock language="java">
+{`List<AttachmentName> AttachmentsFor(Object doc);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AttachmentName" label="AttachmentName">
+<CodeBlock language="java">
+{`private String name;
+private String hash;
+private String contentType;
+private long size;
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public String getHash() {
+    return hash;
+}
+
+public void setHash(String hash) {
+    this.hash = hash;
+}
+
+public String getContentType() {
+    return contentType;
+}
+
+public void setContentType(String contentType) {
+    this.contentType = contentType;
+}
+
+public long getSize() {
+    return size;
+}
+
+public void setSize(long size) {
+    this.size = size;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Creating an index using `AttachmentsFor()`
+
+<TabItem value="index" label="index">
+<CodeBlock language="java">
+{`public static class Employees_ByAttachmentNames extends AbstractIndexCreationTask \{
+    public Employees_ByAttachmentNames() \{
+        map = "from e in docs.Employees\\n" +
+            "let attachments = AttachmentsFor(e)\\n" +
+            "select new\\n" +
+            "\{\\n" +
+            "   attachmentNames = attachments.Select(x => x.Name).ToArray()\\n" +
+            "\}";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Querying the index
+
+<TabItem value="query1" label="query1">
+<CodeBlock language="java">
+{`//return all employees that have an attachment called "cv.pdf"
+List<Employee> employees = session.query(Employees_ByAttachmentNames.class)
+    .containsAny("attachmentNames", Arrays.asList("employees_cv.pdf"))
+    .selectFields(Company.class, "cv.pdf").ofType(Employee.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+

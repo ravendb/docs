@@ -5,274 +5,29 @@ sidebar_label: Pause Indexing
 sidebar_position: 9
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StopIndexingCsharp from './_stop-indexing-csharp.mdx';
+import StopIndexingJava from './_stop-indexing-java.mdx';
+import StopIndexingNodejs from './_stop-indexing-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Pause Indexing Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `StopIndexingOperation` to __pause indexing__ for ALL indexes in the database.  
-
-* To pause only a specific index use the [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
- 
-* In this page:
-  * [Overview](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#overview)
-  * [Pause indexing example](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#pause-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#syntax)
-
-</Admonition>
-## Overview
-
-<Admonition type="note" title="">
-
-__On which node indexing is paused__:
-
-* When pausing indexing from the __client__:  
-  Indexing will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When pausing indexing from the __Studio__ (from the [database list view](../../../../studio/database/databases-list-view.mdx#more-actions)):  
-  Indexing will be paused on the local node the browser is opened on, even if it is Not the preferred node.
-
-</Admonition>
-
-<Admonition type="note" title="">
-
- __When indexing is paused on a node__:
- 
-* No indexing will take place on the node where indexing has paused.  
-  New data will be indexed on other database-group nodes where indexing is not paused.
-
-* You can query any index,  
-  but results may be stale when querying the node where indexing has paused.
- 
-* New indexes can be created in the database,  
-  however, they will also be in a 'pause' state on the node where you paused indexing,  
-  until indexing is resumed on the node.  
-
-* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) indexes, or editing index definitions, then re-indexing on the node  
-  where indexing has paused will only be triggered when indexing is resumed on the node.
-
-</Admonition>
-
-<Admonition type="note" title="">
-
-__How to resume indexing__:
-
-* To resume indexing for all indexes from the client - see [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).  
-
-* To resume indexing for all indexes from the Studio - go to the [database list view](../../../../studio/database/databases-list-view.mdx#more-actions).  
-
-* Pausing indexing is __Not a persistent operation__.  
-  This means that all paused indexes will resume upon either of the following:
-    * The server is restarted.
-    * The database is re-loaded (by disabling and then enabling the database state).  
-      Toggling the database state can be done from [database list view](../../../../studio/database/databases-list-view.mdx#database-actions) in Studio,  
-      or from the client by sending the [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx).
-
-</Admonition>
-
-
-
-## Pause indexing example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the pause indexing operation 
-var pauseIndexingOp = new StopIndexingOperation();
-
-// Execute the operation by passing it to Maintenance.Send
-store.Maintenance.Send(pauseIndexingOp);
-
-// At this point:
-// All indexes in the default database will be 'paused' on the preferred node
-        
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
-Assert.Equal(IndexRunningStatus.Paused, indexingStatus.Status);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the pause indexing operation 
-var pauseIndexingOp = new StopIndexingOperation();
-
-// Execute the operation by passing it to Maintenance.SendAsync
-await store.Maintenance.SendAsync(pauseIndexingOp);
-
-// At this point:
-// All indexes in the default database will be 'paused' on the preferred node
-        
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
-Assert.Equal(IndexRunningStatus.Paused, indexingStatus.Status);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// class name has "Stop", but this is ok, this is the "Pause" operation
-public StopIndexingOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StopIndexingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**StopIndexingOperation** is used to pause indexing for the entire database.
-
-Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) to stop single index.
-
-<Admonition type="note" title="">
-Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
-</Admonition>
-
-### Syntax
-
-<TabItem value="stop_1" label="stop_1">
-<CodeBlock language="java">
-{`public StopIndexingOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-<TabItem value="stop_2" label="stop_2">
-<CodeBlock language="java">
-{`store.maintenance().send(new StopIndexingOperation());
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StopIndexingJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* Use `StopIndexingOperation` to __pause indexing__ for ALL indexes in the database.  
-
-* To pause only a specific index use the [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).
-
-* In this page:
-  * [Overview](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#overview)
-  * [Pause indexing example](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#pause-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#syntax)
-
-</Admonition>
-## Overview
-
-<Admonition type="note" title="">
-
-__On which node indexing is paused__:
-
-* When pausing indexing from the __client__:  
-  Indexing will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
-
-* When pausing indexing from the __Studio__ (from the [database list view](../../../../studio/database/databases-list-view.mdx#more-actions)):  
-  Indexing will be paused on the local node the browser is opened on, even if it is Not the preferred node.
-
-</Admonition>
-
-<Admonition type="note" title="">
-
-__When indexing is paused on a node__:
- 
-* No indexing will take place on the node where indexing has paused.  
-  New data will be indexed on other database-group nodes where indexing is not paused.
-
-* You can query any index,  
-  but results may be stale when querying the node where indexing has paused.
- 
-* New indexes can be created in the database,  
-  however, they will also be in a 'pause' state on the node where you paused indexing,  
-  until indexing is resumed on the node.
-
-* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) indexes, or editing index definitions, then re-indexing on the node  
-  where indexing has paused will only be triggered when indexing is resumed on the node.
-
-</Admonition>
-
-<Admonition type="note" title="">
-
-__How to resume indexing__:
-
-* To resume indexing for all indexes from the client:  
-  See [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
-
-* To resume indexing for all indexes from the Studio:  
-  Go to the [database list view](../../../../studio/database/databases-list-view.mdx#more-actions).  
-
-* Pausing indexing is __Not a persistent operation__.  
-  This means that all paused indexes will resume upon either of the following:
-    * The server is restarted.
-    * The database is re-loaded (by disabling and then enabling the database state).  
-      Toggling the database state can be done from [Studio](../../../../studio/database/databases-list-view.mdx#database-actions),  
-      or from the client by sending the [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx).
-
-</Admonition>
-
-
-
-## Pause indexing example
-
-<TabItem value="pause_indexing" label="pause_indexing">
-<CodeBlock language="js">
-{`// Define the pause indexing operation 
-const pauseIndexingOp = new StopIndexingOperation();
-
-// Execute the operation by passing it to maintenance.send
-await store.maintenance.send(pauseIndexingOp);
-
-// At this point:
-// All indexes in the default database will be 'paused' on the preferred node
-
-// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
-const indexingStatus = await store.maintenance.send(new GetIndexingStatusOperation());
-assert.strictEqual(indexingStatus.status, "Paused");
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`// class name has "Stop", but this is ok, this is the "Pause" operation
-const pauseIndexingOp = new StopIndexingOperation();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <StopIndexingNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

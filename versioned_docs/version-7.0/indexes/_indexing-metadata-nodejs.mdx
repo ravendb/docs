@@ -1,0 +1,110 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Each document in the database includes a metadata section, stored in a special JSON object under the `@metadata` property.
+
+* This metadata is not part of the document's content but holds internal system information (used by RavenDB),
+  such as the document ID, collection name, change vector, last modified timestamp, and more,  
+  as well as optional user-defined entries.
+
+* To learn how to access (get and modify) the metadata from your client code,  
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
+
+* Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
+  This allows you to query for documents based on values stored in the metadata.  
+  See the examples below.
+* In this article:
+    * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)
+
+</Admonition>
+## Indexing metadata properties
+
+* Use the `getMetadata` method to access a document’s metadata, as shown in the example below.
+
+* The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
+{`class Products_ByMetadata extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        const \{ getMetadata \} = this.mapUtils();
+
+        this.map("Products", product => \{
+            // Call 'getMetadata' to access the metadata object
+            const metadata = getMetadata(product);
+
+            return \{
+                // Define the index fields
+                LastModified: metadata['@last-modified'],
+                HasCounters: !!metadata['@counters']
+            \};
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Query for documents based on metadata values:  
+  Retrieve documents that have counters and order them by their last modified timestamp.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const productsWithCounters = await session
+    .query({ indexName: "Products/ByMetadata" })
+    .whereEquals("HasCounters", true)
+    .orderByDescending("LastModified")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByMetadata"
+where HasCounters == true
+order by LastModified desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Metadata properties that can be indexed
+
+* The following are the **predefined metadata properties that can be indexed**:
+    * `@archive-at`
+    * `@attachments`
+    * `@change-vector`
+    * `@collection`
+    * `@counters`
+    * `@etag`
+    * `@expires`
+    * `@id`
+    * `@last-modified`
+    * `@refresh`
+    * `@timeseries`
+    * `Raven-Clr-Type`
+
+* You can add custom metadata properties to any document as needed.  
+  These custom properties can be indexed just like the predefined ones.
+<Admonition type="warning" title="">
+
+Note:
+
+* The `@attachments` metadata property can only be indexed using a **Lucene** index.
+* The **Corax** search engine does not support indexing complex JSON properties.  
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
+
+</Admonition>
+
+
+
