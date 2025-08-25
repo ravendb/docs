@@ -2,7 +2,7 @@
 title: "Archived Documents and Other Features"
 hide_table_of_contents: true
 sidebar_label: Archived Documents and Other Features
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import Admonition from '@theme/Admonition';
@@ -14,8 +14,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp"];
 
-
 # Archived Documents and Other Features
+
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
@@ -36,6 +36,7 @@ export const supportedLanguages = ["csharp"];
 * Limiting processing to either archived or non-archived documents may improve performance by reducing workload and transfer volume.
 
 * Learn more below about how various RavenDB features interact with archived documents.
+
 * In this article:  
   * [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing)
   * [Archived documents and querying](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-querying)
@@ -49,6 +50,9 @@ export const supportedLanguages = ["csharp"];
   * [Archived documents and patching](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-patching)
 
 </Admonition>
+
+---
+
 ## Archived documents and indexing
      
 * Indexing performance may decline as the database grows, since a larger number of documents increases indexing load, expands index size, and can eventually reduce query speed.
@@ -77,6 +81,7 @@ export const supportedLanguages = ["csharp"];
   * `ExcludeArchived`: only non-archived documents are processed by the index.
   * `IncludeArchived`: both archived and non-archived documents are processed by the index.
   * `ArchivedOnly`: only archived documents are processed by the index.
+
 ##### Configuring archived document processing for a static index - from the Client API
 
 You can configure how a static index handles archived documents when creating the index using the Client API.
@@ -88,8 +93,8 @@ Example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-<CodeBlock language="csharp">
-{`public class Orders_ByOrderDate : 
+```csharp
+public class Orders_ByOrderDate : 
     AbstractIndexCreationTask<Order, Orders_ByOrderDate.IndexEntry>
 {
     public class IndexEntry
@@ -112,12 +117,11 @@ Example:
             Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.IncludeArchived;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="JS_index" label="JS_index">
-<CodeBlock language="csharp">
-{`public class Orders_ByOrderDate_JS : AbstractJavaScriptIndexCreationTask
+```csharp
+public class Orders_ByOrderDate_JS : AbstractJavaScriptIndexCreationTask
 {
     public Orders_ByOrderDate_JS()
     {
@@ -137,12 +141,11 @@ Example:
             Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.IncludeArchived;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="IndexDefinitionBuilder" label="IndexDefinitionBuilder">
-<CodeBlock language="csharp">
-{`var indexDefinition = new IndexDefinitionBuilder<Order>()
+```csharp
+var indexDefinition = new IndexDefinitionBuilder<Order>()
 {
     Map = orders => from order in orders
         select new { order.OrderedAt }
@@ -158,12 +161,12 @@ indexDefinition.ArchivedDataProcessingBehavior =
     ArchivedDataProcessingBehavior.IncludeArchived;
 
 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-`}
-</CodeBlock>
+```
 </TabItem>
-  </Tabs>   
+</Tabs>   
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 When a static-index is configured to include **both** archived and non-archived documents in its processing,  
@@ -173,8 +176,8 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-<CodeBlock language="csharp">
-{`public class Orders_ByArchivedStatus : 
+```csharp
+public class Orders_ByArchivedStatus : 
     AbstractIndexCreationTask<Order, Orders_ByArchivedStatus.IndexEntry>
 {
     public class IndexEntry
@@ -212,12 +215,11 @@ For example:
             Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.IncludeArchived;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="JS_index" label="JS_index">
-<CodeBlock language="csharp">
-{`public class Orders_ByArchivedStatus_JS : AbstractJavaScriptIndexCreationTask
+```csharp
+public class Orders_ByArchivedStatus_JS : AbstractJavaScriptIndexCreationTask
 {
     public Orders_ByArchivedStatus_JS()
     {
@@ -244,12 +246,11 @@ For example:
             Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.IncludeArchived;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="IndexDefinition" label="IndexDefinition">
-<CodeBlock language="csharp">
-{`var indexDefinition = new IndexDefinition
+```csharp
+var indexDefinition = new IndexDefinition
 {
     Name = "Orders/ByArchivedStatus",
     
@@ -271,12 +272,12 @@ For example:
 };
                
 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-`}
-</CodeBlock>
+```
 </TabItem>
-  </Tabs>
+</Tabs>
 
 </Admonition>
+
 ##### Configuring archived document processing for a static index - from the Studio
 
 You can configure how a static index handles archived documents directly from the Studio.  
@@ -295,7 +296,7 @@ This setting will **override** the global configuration defined by the [Indexing
 
 ![Processing options](./assets/processing-options.png)
 
-
+---
 
 ## Archived documents and querying
 
@@ -318,7 +319,7 @@ This setting will **override** the global configuration defined by the [Indexing
       * the explicit setting in the index definition, which overrides the global configuration key.
   * The index's archived data processing behavior can be modified after its creation using the Studio or the Client API.
 
-
+---
   
 ## Archived documents and subscriptions
 
@@ -337,6 +338,7 @@ This setting will **override** the global configuration defined by the [Indexing
     * `ExcludeArchived`: only non-archived documents are processed by the subscription query.
     * `IncludeArchived`: both archived and non-archived documents are processed by the subscription query.
     * `ArchivedOnly`: only archived documents are processed by the subscription query.
+
 ##### Configuring archived document processing for a data subscription task - from the Client API
 
 You can configure how a subscription task handles archived documents when creating the subscription using the Client API.  
@@ -348,8 +350,8 @@ Example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Generic-syntax" label="Generic-syntax">
-<CodeBlock language="csharp">
-{`var subscriptionName = store.Subscriptions
+```csharp
+var subscriptionName = store.Subscriptions
     .Create<Order>(new SubscriptionCreationOptions<Order>()
 {
     Name = "ArchivedOrdersSubscription",
@@ -359,12 +361,11 @@ Example:
     
     // You can set the behavior to 'ExcludeArchived', 'IncludeArchived, or 'ArchivedOnly'
 });
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL-syntax" label="RQL-syntax">
-<CodeBlock language="csharp">
-{`var subscriptionName = store.Subscriptions
+```csharp
+var subscriptionName = store.Subscriptions
     .Create(new SubscriptionCreationOptions()
 {
     Name = "ArchivedOrdersSubscription",
@@ -375,12 +376,12 @@ Example:
     
     // You can set the behavior to 'ExcludeArchived', 'IncludeArchived, or 'ArchivedOnly'
 });
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 </Admonition>
+
 ##### Configuring archived document processing for a data subscription task - from the Studio
 
 You can configure how a subscription task handles archived documents directly from the Studio.  
@@ -396,7 +397,7 @@ This setting will **override** the global configuration defined by the [Subscrip
    * **Include Archived**: Process both archived and non-archived documents.
    * **Archived Only**: Process only archived documents.
 
-
+---
 
 ## Archived documents and document extensions
 
@@ -419,7 +420,7 @@ This setting will **override** the global configuration defined by the [Subscrip
   * No revision is created at the time the server archives a document, even if the Revisions feature is enabled.
   * However, if you modify an archived document (when Revisions are enabled), a revision is created for that document - and that revision is archived as well.
 
-
+---
 
 ## Archived documents and smuggler (export/import)
 
@@ -434,15 +435,14 @@ By default, archived documents are **included** in the operation.
 In this example, exported data **excludes** archived documents:
 
 <TabItem value="export" label="export">
-<CodeBlock language="csharp">
-{`var exportOperation = store.Smuggler.ExportAsync(
+```csharp
+var exportOperation = store.Smuggler.ExportAsync(
     new DatabaseSmugglerExportOptions()
-    \{
+    {
         // Export only non-archived documents:
         IncludeArchived = false
-    \}, "DestinationFilePath");
-`}
-</CodeBlock>
+    }, "DestinationFilePath");
+```
 </TabItem>
 
 </Admonition>
@@ -452,24 +452,25 @@ In this example, exported data **excludes** archived documents:
 In this example, imported data **includes** archived documents:
 
 <TabItem value="import" label="import">
-<CodeBlock language="csharp">
-{`var importOperation = store.Smuggler.ImportAsync(
+```csharp
+var importOperation = store.Smuggler.ImportAsync(
     new DatabaseSmugglerImportOptions()
-    \{
+    {
         // Include archived documents in the import:
         IncludeArchived = true
-    \}, "SourceFilePath");
-`}
-</CodeBlock>
+    }, "SourceFilePath");
+```
 </TabItem>
 
 </Admonition>
+
 ##### Export archived documents - from the Studio
 
 ![Export archived documents](./assets/export-archived-documents.png)
 
 1. Go to **Tasks &gt; Export Database**.
 2. Toggle the **Include archived documents** option to control whether archived documents are included in the database export.
+
 ##### Import archived documents - from the Studio
 
 ![Import archived documents](./assets/import-archived-documents.png)
@@ -477,7 +478,7 @@ In this example, imported data **includes** archived documents:
 1. Go to **Tasks &gt; Import Data**.
 2. Toggle the **Include archived documents** option to control whether archived documents are included in the import.
 
-
+---
 
 ## Archived documents and expiration
 
@@ -491,23 +492,22 @@ In this example, imported data **includes** archived documents:
   to schedule it for archiving and expiration, respectively:
  
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+```json
+{
     "Name": "Wilman Kala",
     "Phone": "90-224 8858",
     ...
-    "@metadata": \{
+    "@metadata": {
         "@archive-at": "2026-01-06T22:45:30.018Z",
         "@expires": "2026-07-06T22:45:30.018Z",
         "@collection": "Companies",
         ...  
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 </TabItem>
 
-
+---
 
 ## Archived documents and ETL
 
@@ -521,20 +521,19 @@ In this example, imported data **includes** archived documents:
 * In the following example, the ETL script checks whether the document is archived, and skips it if it is:
 
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`var isArchived = this['@metadata']['@archived'];
+```javascript
+var isArchived = this['@metadata']['@archived'];
 
-if (isArchived === true) \{
+if (isArchived === true) {
     return; // Do not process archived documents
-\}
+}
 
 // Transfer only non-archived documents to the target
 loadToOrders(this);
-`}
-</CodeBlock>
+```
 </TabItem>
 
-
+---
 
 ## Archived documents and backup
 
@@ -544,7 +543,7 @@ loadToOrders(this);
 * When restoring a database from a backup, archived documents are restored as well,  
   and their archived status is preserved.
 
-
+---
 
 ## Archived documents and replication
 
@@ -552,7 +551,7 @@ Archived documents are included in [Internal](../server/clustering/replication/r
 [External](../server/clustering/replication/replication-overview.mdx#external-replication) replication, and [Hub/Sink](../server/clustering/replication/replication-overview.mdx#hubsink-replication) replication -   
 no special configuration is required.
 
-
+---
 
 ## Archived documents and patching
 
@@ -566,9 +565,6 @@ no special configuration is required.
 * When **cloning** an archived document using the `put` method within a patching script  
   (see this [clone document example](../client-api/operations/patching/single-document.mdx#clone-document)) the cloned document will Not be archived,  
   and the `@archived: true` property will be removed from the cloned document.
-
-
-
 
 </LanguageContent>
 
@@ -593,6 +589,4 @@ no special configuration is required.
 
 ### Patching
 - [Patch By Query](../client-api/rest-api/queries/patch-by-query)
-
-
 -->

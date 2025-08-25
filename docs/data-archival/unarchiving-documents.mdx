@@ -2,7 +2,7 @@
 title: "Unarchiving Documents"
 hide_table_of_contents: true
 sidebar_label: Unarchiving Documents
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 import Admonition from '@theme/Admonition';
@@ -19,7 +19,7 @@ export const supportedLanguages = ["csharp"];
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 <LanguageContent language="csharp">
 
-  <Admonition type="note" title="">
+<Admonition type="note" title="">
 
 * Archived documents can be unarchived at any time.
 
@@ -36,6 +36,9 @@ export const supportedLanguages = ["csharp"];
   * [Unarchiving documents with index-based patch queries](../data-archival/unarchiving-documents.mdx#unarchiving-documents-with-index-based-patch-queries)
 
 </Admonition>
+
+---
+
 ## Unarchive documents - from the Client API
 
 * To unarchive documents from the Client API, use the `PatchByQueryOperation` operation,  
@@ -51,8 +54,8 @@ The following operation will unarchive ALL archived documents in the _Orders_ co
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Unarchive_documents" label="Unarchive_documents">
-<CodeBlock language="csharp">
-{`// Define the patch query string
+```csharp
+// Define the patch query string
 string patchByQuery = @"
     // The patch query:
     // ================
@@ -69,12 +72,11 @@ var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
     
 // Execute the operation by passing it to Operations.Send
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Unarchive_documents_async" label="Unarchive_documents_async">
-<CodeBlock language="csharp">
-{`// Define the patch query string
+```csharp
+// Define the patch query string
 string patchByQuery = @"
     from Orders
     update 
@@ -87,12 +89,11 @@ var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
     
 // Execute the operation by passing it to Operations.Send
 await store.Operations.SendAsync(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Operation_overload" label="Operation_overload">
-<CodeBlock language="csharp">
-{`// Define the patch query string
+```csharp
+// Define the patch query string
 string patchByQuery = @"
     from Orders
     update 
@@ -108,12 +109,11 @@ var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
     
 // Execute the operation by passing it to Operations.Send
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Operation_overload_async" label="Operation_overload_async">
-<CodeBlock language="csharp">
-{`// Define the patch query string
+```csharp
+// Define the patch query string
 string patchByQuery = @"
     from Orders
     update 
@@ -129,24 +129,23 @@ var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
     
 // Execute the operation by passing it to Operations.Send
 await store.Operations.SendAsync(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 **Syntax:**
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`archived.unarchive(doc)
-`}
-</CodeBlock>
+```csharp
+archived.unarchive(doc)
+```
 </TabItem>
 
 | Parameter  | Type     | Description                |
 |------------|----------|----------------------------|
 | **doc**    | `object` | The document to unarchive. |
 
-
+---
 
 ## Unarchive documents - from the Studio
 
@@ -154,6 +153,7 @@ await store.Operations.SendAsync(patchByQueryOp);
   * Open the Patch view.
   * Enter a patch script that uses the `archived.unarchive()` method.
   * Execute the patch.
+
 **Example**:
 
 The following patch script, used directly in the Studio,
@@ -168,7 +168,7 @@ It will unarchive all archived documents in the _Orders_ collection.
 4. You can test the patch on a sample document before executing the whole operation.  
    Learn more in [Test patch](../studio/database/documents/patch-view.mdx#test-patch).
 
-
+---
 
 ## Unarchiving documents with index-based patch queries
 
@@ -185,21 +185,20 @@ It will unarchive all archived documents in the _Orders_ collection.
   and the patch operation will not unarchive any documents.
 
 <TabItem value="unarchive_using_auto_index" label="unarchive_using_auto_index">
-<CodeBlock language="csharp">
-{`string patchByQuery = @"
+```csharp
+string patchByQuery = @"
     // This filtering query creates an auto-index:
     // ===========================================
     from Orders
     where ShipTo.Country == 'USA'
     update 
-    \{
+    {
         archived.unarchive(this)
-    \}";
+    }";
 
 var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 Two possible workarounds are:
 
@@ -220,29 +219,25 @@ Two possible workarounds are:
    
       For example:
 <TabItem value="unarchive_using_filter_in_script" label="unarchive_using_filter_in_script">
-<CodeBlock language="csharp">
-{`string patchByQuery = @"
+```csharp
+string patchByQuery = @"
     // Perform a collection query:
     // ===========================
     from Orders as order
     update 
-    \{ 
+    { 
         // Filter documents inside the script:
         // ===================================
         if (order.ShipTo.City == 'New York')
-        \{
+        {
             archived.unarchive(this)
-        \}
-    \}";
+        }
+    }";
 
 var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
 store.Operations.Send(patchByQueryOp);
-`}
-</CodeBlock>
+```
 </TabItem>
-
-
-
 
 </LanguageContent>
 
@@ -262,6 +257,5 @@ store.Operations.Send(patchByQueryOp);
 
 ### Patching
 - [Patch By Query](../client-api/rest-api/queries/patch-by-query)
-
 
 -->
