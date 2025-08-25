@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The conflict solver allows you to set a conflict resolution script for each collection or resolve conflicts using the latest version. 
+
+To modify the solver configuration, use **ModifyConflictSolverOperation**. 
+
+## Syntax
+
+<TabItem value="solver_1" label="solver_1">
+<CodeBlock language="csharp">
+{`public ModifyConflictSolverOperation(
+    string database, 
+    Dictionary<string, ScriptResolver> collectionByScript = null, 
+    bool resolveToLatest = false)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="solver_2" label="solver_2">
+<CodeBlock language="csharp">
+{`public class ScriptResolver
+\{
+    public string Script \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of a database |
+| **collectionByScript** | Dictionary&lt;string,ScriptResolver&gt; | Per collection conflict resolution script |
+| **resolveToLatest** | bool | Indicates if a conflict should be resolved using the latest version |
+
+
+| Return Value | |
+| ------------- | ----- |
+| **Key** | Name of database |
+| **RaftCommandIndex** | RAFT command index |
+| **Solver** | Saved conflict solver configuration |
+
+## Example I
+
+<TabItem value="solver_3" label="solver_3">
+<CodeBlock language="csharp">
+{`// resolve conflict to latest version
+ModifyConflictSolverOperation operation = 
+    new ModifyConflictSolverOperation("Northwind", null, resolveToLatest: true);
+store.Maintenance.Server.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II
+
+<TabItem value="solver_4" label="solver_4">
+<CodeBlock language="csharp">
+{`// resolve conflict by finding max value 
+string script = @"
+var maxRecord = 0;
+for (var i = 0; i < docs.length; i++) \{
+    maxRecord = Math.max(docs[i].maxRecord, maxRecord);   
+\}
+docs[0].MaxRecord = maxRecord;
+
+return docs[0];";
+
+ModifyConflictSolverOperation operation = 
+    new ModifyConflictSolverOperation("Northwind", new Dictionary<string, ScriptResolver>
+    \{
+        \{ "Orders", new ScriptResolver \{ Script = script\} \}
+    \}, resolveToLatest: false);
+store.Maintenance.Server.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+

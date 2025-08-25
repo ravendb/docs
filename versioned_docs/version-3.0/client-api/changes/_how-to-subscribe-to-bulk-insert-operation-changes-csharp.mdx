@@ -1,0 +1,78 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`ForBulkInsert` method can be used to acquire notifications for bulk insert operations.
+
+## Syntax
+
+<TabItem value="bulk_insert_changes_1" label="bulk_insert_changes_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<BulkInsertChangeNotification>
+	ForBulkInsert(Guid operationId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **operationId** | Guid | Id of bulk insert operation, generated when bulk insert operation is created. |
+
+| ReturnValue | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[BulkInsertChangeNotification](../../glossary/bulk-insert-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for bulk insert operation with given id. |
+
+## Example
+
+<TabItem value="bulk_insert_changes_2" label="bulk_insert_changes_2">
+<CodeBlock language="csharp">
+{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
+\{
+	IDisposable subscription = store
+		.Changes()
+		.ForBulkInsert(bulkInsert.OperationId)
+		.Subscribe(change =>
+		\{
+			switch (change.Type)
+			\{
+				case DocumentChangeTypes.BulkInsertStarted:
+					// do something
+					break;
+				case DocumentChangeTypes.BulkInsertEnded:
+					// do something
+					break;
+				case DocumentChangeTypes.BulkInsertError:
+					// do something
+					break;
+			\}
+		\});
+
+	try
+	\{
+		for (int i = 0; i < 1000 * 1000; i++)
+		\{
+			bulkInsert.Store(new Employee
+			\{
+				FirstName = "FirstName #" + i,
+				LastName = "LastName #" + i
+			\});
+		\}
+	\}
+	finally
+	\{
+		if (subscription != null)
+			subscription.Dispose();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+

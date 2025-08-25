@@ -1,0 +1,112 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To open session use the `openSession` method from `DocumentStore`.
+
+## Syntax
+
+There are three overloads of `openSession` methods
+
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="java">
+{`// Open session for a 'default' database configured in 'DocumentStore'
+IDocumentSession openSession();
+
+// Open session for a specified database
+IDocumentSession openSession(String database);
+
+IDocumentSession openSession(SessionOptions sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+The first method is an equivalent of doing
+
+<TabItem value="open_session_2" label="open_session_2">
+<CodeBlock language="java">
+{`store.openSession(new SessionOptions());
+`}
+</CodeBlock>
+</TabItem>
+
+The second method is an equivalent of doing
+
+<TabItem value="open_session_3" label="open_session_3">
+<CodeBlock language="java">
+{`SessionOptions sessionOptions = new SessionOptions();
+sessionOptions.setDatabase(databaseName);
+store.openSession(sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | `OpenSessionOptions` | Options **containing** information such as **name of database** and **RequestExecutor**. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentSession | Instance of a session object. |
+
+## Options
+
+<TabItem value="session_options" label="session_options">
+<CodeBlock language="java">
+{`private String database;
+private boolean noTracking;
+private boolean noCaching;
+private RequestExecutor requestExecutor;
+private TransactionMode transactionMode;
+
+// getters and setters
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **database** | String | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database.mdx) is used. |
+| **noTracking** | boolean | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking.mdx). |
+| **noCaching** | boolean | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching.mdx). |
+| **requestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
+| **transactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SINGLE_NODE`, but session can also operate 'CLUSTER_WIDE'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions.mdx). |
+
+
+## Example I
+
+<TabItem value="open_session_4" label="open_session_4">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    // code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II - Disabling Entities Tracking
+
+<TabItem value="open_session_tracking_1" label="open_session_tracking_1">
+<CodeBlock language="java">
+{`SessionOptions sessionOptions = new SessionOptions();
+sessionOptions.setNoTracking(true);
+try (IDocumentSession session = store.openSession()) \{
+    Employee employee1 = session.load(Employee.class, "employees/1-A");
+    Employee employee2 = session.load(Employee.class, "employees/1-A");
+
+    // because NoTracking is set to 'true'
+    // each load will create a new Employee instance
+    Assert.assertNotSame(employee1, employee2);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="danger" title="Important" id="important" href="#important">
+**Always remember to release session allocated resources after usage by invoking the `close` method or wrapping the session object in the `try` statement.**
+</Admonition>
+
+

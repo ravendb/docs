@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [operations](../client-api/operations/what-are-operations.mdx) or create a [session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
+
+## Example I
+
+<TabItem value="default_database_1" label="default_database_1">
+<CodeBlock language="js">
+{`// without specifying \`database\`
+// we will need to specify the database in each action
+// if no database is passed explicitly we will get an error
+
+const store = new DocumentStore([ "http://localhost:8080" ]);
+store.initialize();
+
+\{
+    const session = store.openSession("Northwind");
+    // ...
+\}
+
+const compactSettings = \{ databaseName: "Northwind" \};
+await store.maintenance.server.send(
+    new CompactDatabaseOperation(compactSettings));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="default_database_2" label="default_database_2">
+<CodeBlock language="js">
+{`// when \`database\` is set to \`Northwind\`
+// created \`operations\` or opened \`sessions\`
+// will work on \`Northwind\` database by default
+// if no database is passed explicitly
+const store =  new DocumentStore("http://localhost:8080", "Northwind");
+store.initialize();
+
+\{
+    const northwindSession = store.openSession();
+    // ...
+\}
+
+await store.maintenance.send(
+    new DeleteIndexOperation("NorthwindIndex"));
+
+\{
+    const adventureWorksSession = store.openSession("AdventureWorks");
+    // ...
+\}
+
+await store.maintenance.forDatabase("AdventureWorks")
+    .send(new DeleteIndexOperation("AdventureWorksIndex"));
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="note" title="">
+By default value of `database` property in `DocumentStore` is `null` which means that in any action requiring a database name, we will have to specify the database.
+</Admonition>
+
+

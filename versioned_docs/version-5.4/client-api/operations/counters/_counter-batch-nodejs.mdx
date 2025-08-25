@@ -1,0 +1,399 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+*CounterBatchOperation* allows you to operate on multiple counters (`Increment`, `Get`, `Delete`) of different documents in a **single request**.
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const counterBatchOp = new CounterBatchOperation(counterBatch);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |                |                                                                                                                                                              |
+|------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **counterBatch** | `CounterBatch` | An object that holds a list of `DocumentCountersOperation`.<br/>Each element in the list describes the counter operations to perform for a specific document |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The CounterBatch object:
+// ========================
+\{
+    // A list of "DocumentCountersOperation" objects
+    documents;
+    // A flag indicating if results should include a dictionary of counter values per database node
+    replyWithAllNodesValues;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`// The DocumentCountersOperation object:
+// =====================================
+\{
+    // Id of the document that holds the counters
+    documentId;
+    // A list of "CounterOperation" objects to perform
+    operations;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// The CounterOperation object:
+// ============================
+\{
+    // The operation type: "Increment" | "Delete" | "Get" 
+    type;
+    // The counter name
+    counterName;
+    // The value to increment by
+    delta;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Document updates as a result of a counter operation " id="document-updates-as-a-result-of-a-counter-operation" href="#document-updates-as-a-result-of-a-counter-operation">
+A document that has counters holds all its counter names in the `metadata`.  
+Therefore, when creating a new counter, the parent document is modified, as the counter's name needs to be added to the metadata.  
+Deleting a counter also modifies the parent document, as the counter's name needs to be removed from the metadata.  
+Incrementing an existing counter will not modify the parent document.
+
+Even if a `DocumentCountersOperation` contains several `CounterOperation` items that affect the document's metadata (create, delete),
+the parent document will be modified **only once**, after all the `CounterOperation` items in this `DocumentCountersOperation` have been processed.  
+If `DocumentCountersOperation` doesn't contain any `CounterOperation` that affects the metadata, the parent document won't be modified.
+
+</Admonition>
+
+
+
+## Return Value
+
+* *CounterBatchOperation* returns a `CountersDetail` object, which holds a list of `CounterDetail` objects.
+
+* If the type is `Increment` or `Get`, a `CounterDetail` object will be added to the result.  
+  `Delete` operations will Not be included in the result.
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// The CounterDetails object:
+// ==========================
+\{
+    // A list of "CounterDetail" objects;
+    counters;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_6" label="syntax_6">
+<CodeBlock language="js">
+{`// The CounterDetail object:
+// =========================
+\{
+    // ID of the document that holds the counter;
+    documentId; // string
+    
+    // The counter name
+    counterName; //string
+
+    // Total counter value
+    totalValue; // number    
+    
+    // A dictionary of counter values per database node
+    counterValues?; 
+    
+    // Etag of counter
+    etag?; // number;
+
+    // Change vector of counter
+    changeVector?; // string
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+Assume we have two documents, `users/1` and `users/2`, that hold 3 counters each -  
+_"Likes"_, _"Dislikes"_ and _"Downloads"_ -  with values 10, 20 and 30 (respectively)
+### Example #1 : Increment Multiple Counters in a Batch
+
+<TabItem value="example_1" label="example_1">
+<CodeBlock language="js">
+{`// Define the counter actions you want to make per document:
+// =========================================================
+
+const counterActions1 = new DocumentCountersOperation();
+counterActions1.documentId = "users/1";
+counterActions1.operations = [
+    CounterOperation.create("Likes", "Increment", 5), // Increment "Likes" by 5
+    CounterOperation.create("Dislikes", "Increment")  // No delta specified, value will stay the same
+];
+
+const counterActions2 = new DocumentCountersOperation();
+counterActions2.documentId = "users/2";
+counterActions2.operations = [
+    CounterOperation.create("Likes", "Increment", 100), // Increment "Likes" by 100
+    CounterOperation.create("Score", "Increment", 50)   // Create a new counter "Score" with value 50
+];
+
+// Define the batch:
+// =================
+const batch = new CounterBatch();
+batch.documents = [counterActions1, counterActions2];
+
+// Define the counter batch operation, pass the batch:
+// ===================================================
+const counterBatchOp = new CounterBatchOperation(batch);
+
+// Execute the operation by passing it to operations.send:
+// =======================================================
+const result = await documentStore.operations.send(counterBatchOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 15,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/1",
+			"counterName"   : "Dislikes",
+			"totalValue"    : 20,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/2",
+			"counterName"   : "Likes",
+			"totalValue"    : 110,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/2",
+			"counterName"   : "score",
+			"totalValue"    : 50,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #2 : Get Multiple Counters in a Batch
+
+<TabItem value="example_2" label="example_2">
+<CodeBlock language="js">
+{`// Define the counter actions you want to make per document:
+// =========================================================
+
+const counterActions1 = new DocumentCountersOperation();
+counterActions1.documentId = "users/1";
+counterActions1.operations = [
+    CounterOperation.create("Likes", "Get"),
+    CounterOperation.create("Downloads", "Get")
+];
+
+const counterActions2 = new DocumentCountersOperation();
+counterActions2.documentId = "users/2";
+counterActions2.operations = [
+    CounterOperation.create("Likes", "Get"),
+    CounterOperation.create("Score", "Get")
+];
+
+// Define the batch:
+// =================
+const batch = new CounterBatch();
+batch.documents = [counterActions1, counterActions2];
+
+// Define the counter batch operation, pass the batch:
+// ===================================================
+const counterBatchOp = new CounterBatchOperation(batch);
+
+// Execute the operation by passing it to operations.send:
+// =======================================================
+const result = await documentStore.operations.send(counterBatchOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 15,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/1",
+			"counterName"   : "Downloads",
+			"totalValue"    : 30,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/2",
+			"counterName"   : "Likes",
+			"totalValue"    : 110,
+			"counterValues" : null
+		\},
+        \{
+			"documentId"    : "users/2",
+			"counterName"   : "Score",
+			"totalValue"    : 50,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #3 : Delete Multiple Counters in a Batch
+
+<TabItem value="example_3" label="example_3">
+<CodeBlock language="js">
+{`// Define the counter actions you want to make per document:
+// =========================================================
+
+const counterActions1 = new DocumentCountersOperation();
+counterActions1.documentId = "users/1";
+counterActions1.operations = [
+    // "Likes" and "Dislikes" will be removed from counter-names in "users/1" metadata
+    CounterOperation.create("Likes", "Delete"),
+    CounterOperation.create("Dislikes", "Delete")
+];
+
+const counterActions2 = new DocumentCountersOperation();
+counterActions2.documentId = "users/2";
+counterActions2.operations = [
+    // "Downloads" will be removed from counter-names in "users/2" metadata
+    CounterOperation.create("Downloads", "Delete")
+];
+
+// Define the batch:
+// =================
+const batch = new CounterBatch();
+batch.documents = [counterActions1, counterActions2];
+
+// Define the counter batch operation, pass the batch:
+// ===================================================
+const counterBatchOp = new CounterBatchOperation(batch);
+
+// Execute the operation by passing it to operations.send:
+// =======================================================
+const result = await documentStore.operations.send(counterBatchOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": []
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #4 : Mix Different Types of CounterOperations in a Batch
+
+<TabItem value="example_4" label="example_4">
+<CodeBlock language="js">
+{`// Define the counter actions you want to make per document:
+// =========================================================
+
+const counterActions1 = new DocumentCountersOperation();
+counterActions1.documentId = "users/1";
+counterActions1.operations = [
+    CounterOperation.create("Likes", "Increment", 30),
+    // The results will include null for this 'Get' 
+    // since we deleted the "Dislikes" counter in the previous example flow
+    CounterOperation.create("Dislikes", "Get"), 
+    CounterOperation.create("Downloads", "Delete")
+];
+
+const counterActions2 = new DocumentCountersOperation();
+counterActions2.documentId = "users/2";
+counterActions2.operations = [
+    CounterOperation.create("Likes", "Get"),
+    CounterOperation.create("Dislikes", "Delete")
+];
+
+// Define the batch:
+// =================
+const batch = new CounterBatch();
+batch.documents = [counterActions1, counterActions2];
+
+// Define the counter batch operation, pass the batch:
+// ===================================================
+const counterBatchOp = new CounterBatchOperation(batch);
+
+// Execute the operation by passing it to operations.send:
+// =======================================================
+const result = await documentStore.operations.send(counterBatchOp);
+const counters = result.counters;
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+* Note: The `Delete` operations are Not included in the result.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"counters": 
+    [
+		\{
+			"documentId"    : "users/1",
+			"counterName"   : "Likes",
+			"totalValue"    : 30,
+			"counterValues" : null
+		\},
+        null,
+        \{
+			"documentId"    : "users/2",
+			"counterName"   : "Likes",
+			"totalValue"    : 110,
+			"counterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -5,87 +5,24 @@ sidebar_label: Get Detailed Statistics
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetDetailedStatisticsCsharp from './_get-detailed-statistics-csharp.mdx';
+import GetDetailedStatisticsJava from './_get-detailed-statistics-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Detailed Database Statistics
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetDetailedStatisticsOperation** will retrieve the same database statistics as [GetStatisticsOperation](../../../client-api/operations/maintenance/get-statistics.mdx) plus total count of identities and counters. 
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="csharp">
-{`public GetDetailedStatisticsOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| `DetailedDatabaseStatistics` | Detailed database statistics |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="csharp">
-{`DetailedDatabaseStatistics stats = store.Maintenance.Send(new GetDetailedStatisticsOperation());
-long countOfDocuments = stats.CountOfDocuments;
-long countOfIndexes = stats.CountOfIndexes;
-long countOfCompareExchange = stats.CountOfCompareExchange;
-long countOfIdentities = stats.CountOfIdentities;
-bool isStale = stats.Indexes[0].IsStale;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDetailedStatisticsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetDetailedStatisticsOperation** will retrieve the same database statistics as [GetStatisticsOperation](../../../client-api/operations/maintenance/get-statistics.mdx) plus total count of identities and counters. 
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="java">
-{`public GetDetailedStatisticsOperation();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| `DetailedDatabaseStatistics` | Detailed database statistics |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="java">
-{`DetailedDatabaseStatistics stats
-    = store.maintenance().send(new GetDetailedStatisticsOperation());
-long countOfDocuments = stats.getCountOfDocuments();
-int countOfIndexes = stats.getCountOfIndexes();
-long countOfCompareExchange = stats.getCountOfCompareExchange();
-long countOfIdentities = stats.getCountOfIdentities();
-boolean stale = stats.getIndexes()[0].isStale();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDetailedStatisticsJava />
 </LanguageContent>
+
 
 <!---
 ### Operations

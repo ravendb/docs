@@ -1,0 +1,101 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetCompareExchangeValueOperation` to return the saved compare-exchange _Value_ for the specified _Key_.  
+
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#syntax)  
+  * [Example I - Value is 'long'](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#example-i---value-is-)  
+  * [Example II - Value is a custom object](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#example-ii---value-is-a-custom-object)  
+</Admonition>
+## Syntax
+
+**Method**:
+<TabItem value="get_0" label="get_0">
+<CodeBlock language="java">
+{`GetCompareExchangeValueOperation(Class<T> clazz, String key);
+`}
+</CodeBlock>
+</TabItem>
+
+**Returned object**:
+<TabItem value="compare_exchange_value" label="compare_exchange_value">
+<CodeBlock language="java">
+{`public class CompareExchangeValue<T> \{
+    private String key;
+    private long index;
+    private T value;
+
+    public CompareExchangeValue(String key, long index, T value) \{
+        this.key = key;
+        this.index = index;
+        this.value = value;
+    \}
+
+    public String getKey() \{
+        return key;
+    \}
+
+    public void setKey(String key) \{
+        this.key = key;
+    \}
+
+    public long getIndex() \{
+        return index;
+    \}
+
+    public void setIndex(long index) \{
+        this.index = index;
+    \}
+
+    public T getValue() \{
+        return value;
+    \}
+
+    public void setValue(T value) \{
+        this.value = value;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| ------------- | ----- | ---- |
+| **Key** | String | The unique object identifier |
+| **Value** | `T` | The existing value that _Key_ has |
+| **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
+
+
+
+## Example I - Value is 'long' 
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="java">
+{`CompareExchangeValue<Long> readResult
+    = store.operations().send(new GetCompareExchangeValueOperation<>(Long.class, "nextClientId"));
+
+Long value = readResult.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II - Value is a custom object 
+<TabItem value="get_2" label="get_2">
+<CodeBlock language="java">
+{`CompareExchangeValue<User> readResult
+    = store.operations().send(
+        new GetCompareExchangeValueOperation<>(User.class, "AdminUser"));
+
+User admin = readResult.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+
+

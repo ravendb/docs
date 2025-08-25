@@ -1,0 +1,159 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
+
+The listener is invoked when a particular action is executed on an entity or querying is performed.
+
+<Admonition type="info" title="Subscribing to an event" id="subscribing-to-an-event" href="#subscribing-to-an-event">
+Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.advanced` which will overwrite the existing event for the current session. 
+</Admonition>
+
+## beforeStoreListener
+
+This event is invoked as a part of `saveChanges` but before it is actually sent to the server.
+
+It takes the argument `BeforeStoreEventArgs` that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+Say we want to discontinue all of the products that are not in stock. 
+
+<TabItem value="on_before_store_event" label="on_before_store_event">
+<CodeBlock language="java">
+{`private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) \{
+    if (args.getEntity() instanceof Product) \{
+        Product product = (Product) args.getEntity();
+        if (product.getUnitsInStock() == 0) \{
+            product.setDiscontinued(true);
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+After we subscribe to the event, every stored entity will invoke the method.
+
+<TabItem value="store_session" label="store_session">
+<CodeBlock language="java">
+{`// subscribe to the event
+store.addBeforeStoreListener(this::onBeforeStoreEvent);
+
+try (IDocumentSession session = store.openSession()) \{
+    Product product1 = new Product();
+    product1.setName("RavenDB v3.5");
+    product1.setUnitsInStock(0);
+
+    session.store(product1);
+
+    Product product2 = new Product();
+    product2.setName("RavenDB v4.0");
+    product2.setUnitsInStock(1000);
+    session.store(product2);
+
+    session.saveChanges();  // Here the method is invoked
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## beforeDeleteListener
+
+This event is invoked as a part of `saveChanges`, but before it actually sends the deleted entities to the server.
+
+It takes the argument `BeforeDeleteEventArgs`, that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+To prevent anyone from deleting entities we can create a method as follows:
+
+<TabItem value="on_before_delete_event" label="on_before_delete_event">
+<CodeBlock language="java">
+{`private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) \{
+    throw new NotImplementedException("Sample");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and subscribe it to the session:
+
+<TabItem value="delete_session" label="delete_session">
+<CodeBlock language="java">
+{`// subscribe to the event
+store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
+
+// open a session and delete entity
+try (IDocumentSession session = store.openSession()) \{
+    Product product = session.load(Product.class, "products/1-A");
+
+    session.delete(product);
+    session.saveChanges(); // NotImplementedException will be thrown here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## afterSaveChangesListener
+
+This event is invoked after the `saveChanges` is returned. It takes the argument `AfterSaveChangesEventArgs` that consists of the `Session` entity's ID and the entity itself with the updated metadata from the server.
+
+### Example
+
+If we want to log each entity that was saved, we can create a method as follows:
+
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
+<CodeBlock language="java">
+{`private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) \{
+    if (log.isLoggable(Level.INFO)) \{
+        log.info("Document " + args.getDocumentId() + " was saved");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## beforeQueryListener
+
+This event is invoked just before the query is sent to the server.
+
+It takes the argument `BeforeQueryEventArgs`, that consists of the `Session` and the `IDocumentQueryCustomization`.
+
+### Example I
+
+If you want to disable caching of all query results, you can implement the method as follows:
+
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
+<CodeBlock language="java">
+{`private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) \{
+    args.getQueryCustomization().noCaching();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:
+
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
+<CodeBlock language="java">
+{`private void onBeforeQueryEvent(BeforeQueryEventArgs args) \{
+    args.getQueryCustomization().waitForNonStaleResults(Duration.ofSeconds(30));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

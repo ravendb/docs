@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When querying with some filtering conditions,  
+a basic score is calculated for each document in the results by the underlying engine.
+
+Providing a **boost value** to some fields allows you to prioritize the resulting documents.  
+The boost value is integrated with the basic score, making the document rank higher.  
+Automatic ordering of the results by the score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).
+
+From the index perspective we can associate to an index entry a boosting factor.  
+The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method. 
+
+Let's jump straight into the example.  
+To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_,  
+and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="java">
+{`public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName.Boost(10)," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Employees/ByFirstAndLastName");
+indexDefinition.setMaps(Collections.singleton(
+    "docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName.Boost(10)," +
+    "    LastName = employee.LastName" +
+    "})"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="java">
+{`// employees with 'firstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'lastName' match
+List<Employee> results = session.query(Employee.class, Employees_ByFirstAndLastName.class)
+    .whereEquals("FirstName", "Bob")
+    .whereEquals("LastName", "Bob")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+Boosting is also available at the query level.
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### Automatic score-based ordering
+
+* By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
+  the results will be automatically ordered by the score.
+
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexingorderbyscoreautomaticallywhenboostingisinvolved)    
+  configuration key.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+When using [Corax](../indexes/search-engine/corax.mdx) as the search engine:  
+
+* [indexing-time boosting](../indexes/search-engine/corax.mdx#supported-features) 
+  is available for documents, but not for document fields.  
+* Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
+  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
+
+</Admonition>
+
+

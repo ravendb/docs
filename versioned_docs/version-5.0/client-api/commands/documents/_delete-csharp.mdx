@@ -1,0 +1,32 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="csharp">
+{`public DeleteDocumentCommand(string id, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | ID of a document to be deleted |
+| **changeVector** | string | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_sample" label="delete_sample">
+<CodeBlock language="csharp">
+{`var command = new DeleteDocumentCommand("employees/1-A", null);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+
+

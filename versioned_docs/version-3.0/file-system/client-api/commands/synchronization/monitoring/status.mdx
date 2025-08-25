@@ -5,126 +5,24 @@ sidebar_label: GetSynchronizationStatusFor
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StatusCsharp from './_status-csharp.mdx';
+import StatusHttp from './_status-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: GetSynchronizationStatusForAsync
-
-**GetSynchronizationStatusForAsync** returns a report that contains the information about the synchronization of a specified file.
-
-<Admonition type="info" title="The actual server to ask" id="the-actual-server-to-ask" href="#the-actual-server-to-ask">
-This method is intended to ask the destination file system about the performed synchronization report. It means that the actual request should be sent there (not to the source server which pushed the data there).
-</Admonition>
-
-
-
-<TabItem value="get_sync_status_1" label="get_sync_status_1">
-<CodeBlock language="csharp">
-{`Task<SynchronizationReport> GetSynchronizationStatusForAsync(string filename);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **filename** | string | The full file name |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous get operation. The task result is an [`SynchronizationReport`](../../../../../glossary/synchronization-report.mdx). |
-
-## Example
-
-<TabItem value="get_sync_status_2" label="get_sync_status_2">
-<CodeBlock language="csharp">
-{`SynchronizationReport report = await store.AsyncFilesCommands.Synchronization
-	.GetSynchronizationStatusForAsync("/documentation/readme.txt");
-
-if (report.Exception == null)
-	Console.WriteLine("The file \{0\} has been synchronized successfully. The synchronization type: \{1\}",
-		report.FileName, report.Type);
-else
-	Console.WriteLine("The synchronization of the file \{0\} failed. The exception message: \{1\}", 
-		report.FileName, report.Exception.Message);
-`}
-</CodeBlock>
-</TabItem>
-
+   <StatusCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: GetSynchronizationStatus
-
-**GET** method allow to retrieve a report that contains the information about the synchronization of a specified file.
-
-<Admonition type="info" title="The actual server to ask" id="the-actual-server-to-ask" href="#the-actual-server-to-ask">
-This method is intended to ask the destination file system about the performed synchronization report. It means that the actual request should be sent there (not to the source server which pushed the data there).
-</Admonition>
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/synchronization/status?fileName=\{fileName\} \\
-	-X GET 
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-The file's content|
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **fileName** | Yes | The full file name |
-
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| JSON | JSON formatted [`SynchronizationReport`](../../../../../glossary/synchronization-report.mdx). |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8081/fs/SlaveNorthwindFS/synchronization/status?fileName=books/Inside.RavenDB.3.0.pdf
-< HTTP/1.1 200 OK
-
-\{
-    "FileName":"/books/Inside.RavenDB.3.0.pdf",
-    "FileETag":"00000000-0000-0001-0000-000000000002",
-    "BytesTransfered":1202187,
-    "BytesCopied":0,
-    "NeedListLength":1,
-    "Exception":null,
-    "Type":"ContentUpdate"
-\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <StatusHttp />
 </LanguageContent>
+
 
 <!---
 

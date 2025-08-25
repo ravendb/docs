@@ -1,0 +1,89 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `PutAttachmentOperation` to add an attachment to a document.
+
+* In this page:
+  
+  * [Put attachment example](../../../client-api/operations/attachments/put-attachment.mdx#put-attachment-example)
+  * [Syntax](../../../client-api/operations/attachments/put-attachment.mdx#syntax)
+  
+</Admonition>
+## Put attachment example
+
+<TabItem value="put_attachment" label="put_attachment">
+<CodeBlock language="js">
+{`// Prepare content to attach
+const text = "Some content...";
+const byteArray = Buffer.from(text);
+
+// Define the put attachment operation
+const putAttachmentOp = new PutAttachmentOperation(
+    "employees/1-A", "attachmentName.txt", byteArray, "text/plain");
+
+// Execute the operation by passing it to operations.send
+const attachmentDetails = await documentStore.operations.send(putAttachmentOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type                         | Description                                                                       |
+|------------------|------------------------------|-----------------------------------------------------------------------------------|
+| __documentId__   | `string`                     | Document ID to which the attachment will be added                                 |
+| __name__         | `string`                     | Name of attachment to put                                                         |
+| __stream__       | `stream.Readable` / `Buffer` | A stream that contains the raw bytes of the attachment                            |
+| __contentType__  | `string`                     | Content type of attachment                                                        |
+| __changeVector__ | `string`                     | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |
+
+| Return Value of `store.operations.send(putAttachmentOp)` |                                             |
+|----------------------------------------------------------|---------------------------------------------|
+| `object`                                                 | An object with the new attachment's details |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The AttachmentDetails object:
+// =============================
+\{
+    // Change vector of attachment
+    changeVector; // string
+
+    // ID of the document that contains the attachment
+    documentId?; // string
+
+    // Name of attachment
+    name; // string;
+
+    // Hash of attachment
+    hash; // string;
+
+    // Content type of attachment
+    contentType; // string
+
+    // Size of attachment
+    size; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

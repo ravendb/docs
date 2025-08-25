@@ -1,0 +1,217 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+* You can add a connection string by using the [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) method.
+
+* This article demonstrates how to connect to an external database.  
+
+In this page:
+
+* [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation)  
+* [Add a Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string)  
+* [Add an Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
+* [Add an Olap Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)  
+
+## `PutConnectionStringOperation`
+
+<TabItem value="add_connection_string" label="add_connection_string">
+<CodeBlock language="csharp">
+{`public PutConnectionStringOperation(T connectionString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Connection String Type | Description |
+| ------------- | ----- | ---- |
+| **connectionString** | `Raven` | Connection string to create: `RavenConnectionString` |
+| **connectionString** | `Sql` | Connection string to create: `SqlConnectionString` |
+| **connectionString** | `Olap` | Connection string to create: `OlapConnectionString` |
+
+
+#### `ConnectionString`
+
+<TabItem value="connection_string" label="connection_string">
+<CodeBlock language="csharp">
+{`public class ConnectionString
+\{
+    public string Name \{ get; set; \} // name of connection string        
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## Add a Raven Connection String
+
+<Admonition type="note" title="Secure servers" id="secure-servers" href="#secure-servers">
+ To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+ you need to 
+
+  1. Export the server certificate from the source server. 
+  2. Install it as a client certificate on the destination server.  
+
+ This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
+</Admonition>
+
+<TabItem value="add_raven_connection_string" label="add_raven_connection_string">
+<CodeBlock language="csharp">
+{`PutConnectionStringOperation<RavenConnectionString> operation
+    = new PutConnectionStringOperation<RavenConnectionString>(
+        new RavenConnectionString
+        \{
+            Name = "raven2",
+            Database = "Northwind2",
+            TopologyDiscoveryUrls = new[]
+            \{
+                "https://rvn2:8080"
+            \}
+        \});
+
+PutConnectionStringResult connectionStringResult
+    = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+* `RavenConnectionString` 
+<TabItem value="raven_connection_string" label="raven_connection_string">
+<CodeBlock language="csharp">
+{`public class RavenConnectionString : ConnectionString
+\{
+    public string Database \{ get; set; \} // target database name
+    public string[] TopologyDiscoveryUrls; // list of server urls
+
+    public ConnectionStringType Type => ConnectionStringType.Raven;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## Add an Sql Connection String
+
+<TabItem value="add_sql_connection_string" label="add_sql_connection_string">
+<CodeBlock language="csharp">
+{`PutConnectionStringOperation<SqlConnectionString> operation
+    = new PutConnectionStringOperation<SqlConnectionString>(
+        new SqlConnectionString
+        \{
+            Name = "local_mysql",
+            FactoryName = "MySql.Data.MySqlClient",
+            ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+        \});
+
+PutConnectionStringResult connectionStringResult
+    = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+* `SqlConnectionString` 
+<TabItem value="sql_connection_string" label="sql_connection_string">
+<CodeBlock language="csharp">
+{`public class SqlConnectionString : ConnectionString
+\{
+    public string ConnectionString \{ get; set; \}
+
+    public string FactoryName \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.Sql;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## Add an Olap Connection String
+
+#### To a Local Machine
+
+<TabItem value="olap_Etl_Connection_String" label="olap_Etl_Connection_String">
+<CodeBlock language="csharp">
+{`OlapConnectionString olapConnectionString = new OlapConnectionString
+\{
+    Name = (string)connectionStringName,
+    LocalSettings = new LocalSettings
+    \{
+        FolderPath = path
+    \}
+\};
+
+var resultOlapString = store.Maintenance.Send
+    (new PutConnectionStringOperation<OlapConnectionString>(olapConnectionString));
+`}
+</CodeBlock>
+</TabItem>
+
+#### To a Cloud-Based Server
+
+To learn how to connect to a cloud instance, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap.mdx#section-1).  
+  
+The following code sample is for a connection string to Amazon AWS.  
+If you use the following cloud-based servers, change the parameters accordingly:  
+
+- [Google](../../../../server/ongoing-tasks/etl/olap.mdx#section-7)  
+- [Azure](../../../../server/ongoing-tasks/etl/olap.mdx#section-6)  
+- [Glacier](../../../../server/ongoing-tasks/etl/olap.mdx#section-5)  
+- [S3](../../../../server/ongoing-tasks/etl/olap.mdx#section-4)  
+- [FTP](../../../../server/ongoing-tasks/etl/olap.mdx#section-3)  
+
+
+
+<TabItem value="olap_Etl_AWS_connection_string" label="olap_Etl_AWS_connection_string">
+<CodeBlock language="csharp">
+{`var myOlapConnectionString = new OlapConnectionString
+\{
+    Name = "myConnectionStringName",
+    S3Settings = new S3Settings
+    \{
+        BucketName = "myBucket",
+        RemoteFolderName = "my/folder/name",
+        AwsAccessKey = "myAccessKey",
+        AwsSecretKey = "myPassword",
+        AwsRegionName = "us-east-1"
+    \}
+\};
+
+var resultOlapString = store.Maintenance.Send(new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
+`}
+</CodeBlock>
+</TabItem>
+
+* `OlapConnectionString`
+<TabItem value="olap_connection_string_config" label="olap_connection_string_config">
+<CodeBlock language="csharp">
+{`public class OlapConnectionString : ConnectionString
+\{
+    public string Name \{ get; set; \}
+    public LocalSettings LocalSettings \{ get; set; \}
+    public S3Settings S3Settings \{ get; set; \}
+    public AzureSettings AzureSettings \{ get; set; \}
+    public GlacierSettings GlacierSettings \{ get; set; \}
+    public GoogleCloudSettings GoogleCloudSettings \{ get; set; \}
+    public FtpSettings FtpSettings \{ get; set; \}
+
+    public ConnectionStringType Type => ConnectionStringType.Olap;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+

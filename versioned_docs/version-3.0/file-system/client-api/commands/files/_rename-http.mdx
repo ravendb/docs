@@ -1,0 +1,60 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: Rename
+
+The **PATCH** method is used to change the file name. 
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/files/\{name\}?rename=\{newName\}  \\
+	-X PATCH
+    --header "If-None-Match:\{etag\}" 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The name of the file that you want to change |
+| **rename** | Yes | The new name of a file |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No |  Used to pass the file `Etag` |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No Content status means that the rename operation processed successfully |
+| `404` | The file was not found |
+| `405` | The concurrency exception occurred |
+| `420` | The synchronization exception occurred |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **None** | The request does not return any value |
+
+---
+
+## Examples
+
+Execute the following request to change the name `/movies/intro.avi` to `/movies/introduction.avi`
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X PATCH http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi?rename=/movies/introduction.avi
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+

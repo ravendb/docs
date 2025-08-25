@@ -5,80 +5,24 @@ sidebar_label: ...change index lock mode
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ChangeIndexLockModeCsharp from './_change-index-lock-mode-csharp.mdx';
+import ChangeIndexLockModeJava from './_change-index-lock-mode-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: Indexes: How to change index lock mode?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**SetIndexLock** method allows you to change index lock mode for a given index.
-
-## Syntax
-
-<TabItem value="change_index_lock_1" label="change_index_lock_1">
-<CodeBlock language="csharp">
-{`void SetIndexLock(string name, IndexLockMode lockMode);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of an index to change lock mode for |
-| **lockMode** | IndexLockMode | new index lock mode |
-
-## Example
-
-<TabItem value="change_index_lock_2" label="change_index_lock_2">
-<CodeBlock language="csharp">
-{`store.DatabaseCommands.SetIndexLock("Orders/Totals", IndexLockMode.LockedIgnore);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ChangeIndexLockModeCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**setIndexLock** method allows you to change index lock mode for a given index.
-
-## Syntax
-
-<TabItem value="change_index_lock_1" label="change_index_lock_1">
-<CodeBlock language="java">
-{`void setIndexLock(String name, IndexLockMode lockMode);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of an index to change lock mode for |
-| **lockMode** | IndexLockMode | new index lock mode |
-
-## Example
-
-<TabItem value="change_index_lock_2" label="change_index_lock_2">
-<CodeBlock language="java">
-{`store
-  .getDatabaseCommands()
-  .setIndexLock("Orders/Totals", IndexLockMode.LOCKED_IGNORE);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ChangeIndexLockModeJava />
 </LanguageContent>
+
 
 <!---
 - [How to change index priority?](../../../../client-api/commands/indexes/how-to/change-index-priority)

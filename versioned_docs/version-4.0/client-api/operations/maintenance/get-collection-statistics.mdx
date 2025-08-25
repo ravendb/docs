@@ -5,133 +5,24 @@ sidebar_label: Get Collection Statistics
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetCollectionStatisticsCsharp from './_get-collection-statistics-csharp.mdx';
+import GetCollectionStatisticsJava from './_get-collection-statistics-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Collection Statistics
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetCollectionStatisticsOperation** is used to return total count of documents, conflicts and document count in each collection.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="csharp">
-{`public GetCollectionStatisticsOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="csharp">
-{`public class CollectionStatistics
-\{
-    public int CountOfDocuments \{ get; set; \}
-    public int CountOfConflicts \{ get; set; \}
-
-    public Dictionary<string, long> Collections \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **CountOfDocuments** | int | Total documents count |
-| **CountOfConflicts** | int | Total conflicts count |
-| **Collections** | Dictionary&lt;string, long&gt; | Dictionary which maps collection name to document count |
-
-## Example
-
-<TabItem value="stats_3" label="stats_3">
-<CodeBlock language="csharp">
-{`CollectionStatistics stats = store.Maintenance.Send(new GetCollectionStatisticsOperation());
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetCollectionStatisticsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetCollectionStatisticsOperation** is used to return total count of documents, conflicts and document count in each collection.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="java">
-{`public GetCollectionStatisticsOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="java">
-{`public class CollectionStatistics \{
-
-    private int countOfDocuments;
-    private int countOfConflicts;
-    private Map<String, Long> collections;
-
-    public CollectionStatistics() \{
-        collections = new HashMap<>();
-    \}
-
-    public Map<String, Long> getCollections() \{
-        return collections;
-    \}
-
-    public void setCollections(Map<String, Long> collections) \{
-        this.collections = collections;
-    \}
-
-    public int getCountOfDocuments() \{
-        return countOfDocuments;
-    \}
-
-    public void setCountOfDocuments(int countOfDocuments) \{
-        this.countOfDocuments = countOfDocuments;
-    \}
-
-    public int getCountOfConflicts() \{
-        return countOfConflicts;
-    \}
-
-    public void setCountOfConflicts(int countOfConflicts) \{
-        this.countOfConflicts = countOfConflicts;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **CountOfDocuments** | int | Total documents count |
-| **CountOfConflicts** | int | Total conflicts count |
-| **Collections** | Map&lt;String, long&gt; | Maps collection name to document count |
-
-## Example
-
-<TabItem value="stats_3" label="stats_3">
-<CodeBlock language="java">
-{`CollectionStatistics stats = store.maintenance().send(new GetCollectionStatisticsOperation());
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetCollectionStatisticsJava />
 </LanguageContent>
+
 
 <!---
 ### Operations

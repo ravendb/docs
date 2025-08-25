@@ -1,0 +1,157 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [Revisions](../../../server/extensions/revisions.mdx) are snapshots of documents that are taken automatically each time a 
+document is updated or deleted.  
+
+* Revisions can be stored indefinitely, or they can be deleted when certain conditions are met. These conditions can be set 
+using the Configure Revisions Operation.  
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/revisions/configure-revisions.mdx#syntax)  
+      * [RevisionsCollectionConfiguration](../../../client-api/operations/revisions/configure-revisions.mdx#revisionscollectionconfiguration)  
+      * [RevisionsConfiguration](../../../client-api/operations/revisions/configure-revisions.mdx#revisionsconfiguration)  
+      * [ConfigureRevisionsOperation](../../../client-api/operations/revisions/configure-revisions.mdx#configurerevisionsoperation)  
+  * [Example](../../../client-api/operations/revisions/configure-revisions.mdx#example)  
+
+</Admonition>
+## Syntax
+
+The ConfigureRevisionsOperation modifies the revisions settings for a particular [database](../../../studio/database/settings/manage-database-group.mdx). 
+Within that database, each [collection](../../../client-api/faq/what-is-a-collection.mdx) can have its own separate revisions 
+settings.  
+
+To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
+
+[1.](../../../client-api/operations/revisions/configure-revisions.mdx#revisionscollectionconfiguration) Create a 
+`RevisionsCollectionConfiguration` object for each desired collection.  
+[2.](../../../client-api/operations/revisions/configure-revisions.mdx#revisionsconfiguration) Put those 
+`RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
+[3.](../../../client-api/operations/revisions/configure-revisions.mdx#configurerevisionsoperation) Send that 
+`RevisionsConfiguration` to the server.  
+
+
+### RevisionsCollectionConfiguration
+
+This object contains the four revisions settings for a particular collection:  
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`public class RevisionsCollectionConfiguration
+\{
+    private boolean disabled;
+    private Duration minimumRevisionAgeToKeep;
+    private Long minimumRevisionsToKeep;
+    private boolean purgeOnDelete;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Configuration Option | Description | Default |
+| - | - | - |
+| **minimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` - unlimited |
+| **minimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `Duration`](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html). | `null` - unlimited |
+| **disabled** | Indicates whether to completely disable revisions for documents in this collection | `false` |
+| **purgeOnDelete** | When a document is deleted, this indicates whether all of its revisions should be deleted as well | `false` |
+
+A revision is only deleted if both the `minimumRevisionsToKeep` for that document is exceeded, **and** the revision is 
+older than the `minimumRevisionAgeToKeep` limit. The oldest revisions are deleted first.  
+
+* By default both these options are set to `null`, meaning that an unlimited number of revisions will be saved 
+indefinitely.  
+
+* If only `minimumRevisionsToKeep` is null, revisions will be deleted only when they are older than 
+`minimumRevisionAgeToKeep`.  
+
+* If only `minimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
+`minimumRevisionsToKeep`.  
+
+These deletions will only take place _when a new revision is added_ to a document. Until a new revision is added, that 
+document's revisions can exceed these limits.  
+### RevisionsConfiguration
+
+This object contains a `Map` of revision configurations for each collection in the database, plus an optional default 
+configuration.  
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`public class RevisionsConfiguration
+\{
+     private Map<String, RevisionsCollectionConfiguration> collections;
+     private RevisionsCollectionConfiguration defaultConfig;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property | Description | Default |
+| - | - | - |
+| **collections** | A map in which the keys are collection names, and the values are the corresponding configurations | `null` |
+| **defaultConfig** | An optional default configuration that applies to any collection not listed in `collections` | `null` |
+
+Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
+configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
+default values listed in the table [above](../../../client-api/operations/revisions/configure-revisions.mdx#revisionscollectionconfiguration) 
+are applied.  
+### ConfigureRevisionsOperation
+
+Lastly, the operation itself sends the `RevisionsConfiguration` to the server, overriding **all** existing collection configurations. 
+You'll want to store these configurations on the client side so they don't have to be created from scratch each time you want to 
+modify them.  
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`public ConfigureRevisionsOperation(RevisionsConfiguration configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Description |
+| - | - |
+| **configuration** | The new revision settings for a particular database |
+
+
+
+## Example
+
+The following code sample updates the settings of the Document Store's [default database](../../../client-api/setting-up-default-database.mdx) 
+- which in this case is a database named "Northwind". To update the configuration of different database, use the 
+[`forDatabase()` method](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+<TabItem value="operation" label="operation">
+<CodeBlock language="java">
+{`// Create a configuration for the Employees collection
+RevisionsCollectionConfiguration employeesRevConfig = new RevisionsCollectionConfiguration();
+employeesRevConfig.setMinimumRevisionAgeToKeep(Duration.ofDays(1));
+employeesRevConfig.setMinimumRevisionsToKeep(42l);
+employeesRevConfig.setPurgeOnDelete(true);
+
+// Add the Employees configuration to a map
+Map<String, RevisionsCollectionConfiguration> collections = new HashMap<>();
+collectionConfig.put("Employees", employeesRevConfig);
+
+// Create a default collection configuration
+RevisionsCollectionConfiguration defaultRevConfig = new RevisionsCollectionConfiguration();
+defaultRevConfig.setMinimumRevisionAgeToKeep(Duration.ofDays(7));
+defaultRevConfig.setMinimumRevisionsToKeep(100l);
+defaultRevConfig.setPurgeOnDelete(false);
+
+// Combine to create a configuration for the database
+RevisionsConfiguration northwindRevConfig = new RevisionsConfiguration();
+northwindRevConfig.setCollections(collections);
+northwindRevConfig.setDefaultConfig(defaultRevConfig);
+
+// Execute the operation to update the database
+documentStore.maintenance().send(new ConfigureRevisionsOperation(northwindRevConfig));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

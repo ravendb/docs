@@ -1,0 +1,53 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetDirectories
+
+The **GET** method is designated to retrieve the paths of subdirectories of a specified directory. 
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/folders/subdirectories/\{directory\}?start=\{start\}&pageSize=\{pageSize\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **directory** | Yes | The directory path (empty value means the root directory) |
+| **start** | No | The number of results that should be skipped (for paging purposes) |
+| **pageSize** | No | The max number of results to get |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Array** | The response consists of array of subdirectory paths. |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/folders/subdirectories
+< HTTP/1.1 200 OK
+["/books","/movies","/pdfs"]
+`}
+</CodeBlock>
+</TabItem>
+

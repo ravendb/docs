@@ -1,0 +1,153 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Global Identifier Generation Conventions
+
+
+
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection.mdx) on the server side. Collection names are also used to build document identifiers. There are two functions that the client uses to determine a collection name for a given type. The first one is used for standard objects with a well-defined type:
+
+<TabItem value="find_type_collection_name" label="find_type_collection_name">
+<CodeBlock language="csharp">
+{`FindCollectionName = type => // function that provides the collection name based on the entity type
+`}
+</CodeBlock>
+</TabItem>
+
+The second one is dedicated for dynamic objects:
+
+<TabItem value="find_dynamic_collection_name" label="find_dynamic_collection_name">
+<CodeBlock language="csharp">
+{`FindCollectionNameForDynamic =
+    dynamicObject => // function to determine the collection name for the given dynamic object
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="What is a Dynamic Object?" id="what-is-a-dynamic-object" href="#what-is-a-dynamic-object">
+
+The `FindCollectionNameForDynamic` only works on objects that inherit from [IDynamicMetaObjectProvider](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.idynamicmetaobjectprovider) interface. In .NET there are two built-in types that implement that interface, the [ExpandoObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.expandoobject) and [DynamicObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject).
+
+For example, if we want to determine a collection using a `Collection` property from a dynamic object, we need to set `FindCollectionNameForDynamic` as follows:
+
+<TabItem value="find_dynamic_collection_name_sample_1" label="find_dynamic_collection_name_sample_1">
+<CodeBlock language="csharp">
+{`FindCollectionNameForDynamic = o => o.Collection
+`}
+</CodeBlock>
+</TabItem>
+
+After that we can store our dynamic object as follows:
+
+<TabItem value="find_dynamic_collection_name_sample_2" label="find_dynamic_collection_name_sample_2">
+<CodeBlock language="csharp">
+{`dynamic car = new ExpandoObject();
+car.Name = "Ford";
+car.Collection = "Cars";
+
+session.Store(car);
+
+dynamic animal = new ExpandoObject();
+animal.Name = "Rhino";
+animal.Collection = "Animals";
+
+session.Store(animal);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+## TransformTypeCollectionNameToDocumentIdPrefix
+
+Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `TransformTypeCollectionNameToDocumentIdPrefix` which takes the collection name and produces the prefix:
+
+<TabItem value="transform_collection_name_to_prefix" label="transform_collection_name_to_prefix">
+<CodeBlock language="csharp">
+{`TransformTypeCollectionNameToDocumentIdPrefix =
+    collectionName => // transform the collection name to the prefix of a identifier, e.g. [prefix]/12
+`}
+</CodeBlock>
+</TabItem>
+
+Its default behavior for a collection which contains one upper character is to simply convert it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters, there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
+
+## FindClrTypeName and FindClrType
+
+In the metadata of all documents stored in a database, you can find the following property which specifies the client-side type. For instance:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Raven-Clr-Type": "Orders.Shipper, Northwind"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This property is used by RavenDB client to perform a conversion between a .NET object and a JSON document stored in a database. A function responsible for retrieving the CLR type of an entity is defined by `FindClrTypeName` convention:
+
+<TabItem value="find_type_name" label="find_type_name">
+<CodeBlock language="csharp">
+{`FindClrTypeName = type => // use reflection to determine the type;
+`}
+</CodeBlock>
+</TabItem>
+
+To properly perform the revert conversion that is from a JSON result into a .NET object, we need to retrieve the CLR type from the `Raven-Clr-Type` metadata:
+
+<TabItem value="find_clr_type" label="find_clr_type">
+<CodeBlock language="csharp">
+{`FindClrType = (id, doc) =>
+\{
+    if (doc.TryGet(Constants.Documents.Metadata.Key, out BlittableJsonReaderObject metadata) &&
+        metadata.TryGet(Constants.Documents.Metadata.RavenClrType, out string clrType))
+        return clrType;
+
+    return null;
+\},
+`}
+</CodeBlock>
+</TabItem>
+
+## FindIdentityProperty
+
+The client must know where in your entity an identifier is stored to be properly able to transform it into JSON document. It uses the `FindIdentityProperty` convention for that. The default and very common convention is that a property named `Id` is the identifier, so is the default one:
+
+<TabItem value="find_identity_property" label="find_identity_property">
+<CodeBlock language="csharp">
+{`FindIdentityProperty = memberInfo => memberInfo.Name == "Id"
+`}
+</CodeBlock>
+</TabItem>
+
+You can provide a customization based on the `MemberInfo` parameter to indicate which property or field keeps the identifier. The client will iterate over all object properties and take the first one according to the defined predicate.
+
+## FindIdentityPropertyNameFromCollectionName
+
+It can happen that sometimes the results returned by the server don't have identifiers defined (for example if you run a projection query). However, they have `@collection` in metadata.
+
+To perform the conversion into a .NET object, a function that finds the identity property name for a given entity name is applied:
+
+<TabItem value="find_identity_property_name_from_collection_name" label="find_identity_property_name_from_collection_name">
+<CodeBlock language="csharp">
+{`FindIdentityPropertyNameFromCollectionName = collectionName => "Id"
+`}
+</CodeBlock>
+</TabItem>
+
+## IdentityPartsSeparator
+
+According to the default, convention document identifiers have the following format: `[collectionName]/[identityValue]-[nodeTag]`. The slash character (`/`) separates the two parts of an identifier.
+You can overwrite it by using `IdentityPartsSeparator` convention. Its default definition is:
+
+<TabItem value="identity_part_separator" label="identity_part_separator">
+<CodeBlock language="csharp">
+{`IdentityPartsSeparator = "/"
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,104 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The server-wide Client-Configuration is a set of configuration options that are set __on the server__ and apply to any client when communicating with __any__ database in the cluster.  
+  See the available configuration options in the article about [put client-configuration for database](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured).
+
+* To set the server-wide Client-Configuration on the server:  
+
+    * Use `PutServerWideClientConfigurationOperation` from the client code.  
+      See the example below.
+
+    * Or, set the server-wide Client-Configuration from the Studio [Client-Configuration view](../../../../studio/server/client-configuration.mdx).
+
+* A Client-Configuration that is set on the server __overrides__ the initial Client-Configuration that is set on the client when creating the Document Store.  
+  A Client-Configuration that is set on the server for the [database level](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)
+  will __override__ the server-wide Client-Configuration for that database.
+
+* Once the Client-Configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
+  the next time it makes a request to the database.
+* In this page:
+    * [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx#put-client-configuration-(server-wide))
+    * [Syntax](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx#syntax)
+
+</Admonition>
+## Put client-configuration (server-wide)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the client-configuration object
+ClientConfiguration clientConfiguration = new ClientConfiguration
+{
+    MaxNumberOfRequestsPerSession = 100,
+    ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+    // ...
+};
+    
+// Define the put server-wide client-configuration operation, pass the configuration 
+var putServerWideClientConfigOp = new PutServerWideClientConfigurationOperation(clientConfiguration);
+
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(putServerWideClientConfigOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the client-configuration object
+ClientConfiguration clientConfiguration = new ClientConfiguration
+{
+    MaxNumberOfRequestsPerSession = 100,
+    ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+    // ...
+};
+        
+// Define the put server-wide client-configuration operation, pass the configuration 
+var putServerWideClientConfigOp = new PutServerWideClientConfigurationOperation(clientConfiguration);
+    
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+tore.Maintenance.Server.SendAsync(putServerWideClientConfigOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`public PutServerWideClientConfigurationOperation(ClientConfiguration configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                  | Description                                                                             |
+|-------------------|-----------------------|-----------------------------------------------------------------------------------------|
+| __configuration__ | `ClientConfiguration` | Client configuration that will be set on the server<br/>(server-wide, for all databases) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class ClientConfiguration
+\{
+    private char? _identityPartsSeparator;
+    public long Etag \{ get; set; \}
+    public bool Disabled \{ get; set; \}
+    public int? MaxNumberOfRequestsPerSession \{ get; set; \}
+    public ReadBalanceBehavior? ReadBalanceBehavior \{ get; set; \}
+    public LoadBalanceBehavior? LoadBalanceBehavior \{ get; set; \}
+    public int? LoadBalancerContextSeed \{ get; set; \}
+    public char? IdentityPartsSeparator;  // can be any character except '|'
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

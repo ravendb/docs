@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `countersFor.delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:
+    * [`delete` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
+
+</Admonition>
+## `delete` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
+* Call `documentCounters.delete`.
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `saveChanges()`.  
+* `delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Syntax
+
+<TabItem value="Delete-definition" label="Delete-definition">
+<CodeBlock language="php">
+{`public function delete(?string $counter): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| **counter** | `string` | Counter name ([see example](../../document-extensions/counters/overview.mdx#managing-counters)) |
+
+
+
+

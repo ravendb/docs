@@ -1,0 +1,266 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Since RavenDB 4.0, the query optimizer supports dynamic group by queries and automatically creates auto map-reduce indexes.
+
+You can create a dynamic query that does an aggregation by using the `groupBy()` method.
+
+The supported aggregation operations are:
+
+- `count`
+- `sum`
+
+&lt;br /&gt;
+
+## Group By Single Field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<CountryAndQuantity> orders = session.query(Order.class)
+    .groupBy("ShipTo.Country")
+    .selectKey("ShipTo.Country", "Country")
+    .selectSum(new GroupByField("Lines[].Quantity", "OrderedQuantity"))
+    .ofType(CountryAndQuantity.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by ShipTo.City
+select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Multiple Fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<CountByCompanyAndEmployee> results = session.query(Order.class)
+    .groupBy("Employee", "Company")
+    .selectKey("Employee", "EmployeeIdentifier")
+    .selectKey("Company")
+    .selectCount()
+    .ofType(CountByCompanyAndEmployee.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by Employee, Company
+select Employee as EmployeeIdentifier, Company, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Select Composite GroupBy Key
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<CountOfEmployeeAndCompanyPairs> orders = session.query(Order.class)
+    .groupBy("Employee", "Company")
+    .selectKey("key()", "EmployeeCompanyPair")
+    .selectCount("Count")
+    .ofType(CountOfEmployeeAndCompanyPairs.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Employee, Company
+select key() as EmployeeCompanyPair, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Array
+
+### By Array Values
+
+In order to group by values of array, you need to use `groupBy(array(...))`. The following query will group by `product` field from `Lines` collection 
+and calculate the count per ordered products. Underneath a fanout, an auto map-reduce index will be created to handle such query. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductsInfo> products = session.query(Order.class)
+    .groupBy(array("Lines[].Product"))
+    .selectKey("key()", "Products")
+    .selectCount()
+    .ofType(ProductsInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product
+select Lines[].Product, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Inside a single group by statement you can mix collection values and value of another property. That's supported by `DocumentQuery` only:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductInfo> results = session.advanced().documentQuery(Order.class)
+    .groupBy("Lines[].Product", "ShipTo.Country")
+    .selectKey("Lines[].Product", "Product")
+    .selectKey("ShipTo.Country", "Country")
+    .selectCount()
+    .ofType(ProductInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, ShipTo.Country 
+select Lines[].Product as Product, ShipTo.Country as Country, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by multiple values from **the same** collection is supported as well:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductInfo> results = session.query(Order.class)
+    .groupBy(array("Lines[].Product"), array("Lines[].Quantity"))
+    .selectKey("Lines[].Product", "Product")
+    .selectKey("Lines[].Quantity", "Quantity")
+    .selectCount()
+    .ofType(ProductInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, Lines[].Quantity 
+select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### By Array Content
+
+Another option is to group by array content. The reduction key will be calculated based on all values of a collection specified in `GroupBy`.
+The client API exposes the `GroupByArrayContent` extension method for that purpose.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductsInfo> results = session.query(Order.class)
+    .groupBy(array("Lines[].Product"))
+    .selectKey("key()", "Products")
+    .selectCount()
+    .ofType(ProductsInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by array(Lines[].Product)
+select key() as Products, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by array content and a value of another property is supported by `DocumentQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductsInfo> results = session.query(Order.class)
+    .groupBy(array("Lines[].Product"), field("ShipTo.Country"))
+    .selectKey("Lines[].Product", "Products")
+    .selectKey("ShipTo.Country", "Country")
+    .selectCount()
+    .ofType(ProductsInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), ShipTo.Country 
+select Lines[].Product as Products, ShipTo.Country as Country, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by multiple values from **the same** collection is also supported by `DocumentQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ProductsInfo> results = session.query(Order.class)
+    .groupBy(array("Lines[].Product"), array("Lines[].Quantity"))
+    .selectKey("Lines[].Product", "Products")
+    .selectKey("Lines[].Quantity", "Quantities")
+    .selectCount()
+    .ofType(ProductsInfo.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), array(Lines[].Quantity) 
+select Lines[].Product as Products, Lines[].Quantity as Quantities, count()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note" id="note" href="#note">
+In order to use the above methods you need to add the following **static import** statement:
+
+<TabItem value="group_by_using" label="group_by_using">
+<CodeBlock language="java">
+{`import static net.ravendb.client.documents.queries.GroupBy.array;
+import static net.ravendb.client.documents.queries.GroupBy.field;
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+
+

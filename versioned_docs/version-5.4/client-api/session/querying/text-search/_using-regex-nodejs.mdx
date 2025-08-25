@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match a given regular expression,  
+use the `regex()` method which enables RavenDB to perform server-side pattern matching queries. 
+
+The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// loads all products, which name
+// starts with 'N' or 'A'
+const products = await session.query({ collection: "Products" })
+    .whereRegex("name", "^[NA]")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where regex(name, '^[NA]')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

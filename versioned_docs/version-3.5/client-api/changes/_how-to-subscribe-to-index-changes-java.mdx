@@ -1,0 +1,122 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following methods allow you to subscribe to index changes:
+
+- [forIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+
+## ForIndex
+
+Index changes for one index can be observed using `forIndex` method.
+
+### Syntax
+
+<TabItem value="index_changes_1" label="index_changes_1">
+<CodeBlock language="java">
+{`IChangesObservable<IndexChange> forIndex(String indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[IndexChangeNotification](../../glossary/index-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="index_changes_2" label="index_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forIndex("Orders/All")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case NONE:
+                // do something
+                break;
+            case BATCH_COMPLETED:
+                // do something
+                break;
+            case INDEX_ADDED:
+                // do something
+                break;
+            case INDEX_REMOVED:
+                // do something
+                break;
+            case INDEX_DEMOTED_TO_IDLE:
+                // do something
+                break;
+            case INDEX_PROMOTED_FROM_IDLE:
+                // do something
+                break;
+            case INDEX_DEMOTED_TO_DISABLED:
+                // do something
+                break;
+            case INDEX_MARKED_AS_ERRORED:
+                // do something
+                break;
+            case SIDE_BY_SIDE_REPLACE:
+                // do something
+                break;
+            case RENAMED:
+                // do something
+                break;
+            case INDEX_PAUSED:
+                // do something
+                break;
+            case LOCK_MODE_CHANGED:
+                // do something
+                break;
+            case PRIORITY_CHANGED:
+                // do something
+                break;
+            default:
+                throw new IllegalArgumentException();
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllIndexes
+
+Index changes for all indexes can be observed using `forAllIndexes` method.
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[IndexChangeNotification](../../glossary/index-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="index_changes_3" label="index_changes_3">
+<CodeBlock language="java">
+{`IChangesObservable<IndexChange> forAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="index_changes_4" label="index_changes_4">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forAllIndexes()
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on index " + change.getName());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+

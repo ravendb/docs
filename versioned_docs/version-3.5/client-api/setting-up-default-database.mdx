@@ -5,152 +5,24 @@ sidebar_label: Setting up Default Database
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SettingUpDefaultDatabaseCsharp from './_setting-up-default-database-csharp.mdx';
+import SettingUpDefaultDatabaseJava from './_setting-up-default-database-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# How to setup a default database?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-`DefaultDatabase` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [Commands](../client-api/commands/what-are-commands.mdx) or create a [Session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
-
-## Example I
-
-<TabItem value="default_database_1" label="default_database_1">
-<CodeBlock language="csharp">
-{`using (IDocumentStore store = new DocumentStore
-\{
-    Urls = new[] \{ "http://your_RavenDB_server_URL" \}
-    // Default database is not set
-\}.Initialize())
-\{
-    // Specify the 'Northwind' database when opening a Session
-    using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
-    \{
-        // Session will operate on the 'Northwind' database
-    \}
-
-    // Specify the 'Northwind' database when sending an Operation
-    store.Maintenance.ForDatabase("Northwind").Send(new DeleteIndexOperation("NorthWindIndex"));
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="default_database_2" label="default_database_2">
-<CodeBlock language="csharp">
-{`using (IDocumentStore store = new DocumentStore
-\{
-    Urls = new[] \{ "http://your_RavenDB_server_URL" \},
-    // Default database is set to 'Northwind'
-    Database = "Northwind"
-\}.Initialize())
-\{
-    // Using the default database
-    using (IDocumentSession northwindSession = store.OpenSession())
-    \{
-        // Session will operate on the default 'Northwind' database
-    \}
-
-    // Operation for default database
-    store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
-
-    // Specify the 'AdventureWorks' database when opening a Session
-    using (IDocumentSession adventureWorksSession = store.OpenSession(database: "AdventureWorks"))
-    \{
-        // Session will operate on the specifed 'AdventureWorks' database
-    \}
-
-    // Specify the 'AdventureWorks' database when sending an Operation
-    store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-<Admonition type="note" title="">
-By default value of `DefaultDatabase` property in `DocumentStore` is `null` which means that actions will be executed on `<system>` database.
-</Admonition>
-
-
+   <SettingUpDefaultDatabaseCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-`DefaultDb` parameter in `DocumentStore` constructor allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [Commands](../client-api/commands/what-are-commands.mdx) or create a [Session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
-
-## Example I
-
-<TabItem value="default_database_1" label="default_database_1">
-<CodeBlock language="java">
-{`// without specifying \`database\`
-// we will need to specify the database in each action
-// if no database is passed explicitly we will get an exception
-
-try (DocumentStore store = new DocumentStore()) \{
-    store.setUrls(new String[]\{ "http://localhost:8080" \});
-    store.initialize();
-
-    try (IDocumentSession session = store.openSession("Northwind")) \{
-        // ...
-    \}
-
-    CompactSettings compactSettings = new CompactSettings();
-    compactSettings.setDatabaseName("Northwind");
-    store.maintenance().server().send(new CompactDatabaseOperation(compactSettings));
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="default_database_2" label="default_database_2">
-<CodeBlock language="java">
-{`// when \`database\` is set to \`Northwind\`
-// created \`operations\` or opened \`sessions\`
-// will work on \`Northwind\` database by default
-// if no database is passed explicitly
-try (DocumentStore store = new DocumentStore(new String[]\{ "http://localhost:8080" \}, "Northwind")) \{
-    store.initialize();
-
-    try (IDocumentSession northwindSession = store.openSession()) \{
-        // ...
-    \}
-
-    store.maintenance().send(new DeleteIndexOperation("NorthwindIndex"));
-
-
-    try (IDocumentSession adventureWorksSession = store.openSession("AdventureWorks")) \{
-        // ...
-    \}
-
-    store.maintenance().forDatabase("AdventureWorks").send(new DeleteIndexOperation("AdventureWorksIndex"));
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-<Admonition type="note" title="">
-By default value of `DefaultDb` property in `DocumentStore` is `null` which means that actions will be executed on `<system>` database.
-</Admonition>
-
-
+   <SettingUpDefaultDatabaseJava />
 </LanguageContent>
+
 
 <!---
 - [How to setup connection string?](./setting-up-connection-string)

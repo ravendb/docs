@@ -1,0 +1,789 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* `Map` indexes, sometimes referred to as simple indexes, contain one or more mapping functions 
+  to indicate which document fields should be indexed.  
+* After indexing, documents can be searched by the indexed fields.  
+* The mapping functions can be considered the **core** of indexes.  
+
+* In This Page:  
+   * [Indexing single fields](../indexes/map-indexes.mdx#indexing-single-fields)
+   * [Combining multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields)
+   * [Indexing partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
+   * [Filtering data within fields](../indexes/map-indexes.mdx#filtering-data-within-fields)
+   * [Indexing nested data](../indexes/map-indexes.mdx#indexing-nested-data)
+   * [Indexing Missing Fields](../indexes/map-indexes.mdx#indexing-missing-fields)
+
+<Admonition type="info" title="Also see:" id="also-see" href="#also-see">
+
+* Indexing fields from [related documents](../indexes/indexing-related-documents.mdx)  
+* Aggregating data with [Map-Reduce indexes](../indexes/map-reduce-indexes.mdx)  
+* Indexing multiple collections with [Multi-Map indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+* [Running calculations and storing the results in the index to reduce query time](https://demo.ravendb.net/demos/python/static-indexes/store-fields-in-index)  
+
+</Admonition>
+
+</Admonition>
+## Indexing single fields
+
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+
+* First, let's create an index called `Employees/ByFirstAndLastName`  
+   <Admonition type="note" title="">
+   Note: The naming separator character "`_`" in your code will become "/" in the index name.  
+   In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
+   </Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask
+{
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`.  
+This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, 
+you can read [this](../indexes/creating-and-deploying.mdx) article before proceeding.
+
+- The next step is to create the indexing function itself. This is done by setting the `map` property with our function in a **parameterless constructor**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`public function __construct()
+{
+    parent::__construct();
+
+    $this->map = "docs.Employees.Select(employee => new { " .
+                 "    FirstName = employee.FirstName, " .
+                 "    LastName = employee.LastName " .
+                 "})";
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="php">
+{`public function __construct()
+{
+    parent::__construct();
+
+    $this->setMaps([
+        "map('Employees', function (employee){
+            return {
+                FirstName : employee.FirstName,
+                LastName : employee.LastName
+            };
+        })"
+    ]);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server 
+  and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method.  
+  To query an index, the name of the index must be called by the query.  
+  If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying.mdx#auto-indexes).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$employees1 = $session
+    ->query(Employee::class, Employees_ByFirstAndLastName::class)
+    ->whereEquals('FirstName', "Robert")
+    ->toList();
+
+$employees2 = $session
+    ->query("Employees/ByFirstAndLastName")
+    ->whereEquals('FirstName', "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This is how our final index looks like:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`_1
+                $employees = $session
+                    ->query(Employees_ByYearOfBirth_Result::class, Employees_ByYearOfBirth::class)
+                    ->whereEquals("YearOfBirth", 1963)
+                    ->ofType(Employee::class)
+                    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps(["map('Employees', function (employee){
+                    return {
+                        FirstName : employee.FirstName,
+                        LastName : employee.LastName
+                    };
+                })"]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Field Types" id="field-types" href="#field-types">
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` has a property named `Age` that is an `int`, the following indexing function...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Function" label="Function">
+<CodeBlock language="php">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+...grants us the capability to issue numeric queries (**return all the Employees whose Age is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Function" label="Function">
+<CodeBlock language="php">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age.ToString()
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age.toString()
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="warning" title="Convention" id="convention" href="#convention">
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`from employee in docs.Employees
+select new
+\{
+	FirstName = employee.FirstName,
+	LastName = employee.LastName
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+</Admonition>
+
+
+
+## Combining multiple fields
+
+Since each index contains a function, you can combine multiple fields into one.
+
+#### Example
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Function" label="Function">
+<CodeBlock language="php">
+{`class Employees_ByFullName_Result {
+    private ?string $fullName = null;
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(?string $fullName): void
+    {
+        $this->fullName = $fullName;
+    }
+}
+
+class Employees_ByFullName extends AbstractIndexCreationTask
+{
+    public function __construct() {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new { " .
+                     "    FullName = (employee.FirstName + \\" \\") + employee.LastName " .
+                     "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByFullName_Result
+{
+    private ?string $fullName = null;
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(?string $fullName): void
+    {
+        $this->fullName = $fullName;
+    }
+}
+class Employees_ByFullName extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps(["map('Employees', function (employee){
+                    return {
+                        FullName  : employee.FirstName + ' ' + employee.LastName
+                    };
+                })"]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+  
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// notice that we're 'cheating' here
+// by marking result type in 'Query' as 'Employees_ByFullName.Result' to get strongly-typed syntax
+// and changing type using 'OfType' before sending query to server
+$employees = $session
+    ->query(Employees_ByFullName_Result::class, Employees_ByFullName::class)
+    ->whereEquals('FullName', "Robert King")
+    ->ofType(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName'
+where FullName = 'Robert King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Indexing partial field data
+
+Imagine that you would like to return all employees that were born in a specific year. 
+You can do it by indexing `Birthday` from `Employee`, then specify the year in `Birthday` as you query the index:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index_Definition" label="Index_Definition">
+<CodeBlock language="php">
+{`class Employees_ByBirthday_Result
+{
+    public ?DateTime $birthday = null;
+
+    public function getBirthday(): ?DateTime
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?DateTime $birthday): void
+    {
+        $this->birthday = $birthday;
+    }
+}
+class Employees_ByBirthday extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new { " .
+                     "    Birthday = employee.Birthday " .
+                     "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByBirthday_Result
+{
+    private ?DateTime $birthday = null;
+
+    public function getBirthday(): ?DateTime
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?DateTime $birthday): void
+    {
+        $this->birthday = $birthday;
+    }
+}
+class Employees_ByBirthday extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Employees', function (employee){
+                return {
+                    Birthday : employee.Birthday
+                }
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+  
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$startDate = new DateTime('1963-01-01');
+$endDate = $startDate->modify('+1 year')->sub(new DateInterval('PT0.001S'));
+$employees = $session
+    ->query(Employees_ByBirthday_Result::class, Employees_ByBirthday::class)
+    ->whereGreaterThanOrEqual("Birthday", $startDate)
+    ->andAlso()
+    ->whereLessThanOrEqual("Birthday", $endDate)
+    ->ofType(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByBirthday '
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index_Definition" label="Index_Definition">
+<CodeBlock language="php">
+{`class Employees_ByYearOfBirth_Result {
+    public ?int $yearOfBirth = null;
+
+    public function getYearOfBirth(): ?int
+    {
+        return $this->yearOfBirth;
+    }
+
+    public function setYearOfBirth(?int $yearOfBirth): void
+    {
+        $this->yearOfBirth = $yearOfBirth;
+    }
+}
+
+class Employees_ByYearOfBirth extends AbstractIndexCreationTask {
+    public function __construct() {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new { " .
+                     "    YearOfBirth = employee.Birthday.Year " .
+                     "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByYearOfBirth_Reslut
+{
+    private ?int $yearOfBirth = null;
+
+    public function getYearOfBirth(): ?int
+    {
+        return $this->yearOfBirth;
+    }
+
+    public function setYearOfBirth(?int $yearOfBirth): void
+    {
+        $this->yearOfBirth = $yearOfBirth;
+    }
+}
+class Employees_ByYearOfBirth extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Employees', function (employee){
+                return {
+                    Birthday : employee.Birthday.Year
+                }
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$employees = $session
+    ->query(Employees_ByYearOfBirth_Result::class, Employees_ByYearOfBirth::class)
+    ->whereEquals("YearOfBirth", 1963)
+    ->ofType(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByYearOfBirth'
+where YearOfBirth = 1963
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filtering data within fields
+
+In the examples above, `where_equals` is used in the query to filter the results.  
+If you consistently want to filter with the same filtering conditions, 
+you can use `where_equals` in the index definition to narrow the index terms that the query must scan.  
+
+This can save query-time but narrows the terms available to query.
+
+#### Example I
+
+For logic that has to do with special import rules that only apply to the USA  
+`where` can be used to filter the Companies collection `Address.Country` field.  
+Thus, we only index documents `where company.Address.Country == "USA"` . 
+
+Index definition:
+<TabItem value="indexes_1_6" label="indexes_1_6">
+<CodeBlock language="php">
+{`class Employees_Query_Result \{
+    public ?StringArray $query = null;
+
+    public function getQuery(): ?StringArray
+    \{
+        return $this->query;
+    \}
+
+    public function setQuery(?StringArray $query): void
+    \{
+        $this->query = $query;
+    \}
+\}
+
+class Employees_Query extends AbstractIndexCreationTask \{
+    public function __construct() \{
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new \{ " .
+                     "    Query = new [] \{ employee.FirstName, employee.LastName, employee.Title, employee.Address.City \} " .
+                     "\})";
+        $this->index("query", FieldIndexing::search());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Query the index:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$orders = $session
+    ->query(Companies_ByAddress_Country_Result::class, Companies_ByAddress_Country::class)
+    ->ofType(Company::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies_ByAddress_Country'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example II
+
+Imagine a seed company that needs to categorize its customers by latitude-based growing zones.  
+
+They can create a different index for each zone and filter their customers in the index with  
+`where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)` .
+
+Index definition:
+<TabItem value="indexes_1_7" label="indexes_1_7">
+<CodeBlock language="php">
+{`class Companies_ByAddress_Latitude_Result \{
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+    private ?string $companyName = null;
+    private ?string $companyAddress = null;
+    private ?string $companyPhone = null;
+
+    public function getLatitude(): ?float
+    \{
+        return $this->latitude;
+    \}
+
+    public function setLatitude(?float $latitude): void
+    \{
+        $this->latitude = $latitude;
+    \}
+
+    public function getLongitude(): ?float
+    \{
+        return $this->longitude;
+    \}
+
+    public function setLongitude(?float $longitude): void
+    \{
+        $this->longitude = $longitude;
+    \}
+
+    public function getCompanyName(): ?string
+    \{
+        return $this->companyName;
+    \}
+
+    public function setCompanyName(?string $companyName): void
+    \{
+        $this->companyName = $companyName;
+    \}
+
+    public function getCompanyAddress(): ?string
+    \{
+        return $this->companyAddress;
+    \}
+
+    public function setCompanyAddress(?string $companyAddress): void
+    \{
+        $this->companyAddress = $companyAddress;
+    \}
+
+    public function getCompanyPhone(): ?string
+    \{
+        return $this->companyPhone;
+    \}
+
+    public function setCompanyPhone(?string $companyPhone): void
+    \{
+        $this->companyPhone = $companyPhone;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Query the index:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$orders = $session
+    ->query(Companies_ByAddress_Latitude_Result::class, Companies_ByAddress_Latitude::class)
+    ->ofType(Company::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies_ByAddress_Latitude'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+  
+
+
+## Indexing nested data
+
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index_Definition" label="Index_Definition">
+<CodeBlock language="php">
+{`class Employees_ByCountry_Result
+{
+    private ?string $country = null;
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+}
+class Employees_ByCountry extends AbstractIndexCreationTask {
+    public function __construct() {
+        parent::__construct();
+
+        $this->map = "docs.Employees.Select(employee => new { " .
+                     "    Country = employee.Address.Country " .
+                     "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByCountry_Result
+{
+    private ?string $country = null;
+}
+class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Employees', function (employee){
+                return {
+                    Country : employee.Address.Country
+                }
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$employees = $session
+    ->query(Employees_ByCountry_Result::class, Employees_ByCountry::class)
+    ->whereEquals("Country", "USA")
+    ->ofType(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByCountry'
+where Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document.  
+Learn more [here](../indexes/indexing-related-documents.mdx).  
+
+
+
+## Indexing Missing Fields
+
+By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
+using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+configuration option.  
+
+The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
+
+
+

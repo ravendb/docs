@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetRevisionsOperation` to GET the document's revisions.
+
+* To only COUNT the number of revisions without getting them, use the [getCountFor](../../../../document-extensions/revisions/client-api/session/counting.mdx) session method.
+
+* In this page:  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#get-all-revisions)  
+  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#paging-results)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#syntax)  
+
+</Admonition>
+## Get all revisions
+
+<TabItem value="getAllRevisions" label="getAllRevisions">
+<CodeBlock language="js">
+{`// Define the get revisions operation, pass the document id
+const getRevisionsOp = new GetRevisionsOperation("Companies/1-A");
+
+// Execute the operation by passing it to operations.send
+const revisions = await documentStore.operations.send(getRevisionsOp);
+
+// The revisions info:
+const allRevisions = revisions.results;        // All the revisions
+const revisionsCount = revisions.totalResults; // Total number of revisions
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Paging results
+
+* Get and process revisions, one page at a time:
+
+<TabItem value="getRevisionsWithPaging" label="getRevisionsWithPaging">
+<CodeBlock language="js">
+{`const parameters = \{
+    start: 0,
+    pageSize: 100
+\};
+
+while (true)
+\{
+    // Execute the get revisions operation
+    // Pass parameters with document id, start & page size
+    const revisions = await documentStore.operations.send(
+        new GetRevisionsOperation("Companies/1-A", parameters));
+    
+    \{
+        // Process the retrieved revisions here
+    \}
+
+    if (revisions.results.length < parameters.pageSize)
+        break; // No more revisions to retrieve
+
+    // Increment 'start' by page-size, to get the "next page" in next iteration
+    parameters.start += parameters.pageSize;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+const getRevisionsOp = new GetRevisionsOperation(id);
+const getRevisionsOp = new GetRevisionsOperation(id, parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | Document ID for which to get revisions |
+| **parameters** | `object` | An object that wraps `start` and `pageSize` (see below) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The parameters object
+\{
+    start,   // Revision number to start from
+    pageSize // Number of revisions to get
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value of `store.operations.send(getRevisionsOp)` | |
+| - | - |
+| `RevisionsResult` | Object with revisions results |
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`class RevisionsResult
+\{
+    results;      // The retrieved revisions
+    totalResults; // Total number of revisions that exist for the document
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

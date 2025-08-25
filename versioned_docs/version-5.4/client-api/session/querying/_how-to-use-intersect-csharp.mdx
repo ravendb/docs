@@ -1,0 +1,90 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries, use the `Intersect` extension which enables RavenDB to perform server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Intersect<T>();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+IList<TShirt> tshirts = session.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+    .Where(x => x.Manufacturer == "Raven")
+    .Intersect()
+    .Where(x => x.Color == "Blue" && x.Size == "Small")
+    .Intersect()
+    .Where(x => x.Color == "Gray" && x.Size == "Large")
+    .OfType<TShirt>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+IList<TShirt> tshirts = await asyncSession.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+    .Where(x => x.Manufacturer == "Raven")
+    .Intersect()
+    .Where(x => x.Color == "Blue" && x.Size == "Small")
+    .Intersect()
+    .Where(x => x.Color == "Gray" && x.Size == "Large")
+    .OfType<TShirt>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class TShirts_ByManufacturerColorSizeAndReleaseYear : AbstractIndexCreationTask<TShirt>
+{
+    public class Result
+    {
+        public string Manufacturer { get; set; }
+
+        public string Color { get; set; }
+
+        public string Size { get; set; }
+
+        public int ReleaseYear { get; set; }
+    }
+
+    public TShirts_ByManufacturerColorSizeAndReleaseYear()
+    {
+        Map = tshirts => from tshirt in tshirts
+                         from type in tshirt.Types
+                         select new
+                         {
+                             Manufacturer = tshirt.Manufacturer,
+                             Color = type.Color,
+                             Size = type.Size,
+                             ReleaseYear = tshirt.ReleaseYear
+                         };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

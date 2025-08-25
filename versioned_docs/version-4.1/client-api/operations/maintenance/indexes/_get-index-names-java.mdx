@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIndexNamesOperation** is used to retrieve multiple index names from a database.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="java">
+{`public GetIndexNamesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Number of index names that should be skipped |
+| **pageSize** | int | Maximum number of index names that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | This methods returns an array of index **name** as a result. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="java">
+{`String[] indexNames
+    = store.maintenance()
+        .send(new GetIndexNamesOperation(0, 10));
+`}
+</CodeBlock>
+</TabItem>
+
+
+

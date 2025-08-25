@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: CleanUpAsync
+
+**CleanUpAsync** forces to run a background task that will clean up files marked as deleted. Read [Background tasks](../../../server/background-tasks.mdx) article for details.
+
+
+
+<TabItem value="clean_up_1" label="clean_up_1">
+<CodeBlock language="csharp">
+{`Task CleanUpAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** |  A task that represents the asynchronous operation |
+
+## Example
+
+<TabItem value="clean_up_2" label="clean_up_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Storage
+		.CleanUpAsync();
+`}
+</CodeBlock>
+</TabItem>
+

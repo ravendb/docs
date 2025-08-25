@@ -1,0 +1,112 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `counters_for.get` to retrieve the value of a **single Counter**,  
+  or `counters_for.get_all` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values.mdx#get-a-single-counter)  
+     * [`get` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage)  
+     * [`get` example](../../document-extensions/counters/retrieve-counter-values.mdx#example)  
+     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [`get_all` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage-1)  
+     * [`get_all` example](../../document-extensions/counters/retrieve-counter-values.mdx#example-1)  
+     * [`get_all` Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax-1)  
+
+</Admonition>
+## Get a single Counter's value
+
+#### `get` usage:  
+
+* Open a session
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `counters_for.get` to retrieve the current value of a single Counter.
+#### `get` example:  
+
+<TabItem value="counters_region_Get" label="counters_region_Get">
+<CodeBlock language="python">
+{`# 1. Open a session
+with store.open_session() as session:
+    # 2. pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-C")
+
+    # 3. Use 'CountersFor.Get' to retrieve a Counter's value
+    days_left = document_counters.get("DaysLeftForSale")
+    print(f"Days Left For Sale: \{days_left\}")
+`}
+</CodeBlock>
+</TabItem>
+#### `get` syntax:  
+
+<TabItem value="Get-definition" label="Get-definition">
+<CodeBlock language="python">
+{`def get(self, counter) -> int: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counter` | str | Counter name |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `int`        | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### `get_all` usage: 
+
+* Open a session.  
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `counters_for.get_all` to retrieve the names and values of all counters associated with the document.
+#### `get_all` example:  
+
+<TabItem value="counters_region_GetAll" label="counters_region_GetAll">
+<CodeBlock language="python">
+{`# 1. Open a session
+with store.open_session() as session:
+    # 2. pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-C")
+
+    # 3. Use GetAll to retrieve all of the document's counters' names and values
+    counters = document_counters.get_all()
+
+    # list counters' names and values
+    for counter_name, counter_value in counters.items():
+        print(f"counter name: \{counter_name\}, counter value: \{counter_value\}")
+`}
+</CodeBlock>
+</TabItem>
+#### `get_all` syntax:  
+
+<TabItem value="GetAll-definition" label="GetAll-definition">
+<CodeBlock language="python">
+{`def get_all(self) -> Dict[str, int]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type      | Description                     |
+|------------------|---------------------------------|
+| `Dict[str, int]` | Map of Counter names and values |
+
+
+
+

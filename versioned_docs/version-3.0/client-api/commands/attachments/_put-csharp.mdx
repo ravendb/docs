@@ -1,0 +1,41 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutAttachment** is used to insert or update an attachment in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`void PutAttachment(string key, Etag etag, Stream data, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | unique key under which attachment will be stored |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check)  |
+| **data** | Stream | attachment data |
+| **metadata** | RavenJObject | attachment metadata |
+
+## Example
+
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="csharp">
+{`using (var file = File.Open("sea.png", FileMode.Open))
+\{
+	store
+		.DatabaseCommands
+		.PutAttachment("albums/holidays/sea.jpg", null, file, new RavenJObject
+			                                           \{
+				                                           \{ "Description", "Holidays 2014" \}
+			                                           \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,82 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To search for documents that contain a specific field by the field **name** or **path**, 
+  use the [document_query](../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
+  `where_exists` method.  
+  Documents that do not contain the specified field will be excluded from the query results.  
+
+* In this page:  
+   * [Filter by Field Name or Path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name-or-path)  
+   * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)  
+   * [Examples](../../../client-api/session/querying/how-to-filter-by-field.mdx#examples)  
+
+</Admonition>
+## Filter by Field Name or Path
+
+To search for documents that contain a specific field by the field's **name** or **path**, 
+pass the name or the path to `where_exists` as demonstrated below.  
+### Syntax 
+
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
+<CodeBlock language="python">
+{`def where_exists(self, field_name: str) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters           | Type        | Description                               |
+|----------------------|-------------|-------------------------------------------|
+| **field_name**       | `str`       | Field Name or Path to filter documents by |
+### Examples
+
+Pass `where_exists` a string containing the field name or path.  
+
+* **Pass a Field Name**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Only documents that contain field 'first_name' will be returned
+results = list(session.advanced.document_query(object_type=Employee).where_exists("first_name"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain the 'FirstName' field will be returned
+
+from Employees
+where exists("FirstName")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **Pass a Field Path**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.document_query(object_type=Employee).where_exists("address.location.latitude")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain the 'Latitude' property in the specified path will be returned
+
+from Employees
+where exists("Address.Location.Latitude")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

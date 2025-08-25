@@ -5,91 +5,24 @@ sidebar_label: Query listeners
 sidebar_position: 5
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WhatAreQueryListenersAndHowToWorkWithThemCsharp from './_what-are-query-listeners-and-how-to-work-with-them-csharp.mdx';
+import WhatAreQueryListenersAndHowToWorkWithThemJava from './_what-are-query-listeners-and-how-to-work-with-them-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Listeners: What are query listeners and how to work with them?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The reason we have document query listeners is to apply query customizations globally. In order to do this the user need to create their own implementation of the `IDocumentQueryListener`.
-
-<TabItem value="document_query_listener" label="document_query_listener">
-<CodeBlock language="csharp">
-{`public interface IDocumentQueryListener
-\{
-	/// <summary>
-	/// Allow to customize a query globally
-	/// </summary>
-	void BeforeQueryExecuted(IDocumentQueryCustomization queryCustomization);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-If we want to disable caching of all query results, you can implement `DisableCachingQueryListener` which will add `NoCaching` customization to each performed query.
-
-<TabItem value="document_query_example" label="document_query_example">
-<CodeBlock language="csharp">
-{`public class DisableCachingQueryListener : IDocumentQueryListener
-\{
-	public void BeforeQueryExecuted(IDocumentQueryCustomization customization)
-	\{
-		customization.NoCaching();
-	\}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreQueryListenersAndHowToWorkWithThemCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The reason we have document query listeners is to apply query customizations globally. In order to do this the user need to create their own implementation of the `IDocumentQueryListener`.
-
-<TabItem value="document_query_listener" label="document_query_listener">
-<CodeBlock language="java">
-{`public interface IDocumentQueryListener \{
-  /**
-   * Allow to customize a query globally
-   * @param queryCustomization
-   */
-  void beforeQueryExecuted(IDocumentQueryCustomization queryCustomization);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-If we want to disable caching of all query results, you can implement `DisableCachingQueryListener` which will add `noCaching` customization to each performed query.
-
-<TabItem value="document_query_example" label="document_query_example">
-<CodeBlock language="java">
-{`public class DisableCachingQueryListener implements IDocumentQueryListener \{
-  @Override
-  public void beforeQueryExecuted(IDocumentQueryCustomization queryCustomization) \{
-    queryCustomization.noCaching();
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreQueryListenersAndHowToWorkWithThemJava />
 </LanguageContent>
+
 
 <!---
 - [Indexes : Querying : Basics](../../indexes/querying/basics)

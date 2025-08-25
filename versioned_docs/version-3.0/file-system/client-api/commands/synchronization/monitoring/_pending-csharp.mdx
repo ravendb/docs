@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetPendingAsync
+
+The **GetPendingAsync** method returns the information about the files that wait for a synchronization slot to a destination file system.
+
+
+
+<TabItem value="get_pending_1" label="get_pending_1">
+<CodeBlock language="csharp">
+{`Task<ItemsPage<SynchronizationDetails>> GetPendingAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of items to skip |
+| **pageSize** | int | The maximum number of items to get |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ItemsPage&lt;SynchronizationDetails&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object that contains the number of total results and the list of the [`SynchronizationDetails`](../../../../../glossary/synchronization-details.mdx) objects, which contains info about pending file synchronizations. |
+
+
+## Example
+
+<TabItem value="get_pending_2" label="get_pending_2">
+<CodeBlock language="csharp">
+{`ItemsPage<SynchronizationDetails> page = await store.AsyncFilesCommands.Synchronization
+												.GetPendingAsync(0, 128);
+
+page.Items.ForEach(x =>
+	Console.WriteLine("File \{0\} waits to be synchronized to \{1\} (modification type: \{2\})",
+							x.FileName, x.DestinationUrl, x.Type));
+`}
+</CodeBlock>
+</TabItem>
+

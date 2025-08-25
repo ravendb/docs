@@ -1,0 +1,72 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Several methods allow you to download attachments from a database:   
+
+Use `session.advanced.attachments.get` to download an attachment or multiple attachments.  
+Use `session.advanced.attachments.get_names` to get all the names of a document's attachments.  
+Use `session.advanced.attachments.get_revision` to download an attachment of a document revision.  
+Use `session.advanced.attachments.exists` to determine if an attachment exists on a document.  
+
+## Syntax
+
+<TabItem value="GetSyntax" label="GetSyntax">
+<CodeBlock language="python">
+{`def get(self, entity_or_document_id: str = None, name: str = None) -> CloseableAttachmentResult: ...
+
+class CloseableAttachmentResult:
+    def __init__(self, response: requests.Response, details: AttachmentDetails):
+        self.__details = details
+        self.__response = response
+
+class AttachmentDetails(AttachmentName):
+    def __init__(
+        self, name: str, hash: str, content_type: str, size: int, change_vector: str = None, document_id: str = None
+    ):
+        super().__init__(...)
+        ...
+
+class AttachmentName:
+    def __init__(self, name: str, hash: str, content_type: str, size: int): ...
+
+def get_names(self, entity: object) -> List[AttachmentName]: ...
+
+def exists(self, document_id: str, name: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="GetAttachment" label="GetAttachment">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    album = session.load("albums/1", Album)
+
+    with session.advanced.attachments.get(album, "001.jpg") as file1:
+        with session.advanced.attachments.get("albums/1", "002.jpg") as file2:
+            bytes_data = file1.data
+
+            attachment_details = file1.details
+            name = attachment_details.name
+            content_type = attachment_details.content_type
+            hash_ = attachment_details.hash
+            size = attachment_details.size
+            document_id = attachment_details.document_id
+            change_vector = attachment_details.change_vector
+
+    attachment_names = session.advanced.attachments.get_names(album)
+    for attachment_name in attachment_names:
+        name = attachment_name.name
+        content_type = attachment_name.content_type
+        hash_ = attachment_name.hash
+        size = attachment_name.size
+
+    exists = session.advanced.attachments.exists("albums/1", "003.jpg")
+`}
+</CodeBlock>
+</TabItem>
+
+

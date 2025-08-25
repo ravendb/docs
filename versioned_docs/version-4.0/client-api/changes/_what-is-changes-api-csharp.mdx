@@ -1,0 +1,112 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
+You are able to subscribe to events for all documents, indexes, and operations as well as to indicate a particular one that you are interested in. 
+This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
+
+<Admonition type="danger" title="Changes API on Secured Server" id="changes-api-on-secured-server" href="#changes-api-on-secured-server">
+
+Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
+the Changes API won't work for secured servers accessible over HTTPS.
+
+This issue will be fixed in the final version of .NET Core 2.1 (Q2 2018). The fix is already available in [daily builds of .NET Core 2.1](https://github.com/dotnet/core-setup#daily-builds). 
+In order to workaround this you can switch your application to use .NET Core 2.1 (build `2.1.0-preview2-26308-01` or newer). 
+
+The issue affects only the RavenDB client, the server can be running on .NET Core 2.0.
+</Admonition>
+
+## Accessing Changes API
+
+The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.
+
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="csharp">
+{`IDatabaseChanges Changes(string database = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of database to open changes API for. If `null`, the `Database` configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| IDatabaseChanges | Instance implementing IDatabaseChanges interface. |
+
+## Connection interface
+
+`IDatabaseChanges` inherits from `IConnectableChanges<TChanges>` interface that represent the connection.
+
+<TabItem value="connectable_changes" label="connectable_changes">
+<CodeBlock language="csharp">
+{`public interface IConnectableChanges<TChanges> : IDisposable
+    where TChanges : IDatabaseChanges
+\{
+    // returns state of the connection
+    bool Connected \{ get; \}
+
+    // A task that ensures that the connection to the server was established.
+    Task<TChanges> EnsureConnectedNow();
+
+    //An event handler to detect changed to the connection status
+    event EventHandler ConnectionStatusChanged;
+
+    //An action to take if an error occured in the connection to the server
+    event Action<Exception> OnError;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Subscriptions
+
+In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
+
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+- [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)
+
+## Unsubscribing
+
+In order to end subscription (stop listening for particular notifications) you must `Dispose` it.
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="csharp">
+{`IDatabaseChanges changes = store.Changes();
+await changes.EnsureConnectedNow();
+var subscription = changes
+        .ForAllDocuments()
+        .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+try
+\{
+    // application code here
+\}
+finally
+\{
+    if (subscription != null)
+        subscription.Dispose();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="note" title="">
+One or more open Changes API connections will prevent a database from becoming idle and unloaded, regardless of [configuration value for database idle timeout](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec)
+</Admonition>
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.
+</Admonition>
+
+

@@ -5,88 +5,19 @@ sidebar_label: Get Compare Exchange Values
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetCompareExchangeValuesCsharp from './_get-compare-exchange-values-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Compare Exchange: How to Get Compare Exchange Values
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `GetCompareExchangeValuesOperation` to return the saved compare-exchange _Values_ for the specified _Keys_.  
-
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
-
-* In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)  
-  * [Example I - Get Value for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-i---get-values-for-specified-keys)  
-  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-ii---get-values-for-keys-with-common-prefix)  
-</Admonition>
-## Syntax
-
-**Methods**:
-<TabItem value="get_list_1" label="get_list_1">
-<CodeBlock language="csharp">
-{`public GetCompareExchangeValuesOperation(string startWith, int? start = null, int? pageSize = null)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **startWith** | string | A common prefix for those keys whose values should be returned |
-| **start** | int | The number of items that should be skipped |
-| **pageSize** | int | The maximum number of values that will be retrieved |
-
-**Returned object**:
-<TabItem value="compare_exchange_value" label="compare_exchange_value">
-<CodeBlock language="csharp">
-{`public class CompareExchangeValue<T>
-\{
-    public readonly string Key;
-    public readonly T Value;
-    public readonly long Index;
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | Description |
-| ------------- | ----- |
-| `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary containing _'Key'_ to _'CompareExchangeValue'_ associations |
-
-<Admonition type="info" title="Session Interface and Lazy Get" id="session-interface-and-lazy-get" href="#session-interface-and-lazy-get">
-You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
-at `session.Advanced.ClusterTransaction`.  
-
-This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange).  
-</Admonition>
-
-
-
-## Example II - Get Values for Keys with Common Prefix
-
-<TabItem value="get_list_3" label="get_list_3">
-<CodeBlock language="csharp">
-{`// Get values for keys that have the common prefix 'users'
-// Retrieve maximum 20 entries
-Dictionary<string, CompareExchangeValue<User>> compareExchangeValues
-    = store.Operations.Send(new GetCompareExchangeValuesOperation<User>("users", 0, 20));
-`}
-</CodeBlock>
-</TabItem>  
-
-
-
+   <GetCompareExchangeValuesCsharp />
 </LanguageContent>
+
 
 <!---
 ### Compare Exchange

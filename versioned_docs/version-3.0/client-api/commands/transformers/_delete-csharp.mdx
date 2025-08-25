@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**DeleteTransformer** is used to remove a transformer from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`void DeleteTransformer(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of a transformer to delete |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.DeleteTransformer("Order/Statistics");
+`}
+</CodeBlock>
+</TabItem>
+
+

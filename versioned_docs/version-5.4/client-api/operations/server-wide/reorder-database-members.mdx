@@ -5,70 +5,19 @@ sidebar_label: Reorder Database Members
 sidebar_position: 10
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ReorderDatabaseMembersCsharp from './_reorder-database-members-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Operations: Server: How to reoder database members?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**ReorderDatabaseMembersOperation** allows you to change the order of nodes in the [Database Group Topology](../../../studio/database/settings/manage-database-group.mdx).
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`public ReorderDatabaseMembersOperation(string database, List<string> order)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | string | Name of a database to operate on |
-| **order** | List\&lt;string&gt; | List of node tags of all existing nodes in the database group, listed in the exact order that you wish to have. <br/> Throws `ArgumentException` is the reordered list doesn't correspond to the existing nodes of the database group |
-
-
-## Example I
-
-<TabItem value="example_1" label="example_1">
-<CodeBlock language="csharp">
-{`// Assume that the current order of database group nodes is : ["A", "B", "C"]
-
-// Change the order of database group nodes to : ["C", "A", "B"]
-
-store.Maintenance.Server.Send(new ReorderDatabaseMembersOperation("Northwind", 
-    new List<string>
-    \{
-        "C", "A", "B"
-    \}));
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="example_2" label="example_2">
-<CodeBlock language="csharp">
-{`// Get the current DatabaseTopology from database record
-var topology = store.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind")).Topology;
-
-// Reverse the order of database group nodes
-topology.Members.Reverse();
-store.Maintenance.Server.Send(new ReorderDatabaseMembersOperation("Northwind", topology.Members));
-`}
-</CodeBlock>
-</TabItem>
-
+   <ReorderDatabaseMembersCsharp />
 </LanguageContent>
+
 
 <!---
 

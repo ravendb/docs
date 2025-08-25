@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetKey
+
+The **PUT** operation is used to retrieve an object stored as [a configuration item](../../../configurations.mdx) in RavenFS.
+
+
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverUrl\}/fs/\{fileSystemName\}/config?name=\{name\}  \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **name** | Yes | The name of an configuration item |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **JSON** | The configuration object |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	-X GET http://localhost:8080/fs/NorthwindFS/config?name=descriptions/intro.avi
+< HTTP/1.1 200 OK
+\{"Author":"Hibernathing Rhinos"\}
+`}
+</CodeBlock>
+</TabItem>
+

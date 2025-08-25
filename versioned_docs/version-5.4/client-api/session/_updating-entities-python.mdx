@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To modify existing documents:
+
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities.mdx#load) or by a [query](../../client-api/session/querying/how-to-query.mdx#sessionquery).  
+      The entities loaded from the documents are added to the internal entities map that the Session manages.
+  
+    * **Edit** the properties you wish to change.  
+      The session will track all changes made to the loaded entities.
+
+    * **Save** to apply the changes.  
+      Once `save_changes()` returns it is guaranteed that the data is persisted in the database.
+      
+
+
+* In this page:
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document--update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents--update)
+    
+</Admonition>
+## Load a document & update
+
+* In this example we `load` a company document and update its **PostalCode** property.  
+
+<TabItem value="load-company-and-update" label="load-company-and-update">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Load a company document
+    # The entity loaded from the document will be added to the Session's entities map
+    company = session.load("companies/1-A", Company)
+
+    # Update the company's postal_code
+    company.address["postal_code"] = "TheNewPostalCode"
+
+    # In Python client nested objects are loaded as dicts for convenience
+    # You can customize and control your class (from/to) JSON conversion to fit any case
+    # Implement classmethod 'from_json(json_dict) -> YourType' to control how the object its being read
+    # Implement method 'to_json() -> Dict' to manage how it's serialized
+
+    # Apply changes
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Query for documents & update
+
+* In this example we `query` for company documents whose **PostalCode** property is _12345_,  
+  and modify this property for the matching documents.  
+
+<TabItem value="query-companies-and-update" label="query-companies-and-update">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Query: find companies with the specified postal_code
+    # The entities loaded from the matching documents will be added to the Session's entities map
+    query = session.query(object_type=Company).where_equals("address.postal_code", "12345")
+
+    matching_companies = list(query)
+
+    # Update the postal_code for the resulting company documents
+    for company in matching_companies:
+        company.address["postal_code"] = "TheNewPostalCode"
+
+    # Apply changes
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

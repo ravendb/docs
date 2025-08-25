@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: SearchAsync
+
+**SearchAsync** retrieves the names of configurations that starts with a specified prefix.
+
+
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="csharp">
+{`Task<ConfigurationSearchResults> SearchAsync(string prefix, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **prefix** | string | The prefix value with which the name of a configuration has to start |
+| **start** | int | The number of results that should be skipped |
+| **pageSize** | int | The maximum number of results that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ConfigurationSearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`ConfigurationSearchResults`](../../../../glossary/configuration-search-results.mdx) object which represents results of a prefix query. |
+
+## Example
+
+In order to get all configuration names which keys start with `descriptions/` prefix you can use the following code:
+
+<TabItem value="search_2" label="search_2">
+<CodeBlock language="csharp">
+{`int start = 0;
+int pageSize = 10;
+
+do
+\{
+	ConfigurationSearchResults results = await store
+		.AsyncFilesCommands
+		.Configuration
+		.SearchAsync("descriptions/", start, pageSize);
+
+	IList<string> names = results.ConfigNames;
+
+	start += pageSize;
+	
+	if(names.Count < pageSize)
+		break;
+
+\} while (true);
+`}
+</CodeBlock>
+</TabItem>
+

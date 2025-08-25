@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+
+Last modified date is stored within the metadata in session and is available for each entity using the `getLastModifiedFor` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
+<CodeBlock language="java">
+{`<T> Date getLastModifiedFor(T instance)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **instance** | T | Instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| Date | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+
+## Example
+
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");
+Date lastModified = session.advanced().getLastModifiedFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+

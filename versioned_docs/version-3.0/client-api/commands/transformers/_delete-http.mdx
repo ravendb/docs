@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**DeleteTransformer** is used to remove a transformer from a database.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/transformers/\{transformerName\} \\
+	-X DELETE
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **transformerName** | Yes | name of a transformer |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `204` | No content |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X DELETE "http://localhost:8080/databases/NorthWind/transformers/Order/Statistics" 
+< HTTP/1.1 204 No Content
+`}
+</CodeBlock>
+</TabItem>
+
+

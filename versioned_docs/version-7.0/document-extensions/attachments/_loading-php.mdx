@@ -1,0 +1,64 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Several methods allow you to download attachments from a database:   
+
+Use `session.advanced.attachments.get` to download an attachment or multiple attachments.  
+Use `session.advanced.attachments.getNames` to get all the names of a document's attachments.  
+Use `session.advanced.attachments.getRevision` to download an attachment of a document revision.  
+Use `session.advanced.attachments.exists` to determine if an attachment exists on a document.  
+
+## Syntax
+
+<TabItem value="GetSyntax" label="GetSyntax">
+<CodeBlock language="php">
+{`function get(object|string $idOrEntity, ?string $name): CloseableAttachmentResult;
+function getNames(?object $entity): AttachmentNameArray;
+function exists(?string $documentId, ?string $name): bool;
+function getRevision(?string $documentId, ?string $name, ?string $changeVector): CloseableAttachmentResult;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="GetAttachment" label="GetAttachment">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    $album = $session->load(Album::class, "albums/1");
+
+    $file1 = $session->advanced()->attachments()->get($album, "001.jpg");
+    $file2 = $session->advanced()->attachments()->get("albums/1", "002.jpg");
+
+    $data = $file1->getData();
+
+    $attachmentDetails = $file1->getDetails();
+    $name = $attachmentDetails->getName();
+    $contentType = $attachmentDetails->getContentType();
+    $hash = $attachmentDetails->getHash();
+    $size = $attachmentDetails->getSize();
+    $documentId = $attachmentDetails->getDocumentId();
+    $changeVector = $attachmentDetails->getChangeVector();
+
+    $attachmentNames = $session->advanced()->attachments()->getNames($album);
+    /** @var AttachmentName $attachmentName */
+    foreach ($attachmentNames as $attachmentName)
+    \{
+        $name = $attachmentName->getName();
+        $contentType = $attachmentName->getContentType();
+        $hash = $attachmentName->getHash();
+        $size = $attachmentName->getSize();
+    \}
+
+    $exists = $session->advanced()->attachments()->exists("albums/1", "003.jpg");
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

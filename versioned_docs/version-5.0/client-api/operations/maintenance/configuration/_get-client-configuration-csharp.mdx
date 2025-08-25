@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetClientConfigurationOperation** is used to return a client configuration, which is saved on the server and overrides client behavior. 
+
+## Syntax
+
+<TabItem value="config_1_0" label="config_1_0">
+<CodeBlock language="csharp">
+{`public GetClientConfigurationOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="config_1_1" label="config_1_1">
+<CodeBlock language="csharp">
+{`public class Result
+\{
+    public long Etag \{ get; set; \}
+
+    public ClientConfiguration Configuration \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ----- | ---- |
+| **Etag** | string | Etag of configuration |
+| **Configuration** | `ClientConfiguration` | configuration which will be used by the client API |
+
+## Example
+
+<TabItem value="config_1_2" label="config_1_2">
+<CodeBlock language="csharp">
+{`GetClientConfigurationOperation.Result config = store.Maintenance.Send(new GetClientConfigurationOperation());
+ClientConfiguration clientConfiguration = config.Configuration;
+`}
+</CodeBlock>
+</TabItem>
+
+

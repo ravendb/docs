@@ -1,0 +1,73 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries, use the `intersect` method 
+which enables RavenDB to perform server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="python">
+{`def intersect(self) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# return all T-shirts that are manufactured by 'Raven'
+# and contain both 'Small Blue' and 'Large Gray' types
+tshirts = list(
+    session.query_index("TShirts/ByManufacturerColorSizeAndReleaseYear")
+    .where_equals("manufacturer", "Raven")
+    .intersect()
+    .where_equals("color", "Blue")
+    .and_also()
+    .where_equals("size", "Small")
+    .intersect()
+    .where_equals("color", "Gray")
+    .and_also()
+    .where_equals("size", "Large")
+    .of_type(TShirt)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class TShirts_ByManufacturerColorSizeAndReleaseYear(AbstractIndexCreationTask):
+    class Result:
+        def __init__(self, manufacturer: str = None, color: str = None, size: str = None, release_year: int = None):
+            self.manufacturer = manufacturer
+            self.color = color
+            self.size = size
+            self.release_year = release_year
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from tshirt in docs.TShirts from type in tshirt.types select new {"
+            "  manufacturer = tshirt.manufacturer,"
+            "  color = tshirt.color,"
+            "  size = type.size,"
+            "  release_year = tshirt.release_year"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

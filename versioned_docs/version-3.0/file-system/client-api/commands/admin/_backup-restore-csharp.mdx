@@ -1,0 +1,117 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Backup and restore
+
+To start or restore backup use `StartBackup` or `StartRestore` operations respectively.
+
+
+<Admonition type="note" title="Non blocking operations" id="non-blocking-operations" href="#non-blocking-operations">
+Execution of the `StartBackup` and `StartRestore` methods simply starts the requested actions on the server and returns immediately. 
+The `StartBackup` and `StartRestore` methods do not wait for operation to complete.
+</Admonition>
+
+
+
+<TabItem value="start_backup_1" label="start_backup_1">
+<CodeBlock language="csharp">
+{`Task StartBackup(string backupLocation, FileSystemDocument fileSystemDocument, bool incremental, string fileSystemName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **backupLocation** | string | The path to a directory where the backup will be stored |
+| **fileSystemDocument** | [FileSystemDocument](../../../../glossary/file-system-document.mdx) | The file system configuration document that will be stored with the backup location as 'Filesystem.Document' file. Pass `null` to use the current one.&lt;br /&gt;**WARNING**: The file system configuration document may contain sensitive data which will be decrypted and stored in the backup. |
+| **incremental** | bool | Indicates if it should be the incremental backup |
+| **fileSystemName** | string | The name of the file system to backup. |
+
+&lt;hr/&gt;
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous start operation |
+
+### Example
+
+<TabItem value="start_backup_2" label="start_backup_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Admin
+		.StartBackup(@"C:\\backups\\NorthwindFS", null, false, "NorthwindFS");
+`}
+</CodeBlock>
+</TabItem>
+
+If you are interested in checking the current backup status you can retrieve it by getting `Raven/Backup/Status` configuration item:
+
+<TabItem value="start_backup_3" label="start_backup_3">
+<CodeBlock language="csharp">
+{`BackupStatus status = await store.AsyncFilesCommands.Configuration
+	.GetKeyAsync<BackupStatus>(BackupStatus.RavenBackupStatusDocumentKey);
+
+if (status.IsRunning)
+\{
+	// ... //
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## StartRestore
+
+<TabItem value="start_restore_1" label="start_restore_1">
+<CodeBlock language="csharp">
+{`Task<long> StartRestore(FilesystemRestoreRequest restoreRequest);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **restoreRequest** | [FilesystemRestoreRequest](../../../../glossary/file-system-restore-request.mdx) | Restore information |
+
+&lt;hr/&gt;
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;long&gt;** | A task that represents the asynchronous restore operation. The task result is the operation identifier. |
+
+## Example
+
+<TabItem value="start_restore_2" label="start_restore_2">
+<CodeBlock language="csharp">
+{`long restoreOperationId = await store.AsyncFilesCommands.Admin
+									.StartRestore(new FilesystemRestoreRequest()
+									\{
+										BackupLocation = @"C:\\backups\\NorthwindFS",
+										FilesystemLocation = @"~\\FileSystems\\NewNorthwindFS",
+										FilesystemName = "NewNorthwindFS"
+									\});
+`}
+</CodeBlock>
+</TabItem>
+
+If you needed to wait until the operation finishes, you would have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
+
+<TabItem value="start_restore_3" label="start_restore_3">
+<CodeBlock language="csharp">
+{`using (var sysDbStore = new DocumentStore
+\{
+	Url = "http://localhost:8080/"
+\}.Initialize())
+\{
+	await new Operation((AsyncServerClient)sysDbStore.AsyncDatabaseCommands, restoreOperationId)
+				.WaitForCompletionAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

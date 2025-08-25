@@ -1,0 +1,124 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, when querying strings the string comparisons are **case-insensitive**.
+
+* Use the `where_equals` method `exact` parameter to perform a search that is **case-sensitive**.
+
+* When making a dynamic query with an exact match, the auto-index created by the server indexes 
+  the text of the document field using the [default exact analyzer](../../../../indexes/using-analyzers.mdx#ravendb) 
+  where the casing of the original text is unchanged.
+
+* In this page:
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match)
+    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match---nested-object)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-query.mdx#syntax)
+
+</Admonition>
+## Query with exact match
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.
+    # Make a query on 'Employees' collection
+    query(object_type=Employee)
+    # Query for all documents where 'FirstName' equals 'Robert'
+    # Pass 'exact=True' for a case-sensitive match
+    .where_equals("FirstName", "Robert", exact=True)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where exact(FirstName == "Robert")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/ByExact(FirstName)`.
+
+* This auto-index will contain the following two index-fields:
+  
+  * `FirstName`  
+    Contains terms with the text from the indexed document field 'FirstName'.  
+    Text is lower-cased and not tokenized.  
+
+  * `exact(FirstName)`  
+    Contain terms with the original text from the indexed document field 'FirstName'.  
+    Casing is exactly the same as in the original text, and the text is not tokenized.  
+    Making an exact query targets these terms to find matching documents.
+
+
+
+## Query with exact match - nested object
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`orders = list(
+    session
+    # Make a query on 'Orders' collection
+    .query(object_type=Order)
+    # Query for documents that contain at least one order line with 'Teatime Chocolate Biscuits'
+    .where_equals(
+        "Lines[].ProductName",
+        "Teatime Chocolate Biscuits",
+        # Pass 'exact=True' for a case-sensitive match
+        exact=True,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" 
+where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`def where_equals(
+    self, field_name: str, value_or_method: Union[object, MethodCall], exact: Optional[bool] = None
+) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                       | Description                                                  |
+|---------------|----------------------------|--------------------------------------------------------------|
+| **field_name** | `str` | Search-field name |
+| **value_or_method** | `Union[object, MethodCall]` | `object` to match with <br/>-or-<br/>`MethodCall` with match condition |
+| **exact** (optional) | `bool` | `False` - search is case-insensitive<br/>`True` - search is case-sensitive |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `DocumentQuery[_T]` | `where_equals` query results |
+
+
+
+

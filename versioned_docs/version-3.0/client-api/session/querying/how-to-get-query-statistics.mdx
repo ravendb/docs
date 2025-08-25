@@ -5,122 +5,24 @@ sidebar_label: Get Query Statistics
 sidebar_position: 10
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToGetQueryStatisticsCsharp from './_how-to-get-query-statistics-csharp.mdx';
+import HowToGetQueryStatisticsJava from './_how-to-get-query-statistics-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: Querying: How to get query statistics?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Query statistics can provide important information about query e.g. duration, total number of results, staleness information, etc. To access statistics use `Statistics` method.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
-    .Query<Employee>()
-    .Where(x => x.FirstName == "Anne")
-     // Get query stats:
-     // * Call 'Statistics'
-     // * Pass an out 'QueryStatistics' param for getting the stats
-    .Statistics(out QueryStatistics stats)
-    .ToList();
-
-long numberOfResults = stats.TotalResults; // Get results count
-long queryDuration = stats.DurationInMs;   // Get query duration
-string indexNameUsed = stats.IndexName;    // Get index name used in query
-// ...
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **stats** | [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
-
-| Return Value | |
-| ------------- | ----- |
-| [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
-    .Query<Employee>()
-    .Where(x => x.FirstName == "Anne")
-     // Get query stats:
-     // * Call 'Statistics'
-     // * Pass an out 'QueryStatistics' param for getting the stats
-    .Statistics(out QueryStatistics stats)
-    .ToListAsync();
-
-long numberOfResults = stats.TotalResults; // Get results count
-long queryDuration = stats.DurationInMs;   // Get query duration
-string indexNameUsed = stats.IndexName;    // Get index name used in query
-// ...
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToGetQueryStatisticsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Query statistics can provide important information about query e.g. duration, total number of results, staleness information, etc. To access statistics use `statistics` method.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="java">
-{`IDocumentQuery<T> statistics(Reference<QueryStatistics> stats);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **stats** | [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
-
-| Return Value | |
-| ------------- | ----- |
-| [RavenQueryStatistics](../../../glossary/raven-query-statistics.mdx) | Statistics for query. |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="java">
-{`public class QueryStatistics \{
-
-    private boolean isStale;
-    private long durationInMs;
-    private int totalResults;
-    private long longTotalResults;
-    private int skippedResults;
-    private Date timestamp;
-    private String indexName;
-    private Date indexTimestamp;
-    private Date lastQueryTime;
-    private Long resultEtag;
-    private String nodeTag;
-    
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToGetQueryStatisticsJava />
 </LanguageContent>
+
 
 <!---
 - [How to show detailed timings in query statistics?](../../../client-api/session/querying/how-to-customize-query#showtimings)

@@ -1,0 +1,139 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`MoreLikeThis` is available through query methods and will return similar documents according to the provided criteria and options.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> moreLikeThis(MoreLikeThisBase moreLikeThis);
+
+IDocumentQuery<T> moreLikeThis(Consumer<IMoreLikeThisBuilderForDocumentQuery<T>> builder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed |
+| **builder** | `Consumer<IMoreLikeThisBuilderForDocumentQuery<T>>` | Builder with fluent API that constructs the `MoreLikeThisBase` instance |
+
+### Builder
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="java">
+{`IMoreLikeThisOperations<T> usingAnyDocument();
+
+IMoreLikeThisOperations<T> usingDocument(String documentJson);
+
+IMoreLikeThisOperations<T> usingDocument(Consumer<IFilterDocumentQueryBase<T, IDocumentQuery<T>>> builder);
+
+IMoreLikeThisOperations<T> withOptions(MoreLikeThisOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentJson** | String | Inline JSON document that will be used as a base for operation |
+| **builder** | `Consumer<IFilterDocumentQueryBase<T, IDocumentQuery<T>>>` | Filtering expression utilized to find a document that will be used as a base for operation |
+| **options** | `MoreLikeThisOptions` | Non-default options that should be used for operation |
+
+### Options
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="java">
+{`private Integer minimumTermFrequency = 2;
+private Integer maximumQueryTerms = 25;
+private Integer maximumNumberOfTokensParsed = 5000;
+private Integer minimumWordLength = 0;
+private Integer maximumWordLength = 0;
+private Integer minimumDocumentFrequency = 5;
+private Integer maximumDocumentFrequency = Integer.MAX_VALUE;
+private Integer maximumDocumentFrequencyPercentage;
+private Boolean boost = false;
+private Float boostFactor = 1f;
+private String stopWordsDocumentId;
+private String[] fields;
+
+// getters and setters
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **MinimumTermFrequency** | Integer | Ignores terms with less than this frequency in the source doc |
+| **MaximumQueryTerms** | Integer | Returns a query with no more than this many terms |
+| **MaximumNumberOfTokensParsed** | Integer | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
+| **MinimumWordLength** | Integer | Ignores words less than this length or, if 0, then this has no effect |
+| **MaximumWordLength** | Integer | Ignores words greater than this length or if 0 then this has no effect |
+| **MinimumDocumentFrequency** | Integer | Ignores words which do not occur in at least this many documents |
+| **MaximumDocumentFrequency** | Integer | Ignores words which occur in more than this many documents |
+| **MaximumDocumentFrequencyPercentage** | Integer | Ignores words which occur in more than this percentage of documents |
+| **Boost** | Boolean | Boost terms in query based on score |
+| **BoostFactor** | Float |  Boost factor when boosting based on score |
+| **StopWordsDocumentId** | String | Document ID containing custom stop words |
+| **Fields** | String[] | Fields to compare |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+MoreLikeThisOptions options = new MoreLikeThisOptions();
+options.setFields(new String[]{ "body" });
+
+List<Article> articles = session
+    .query(Article.class, Query.index("Articles/MoreLikeThis"))
+    .moreLikeThis(builder -> builder
+        .usingDocument(x -> x.whereEquals("id()", "articles/1"))
+        .withOptions(options))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "body" ] }')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'body'
+// where article category is 'IT'
+MoreLikeThisOptions options = new MoreLikeThisOptions();
+options.setFields(new String[]{ "body" });
+List<Article> articles = session
+    .query(Article.class, Query.index("Articles/MoreLikeThis"))
+    .moreLikeThis(builder -> builder
+        .usingDocument(x -> x.whereEquals("id()", "articles/1"))
+        .withOptions(options))
+    .whereEquals("category", "IT")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/MoreLikeThis' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "body" ] }') and category == 'IT'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

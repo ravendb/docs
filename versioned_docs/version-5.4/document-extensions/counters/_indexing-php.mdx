@@ -1,0 +1,139 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
+that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
+
+* Auto-indexes for counters are not available at this time.  
+
+* In this page:  
+  * [Syntax](../../document-extensions/counters/indexing.mdx#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section)  
+
+</Admonition>
+## Syntax
+
+To index counter values, create an index that inherits from `AbstractCountersIndexCreationTask` 
+and set a map as follows.  
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="php">
+{`class MyCounterIndex extends AbstractCountersIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->setMap(
+            "from counter in counters " .
+            "select new \{ " .
+            "    Likes = counter.Value, " .
+            "    Name = counter.Name, " .
+            "    User = counter.DocumentId " .
+            "\}"
+        );
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+### AbstractJavaScriptCountersIndexCreationTask
+
+Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
+you to write your map and reduce functions in JavaScript.  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
+\{
+    public HashSet<string> Maps;
+    protected string Reduce;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property | Type | Description |
+| - | - | - |
+| **Maps** | `HashSet<string>` | The set of javascript map functions |
+| **Reduce** | `string` | The javascript reduce function |
+
+Example:  
+
+<TabItem value="index_3" label="index_3">
+<CodeBlock language="php">
+{`class MyMultiMapCounterIndex extends AbstractJavaScriptCountersIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->setMaps([
+            "counters.map('Blogposts', 'Likes', function (counter) \{
+                return \{
+                    Likes: counter.Value,
+                    Name: counter.Name,
+                    Blog Post: counter.DocumentId
+                \};
+            \})"
+        ]);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+### `CounterNamesFor`
+
+While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
+method is available which returns the names of all counters for a specified document:  
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="php">
+{`List<String> counterNamesFor(Object doc);
+`}
+</CodeBlock>
+</TabItem>
+
+Example of index using `CounterNamesFor`:  
+
+<TabItem value="index_0" label="index_0">
+<CodeBlock language="php">
+{`class Companies_ByCounterNames_Result
+\{
+    public ?StringArray $counterNames = null;
+
+    public function getCounterNames(): ?StringArray
+    \{
+        return $this->counterNames;
+    \}
+
+    public function setCounterNames(?StringArray $counterNames): void
+    \{
+        $this->counterNames = $counterNames;
+    \}
+\}
+class Companies_ByCounterNames extends AbstractIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->map = "from e in docs.Employees " .
+            "let counterNames = counterNamesFor(e) " .
+            "select new \{" .
+            "    CounterNames = counterNames.ToArray() " .
+            "\}";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetKeyAsync
+
+**GetKeyAsync** is used to retrieve an object stored as [a configuration item](../../../configurations.mdx) in RavenFS.
+
+
+
+<TabItem value="get_key_1" label="get_key_1">
+<CodeBlock language="csharp">
+{`Task<T> GetKeyAsync<T>(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | The configuration name |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;T&gt;** | A task that represents the asynchronous operation. The task result is the deserialized object of type *T*. |
+
+## Example
+
+<TabItem value="get_key_2" label="get_key_2">
+<CodeBlock language="csharp">
+{`FileDescription desc = await store
+	.AsyncFilesCommands
+	.Configuration
+	.GetKeyAsync<FileDescription>("descriptions/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+

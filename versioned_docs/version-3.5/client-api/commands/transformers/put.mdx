@@ -5,166 +5,29 @@ sidebar_label: Put
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PutCsharp from './_put-csharp.mdx';
+import PutJava from './_put-java.mdx';
+import PutHttp from './_put-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: Transformers: Put
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**PutTransformer** is used to add a transformer to a database.
-
-## Syntax
-
-<TabItem value="put_1" label="put_1">
-<CodeBlock language="csharp">
-{`string PutTransformer(string name, TransformerDefinition transformerDef);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of a transformer |
-| **transformerDef** | [TransformerDefinition](../../../glossary/transformer-definition.mdx) | definition of a transformer |
-
-| Return Value | |
-| ------------- | ----- |
-| string | Transformer **name**. |
-
-## Example
-
-<TabItem value="put_2" label="put_2">
-<CodeBlock language="csharp">
-{`string transformerName = store
-	.DatabaseCommands
-	.PutTransformer(
-		"Order/Statistics",
-		new TransformerDefinition
-		\{
-			TransformResults = @"from order in results
-								select new
-								\{
-									order.OrderedAt,
-									order.Status,
-									order.CustomerId,
-									CustomerName = LoadDocument(order.CustomerId).Name,
-									LinesCount = order.Lines.Count
-								\}",
-                        Name = "Order/Statistics"
-		\});
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**PutTransformer** is used to add a transformer to a database.
-
-## Syntax
-
-<TabItem value="put_1" label="put_1">
-<CodeBlock language="java">
-{`public String putTransformer(String name, TransformerDefinition transformerDef);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | String | name of a transformer |
-| **transformerDef** | [TransformerDefinition](../../../glossary/transformer-definition.mdx) | definition of a transformer |
-
-| Return Value | |
-| ------------- | ----- |
-| String | Transformer **name**. |
-
-## Example
-
-<TabItem value="put_2" label="put_2">
-<CodeBlock language="java">
-{`TransformerDefinition transformerDefinition = new TransformerDefinition();
-transformerDefinition.setTransformResults("from order in orders " +
-  "select new " +
-  "\{ " +
-  "    order.OrderedAt, " +
-  "    order.Status, " +
-  "    order.CustomerId, " +
-  "    CustomerName = LoadDocument<Customer>(order.CustomerId).Name, " +
-  "    LinesCount = order.Lines.Count " +
-  "\}");
-
-String transformerName = store.getDatabaseCommands().putTransformer("Order/Statistics", transformerDefinition);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-**PutTransformer** is used to add a transformer to a database.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/transformers/\{transformerName\} \\
-	-X PUT \\
-	-d @transformerDefiniton.txt
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| [TransformerDefinition](../../../glossary/transformer-definition.mdx) |
-
-| Query parameter | Required | Description  |
-| ------------- | -- | ---- |
-| **transformerName** | Yes | name of a transformer |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `201` | Created |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **Transformer** | Transformer **name**. |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X PUT "http://localhost:8080/databases/NorthWind/transformers/Order/Statistics" 
--d "\{\\"TransformResults\\":\\"from order in results select new \{     order.OrderedAt,     order.Status,     order.CustomerId,     CustomerName = LoadDocument(order.CustomerId).Name,     LinesCount = order.Lines.Count \}\\",\\"IndexId\\":0,\\"Name\\":\\"Order/Statistics\\"\}"
-< HTTP/1.1 201 Created
-\{"Transformer":"Order/Statistics"\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutHttp />
 </LanguageContent>
+
 
 <!---
 - [GetTransformer](../../../client-api/commands/transformers/get)

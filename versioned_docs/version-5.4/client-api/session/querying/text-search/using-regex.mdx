@@ -5,204 +5,39 @@ sidebar_label: Using Regex
 sidebar_position: 8
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import UsingRegexCsharp from './_using-regex-csharp.mdx';
+import UsingRegexJava from './_using-regex-java.mdx';
+import UsingRegexPython from './_using-regex-python.mdx';
+import UsingRegexPhp from './_using-regex-php.mdx';
+import UsingRegexNodejs from './_using-regex-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-
-# Using Regex
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To return only documents that match regular expression,  
-use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = session
-    .Query<Product>()
-    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = await asyncSession
-    .Query<Product>()
-    .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
-    .ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <UsingRegexCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To return only documents that match regular expression,  
-use the `regex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Java" label="Java">
-<CodeBlock language="java">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-List<Product> products = session.query(Product.class)
-    .whereRegex("Name", "^[NA]")
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <UsingRegexJava />
 </LanguageContent>
+
 <LanguageContent language="python">
-
-
-To return only documents that match regular expression,  
-use the `where_regex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Python" label="Python">
-<CodeBlock language="python regex_1@clientapi\session\querying\textsearch\usingregex.py /}">
-{`# loads all products, which name
-# starts with 'N' or 'A'
-products = list(session.query(object_type=Product).where_regex("Name", "^[NA]"))
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <UsingRegexPython />
 </LanguageContent>
+
 <LanguageContent language="php">
-
-
-To return only documents that match a regular expression ("regex"),  
-use the `whereRegex` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-Load all products whose name starts with 'N' or 'A'.
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Php" label="Php">
-<CodeBlock language="php regex_1@clientapi\session\querying\textsearch\usingregex.php /}">
-{`/** @var array<Product> $products */
-$products = $session
-    ->query(Product::class)
-    ->whereRegex("Name", "^[NA]")
-    ->toList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(Name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="php">
-{`function whereRegex(?string $fieldName, ?string $pattern): FilterDocumentQueryBaseInterface;
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter     | Type  | Description                                                                   |
-|---------------|-------|-------------------------------------------------------------------------------|
-| **$fieldName** | `?string` | Name of the field to query |
-| **$pattern** | `?string` | Pattern to query for |
-
-
+   <UsingRegexPhp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-To return only documents that match a given regular expression,  
-use the `regex()` method which enables RavenDB to perform server-side pattern matching queries. 
-
-The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Node.js" label="Node.js">
-<CodeBlock language="js">
-{`// loads all products, which name
-// starts with 'N' or 'A'
-const products = await session.query({ collection: "Products" })
-    .whereRegex("name", "^[NA]")
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where regex(name, '^[NA]')
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <UsingRegexNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

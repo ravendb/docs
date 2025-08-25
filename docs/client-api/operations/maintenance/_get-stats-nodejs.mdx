@@ -1,0 +1,200 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics can be retrieved for the database and for collections.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
+</Admonition>
+## Get collection statistics
+
+To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="js">
+{`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
+const stats = await store.maintenance.send(new GetCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="js">
+{`// Object with following props is returned:
+\{
+    // Total # of documents in all collections
+    countOfDocuments,
+    // Total # of conflicts
+    countOfConflicts,
+    // Dictionary with total # of documents per collection
+    collections
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed collection statistics
+
+To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="js">
+{`// Object with following props is returned:
+\{
+    // Total # of documents in all collections
+    countOfDocuments,
+    // Total # of conflicts
+    countOfConflicts,
+    // Dictionary with 'collection details per collection'
+    collections,
+\}
+
+// 'Collection details per collection' object props:
+\{
+    name,
+    countOfDocuments,
+    size,
+    documentsSize,
+    tombstonesSize,
+    revisionsSize
+\}
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="python">
+{`class Size:
+    def __init__(self, size_in_bytes: int = None, human_size: str = None): ...
+
+class CollectionDetails:
+    def __init__(
+        self,
+        name: str = None,
+        count_of_documents: int = None,
+        size: Size = None,
+        documents_size: Size = None,
+        tombstones_size: Size = None,
+        revisions_size: Size = None,
+    ): ...
+
+class DetailedCollectionStatistics:
+    def __init__(
+        self,
+        count_of_documents: int = None,
+        count_of_conflicts: int = None,
+        collections: Dict[str, CollectionDetails] = None,
+    ) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get database statistics
+
+To get **database statistics**, use `GetStatisticsOperation`:  
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="js">
+{`// Pass an instance of class \`GetStatisticsOperation\` to the store 
+const stats = await store.maintenance.send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="js">
+{`// Object with following props is returned:
+\{
+    lastDocEtag,      // Last document etag in database
+    lastDatabaseEtag, // Last database etag
+    
+    countOfIndexes,            // Total # of indexes in database
+    countOfDocuments,          // Total # of documents in database
+    countOfRevisionDocuments,  // Total # of revision documents in database
+    countOfDocumentsConflicts, // Total # of documents conflicts in database 
+    countOfTombstones,         // Total # of tombstones in database
+    countOfConflicts,          // Total # of conflicts in database
+    countOfAttachments,        // Total # of attachments in database
+    countOfUniqueAttachments,  // Total # of unique attachments in database
+    countOfCounterEntries,     // Total # of counter-group entries in database
+    countOfTimeSeriesSegments, // Total # of time-series segments in database
+    
+    indexes, // Statistics for each index in database (array of IndexInformation) 
+
+    databaseChangeVector,  // Global change vector of the database
+    databaseId,            // Database identifier
+    is64Bit,               // Indicates if process is 64-bit 
+    pager,                 // Component handling the memory-mapped files
+    lastIndexingTime,      // Last time of indexing an item
+    sizeOnDisk,            // Database size on disk
+    tempBuffersSizeOnDisk, // Temp buffers size on disk
+    numberOfTransactionMergerQueueOperations
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed database statistics
+
+To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="js">
+{`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
+const stats = await store.maintenance.send(new GetDetailedStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="js">
+{`// Resulting object contains all database stats props from above and the following in addition:
+\{
+    // Total # of identities in database
+    countOfIdentities,
+    // Total # of compare-exchange items in database
+    countOfCompareExchange,
+    // Total # of cmpXchg tombstones in database
+    countOfCompareExchangeTombstones,
+    // Total # of TS deleted ranges values in database
+    countOfTimeSeriesDeletedRanges
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get statistics for another database
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection statistics for another database.  
+* `forDatabase` can be used with **any** of the above statistics options.
+
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="js">
+{`// Get stats for 'AnotherDatabase':
+const stats = 
+    await store.maintenance.forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+
+
+

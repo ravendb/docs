@@ -5,114 +5,24 @@ sidebar_label: Put Document
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PutCsharp from './_put-csharp.mdx';
+import PutJava from './_put-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: Documents: Put
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-**Put** is used to insert or update a document in a database.
-
-In this page: 
-
-* [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
-* [Example](../../../client-api/commands/documents/put.mdx#example)
-
-</Admonition>
-
-## Syntax
-
-<TabItem value="put_interface" label="put_interface">
-<CodeBlock language="csharp">
-{`public PutDocumentCommand(string id, string changeVector, BlittableJsonReaderObject document)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **conventions** | DocumentConventions | Document conventions |
-| **id** | string | Unique ID under which document will be stored |
-| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
-
-## Example
-
-<TabItem value="put_sample" label="put_sample">
-<CodeBlock language="csharp">
-{`// Create a new document
-var doc = new Category
-\{
-    Name = "My category",
-    Description = "My category description"
-\};
-// Create metadata on the document
-var docInfo = new DocumentInfo
-\{
-    Collection = "Categories"
-\};
-// Convert your entity to a BlittableJsonReaderObject
-var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
-
-// The Put command (parameters are document ID, changeVector check is null, the document to store)
-var command = new PutDocumentCommand("categories/999", null, blittableDoc);
-// RequestExecutor sends the command to the server
-session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**Put** is used to insert or update a document in a database.
-
-## Syntax
-
-<TabItem value="put_interface" label="put_interface">
-<CodeBlock language="java">
-{`public PutDocumentCommand(String id, String changeVector, ObjectNode document)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | String | unique ID under which document will be stored |
-| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | ObjectNode | The document to store. You may use `session.advanced().getEntityToJson().convertEntityToJson` to convert your entity to a `ObjectNode` |
-
-## Example
-
-<TabItem value="put_sample" label="put_sample">
-<CodeBlock language="java">
-{`Category doc = new Category();
-doc.setName("My category");
-doc.setDescription("My category description");
-
-DocumentInfo docInfo = new DocumentInfo();
-docInfo.setCollection("Categories");
-
-ObjectNode jsonDoc = session.advanced().getEntityToJson().convertEntityToJson(doc, docInfo);
-PutDocumentCommand command = new PutDocumentCommand("categories/999", null, jsonDoc);
-session.advanced().getRequestExecutor().execute(command);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutJava />
 </LanguageContent>
+
 
 <!---
 ### Commands

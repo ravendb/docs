@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetFinishedAsync
+
+**GetFinishedAsync** allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report.mdx) of already accomplished file synchronizations on the destination server.
+
+
+
+<TabItem value="get_finished_1" label="get_finished_1">
+<CodeBlock language="csharp">
+{`Task<ItemsPage<SynchronizationReport>> GetFinishedAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of reports to skip |
+| **pageSize** | int | The maximum number of reports that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ItemsPage&lt;SynchronizationReport&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object, which contains the number of total results and the list of the `SynchronizationReport` objects for the requested page. |
+
+## Example
+
+<TabItem value="get_finished_2" label="get_finished_2">
+<CodeBlock language="csharp">
+{`ItemsPage<SynchronizationReport> page;
+IList<SynchronizationReport> reports = new List<SynchronizationReport>();
+
+var start = 0;
+const int pageSize = 10;
+
+do
+\{
+	page = await store.AsyncFilesCommands.Synchronization.GetFinishedAsync(start, pageSize);
+
+	reports.AddRange(page.Items);
+
+	Console.WriteLine("Retrieved \{0\} of \{1\} reports", reports.Count, page.TotalCount);
+
+\} while (page.Items.Count == pageSize);
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,103 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: UploadAsync
+
+**UploadAsync** is used to insert a new file or update the content of an existing one in a file system.
+
+
+
+<TabItem value="upload_1" label="upload_1">
+<CodeBlock language="csharp">
+{`Task UploadAsync(string filename, Stream source, RavenJObject metadata = null, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of the uploaded file (full path) |
+| **source** | Stream | The file content |
+| **metadata** | RavenJObject | The file metadata (default: `null`) |
+| **etag** | Etag | The current file etag used for concurrency checks (`null` skips check) |
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous upload operation |
+
+<TabItem value="upload_3" label="upload_3">
+<CodeBlock language="csharp">
+{`Task UploadAsync(string filename, Action<Stream> source, Action prepareStream, long size, RavenJObject metadata = null, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of the uploaded file (full path) |
+| **source** | Action&lt;Stream&gt; | The action which writes file content to the network stream |
+| **prepareStream** | Action | The action executed before the content is being written (`null` means no action to perform) |
+| **size** | long | The file size. It is sent in `RavenFS-Size` header to validate the number of bytes received on the server side. If there is a mismatch between the size reported in the header and the number of the bytes read on the server side, then `BadRequestException` is thrown |
+| **metadata** | RavenJObject | The file metadata (default: `null`) |
+| **etag** | Etag | The current file etag used for concurrency checks (`null` skips check) |
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous upload operation |
+
+<Admonition type="note" title="">
+CryptoStream and any other non-seekable streams are supported.
+</Admonition>
+
+
+## Example I
+
+<TabItem value="upload_2" label="upload_2">
+<CodeBlock language="csharp">
+{`using (var file = File.OpenRead(@"C:\\intro.avi"))
+\{
+	await store
+	.AsyncFilesCommands
+	.UploadAsync(
+		"/movies/intro.avi",
+		file,
+		new RavenJObject
+		\{
+			\{
+				"AllowRead", "Everyone"
+			\}
+		\}
+	);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="upload_4" label="upload_4">
+<CodeBlock language="csharp">
+{`await store
+	.AsyncFilesCommands
+	.UploadAsync(
+		"two-bytes-file.bin",
+		s =>
+		\{
+			s.WriteByte(1);
+			s.WriteByte(2);
+		\},
+		null,
+		2,
+		new RavenJObject
+		\{
+			\{
+				"AllowRead", "Everyone"
+			\}
+		\}
+	);
+`}
+</CodeBlock>
+</TabItem>
+

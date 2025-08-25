@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `PutClientCertificateOperation` to register an existing client certificate.
+
+* To register an existing client certificate from the Studio,
+  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view.mdx#upload-an-existing-client-certificate).
+
+* In this article:
+    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#put-client-certificate-example)
+    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#syntax)
+
+</Admonition>
+## Put client certificate example
+
+<TabItem value="cert_put_2" label="cert_put_2">
+<CodeBlock language="js">
+{`const rawCert = fs.readFileSync("<path-to-certificate.crt>");
+const certificateAsBase64 = rawCert.toString("base64");
+
+const putClientCertificateOp = new PutClientCertificateOperation(
+    "certificateName",
+    certificateAsBase64,
+    \{\},
+    "ClusterAdmin");
+
+await store.maintenance.server.send(putClientCertificateOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const putOperation = 
+    new PutClientCertificateOperation(name, certificate, permissions, clearance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type                             | Description                                                                                         |
+|-----------------|----------------------------------|-----------------------------------------------------------------------------------------------------|
+| **name**        | `string`                         | A name for the certificate.                                                                         |
+| **certificate** | `string`                         | The certificate to register.                                                                        |
+| **permissions** | `Record<string, DatabaseAccess>` | A dictionary mapping database name to access level.<br/>Relevant only when clearance is `ValidUser`. |
+| **clearance**   | `SecurityClearance`              | Access level (role) assigned to the certificate.                                                    |
+
+* `SecurityClearance` options:
+  * `ClusterAdmin`  
+  * `ClusterNode`  
+  * `Operator`  
+  * `ValidUser`  
+
+* `DatabaseAccess ` options:
+  * `Read`
+  * `ReadWrite`  
+  * `Admin`
+
+
+
+

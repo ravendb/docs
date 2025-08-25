@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are two types of statistics available. First type of statistics returns server-wide information, the second one returns statistics for particular database.
+
+## Database statistics
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/stats \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| [DatabaseStatistics](../../../glossary/database-statistics.mdx) | Current statistics for a database that commands work on |
+
+
+
+## Server statistics
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/stats \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| [AdminStatistics](../../../glossary/admin-statistics.mdx) | Current statistics for a server |
+
+
+
+

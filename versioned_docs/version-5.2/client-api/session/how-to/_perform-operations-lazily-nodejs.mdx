@@ -1,0 +1,318 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* __Lazy request__:
+
+    * You can define a lazy request within a session (e.g. a lazy-query or a lazy-load request)  
+      and defer its execution until actually needed.
+
+    * The lazy request definition is stored in the session and a `Lazy` instance is returned.  
+      The request will be sent to the server and executed only when you access the value of this instance.
+
+* __Multiple lazy requests__:
+
+    * Multiple lazy requests can be defined within the same session.
+
+    * When triggering the deferred execution (whether implicitly or explicitly),  
+      ALL pending lazy requests held up by the session will be sent to the server in a single call.  
+      This can help reduce the number of remote calls made to the server over the network.
+
+* In this page:
+    * [Requests that can be executed lazily:](../../../client-api/session/how-to/perform-operations-lazily.mdx#requests-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#implicit)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#explicit)
+
+</Admonition>
+## Operations that can be executed lazily
+
+<Admonition type="note" title="">
+<a id="loadEntities"/> __Load entities__
+
+* ['load'](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
+  Loading entities can be executed __lazily__.   
+
+<TabItem value="lazy_load" label="lazy_load">
+<CodeBlock language="js">
+{`const lazyEmployee = session
+     // Add a call to lazily 
+    .advanced.lazily
+     // Document will Not be loaded from the database here, no server call is made
+    .load("employees/1-A");
+
+const employee = await lazyEmployee.getValue(); // 'load' operation is executed here
+// The employee entity is now loaded & tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="loadWithInclude"/> __Load entities with include__
+
+* ['load' with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
+  Loading entities with include can be executed __lazily__.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Lazy_load_with_include" label="Lazy_load_with_include">
+<CodeBlock language="js">
+{`const lazyProduct = session
+     // Add a call to lazily 
+    .advanced.lazily
+     // Request to include the related Supplier document
+     // Documents will Not be loaded from the database here, no server call is made
+    .include("supplierId")
+    .load("products/1-A");
+
+// 'load with include' operation will be executed here
+// Both documents will be retrieved from the database
+const product = await lazyProduct.getValue();
+// The product entity is now loaded & tracked by the session
+
+// Access the related document, no additional server call is made
+const supplier = await session.load(product.supplierId)
+// The supplier entity is now also loaded & tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="The_document" label="The_document">
+<CodeBlock language="js">
+{`// Sample product document
+class Product {
+    constructor(name, supplierId) {
+        this.id = null;
+        this.name = name;
+        this.supplierId = supplierId; // The related document ID
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="loadStartingWith"/> __Load entities starting with__
+
+* ['loadStartingWith'](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+  Loading entities with a common prefix can be executed __lazily__.
+
+<TabItem value="lazy_loadStartingWith" label="lazy_loadStartingWith">
+<CodeBlock language="js">
+{`const lazyEmployees = session
+     // Add a call to lazily 
+    .advanced.lazily
+     // Request to load entities whose ID starts with 'employees/'
+     // Documents will Not be loaded from the database here, no server call is made
+    .loadStartingWith("employees/");
+
+const employees = await lazyEmployees.getValue(); // 'load' operation is executed here
+// The employee entities are now loaded & tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="conditionalLoad"/> __Conditional load__
+
+* ['conditionalLoad'](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
+  * If the entity is already loaded to the session:  
+    no server call is made, the tracked entity is returned.    
+  * If the entity is Not already loaded to the session:  
+    the document will be loaded from the server only if the change-vector provided to the method is older than the one in the server
+    (i.e. if the document in the server is newer).
+  * Loading entities conditionally can be executed __lazily__.  
+
+<TabItem value="lazy_conditionalLoad" label="lazy_conditionalLoad">
+<CodeBlock language="js">
+{`// Create document and get its change-vector:
+\{
+    const session1 = documentStore.openSession();
+
+    const employee = new Employee();
+    await session1.store(employee, "employees/1-A");
+    await session.saveChanges();
+    
+    // Get the tracked entity change-vector
+    const changeVector = session.advanced.getChangeVectorFor(employee);
+\}
+
+// Conditionally lazy-load the document:
+\{
+    const session2 = documentStore.openSession();
+
+    const lazyEmployee = session2
+         // Add a call to lazily 
+        .advanced.lazily
+         // Document will Not be loaded from the database here, no server call is made
+        .conditionalLoad("employees/1-A", changeVector, Employee);
+
+    const loadedItem = await lazyEmployee.getValue(); // 'conditionalLoad' operation is executed here
+    const employee = loadeditem.entity;
+    
+    // If conditionalLoad has actually fetched the document from the server (logic described above)
+    // then the employee entity is now loaded & tracked by the session
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="runQuery"/> __Run query__
+
+* A Query can be executed __lazily__.  
+  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+
+<TabItem value="lazy_query" label="lazy_query">
+<CodeBlock language="js">
+{`// Define a lazy query:
+const lazyEmployees = session
+    .query(\{ collection: "employees" \})
+    .whereEquals("FirstName", "John")
+     // Add a call to lazily, the query will Not be executed here 
+    .lazily();
+
+const employees = await lazyEmployees.getValue(); // Query is executed here
+
+// Note: Since query results are not projected,
+// then the resulting employee entities will be tracked by the session.
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="getRevisions"/> __Get revisions__
+
+* All methods for [getting revisions](../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
+
+<TabItem value="lazy_revisions" label="lazy_revisions">
+<CodeBlock language="js">
+{`var lazyRevisions = session
+     // Add a call to lazily 
+    .advanced.revisions.lazily
+     // Revisions will Not be fetched here, no server call is made
+    .getFor("employees/1-A");
+
+     // Usage is the same for the other get revisions methods:
+     // .get()
+     // .getMetadataFor()
+
+const revisions = lazyRevisions.getValue(); // Getting revisions is executed here
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="getCompareExchange"/> __Get compare-exchange value__
+
+* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
+
+<TabItem value="lazy_compareExchange" label="lazy_compareExchange">
+<CodeBlock language="js">
+{`const session = documentStore.openSession(\{ transactionMode: "ClusterWide" \});
+
+// Create compare-exchange value:
+session.advanced.clusterTransaction.createCompareExchangeValue("someKey", "someValue");
+await session.saveChanges();
+
+// Get the compare-exchange value lazily:
+const lazyCmpXchg = session
+    // Add a call to lazily 
+    .advanced.clusterTransaction.lazily
+    // Compare-exchange values will Not be fetched here, no server call is made
+    .getCompareExchangeValue("someKey");
+
+// Usage is the same for the other method:
+// .getCompareExchangeValues()
+
+const cmpXchgValue =
+    await lazyCmpXchg.getValue(); // Getting compare-exchange value is executed here            
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+
+## Multiple lazy requests 
+
+<Admonition type="note" title="">
+<a id="implicit"/> __Execute all requests - implicitly__
+
+<TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
+<CodeBlock language="js">
+{`// Define multiple lazy requests
+const lazyUser1 = session.advanced.lazily.load("users/1-A");
+const lazyUser2 = session.advanced.lazily.load("users/2-A");
+
+const lazyEmployees = session.query(\{ collection: "employees" \})
+    .lazily();
+const lazyProducts = session.query(\{ collection: "products" \})
+    .search("Name", "Ch*")
+    .lazily();
+
+// Accessing the value of ANY of the lazy instances will trigger
+// the execution of ALL pending lazy requests held up by the session
+// This is done in a SINGLE server call
+const user1 = await lazyUser1.getValue();
+
+// ALL the other values are now also available
+// No additional server calls are made when accessing these values
+const user2 = await lazyUser2.getValue();
+const employees = await lazyEmployees.getValue();
+const products = await lazyProducts.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+<a id="explicit"/> __Execute all requests - explicitly__
+
+<TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
+<CodeBlock language="js">
+{`// Define multiple lazy requests
+const lazyUser1 = session.advanced.lazily.load("users/1-A");
+const lazyUser2 = session.advanced.lazily.load("users/2-A");
+
+const lazyEmployees = session.query(\{ collection: "employees" \})
+    .lazily();
+const lazyProducts = session.query(\{ collection: "products" \})
+    .search("Name", "Ch*")
+    .lazily();
+
+// Explicitly call 'executeAllPendingLazyOperations'
+// ALL pending lazy requests held up by the session will be executed in a SINGLE server call
+await session.advanced.eagerly.executeAllPendingLazyOperations();
+
+// ALL values are now available
+// No additional server calls are made when accessing the values
+const user1 = await lazyUser1.getValue();
+const user2 = await lazyUser2.getValue();
+const employees = await lazyEmployees.getValue();
+const products = await lazyProducts.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+

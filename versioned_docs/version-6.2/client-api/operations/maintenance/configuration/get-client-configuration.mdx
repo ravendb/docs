@@ -5,329 +5,39 @@ sidebar_label: Get Client Configuration
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetClientConfigurationCsharp from './_get-client-configuration-csharp.mdx';
+import GetClientConfigurationJava from './_get-client-configuration-java.mdx';
+import GetClientConfigurationPython from './_get-client-configuration-python.mdx';
+import GetClientConfigurationPhp from './_get-client-configuration-php.mdx';
+import GetClientConfigurationNodejs from './_get-client-configuration-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-
-# Get Client Configuration Operation  (for database)
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
-  
-* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the get client-configuration operation 
-var getClientConfigOp = new GetClientConfigurationOperation();
-    
-// Execute the operation by passing it to Maintenance.Send
-GetClientConfigurationOperation.Result result = store.Maintenance.Send(getClientConfigOp);
-
-ClientConfiguration clientConfiguration = result.Configuration;
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the get client-configuration operation 
-var getClientConfigOp = new GetClientConfigurationOperation();
-                
-// Execute the operation by passing it to Maintenance.SendAsync
-GetClientConfigurationOperation.Result config = 
-    await store.Maintenance.SendAsync(getClientConfigOp);
-                
-ClientConfiguration clientConfiguration = config.Configuration;
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="csharp">
-{`public GetClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="csharp">
-{`// Executing the operation returns the following object: 
-public class Result
-\{
-    // The configuration Etag
-    public long Etag \{ get; set; \}
-    
-    // The current client-configuration deployed on the server for the database
-    public ClientConfiguration Configuration \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <GetClientConfigurationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetClientConfigurationOperation** is used to return a client configuration, which is saved on the server and overrides client behavior. 
-
-## Syntax
-
-<TabItem value="config_1_0" label="config_1_0">
-<CodeBlock language="java">
-{`GetClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="config_1_1" label="config_1_1">
-<CodeBlock language="java">
-{`public static class Result \{
-    private long etag;
-    private ClientConfiguration configuration;
-
-    public long getEtag() \{
-        return etag;
-    \}
-
-    public void setEtag(long etag) \{
-        this.etag = etag;
-    \}
-
-    public ClientConfiguration getConfiguration() \{
-        return configuration;
-    \}
-
-    public void setConfiguration(ClientConfiguration configuration) \{
-        this.configuration = configuration;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **Etag** | String | Etag of configuration |
-| **Configuration** | `ClientConfiguration` | configuration which will be used by the client API |
-
-## Example
-
-<TabItem value="config_1_2" label="config_1_2">
-<CodeBlock language="java">
-{`GetClientConfigurationOperation.Result config
-    = store.maintenance().send(new GetClientConfigurationOperation());
-ClientConfiguration clientConfiguration = config.getConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetClientConfigurationJava />
 </LanguageContent>
+
 <LanguageContent language="python">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
-  
-* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<TabItem value="get_config" label="get_config">
-<CodeBlock language="python">
-{`# Define the get client-configuration operation
-get_client_config_op = GetClientConfigurationOperation()
-
-# Execute the operation by passing it to maintenance.send
-result = store.maintenance.send(get_client_config_op)
-
-client_configuration = result.configuration
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="python">
-{`class GetClientConfigurationOperation(MaintenanceOperation): ...
-
-# no __init__ (default)
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="python">
-{`# Executing the operation returns the following object:
-class Result:
-    def __init__(self, etag: int, configuration: ClientConfiguration):
-        # The configuration Etag
-        self.etag = etag
-        # The current client-configuration deployed on the server for the database
-        self.configuration = configuration
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <GetClientConfigurationPython />
 </LanguageContent>
+
 <LanguageContent language="php">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
-  
-* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<TabItem value="get_config" label="get_config">
-<CodeBlock language="php">
-{`// Define the get client-configuration operation
-$getClientConfigOp = new GetClientConfigurationOperation();
-
-// Execute the operation by passing it to Maintenance.Send
-/** @var GetClientConfigurationResult $result */
-$result = $store->maintenance()->send($getClientConfigOp);
-
-$clientConfiguration = $result->getConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="php">
-{`public GetClientConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="php">
-{`// Executing the operation returns the following object:
-class GetClientConfigurationResult implements ResultInterface
-    private ?int $etag = null;
-    private ?ClientConfiguration $configuration;
-
-    // ... getters and setters
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <GetClientConfigurationPhp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
-
-* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
-
-* In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
-
-</Admonition>
-## Get client-configuration
-
-<TabItem value="get_config" label="get_config">
-<CodeBlock language="js">
-{`// Define the get client-configuration operation 
-const getClientConfigOp = new GetClientConfigurationOperation();
-
-// Execute the operation by passing it to maintenance.send
-const result = await store.maintenance.send(getClientConfigOp);
-
-const configuration = result.configuration;
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="js">
-{`const getClientConfigOp = new GetClientConfigurationOperation();
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="js">
-{`// Object returned from store.maintenance.send(getClientConfigOp):
-\{
-   etag,
-   configuration // The configution object
-\}
-
-// The configuration object:
-\{
-    identityPartsSeparator,
-    etag,
-    disabled,
-    maxNumberOfRequestsPerSession,
-    readBalanceBehavior,
-    loadBalanceBehavior,
-    loadBalancerContextSeed
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <GetClientConfigurationNodejs />
 </LanguageContent>
+
 
 <!---
 ### Studio

@@ -1,0 +1,100 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The `suggestion` feature is available through query extension methods. It gives you the ability to find word similarities using string distance algorithms.
+
+## Syntax
+
+<TabItem value="suggest_1" label="suggest_1">
+<CodeBlock language="js">
+{`query.suggestUsing(suggestion);
+
+query.suggestUsing(suggestionBuilder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **suggestion** | `SuggestionBase`  | Defines the type of suggestion that should be executed |
+| **suggestionBuilder** | `(SuggestionBuilder) => void` | Builder with a fluent API that constructs a `SuggestionBase` instance |
+
+### Builder
+
+<TabItem value="suggest_2" label="suggest_2">
+<CodeBlock language="js">
+{`suggestionBuilder.byField(fieldName, term);
+
+suggestionBuilder.byField(fieldName, terms);
+
+suggestionBuilder.withOptions(options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Points to the index field that should be used for operation |
+| **term** | string | Term that will be used as a basis of the suggestions |
+| **terms** | string[] | Terms that will be used as a basis of the suggestions |
+| **options** | object | Non-default options that should be used for operation |
+| &nbsp;&nbsp;&nbsp;*pageSize* | number | Maximum number of suggestions that will be returned |
+| &nbsp;&nbsp;&nbsp;*distance* | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
+| &nbsp;&nbsp;&nbsp;*accuracy* | number | Suggestion accuracy |
+| &nbsp;&nbsp;&nbsp;*sortMode* | `SuggestionSortMode` | Indicates in what order the results should be returned (`None`, `Popularity`) |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const suggestions = await session
+    .query({ indexName: "Employees/ByFullName" })
+    .suggestUsing(builder =>
+        builder.byField("FullName", "johne")
+            .withOptions({
+                accuracy: 0.4,
+                pageSize: 5,
+                distance: "JaroWinkler",
+                sortMode: "Popularity"
+            }))
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName' 
+select suggest('FullName', 'johne', '{ "Accuracy" : 0.4, "PageSize" : 5, "Distance" : "JaroWinkler", "SortMode" : "Popularity" }')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const suggestionWithTerm = new SuggestionWithTerm("fullName");
+suggestionWithTerm.term = "johne";
+
+const suggestions = await session
+    .query({ indexName: "Employees/ByFullName" })
+    .suggestUsing(suggestionWithTerm)
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName' 
+select suggest('FullName', 'johne')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

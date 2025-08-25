@@ -1,0 +1,215 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `timeSeriesFor.get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the `GetMultipleTimeSeriesOperation`operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+
+* Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+
+* In this page:  
+  * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+
+</Admonition>
+## `get` usage 
+
+* Open a session.  
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="timeseries_region_Get-All-Entries-Using-Document-ID" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="php">
+{`// Get all time series entries
+/** @var TimeSeriesEntryArray $val */
+$val = $session->timeSeriesFor("users/john", "HeartRates")
+    ->get();
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="php">
+{`// Query for a document with the Name property "John"
+// and get its HeartRates time-series values
+$session = $store->openSession();
+try \{
+     $baseTime = DateUtils::today();
+
+    $query = $session->query(User::class)
+        ->whereEquals("Name", "John");
+
+    $result = $query->toList();
+
+    /** @var TimeSeriesEntryArray $val */
+    $val = $session->timeSeriesFor($result[0], "HeartRates")
+        ->get();
+
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values, 
+  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values) 
+  time series values to make the code easier to read.  
+
+<TabItem value="timeseries_region_Get-Named-Values" label="timeseries_region_Get-Named-Values">
+<CodeBlock language="php">
+{`$goingUp = false;
+
+$session = $store->openSession();
+try \{
+    // Call 'Get' with the custom StockPrice class type
+    /** @var TimeSeriesEntryArray<StockPrice> $val */
+    $val = $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->get();
+
+    $closePriceDay1 = $val[0]->getValue()->getClose();
+    $closePriceDay2 = $val[1]->getValue()->getClose();
+    $closePriceDay3 = $val[2]->getValue()->getClose();
+
+    if (($closePriceDay2 > $closePriceDay1)
+        &&
+        ($closePriceDay3 > $closePriceDay2))
+        $goingUp = true;
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `timeSeriesFor.get`,  
+  you can include the series parent document and/or documents referred to by the entries 
+  [tags](../../../../../document-extensions/timeseries/overview.mdx#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="IncludeParentAndTaggedDocuments" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="php">
+{`// Get all time series entries
+/** @var TimeSeriesEntryArray $entries */
+$entries =
+    $session->timeSeriesFor("users/john", "HeartRates")
+        ->get(null, null,
+            includes: function($builder) \{
+                return $builder
+                    // Include documents referred-to by entry tags
+                    ->includeTags()
+                    // Include Parent Document
+                    ->includeDocument();
+            \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="TimeSeriesFor-Get-definition" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="php">
+{`public function get(?DateTimeInterface $from = null, ?DateTimeInterface $to = null, ?Closure $includes = null, int $start = 0, int $pageSize = PHP_INT_MAX): ?TimeSeriesEntryArray;
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="TimeSeriesFor-Get-Named-Values" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="php">
+{`// The stongly-typed API is used, to address time series values by name.
+
+/**
+ * Return the time series values for the provided range
+ *
+ * @param DateTimeInterface|null $from
+ * @param DateTimeInterface|null $to
+ * @param int $start
+ * @param int $pageSize
+ * @return TypedTimeSeriesEntryArray|null
+ */
+public function get(?DateTimeInterface $from = null, ?DateTimeInterface $to = null, int $start = 0, int $pageSize = PHP_INT_MAX): ?TypedTimeSeriesEntryArray;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **from** (Optional) | `DateTimeInterface` | Get the range of time series entries starting from this timestamp (inclusive). |
+| **to** (Optional) | `DateTimeInterface` | Get the range of time series entries ending at this timestamp (inclusive). |
+| **start** | `int` | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
+| **pageSize** | `int` | Paging page-size.<br/>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br/>Default: `PHP_INT_MAX`, for all time series entries. |
+
+**Return Values (Optional)**
+ 
+* `?TimeSeriesEntryArray` - an array of time series entry classes.
+<TabItem value="TimeSeriesEntry-Definition" label="TimeSeriesEntry-Definition">
+<CodeBlock language="php">
+{`class TimeSeriesEntry
+\{
+    private ?DateTime $timestamp = null;
+    private ?string $tag = null;
+    private ?array $values = null;
+    private bool $rollup = false;
+
+    private ?array $nodeValues = null; // Map<String, Double[]>
+
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

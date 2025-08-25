@@ -1,0 +1,164 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This session explains the following methods to query a database:
+
+* `session.query()`
+* `session.advanced.documentQuery()`
+* `session.advanced.rawQuery()`
+
+## Session.Query
+
+The most straightforward way to issue a query is by using the `query()` method.
+
+### Syntax
+
+<TabItem value="query_1_0" label="query_1_0">
+<CodeBlock language="js">
+{`// This is a Full Collection Query
+// No auto-index is created since no filtering is applied
+
+// Query for all documents from 'employees' collection
+const employees = await session.query(\{ collection: "employees" \})
+    // Execute the query
+    .all();
+
+// All 'employee' entities are loaded and will be tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentType** | class | A class constructor used for reviving the results' entities from which the collection name is determined |
+| **options** | object | |
+| &nbsp;&nbsp;*indexName* | string | Name of an index to perform a query on (exclusive with *collectionName*)  |
+| &nbsp;&nbsp;*collection* | string | Name of a collection to perform a query on (exclusive with *indexName*) |
+| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+
+| Return Value | | 
+| ------------- | ----- |
+| `Promise<IDocumentQuery>` | Promise resolving to instance implementing `IDocumentQuery` interface containing additional query methods |
+
+
+### Example I - Basic Dynamic Query
+
+<TabItem value="query_1_1" label="query_1_1">
+<CodeBlock language="js">
+{`// This is a Full Collection Query
+// No auto-index is created since no filtering is applied
+
+// Query for all documents from 'employees' collection
+const employees = await session.query(Employee)
+    // Execute the query
+    .all();
+
+// All 'employee' entities are loaded and will be tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+
+The above is an example of a dynamic query which doesn't require you to specify an index name. RavenDB will create an auto index automatically if necessary.
+
+The provided `Employee` type as the generic type parameter does not only define the type of returned
+results, but it also indicates that the queried collection will be `Employees`.
+
+### Example II - Query Syntax
+
+<TabItem value="query_1_2" label="query_1_2">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where FirstName equals 'Robert'
+const employees = await session.query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - Using Specific Index
+
+<TabItem value="query_1_4" label="query_1_4">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+// using 'Employees/ByName' index
+const employees = await session.query(\{ indexName: "Employees/ByName" \})
+    .whereEquals("FirstName", "Robert")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## session.advanced.documentQuery()
+
+### Example IV
+
+<TabItem value="query_1_6" label="query_1_6">
+<CodeBlock language="js">
+{`// load all employees hired between
+// 1/1/2002 and 12/31/2002
+const employees = await session.advanced.documentQuery(Employee)
+    .whereBetween("HiredAt",
+        new Date("2002-01-01"), new Date("2002-12-31"))
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+## session.advanced.rawQuery()
+
+Queries in RavenDB use a SQL-like language called RavenDB Query Language ([RQL](../../../indexes/querying/what-is-rql.mdx)). All of the above queries generate RQL sent to the server. The session also gives you the way to express the query directly in RQL using `rawQuery()` method.
+
+### Example IV
+
+<TabItem value="query_1_7" label="query_1_7">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where FirstName equals 'Robert
+const employees = await session.advanced
+    .rawQuery("from Employees where FirstName = 'Robert'")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+### On entities loading, JS classes and the&nbsp;*documentType*&nbsp;parameter
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
+
+<Admonition type="info" title="Entity type registration " id="entity-type-registration" href="#entity-type-registration">
+In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+<TabItem value="query_1_8" label="query_1_8">
+<CodeBlock language="js">
+{`class Pet \{
+    constructor(name) \{
+        this.name = name;
+    \}
+\}
+
+class Person \{
+    constructor(name, pet) \{
+        this.name = name;
+        this.pet = pet;
+    \}
+\}
+
+documentStore.conventions.registerEntityType(Person);
+documentStore.conventions.registerEntityType(Pet);
+// ...
+
+documentStore.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
+
+

@@ -5,216 +5,24 @@ sidebar_label: Conversion listeners
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WhatAreConversionListenersAndHowToWorkWithThemCsharp from './_what-are-conversion-listeners-and-how-to-work-with-them-csharp.mdx';
+import WhatAreConversionListenersAndHowToWorkWithThemJava from './_what-are-conversion-listeners-and-how-to-work-with-them-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Listeners: What are conversion listeners and how to work with them?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Conversion listeners provide users with hook for an additional logic when converting an entity to a document/metadata pair and backwards.
-
-`IDocumentConversionListener` provides methods to inject custom actions before or after actual document/entity conversion.
-
-<TabItem value="document_conversion_interface" label="document_conversion_interface">
-<CodeBlock language="csharp">
-{`public interface IDocumentConversionListener
-\{
-	/// <summary>
-	/// Called before converting an entity to a document and metadata
-	/// </summary>
-	void BeforeConversionToDocument(string key, object entity, RavenJObject metadata);
-
-	/// <summary>
-	/// Called after having converted an entity to a document and metadata
-	/// </summary>
-	void AfterConversionToDocument(string key, object entity, RavenJObject document, RavenJObject metadata);
-
-	/// <summary>
-	/// Called before converting a document and metadata to an entity
-	/// </summary>
-	void BeforeConversionToEntity(string key, RavenJObject document, RavenJObject metadata);
-
-	/// <summary>
-	/// Called after having converted a document and metadata to an entity
-	/// </summary>
-	void AfterConversionToEntity(string key, RavenJObject document, RavenJObject metadata, object entity);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-Let's consider a case that we want to convert a metadata value provided by RavenDB server to a property of our class. 
-To achieve this we are going to ignore the property after the entity is converted to the document and set the value of this property after the entity is created from the document/metadata pair.
-
-<TabItem value="document_conversion_example" label="document_conversion_example">
-<CodeBlock language="csharp">
-{`public class Item
-\{
-	public string Id \{ get; set; \}
-
-	public string Name \{ get; set; \}
-
-	public string Revision \{ get; set; \}
-\}
-
-public class MetadataToPropertyConversionListener : IDocumentConversionListener
-\{
-	public void AfterConversionToDocument(string key, object entity, RavenJObject document, RavenJObject metadata)
-	\{
-		if (entity is Item == false)
-			return;
-
-		document.Remove("Revision");
-	\}
-
-	public void AfterConversionToEntity(string key, RavenJObject document, RavenJObject metadata, object entity)
-	\{
-		if (entity is Item == false)
-			return;
-
-		((Item)entity).Revision = metadata.Value<string>("Raven-Document-Revision");
-	\}
-
-	public void BeforeConversionToDocument(string key, object entity, RavenJObject metadata)
-	\{
-	\}
-
-	public void BeforeConversionToEntity(string key, RavenJObject document, RavenJObject metadata)
-	\{
-	\}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <WhatAreConversionListenersAndHowToWorkWithThemCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Conversion listeners provide users with hook for an additional logic when converting an entity to a document/metadata pair and backwards.
-
-`IDocumentConversionListener` provides methods to inject custom actions before or after actual document/entity conversion.
-
-<TabItem value="document_conversion_interface" label="document_conversion_interface">
-<CodeBlock language="java">
-{`public interface IDocumentConversionListener \{
-  /**
-   * Called before converting an entity to a document and metadata
-   * @param key
-   * @param entity
-   * @param metadata
-   */
-  void beforeConversionToDocument(String key, Object entity, RavenJObject metadata);
-
-  /**
-   * Called after having converted an entity to a document and metadata
-   * @param key
-   * @param entity
-   * @param document
-   * @param metadata
-   */
-  void afterConversionToDocument(String key, Object entity, RavenJObject document, RavenJObject metadata);
-
-  /**
-   * Called before converting a document and metadata to an entity
-   * @param key
-   * @param document
-   * @param metadata
-   */
-  void beforeConversionToEntity(String key, RavenJObject document, RavenJObject metadata);
-
-  /**
-   * Called before converting a document and metadata to an entity
-   * @param key
-   * @param document
-   * @param metadata
-   * @param entity
-   */
-  void afterConversionToEntity(String key, RavenJObject document, RavenJObject metadata, Object entity);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-Let's consider a case that we want to convert a metadata value provided by RavenDB server to a property of our class. 
-To achieve this we are going to ignore the property after the entity is converted to the document and set the value of this property after the entity is created from the document/metadata pair.
-
-<TabItem value="document_conversion_example" label="document_conversion_example">
-<CodeBlock language="java">
-{`public static class Item \{
-  private String id;
-  private String name;
-  private String revision;
-  public String getId() \{
-    return id;
-  \}
-  public void setId(String id) \{
-    this.id = id;
-  \}
-  public String getName() \{
-    return name;
-  \}
-  public void setName(String name) \{
-    this.name = name;
-  \}
-  public String getRevision() \{
-    return revision;
-  \}
-  public void setRevision(String revision) \{
-    this.revision = revision;
-  \}
-\}
-
-public static class MetadataToPropertyConversionListener implements IDocumentConversionListener \{
-  @Override
-  public void beforeConversionToDocument(String key, Object entity, RavenJObject metadata) \{
-    //empty by design
-  \}
-
-  @Override
-  public void afterConversionToDocument(String key, Object entity, RavenJObject document, RavenJObject metadata) \{
-    if (!(entity instanceof Item)) \{
-      return ;
-    \}
-    document.remove("Revision");
-  \}
-
-  @Override
-  public void beforeConversionToEntity(String key, RavenJObject document, RavenJObject metadata) \{
-    //empty by design
-  \}
-
-  @Override
-  public void afterConversionToEntity(String key, RavenJObject document, RavenJObject metadata, Object entity) \{
-    if (!(entity instanceof Item)) \{
-      return;
-    \}
-    ((Item)entity).setRevision(metadata.value(String.class, "Raven-Document-Revision"));
-  \}
-
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <WhatAreConversionListenersAndHowToWorkWithThemJava />
 </LanguageContent>
+
 
 <!---
 

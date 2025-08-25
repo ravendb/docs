@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
+
+## Syntax
+
+<TabItem value="update_1" label="update_1">
+<CodeBlock language="csharp">
+{`void UpdateAttachmentMetadata(string key, Etag etag, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key under which attachment is stored |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
+| **metadata** | RavenJObject | attachment metadata |
+
+## Example
+
+<TabItem value="update_2" label="update_2">
+<CodeBlock language="csharp">
+{`JsonDocumentMetadata attachment = store.DatabaseCommands.Head("albums/holidays/sea.jpg");
+RavenJObject metadata = attachment.Metadata;
+metadata["Description"] = "Holidays 2012";
+
+store
+	.DatabaseCommands
+	.UpdateAttachmentMetadata("albums/holidays/sea.jpg", attachment.Etag, metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+

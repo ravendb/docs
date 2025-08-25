@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Replication conflicts, for both documents and attachments, can be tracked by using `forAllReplicationConflicts` method available in changes API.
+
+## Syntax
+
+<TabItem value="replication_conflicts_changes_1" label="replication_conflicts_changes_1">
+<CodeBlock language="java">
+{`public IObservable<ReplicationConflictNotification> forAllReplicationConflicts();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservable&lt;[ReplicationConflictNotification](../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
+
+## Example
+
+<TabItem value="replication_conflicts_changes_2" label="replication_conflicts_changes_2">
+<CodeBlock language="java">
+{`Closeable subscription = store
+  .changes()
+  .forAllReplicationConflicts()
+  .subscribe(Observers.create(new Action1<ReplicationConflictNotification>() \{
+    @Override
+    public void apply(ReplicationConflictNotification conflict) \{
+      if (ReplicationConflictTypes.DOCUMENT_REPLICATION_CONFLICT.equals(conflict.getItemType())) \{
+        System.out.println("Conflict detected for " + conflict.getId());
+      \}
+    \}
+  \}));
+`}
+</CodeBlock>
+</TabItem>
+
+## Automatic document conflict resolution
+
+In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered then the client will automatically resolve the conflict right after the arrival of the notification.
+
+

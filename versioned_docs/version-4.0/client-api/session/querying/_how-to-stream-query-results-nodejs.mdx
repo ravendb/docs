@@ -1,0 +1,133 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query results can be streamed using the `stream()` method from the `advanced` session operations. The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
+
+## Syntax
+
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="js">
+{`// Define a query on a collection
+const query = session.query(\{ collection: "employees" \})
+    .whereEquals('FirstName', 'Robert');
+
+// Call stream() to execute the query, it returns a Node.js ReadableStream.
+// Parms: pass the query and an optional callback for getting the query stats.
+let streamQueryStats;
+const queryStream = await session.advanced.stream(query, s => streamQueryStats = s);
+
+// Two options to get query stats:
+// * Pass a callback to stream() with an 'out param' that will be filled with query stats.
+//   This param can then be accessed in the 'end' event.
+// * Or: Use an event listener, listen to the 'stats' event, as described below.
+
+// Handle stream events with callback functions:        
+
+// Process the item received:
+queryStream.on("data", resultItem => \{
+    // Get the employee entity from the result item.
+    // Note: This entity will Not be tracked by the session.
+    const employee = resultItem.document;
+
+    // The resultItem also provides the following:
+    const employeeId = resultItem.id;
+    const documentMetadata = resultItem.metadata;
+    const documentChangeVector = resultItem.changeVector;
+\});
+
+// Can get query stats by using an event listener:
+queryStream.once("stats", queryStats => \{
+    // Get number of total results
+    const totalResults = queryStats.totalResults;
+    // Get the Auto-Index that was used/created with this dynamic query
+    const indexUsed = queryStats.indexName;
+\});
+
+// Stream emits an 'end' event when there is no more data to read:
+queryStream.on("end", () => \{            
+    // Get info from 'streamQueryStats', the stats object
+    const totalResults = streamQueryStats.totalResults;
+    const indexUsed = streamQueryStats.indexName;
+\});
+
+queryStream.on("error", err => \{
+    // Handle errors
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
+| **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
+| **callback** | function | returns a readable stream with query results (same as Return Value result below) |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<Readable>` | A `Promise` resolving to readable stream with query results |
+
+## Example I - Using Static Index
+
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="js">
+{`// Define a raw query using RQL
+const rawQuery = session.advanced
+    .rawQuery("from Employees where FirstName = 'Robert'");
+
+// Call stream() to execute the query
+const queryStream = await session.advanced.stream(rawQuery);
+
+// Handle stats & stream events as described in the dynamic query example above.
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II - Dynamic Document Query
+
+<TabItem value="stream_3" label="stream_3">
+<CodeBlock language="js">
+{`// Define a query with projected results
+// Each query result is not an Employee document but an entity containing selected fields only.
+const projectedQuery = session.query(\{collection: 'employees'\})
+    .selectFields(['FirstName', 'LastName']);
+       
+// Call stream() to execute the query
+const queryStream = await session.advanced.stream(projectedQuery);
+
+queryStream.on("data", resultItem => \{
+    // entity contains only the projected fields
+    const employeeName = resultItem.document;
+\});
+
+// Handle stats & stream events as described in the dynamic query example above.
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III - Dynamic Raw Query
+
+<TabItem value="stream_4" label="stream_4">
+<CodeBlock language="js">
+{`// Define a query on an index
+const query = session.query(\{ indexName: "Employees/ByFirstName" \})
+    .whereEquals("FirstName", "Robert");
+
+// Call stream() to execute the query
+const queryStream = await session.advanced.stream(query);
+
+// Can get info about the index used from the stats
+queryStream.once("stats", queryStats => \{
+    const indexUsed = queryStats.indexName;
+    const isIndexStale = queryStats.stale;
+    const lastTimeIndexWasUpdated = queryStats.indexTimestamp;
+\});
+
+// Handle stats & stream events as described in the dynamic query example above.
+`}
+</CodeBlock>
+</TabItem>
+
+

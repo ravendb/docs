@@ -1,0 +1,160 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `GetCompareExchangeValueOperation` operation to get a compare-exchange item by its _key_.  
+
+* Compare-exchange items can also be managed via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange.mdx),  
+  which also expose getting the compare-exchange lazily,  
+  or from the [Studio](../../../studio/database/documents/compare-exchange-view.mdx).
+
+* In this page:
+  * [Examples](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#examples)
+      * [Get cmpXchg item that has a number and metadata](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#get-cmpxchg-item-that-has-a-number-and-metadata)
+      * [Get cmpXchg item that has an object](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#get-cmpxchg-item-that-has-an-object)
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx#syntax)  
+
+</Admonition>
+## Examples 
+
+<Admonition type="note" title="">
+
+<a id="get-cmpxchg-item-that-has-a-number-and-metadata"/> __Get cmpXchg item that has a number and metadata__:
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="js">
+{`// Put a new compare-exchange item,
+// e.g. save the number of sales made by an employee as the value + some metadata info        
+const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", 12345, 0,\{
+    "Department": "Sales",
+    "Role": "Salesperson",
+\});
+const result = await documentStore.operations.send(putCmpXchgOp);
+
+// Get the compare-exchange item:
+// ==============================
+
+// Define the get compare-exchange operation, pass the unique item key
+const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A");
+
+// Execute the operation by passing it to operations.send
+const item = await documentStore.operations.send(getCmpXchgOp);
+
+// Access the value and metadata of the retrieved item
+const numberOfSales = item.value;
+const employeeRole = item.metadata["Role"];
+
+// Access the version number of the retrieved item
+const version = item.index;
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+<a id="get-cmpxchg-item-that-has-an-object"/> __Get cmpXchg item that has an object__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Get_operation" label="Get_operation">
+<CodeBlock language="js">
+{`// Put a new compare-exchange item,
+// e.g. save an object as the value
+const employee = new Employee();
+employee.role = "Salesperson"
+employee.department = "Sales";
+employee.numberOfSales = 12345;
+
+const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", employee, 0);
+const result = await documentStore.operations.send(putCmpXchgOp);
+
+// Get the compare-exchange item:
+// ==============================
+
+// Define the get compare-exchange operation, pass the unique item key & the class type
+const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A", Employee);
+
+// Execute the operation by passing it to operations.send
+const item = await documentStore.operations.send(getCmpXchgOp);
+
+// Access the value of the retrieved item
+const employeeResult = item.value;
+const employeeClass = employeeResult.constructor;   // Employee
+
+const employeeRole = employeeResult.role;           // Salesperson
+const employeeDep = employeeResult.department;      // Sales
+const employeeSales = employeeResult.numberOfSales; // 12345
+
+// Access the version number of the retrieved item
+const version = item.index;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Employee_class" label="Employee_class">
+<CodeBlock language="js">
+{`class Employee {
+    constructor(
+        id = null,
+        department = "",
+        role = "",
+        numberOfSales = 0
+
+    ) {
+        Object.assign(this, {
+            id,
+            department,
+            role,
+            numberOfSales
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const getCmpXchgOp = new GetCompareExchangeValueOperation(key, clazz, materializeMetadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter               | Type      | Description                                                                                                     |
+|-------------------------|-----------|-----------------------------------------------------------------------------------------------------------------|
+| __key__                 | `string`  | The unique identifier of the cmpXchg item.                                                                      |
+| __clazz__               | `object`  | The class type of the item's value.                                                                             |
+| __materializeMetadata__ | `boolean` | The Metadata will be retrieved and available regardless of the value of this param. Used for internal purposes. |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Return value of store.operations.send(getCmpXchgOp)
+// ===================================================
+class CompareExchangeValue \{
+    key;
+    value;
+    metadata;
+    index;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                           |
+|--------------|----------|-------------------------------------------------------|
+| __key__      | `string` | The unique identifier of the cmpXchg item.            |
+| __value__    | `object` | The existing `value` of the returned cmpXchg item.    |
+| __metadata__ | `object` | The existing `metadata` of the returned cmpXchg item. |
+| __index__    | `number` | The compare-exchange item's version.                  |
+
+
+
+

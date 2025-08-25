@@ -1,0 +1,198 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This feature was created for users who want to create an index and prefer JavaScript over C#.   
+JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).   
+All other capabilities and features are the same as C# indexes.   
+
+## Creating JavaScript index
+
+If we want to create JavaScript index we need to create an instance of our class that inherits 
+from AbstractJavaScriptIndexCreationTask.   
+AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask 
+(Read more about AbstractIndexCreationTask [here](../indexes/creating-and-deploying.mdx#Using-AbstractIndexCreationTask).)
+
+<TabItem value="javaScriptindexes_1" label="javaScriptindexes_1">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Map index
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
+They indicate which documents can be searched by which fields.
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`map(<collection-name>, function (document)\{
+     return \{
+         // indexed properties go here e.g:
+         // name: document.name
+     \};
+ \})
+`}
+</CodeBlock>
+</TabItem>
+
+### Example I - Simple map index
+
+<TabItem value="javaScriptindexes_6" label="javaScriptindexes_6">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
+    public Employees_ByFirstAndLastName() \{
+        setMaps(Sets.newHashSet("map('Employees', function (employee)\{\\n" +
+            "                return \{\\n" +
+            "                    FirstName : employee.FirstName,\\n" +
+            "                    LastName : employee.LastName\\n" +
+            "                \};\\n" +
+            "        \})"));
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - Map index with additional sources
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByCommentAuthor extends AbstractJavaScriptIndexCreationTask \{
+    public BlogPosts_ByCommentAuthor() \{
+        setMaps(Sets.newHashSet("map('BlogPosts', function(b)\{\\n" +
+            "            var names = [];\\n" +
+            "            b.comments.forEach(x => getNames(x, names));\\n" +
+            "                return \{\\n" +
+            "                   authors : names\\n" +
+            "                \};" +
+            "            \})"));
+
+        java.util.Map<String, String> additionalSources = new HashMap<>();
+        additionalSources.put("The Script", "function getNames(x, names)\{\\n" +
+            "        names.push(x.author);\\n" +
+            "        x.comments.forEach(x => getNames(x, names));\\n" +
+            "    \}");
+
+        setAdditionalSources(additionalSources);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about map indexes [here](../indexes/map-indexes.mdx).
+
+## Multi map index
+
+Multi-Map indexes allow you to index data from multiple collections
+
+### Example
+
+<TabItem value="multi_map_5" label="multi_map_5">
+<CodeBlock language="java">
+{`public static class Animals_ByName extends AbstractJavaScriptIndexCreationTask \{
+    public Animals_ByName() \{
+        setMaps(Sets.newHashSet(
+            "map('cats', function (c)\{ return \{name: c.name\}\})",
+            "map('dogs', function (d)\{ return \{name: d.name\}\})"
+        ));
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about multi map indexes [here](../indexes/map-reduce-indexes.mdx).
+
+## Map-Reduce index
+Map-Reduce indexes allow you to perform complex aggregations of data.
+The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
+Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
+
+<TabItem value="java" label="java">
+<CodeBlock language="java">
+{`groupBy(x => \{map properties\})
+     .aggregate(y => \{
+         return \{
+             // indexed properties go here e.g:
+             // name: y.name
+         \};
+     \})
+`}
+</CodeBlock>
+</TabItem>
+
+### Example I
+
+<TabItem value="map_reduce_0_0" label="map_reduce_0_0">
+<CodeBlock language="java">
+{`public static class Products_ByCategory extends AbstractJavaScriptIndexCreationTask \{
+    public Products_ByCategory() \{
+        setMaps(Sets.newHashSet("map('products', function(p)\{\\n" +
+            "            return \{\\n" +
+            "                Category: load(p.Category, 'Categories').Name,\\n" +
+            "                Count: 1\\n" +
+            "            \}\\n" +
+            "        \})"));
+
+        setReduce("groupBy(x => x.Category)\\n" +
+            "    .aggregate(g => \{\\n" +
+            "        return \{\\n" +
+            "            Category: g.key,\\n" +
+            "            Count: g.values.reduce((count, val) => val.Count + count, 0)\\n" +
+            "        \};\\n" +
+            "    \})");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="map_reduce_3_0" label="map_reduce_3_0">
+<CodeBlock language="java">
+{`public static class Product_Sales_ByMonth extends AbstractJavaScriptIndexCreationTask \{
+    public Product_Sales_ByMonth() \{
+        setMaps(Sets.newHashSet("map('orders', function(order)\{\\n" +
+            "            var res = [];\\n" +
+            "            order.Lines.forEach(l => \{\\n" +
+            "            res.push(\{\\n" +
+            "                Product: l.Product,\\n" +
+            "                Month: new Date( (new Date(order.OrderedAt)).getFullYear(),(new Date(order.OrderedAt)).getMonth(),1),\\n" +
+            "                Count: 1,\\n" +
+            "                Total: (l.Quantity * l.PricePerUnit) * (1- l.Discount)\\n" +
+            "            \})\\n" +
+            "        \});\\n" +
+            "        return res;\\n" +
+            "    \})"));
+
+        setReduce("groupBy(x => (\{Product: x.Product, Month: x.Month\}))\\n" +
+            "    .aggregate(g => \{\\n" +
+            "        return \{\\n" +
+            "            Product: g.key.Product,\\n" +
+            "            Month: g.key.Month,\\n" +
+            "            Count: g.values.reduce((sum, x) => x.Count + sum, 0),\\n" +
+            "            Total: g.values.reduce((sum, x) => x.Total + sum, 0)\\n" +
+            "        \}\\n" +
+            "    \})");
+
+        setOutputReduceToCollection("MonthlyProductSales");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about map reduce indexes [here](../indexes/multi-map-indexes.mdx).
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Supported JavaScript version : ECMAScript 5.1
+</Admonition>
+
+

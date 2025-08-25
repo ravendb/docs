@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
+
+From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
+
+Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+        this.map = "docs.Employees.Select(employee => new {" +
+            "    firstName = employee.FirstName.Boost(10)," +
+            "    lastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="js">
+{`const indexDefinition = new IndexDefinition();
+indexDefinition.name = "Employees/ByFirstAndLastName";
+indexDefinition.maps = new Set([ 
+    "docs.Employees.Select(employee => new {" +
+    "    FirstName = employee.FirstName.Boost(10)," +
+    "    LastName = employee.LastName" +
+    "})" 
+]);
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The next step is to perform a query against that index:
+
+<TabItem value="boosting_3" label="boosting_3">
+<CodeBlock language="js">
+{`// employees with 'FirstName' equal to 'Bob'
+// will be higher in results
+// than the ones with 'LastName' match
+const results = await session.query(\{ indexName: "Employees/ByFirstAndLastName" \})
+    .whereEquals("FirstName", "Bob")
+    .whereEquals("LastName", "Bob")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+Boosting is also available at the query level. You can read more about it [here](../indexes/querying/boosting.mdx).
+</Admonition>
+
+

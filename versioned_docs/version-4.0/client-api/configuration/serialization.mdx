@@ -5,153 +5,24 @@ sidebar_label: Serialization
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SerializationCsharp from './_serialization-csharp.mdx';
+import SerializationJava from './_serialization-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Conventions: Serialization
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-## CustomizeJsonSerializer
-
-If you need to modify `JsonSerializer` object used by the client when sending entities to the server you can register a customization action:
-
-<TabItem value="customize_json_serializer" label="customize_json_serializer">
-<CodeBlock language="csharp">
-{`Serialization = new NewtonsoftJsonSerializationConventions
-\{
-    CustomizeJsonSerializer = serializer => throw new CodeOmitted()
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## DeserializeEntityFromBlittable
-
-In order to customize the entity deserialization from blittable JSON you can use define `DeserializeEntityFromBlittable` implementation:
-
-<TabItem value="DeserializeEntityFromBlittable" label="DeserializeEntityFromBlittable">
-<CodeBlock language="csharp">
-{`Serialization = new NewtonsoftJsonSerializationConventions
-\{
-    DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## JsonContractResolver
-
-The default `JsonContractResolver` used by RavenDB will serialize all properties and all public fields. You can change it by providing own implementation of `IContractResolver` interface:
-
-<TabItem value="json_contract_resolver" label="json_contract_resolver">
-<CodeBlock language="csharp">
-{`Serialization = new NewtonsoftJsonSerializationConventions
-\{
-    JsonContractResolver = new CustomJsonContractResolver()
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="custom_json_contract_resolver" label="custom_json_contract_resolver">
-<CodeBlock language="csharp">
-{`public class CustomJsonContractResolver : IContractResolver
-\{
-    public JsonContract ResolveContract(Type type)
-    \{
-        throw new CodeOmitted();
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-You can also customize behavior of the default resolver by inheriting from `DefaultRavenContractResolver` and overriding specific methods.
-
-<TabItem value="custom_json_contract_resolver_based_on_default" label="custom_json_contract_resolver_based_on_default">
-<CodeBlock language="csharp">
-{`public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
-\{
-    public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
-    \{
-    \}
-
-    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-    \{
-        throw new CodeOmitted();
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## PreserveDocumentPropertiesNotFoundOnModel
-
-Controls whatever properties that were not de-serialized to an object properties will be preserved 
-during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
-
-<TabItem value="preserve_doc_props_not_found_on_model" label="preserve_doc_props_not_found_on_model">
-<CodeBlock language="csharp">
-{`PreserveDocumentPropertiesNotFoundOnModel = true
-`}
-</CodeBlock>
-</TabItem>
-
-## BulkInsert.TrySerializeEntityToJsonStream
-
-For the bulk insert you can configure custom serialization implementation by providing `TrySerializeEntityToJsonStream`:
-
-<TabItem value="TrySerializeEntityToJsonStream" label="TrySerializeEntityToJsonStream">
-<CodeBlock language="csharp">
-{`BulkInsert =
-\{
-    TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-## Numbers (de)serialization
-
-RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double`, `decimal` etc.  
-Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb.mdx) to numbers in that range.  
-Other number types like `BigInteger` must be treated using custom (de)serialization.
-
-
+   <SerializationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-## Customize ObjectMapper
-
-If you need to customize Jackson `ObjectMapper` object used by the client when sending entities to the server you can access and modify its instance:
-
-<TabItem value="customize_object_mapper" label="customize_object_mapper">
-<CodeBlock language="java">
-{`ObjectMapper entityMapper = conventions.getEntityMapper();
-entityMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
-`}
-</CodeBlock>
-</TabItem>
-
-## Numbers (de)serialization
-
-RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double` etc.  
-Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb.mdx) to numbers in that range.  
-Other number types like `BigInteger` must be treated using custom (de)serialization.
-
-
+   <SerializationJava />
 </LanguageContent>
+
 
 <!---
 ### Conventions

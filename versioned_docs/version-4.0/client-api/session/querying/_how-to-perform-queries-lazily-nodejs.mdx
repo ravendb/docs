@@ -1,0 +1,164 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
+
+## Lazily
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="js">
+{`// Define a lazy query
+const lazyEmployees = session
+    .query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+     // Add a call to 'lazily'
+    .lazily();
+
+const employees = await lazyEmployees.getValue(); // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `Lazy<object[]>` | Lazy query initializer returning query results. |
+
+### Example
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="js">
+{`// Define a lazy count query
+const lazyCount = session
+    .query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+     // Add a call to 'countLazily'
+    .countLazily();
+
+const count = await lazyCount.getValue(); // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Counts
+
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="js">
+{`// The facets definition used in the facets query:
+// ===============================================
+const categoryNameFacet = new Facet();
+
+categoryNameFacet.fieldName = "categoryName";
+categoryNameFacet.displayFieldName = "Product Category";
+
+const rangeFacet = new RangeFacet();
+rangeFacet.ranges = [
+    "pricePerUnit < " + 25,
+    "pricePerUnit >= " + 25 + " and pricePerUnit < " + 50,
+    "pricePerUnit >= " + 50 + " and pricePerUnit < " + 100,
+    "pricePerUnit >= " + 100
+];
+rangeFacet.displayFieldName = 'Price per Unit';
+
+const facetsDefinition = [categoryNameFacet, rangeFacet];
+
+// The lazy factes query:
+// ======================
+const lazyFacets = session
+    .query(\{ indexName: "Products/ByCategoryAndPrice" \})
+    .aggregateBy(...facetsDefinition)
+     // Add a call to 'executeLazy'
+    .executeLazy();
+
+const facets = await lazyFacets.getValue(); // Query is executed here
+
+const categoryResults = facets["Product Category"];
+const priceResults = facets["Price per Unit"];
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `Lazy<number>` | Lazy query initializer returning a count of matched documents. |
+
+### Example
+
+<TabItem value="lazy_5" label="lazy_5">
+<CodeBlock language="js">
+{`const countLazy = session
+    .query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+    .countLazily();
+
+const count = await countLazy.getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggestions
+
+<TabItem value="lazy_6" label="lazy_6">
+<CodeBlock language="js">
+{`query.executeLazy();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `Lazy<{ [key]: SuggestionResult }>` | Lazy query initializer containing a map with suggestions for matching executed query |
+
+### Example
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="js">
+{`const suggestLazy = session
+    .query(\{ indexName: "Employees_ByFullName" \})
+    .suggestUsing(builder => builder.byField("FullName", "Johne"))
+    .executeLazy();
+
+const suggestResult = await suggestLazy.getValue(); // query will be executed here
+const suggestions = suggestResult["FullName"].suggestions;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Facets
+
+<TabItem value="lazy_8" label="lazy_8">
+<CodeBlock language="js">
+{`query.executeLazy();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| `Lazy<{ [key]: FacetResult }>` | Lazy query initializer containing a map with facet results matching executed query |
+
+### Example
+
+<TabItem value="lazy_9" label="lazy_9">
+<CodeBlock language="js">
+{`const facetsLazy = session
+    .query(\{ indexName: "Camera/Costs" \})
+    .aggregateUsing("facets/CameraFacets")
+    .executeLazy();
+
+const facets = await facetsLazy.getValue(); // query will be executed here
+const results = facets["manufacturer"];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

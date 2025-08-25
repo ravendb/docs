@@ -1,0 +1,199 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* __Prior to this article__, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)
+
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)
+
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)
+
+</Admonition>
+## Order by index-field value
+
+* Use `orderBy` or `orderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const products = await session
+     // Query the index
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // Apply filtering (optional)
+    .whereGreaterThan("unitsInStock", 10)
+     // Call 'orderByDescending'
+     // Pass the index-field by which to order the results and the ordering type
+    .orderByDescending("unitsInStock", "Long")
+    .all();
+
+// Results will be sorted by the 'unitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                unitsInStock: p.UnitsInStock
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where unitsInStock > 10
+order by unitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+__Ordering Type__:
+
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+
+* In the above example, the ordering type was set to `Long`.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* __When configuring an index-field__ for [full-text search](../../indexes/querying/searching.mdx), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
+
+* __When querying such index__, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                // Index-field 'name' will be configured below for full-text search
+                name: p.Name,
+                
+                // Index-field 'nameForSorting' will be used for ordering query results 
+                nameForSorting: p.Name
+
+                // Note:
+                // Both index-fields are assigned the same content (the 'Name' from the document)
+            };
+        });
+
+        // Configure only the 'name' index-field for FTS
+        this.index("name", "Search");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const products = await session
+    // Query the index
+    .query({ indexName: "Products/BySearchName"})
+    // Call 'search':
+    // Pass the index-field that was configured for FTS and the term to search for.
+    // Here we search for terms that start with "ch" within index-field 'name'.
+    .search("name", "ch*")
+    // Call 'orderBy':
+    // Pass the other index-field by which to order the results.
+    .orderBy("nameForSorting")
+    .all();
+
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(name, "ch*")
+order by nameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the __same__ as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
+
+
+
+

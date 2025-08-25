@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Conventions related to caching
+
+
+
+Use this convention to determine if the client should cache the request for the given URL. By default all requests are cached:
+
+<TabItem value="should_cache" label="should_cache">
+<CodeBlock language="java">
+{`conventions.setShouldCacheRequest(new RequestCachePolicy() \{
+  @Override
+  public Boolean shouldCacheRequest(String url) \{
+    return Boolean.TRUE;
+  \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### ShouldAggressiveCacheTrackChanges
+
+It decides whether the client being in [the aggressive cache](../../how-to/setup-aggressive-caching.mdx) mode should use [Changes API](../../changes/what-is-changes-api.mdx) to monitor notifications and rebuild the cache based on them.
+If the notification arrives then an outdated item from cache will be revalidated. 
+
+<TabItem value="should_aggressive_cache_track_changes" label="should_aggressive_cache_track_changes">
+<CodeBlock language="java">
+{`conventions.setShouldAggressiveCacheTrackChanges(true);
+`}
+</CodeBlock>
+</TabItem>
+
+Note that it is still possible to get a stale result because of the time needed to receive the notification and checking for cached data.
+
+### ShouldSaveChangesForceAggressiveCacheCheck
+
+In addition to the use of notifications, the aggressive cache also revalidates the cache after calling `session.saveChanges()`. 
+This behavior is configurable by the following convention:
+
+<TabItem value="should_save_changes_force_aggressive_cache_check" label="should_save_changes_force_aggressive_cache_check">
+<CodeBlock language="java">
+{`conventions.setShouldSaveChangesForceAggressiveCacheCheck(true);
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: DownloadAsync
+
+The **DownloadAsync** method is used to retrieve the file's content and metadata.
+
+
+
+<TabItem value="download_1" label="download_1">
+<CodeBlock language="csharp">
+{`Task<Stream> DownloadAsync(string filename, Reference<RavenJObject> metadata = null, long? from = null, long? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of a downloaded file |
+| **metadata** | Reference&lt;RavenJObject&gt; | Reference of metadata object where downloaded file metadata will be placed (if not `null`, default: `null`)  |
+| **from** | long? | The number of the first byte in a range when a partial download is requested |
+| **to** | long? | The number of the last byte in a range when a partial download is requested|
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;Stream&gt;** | A task that represents the asynchronous download operation. The task result is a file's content represented by a readable stream. |
+
+## Example
+
+<TabItem value="download_2" label="download_2">
+<CodeBlock language="csharp">
+{`var metadata = new Reference<RavenJObject>();
+
+var data = await store
+	.AsyncFilesCommands
+	.DownloadAsync(
+		"/movies/intro.avi",
+		metadata,
+		from: 0,
+		to: 200);
+`}
+</CodeBlock>
+</TabItem>
+

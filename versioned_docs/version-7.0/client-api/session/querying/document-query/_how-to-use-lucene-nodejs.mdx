@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Lucene flavored syntax can be used with the `whereLucene()` method, a part of the filtering methods available in `IDocumentQuery`.
+
+## Syntax
+
+<TabItem value="lucene_1" label="lucene_1">
+<CodeBlock language="js">
+{`query.whereLucene(fieldName, whereClause, exact);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Name of a field in an index (default field) |
+| **whereClause** | string | Lucene-syntax based clause |
+| **exact** | boolean | (optional, default false) Match exact |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const companies = await session.advanced
+    .documentQuery({ collection: "Companies" })
+    .whereLucene("Name", "bistro")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies 
+where lucene(name, 'bistro')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced Usage
+
+The `fieldName` argument corresponds to Lucene's default field convention. It is mandatory to pass it to the `whereLucene()` but the `whereClause` can contain clause that omits the field entirely giving you the opportunity to pass a complex expression e.g. `.whereLucene("name", "name:bistro OR phone:981-443655")`. It is advised to use this approach against Static Index where all fields are known, because there is no guarantee that a proper Auto Index will be created or used.
+
+

@@ -1,0 +1,26 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/debug/config \\
+	-X GET
+`}
+</CodeBlock>
+</TabItem>
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+
+

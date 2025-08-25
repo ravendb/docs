@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+More complex text searching can be achieved by using `search` extension method. This method allows you to pass one or more search terms that will be used in searching process for a particular field (or fields).
+
+## Syntax
+
+<TabItem value="search_1" label="search_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> search(String fieldName, String searchTerms);
+IDocumentQuery<T> search(String fieldName, String searchTerms, SearchOperator operator);
+IDocumentQuery<T> boost(double boost);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldSelector** | Path | Expression marking a field in which terms should be looked for. |
+| **searchTerms** | String | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. |
+| **boost** | double | Boost value. Default: `1`. |
+| **options** | SearchOptions | Explicitly set relation between each Search functions. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **escapeQueryOptions** | `EscapeQueryOptions()` | Terms escaping strategy. One of the following: `EscapeAll`, `AllowPostfixWildcard`, `AllowAllWildcards`, `RawQuery`. Default: `EscapeQueryOptions.EscapeAll`. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="search_2" label="search_2">
+<CodeBlock language="java">
+{`List<User> users = session.query(User.class, Users_ByNameAndHobbies.class)
+    .search("Name", "Adam")
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="search_3" label="search_3">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class, index("Users/ByHobbies"))
+    .search("Hobbies", "I love sport")
+    .boost(10)
+    .search("Hobbies", "but also like reading books")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+

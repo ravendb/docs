@@ -1,0 +1,350 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This section describes the relationships between Counters and other RavenDB features:  
+   * How Counters are supported by the different features.  
+   * How Counters trigger features' execution.  
+
+* In this page:  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
+</Admonition>
+
+
+### Counters and Indexing  
+
+Indexing Counters can speed-up finding them and the documents that contain them.  
+
+* **Indexing Counter Values**
+    Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
+    create a static index that inherits from `AbstractCountersIndexCreationTask`.  
+
+* **Indexing Counter Names**  
+    Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
+    To index a document's Counters by name, use `counterNamesFor`.  
+### Counters and Queries  
+
+Create queries **using code**, or send the server **raw queries** for execution.  
+
+* Either way, you can query Counters **by name** but **not by value**.  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+* Counter values **can** be projected from query results, as demonstrated in the following examples.  
+  This way a client can get Counter values from a query without downloading whole documents.  
+
+* Use `Session.Query` to code queries yourself.  
+   * **Returned Counter Value**: **Accumulated**  
+     A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
+<TabItem value="counters_region_query" label="counters_region_query">
+<CodeBlock language="csharp">
+{`using (var session = docStore.OpenSession())
+\{
+    //Select documents from the "Products" collection, with a Counter named \`ProductLikes\`.  
+    //Querying upon Counter values (e.g. using "Where") is not possible.  
+    //In this example the documents that contain the Counter are NOT returned, only Counter values.
+    var query = session.Query<Product>()
+    .Select(product => RavenQuery.Counter(product, "ProductLikes"));
+
+    var queryResults = query.ToList();
+
+    //Show ProductLikes's value, or NULL for documents with no such Counter.  
+    foreach (var counterValue in queryResults)
+    \{
+        Console.WriteLine("ProductLikes: " + counterValue);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Use `rawQuery` to send the server raw RQL expressions for execution.  
+   * You can use the `counter` method.  
+     **Returned Counter Value**: **Accumulated**
+
+  * You can use the `counterRaw` method.  
+     **Returned Counter Value**: **Distributed**  
+     A Counter's value is returned as a series of values, each maintained by one of the nodes.  
+      * It is not expected of you to use this in your application.  
+        Applications normally use the Counter's overall value, and very rarely refer to the value each node gives it.  
+      
+        
+    `counter` and `counterRaw` samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="counter" label="counter">
+<CodeBlock language="java">
+{`//Various RQL expressions sent to the server using counter()
+//Returned Counter value is accumulated
+List<CounterResult> rawQuery1 = session
+    .advanced()
+    .rawQuery(CounterResult.class, "from products as p select counter(p, \\"productLikes\\")")
+    .toList();
+
+List<CounterResult> rawQuery2 = session.advanced().rawQuery(CounterResult.class,
+    "from products select counter(\\"productLikes\\") as productLikesCount")
+    .toList();
+
+List<CounterResult> rawQuery3 = session.advanced()
+    .rawQuery(CounterResult.class,
+        "from products where PricePerUnit > 50 select Name, counter(\\"productLikes\\")")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="counterRaw" label="counterRaw">
+<CodeBlock language="java">
+{`//An RQL expression sent to the server using counterRaw()
+//Returned Counter value is distributed
+List<CounterResultRaw> query = session
+    .advanced().rawQuery(CounterResultRaw.class,
+        "from users as u select counterRaw(u, \\"downloads\\")")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+### Counters and Revisions  
+
+A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
+names and values when the revision was created.  
+ 
+* **Stored Counter Values**: **Accumulated**  
+  A revision stores a Counter's value as a single sum, with no specification of the Counter's value on each node.  
+
+* Revisions-creation can be initiated by **Counter-name modification**.  
+   * When the Revisions feature is enabled, the creation or deletion of a Counter initiates the creation of a new document revision.  
+   * Counter **value** modifications do **not** cause the creation of new revisions.  
+### Counters and Smuggler  
+
+`Smuggler` is a DocumentStore property, that can be used 
+to **export** chosen database items to an external file or to 
+**import** database items from an existing file into the database.  
+
+* **Transferred Counter Value**: **Distributed**  
+  Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
+* To make Smuggler handle Counters, include `DatabaseItemType.COUNTERS` in `OperateOnTypes`'s list of entities to import or export.  
+<TabItem value="smuggler_options" label="smuggler_options">
+<CodeBlock language="java">
+{`exportOptions.setOperateOnTypes(EnumSet.of(
+    DatabaseItemType.INDEXES,
+    DatabaseItemType.DOCUMENTS,
+    DatabaseItemType.COUNTERS));
+`}
+</CodeBlock>
+</TabItem>
+### Counters and Changes API
+
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
+You can target all Counters, or specify the ones you wish to follow.  
+
+* **Pushed Counter Value**: **Accumulated**  
+  `Changes API` methods return a Counter's value as a single sum, without specifying its value on each node.  
+* The service is initiated by **Counter Value Modification**.  
+### Counters and Ongoing Tasks:
+
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
+
+* **Counters** and the **Backup task**  
+    There are two backup types: **logical-backup** and **snapshot**.  
+    Both types store and restore **all** data, including Counters.  
+    Both types operate as an ongoing backup routine, with a pre-set time schedule.  
+    * Logical Backup:  
+      **Backed-up Counter values**: **Distributed**  
+      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
+      As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
+    * Snapshot:  
+      A snapshot stores all data and settings as a single binary image.
+      All components, including Counters, are restored to the exact same state they've been at during backup.  
+
+* **Counters** and the **External Replication task**  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
+    * **Replicated Counter Value**: **Distributed**  
+        Counters are replicated along with their values on all nodes.  
+    * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
+
+* **Counters** and the **ETL task**  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
+      Counters cannot be exported to an SQL database over SQL ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
+      * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
+      * **Exported Counter Value**: **Distributed**  
+        Counters are exported along with their values on all nodes.  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
+        **Default behavior**: When an ETL script is not provided, Counters are exported.  
+      
+* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions) task**  
+    Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
+    Documents will **not** be delivered in reaction to Counter Value modification.  
+
+
+<Admonition type="note" title="">
+### Counters and Other Features: Summary
+
+Use this table to find if and how various RavenDB features are triggered by Counters, 
+and how the various features handle Counter values.  
+
+* In the **Triggered By** column:  
+    * _Document Change_ - Feature is triggered by a Counter Name update.  
+    * _Countrer Value Modification_ - Feature is triggered by a Counter Value modification.  
+    * _Time Schedule_ - Feature is invoked by a pre-set time routine.  
+    * _No Trigger_ - Feature is executed manually, through the Studio or by a Client.  
+* In the **Counter Value** column:  
+    * _Accumulated_ - Counter Value is handled as a single accumulated sum.  
+    * _Distributed_ - Counter Value is handled as a series of values maintained by cluster nodes.  
+
+| **Feature** | **Triggered by** | **Counter Value** |
+|-------------|:-------------|:-------------|
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+
+</Admonition>
+### Including Counters  
+You can `include` Counters while loading a document.  
+An included Counter is retrieved in the same request as its owner-document and is 
+held by the session, so it can be immediately retrieved when needed with no additional 
+remote calls.
+
+* **Including Counters when using `Session.load`**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
+
+    `includeCounter` and `includeCounters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="java">
+{`//include single Counters
+Product productPage = session
+    .load(Product.class, "products/1-C", includeBuilder -> {
+        includeBuilder.includeCounter("productLikes")
+            .includeCounter("productDislikes")
+            .includeCounter("productDownloads");
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="java">
+{`//include multiple Counters
+//note that you can combine the inclusion of Counters and documents.
+
+Product productPage = session.load(Product.class, "orders/1-A", includeBuilder -> {
+    includeBuilder.includeDocuments("products/1-C")
+        .includeCounters(new String[]{"productLikes", "productDislikes"});
+});
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+* **Including Counters when using `Session.query`**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
+
+    `includeCounter` and `includeCounters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="java">
+{`//include a single Counter
+IDocumentQuery<Product> query = session.query(Product.class)
+    .include(includeBuilder -> {
+        includeBuilder.includeCounter("productLikes");
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="java">
+{`//include multiple Counters
+IDocumentQuery<Product> query = session.query(Product.class)
+    .include(includeBuilder -> {
+        includeBuilder.includeCounters(new String[]{"productLikes", "productDownloads"});
+    });
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+### Counters Bulk-Insert  
+`store.bulkInsert` is RavenDB's high-performance data insertion operation.  
+Use its `countersFor` interface's `increment` method to add or update counters with great speed.  
+
+* Syntax  
+
+   * `countersFor`
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
+<CodeBlock language="java">
+{`public CountersBulkInsert countersFor(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `String` | Document ID |
+
+   *   `increment`
+<TabItem value="Increment-definition" label="Increment-definition">
+<CodeBlock language="java">
+{`void increment(String counterName);
+
+void increment(String id, String name, long delta);
+`}
+</CodeBlock>
+</TabItem>
+
+           | Parameters | Type | Description |
+           |:-------------|:-------------|:-------------|
+           | `name` | `String` | Counter Name |
+           | `id` | `String` | Document ID |
+           | `delta` | `long` | Default: 1L |
+
+* Usage Flow  
+
+   * Create a `store.bulkInsert` instance.  
+   * Pass the instance's `countersFor` interface, the document ID  
+   * Call `increment` as many times as you like. Pass it -  
+     The Counter Name and Value (delta to be added).
+
+* Usage Sample  
+  In this sample, we attach a counter to all User documents.
+<TabItem value="bulk-insert-counters" label="bulk-insert-counters">
+<CodeBlock language="java">
+{`try (IDocumentSession session = docStore.openSession()) \{
+    IDocumentQuery<User> query = session.query(User.class)
+        .whereLessThan("age", 30);
+
+    result = query.toList();
+\}
+
+try (BulkInsertOperation bulkInsert = docStore.bulkInsert()) \{
+    for (User user : result) \{
+        String userId = user.getId();
+        CountersBulkInsert countersFor = bulkInsert.countersFor(userId);
+        bulkInsert.countersFor(userId).increment("downloaded", 100);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+

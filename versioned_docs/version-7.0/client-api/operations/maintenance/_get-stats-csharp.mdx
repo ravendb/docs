@@ -1,0 +1,193 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics can be retrieved for the database and for collections.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
+</Admonition>
+## Get collection statistics
+
+To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
+CollectionStatistics stats =
+    store.Maintenance.Send(new GetCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="csharp">
+{`// Collection stats results:
+public class CollectionStatistics
+\{
+    // Total # of documents in all collections
+    public long CountOfDocuments \{ get; set; \}
+    // Total # of conflicts
+    public long CountOfConflicts \{ get; set; \}
+    // Total # of documents per collection
+    public Dictionary<string, long> Collections \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed collection statistics
+
+To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store 
+DetailedCollectionStatistics stats =
+    store.Maintenance.Send(new GetDetailedCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="csharp">
+{`// Detailed collection stats results:
+public class DetailedCollectionStatistics
+\{
+    // Total # of documents in all collections
+    public long CountOfDocuments \{ get; set; \}
+    // Total # of conflicts
+    public long CountOfConflicts \{ get; set; \}
+    // Collection details per collection
+    public Dictionary<string, CollectionDetails> Collections \{ get; set; \}
+\}
+
+// Details per collection
+public class CollectionDetails
+\{        
+    public string Name \{ get; set; \}
+    public long CountOfDocuments \{ get; set; \}
+    public Size Size \{ get; set; \}
+    public Size DocumentsSize \{ get; set; \}
+    public Size TombstonesSize \{ get; set; \}
+    public Size RevisionsSize \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get database statistics
+
+To get **database statistics**, use `GetStatisticsOperation`:  
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetStatisticsOperation\` to the store 
+DatabaseStatistics stats =
+    store.Maintenance.Send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="csharp">
+{`// Database stats results:
+public class DatabaseStatistics
+\{
+    public long? LastDocEtag \{ get; set; \}      // Last document etag in database
+    public long? LastDatabaseEtag \{ get; set; \} // Last database etag
+    
+    public int CountOfIndexes \{ get; set; \}     // Total # of indexes in database
+    public long CountOfDocuments \{ get; set; \}  // Total # of documents in database
+    public long CountOfRevisionDocuments \{ get; set; \}  // Total # of revision documents in database
+    public long CountOfDocumentsConflicts \{ get; set; \} // Total # of documents conflicts in database
+    public long CountOfTombstones \{ get; set; \}         // Total # of tombstones in database
+    public long CountOfConflicts \{ get; set; \}          // Total # of conflicts in database
+    public long CountOfAttachments \{ get; set; \}        // Total # of attachments in database
+    public long CountOfUniqueAttachments \{ get; set; \}  // Total # of unique attachments in database
+    public long CountOfCounterEntries \{ get; set; \}     // Total # of counter-group entries in database
+    public long CountOfTimeSeriesSegments \{ get; set; \} // Total # of time-series segments in database
+    
+    // List of stale index names in database
+    public string[] StaleIndexes => Indexes?.Where(x => x.IsStale).Select(x => x.Name).ToArray();
+    // Statistics for each index in database
+    public IndexInformation[] Indexes \{ get; set; \}
+    
+    public string DatabaseChangeVector \{ get; set; \} // Global change vector of the database
+    public string DatabaseId \{ get; set; \}           // Database identifier
+    public bool Is64Bit \{ get; set; \}                // Indicates if process is 64-bit
+    public string Pager \{ get; set; \}                // Component handling the memory-mapped files
+    public DateTime? LastIndexingTime \{ get; set; \}  // Last time of indexing an item
+    public Size SizeOnDisk \{ get; set; \}             // Database size on disk
+    public Size TempBuffersSizeOnDisk \{ get; set; \}  // Temp buffers size on disk
+    public int NumberOfTransactionMergerQueueOperations \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get detailed database statistics
+
+To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="csharp">
+{`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
+DetailedDatabaseStatistics stats =
+    store.Maintenance.Send(new GetDetailedStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+Statistics are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="csharp">
+{`// Detailed database stats results:
+public class DetailedDatabaseStatistics : DatabaseStatistics
+\{
+    // Total # of identities in database
+    public long CountOfIdentities \{ get; set; \}
+    // Total # of compare-exchange items in database
+    public long CountOfCompareExchange \{ get; set; \}
+    // Total # of cmpXchg tombstones in database
+    public long CountOfCompareExchangeTombstones \{ get; set; \}
+    // Total # of TS deleted ranges values in database
+    public long CountOfTimeSeriesDeletedRanges \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get statistics for another database
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `ForDatabase` to get database and collection statistics for another database.  
+* `ForDatabase` can be used with **any** of the above statistics options.
+
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="csharp">
+{`// Get stats for 'AnotherDatabase':
+DatabaseStatistics stats =
+    store.Maintenance.ForDatabase("AnotherDatabase").Send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+
+
+

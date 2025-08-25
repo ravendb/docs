@@ -1,0 +1,127 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following methods allow you to subscribe to index changes:
+
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+
+## ForIndex
+
+Index changes for one index can be observed using `ForIndex` method.
+
+### Syntax
+
+<TabItem value="index_changes_1" label="index_changes_1">
+<CodeBlock language="csharp">
+{`IChangesObservable<IndexChange> ForIndex(string indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[IndexChangeNotification](../../glossary/index-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="index_changes_2" label="index_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForIndex("Orders/All")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case IndexChangeTypes.None:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.BatchCompleted:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexAdded:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexRemoved:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexDemotedToIdle:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexPromotedFromIdle:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexDemotedToDisabled:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexMarkedAsErrored:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.SideBySideReplace:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexPaused:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.LockModeChanged:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.PriorityChanged:
+                    //Do someting
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllIndexes
+
+Index changes for all indexex can be observed using `ForAllIndexes` method.
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[IndexChangeNotification](../../glossary/index-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="index_changes_3" label="index_changes_3">
+<CodeBlock language="csharp">
+{`IChangesObservable<IndexChange> ForAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="index_changes_4" label="index_changes_4">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForAllIndexes()
+    .Subscribe(change => Console.WriteLine("\{0\} on index \{1\}", change.Type, change.Name));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+

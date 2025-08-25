@@ -1,0 +1,316 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
+results. The projections are defined with the usage of:
+
+- [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)
+- [OfType](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype---simple-projection)
+
+## SelectFields
+
+The most common way to perform a query with projection is to use the `selectFields` method. You can specify what fields from a document you want to retrieve.
+
+### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// request name, city and country for all entities from 'Companies' collection
+QueryData queryData = new QueryData(
+    new String[] { "Name", "Address.city", "Address.country"},
+    new String[] { "Name", "City", "Country"});
+List<NameCityAndCountry> results = session
+    .query(Company.class)
+    .selectFields(NameCityAndCountry.class, queryData)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+select Name, Address.City as City, Address.Country as Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`QueryData queryData = new QueryData(new String[]{ "ShipTo", "Lines[].ProductName" },
+    new String[]{"ShipTo", "Products"});
+
+List<ShipToAndProducts> results = session.query(Order.class)
+    .selectFields(ShipToAndProducts.class, queryData)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+select ShipTo, Lines[].ProductName as Products
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<FullName> results = session.advanced().rawQuery(FullName.class, "from Employees as e " +
+    "select {" +
+    "    FullName : e.FirstName + \\" \\" + e.LastName " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees as e
+select {
+    FullName : e.FirstName + " " + e.LastName
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IV - Projection with `declared function`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> results = session.advanced().rawQuery(Employee.class, "declare function output(e) { " +
+    "    var format = function(p){ return p.FirstName + \\" \\" + p.LastName; }; " +
+    "    return { FullName : format(e) }; " +
+    "} " +
+    "from Employees as e select output(e)").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from Employees as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example V - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Total> results = session.advanced().rawQuery(Total.class, "from Orders as o " +
+    "select { " +
+    "    Total : o.Lines.reduce( " +
+    "        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0) " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VI - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<OrderProjection> results = session.advanced().rawQuery(OrderProjection.class, "from Orders as o " +
+    "load o.Company as c " +
+    "select { " +
+    "    CompanyName: c.Name," +
+    "    ShippedAt: o.ShippedAt" +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VII - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
+    "select { " +
+    "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), " +
+    "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, " +
+    "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VIII - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
+    "select { " +
+    "    Date : new Date(Date.parse(e.Birthday)), " +
+    "    Name : e.FirstName.substr(0,3) " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IX - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> results = session.advanced().rawQuery(Employee.class, "from Employees as e " +
+    "select {" +
+    "     Name : e.FirstName, " +
+    "     Metadata : getMetadata(e)" +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This method overload retrieves all public fields of the class given in generic and uses them to perform projection to the requested type.
+You can use this method instead of using `selectFields` together with all fields of the projection class.
+
+### Example X
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<ContactDetails> results = session.query(Company.class, Companies_ByContact.class)
+    .selectFields(ContactDetails.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_2" label="RQL_2">
+<CodeBlock language="java">
+{`from index 'Companies/ByContact' 
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`private class Companies_ByContact extends AbstractIndexCreationTask {
+    public Companies_ByContact() {
+
+        map = "from c in docs.Companies select new  { Name = c.Contact.Name, Phone = c.Phone } ";
+
+        storeAllFields(FieldStorage.YES); // name and phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+
+</Tabs>
+
+
+
+## OfType - simple projection
+
+`ofType` is a client-side projection. The easiest explanation of how it works is to take the results that the server returns and map them to given type. This may become useful when querying an index that contains fields that are not available in mapped type.
+
+### Example
+
+<TabItem value="projections_10" label="projections_10">
+<CodeBlock language="java">
+{`// query index 'Products_BySupplierName'
+// return documents from collection 'Products' that have a supplier 'Norske Meierier'
+// project them to 'Products'
+List<Product> results = session.query(Products_BySupplierName.Result.class, Products_BySupplierName.class)
+    .whereEquals("Name", "Norske Meierier")
+    .ofType(Product.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+<Admonition type="note" title="">
+Projected entities (even named types) are not tracked by the session.
+</Admonition>
+
+<Admonition type="note" title="">
+If the projected fields are stored inside the index itself (`FieldStorage.YES` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project.
+</Admonition>
+
+

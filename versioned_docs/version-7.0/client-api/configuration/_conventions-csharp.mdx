@@ -1,0 +1,1261 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
+
+* In this article:
+    * [How to set conventions](../../client-api/configuration/conventions.mdx#how-to-set-conventions)
+    * [Conventions:](../../client-api/configuration/conventions.mdx#conventions:)  
+      [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions.mdx#addidfieldtodynamicobjects)  
+      [AggressiveCache.Duration](../../client-api/configuration/conventions.mdx#aggressivecacheduration)  
+      [AggressiveCache.Mode](../../client-api/configuration/conventions.mdx#aggressivecachemode)  
+      [AsyncDocumentIdGenerator](../../client-api/configuration/conventions.mdx#asyncdocumentidgenerator)  
+      [CreateHttpClient](../../client-api/configuration/conventions.mdx#createhttpclient)  
+      [DisableAtomicDocumentWritesInClusterWideTransaction](../../client-api/configuration/conventions.mdx#disableatomicdocumentwritesinclusterwidetransaction)  
+      [DisableTcpCompression](../../client-api/configuration/conventions.mdx#disabletcpcompression)  
+      [DisableTopologyCache](../../client-api/configuration/conventions.mdx#disabletopologycache)  
+      [DisableTopologyUpdates](../../client-api/configuration/conventions.mdx#disabletopologyupdates)  
+      [DisposeCertificate](../../client-api/configuration/conventions.mdx#disposecertificate)  
+      [FindClrType](../../client-api/configuration/conventions.mdx#findclrtype)  
+      [FindClrTypeName](../../client-api/configuration/conventions.mdx#findclrtypename)  
+      [FindClrTypeNameForDynamic](../../client-api/configuration/conventions.mdx#findclrtypenamefordynamic)  
+      [FindCollectionName](../../client-api/configuration/conventions.mdx#findcollectionname)  
+      [FindCollectionNameForDynamic](../../client-api/configuration/conventions.mdx#findcollectionnamefordynamic)  
+      [FindIdentityProperty](../../client-api/configuration/conventions.mdx#findidentityproperty)  
+      [FindIdentityPropertyNameFromCollectionName](../../client-api/configuration/conventions.mdx#findidentitypropertynamefromcollectionname)  
+      [FindProjectedPropertyNameForIndex](../../client-api/configuration/conventions.mdx#findprojectedpropertynameforindex)  
+      [FindPropertyNameForDynamicIndex](../../client-api/configuration/conventions.mdx#findpropertynamefordynamicindex)  
+      [FindPropertyNameForIndex](../../client-api/configuration/conventions.mdx#findpropertynameforindex)  
+      [FirstBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
+      [HttpClientType](../../client-api/configuration/conventions.mdx#httpclienttype)  
+      [HttpVersion](../../client-api/configuration/conventions.mdx#httpversion)  
+      [IdentityPartsSeparator](../../client-api/configuration/conventions.mdx#identitypartsseparator)  
+      [LoadBalanceBehavior](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [LoadBalancerContextSeed](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [LoadBalancerPerSessionContextSelector](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [MaxHttpCacheSize](../../client-api/configuration/conventions.mdx#maxhttpcachesize)  
+      [MaxNumberOfRequestsPerSession](../../client-api/configuration/conventions.mdx#maxnumberofrequestspersession)  
+      [Modify serialization of property name](../../client-api/configuration/conventions.mdx#modify-serialization-of-property-name)  
+      [OperationStatusFetchMode](../../client-api/configuration/conventions.mdx#operationstatusfetchmode)  
+      [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/conventions.mdx#preservedocumentpropertiesnotfoundonmodel)  
+      [ReadBalanceBehavior](../../client-api/configuration/conventions.mdx#readbalancebehavior)  
+      [RequestTimeout](../../client-api/configuration/conventions.mdx#requesttimeout)  
+      [ResolveTypeFromClrTypeName](../../client-api/configuration/conventions.mdx#resolvetypefromclrtypename)  
+      [SaveEnumsAsIntegers](../../client-api/configuration/conventions.mdx#saveenumsasintegers)  
+      [SecondBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout)  
+      [SendApplicationIdentifier](../../client-api/configuration/conventions.mdx#sendapplicationidentifier)  
+      [ShouldIgnoreEntityChanges](../../client-api/configuration/conventions.mdx#shouldignoreentitychanges)  
+      [TopologyCacheLocation](../../client-api/configuration/conventions.mdx#topologycachelocation)  
+      [TransformTypeCollectionNameToDocumentIdPrefix](../../client-api/configuration/conventions.mdx#transformtypecollectionnametodocumentidprefix)  
+      [UseHttpCompression](../../client-api/configuration/conventions.mdx#usehttpcompression)  
+      [UseHttpDecompression](../../client-api/configuration/conventions.mdx#usehttpdecompression)  
+      [HttpCompressionAlgorithm](../../client-api/configuration/conventions.mdx#httpcompressionalgorithm)  
+      [UseOptimisticConcurrency](../../client-api/configuration/conventions.mdx#useoptimisticconcurrency)  
+      [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforindexesaftersavechangestimeout)  
+      [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions.mdx#waitfornonstaleresultstimeout)  
+      [WaitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforreplicationaftersavechangestimeout)
+
+</Admonition>
+## How to set conventions
+
+* Access the conventions via the `Conventions` property of the `DocumentStore` object.
+
+* The conventions set on a Document Store will apply to ALL [sessions](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../client-api/operations/what-are-operations.mdx) associated with that store.
+
+* Customizing the conventions can only be set **before** calling `DocumentStore.Initialize()`.  
+  Trying to do so after calling _Initialize()_ will throw an exception.
+
+<TabItem value="conventions_1" label="conventions_1">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore()
+\{
+    Conventions =
+    \{
+        // Set conventions HERE, e.g.:
+        MaxNumberOfRequestsPerSession = 50,
+        AddIdFieldToDynamicObjects = false
+        // ...
+    \}
+\}.Initialize())
+\{
+    // * Here you can interact with the RavenDB store:
+    //   open sessions, create or query for documents, perform operations, etc.
+    
+    // * Conventions CANNOT be set here after calling Initialize()
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Conventions:
+
+<Admonition type="note" title="">
+
+#### AddIdFieldToDynamicObjects
+* Use the `AddIdFieldToDynamicObjects` convention to determine whether an `Id` field is automatically added  
+  to [dynamic objects](https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../client-api/session/storing-entities.mdx) via the session.
+
+* DEFAULT: `true`
+
+<TabItem value="AddIdFieldToDynamicObjectsSyntax" label="AddIdFieldToDynamicObjectsSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool AddIdFieldToDynamicObjects \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### AggressiveCache.Duration
+* Use the `AggressiveCache.Duration` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching.mdx) duration period.
+
+* DEFAULT: `1 day`
+
+<TabItem value="AggressiveCacheDurationSyntax" label="AggressiveCacheDurationSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan Duration \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### AggressiveCache.Mode
+* Use the `AggressiveCache.Mode` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching.mdx) mode.  
+  (`AggressiveCacheMode.TrackChanges` or `AggressiveCacheMode.DoNotTrackChanges`)
+
+* DEFAULT: `AggressiveCacheMode.TrackChanges`
+
+<TabItem value="AggressiveCacheModeSyntax" label="AggressiveCacheModeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public AggressiveCacheMode Mode \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### AsyncDocumentIdGenerator
+* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method 
+  used when storing a document without explicitly specifying its `Id`.
+
+* You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../client-api/configuration/identifier-generation/type-specific.mdx) convention.
+
+* DEFAULT:  
+  The default document ID generator is the `GenerateDocumentIdAsync` method, which is part of the `HiLoIdGenerator` object within the _DocumentStore_.
+  This method implements the [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm.mdx) to ensure efficient ID generation when storing a document without explicitly specifying its `Id`.
+
+<TabItem value="AsyncDocumentIdGenerator" label="AsyncDocumentIdGenerator">
+<CodeBlock language="csharp">
+{`// Customize ID generation for all collections
+AsyncDocumentIdGenerator = (database, obj) =>
+\{
+    var objectType = obj.GetType().Name;  // e.g., Person, Order, etc.
+    var timestamp = DateTime.UtcNow.Ticks; // Get the current timestamp
+
+    // Format the ID as \{ObjectType\}/\{Ticks\}
+    var id = $"\{objectType\}/\{timestamp\}";
+
+    return Task.FromResult(id);
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AsyncDocumentIdGeneratorSyntax" label="AsyncDocumentIdGeneratorSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<string, object, Task<string>> AsyncDocumentIdGenerator \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### CreateHttpClient
+* Use the `CreateHttpClient` convention to modify the HTTP client your client application uses.
+
+* For example, implementing your own HTTP client can be useful when you'd like your clients to provide the server with tracing info.
+
+* If you override the default `CreateHttpClient` convention we advise that you also set the HTTP client type
+  correctly using the [HttpClientType](../../client-api/configuration/conventions.mdx#httpclienttype) convention.
+
+<TabItem value="CreateHttpClient" label="CreateHttpClient">
+<CodeBlock language="csharp">
+{`CreateHttpClient = handler =>
+\{
+    // Your HTTP client code here, e.g.:
+    var httpClient = new MyHttpClient(new HttpClientXRayTracingHandler(new HttpClientHandler()));
+    return httpClient;
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="CreateHttpClientSyntax" label="CreateHttpClientSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<HttpClientHandler, HttpClient> CreateHttpClient \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### DisableAtomicDocumentWritesInClusterWideTransaction
+* EXPERT ONLY:   
+  Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention to disable automatic  
+  atomic writes with cluster write transactions.
+
+* When set to `true`, will only consider explicitly-added compare exchange values to validate cluster-wide transactions.
+
+* DEFAULT: `false`
+
+<TabItem value="DisableAtomicDocumentWritesInClusterWideTransactionSyntax" label="DisableAtomicDocumentWritesInClusterWideTransactionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool? DisableAtomicDocumentWritesInClusterWideTransaction \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### DisableTcpCompression
+* When setting the `DisableTcpCompression` convention to `true`, TCP data will not be compressed.
+
+* DEFAULT: `false`
+
+<TabItem value="DisableTcpCompressionSyntax" label="DisableTcpCompressionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool DisableTcpCompression \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### DisableTopologyCache
+* By default, the client caches the cluster's topology in `*.raven-cluster-topology` files on disk.  
+  When all servers provided in the `DocumentStore.Urls` property are down or unavailable,
+  the client will load the topology from the latest file and try to connect to nodes that are not listed in the URL property.
+
+* This behavior can be disabled when setting the `DisableTopologyCache` convention to `true`.  
+  In such a case:
+
+    * The client will not load the topology from the cache upon failing to connect to a server.
+    * Even if the client is configured to [receive topology updates](../../client-api/configuration/conventions.mdx#disabletopologyupdates) from the server,
+      no topology files will be saved on disk, thus preventing the accumulation of these files.
+
+* DEFAULT: `false`
+
+<TabItem value="DisableTopologyCacheSyntax" label="DisableTopologyCacheSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool DisableTopologyCache \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### DisableTopologyUpdates
+* When setting the `DisableTopologyUpdates` convention to `true`,  
+  no database topology updates will be sent from the server to the client (e.g. adding or removing a node).
+
+* DEFAULT: `false`
+
+<TabItem value="DisableTopologyUpdatesSyntax" label="DisableTopologyUpdatesSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool DisableTopologyUpdates \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### DisposeCertificate
+* When setting the `DisposeCertificate` convention to `true`,  
+  the `DocumentStore.Certificate` will be disposed of during DocumentStore disposal. 
+
+* DEFAULT: `true`
+
+<TabItem value="DisposeCertificateSyntax" label="DisposeCertificateSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool DisposeCertificate \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindClrType
+* Use the `FindClrType` convention to define a function that finds the CLR type of a document.
+
+* DEFAULT:  
+  The CLR type is retrieved from the `Raven-Clr-Type` property under the `@metadata` key in the document.
+
+<TabItem value="FindClrType" label="FindClrType">
+<CodeBlock language="csharp">
+{`// The default implementation is:
+FindClrType = (_, doc) =>
+\{
+    if (doc.TryGet(Constants.Documents.Metadata.Key, out BlittableJsonReaderObject metadata) &&
+        metadata.TryGet(Constants.Documents.Metadata.RavenClrType, out string clrType))
+        return clrType;
+
+    return null;
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindClrTypeSyntax" label="FindClrTypeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<string, BlittableJsonReaderObject, string> FindClrType \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindClrTypeName
+* Use the `FindClrTypeName` convention to define a function that returns the CLR type name from a given type.
+
+* DEFAULT: Return the entity's full name, including the assembly name.
+
+<TabItem value="FindClrTypeNameSyntax" label="FindClrTypeNameSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<Type, string> FindClrTypeName \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindClrTypeNameForDynamic
+* Use the `FindClrTypeNameForDynamic` convention to define a function that returns the CLR type name  
+  from a dynamic entity.
+
+* DEFAULT: The dynamic entity type is returned.
+
+<TabItem value="FindClrTypeNameForDynamic" label="FindClrTypeNameForDynamic">
+<CodeBlock language="csharp">
+{`// The dynamic entity's type is returned by default
+FindClrTypeNameForDynamic = dynamicEntity => dynamicEntity.GetType()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindClrTypeNameForDynamicSyntax" label="FindClrTypeNameForDynamicSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<dynamic, string> FindClrTypeNameForDynamic \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindCollectionName
+* Use the `FindCollectionName` convention to define a function that will customize 
+  the collection name from a given type.
+
+* DEFAULT: The collection name will be the plural form of the type name.
+
+<TabItem value="FindCollectionName" label="FindCollectionName">
+<CodeBlock language="csharp">
+{`// Here the collection name will be the type name separated by dashes
+FindCollectionName = type => String.Join("-", type.Name.ToCharArray())
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindCollectionNameSyntax" label="FindCollectionNameSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<Type, string> FindCollectionName \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindCollectionNameForDynamic
+* Use the `FindCollectionNameForDynamic` convention to define a function that will customize the  
+  collection name from a dynamic type.
+
+* DEFAULT: The collection name will be the entity's type.
+
+<TabItem value="FindCollectionNameForDynamic" label="FindCollectionNameForDynamic">
+<CodeBlock language="csharp">
+{`// Here the collection name will be some property of the dynamic entity
+FindCollectionNameForDynamic = dynamicEntity => dynamicEntity.SomeProperty
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindCollectionNameForDynamicSyntax" label="FindCollectionNameForDynamicSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<dynamic, string> FindCollectionNameForDynamic \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindIdentityProperty
+* Use the `FindIdentityProperty` convention to define a function that finds the specified ID property  
+  in the entity.
+
+* DEFAULT: The entity's `Id` property serves as the ID property.
+
+<TabItem value="FindIdentityProperty" label="FindIdentityProperty">
+<CodeBlock language="csharp">
+{`// If there exists a property with name "CustomizedId" then it will be the entity's ID property 
+FindIdentityProperty = memberInfo => memberInfo.Name == "CustomizedId"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindIdentityPropertySyntax" label="FindIdentityPropertySyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<MemberInfo, bool> FindIdentityProperty \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindIdentityPropertyNameFromCollectionName
+* Use the `FindIdentityPropertyNameFromCollectionName` convention to define a function that customizes
+  the entity's ID property from the collection name.
+
+* DEFAULT: Will use the `Id` property.
+
+<TabItem value="FindIdentityPropertyNameFromCollectionName" label="FindIdentityPropertyNameFromCollectionName">
+<CodeBlock language="csharp">
+{`// Will use property "CustomizedId" as the ID property
+FindIdentityPropertyNameFromCollectionName = collectionName => "CustomizedId"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindIdentityPropertyNameFromCollectionNameSyntax" label="FindIdentityPropertyNameFromCollectionNameSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<string, string> FindIdentityPropertyNameFromCollectionName \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindProjectedPropertyNameForIndex
+* Use the `FindProjectedPropertyNameForIndex` convention to define a function that customizes the  
+  **projected** field names that will be used in the RQL generated by the client and sent to the server when querying a static index.
+
+* This can be useful when projecting **nested properties** that are not [Stored in the index](../../indexes/storing-data-in-index.mdx).
+
+* The function receives the following input:  
+  the index type, the index name, the current path, and the property path that is used in the query.
+
+* DEFAULT: `null`  
+  When `FindProjectedPropertyNameForIndex` is set to `null` (or returns `null`),  
+  the [FindPropertyNameForIndex](../../client-api/configuration/conventions.mdx#findpropertynameforindex) convention is used instead.
+**Example**:  
+Consider the following index, which indexes the nested `School.Id` property from _Student_ documents:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Students_BySchoolId : AbstractIndexCreationTask<Student>
+{
+    public class IndexEntry
+    {
+        public string Name { get; set; }
+        public string SchoolId { get; set; }
+    }
+    
+    public Students_BySchoolId()
+    {
+        Map = students => from student in students
+            select new IndexEntry
+            {
+                Name = student.StudentName,
+                SchoolId = student.School.Id // index nested property
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="csharp">
+{`public class Student
+{
+    public string StudentName { get; set; }
+    public School School { get; set; }
+    // ... other student properties
+}
+
+public class School
+{
+    public string SchoolName { get; set; }
+    public string Id { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+When querying the index and projecting fields from the matching _Student_ documents,  
+if the `FindProjectedPropertyNameForIndex` convention is Not set,
+the client will use the [FindPropertyNameForIndex](../../client-api/configuration/conventions.mdx#findpropertynameforindex) convention instead when constructing the RQL sent to the server.
+
+This results in the following RQL query:  
+(Note that while the high-level query uses `.Select(student => student.School.Id)`,  
+the RQL sent to the server contains `School_Id`)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the index
+var query = session.Query<Students_BySchoolId.IndexEntry, Students_BySchoolId>()
+    .Where(x => x.Name == "someStudentName")
+    .OfType<Student>()
+    // Project only the School.Id property from the Student document in the results
+    .Select(student => student.School.Id)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Students/BySchoolId'
+where Name == "someStudentName"
+select School_Id
+// Since the FindProjectedPropertyNameForIndex convention was not yet defined,
+// the 'School_Id' property name was generated using the FindPropertyNameForIndex convention.
+// ('School.Id' was converted to 'School_Id')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The RQL generated by the above query projects the `School_Id` field, so the server first attempts to fetch this property from the [Stored index fields](../../indexes/storing-data-in-index.mdx)
+(this is the default behavior, learn more in [Projection behavior with a static-index](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index)).
+
+However, because this property is Not stored in the index, the server then tries to retrieve it from the _Student_ document instead.
+But the document does not contain a flat `School_Id` field — it contains the nested property `School.Id`,  
+and so no results are returned for the `School_Id` field.
+
+To resolve this issue,
+set the `FindProjectedPropertyNameForIndex` convention to return the nested property name that the client should use when constructing the RQL query sent to the server:
+
+<TabItem value="FindProjectedPropertyNameForIndex" label="FindProjectedPropertyNameForIndex">
+<CodeBlock language="csharp">
+{`FindProjectedPropertyNameForIndex = (indexedType, indexName, path, prop) => path + prop
+`}
+</CodeBlock>
+</TabItem>
+
+Now, when using the same query, the RQL sent to the server will contain the nested `School.Id` property name,  
+and the query will return results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the index
+var query = session.Query<Students_BySchoolId.IndexEntry, Students_BySchoolId>()
+    .Where(x => x.Name == "someStudentName")
+    .OfType<Student>()
+    // Project only the School.Id property from the Student document in the results
+    .Select(student => student.School.Id)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Students/BySchoolId'
+where Name == "someStudentName"
+select School.Id
+// The RQL sent to the server now contains 'School.Id',
+// as defined by the FindProjectedPropertyNameForIndex convention.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+<TabItem value="FindProjectedPropertyNameForIndexSyntax" label="FindProjectedPropertyNameForIndexSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<Type, string, string, string, string> FindProjectedPropertyNameForIndex \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindPropertyNameForDynamicIndex
+* Use the `FindPropertyNameForDynamicIndex` convention to define a function that customizes the  
+  property name that will be used in the RQL sent to the server when making a dynamic query.
+
+* The function receives the following input:  
+  the index type, the index name, the current path, and the property path that is used in the query predicate.
+
+<TabItem value="FindPropertyNameForDynamicIndex" label="FindPropertyNameForDynamicIndex">
+<CodeBlock language="csharp">
+{`// The DEFAULT function:
+FindPropertyNameForDynamicIndex = (Type indexedType, string indexedName, string path, string prop) =>
+    path + prop
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindPropertyNameForDynamicIndexSyntax" label="FindPropertyNameForDynamicIndexSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<Type, string, string, string, string> FindPropertyNameForDynamicIndex \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FindPropertyNameForIndex
+* Use the `FindPropertyNameForIndex` convention to define a function that customizes the name of the  
+  index-field property that will be used in the RQL sent to the server when querying a static index.
+
+* The function receives the following input:  
+  the index type, the index name, the current path, and the property path that is used in the query predicate.
+
+* DEFAULT: `[].` & `.` are replaced by `_`
+
+<TabItem value="FindPropertyNameForIndex" label="FindPropertyNameForIndex">
+<CodeBlock language="csharp">
+{`// The DEFAULT function:
+FindPropertyNameForIndex = (Type indexedType, string indexedName, string path, string prop) => 
+    (path + prop).Replace("[].", "_").Replace(".", "_")
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FindPropertyNameForIndexSyntax" label="FindPropertyNameForIndexSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<Type, string, string, string, string> FindPropertyNameForIndex \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### FirstBroadcastAttemptTimeout
+* Use the `FirstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.
+
+* In the first attempt, the request executor will send a single request to the selected node.  
+  Learn about the "selected node" in: [Client logic for choosing a node](../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+
+* A [second attempt](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout) will be held upon failure.
+
+* DEFAULT: `5 seconds`
+
+<TabItem value="FirstBroadcastAttemptTimeout" label="FirstBroadcastAttemptTimeout">
+<CodeBlock language="csharp">
+{`FirstBroadcastAttemptTimeout = TimeSpan.FromSeconds(10)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FirstBroadcastAttemptTimeoutSyntax" label="FirstBroadcastAttemptTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan FirstBroadcastAttemptTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### HttpClientType
+* Use the `HttpClientType` convention to set the type of HTTP client you're using.
+
+* RavenDB uses the HTTP type internally to manage its cache.
+
+* If you override the [CreateHttpClient](../../client-api/configuration/conventions.mdx#createhttpclient) convention to use a non-default HTTP client,  
+  we advise that you also set `HttpClientType` so it returns the client type you are actually using.
+
+<TabItem value="HttpClientType" label="HttpClientType">
+<CodeBlock language="csharp">
+{`// The type of HTTP client you are using
+HttpClientType = typeof(MyHttpClient)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="HttpClientTypeSyntax" label="HttpClientTypeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Type HttpClientType \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### HttpVersion
+* Use the `HttpVersion` convention to set the Http version the client will use when communicating  
+  with the server.
+
+* DEFAULT:
+    * When this convention is explicitly set to `null`, the default HTTP version provided by your .NET framework is used.
+    * Otherwise, the default HTTP version is set to `System.Net.HttpVersion.Version20` (HTTP 2.0).
+
+<TabItem value="HttpVersionSyntax" label="HttpVersionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Version HttpVersion \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### IdentityPartsSeparator
+* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically generated document IDs.
+
+* DEFAULT: `/` (forward slash)
+
+* The value can be any `char` except `|` (pipe).
+
+* Changing the separator affects these ID generation strategies:
+    * [Server-Side ID](../../server/kb/document-identifier-generation.mdx#strategy--2)
+    * [Identity](../../server/kb/document-identifier-generation.mdx#strategy--3)
+    * [HiLo Algorithm](../../server/kb/document-identifier-generation.mdx#strategy--4)
+
+<TabItem value="IdentityPartsSeparatorSyntax" label="IdentityPartsSeparatorSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public char IdentityPartsSeparator \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### LoadBalanceBehavior
+#### LoadBalancerPerSessionContextSelector
+#### LoadBalancerContextSeed
+* Configure the **load balance behavior** by setting the following conventions:
+    * `LoadBalanceBehavior`
+    * `LoadBalancerPerSessionContextSelector`
+    * `LoadBalancerContextSeed`
+
+* Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### MaxHttpCacheSize
+* Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.  
+  This setting will affect all the databases accessed by the Document Store.
+
+* DEFAULT:
+
+  | System   | Usable Memory                                                                                         | Default Value              |
+  |----------|-------------------------------------------------------------------------------------------------------|----------------------------|
+  | 64-bit   | Lower than or equal to 3GB <br/> Greater than 3GB and Lower than or equal to 6GB <br/> Greater than 6GB | 64MB <br/> 128MB <br/> 512MB |
+  | 32-bit   |                                                                                                       | 32MB                       |
+
+* **Disabling Caching**:
+
+    * To disable caching globally, set `MaxHttpCacheSize` to zero.
+    * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
+
+* Note: RavenDB also supports Aggressive Caching.  
+  Learn more about this in the [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching.mdx) article.
+
+<TabItem value="MaxHttpCacheSize" label="MaxHttpCacheSize">
+<CodeBlock language="csharp">
+{`MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes) // Set max cache size
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="disable_cache" label="disable_cache">
+<CodeBlock language="csharp">
+{`MaxHttpCacheSize = new Size(0, SizeUnit.Megabytes) // Disable caching
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MaxHttpCacheSizeSyntax" label="MaxHttpCacheSizeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Size MaxHttpCacheSize \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### MaxNumberOfRequestsPerSession
+* Use the `MaxNumberOfRequestsPerSession` convention to set the maximum number of requests per session.
+
+* DEFAULT: `30`
+
+<TabItem value="MaxNumberOfRequestsPerSessionSyntax" label="MaxNumberOfRequestsPerSessionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public int MaxNumberOfRequestsPerSession \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Modify serialization of property name
+* Different clients use different casing conventions for entity field names. For example:
+
+  | Language   | Default casing  | Example    |
+  |------------|-----------------|------------|
+  | C#         | PascalCase      | OrderLines |
+  | Java       | camelCase       | orderLines |
+  | JavaScript | camelCase       | orderLines |
+
+* By default, when saving an entity, the naming convention used by the client is reflected in the JSON document properties on the server-side.  
+  This default serialization behavior can be customized to facilitate language interoperability.
+
+* **Example**:
+
+  Set `CustomizeJsonSerializer` and `PropertyNameConverter` to serialize an entity's properties as camelCase from a C# client:
+
+<TabItem value="PropertyCasing" label="PropertyCasing">
+<CodeBlock language="csharp">
+{`Serialization = new NewtonsoftJsonSerializationConventions
+\{
+    // .Net properties will be serialized as camelCase in the JSON document when storing an entity
+    // and deserialized back to PascalCase
+    CustomizeJsonSerializer = s => s.ContractResolver = new CamelCasePropertyNamesContractResolver()
+\},
+
+// In addition, the following convention is required when
+// making a query that filters by a field name and when indexing. 
+PropertyNameConverter = memberInfo => FirstCharToLower(memberInfo.Name)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FirstChar" label="FirstChar">
+<CodeBlock language="csharp">
+{`private string FirstCharToLower(string str) => $"\{Char.ToLower(str[0])\}\{str.Substring(1)\}";
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="SerializationSyntax" label="SerializationSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public ISerializationConventions Serialization \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### OperationStatusFetchMode
+* Use the `OperationStatusFetchMode` convention to set the way an [operation](../../client-api/operations/what-are-operations.mdx) is getting its status when [waiting for completion](../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+
+* DEFAULT:  
+  By default, the value is set to `ChangesApi` which uses the WebSocket protocol underneath when a connection is established with the server.
+
+* On some older systems like Windows 7 the WebSocket protocol might not be available due to the OS and .NET Framework limitations.
+  To bypass this issue, the value can be changed to `Polling`.
+
+<TabItem value="OperationStatusFetchMode" label="OperationStatusFetchMode">
+<CodeBlock language="csharp">
+{`OperationStatusFetchMode = OperationStatusFetchMode.ChangesApi // ChangesApi | Polling
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="OperationStatusFetchModeSyntax" label="OperationStatusFetchModeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public OperationStatusFetchMode OperationStatusFetchMode \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### PreserveDocumentPropertiesNotFoundOnModel
+* Loading a document using a different model will result in the removal of the missing model properties  
+  from the loaded entity, and no exception is thrown.
+
+* Setting the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`  
+  allows the client to check (via [whatChanged](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  or via [WhatChangedFor](../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes) methods)
+  for the missing properties on the entity after loading the document.
+
+* DEFAULT: `true`
+
+<TabItem value="PreserveDocumentPropertiesNotFoundOnModelSyntax" label="PreserveDocumentPropertiesNotFoundOnModelSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool PreserveDocumentPropertiesNotFoundOnModel \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### ReadBalanceBehavior
+* Configure the **read request behavior** by setting the `ReadBalanceBehavior` convention.
+
+* Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### RequestTimeout
+* Use the `RequestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
+
+* DEFAULT: `null` (the default HTTP client timeout will be applied - 12h)
+
+<TabItem value="RequestTimeout" label="RequestTimeout">
+<CodeBlock language="csharp">
+{`RequestTimeout = TimeSpan.FromSeconds(90)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RequestTimeoutSyntax" label="RequestTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan? RequestTimeout \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### ResolveTypeFromClrTypeName
+* Use the `ResolveTypeFromClrTypeName` convention to define a function that resolves the CLR type  
+  from the CLR type name.
+
+* DEFAULT: The type is returned.
+
+<TabItem value="ResolveTypeFromClrTypeName" label="ResolveTypeFromClrTypeName">
+<CodeBlock language="csharp">
+{`// The type itself is returned by default
+ResolveTypeFromClrTypeName = clrType => clrType.GetType()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="ResolveTypeFromClrTypeNameSyntax" label="ResolveTypeFromClrTypeNameSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<string, Type> ResolveTypeFromClrTypeName \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### SaveEnumsAsIntegers
+* When setting the `SaveEnumsAsIntegers` convention to `true`,  
+  C# `enum` types will be stored and queried as integers, rather than their string representations.
+
+* DEFAULT: `false` (save as strings)
+
+<TabItem value="SaveEnumsAsIntegersSyntax" label="SaveEnumsAsIntegersSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool SaveEnumsAsIntegers \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### SecondBroadcastAttemptTimeout
+* Use the `SecondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
+
+* Upon failure of the [first attempt](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout) the request executor will resend the command to all nodes simultaneously.
+
+* DEFAULT: `30 seconds`
+
+<TabItem value="SecondBroadcastAttemptTimeout" label="SecondBroadcastAttemptTimeout">
+<CodeBlock language="csharp">
+{`SecondBroadcastAttemptTimeout = TimeSpan.FromSeconds(20)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="SecondBroadcastAttemptTimeoutSyntax" label="SecondBroadcastAttemptTimeoutSyntax">
+<CodeBlock language="csharp">
+{`public TimeSpan SecondBroadcastAttemptTimeout \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### SendApplicationIdentifier
+* Use the `SendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
+
+* Setting to _true_ allows the server to issue performance hint notifications to the client,
+  e.g. during robust topology update requests which could indicate a Client API misuse impacting the overall performance.
+
+* DEFAULT: `true`
+
+<TabItem value="SendApplicationIdentifierSyntax" label="SendApplicationIdentifierSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool SendApplicationIdentifier \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### ShouldIgnoreEntityChanges
+* Set the `ShouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.
+
+* Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### TopologyCacheLocation
+* Use the `TopologyCacheLocation` convention to change the location of the topology cache files   
+  (`*.raven-database-topology` & `*.raven-cluster-topology`).
+
+* Directory existence and writing permissions will be checked when setting this value.
+
+* DEFAULT: `AppContext.BaseDirectory` (The application's base directory)
+
+<TabItem value="TopologyCacheLocation" label="TopologyCacheLocation">
+<CodeBlock language="csharp">
+{`TopologyCacheLocation = @"C:\\RavenDB\\TopologyCache"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="TopologyCacheLocationSyntax" label="TopologyCacheLocationSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public string TopologyCacheLocation \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### TransformTypeCollectionNameToDocumentIdPrefix
+* Use the `TransformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
+  customize the document ID prefix from the collection name.
+
+* DEFAULT:  
+  By default, the document id prefix is determined as follows:
+
+| Number of uppercase letters in collection name   | Document ID prefix                                          |
+|--------------------------------------------------|-------------------------------------------------------------|
+| `<= 1`                                           | Use the collection name with all lowercase letters          |
+| `> 1`                                            | Use the collection name as is, preserving the original case |
+
+<TabItem value="TransformTypeCollectionNameToDocumentIdPrefixSyntax" label="TransformTypeCollectionNameToDocumentIdPrefixSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public Func<string, string> TransformTypeCollectionNameToDocumentIdPrefix \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### UseHttpCompression
+* When setting the `UseHttpCompression` convention to `true`,  
+  then `Gzip` compression will be used when sending content of HTTP request.
+
+* When the convention is set to `false`, content will not be compressed.
+
+* DEFAULT: `true`
+
+<TabItem value="UseHttpCompressionSyntax" label="UseHttpCompressionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool UseHttpCompression \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### UseHttpDecompression
+* When setting the `UseHttpDecompression` convention to `true`,  
+  the client can accept compressed HTTP response content and will use zstd/gzip/deflate decompression methods.
+
+* DEFAULT: `true`
+
+<TabItem value="UseHttpDecompressionSyntax" label="UseHttpDecompressionSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool UseHttpDecompression \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### HttpCompressionAlgorithm
+* Use this convention to set the HTTP compression algorithm 
+  (see [UseHttpDecompression](../../client-api/configuration/conventions.mdx#usehttpcompression) above).  
+
+* DEFAULT: `Zstd`
+  <Admonition type="info" title="Default compression algorithm" id="default-compression-algorithm" href="#default-compression-algorithm">
+   In RavenDB versions up to `6.2`, HTTP compression is set to `Gzip` by default.  
+   In RavenDB versions from `7.0` on, the default has changed and is now `Zstd`.  
+  </Admonition>
+
+<TabItem value="HttpCompressionAlgorithm" label="HttpCompressionAlgorithm">
+<CodeBlock language="csharp">
+{`// Syntax:
+public HttpCompressionAlgorithm HttpCompressionAlgorithm \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+<Admonition type="note" title="">
+
+#### UseOptimisticConcurrency
+* When setting the `UseOptimisticConcurrency` convention to `true`,  
+  Optimistic Concurrency checks will be applied for all sessions opened from the Document Store.
+
+* Learn more about Optimistic Concurrency and the various ways to enable it in the 
+  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) 
+  article.  
+
+* DEFAULT: `false`
+
+<TabItem value="UseOptimisticConcurrencySyntax" label="UseOptimisticConcurrencySyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public bool UseOptimisticConcurrency \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### WaitForIndexesAfterSaveChangesTimeout
+* Use the `WaitForIndexesAfterSaveChangesTimeout` convention to set the default timeout for the
+  `DocumentSession.Advanced.WaitForIndexesAfterSaveChanges` method.
+
+* DEFAULT: 15 Seconds
+
+<TabItem value="WaitForIndexesAfterSaveChangesTimeout" label="WaitForIndexesAfterSaveChangesTimeout">
+<CodeBlock language="csharp">
+{`WaitForIndexesAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="WaitForIndexesAfterSaveChangesTimeoutSyntax" label="WaitForIndexesAfterSaveChangesTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan WaitForIndexesAfterSaveChangesTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### WaitForNonStaleResultsTimeout
+* Use the `WaitForNonStaleResultsTimeout` convention to set the default timeout used by the  
+  `WaitForNonStaleResults` method when querying.
+
+* DEFAULT: 15 Seconds
+
+<TabItem value="WaitForNonStaleResultsTimeout" label="WaitForNonStaleResultsTimeout">
+<CodeBlock language="csharp">
+{`WaitForNonStaleResultsTimeout = TimeSpan.FromSeconds(10)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="WaitForNonStaleResultsTimeoutSyntax" label="WaitForNonStaleResultsTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan WaitForNonStaleResultsTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### WaitForReplicationAfterSaveChangesTimeout
+* Use the `WaitForReplicationAfterSaveChangesTimeout` convention to set the default timeout for the  
+  `DocumentSession.Advanced.WaitForReplicationAfterSaveChanges`method.
+
+* DEFAULT: 15 Seconds
+
+<TabItem value="WaitForReplicationAfterSaveChangesTimeout" label="WaitForReplicationAfterSaveChangesTimeout">
+<CodeBlock language="csharp">
+{`WaitForReplicationAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="WaitForReplicationAfterSaveChangesTimeoutSyntax" label="WaitForReplicationAfterSaveChangesTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan WaitForReplicationAfterSaveChangesTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+

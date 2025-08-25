@@ -1,0 +1,75 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="java">
+{`public PutResult put(String key, Etag guid, RavenJObject document, RavenJObject metadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | unique key under which document will be stored |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+| **document** | RavenJObject | document data |
+| **metadata** | RavenJObject | document metadata |
+
+---
+
+<TabItem value="putresult" label="putresult">
+<CodeBlock language="java">
+{`public class PutResult
+\{
+  private String key;
+  private Etag etag;
+
+  public String getKey() \{
+    return key;
+  \}
+
+  public void setKey(String key) \{
+    this.key = key;
+  \}
+
+  public Etag getEtag() \{
+    return etag;
+  \}
+
+  public void setEtag(Etag etag) \{
+    this.etag = etag;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Key** | String | unique key under which document was stored |
+| **Etag** | Etag | stored document etag |
+
+## Example
+
+<TabItem value="put_3" label="put_3">
+<CodeBlock language="java">
+{`Category category = new Category();
+category.setName("My Category");
+category.setDescription("My Category description");
+
+store.getDatabaseCommands().put(
+  "categories/999",
+  null,
+  RavenJObject.fromObject(category),
+  new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+

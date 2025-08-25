@@ -5,184 +5,29 @@ sidebar_label: ...evict entity from a session
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import EvictEntityFromASessionCsharp from './_evict-entity-from-a-session-csharp.mdx';
+import EvictEntityFromASessionJava from './_evict-entity-from-a-session-java.mdx';
+import EvictEntityFromASessionNodejs from './_evict-entity-from-a-session-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Session: How to Evict Single Entity from a Session
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-We can clear all session operations and stop tracking of all entities by the using [Clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes there is need to only to do a cleanup only for one entity. For this purpose `Evict` was introduced.
-
-## Syntax
-
-<TabItem value="evict_1" label="evict_1">
-<CodeBlock language="csharp">
-{`void Evict<T>(T entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | T | Instance of an entity that will be evicted |
-
-## Example I
-
-<TabItem value="evict_2" label="evict_2">
-<CodeBlock language="csharp">
-{`Employee employee1 = new Employee
-\{
-    FirstName = "John",
-    LastName = "Doe"
-\};
-
-Employee employee2 = new Employee
-\{
-    FirstName = "Joe",
-    LastName = "Shmoe"
-\};
-
-session.Store(employee1);
-session.Store(employee2);
-
-session.Advanced.Evict(employee1);
-
-session.SaveChanges(); // only 'Joe Shmoe' will be saved
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="evict_3" label="evict_3">
-<CodeBlock language="csharp">
-{`Employee employee = session.Load<Employee>("employees/1-A"); // loading from server
-employee = session.Load<Employee>("employees/1-A"); // no server call
-session.Advanced.Evict(employee);
-employee = session.Load<Employee>("employees/1-A"); // loading from server
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <EvictEntityFromASessionCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-We can clear all session operations and stop tracking of all entities by the using [clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes there is need to only to do a cleanup only for one entity. For this purpose `evict` was introduced.
-
-## Syntax
-
-<TabItem value="evict_1" label="evict_1">
-<CodeBlock language="java">
-{`<T> void evict(T entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | T | Instance of an entity that will be evicted |
-
-## Example I
-
-<TabItem value="evict_2" label="evict_2">
-<CodeBlock language="java">
-{`Employee employee1 = new Employee();
-employee1.setFirstName("John");
-employee1.setLastName("Doe");
-
-Employee employee2 = new Employee();
-employee2.setFirstName("Joe");
-employee2.setLastName("Shmoe");
-
-session.store(employee1);
-session.store(employee2);
-
-session.advanced().evict(employee1);
-
-session.saveChanges(); // only 'Joe Shmoe' will be saved
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="evict_3" label="evict_3">
-<CodeBlock language="java">
-{`Employee employee = session.load(Employee.class, "employees/1-A");//loading from serer
-employee = session.load(Employee.class, "employees/1-A"); // no server call
-session.advanced().evict(employee);
-employee = session.load(Employee.class, "employees/1-A"); // loading form server
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <EvictEntityFromASessionJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-We can clear all session operations and stop tracking of all entities by the using [session.advanced.clear()](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes there is a need to only to do a cleanup for a single entity. For this purpose `evict()` was introduced.
-
-## Syntax
-
-<TabItem value="evict_1" label="evict_1">
-<CodeBlock language="js">
-{`session.advanced.evict(entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Entity that will be evicted |
-
-## Example I
-
-<TabItem value="evict_2" label="evict_2">
-<CodeBlock language="js">
-{`const employee1 = new Employee();
-employee1.firstName = "John";
-employee1.lastName = "Doe";
-
-const employee2 = new Employee();
-employee2.firstName = "Joe";
-employee2.lastName = "Shmoe";
-
-await session.store(employee1);
-await session.store(employee2);
-
-session.advanced.evict(employee1);
-
-await session.saveChanges();        // only 'Joe Shmoe' will be saved
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="evict_3" label="evict_3">
-<CodeBlock language="js">
-{`let employee = await session.load("employees/1-A"); // loading from serer
-employee = await session.load("employees/1-A");     // no server call
-session.advanced.evict(employee);
-employee = await session.load("employees/1-A");     // loading from server
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <EvictEntityFromASessionNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

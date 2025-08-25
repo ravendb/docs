@@ -5,89 +5,29 @@ sidebar_label: ...ignore entity changes
 sidebar_position: 17
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import IgnoreEntityChangesCsharp from './_ignore-entity-changes-csharp.mdx';
+import IgnoreEntityChangesJava from './_ignore-entity-changes-java.mdx';
+import IgnoreEntityChangesNodejs from './_ignore-entity-changes-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# How to Ignore Entity Changes
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* By default, each session tracks the changes made to all entities it has either stored, loaded, or queried for.  
-  All changes are then persisted when `SaveChanges` is called.
-
-* Entity changes can be ignored for the `SaveChanges` by disabling entity tracking.  
-
-* Tracking can be disabled by any of the following:
-    * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
-    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
-</Admonition>
-
+   <IgnoreEntityChangesCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-In order to mark an entity as one that should be ignored for change tracking purposes, use the `ignoreChangesFor` method from the `advanced` session operations.  
-
-Unlike the `evict` method, performing another `Load` of that entity won't create a call to the server.  
-
-The entity will still take part in the session, but will be ignored for `saveChanges`.  
-
-## Syntax
-
-<TabItem value="ignore_changes_1" label="ignore_changes_1">
-<CodeBlock language="java">
-{`void ignoreChangesFor(Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | Object | Instance of entity for which changes will be ignored. |
-
-
-## Example
-
-<TabItem value="ignore_changes_2" label="ignore_changes_2">
-<CodeBlock language="java">
-{`Product product = session.load(Product.class, "products/1-A");
-session.advanced().ignoreChangesFor(product);
-product.unitsInStock++; //this will be ignored for SaveChanges
-session.saveChanges();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <IgnoreEntityChangesJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* By default, each session tracks the changes made to all entities it has either stored, loaded, or queried for.  
-  All changes are then persisted when `saveChanges` is called.
-
-* Entity changes can be ignored for the `saveChanges` by disabling entity tracking.
-
-* Tracking can be disabled by any of the following:
-    * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
-    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
-</Admonition>
-
+   <IgnoreEntityChangesNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

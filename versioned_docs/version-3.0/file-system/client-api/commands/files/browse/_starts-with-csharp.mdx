@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: StartsWithAsync
+
+**StartsWithAsync** can be used to retrieve multiple file headers for the specified prefix name.
+
+
+
+<TabItem value="starts_with_1" label="starts_with_1">
+<CodeBlock language="csharp">
+{`Task<FileHeader[]> StartsWithAsync(string prefix, string matches, int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **prefix** | string | The prefix that the returned files need to match |
+| **matches** | string | Pipe ('&#124;') separated values for which file name (after 'prefix') should be matched ('?' any single character; '*' any characters) |
+| **start** | int | The number of files that should be skipped |
+| **pageSize** | int | The maximum number of the file headers that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;FileHeader[]&gt;** | A task that represents the asynchronous operation. The task result is the array of [`FileHeaders`](../../../../../glossary/file-header.mdx). |
+
+## Example I 
+
+The below code will return 128 results at most for files which names start with `/images`.
+
+<TabItem value="starts_with_2" label="starts_with_2">
+<CodeBlock language="csharp">
+{`FileHeader[] images = await store
+	.AsyncFilesCommands
+	.StartsWithAsync("/images", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+In contrast to the previous example, here only the images which names end with `.jpg` will be returned.
+
+<TabItem value="starts_with_3" label="starts_with_3">
+<CodeBlock language="csharp">
+{`FileHeader[] jpgs = await store
+	.AsyncFilesCommands
+	.StartsWithAsync("/images", "*.jpg", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+

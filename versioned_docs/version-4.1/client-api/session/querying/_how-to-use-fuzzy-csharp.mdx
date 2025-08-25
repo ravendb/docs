@@ -1,0 +1,53 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Fuzzy search is supported via `Fuzzy` method. This method is available only from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values. Because of that it can be used only right after `WhereEquals` method.
+
+## Syntax
+
+<TabItem value="fuzzy_1" label="fuzzy_1">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Fuzzy(decimal fuzzy);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `decimal` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<Company>()
+    .WhereEquals(x => x.Name, "Ernts Hnadel").Fuzzy(0.5m)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereEquals(x => x.Name, "Ernts Hnadel").Fuzzy(0.5m)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

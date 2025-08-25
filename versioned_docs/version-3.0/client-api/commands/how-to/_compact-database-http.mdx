@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To compact a database, please use compact endpoint.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/admin/compact?database=\{databaseName\} \\
+	-X POST
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **databaseName** | Yes | Name of a database to compact |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **OperationId** | Operation id |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/admin/compact?database=NorthWind"
+< HTTP/1.1 200 OK
+\{"OperationId":1\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+
+

@@ -1,0 +1,159 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The **client configuration** is a set of configuration options applied during 
+  client-server communication.  
+* The initial client configuration can be set by the client when creating the Document Store.  
+* A database administrator can modify the current client configuration on the server using the 
+  `PutClientConfigurationOperation` operation or via Studio, to gain dynamic control over 
+  client-server communication.  
+  The client will be updated with the modified configuration the next time it sends a request to the database.  
+* In this page:
+  
+  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#client-configuration-overview-and-modification)
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
+
+</Admonition>
+## Client configuration overview and modification
+
+* **What is the client configuration**:  
+  The client configuration is a set of configuration options that apply to the client when communicating with the database.
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
+
+* **Initializing the client configuration** (on the client):  
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
+  
+* **Overriding the initial client configuration for the database** (on the server):  
+
+    * From the client code:  
+      Use `PutClientConfigurationOperation` to set the client configuration options on the server.  
+      See the example below.
+    
+    * From Studio:  
+      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database.mdx) view.
+
+* **Updating the running client**:  
+
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
+    the next time it makes a request to the database.  
+
+  * Setting the client configuration on the server enables administrators to dynamically control 
+    the client behavior after it has started running.  
+    e.g. manage load balancing of client requests on the fly in response to changing system demands.
+
+* The client configuration set for the database level **overrides** the 
+  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
+
+
+
+## What can be configured
+
+The following client configuration options are available:  
+
+* **Identity parts separator**:  
+  Set the separator used with automatically generated document identity IDs (default separator is `/`).  
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
+
+* **Maximum number of requests per session**:  
+  Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
+
+* **Read balance behavior**:  
+  Set the Read balance method the client will use when accessing a node with Read requests.  
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
+  
+* **Load balance behavior**:  
+  Set the Load balance method for Read & Write requests.  
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
+
+
+
+## Put client configuration (for database)
+
+<TabItem value="put_config_1" label="put_config_1">
+<CodeBlock language="php">
+{`// You can customize the client-configuration options in the client
+// when creating the Document Store (this is optional):
+// =================================================================
+
+$urls = ["ServerURL_1", "ServerURL_2", "..."];
+$database = "DefaultDB";
+
+$documentStore = new DocumentStore($urls, $database);
+
+$conventions = new DocumentConventions();
+$conventions->setMaxNumberOfRequestsPerSession(100);
+$conventions->setIdentityPartsSeparator('$');
+// ....
+
+$documentStore->setConventions($conventions);
+
+$documentStore->initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="put_config_2" label="put_config_2">
+<CodeBlock language="php">
+{`// Override the initial client-configuration in the server using the put operation:
+// ================================================================================
+try \{
+    // Define the client-configuration object
+    $clientConfiguration = new ClientConfiguration();
+    $clientConfiguration->setMaxNumberOfRequestsPerSession(200);
+    $clientConfiguration->setReadBalanceBehavior(ReadBalanceBehavior::fastestNode());
+    // ...
+
+    // Define the put client-configuration operation, pass the configuration
+    $putClientConfigOp = new PutClientConfigurationOperation($clientConfiguration);
+
+    // Execute the operation by passing it to Maintenance.Send
+    $documentStore->maintenance()->send($putClientConfigOp);
+\} finally \{
+    $documentStore->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`PutClientConfigurationOperation(?ClientConfiguration $configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                  | Description                                                            |
+|-------------------|-----------------------|------------------------------------------------------------------------|
+| **$configuration** | `?ClientConfiguration` | Client configuration that will be set on the server (for the database) |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`class ClientConfiguration
+\{
+    private ?string $identityPartsSeparator = null;
+    private ?int $etag = null;
+    private bool $disabled = false;
+    private ?int $maxNumberOfRequestsPerSession = null;
+    private ?ReadBalanceBehavior $readBalanceBehavior = null;
+    private ?LoadBalanceBehavior $loadBalanceBehavior = null;
+    private ?int $loadBalancerContextSeed = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

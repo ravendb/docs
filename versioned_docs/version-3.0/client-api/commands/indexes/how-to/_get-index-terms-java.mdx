@@ -1,0 +1,37 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetTerms** will retrieve all stored terms for a field of an index.
+
+## Syntax
+
+<TabItem value="get_terms_1" label="get_terms_1">
+<CodeBlock language="java">
+{`public List<String> getTerms(String index, String field, String fromValue, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | Name of an index |
+| **field** | String | Index field |
+| **fromValue** | String | Starting point for a query, used for paging |
+| **pageSize** | int | Maximum number of terms that will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | Array of index terms. |
+
+## Example
+
+<TabItem value="get_terms_2" label="get_terms_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getTerms("Orders/Totals", "Company", null, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+

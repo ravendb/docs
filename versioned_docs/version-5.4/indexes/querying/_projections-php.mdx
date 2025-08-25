@@ -1,0 +1,732 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article provides examples of projecting query results when querying a **static-index**.  
+
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
+  for general knowledge about Projections and for dynamic-queries examples.  
+
+* Projections can be applied using the `selectFields` method.  
+
+* In this page:  
+
+  * [What are Projections and When to Use Them](../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
+  * [`selectFields`](../../indexes/querying/projections.mdx#selectfields)
+  * [Examples](../../indexes/querying/projections.mdx#examples)
+  * [Projection Behavior](../../indexes/querying/projections.mdx#projection-behavior)
+  * [Projections and the Session](../../indexes/querying/projections.mdx#projections-and-the-session)
+  
+</Admonition>
+## What are Projections and When to Use Them
+
+When performing a query, we usually pull the full document back from the server.
+
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking 
+just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce 
+the amount of traffic on the network.   
+
+The savings can be very significant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company 
+is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of 
+the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to 
+rename some fields, load external documents, and perform transformations on the results. 
+
+#### Projections are Applied as the Last Stage in the Query
+It is important to understand that projections are applied after the query has been processed, filtered, 
+sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results 
+that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately 
+after. It also means that we cannot do any filtering work as part of the projection. You can filter what will 
+be returned, but not which documents will be returned. That has already been determined earlier in the query 
+pipeline.  
+
+#### The Cost of Running a Projection
+Another consideration to take into account is the cost of running the projection. It is possible to make the 
+projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the 
+projection, and exceeding these (quite generous) limits will fail the query.
+
+#### Projections and Stored Fields
+If a projection function only requires fields that are stored, then the document will not be loaded from 
+storage and all data will come from the index directly. This can increase query performance (by the cost 
+of disk space used) in many situations when whole document is not needed. You can read more about field 
+storing [here](../../indexes/storing-data-in-index.mdx).
+
+
+
+## `selectFields`
+
+Projections can be applied using the `selectFields` method.
+
+The projection fields can be specified as a `str` array of field names,  
+and the projection type can be passed as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$fields = [
+    "Name",
+    "Phone"
+];
+
+$results = $session
+    ->advanced()
+    ->documentQuery(Company::class, Companies_ByContact::class)
+    ->selectFields(ContactDetails::class, $fields)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Companies_ByContact extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "companies.Select(x => new {Name = x.Contact.Name, Phone = x.Phone})";
+
+        $this->storeAllFields(FieldStorage::yes()); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="php">
+{`class ContactDetails
+{
+    private ?string $name = null;
+    private ?string $phone = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The projection can also be defined by simply passing the projection type as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+->advanced()
+->documentQuery(Company::class, Companies_ByContact::class)
+->selectFields(ContactDetails::class)
+->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Companies_ByContact extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "companies.Select(x => new {Name = x.Contact.Name, Phone = x.Phone})";
+
+        $this->storeAllFields(FieldStorage::yes()); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="php">
+{`class ContactDetails
+{
+    private ?string $name = null;
+    private ?string $phone = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Examples
+
+#### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->query(Employee::class, Employees_ByFirstAndLastName::class)
+    ->selectFields(Employee::class, ["FirstName", "LastName"])
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that 
+index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index 
+entry matches our query predicate, then we will try to extract all requested fields from that particular entry. 
+If all requested fields are available in there, then we do not download it from storage. 
+The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, 
+so the documents will be fetched from storage.
+#### Example II - Projecting Stored Fields
+
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, 
+then **the data will come from the index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->query(Employee::class, Employees_ByFirstAndLastNameWithStoredFields::class)
+    ->selectFields(Employee::class, ["FirstName", "LastName"])
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new" .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+
+        $this->storeAllFields(FieldStorage::yes()); // FirstName and LastName fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastNameWithStoredFields'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example III - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$queryData = new QueryData(["ShipTo", "Lines[].ProductName"], ["ShipTo", "Products"]);
+
+$results = $session
+    ->query(Order::class, Orders_ByShipToAndLines::class)
+    ->selectFields(ShipToAndProducts::class, $queryData)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShipToAndLines extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from order in docs.Orders" .
+            "select new { " .
+            "   ShipTo = order.ShipTo, " .
+            "   Lines = order.Lines " .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select 
+{ 
+    ShipTo: o.ShipTo, 
+    Products : o.Lines.map(function(y){return y.ProductName;}) 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IV - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->rawQuery(FullName::class, 'from Employees as e select { FullName: e.FirstName + " " + e.LastName }')
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e
+select 
+{ 
+    FullName : e.FirstName + " " + e.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example V - Projection with `let`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Employee::class,
+    "declare function output(e) { " .
+        "    var format = function(p){ return p.FirstName + \\" \\" + p.LastName; }; " .
+        "    return { FullName : format(e) }; " .
+        "} " .
+        "from Employees as e select output(e)"
+    )
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from index 'Employees/ByFirstAndLastName' as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VI - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Total::class,
+    "from Orders as o " .
+    "select { " .
+    "    Total : o.Lines.reduce( " .
+    "        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0) " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShipToAndLines extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from order in docs.Orders" .
+            "select new { " .
+            "   ShipTo = order.ShipTo, " .
+            "   Lines = order.Lines " .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VII - Projection With a Count() Predicate
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from order in docs.Orders " .
+            "select new " .
+            "{" .
+            "   ShippedAt = order.ShippedAt," .
+            "   Company = order.Company" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from Orders as o 
+load o.Company as c 
+select 
+{ 
+    CompanyName : c.Name, 
+    ShippedAt : o.ShippedAt, 
+    TotalProducts : o.Lines.length, 
+    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VIII - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    OrderProjection::class,
+    "from Orders as o " .
+        "load o.company as c " .
+        "select { " .
+        "    CompanyName: c.Name," .
+        "    ShippedAt: o.ShippedAt" .
+        "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from order in docs.Orders " .
+            "select new " .
+            "{" .
+            "   ShippedAt = order.ShippedAt," .
+            "   Company = order.Company" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShippedAtAndCompany' as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IX - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    EmployeeProjection::class,
+    "from Employees as e " .
+    "select { " .
+    "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), " .
+    "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, " .
+    "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   Birthday = employee.Birthday" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example X - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    EmployeeProjection::class,
+    "from Employees as e " .
+    "select { " .
+    "    Date : new Date(Date.parse(e.Birthday)), " .
+    "    Name : e.FirstName.substr(0,3) " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   Birthday = employee.Birthday" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example XI - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Employee::class,
+    "from Employees as e " .
+    "select {" .
+    "     Name : e.FirstName, " .
+    "     Metadata : getMetadata(e)" .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Projection Behavior
+The `selectFields` methods can also take a `ProjectionBehavior` parameter, which
+determines whether the query should retrieve indexed data or directly retrieve 
+document data, and what to do when the data can't be retrieved. Learn more 
+[here](../../client-api/session/querying/how-to-customize-query.mdx#projection).  
+
+
+
+## Projections and the Session
+As you work with projections rather than directly with documents, the data is _not_ tracked by the session.  
+Modifications to a projection will not modify the document when `saveChanges` is called.
+
+
+

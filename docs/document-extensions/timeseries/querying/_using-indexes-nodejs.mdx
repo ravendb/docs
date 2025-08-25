@@ -1,0 +1,248 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Time series index**:
+
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing.mdx) 
+      or using [Studio](../../../studio/database/indexes/create-map-index.mdx).  
+      Such an index can be queried in the same way as a regular index that indexes documents.  
+      (See [Querying an index](../../../indexes/querying/query-index.mdx)).
+    
+    * AUTO-time-series-indexes are Not generated automatically by the server when making a time series query.
+
+* **The contents of the query results**:
+
+    * Unlike a document index, where the source data are your JSON documents,  
+      the source data for a time series index are the time series entries within the documents.
+
+    * When querying a **document index**:  
+      the resulting objects are the document entities (unless results are [projected](../../../indexes/querying/projections.mdx)).
+  
+    * When querying a **time series index**:  
+      each item in the results is of the type defined by the **index-entry** in the index definition,  
+      (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). 
+      The documents themselves are not returned.
+
+* In this page:
+    * [Sample index](../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
+    * [Querying the index](../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
+        * [Query all time series entries](../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
+        * [Filter query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
+        * [Order query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
+        * [Project results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
+
+</Admonition>
+## Sample Index
+
+* The following is a time series map-index that will be used in the query examples throughout this article.
+
+* Each **index-entry** consists of:
+  * Three index-fields obtained from the "HeartRates" time series entries: `bpm`, `date`, and `tag`.
+  * One index-field obtained from the time series [segment](../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `employeeID`.
+  * One index-field obtained from the loaded employee document: `employeeName`.
+
+* When querying this time series index:  
+  * The resulting items correspond to the time series entries that match the query predicate.  
+  * Each item in the results will in the shape of the defined index-entry.  
+    Different result types may be returned when the query [projects the results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
+
+<TabItem value="sample_ts_index" label="sample_ts_index">
+<CodeBlock language="js">
+{`class TsIndex extends AbstractRawJavaScriptTimeSeriesIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.maps.add(\`
+            timeSeries.map("Employees", "HeartRates", function (segment) \{
+                 let employee = load(segment.DocumentId, "Employees")
+                 
+                 // Return the index-entry:
+                 return segment.Entries.map(entry => (\{
+                 
+                     // Define the index-fields:
+                     bpm: entry.Values[0],
+                     date: new Date(entry.Timestamp),
+                     tag: entry.Tag
+                     employeeID: segment.DocumentId,
+                     employeeName: employee.FirstName + " " + employee.LastName
+                 \}));
+            \})
+        \`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Querying the index 
+ 
+#### Query all time series entries:
+
+No filtering is applied in this query.  
+Results will include ALL entries from time series "HeartRates".
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+     // Query the index 
+    .query({ indexName: "TsIndex" })
+     // Query for all entries w/o any filtering
+    .all();
+
+// Access results:
+const entryResult = results[0];
+const employeeName = entryResult.employeeName;
+const bpm = entryResult.bpm;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const results = await session
+     // Provide RQL to rawQuery
+    .advanced.rawQuery("from index 'TsIndex'")
+     // Execute the query
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+`}
+</CodeBlock>
+</TabItem> 
+</Tabs>
+#### Filter query results:
+
+In this example, time series entries are filtered by the query.  
+The query predicate is applied to the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "TsIndex" })
+     // Retrieve only time series entries with high BPM values for a specific employee
+    .whereEquals("employeeName", "Robert King")
+    .whereGreaterThanOrEqual("bpm", 85)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const results = await session
+     // Retrieve only time series entries with high BPM values for a specific employee
+    .advanced.rawQuery(\`
+         from index "TsIndex"
+         where employeeName == "Robert King" and bpm > 85.0
+    \`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where employeeName == "Robert King" and bpm >= 85
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Order query results:
+
+Results can be ordered by any of the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "TsIndex" })
+     // Retrieve time series entries where employees had a low BPM value
+    .whereLessThan("bpm", 58)
+     // Order by the 'date' index-field (descending order)
+    .orderByDescending("date")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const results = await session
+     // Retrieve entries with low BPM value and order by 'date' descending
+    .advanced.rawQuery(\`
+          from index "TsIndex"
+          where bpm < 58
+          order by date desc
+    \`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where bpm < 58
+order by date desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Project results:
+
+* Instead of returning the entire index entry object for each result item,  
+  you can return only partial fields.
+
+* Learn more about projecting query results in [Project Index Query Results](../../../indexes/querying/projections.mdx).
+
+* In this example, we query for time series entries with a very high BPM value.  
+  We retrieve entries with BPM value &gt; 100 but return only the _employeeID_ for each entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "TsIndex" })
+    .whereGreaterThanOrEqual("bpm", 100)
+     // Return only the employeeID index-field in the results
+    .selectFields(["employeeID"])
+     // Optionally: call 'distinct' to remove duplicates from results
+    .distinct()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`const results = await session
+     // Return only the employeeID index-field in the results
+    .advanced.rawQuery(\`
+         from index "TsIndex"
+         where bpm >= 100
+         select distinct employeeID
+    \`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where bpm > 100
+select distinct employeeID
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

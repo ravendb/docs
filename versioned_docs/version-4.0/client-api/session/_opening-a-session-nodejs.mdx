@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To open session use the `openSession()` method from `DocumentStore` instance.
+
+## Syntax
+
+There are three overloads of `openSession()` methods
+
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="js">
+{`// Open session for a 'default' database configured in the 'DocumentStore' instance
+store.openSession();
+
+// Open session for a specified database
+store.openSession("Database1"); // database name string
+
+store.openSession(\{
+    database: "Db1",    // string (optional, defaults to 'default' database)
+    requestExecutor	    // RequestExecutor instance (optional)
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+The first method is an equivalent of doing:
+
+<TabItem value="open_session_2" label="open_session_2">
+<CodeBlock language="js">
+{`store.openSession(\{\});
+`}
+</CodeBlock>
+</TabItem>
+
+The second method is an equivalent of doing:
+
+<TabItem value="open_session_3" label="open_session_3">
+<CodeBlock language="js">
+{`const sessionOptions = \{ database: databaseName \};
+store.openSession(sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+Here is the list of available SessionOption object properties:
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **database** | `string` | name of database |
+| **requestExecutor** | `RequestExecutor` | RequestExecutor instance |
+
+
+| Return Value | |
+| ---------- | --------- |
+|`IDocumentSession` | session instance |
+
+## Example
+
+<TabItem value="open_session_4" label="open_session_4">
+<CodeBlock language="js">
+{`store.openSession();
+// code here
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,101 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Conventions related to request handling
+
+
+
+Instruct the client to do parallel MultiGet processing when handling lazy requests. It is enabled by default.
+
+<TabItem value="use_paraller_multi_get" label="use_paraller_multi_get">
+<CodeBlock language="csharp">
+{`Conventions.UseParallelMultiGet = true;
+`}
+</CodeBlock>
+</TabItem>
+
+
+### AllowMultipuleAsyncOperations
+
+Enable or disable multiple async requests per client instance. By default only a single concurrent async request is allowed.
+
+<TabItem value="allow_multiple_async_ops" label="allow_multiple_async_ops">
+<CodeBlock language="csharp">
+{`Conventions.AllowMultipuleAsyncOperations = false;
+`}
+</CodeBlock>
+</TabItem>
+
+### HandleForbiddenResponseAsync
+
+The async function that begins the handling of forbidden responses.
+
+<TabItem value="handle_forbidden_response_async" label="handle_forbidden_response_async">
+<CodeBlock language="csharp">
+{`Conventions.HandleForbiddenResponseAsync = (forbiddenResponse, credentials) => 
+`}
+</CodeBlock>
+</TabItem>
+
+### HandleUnauthorizedResponseAsync
+
+It begins the handling of unauthenticated responses, usually by authenticating against the oauth server in async manner.
+
+<TabItem value="handle_unauthorized_response_async" label="handle_unauthorized_response_async">
+<CodeBlock language="csharp">
+{`Conventions.HandleUnauthorizedResponseAsync = (unauthorizedResponse, credentials) =>
+`}
+</CodeBlock>
+</TabItem>
+
+
+### CustomizeJsonSerializer
+
+If you need to modify `JsonSerializer` object used by the client you can register a customization action:
+
+<TabItem value="customize_json_serializer" label="customize_json_serializer">
+<CodeBlock language="csharp">
+{`Conventions.CustomizeJsonSerializer = serializer => \{ \};
+`}
+</CodeBlock>
+</TabItem>
+
+### JsonContractResolver
+
+The default `JsonContractResolver` used by RavenDB will serialize all properties and all public fields. You can change it by providing own implementation of `IContractResolver` interface:
+
+<TabItem value="json_contract_resolver" label="json_contract_resolver">
+<CodeBlock language="csharp">
+{`Conventions.JsonContractResolver = new CustomJsonContractResolver();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="custom_json_contract_resolver" label="custom_json_contract_resolver">
+<CodeBlock language="csharp">
+{`public class CustomJsonContractResolver : IContractResolver
+\{
+	public JsonContract ResolveContract(Type type)
+	\{
+		throw new CodeOmitted();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### PreserveDocumentPropertiesNotFoundOnModel
+
+Controls whatever properties that were not de-serialized to an object properties will be preserved 
+during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
+
+<TabItem value="preserve_doc_props_not_found_on_model" label="preserve_doc_props_not_found_on_model">
+<CodeBlock language="csharp">
+{`Conventions.PreserveDocumentPropertiesNotFoundOnModel = true;
+`}
+</CodeBlock>
+</TabItem>
+
+

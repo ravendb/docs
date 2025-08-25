@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To update an entity with the latest changes from the server, use the `Refresh` method from `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="csharp">
+{`void Refresh<T>(T entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be refreshed |
+
+## Example
+
+<TabItem value="refresh_2" label="refresh_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1");
+Assert.Equal("Doe", employee.LastName);
+
+// LastName changed to 'Shmoe'
+
+session.Advanced.Refresh(employee);
+Assert.Equal("Shmoe", employee.LastName);
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Refreshing a transient entity (not attached) or an entity that was deleted on server-side will result in a `InvalidOperationException`.
+
+

@@ -1,0 +1,53 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Replication conflicts, for both documents and attachments, can be tracked using `ForAllReplicationConflicts` method available in changes API.
+
+## Syntax
+
+<TabItem value="replication_conflicts_changes_1" label="replication_conflicts_changes_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<ReplicationConflictNotification>
+	ForAllReplicationConflicts();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[ReplicationConflictNotification](../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
+
+## Example
+
+<TabItem value="replication_conflicts_changes_2" label="replication_conflicts_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store.Changes()
+	.ForAllReplicationConflicts()
+	.Subscribe(conflict =>
+	\{
+		if (conflict.ItemType == ReplicationConflictTypes.DocumentReplicationConflict)
+		\{
+			Console.WriteLine("Conflict detected for \{0\}. Ids of conflicted docs: \{1\}. " +
+							  "Type of replication operation: \{2\}",
+							  conflict.Id,
+							  string.Join(", ", conflict.Conflicts),
+							  conflict.OperationType);
+		\}
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Automatic document conflict resolution
+
+In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered, the client will automatically resolve the conflict right after the arrival of the notification.
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+

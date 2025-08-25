@@ -1,0 +1,87 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: Delete
+
+There are two methods that allow to delete a single file or multiple files at once.
+
+
+
+The **DeleteAsync** method is used to delete a file.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`Task DeleteAsync(string filename, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of a file to be deleted |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` skips check) |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous delete operation. |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.DeleteAsync("/movies/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+## DeleteByQueryAsync
+
+The **DeleteByQueryAsync** is used to delete files that match the specified query.
+
+## Syntax
+
+<TabItem value="delete_by_query_1" label="delete_by_query_1">
+<CodeBlock language="csharp">
+{`Task DeleteByQueryAsync(string query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | string | The Lucene query |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous delete operation. |
+
+## Example
+
+In order to delete files located in `/temp` folder except from ones in its subdirectories, run the following code:
+
+<TabItem value="delete_by_query_2" label="delete_by_query_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.DeleteByQueryAsync("__directoryName:/temp AND __level:2");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+<Admonition type="info" title="Delete on the server side" id="delete-on-the-server-side" href="#delete-on-the-server-side">
+To delete a file, RavenFS needs to remove a lot of information related to this file. In order to respond to the user quickly, the file is just renamed and a delete marker is added to its metadata. The actual delete is performed by [a periodic task](../../../server/background-tasks.mdx), which ensures that all the requested deletes will be accomplished even in the presence of a server restarts in the middle.
+</Admonition>
+
+

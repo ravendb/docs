@@ -5,138 +5,24 @@ sidebar_label: ...check if document exists
 sidebar_position: 15
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import CheckIfDocumentExistsCsharp from './_check-if-document-exists-csharp.mdx';
+import CheckIfDocumentExistsJava from './_check-if-document-exists-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to Check if a Document Exists
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* To check whether the database contains a certain document, use the method `Exists()` from the `Advanced` session operations.  
-
-* This does not [load](../../../client-api/session/loading-entities.mdx) the document from the server or cause the session to 
-track it.  
-
-* In this page:  
-  * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)  
-  * [Example](../../../client-api/session/how-to/check-if-document-exists.mdx#example)  
-</Admonition>
-## Syntax
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`bool Exists(string id);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`Task<bool> ExistsAsync(string documentId, CancellationToken token = default);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-| Parameter | Type | Description |
-| - | - | - |
-| **id** | `string` | The ID of the document you want to check the database for |
-
-| Return Value | Description |
-| - | - |
-| `bool` | Indicates whether a document with the specified ID exists in the database |
-
-
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`bool exists = session.Advanced.Exists("employees/1-A");
-
-if (exists)
-{
-    //do something
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`bool exists = await asyncSession.Advanced.ExistsAsync("employees/1-A");
-
-if (exists)
-{
-    //do something
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-
+   <CheckIfDocumentExistsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-<Admonition type="note" title="">
-
-* To check whether the database contains a certain document, use the method `exists()` from the `advanced` session operations.  
-
-* This does not [load](../../../client-api/session/loading-entities.mdx) the document from the server or cause the session to 
-track it.  
-
-* In this page:  
-  * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)  
-  * [Example](../../../client-api/session/how-to/check-if-document-exists.mdx#example)  
-</Admonition>
-## Syntax
-
-<TabItem value="exists_1" label="exists_1">
-<CodeBlock language="java">
-{`boolean exists(String id);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter | Type | Description |
-| - | - | - |
-| **id** | `String` | The ID of the document you want to check the database for |
-
-| Return Value | Description |
-| - | - |
-| `boolean` | Indicates whether a document with the specified ID exists in the database |
-
-
-
-## Example
-
-<TabItem value="exists_2" label="exists_2">
-<CodeBlock language="java">
-{`boolean exists = session.advanced().exists("employees/1-A");
-
-if (exists) \{
-    // do something
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <CheckIfDocumentExistsJava />
 </LanguageContent>
+
 
 <!---
 ### Session

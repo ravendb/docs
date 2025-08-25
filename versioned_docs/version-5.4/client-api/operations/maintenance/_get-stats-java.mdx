@@ -1,0 +1,195 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Statistics about your database and collections can be retrieved.
+
+* By default, you get stats for the database defined in your Document Store.   
+  To get database and collection stats for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).
+
+* In this page:
+    * [Get collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-stats)
+    * [Get detailed collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-stats)
+    * [Get database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)
+    * [Get detailed database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)
+    * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
+</Admonition>
+## Get collection stats
+<Admonition type="note" title="">
+Use `GetCollectionStatisticsOperation` to get **collection stats**.
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="java">
+{`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
+CollectionStatistics stats =
+    store.maintenance().send(new GetCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `CollectionStatistics` object.
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="java">
+{`public class CollectionStatistics \{
+// Collection stats results:
+    // Total # of documents in all collections
+    int CountOfDocuments;
+    // Total # of conflicts
+    int CountOfConflicts;
+    // Total # of documents per collection
+    Map<String, Long> Collections;
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get detailed collection stats
+<Admonition type="note" title="">
+Use `GetDetailedCollectionStatisticsOperation` to get **detailed collection stats**.
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="java">
+{`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store 
+DetailedCollectionStatistics stats =
+    store.maintenance().send(new GetDetailedCollectionStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DetailedCollectionStatistics` object.
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="java">
+{`// Detailed collection stats results:
+public class DetailedCollectionStatistics  \{
+    // Total # of documents in all collections
+    long CountOfDocuments;
+    // Total # of conflicts
+    long CountOfConflicts;
+    // Collection details per collection
+    Map<String, CollectionDetails> Collections;
+\}
+
+// Details per collection
+public class CollectionDetails \{
+    String Name;
+    long CountOfDocuments;
+    Size Size;
+    Size DocumentsSize;
+    Size TombstonesSize;
+    Size RevisionsSize;
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get database stats
+<Admonition type="note" title="">
+Use `GetStatisticsOperation` to get **database stats**.
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="java">
+{`// Pass an instance of class \`GetStatisticsOperation\` to the store 
+DatabaseStatistics stats =
+    store.maintenance().send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DatabaseStatistics` object.
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="java">
+{`// Database stats results:
+public class DatabaseStatistics \{
+    Long LastDocEtag;       // Last document etag in database
+    Long LastDatabaseEtag;  // Last database etag
+    
+    int CountOfIndexes;     // Total # of indexes in database
+    long CountOfDocuments;  // Total # of documents in database
+    long CountOfRevisionDocuments;  // Total # of revision documents in database
+    long CountOfDocumentsConflicts; // Total # of documents conflicts in database
+    long CountOfTombstones;         // Total # of tombstones in database
+    long CountOfConflicts;          // Total # of conflicts in database
+    long CountOfAttachments;        // Total # of attachments in database
+    long CountOfUniqueAttachments;  // Total # of unique attachments in database
+    long CountOfCounterEntries;     // Total # of counter-group entries in database
+    long CountOfTimeSeriesSegments; // Total # of time-series segments in database
+
+    IndexInformation[] Indexes;     // Statistics for each index in database
+
+    String DatabaseChangeVector;    // Global change vector of the database
+    String DatabaseId;              // Database identifier
+    boolean Is64Bit;                // Indicates if process is 64-bit
+    String Pager;                   // Component handling the memory-mapped files
+    Date LastIndexingTime;          // Last time of indexing an item
+    Size SizeOnDisk;                // Database size on disk
+    Size TempBuffersSizeOnDisk;     // Temp buffers size on disk
+    int NumberOfTransactionMergerQueueOperations;
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get detailed database stats
+<Admonition type="note" title="">
+Use `GetDetailedStatisticsOperation` to get **detailed database stats**.
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="java">
+{`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
+DetailedDatabaseStatistics stats =
+    store.maintenance().send(new GetDetailedStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+<Admonition type="note" title="">
+Stats are returned in the `DetailedDatabaseStatistics` object.
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="java">
+{`// Detailed database stats results:
+public class DetailedDatabaseStatistics extends DatabaseStatistics \{
+    // Total # of identities in database
+    long CountOfIdentities;
+    // Total # of compare-exchange items in database
+    long CountOfCompareExchange;
+    // Total # of cmpXchg tombstones in database
+    long CountOfCompareExchangeTombstones;
+    // Total # of TS deleted ranges values in database
+    long CountOfTimeSeriesDeletedRanges;
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+## Get stats for another database
+<Admonition type="note" title="">
+
+* By default, you get stats for the database defined in your Document Store.
+* Use `forDatabase` to get database & collection stats for another database.
+* 'ForDatabase' can be used with **any** of the above stats options.
+ 
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="java">
+{`// Get stats for 'AnotherDatabase':
+DatabaseStatistics stats =
+    store.maintenance().forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Admonition>
+
+
+

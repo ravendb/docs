@@ -1,0 +1,73 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, the `whereXXX()` methods in `query` use a case-insensitive match.
+
+To perform a case-sensitive match you should use the `exact` parameter.
+
+### Syntax
+
+<TabItem value="query_1_0" label="query_1_0">
+<CodeBlock language="js">
+{`query.whereEquals(fieldName, value, [exact]);
+query.whereNotEquals(fieldName, value, [exact]);
+
+// ... rest of where methods
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Object field to use |
+| **value** | any | Predicate value |
+| **exact** | boolean | Indicates if `predicate` should be matched in case-sensitive manner |
+
+### Example I - Query With Exact Match
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert' (case sensitive match)
+const employees = await session.query({ collection: "Employees" })
+    .whereEquals("FirstName", "Robert", true)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees where exact(FirstName == 'Robert')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Query With Inner Exact Match
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// return all entities from 'Orders' collection
+// which contain at least one order line with
+// 'Singaporean Hokkien Fried Mee' product
+// perform a case-sensitive match
+const orders = await session.query({ collection: "Orders" })
+    .whereEquals("Lines[].ProductName", "Singaporean Hokkien Fried Mee", true)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

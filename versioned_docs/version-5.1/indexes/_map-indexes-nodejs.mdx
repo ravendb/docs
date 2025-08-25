@@ -1,0 +1,367 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
+
+These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
+
+## What Can be Indexed
+
+You can:
+
+- [index single fields](../indexes/map-indexes.mdx#indexing-single-fields)
+- [combined multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields-together) together
+- [index partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
+- [index nested data](../indexes/map-indexes.mdx#indexing-nested-data)
+- [index fields from related documents](../indexes/indexing-related-documents.mdx)
+- [index fields from multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes.mdx#indexing-missing-fields)
+- ...and more. 
+
+## Indexing Single Fields
+
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+
+- First, let's create an index called `Employees/ByFirstAndLastName`
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask \{
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in the **constructor**.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="js">
+{`constructor() \{
+    super();
+
+    this.map = \`from employee in docs.Employees
+        select new \{ 
+           FirstName = employee.FirstName,     
+           LastName = employee.LastName 
+        \}\`;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees1 = await session.query({ indexName: "Employees/ByFirstAndLastName" })
+    .whereEquals("FirstName", "Robert")
+    .all();
+
+const employees2 = await session.query({ indexName: "Employees/ByFirstAndLastName" })
+    .whereEquals("FirstName", "Robert")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Field Types" id="field-types" href="#field-types">
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+\{
+	Age = employee.Age
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+\{
+	Age = employee.Age.ToString()
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="warning" title="Convention" id="convention" href="#convention">
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+\{
+	FirstName = employee.firstName,
+	LastName = employee.lastName
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+</Admonition>
+
+## Combining Multiple Fields Together
+
+Since each index contains a LINQ function, you can combine multiple fields into one.
+
+### Example I
+
+<TabItem value="indexes_7" label="indexes_7">
+<CodeBlock language="js">
+{`class Employees_ByFullName extends AbstractCsharpIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{ 
+               Name = employee.FirstName + ' ' + employee.LastName
+            \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByFullName" })
+    .whereEquals("FullName", "Robert King")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName'
+where FullName = 'Robert King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+
+You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+
+</Admonition>
+
+<TabItem value="indexes_1_6" label="indexes_1_6">
+<CodeBlock language="js">
+{`class Employees_Query extends AbstractCsharpIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{     
+            Query = new [] \{ 
+                employee.FirstName, 
+                employee.LastName, 
+                employee.Title, 
+                employee.Address.City 
+            \} 
+        \}\`;
+
+        this.index("Query", "Search");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/Query" })
+    .search("Query", "John Doe")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/Query'
+where search(Query, 'John Doe')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Partial Field Data
+
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:
+
+<TabItem value="indexes_1_2" label="indexes_1_2">
+<CodeBlock language="js">
+{`class Employees_ByBirthday extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{     
+                Birthday = employee.Birthday,
+            \}\`;
+    \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const startDate = new Date(1963, 1, 1);
+const endDate = new Date(1963, 12, 31, 23, 59, 59, 999);
+const employees = await session
+    .query({ indexName: "Employees/ByBirthday" })
+    .whereBetween("Birthday", startDate, endDate)
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByBirthday '
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
+
+<TabItem value="indexes_1_0" label="indexes_1_0">
+<CodeBlock language="js">
+{`class Employees_ByYearOfBirth extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{ 
+               YearOfBirth = employee.Birthday.Year,     
+            \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByYearOfBirth" })
+    .whereEquals("YearOfBirth", 1963)
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByYearOfBirth'
+where YearOfBirth = 1963
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Nested Data
+
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
+
+<TabItem value="indexes_1_4" label="indexes_1_4">
+<CodeBlock language="js">
+{`class Employees_ByCountry extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{      
+            Country = employee.Address.Country 
+        \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByCountry" })
+    .whereEquals("Country", "USA")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByCountry'
+where Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+
+## Indexing Multiple Collections
+
+Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+
+## Indexing Missing Fields
+
+By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
+using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+configuration option.  
+
+The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
+

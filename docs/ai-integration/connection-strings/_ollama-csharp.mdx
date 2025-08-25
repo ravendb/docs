@@ -1,0 +1,108 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article explains how to define a connection string to [Ollama](https://ollama.com/blog/embedding-models),  
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx) with your Ollama setup.
+
+* In this article:
+  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string---from-the-client-api)
+  * [Syntax](../../ai-integration/connection-strings/ollama.mdx#syntax) 
+    
+</Admonition>
+## Define the connection string - from the Studio
+
+![connection string to ollama](./assets/ollama.png)
+
+1. **Name**  
+   Enter a name for this connection string.
+
+2. **Identifier** (optional)  
+   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
+
+3. **Connector**  
+   Select **Ollama** from the dropdown menu.
+
+4. **Model**  
+   Specify the Ollama text embedding model to use.
+
+5. **URI**  
+   Enter the Ollama API URI.
+
+6. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches) configuration key.
+
+7. Click **Test Connection** to confirm the connection string is set up correctly.
+
+8. Click **Save** to store the connection string or **Cancel** to discard changes.
+
+
+
+## Define the connection string - from the Client API
+
+<TabItem value="create_connection_string_ollama" label="create_connection_string_ollama">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // Define the connection string to Ollama
+    var connectionString = new AiConnectionString
+    \{
+        // Connection string name & identifier
+        Name = "ConnectionStringToOllama", 
+        Identifier = "identifier-to-the-connection-string", // optional
+        
+        // Ollama connection settings
+        OllamaSettings = new OllamaSettings(
+            uri: "http://localhost:11434/",
+            model: "mxbai-embed-large")
+    \};
+    
+    // Optionally, override the default maximum number of query embedding batches
+    // that can be processed concurrently 
+    connectionString.OllamaSettings.EmbeddingsMaxConcurrentBatches = 10;
+    
+    // Deploy the connection string to the server
+    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringResult = store.Maintenance.Send(operation);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="ollama_settings" label="ollama_settings">
+<CodeBlock language="csharp">
+{`public class AiConnectionString
+\{
+    public string Name \{ get; set; \}
+    public string Identifier \{ get; set; \}
+    public OllamaSettings OllamaSettings \{ get; set; \}
+\}
+
+public class OllamaSettings : AbstractAiSettings
+\{
+    public string Uri \{ get; set; \}
+    public string Model \{ get; set; \}
+\}
+
+public class AbstractAiSettings
+\{
+    public int? EmbeddingsMaxConcurrentBatches \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

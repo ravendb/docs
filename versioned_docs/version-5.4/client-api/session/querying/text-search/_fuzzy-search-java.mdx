@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Fuzzy search is supported via `fuzzy` method.  
+This method is available only from [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values.  
+Because of that it can be used only right after `whereEquals` method.
+
+## Syntax
+
+<TabItem value="fuzzy_1" label="fuzzy_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> fuzzy(double var1);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `double` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Company.class)
+    .whereEquals("Name", "Ernts Hnadel")
+    .fuzzy(0.5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

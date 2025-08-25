@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities can be marked for deletion by using the `delete()` method, but will not be removed from the server until `save_changes()` is called.  
+
+## Syntax
+
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="python">
+{`def delete(self, key_or_entity: Union[str, object], expected_change_vector: Optional[str] = None) -> None:
+    ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key_or_entity** | `str` or `object` | ID of the document or instance of the entity to delete |
+| **expected_change_vector** | `str` | a change vector to use for concurrency checks |
+
+## Example I
+
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="python">
+{`employee = session.load("employees/1")
+
+session.delete(employee)
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+If use_optimistic_concurrency is set to 'True' (default 'False'), the delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.  
+</Admonition>
+
+## Example II
+
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="python">
+{`session.delete("employees/1")
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Concurrency on Delete" id="concurrency-on-delete" href="#concurrency-on-delete">
+The delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.  
+</Admonition>
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+If entity is **not** tracked by session, then executing:  
+
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="python">
+{`session.delete("employees/1")
+`}
+</CodeBlock>
+</TabItem>
+
+is equal to doing:  
+
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="python">
+{`session.advanced.defer(DeleteCommandData("employees/1", change_vector=None))
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Change Vector in DeleteCommandData" id="change-vector-in-deletecommanddata" href="#change-vector-in-deletecommanddata">
+In this sample the change vector is None - this means that there will be no concurrency checks. A not-None and valid change vector value will trigger a concurrency check.  
+</Admonition>
+
+You can read more about defer operations [here](../../client-api/session/how-to/defer-operations.mdx).  
+
+</Admonition>
+
+

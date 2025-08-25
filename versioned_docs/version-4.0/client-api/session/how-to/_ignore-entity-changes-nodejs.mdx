@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In order to mark an entity as one that should be ignored for change tracking purposes, use the `ignoreChangesFor()` method from the `advanced` session operations.  
+
+Unlike the `evict()` method, performing another `load()` of that entity won't create a call to the server.  
+
+The entity will still take part in the session, but will be ignored for `saveChanges()`.  
+
+## Syntax
+
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
+<CodeBlock language="js">
+{`session.advanced.ignoreChangesFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of entity for which changes will be ignored. |
+
+
+## Example
+
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
+<CodeBlock language="js">
+{`const product = await session.load("products/1-A");
+session.advanced.ignoreChangesFor(product);
+product.unitsInStock++; // this will be ignored by saveChanges()
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

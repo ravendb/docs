@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Downloading files
+
+The session exposes the `DownloadAsync` method to allow you to retrieve the content of a file.
+
+
+
+
+There are two overloads:
+
+<TabItem value="download_1" label="download_1">
+<CodeBlock language="csharp">
+{`Task<Stream> DownloadAsync(string path, Reference<RavenJObject> metadata = null);
+Task<Stream> DownloadAsync(FileHeader file, Reference<RavenJObject> metadata = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | The full file path |
+| **file** | [FileHeader](../../../glossary/file-header.mdx) | The file represented by the `FileHeader` |
+| **metadata** | Reference&lt;RavenJObject&gt; | Metadata of the downloaded file |
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;Stream&gt;** |  A task that represents the asynchronous download operation. The task result is the file's content represented by a readable stream. | 
+
+| Exceptions | |
+| ------------- | ------------- |
+| FileNotFoundException | It is thrown when the requested file does not exist in the file system. |
+
+## Example
+
+<TabItem value="download_2" label="download_2">
+<CodeBlock language="csharp">
+{`Reference<RavenJObject> metadata = new Reference<RavenJObject>();
+
+Stream content = await session.DownloadAsync("/movies/intro.avi", metadata);
+
+Console.WriteLine("Downloaded \{0\} bytes", metadata.Value.Value<long>("RavenFS-Size"));
+`}
+</CodeBlock>
+</TabItem>

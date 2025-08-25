@@ -1,0 +1,211 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `time_series_for.get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+
+* Calling `time_series_for.get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+  Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+
+* In this page:  
+  * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+
+</Admonition>
+## `Get` usage 
+
+* Open a session.  
+* Create an instance of `time_series_for` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `time_series_for.get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="timeseries_region_Get-All-Entries-Using-Document-ID" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="python">
+{`# Get all time series entries
+val = session.time_series_for("users/john", "HeartRates").get(datetime.min, datetime.max)
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="python">
+{`# Query for a document with the Name property "John"
+# and get its HeartRates time-series values
+with store.open_session() as session:
+    base_line = datetime.utcnow()
+
+    query = session.query(object_type=User).where_equals("Name", "John")
+
+    result = list(query)
+
+    doc_id = session.advanced.get_document_id(result[0])
+
+    val = session.time_series_for(doc_id, "HeartRates").get(datetime.min, datetime.max)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values, 
+  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values) 
+  time series values to make the code easier to read.  
+
+<TabItem value="timeseries_region_Get-Named-Values" label="timeseries_region_Get-Named-Values">
+<CodeBlock language="python">
+{`going_up = False
+
+# Use Get with a Named type
+with store.open_session() as session:
+    val = session.typed_time_series_for(StockPrice, "users/john").get()
+
+    close_price_day_1 = val[0].value.close
+    close_price_day_2 = val[1].value.close
+    close_price_day_3 = val[2].value.close
+    if close_price_day_2 > close_price_day_1 and close_price_day_3 > close_price_day_2:
+        going_up = True
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `time_series_for.get`,  
+  you can include the series parent document and/or documents referred to by the entries 
+  [tags](../../../../../document-extensions/timeseries/overview.mdx#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="IncludeParentAndTaggedDocuments" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="python">
+{`# Get all time series entries
+entries = session.time_series_for("users/john", "HeartRates").get_with_include(
+    datetime.min,
+    datetime.max,
+    lambda builder: builder
+    # Include documents referred-to by entry tags
+    .include_tags()
+    # Include Parent Document
+    .include_document(),
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="TimeSeriesFor-Get-definition" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="python">
+{`def get(
+    self,
+    from_date: Optional[datetime] = None,
+    to_date: Optional[datetime] = None,
+    start: int = 0,
+    page_size: int = int_max,
+) -> Optional[List[TimeSeriesEntry]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="TimeSeriesFor-Get-Named-Values" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="python">
+{`# The strongly-typed API is used, to address time series values by name.
+def get(
+    self,
+    from_date: Optional[datetime] = None,
+    to_date: Optional[datetime] = None,
+    start: int = 0,
+    page_size: int = int_max,
+) -> Optional[List[TypedTimeSeriesEntry[_T_TS_Values_Bindable]]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **from_date** (Optional) | `datetime` | Get the range of time series entries starting from this timestamp (inclusive).
+Default: `datetime.min` |
+| **to_date** (Optional) | `datetime` | Get the range of time series entries ending at this timestamp (inclusive).
+Default: `datetime.max` |
+| **start** | `int` | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
+| **page_size** | `int` | Paging page-size.<br/>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br/>Default: `int_max`, for all time series entries. |
+
+**Return Values (Optional)**
+ 
+* `List[TypedTimeSeriesEntry[_T_TS_Values_Bindable]]` - an array of time series entry classes.
+<TabItem value="TimeSeriesEntry-Definition" label="TimeSeriesEntry-Definition">
+<CodeBlock language="python">
+{`class TimeSeriesEntry:
+    def __init__(self, timestamp: datetime = None, tag: str = None, values: List[int] = None, rollup: bool = None):
+        self.timestamp = timestamp
+        self.tag = tag
+        self.values = values
+        self.rollup = rollup
+
+    @property
+    def value(self):
+        if len(self.values) == 1:
+            return self.values[0]
+        raise ValueError("Entry has more than one value.")
+
+    @value.setter
+    def value(self, value: int):
+        if len(self.values) == 1:
+            self.values[0] = value
+            return
+        raise ValueError("Entry has more than one value")
+`}
+</CodeBlock>
+</TabItem>
+
+* `TimeSeriesEntry<TValues>[]` - Time series values that can be referred to by name.  
+
+
+
+

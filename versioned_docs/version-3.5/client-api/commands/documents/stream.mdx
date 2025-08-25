@@ -5,238 +5,29 @@ sidebar_label: Stream
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StreamCsharp from './_stream-csharp.mdx';
+import StreamJava from './_stream-java.mdx';
+import StreamHttp from './_stream-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: Documents: Stream
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**StreamDocs** is used to stream documents which match chosen criteria from a database.
-
-## Syntax
-
-<TabItem value="stream_1" label="stream_1">
-<CodeBlock language="csharp">
-{`IEnumerator<RavenJObject> StreamDocs(
-    Etag fromEtag = null,
-    string startsWith = null,
-    string matches = null,
-    int start = 0,
-    int pageSize = int.MaxValue,
-    string exclude = null,
-    RavenPagingInformation pagingInformation = null,
-    string skipAfter = null,
-    string transformer = null,
-    Dictionary<string, RavenJToken> transformerParameters = null);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **fromEtag** | Etag | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
-| **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
-| **start** | int | number of documents that should be skipped |
-| **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side |
-| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
-| **transformer** | String |  name of transformer (default: `null`) |
-| **transformerParameters** | Dictionary&lt;string, RavenJToken&gt; | parameters to pass to the transformer (default: `null`) |
-
-## Example 1
-
-<TabItem value="stream_2" label="stream_2">
-<CodeBlock language="csharp">
-{`IEnumerator<RavenJObject> enumerator = store.DatabaseCommands.StreamDocs(null, "products/");
-while (enumerator.MoveNext())
-\{
-    RavenJObject document = enumerator.Current;
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example 2
-Using the following transformer:
-<TabItem value="transformer" label="transformer">
-<CodeBlock language="csharp">
-{`private class SimpleTransformer : AbstractTransformerCreationTask
-\{
-    public class Result
-    \{
-        public string Name \{ get; set; \}
-    \}
-
-    public override TransformerDefinition CreateTransformerDefinition(bool prettify = true)
-    \{
-        return new TransformerDefinition
-        \{
-            Name = "SimpleTransformer",
-            TransformResults = "from r in results select new \{ Name = Parameter(\\"Name\\") \}"
-        \};
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-StreamDocs using the SimpleTransformer defined above and one supplied parameter:
-<TabItem value="stream_3" label="stream_3">
-<CodeBlock language="csharp">
-{`var transformer = new SimpleTransformer();
-transformer.Execute(store);
-
-using (IEnumerator<RavenJObject> enumerator = store.DatabaseCommands.StreamDocs(startsWith: "people/", transformer: transformer.TransformerName, transformerParameters: new Dictionary<string, RavenJToken> \{\{"Name", "Bill"\}\}))
-\{
-    while (enumerator.MoveNext())
-    \{
-        RavenJObject result = enumerator.Current;
-        string name = result.Value<string>("Name");
-        Assert.Equal("Bill", name); // Should be true
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <StreamCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**StreamDocs** is used to stream documents which match chosen criteria from a database.
-
-## Syntax
-
-<TabItem value="stream_1" label="stream_1">
-<CodeBlock language="java">
-{`public CloseableIterator<RavenJObject> streamDocs();
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches, int start);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches, int start, int pageSize);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches, int start, int pageSize, String exclude);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches, int start, int pageSize, String exclude, RavenPagingInformation pagingInformation);
-
-public CloseableIterator<RavenJObject> streamDocs(Etag fromEtag, String startsWith, String matches, int start, int pageSize, String exclude, RavenPagingInformation pagingInformation, String skipAfter);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **fromEtag** | Etag | ETag of a document from which stream should start (mutually exclusive with 'startsWith') (default: `null`) |
-| **startsWith** | String | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') (default: `null`) |
-| **matches** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) (default: `null`) |
-| **start** | int | number of documents that should be skipped (default: `0`) |
-| **pageSize** | int | maximum number of documents that will be retrieved (default: `Integer.MAX_VALUE`) |
-| **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) (default: `null`) |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side (default: `null`) |
-| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
-
-## Example
-
-<TabItem value="stream_2" label="stream_2">
-<CodeBlock language="java">
-{`try (CloseableIterator<RavenJObject> iterator = store.getDatabaseCommands().streamDocs(null, "products/")) \{
-  while (iterator.hasNext()) \{
-    RavenJObject document = iterator.next();
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StreamJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-**StreamDocs** is used to stream documents which match chosen criteria from a database.
-
-
-### Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-http://\{serverName\}/databases/\{databaseName\}/streams/docs? \\
-	etag=\{etag\}& \\
-	startsWith=\{startsWith\}& \\
-	matches=\{matches\}& \\
-	exclude=\{exclude\}& \\
-	skipAfter=\{skipAfter\}& \\
-	start=\{start\}& \\
-	pageSize=\{pageSize\} \\
--X GET 
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **etag** | No | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
-| **startsWith** | No | prefix for which documents should be streamed (mutually exclusive with 'etag') |
-| **matches** | No | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
-| **exclude** | No | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | No | skip document fetching until given key is found and return documents after that key |
-| **start** | No | number of documents that should be skipped |
-| **pageSize** | No | maximum number of documents that will be retrieved |
-
-| Header | Required | Description |
-| --------| ------- | --- |
-| **Single-Use-Auth-Token** | No | Required if authentication is enabled. |
-
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **Results** | list of json documents |
-
----
-
-### Example
-
-Streams products.
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X GET "http://localhost:8080/databases/NorthWind/streams/docs?startsWith=products%2F"
-< HTTP/1.1 200 OK
-\{"Results": [ jsonDocument, jsonDocument, ... ] \}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StreamHttp />
 </LanguageContent>
+
 
 <!---
 - [How to use startsWith, matches and exclude?](../../../client-api/commands/documents/get#startswith)

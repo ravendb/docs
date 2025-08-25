@@ -1,0 +1,73 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`MoreLikeThis` is available through `advanced()` in session operations. This method returns articles similar to the provided input.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="java">
+{`public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, String documentId);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, MoreLikeThisQuery parameters);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, String index, String documentId);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, Class<? extends AbstractTransformerCreationTask> transformerClass, String documentId);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, Class<? extends AbstractTransformerCreationTask> transformerClass, MoreLikeThisQuery parameters);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, String index, String transformer, String documentId);
+
+public <T> T[] moreLikeThis(Class<T> entityClass, String index, String transformer, MoreLikeThisQuery parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | Name of an index on which query will be executed. |
+| **documentId** | String | Id of a document for which similarities will be searched. |
+| **parameters** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed. |
+
+| Return Value | |
+| ------------- | ----- |
+| T[] | Array of similar documents returned as entities. |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="java">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+
+Article[] articles = session.advanced()
+  .moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_4" label="more_like_this_4">
+<CodeBlock language="java">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+moreLikeThisQuery.setAdditionalQuery("Category:IT");
+session.advanced().moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+

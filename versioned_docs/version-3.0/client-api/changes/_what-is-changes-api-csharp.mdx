@@ -1,0 +1,93 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
+You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
+This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
+
+## Accessing Changes API
+
+The changes subscription is accessible by a document store. Depending on the type of the store you use (`DocumentStore`, `ShardedDocumentStore` or `EmbeddableDocumentStore`) you will get an appropriate instance which is an implementation of a common `IDatabaseChanges` interface.
+
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="csharp">
+{`IDatabaseChanges Changes(string database = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of database to open changes API for. If `null`, default database configured in DocumentStore will be used. |
+
+| Return value | |
+| ------------- | ----- |
+| IDocumentChanges | Instance implementing IDocumentChanges interface appropriate to store type. |
+
+## Connection properties
+
+`IDatabaseChanges` has three properties that are related to the server connection:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// represents the task responsible for establishing connection with the server
+Task Task \{ get; \}
+
+// returns state of the connection
+bool Connected \{ get; \}
+
+// the event raised if a connection state is changed
+event EventHandler ConnectionStatusChanged
+`}
+</CodeBlock>
+</TabItem>
+
+## Subscriptions
+
+In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
+
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+- [ForAllReplicationConflicts](../../client-api/changes/how-to-subscribe-to-replication-conflicts.mdx)
+- [ForAllTransformers](../../client-api/changes/how-to-subscribe-to-transformer-changes.mdx)
+- [ForBulkInsert](../../client-api/changes/how-to-subscribe-to-bulk-insert-operation-changes.mdx)
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [ForAllDataSubscriptions](../../client-api/changes/how-to-subscribe-to-data-subscription-changes.mdx)
+
+## Unsubscribing
+
+In order to end subscription (stop listening for particular notifications) you must `Dispose` it.
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="csharp">
+{`IDatabaseChanges changes = store.Changes();
+await changes.EnsureConnectedNow();
+var subscription = changes
+        .ForAllDocuments()
+        .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+try
+\{
+    // application code here
+\}
+finally
+\{
+    if (subscription != null)
+        subscription.Dispose();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+

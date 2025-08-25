@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.
+
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:
+    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)
+    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define an output param for getting the query stats
+let stats;
+
+const employees = await session
+    .query({ collection: "Employees" })
+    .whereEquals("FirstName", "Anne")
+     // Get query stats:
+     // * Call 'statistics', pass a callback function
+     // * Output param 'stats' will be filled with the stats when query returns 
+    .statistics(s => stats = s)
+    .all();
+
+const numberOfResults = stats.value.totalResults; // Get results count
+const queryDuration = stats.value.durationInMs;   // Get query duration
+const indexNameUsed = stats.value.indexName;      // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Anne"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`query.statistics(statsCallback);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type              | Description                                                                                                                                                                       |
+|-------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **statsCallback** | `(stats) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `QueryStatistics` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
+
+| `QueryStatistics`    |           |                                                                                                                                                                    |
+|----------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **isStale**          | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
+| **durationInMs**     | `number`  | Query duration on the server side in Milliseconds                                                                                                                  |
+| **totalResults**     | `number`  | The total count of results that matched the query                                                                                                                  |
+| **longTotalResults** | `number`  | The total count of results that matched the query (same as `totalResults`)                                                                                         |
+| **skippedResults**   | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results). |
+| **timestamp**        | `Date`    | The time when the query results were unstale                                                                                                                       |
+| **indexName**        | `string`  | The name of the queried index                                                                                                                                      |
+| **indexTimestamp**   | `Date`    | The timestamp of the queried index                                                                                                                                 |
+| **lastQueryTime**    | `Date`    | The timestamp of the last time the index was queried                                                                                                               |
+| **resultEtag**       | `number`  | Results Etag                                                                                                                                                       |
+| **nodeTag**          | `string`  | Tag of the cluster node that responded to the query                                                                                                                |
+
+
+
+

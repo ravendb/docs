@@ -1,0 +1,258 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Spatial indexes can be queried using the `spatial()` method which contains a full spectrum of spatial methods. The following article will cover these methods:
+
+- [spatial()](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
+- [orderByDistance()](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)
+- [orderByDistanceDescending()](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistancedescending)
+
+## Spatial
+
+<TabItem value="spatial_1" label="spatial_1">
+<CodeBlock language="js">
+{`query.spatial(fieldName, clause);
+query.spatial(field, clause);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Path to spatial field in an index |
+| **field** | `DynamicSpatialField`  | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **clause** | `(spatialCriteriaFactory) => spatialCriteria` | Spatial criteria builder |
+
+### DynamicSpatialField  
+
+<TabItem value="spatial_2" label="spatial_2">
+<CodeBlock language="js">
+{`import \{ PointField, WktField \} from "ravendb";
+
+new PointField(latitude, longitude);
+
+new WktField(wkt);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **latitude** or **longitude** or **wkt** | string | Path to the field in a document containing either longitude, latitude or WKT |
+
+### SpatialCriteriaFactory
+
+<TabItem value="spatial_3" label="spatial_3">
+<CodeBlock language="js">
+{`spatialCriteriaFactory.relatesToShape(shapeWkt, relation);
+spatialCriteriaFactory.relatesToShape(shapeWkt, relation, distErrorPercent);
+
+spatialCriteriaFactory.intersect(shapeWkt);
+spatialCriteriaFactory.intersect(shapeWkt, distErrorPercent) ;
+
+spatialCriteriaFactory.contains(shapeWkt);
+spatialCriteriaFactory.contains(shapeWkt, distErrorPercent);
+
+spatialCriteriaFactory.disjoint(shapeWkt);
+spatialCriteriaFactory.disjoint(shapeWkt, distErrorPercent);
+
+spatialCriteriaFactory.within(shapeWkt);
+
+spatialCriteriaFactory.within(shapeWkt, distErrorPercent);
+
+spatialCriteriaFactory.withinRadius(radius, latitude, longitude);
+spatialCriteriaFactory.withinRadius(radius, latitude, longitude, radiusUnits);
+spatialCriteriaFactory.withinRadius(radius, latitude, longitude, radiusUnits, distErrorPercent);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **shapeWkt** | string | WKT-based shape to be used in operation |
+| **relation** | `SpatialRelation` | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
+| **distErrorPercent** | number | Maximum distance error tolerance in percents. Default: *0.025* |
+| **radius** or **latitude** or **longitude** | number | Used to define a radius circle |
+| **radiusUnits** | `SpatialUnits` | Determines if circle should be calculated in `Kilometers` or `Miles` units |
+
+### Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+const results = await session
+    .query({ collection: "Houses" })
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f => f.withinRadius(10, 32.1234, 23.4321))
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(latitude, longitude), spatial.circle(10, 32.1234. 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// this equals to WithinRadius(10, 32.1234, 23.4321)
+const results = await session
+    .query({ collection: "Houses" })
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f => f.relatesToShape("Circle(32.1234 23.4321 d=10.0000)", "Within")
+    )
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(32.1234 23.4321 d=10.0000)'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## OrderByDistance
+
+To sort by distance from given point use the `orderByDistance()` method. The closest results will come first.
+
+<TabItem value="spatial_6" label="spatial_6">
+<CodeBlock language="js">
+{`query.orderByDistance(field, latitude, longitude);
+
+query.orderByDistance(field, shapeWkt);
+
+query.orderByDistance(fieldName, latitude, longitude);
+
+query.orderByDistance(fieldName, shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Path to spatial field in index |
+| **field** | `DynamicSpatialField` | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **latitude** or **longitude** | number | Used to define a point from which distance will be measured |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+const results = await session
+    .query({ collection: "Houses" })
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f => f.withinRadius(10, 32.1234, 23.4321)
+    )
+    .orderByDistance(
+        new PointField("latitude", "longitude"),
+        32.12324, 23.4321)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(latitude, longitude), spatial.circle(10, 32.1234. 23.4321))
+order by spatial.distance(spatial.point(latitude, longitude), spatial.point(32.1234, 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## OrderByDistanceDescending
+
+To sort by distance from given point use the `orderByDistanceDescending()` method. The farthest results will come first.
+
+<TabItem value="spatial_8" label="spatial_8">
+<CodeBlock language="js">
+{`query.orderByDistanceDescending(field, latitude, longitude);
+
+query.orderByDistanceDescending(field, shapeWkt);
+
+query.orderByDistanceDescending(fieldName, latitude, longitude);
+
+query.orderByDistanceDescending(fieldName, shapeWkt);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Path to spatial field in index |
+| **field** | `DynamicSpatialField` | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **latitude** or **longitude** | number | Used to define a point from which distance will be measured |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`// return all matching entities
+// within 10 kilometers radius
+// from 32.1234 latitude and 23.4321 longitude coordinates
+// sort results by distance from 32.1234 latitude and 23.4321 longitude point
+const results = await session
+    .query({ collection: "Houses" })
+    .spatial(
+        new PointField("latitude", "longitude"),
+        f => f.withinRadius(10, 32.1234, 23.4321)
+    )
+    .orderByDistanceDescending(
+        new PointField("latitude", "longitude"),
+        32.12324, 23.4321)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Houses
+where spatial.within(spatial.point(latitude, longitude), spatial.circle(10, 32.1234. 23.4321))
+order by spatial.distance(spatial.point(latitude, longitude), spatial.point(32.1234, 23.4321)) desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Remarks
+
+<Admonition type="note" title="">
+By default, distances are measured in **kilometers**.
+</Admonition>
+
+

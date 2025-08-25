@@ -1,0 +1,333 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to the server.  
+  This reduces the number of remote calls and allows several operations to share the same transaction.
+
+* All the commands sent in the batch are executed as a **single transaction** on the node the client communicated with.
+  If any command fails, the entire batch is rolled back, ensuring data integrity.  
+
+* The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
+
+* In this page:
+    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
+    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
+    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="">
+
+#### Send multiple commands - using the Store's request executor:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor()
+           .ContextPool.AllocateOperationContext(out var storeContext))
+{
+    // Define the list of batch commands to execute
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("employees/999", null, new DynamicJsonValue
+        {
+            ["FirstName"] = "James",
+            ["@metadata"] = new DynamicJsonValue
+            {
+                ["@collection"] = "employees"
+            }
+        }),
+        
+        new PatchCommandData("employees/2-A", null, new PatchRequest
+        {
+            Script = "this.HomePhone = 'New phone number';"
+        }, null),
+        
+        new DeleteCommandData("employees/3-A", null)
+    };
+
+    // Define the SingleNodeBatchCommand command
+    var batchCommand = new SingleNodeBatchCommand(store.Conventions, commands);
+    
+    // Execute the batch command,
+    // all the 3 commands defined in the list will be executed in a single transaction
+    store.GetRequestExecutor().Execute(batchCommand, storeContext);
+    
+    // Can access the batch command results:
+    var commandResults = batchCommand.Result.Results;
+    Assert.Equal(3, commandResults.Length);
+
+    var blittable = (BlittableJsonReaderObject)commandResults[0];
+    
+    blittable.TryGetMember("Type", out var commandType);
+    Assert.Equal("PUT", commandType.ToString());
+    
+    blittable.TryGetMember("@id", out var documentId);
+    Assert.Equal("employees/999", documentId.ToString());
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor()
+           .ContextPool.AllocateOperationContext(out var storeContext))
+{
+    // Define the list of batch commands to execute
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("employees/999", null, new DynamicJsonValue
+        {
+            ["FirstName"] = "James",
+            ["@metadata"] = new DynamicJsonValue
+            {
+                ["@collection"] = "employees"
+            }
+        }),
+        
+        new PatchCommandData("employees/2-A", null, new PatchRequest
+        {
+            Script = "this.HomePhone = 'New phone number';"
+        }, null),
+        
+        new DeleteCommandData("employees/3-A", null)
+    };
+
+    // Define the SingleNodeBatchCommand command
+    var batchCommand = new SingleNodeBatchCommand(store.Conventions,
+         commands);
+    
+    // Execute the batch command,
+    // all the 3 commands defined in the list will be executed in a single transaction
+    await store.GetRequestExecutor().ExecuteAsync(batchCommand, storeContext);
+    
+    // Can access the batch command results:
+    var commandResults = batchCommand.Result.Results;
+    Assert.Equal(3, commandResults.Length);
+
+    var blittable = (BlittableJsonReaderObject)commandResults[0];
+    
+    blittable.TryGetMember("Type", out var commandType);
+    Assert.Equal("PUT", commandType.ToString());
+    
+    blittable.TryGetMember("@id", out var documentId);
+    Assert.Equal("employees/999", documentId.ToString());
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Send multiple commands - using the Session's request executor:
+* `SingleNodeBatchCommand` can also be executed using the session's request executor.
+
+* Note that the transaction created for the HTTP request when executing `SingleNodeBatchCommand`
+  is separate from the transaction initiated by the session's [SaveChanges](../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
+  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    // Define the list of batch commands to execute
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("employees/999", null, new DynamicJsonValue
+        {
+            ["FirstName"] = "James",
+            ["@metadata"] = new DynamicJsonValue
+            {
+                ["@collection"] = "employees"
+            }
+        }),
+        
+        new PatchCommandData("employees/2-A", null, new PatchRequest
+        {
+            Script = "this.HomePhone = 'New phone number';"
+        }, null),
+        
+        new DeleteCommandData("employees/3-A", null)
+    };
+
+    // Define the SingleNodeBatchCommand command
+    var batchCommand = new SingleNodeBatchCommand(store.Conventions,
+        commands);
+    
+    // Execute the batch command,
+    // all the 3 commands defined in the list will be executed in a single transaction
+    session.Advanced.RequestExecutor.Execute(batchCommand, session.Advanced.Context);
+    
+    // Can access the batch command results:
+    var commandResults = batchCommand.Result.Results;
+    Assert.Equal(3, commandResults.Length);
+
+    var blittable = (BlittableJsonReaderObject)commandResults[0];
+
+    blittable.TryGetMember("Type", out var commandType);
+    Assert.Equal("PUT", commandType.ToString());
+
+    blittable.TryGetMember("@id", out var documentId);
+    Assert.Equal("employees/999", documentId.ToString());
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenAsyncSession())
+{
+    // Define the list of batch commands to execute
+    var commands = new List<ICommandData>
+    {
+        new PutCommandData("employees/999", null, new DynamicJsonValue
+        {
+            ["FirstName"] = "James",
+            ["@metadata"] = new DynamicJsonValue
+            {
+                ["@collection"] = "employees"
+            }
+        }),
+        
+        new PatchCommandData("employees/2-A", null, new PatchRequest
+        {
+            Script = "this.HomePhone = 'New phone number';"
+        }, null),
+        
+        new DeleteCommandData("employees/3-A", null)
+    };
+
+    // Define the SingleNodeBatchCommand command
+    var batchCommand = new SingleNodeBatchCommand(store.Conventions,
+        commands);
+    
+    // Execute the batch command,
+    // all the 3 commands defined in the list will be executed in a single transaction
+    await session.Advanced.RequestExecutor.ExecuteAsync(
+        batchCommand, session.Advanced.Context);
+    
+    // Can access the batch command results:
+    var commandResults = batchCommand.Result.Results;
+    Assert.Equal(3, commandResults.Length);
+
+    var blittable = (BlittableJsonReaderObject)commandResults[0];
+
+    blittable.TryGetMember("Type", out var commandType);
+    Assert.Equal("PUT", commandType.ToString());
+
+    blittable.TryGetMember("@id", out var documentId);
+    Assert.Equal("employees/999", documentId.ToString());
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Available batch commands
+
+**The following commands can be sent in a batch via `SingleNodeBatchCommand`**:  
+(These commands implement the `ICommandData` interface).
+ 
+   * BatchPatchCommandData
+   * CopyAttachmentCommandData
+   * CountersBatchCommandData
+   * DeleteAttachmentCommandData
+   * DeleteCommandData
+   * DeleteCompareExchangeCommandData
+   * DeletePrefixedCommandData
+   * ForceRevisionCommandData
+   * IncrementalTimeSeriesBatchCommandData
+   * JsonPatchCommandData
+   * MoveAttachmentCommandData
+   * PatchCommandData
+   * PutAttachmentCommandData
+   * PutCommandData
+   * PutCompareExchangeCommandData
+   * TimeSeriesBatchCommandData
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`public SingleNodeBatchCommand(
+       DocumentConventions conventions, 
+       IList<ICommandData> commands, 
+       BatchOptions options = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class BatchOptions
+\{
+    public TimeSpan? RequestTimeout \{ get; set; \}
+    public ReplicationBatchOptions ReplicationOptions \{ get; set; \}
+    public IndexBatchOptions IndexOptions \{ get; set; \}
+    public ShardedBatchOptions ShardedOptions \{ get; set; \}
+\}
+
+public class ReplicationBatchOptions
+\{
+    // If set to true,
+    // will wait for replication to be performed on at least a majority of DB instances. 
+    public bool WaitForReplicas \{ get; set; \}
+    
+    public int NumberOfReplicasToWaitFor \{ get; set; \}
+    public TimeSpan WaitForReplicasTimeout \{ get; set; \}
+    public bool Majority \{ get; set; \}
+    public bool ThrowOnTimeoutInWaitForReplicas \{ get; set; \}
+\}
+
+public sealed class IndexBatchOptions
+\{
+    public bool WaitForIndexes \{ get; set; \}
+    public TimeSpan WaitForIndexesTimeout \{ get; set; \}
+    public bool ThrowOnTimeoutInWaitForIndexes \{ get; set; \}
+    public string[] WaitForSpecificIndexes \{ get; set; \}
+\}
+
+public class ShardedBatchOptions
+\{
+    public ShardedBatchBehavior BatchBehavior \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`// Executing \`SingleNodeBatchCommand\` returns the following object:
+// ================================================================
+
+public class BatchCommandResult
+\{
+    public BlittableJsonReaderArray Results \{ get; set; \}
+    public long? TransactionIndex \{ get; set; \}
+\}
+
+public sealed class BlittableArrayResult
+\{
+    public BlittableJsonReaderArray Results \{ get; set; \}
+    public long TotalResults \{ get; set; \}
+    public string ContinuationToken \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

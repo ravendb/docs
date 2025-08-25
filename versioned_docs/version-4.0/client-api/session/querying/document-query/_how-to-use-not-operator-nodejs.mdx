@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
+
+<Admonition type="note" title="">
+`NOT` operator cannot be used alone without succeeding predicate.
+</Admonition>
+
+## Example I
+
+<TabItem value="not_1" label="not_1">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+const employees = await session.advanced
+    .documentQuery(\{ collection: "Employees" \})
+    .not()
+    .whereEquals("FirstName", "Robert")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="not_2" label="not_2">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+// and lastName NOT equals 'King'
+const employees = await session.advanced
+    .documentQuery(\{ collection: "Employees" \})
+    .not()
+    .openSubclause()
+    .whereEquals("FirstName", "Robert")
+    .andAlso()
+    .whereEquals("LastName", "King")
+    .closeSubclause()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+<TabItem value="not_3" label="not_3">
+<CodeBlock language="js">
+{`// load all entities from 'Employees' collection
+// where firstName NOT equals 'Robert'
+// and lastName NOT equals 'King'
+// identical to 'Example II' but 'whereNotEquals' is used
+const employees = await session.advanced
+    .documentQuery(\{ collection: "Employees" \})
+    .whereNotEquals("FirstName", "Robert")
+    .andAlso()
+    .whereNotEquals("LastName", "King")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+

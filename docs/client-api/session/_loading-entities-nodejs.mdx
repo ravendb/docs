@@ -1,0 +1,418 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* There are several methods that allow users to load documents from the database and convert them to entities.
+
+* This article covers the following methods:
+
+  - [Load](../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+  - [Stream](../../client-api/session/loading-entities.mdx#stream)
+
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+
+</Admonition>
+## Load
+
+The most basic way to load a single entity is to use session's `load()` method.
+
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="js">
+{`await session.load(id, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | Identifier of a document that will be loaded. |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<object>` | A `Promise` returning `object` or `null` if a document with a given ID does not exist. |
+
+### Example
+
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="js">
+{`const employee = await session.load("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
+</Admonition>
+
+
+
+## Load with Includes
+
+When there is a *relationship* between documents, those documents can be loaded in a single request call using the `include()` and `load()` methods.
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="js">
+{`session.include(path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | Field path in documents in which the server should look for 'referenced' documents. |
+
+| Return Value | |
+| ------------- | ----- |
+| `object{load()}` | The `include()` method by itself does not materialize any requests but returns loader containing methods such as `load()`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="js">
+{`// loading 'products/1'
+// including document found in 'supplier' property
+const product = await session
+    .include("supplier")
+    .load("products/1");
+
+const supplier = await session.load(product.supplier); // this will *not* make a server call
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Load - multiple entities
+
+To load multiple entities at once, use one of the following ways to call `load()`.
+
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
+<CodeBlock language="js">
+{`await session.load(idsArray, [documentType]);
+await session.load(idsArray, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idsArray** | string[] | Multiple document identifiers to load |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **options** | string | Options with the following properties |
+| **documentType** | function | A class construcor used for reviving the results' entities |
+| **includes** | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<{ [id]: object }>` | A `Promise` resolving to an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist |
+
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="js">
+{`const employees = await session.load(
+    ["employees/1", "employees/2", "employees/3"]);
+// \{
+//     "employees/1": \{ ... \},
+//     "employees/2": \{ ... \}
+//     "employees/3": \{ ... \}
+// \}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## LoadStartingWith
+
+To load multiple entities that contain a common prefix, use the `loadStartingWith()` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
+<CodeBlock language="js">
+{`await session.advanced.loadStartingWith(idPrefix, [options]);
+
+await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **options** | string | Options with the following properties |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<object[]>` | A `Promise` resolving to an array of entities matching given parameters |
+
+### Example I
+
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="js">
+{`// return up to 128 entities with Id that starts with 'employees'
+const result = await session
+    .advanced
+    .loadStartingWith("employees/", \{
+        start: 0,
+        pageSize: 128
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="js">
+{`// return up to 128 entities with Id that starts with 'employees/'
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+const result = await session
+    .advanced
+    .loadStartingWith("employees/", \{
+        matches: "1*|2*",
+        start: 0,
+        pageSize: 128
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ConditionalLoad
+
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+The method is accessible from the `session.Advanced` operations.  
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="js">
+{`await session.advanced.conditionalLoad(id, changeVector, clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | The identifier of a document to be loaded. |
+| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| ValueTuple `(object, changeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.
+If the change vectors match, the method returns `default` as the entity, and the current change vector.
+If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="js">
+{`const session = store.openSession();
+const user = new User("Bob");
+await session.store(user, "users/1");
+await session.saveChanges();
+
+const changeVector = session.advanced.getChangeVectorFor(user);
+
+\{
+    // New session which does not track our User entity
+    // The given change vector matches
+    // the server-side change vector
+    // Does not load the document
+    const session = store.openSession();
+    const result1 = await session.advanced
+        .conditionalLoad("users/1", changeVector, User);
+
+    // Modify the document
+    user.name = "Bob Smith";
+    await session.store(user);
+    await session.saveChanges();
+
+    // Change vectors do not match
+    // Loads the document
+    const result2 = await session.advanced
+        .conditionalLoad("users/1", changeVector, User);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Stream
+
+Entities can be streamed from the server using the `stream()` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="js">
+{`// stream query results
+await session.stream(query, [statsCallback]);
+
+// stream documents with ID starting with
+await session.stream(idPrefix, [options]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **query** | query object | a query obtained from a call to `session.query()` or `session.advanced.rawQuery()` |
+| **options** | string | Options with the following properties |
+| **startsWith** | string | prefix for which documents should be streamed |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<Readable>` | A `Promise` resolving to readable stream with query results |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="js">
+{`// stream() returns a Node.js Readable
+const stream = await session.advanced.stream("employees/");
+
+stream.on("data", data => \{
+    // Employee \{ name: 'Anna', id: 'employees/1-A' \}
+\});
+
+stream.on("error", err => \{
+    // handle errors
+\});
+
+stream.on("end", () => \{
+    // stream ended
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example 2
+
+Fetch documents for a ID prefix directly into a writable stream:
+
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="js">
+{`const employeesFile = fs.createWriteStream("employees.json");
+await session.advanced.loadStartingWithIntoStream("employees/", employeesFile);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="">
+Entities loaded using `stream()` will be transient (not attached to session).
+</Admonition>
+
+
+
+## IsLoaded
+
+Use the `isLoaded` method from the `advanced` session operations
+To check if an entity is attached to a session (e.g. because it's been 
+previously loaded).  
+  
+<Admonition type="note" title="">
+`isLoaded` checks if an attempt to load a document has been already made 
+during the current session, and returns `true` even if such an attemp was 
+made and failed.  
+If, for example, the `load` method was used to load `employees/3` during 
+this session and failed because the document has been previously deleted, 
+`isLoaded` will still return `true` for `employees/3` for the remainder 
+of the session just because of the attempt to load it.  
+</Admonition>
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="js">
+{`session.advanced.isLoaded(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | Entity ID for which the check should be performed. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if an entity with a given ID is loaded. |
+
+### Example
+
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="js">
+{`session.advanced.isLoaded("employees/1"); // false
+const employee = await session.load("employees/1");
+session.advanced.isLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+### On entities loading, JS classes and the **documentType** parameter
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
+
+<Admonition type="info" title="Entity type registration " id="entity-type-registration" href="#entity-type-registration">
+In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+<TabItem value="loading_entities_8" label="loading_entities_8">
+<CodeBlock language="js">
+{`class Pet \{
+    constructor(name) \{
+        this.name = name;
+    \}
+\}
+
+class Person \{
+    constructor(name, pet) \{
+        this.name = name;
+        this.pet = pet;
+    \}
+\}
+
+documentStore.conventions.registerEntityType(Person);
+documentStore.conventions.registerEntityType(Pet);
+// ...
+
+documentStore.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
+
+

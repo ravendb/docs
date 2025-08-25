@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutAttachment** is used to insert or update an attachment in a database.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/static/\{attachmentName\} \\
+	-X PUT
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| Attachment data |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| **If-None-Match** | No | current attachment etag, used for concurrency checks |
+| any header | No |  Metadata |
+
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `201` | Created |
+
+| Header | Description |
+| -------- | - |
+| **ETag** | Attachment ETag |
+
+---
+
+### Example I
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X PUT "http://localhost:8080/databases/NorthWind/static/albums/holidays/sea.jpg"  \\
+	--header "Description: Holidays 2014" \\
+	-d @sea.jpg
+
+< HTTP/1.1 201 Created
+< ETag: "02000000-0000-0004-0000-000000000002"
+< Location: /static/albums/holidays/sea.jpg
+`}
+</CodeBlock>
+</TabItem>
+
+

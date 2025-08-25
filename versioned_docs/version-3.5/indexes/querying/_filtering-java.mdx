@@ -1,0 +1,427 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../client-api/session/querying/how-to-query.mdx) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) from advanced session operations or low-level [Command](../../client-api/commands/querying/how-to-query-a-database.mdx)). Following example demonstrates how to add a simple conditions to query using all those methods.
+
+## Where
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .query(Employee.class, Employees_ByFirstAndLastName.class)   //query 'Employees/ByFirstAndLastName' index
+  .where(e.firstName.eq("Robert").and(e.lastName.eq("King")))  // filtering predicates
+  .toList();     // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .advanced()
+  .documentQuery(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
+  .whereEquals(e.firstName, "Robert") // filtering predicates
+  .andAlso()                       // by default OR is between each condition
+  .whereEquals(e.lastName, "King") // filtering predicates
+  .toList();                     // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Employees/ByFirstAndLastName",
+    new IndexQuery("FirstName:Robert AND LastName:King"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public Employees_ByFirstAndLastName() {
+  map =
+   " from employee in docs.Employees " +
+   " select new                              " +
+   " {                                       " +
+   "     FirstName = employee.FirstName,     " +
+   "     LastName = employee.LastName        " +
+   " };                                      ";
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - numeric property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .query(Product.class, Products_ByUnitsInStock.class) // query 'Products/ByUnitsInStock' index
+  .where(p.unitsInStock.gt(10)) // filtering predicates
+  .toList();  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QProduct p = QProduct.product;
+List<Product> results = session
+  .advanced()
+  .documentQuery(Product.class, Products_ByUnitsInStock.class) // query 'Products/ByUnitsInStock' index
+  .whereGreaterThan(p.unitsInStock, 50) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`store
+  .getDatabaseCommands()
+  .query("Products/ByUnitsInStock",
+    new IndexQuery("UnitsInStock_Range:{Ix50 TO NULL}"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+  public Products_ByUnitsInStock() {
+    map =
+     " from product in docs.Products " +
+     " select new                           " +
+     "   {                                  " +
+     "       product.UnitsInStock           " +
+     "   };                                 ";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="The importance of types in queries" id="the-importance-of-types-in-queries" href="#the-importance-of-types-in-queries">
+
+Let's consider the following index and queries:
+
+<Tabs groupId='languageSyntax'>
+
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByTotalPrice extends AbstractIndexCreationTask {
+  @QueryEntity
+  public static class Result {
+    public double totalPrice;
+  }
+
+  public Orders_ByTotalPrice() {
+    map = "from order in docs.orders select new { TotalPrice = order.Lines.Sum(x => (x.Quantity * x.PricePerUnit) * (1 - x.Discount)) }";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QFiltering_Orders_ByTotalPrice_Result x = QFiltering_Orders_ByTotalPrice_Result.result;
+List<Orders_ByTotalPrice.Result> results = session.query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+        .where(x.totalPrice.gt(50))
+        .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QFiltering_Orders_ByTotalPrice_Result x = QFiltering_Orders_ByTotalPrice_Result.result;
+List<Orders_ByTotalPrice.Result> results = session.advanced().documentQuery(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+        .whereGreaterThan(x.totalPrice, 50.0)
+        .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().query("Orders/ByTotalPrice", new IndexQuery("TotalPrice_Range:{Dx50 TO NULL}"));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Note that `PricePerUnit` is of type `double` in `Order` entity, so indexed `TotalPrice` value  will be `double` too. In oder to
+properly query such index, we need to preserve types in queries. That is why `Orders_ByTotalPrice.Result.TotalPrice` is `double` and 
+`IndexQuery.Query` has `Dx` prefix specified before the actual value. Types of properties in predicates have to match types of indexed fields.
+
+* More about the need to use `OfType` here, you can find in [projections article](../../client-api/session/querying/how-to-perform-projection.mdx#oftype-(as)---simple-projection).
+
+</Admonition>
+
+## Where - nested property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QOrder o = QOrder.order;
+List<Order> results = session
+  .query(Order.class, Order_ByOrderLinesCount.class) // query 'Order/ByOrderLinesCount' index
+  .where(o.lines.size().lt(50))  // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QOrder o = QOrder.order;
+session
+  .advanced()
+  .documentQuery(Order.class, Order_ByOrderLinesCount.class) // query 'Order/ByOrderLinesCount' index
+  .whereGreaterThan(o.lines.size(), 50)   // filtering predicates
+  .toList();  // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Order/ByOrderLinesCount",
+    new IndexQuery("Lines.Count_Range:{Ix50 TO NULL}"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Order_ByOrderLinesCount extends AbstractIndexCreationTask {
+  public Order_ByOrderLinesCount() {
+    map =
+      " from order in docs.Orders     " +
+      " select new                         " +
+      " {                                  " +
+      "   Lines_Count = order.Lines.Count  " +
+      " };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + Any
+
+`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on a values from this collection. For example, let's retrieve all orders that contain a `OrderLine` with a given product.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QOrder o = QOrder.order;
+QOrderLine l = QOrderLine.orderLine;
+List<Order> results = session
+  .query(Order.class, Order_ByOrderLines_ProductName.class) // query 'Order/ByOrderLines/ProductName' index
+  .where(o.lines.any(l.productName.eq("Teatime Chocolate Biscuits"))) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Order> results = session
+  .advanced()
+  .documentQuery(Order.class, Order_ByOrderLines_ProductName.class) // query 'Order/ByOrderLines/ProductName' index
+  .whereEquals("Lines,ProductName", "Teatime Chocolate Biscuits") // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Order/ByOrderLinesCount",
+    new IndexQuery("Lines,ProductName:\\"Teatime Chocolate Biscuits\\""));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Order_ByOrderLines_ProductName extends AbstractIndexCreationTask {
+  public Order_ByOrderLines_ProductName() {
+    map =
+     " from order in docs.Orders                                  " +
+     " select new                                                      " +
+     " {                                                               " +
+     "     Lines_ProductName = order.Lines.Select(x => x.ProductName)  " +
+     " }; ";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + In
+
+When you want to check single value against multiple values `in` operator can become handy. E.g. to retrieve all employees that `FirstName` is either `Robert` or `Nancy` we can issue following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .query(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
+  .where(e.firstName.in("Robert", "Nancy")) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QEmployee e = QEmployee.employee;
+List<Employee> results = session
+  .advanced()
+  .documentQuery(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
+  .whereIn(e.firstName, Arrays.asList("Robert", "Nancy")) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("Employees/ByFirstAndLastName",
+       new IndexQuery("@in<FirstName>:(Robert, Nancy)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public Employees_ByFirstAndLastName() {
+  map =
+   " from employee in docs.Employees " +
+   " select new                              " +
+   " {                                       " +
+   "     FirstName = employee.FirstName,     " +
+   "     LastName = employee.LastName        " +
+   " };                                      ";
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + ContainsAny
+
+To check if enumeration contains **any** of the values from a specified collection you can use `containsAny` method.
+
+Let's assume that we want to return all `BlogPosts` that contain any of the specified `Tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QBlogPost b = QBlogPost.blogPost;
+List<BlogPost> results = session
+  .query(BlogPost.class, BlogPosts_ByTags.class) // query 'BlogPosts/ByTags' index
+  .where(b.tags.containsAny(Arrays.asList("Development", "Research"))) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<BlogPost> results = session
+  .advanced()
+  .documentQuery(BlogPost.class, BlogPosts_ByTags.class) // query 'BlogPosts/ByTags' index
+  .containsAny("Tags", Arrays.<Object>asList("Development", "Research")) // filtering predicates
+  .toList(); // materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`QueryResult result = store
+  .getDatabaseCommands()
+  .query("BlogPosts/ByTags",
+    new IndexQuery("(Tags:Development OR Tags:Research)"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByTags extends AbstractIndexCreationTask {
+  public BlogPosts_ByTags() {
+    map =
+     " from post in docs.Posts " +
+     " select new                  " +
+     "  {                          " +
+     "      post.Tags              " +
+     "  };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + ContainsAll
+
+To check if enumeration contains **all** of the values from a specified collection you can use `containsAll` method.
+
+Let's assume that we want to return all `BlogPosts` that contain all of the specified `Tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QFiltering_Orders_ByTotalPrice_Result r = QFiltering_Orders_ByTotalPrice_Result.result;
+List<Orders_ByTotalPrice.Result> results = session
+    .query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class).where(r.totalPrice.gt(50)).toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`QFiltering_Orders_ByTotalPrice_Result r = QFiltering_Orders_ByTotalPrice_Result.result;
+List<Orders_ByTotalPrice.Result> results = session.advanced()
+    .documentQuery(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+    .whereGreaterThan(r.totalPrice, 50.0).toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().query("Orders/ByTotalPrice", new IndexQuery("TotalPrice_Range:{Dx50 TO NULL}"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByTags extends AbstractIndexCreationTask {
+  public BlogPosts_ByTags() {
+    map =
+     " from post in docs.Posts " +
+     " select new                  " +
+     "  {                          " +
+     "      post.Tags              " +
+     "  };";
+  }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="">
+Underneath, `Query` and `DocumentQuery` are converting predicates to `IndexQuery` class so they can issue a query from **low-level command method**.
+</Admonition>
+
+<Admonition type="note" title="">
+By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](../../indexes/querying/paging.mdx).
+</Admonition>
+
+

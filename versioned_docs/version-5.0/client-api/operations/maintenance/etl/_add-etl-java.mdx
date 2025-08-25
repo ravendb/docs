@@ -1,0 +1,95 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can add ETL task by using **AddEtlOperation**.
+
+## Syntax
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="java">
+{`public AddEtlOperation(EtlConfiguration<T> configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+## Example - Add Raven ETL
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="java">
+{`RavenEtlConfiguration configuration = new RavenEtlConfiguration();
+configuration.setName("Employees ETL");
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setScript("loadToEmployees (\{\\n" +
+    "  Name: this.FirstName + ' ' + this.LastName,\\n" +
+    "  Title: this.Title\\n" +
+    "\});");
+
+configuration.setTransforms(Arrays.asList(transformation));
+AddEtlOperation<RavenConnectionString> operation = new AddEtlOperation<>(configuration);
+AddEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Sql ETL
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="java">
+{`SqlEtlConfiguration configuration = new SqlEtlConfiguration();
+SqlEtlTable table1 = new SqlEtlTable();
+table1.setTableName("Orders");
+table1.setDocumentIdColumn("Id");
+table1.setInsertOnlyMode(false);
+
+SqlEtlTable table2 = new SqlEtlTable();
+table2.setTableName("OrderLines");
+table2.setDocumentIdColumn("OrderId");
+table2.setInsertOnlyMode(false);
+
+configuration.setSqlTables(Arrays.asList(table1, table2));
+configuration.setName("Order to SQL");
+configuration.setConnectionStringName("sql-connection-string-name");
+
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setCollections(Arrays.asList("Orders"));
+transformation.setScript("var orderData = \{\\n" +
+    "    Id: id(this),\\n" +
+    "    OrderLinesCount: this.Lines.length,\\n" +
+    "    TotalCost: 0\\n" +
+    "\};\\n" +
+    "\\n" +
+    "    for (var i = 0; i < this.Lines.length; i++) \{\\n" +
+    "        var line = this.Lines[i];\\n" +
+    "        orderData.TotalCost += line.PricePerUnit;\\n" +
+    "\\n" +
+    "        // Load to SQL table 'OrderLines'\\n" +
+    "        loadToOrderLines(\{\\n" +
+    "            OrderId: id(this),\\n" +
+    "            Qty: line.Quantity,\\n" +
+    "            Product: line.Product,\\n" +
+    "            Cost: line.PricePerUnit\\n" +
+    "        \});\\n" +
+    "    \}\\n" +
+    "    orderData.TotalCost = Math.round(orderData.TotalCost  * 100) / 100;\\n" +
+    "\\n" +
+    "    // Load to SQL table 'Orders'\\n" +
+    "    loadToOrders(orderData)");
+
+configuration.setTransforms(Arrays.asList(transformation));
+
+AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<>(configuration);
+
+AddEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+

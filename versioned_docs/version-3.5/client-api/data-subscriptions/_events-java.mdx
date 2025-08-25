@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Data subscription events
+
+The `Subscription` instance exposes a few events which allow to provide control over the data stream. There are four subscription events that you can hook up:
+
+<TabItem value="events" label="events">
+<CodeBlock language="java">
+{`void addBeforeBatchHandler(EventHandler<VoidArgs> handler);
+
+void removeBeforeBatchHandler(EventHandler<VoidArgs> handler);
+
+void addAfterBatchHandler(EventHandler<Subscription.DocumentProcessedEventArgs> handler);
+
+void removeAfterBatchHandler(EventHandler<Subscription.DocumentProcessedEventArgs> handler);
+
+void addBeforeAcknowledgmentHandler(EventHandler<VoidArgs> handler);
+
+void removeBeforeAcknowledgmentHandler(EventHandler<VoidArgs> handler);
+
+void addAfterAcknowledgmentHandler(EventHandler<Subscription.LastProcessedEtagEventArgs> handler);
+
+void removeAfterAcknowledgmentHandler(EventHandler<Subscription.LastProcessedEtagEventArgs> handler);
+`}
+</CodeBlock>
+</TabItem>
+
+Each of them is invoked on a different level of documents processing:
+
+- `beforeBatch` - called when a first document from the batch is about to be processed by handlers, if the batch is empty then the event is not raised,
+- `beforeAcknowledgment` - triggered after processing all documents in batch, the returned value determines if the batch can be acknowledged (default: `true`),
+- `afterAcknowledgment` - invoked after the batch processed acknowledgment had been sent to the server,
+- `afterBatch` - called after processing all docs from the batch.
+
+

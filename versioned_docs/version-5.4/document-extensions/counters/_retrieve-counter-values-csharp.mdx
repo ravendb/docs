@@ -1,0 +1,118 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `CountersFor.Get` to retrieve the value of a **single Counter**,  
+  or `CountersFor.GetAll` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values.mdx#get-a-single-counter)  
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values.mdx#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values.mdx#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values.mdx#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
+
+</Admonition>
+## Get a single Counter's value
+
+#### Get usage:  
+
+* Open a session
+* Create an instance of `CountersFor`.
+    * Either pass `CountersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).
+* Call `CountersFor.Get` to retrieve the current value of a single Counter.
+#### Get example:  
+
+<TabItem value="counters_region_Get" label="counters_region_Get">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Use \`CountersFor.Get\` to retrieve a Counter's value
+    var DaysLeft = documentCounters.Get("DaysLeftForSale");
+    Console.WriteLine("Days Left For Sale: " + DaysLeft);
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get syntax:  
+
+<TabItem value="Get-definition" label="Get-definition">
+<CodeBlock language="csharp">
+{`long Get(string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counterName` | string | Counter's name |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `long`       | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### GetAll usage: 
+
+* Open a session.  
+* Create an instance of `CountersFor`.
+    * Either pass `CountersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).
+* Call `CountersFor.GetAll` to retrieve the names and values of all counters associated with the document.
+#### GetAll example:  
+
+<TabItem value="counters_region_GetAll" label="counters_region_GetAll">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+    var counters = documentCounters.GetAll();
+
+    // list counters' names and values
+    foreach (var counter in counters)
+    \{
+        Console.WriteLine("counter name: " + counter.Key + ", counter value: " + counter.Value);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### GetAll syntax:  
+
+<TabItem value="GetAll-definition" label="GetAll-definition">
+<CodeBlock language="csharp">
+{`Dictionary<string, long?> GetAll();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type              | Description                     |
+|--------------------------|---------------------------------|
+| Dictionary&lt;string, long&gt; | Map of Counter names and values |
+
+
+
+

@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Custom requests can be send using HttpJsonRequestFactory which can be accessed by `getJsonRequestFactory()` in `DocumentStore`. This is the same factory that client uses for communication.
+
+Worth knowing is that factory might not always be accessible. To check if document store contains factory use `hasJsonRequestFactory`. In most of cases value of this property will be `true`. 
+
+## Example
+
+<TabItem value="custom_request_1" label="custom_request_1">
+<CodeBlock language="java">
+{`String key = "employees/1";
+
+// http://localhost:8080/databases/Northwind/docs/employees/1
+String forDatabase = RavenUrlExtensions.forDatabase(store.getUrl(), "Northwind");
+String url = forDatabase + "/docs/" + key;
+
+IDatabaseCommands commands = store.getDatabaseCommands();
+HttpJsonRequest request = store
+  .getJsonRequestFactory()
+  .createHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, HttpMethods.GET, null, commands.getPrimaryCredentials(), store.getConventions()));
+
+RavenJToken json = request.readResponseJson();
+JsonDocument jsonDocument = SerializationHelper.deserializeJsonDocument(key, json, request.getResponseHeaders(), request.getResponseStatusCode());
+`}
+</CodeBlock>
+</TabItem>
+
+

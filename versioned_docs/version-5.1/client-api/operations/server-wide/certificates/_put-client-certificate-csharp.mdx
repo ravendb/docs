@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can register an existing client certificate using **PutClientCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="cert_put_1" label="cert_put_1">
+<CodeBlock language="csharp">
+{`public PutClientCertificateOperation(
+    string name, 
+    X509Certificate2 certificate, 
+    Dictionary<string, DatabaseAccess> permissions, 
+    SecurityClearance clearance)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_2" label="cert_1_2">
+<CodeBlock language="csharp">
+{`// The role assigned to the certificate:
+public enum SecurityClearance
+\{
+    ClusterAdmin,
+    ClusterNode,
+    Operator,
+    ValidUser
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_3" label="cert_1_3">
+<CodeBlock language="csharp">
+{`// The access level for a 'ValidUser' security clearance:
+public enum DatabaseAccess
+\{
+    Read,
+    ReadWrite,
+    Admin
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **certificate** | X509Certificate2 | Certificate to register |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+
+## Example
+
+<TabItem value="cert_put_2" label="cert_put_2">
+<CodeBlock language="csharp">
+{`X509Certificate2 certificate = new X509Certificate2("c:\\\\path_to_pfx_file");
+store.Maintenance.Server.Send(
+    new PutClientCertificateOperation(
+        "cert1", certificate, null, SecurityClearance.ClusterAdmin));
+`}
+</CodeBlock>
+</TabItem>
+
+

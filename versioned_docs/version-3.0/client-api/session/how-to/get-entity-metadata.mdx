@@ -5,84 +5,24 @@ sidebar_label: ...get entity metadata
 sidebar_position: 6
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetEntityMetadataCsharp from './_get-entity-metadata-csharp.mdx';
+import GetEntityMetadataJava from './_get-entity-metadata-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to get entity metadata?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-When document is downloaded from server it contains various metadata information e.g. Id or current etag. This information is stored in session and available for each entity using `GetMetadataFor` method from `Advanced` session operations.
-
-## Syntax
-
-<TabItem value="get_metadata_1" label="get_metadata_1">
-<CodeBlock language="csharp">
-{`IMetadataDictionary GetMetadataFor<T>(T instance);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which metadata will be returned. |
-
-| Return Value | |
-| ------------- | ----- |
-| RavenJObject | Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
-
-## Example
-
-<TabItem value="get_metadata_2" label="get_metadata_2">
-<CodeBlock language="csharp">
-{`var employee = session.Load<Employee>("employees/1-A");
-var metadata = session.Advanced.GetMetadataFor(employee);
-`}
-</CodeBlock>
-</TabItem>
-
+   <GetEntityMetadataCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-When document is downloaded from server it contains various metadata information e.g. Id or current etag. This information is stored in session and available for each entity using `getMetadataFor` method from `advanced` session operations.
-
-## Syntax
-
-<TabItem value="get_metadata_1" label="get_metadata_1">
-<CodeBlock language="java">
-{`<T> IMetadataDictionary getMetadataFor(T instance);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which metadata will be returned. |
-
-| Return Value | |
-| ------------- | ----- |
-| RavenJObject | Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
-
-## Example
-
-<TabItem value="get_metadata_2" label="get_metadata_2">
-<CodeBlock language="java">
-{`Employee employee = session.load(Employee.class, "employees/1-A");
-IMetadataDictionary metadata = session.advanced().getMetadataFor(employee);
-`}
-</CodeBlock>
-</TabItem>
-
+   <GetEntityMetadataJava />
 </LanguageContent>
+
 
 <!---
 

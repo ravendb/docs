@@ -1,0 +1,26 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**StartIndexingOperation** is used to resume indexing for entire database. 
+
+### Syntax
+
+<TabItem value="start_1" label="start_1">
+<CodeBlock language="csharp">
+{`public StartIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="start_2" label="start_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new StartIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+

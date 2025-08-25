@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Put** is used to insert or update a document in a database.
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="csharp">
+{`public PutDocumentCommand(string id, string changeVector, BlittableJsonReaderObject document)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | string | unique ID under which document will be stored |
+| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.EntityToBlittable.ConvertEntityToBlittable` to convert your entity to a `BlittableJsonReaderObject` |
+
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="csharp">
+{`// Create a new document
+var doc = new Category
+\{
+    Name = "My category",
+    Description = "My category description"
+\};
+// Create metadata on the document
+var docInfo = new DocumentInfo
+\{
+    Collection = "Categories"
+\};
+// Convert your entity to a BlittableJsonReaderObject
+var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
+
+// The Put command (parameters are document ID, changeVector check is null, the document to store)
+var command = new PutDocumentCommand("categories/999", null, blittableDoc);
+// RequestExecutor sends the command to the server
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+
+

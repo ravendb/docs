@@ -5,117 +5,24 @@ sidebar_label: ...get document metadata only
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetDocumentMetadataOnlyCsharp from './_get-document-metadata-only-csharp.mdx';
+import GetDocumentMetadataOnlyJava from './_get-document-metadata-only-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: Documents: How to Get Document Metadata Only
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetDocumentsCommand** can be used to retrieve the metadata of documents.
-
-## Syntax
-
-<TabItem value="head_1" label="head_1">
-<CodeBlock language="csharp">
-{`public GetDocumentsCommand(string id, string[] includes, bool metadataOnly)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="head_3" label="head_3">
-<CodeBlock language="csharp">
-{`public GetDocumentsCommand(string[] ids, string[] includes, bool metadataOnly)
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** / **ids** | string / string[] | IDs of documents to get metadata for |
-| **includes** | string | Related documents to fetch along with the document |
-| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
-
-## Example
-
-<TabItem value="head_2" label="head_2">
-<CodeBlock language="csharp">
-{`var command = new GetDocumentsCommand("orders/1-A", null, metadataOnly: true);
-session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-var result = (BlittableJsonReaderObject)command.Result.Results[0];
-var documentMetadata = (BlittableJsonReaderObject)result["@metadata"];
-
-// Print out all the metadata properties.
-foreach (var propertyName in documentMetadata.GetPropertyNames())
-\{
-    documentMetadata.TryGet<object>(propertyName, out var metaPropValue);
-    Console.WriteLine("\{0\} = \{1\}", propertyName, metaPropValue);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDocumentMetadataOnlyCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetDocumentsCommand** can be used to retrieve the metadata of documents.
-
-## Syntax
-
-<TabItem value="head_1" label="head_1">
-<CodeBlock language="java">
-{`public GetDocumentsCommand(String id, String[] includes, boolean metadataOnly)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="head_3" label="head_3">
-<CodeBlock language="java">
-{`public GetDocumentsCommand(String[] ids, String[] includes, boolean metadataOnly)
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** / **ids** | String / String[] | IDs of documents to get metadata for |
-| **includes** | String | Related documents to fetch along with the document |
-| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
-
-## Example
-
-<TabItem value="head_2" label="head_2">
-<CodeBlock language="java">
-{`GetDocumentsCommand command = new GetDocumentsCommand("orders/1-A", null, true);
-session.advanced().getRequestExecutor().execute(command);
-
-JsonNode result = command.getResult().getResults().get(0);
-ObjectNode documentMetadata = (ObjectNode) result.get("@metadata");
-
-// Print out all the metadata properties.
-Iterator<String> fieldIterator = documentMetadata.fieldNames();
-
-while (fieldIterator.hasNext()) \{
-    String field = fieldIterator.next();
-    JsonNode value = documentMetadata.get(field);
-    System.out.println(field + " = " + value);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDocumentMetadataOnlyJava />
 </LanguageContent>
+
 
 <!---
 ### Commands

@@ -5,156 +5,24 @@ sidebar_label: Search
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SearchOverviewCsharp from './_search-overview-csharp.mdx';
+import SearchOverviewHttp from './_search-overview-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: SearchAsync
-
-Use the **SearchAsync** method to fetch the list of files matching the specified query.
-
-
-
-<TabItem value="search_1" label="search_1">
-<CodeBlock language="csharp">
-{`Task<SearchResults> SearchAsync(string query, string[] sortFields = null, int start = 0, int pageSize = 1024);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **query** | string | The query containing search criteria (you can use the [built-in fields](../../../../indexing.mdx) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html) |
-| **sortFields** | string[] | The fields to sort by |
-| **start** | int | The start number to read index results |
-| **pageSize** | int | The max number of results that will be returned |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;SearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`SearchResults`](../../../../../glossary/search-results.mdx) object which represents results of a specified query. |
-
-## Example I
-
-In order to get the list of files that has `Everyone` value under the `AllowRead` metadata key returned in ascending order by a full file name (stored under built-in `__key` field), you need to build the following query:
-
-<TabItem value="search_2" label="search_2">
-<CodeBlock language="csharp">
-{`SearchResults results = await store
-	.AsyncFilesCommands
-	.SearchAsync("AllowRead:Everyone", new []\{ "__key"\});
-`}
-</CodeBlock>
-</TabItem>
-
-<Admonition type="info" title="Results order" id="results-order" href="#results-order">
-There is a convention which determines the ordering type: *ascending* or *descending*.
-The usage of `+` symbol or no prefix before a name of the sorted field means that ascending sorting will be applied. In order to retrieve results in descending order you need to add `-` sign before the field name.
-</Admonition>
-
-## Example II
-
-<TabItem value="search_3" label="search_3">
-<CodeBlock language="csharp">
-{`SearchResults results = await store
-	.AsyncFilesCommands
-	.SearchAsync(
-		"AllowRead:Everyone", 
-		new[] \{ "__key", "-__fileName" \} // sort ascending by full path, then by file name in descending order
-	);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SearchOverviewCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: Search
-
-Use the **GET** method on `/search` endpoint to fetch the list of files matching the specified query.
-
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/search?query=\{query\}&start=\{start\}&pageSize=\{pageSize\}&sort=\{sort\}  \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **query** | Yes | The query containing search criteria (you can use the [built-in fields](../../../../indexing.mdx) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html) |
-| **sort** | No | The fields to sort by |
-| **start** | No | The start number to read index results |
-| **pageSize** | No | The max number of results that will be returned  (Default: 25)|
-
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **JSON** | JSON object representing [search results](../../../../../glossary/search-results.mdx)|
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-X GET http://localhost:8080/fs/NorthwindFS/search?query=AllowRead:Everyone&sort=__key
-< HTTP/1.1 200 OK
-\{
-    "Files":[
-        \{
-            "Metadata":\{
-                // ...
-            \},
-            "OriginalMetadata":\{
-                // ...
-            \},
-            "TotalSize":1202187,
-            "UploadedSize":1202187,
-            "LastModified":"2015-04-11T08:22:35.5854653+00:00",
-            "CreationDate":"2015-04-10T12:34:04.5128067+00:00",
-            "Etag":"00000000-0000-0007-0000-000000000001",
-            "FullPath":"/books/Inside.RavenDB.3.0.pdf",
-            "Name":"Inside.RavenDB.3.0.pdf",
-            "Extension":".pdf",
-            "Directory":"/books",
-            "IsTombstone":false,
-            "HumaneTotalSize":"1.15 MBytes"
-        \}
-    ],
-    "FileCount":1,
-    "Start":0,
-    "PageSize":25
-\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <SearchOverviewHttp />
 </LanguageContent>
+
 
 <!---
 - [Indexing](../../../../indexing)

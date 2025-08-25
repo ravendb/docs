@@ -1,0 +1,83 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are the differences between them?
+
+`DocumentQuery` is the lower level API that we use to query RavenDB, but it does not support LINQ, the mandatory data access solution in .NET. We created `Query` to be the LINQ endpoint for RavenDB. 
+
+The entire LINQ API is a wrapper of `DocumentQuery` and is built on top on that. 
+When you use `Query`, it always is translated into the `DocumentQuery` object, which then builds a RQL-syntax query that is sent to the server.
+However, we still expose `DocumentQuery` in advanced options to allow the users to have the full power of RQL available to them. 
+
+## Immutability
+
+`DocumentQuery` is mutable while `Query` is immutable. You might get different results if you try to *reuse* a query. The usage of the `Query` method in the following example:
+
+<TabItem value="immutable_query" label="immutable_query">
+<CodeBlock language="csharp">
+{`IRavenQueryable<User> query = session
+    .Query<User>()
+    .Where(x => x.Name.StartsWith("A"));
+
+IRavenQueryable<User> ageQuery = query
+    .Where(x => x.Age > 21);
+
+IRavenQueryable<User> eyeQuery = query
+    .Where(x => x.EyeColor == "blue");
+`}
+</CodeBlock>
+</TabItem>
+
+will result that the queries will be translated into following Lucene-syntax queries:
+
+`query - from Users where startsWith(Name, 'A')`
+
+`ageQuery - from Users where startsWith(Name, 'A') and Age > 21`
+
+`eyeQuery - from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+
+The similar usage of `DocumentQuery`:
+
+<TabItem value="mutable_lucene_query" label="mutable_lucene_query">
+<CodeBlock language="csharp">
+{`IDocumentQuery<User> documentQuery = session
+    .Advanced
+    .DocumentQuery<User>()
+    .WhereStartsWith(x => x.Name, "A");
+
+IDocumentQuery<User> ageDocumentQuery = documentQuery
+    .WhereGreaterThan(x => x.Age, 21);
+
+IDocumentQuery<User> eyeDocumentQuery = documentQuery
+    .WhereEquals(x => x.EyeColor, "blue");
+
+// here all of the DocumentQuery variables are the same references
+`}
+</CodeBlock>
+</TabItem>
+
+`documentQuery - from Users where startsWith(Name, 'A')` (before creating `ageQuery`)
+
+`ageLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21` (before creating `eyeDocumentQuery`)
+
+`eyeLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+
+In results, all created Lucene queries are the same query (actually the same instance). This is an important hint that you should be aware if you are going to reuse `DocumentQuery`.
+
+## Default Query Operator
+
+Starting from version 4.0, the `Query` and `DocumentQuery` have an identical default operator `AND` (previously `Query` used `AND` and `DocumentQuery` used `OR`). You are able to change this behavior by using `UsingDefaultOperator`:
+        
+<TabItem value="default_operator" label="default_operator">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<User>()
+    .UsingDefaultOperator(QueryOperator.Or);
+`}
+</CodeBlock>
+</TabItem>
+
+

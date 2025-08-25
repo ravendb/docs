@@ -1,0 +1,105 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Update an entity by retrieving it, editing its properties, and applying your changes using `SaveChanges()`.  
+
+- [Update](../../client-api/session/updating-entities.mdx#update)
+## Update
+
+* Retrieve the entity you wish to update, using a [load](../../client-api/session/loading-entities.mdx#load) 
+  method or a [query](../../client-api/session/querying/how-to-query.mdx#sessionquery).  
+* Edit the properties you wish to change.  
+* Call `SaveChanges()` to apply the update.  
+### Example I
+
+In this example we load a company profile and change its **type** property to **private**.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    // Load a document
+    Company company = session.Load<Company>("companies/KitchenAppliances");
+
+    // Update the company's type
+    company.Type = Company.CompanyType.Private;
+
+    // Apply changes
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load a document
+    Company company = await asyncSession.LoadAsync<Company>("companies/KitchenAppliances");
+
+    // Update the company's type
+    company.Type = Company.CompanyType.Private;
+
+    // Apply changes
+    await asyncSession.SaveChangesAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+### Example II
+
+Here we run a query to find companies whose type is **public**, and change 
+the type of matching companies to **private**.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    // Query: find public companies
+    IRavenQueryable<Company> query = session.Query<Company>()
+        .Where(c => c.Type == Company.CompanyType.Public);
+
+    var result = query.ToList();
+
+    // Change company type from public to private
+    for (var l = 0; l < result.Count; l++)
+    {
+        result[l].Type = Company.CompanyType.Private;
+    }
+
+    // Apply changes
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    // Query: find public companies
+    IRavenQueryable<Company> query = asyncSession.Query<Company>()
+        .Where(c => c.Type == Company.CompanyType.Public);
+
+    var result = await query.ToListAsync();
+
+    // Change company type from public to private
+    for (var l = 0; l < result.Count; l++)
+    {
+        result[l].Type = Company.CompanyType.Private;
+    }
+
+    // Apply changes
+    await asyncSession.SaveChangesAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+
+

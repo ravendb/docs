@@ -1,0 +1,254 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Since RavenDB 4.0, the query optimizer supports dynamic group by queries and automatically creates auto map-reduce indexes.
+
+You can create a dynamic query that does an aggregation by using the `groupBy()` method.
+
+The supported aggregation operations are:
+
+- `count`
+- `sum`
+
+&lt;br /&gt;
+
+## Group By Single Field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const orders = await session.query({ collection: "Orders" })
+    .groupBy("ShipTo.Country")
+    .selectKey("ShipTo.Country", "Country")
+    .selectSum(new GroupByField("Lines[].Quantity", "OrderedQuantity"))
+    .ofType(CountryAndQuantity)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by ShipTo.City
+select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Multiple Fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ collection: "Orders" })
+    .groupBy("Employee", "Company")
+    .selectKey("Employee", "EmployeeIdentifier")
+    .selectKey("Company")
+    .selectCount()
+    .ofType(CountByCompanyAndEmployee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by Employee, Company
+select Employee as EmployeeIdentifier, Company, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Select Composite GroupBy Key
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const orders = await session.query({ collection: "Orders" })
+    .groupBy("Employee", "Company")
+    .selectKey("key()", "EmployeeCompanyPair")
+    .selectCount("Count")
+    .ofType(CountOfEmployeeAndCompanyPairs)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Employee, Company
+select key() as EmployeeCompanyPair, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Group By Array
+
+### By Array Values
+
+In order to group by values of array, you need to use `groupBy(array(...))`. The following query will group by `product` field from `lines` collection 
+and calculate the count per ordered products. Underneath a fanout, an auto map-reduce index will be created to handle such query. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const products = await session.query({ collection: "Orders" })
+    .groupBy(GroupBy.array("Lines[].Product"))
+    .selectKey("key()", "Products")
+    .selectCount()
+    .ofType(ProductsInfo)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product
+select Lines[].Product, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Inside a single group by statement you can mix collection values and value of another property. That's supported by `DocumentQuery` only:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.advanced.documentQuery({ collection: "Orders" })
+    .groupBy("Lines[].Product", "ShipTo.Country")
+    .selectKey("Lines[].Product", "Product")
+    .selectKey("ShipTo.Country", "Country")
+    .selectCount()
+    .ofType(ProductInfo)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, ShipTo.Country 
+select Lines[].Product as Product, ShipTo.Country as Country, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by multiple values from **the same** collection is supported as well:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ collection: "Orders" })
+    .groupBy(GroupBy.array("Lines[].Product"), GroupBy.array("Lines[].Quantity"))
+    .selectKey("Lines[].Product", "Product")
+    .selectKey("Lines[].Quantity", "Quantity")
+    .selectCount()
+    .ofType(ProductInfo)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by Lines[].Product, Lines[].Quantity 
+select Lines[].Product as Product, Lines[].Quantity as Quantity, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### By Array Content
+
+Another option is to group by array content. The reduction key will be calculated based on all values of a collection specified in `GroupBy`.
+The client API exposes the `GroupByArrayContent` extension method for that purpose.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ collection: "Orders" })
+    .groupBy(GroupBy.array("Lines[].Product"))
+    .selectKey("key()", "Products")
+    .selectCount()
+    .ofType(ProductsInfo)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by array(Lines[].Product)
+select key() as Products, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by array content and a value of another property is supported by `DocumentQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ collection: "Orders" })
+    .groupBy(GroupBy.array("Lines[].Product"), GroupBy.field("ShipTo.Country"))
+    .selectKey("Lines[].Product", "Products")
+    .selectKey("ShipTo.Country", "Country")
+    .selectCount()
+    .ofType(ProductsInfo)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), ShipTo.Country 
+select Lines[].Product as Products, ShipTo.Country as Country, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Grouping by multiple values from **the same** collection is also supported by `DocumentQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session.query({ collection: "Orders" })
+    .groupBy(GroupBy.array("Lines[].Product"), GroupBy.array("Lines[].Quantity"))
+    .selectKey("Lines[].Product", "Products")
+    .selectKey("Lines[].Quantity", "Quantities")
+    .selectCount()
+    .ofType(ProductsInfo)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+group by array(Lines[].Product), array(Lines[].Quantity) 
+select Lines[].Product as Products, Lines[].Quantity as Quantities, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

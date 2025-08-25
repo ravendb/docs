@@ -1,0 +1,36 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutServerWideClientConfigurationOperation** is used to save server-wide client configuration on the server. It allows you to override the client's settings remotely. 
+
+<Admonition type="note" title="">
+`ClientConfiguration` defined at database level overrides the server-wide client configuration.
+</Admonition>
+
+## Syntax
+
+<TabItem value="config_2_0" label="config_2_0">
+<CodeBlock language="csharp">
+{`public PutClientConfigurationOperation(ClientConfiguration configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="config_2_2" label="config_2_2">
+<CodeBlock language="csharp">
+{`ClientConfiguration clientConfiguration = new ClientConfiguration
+\{
+    MaxNumberOfRequestsPerSession = 100,
+    ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+\};
+
+store.Maintenance.Send(new PutClientConfigurationOperation(clientConfiguration));
+`}
+</CodeBlock>
+</TabItem>
+
+

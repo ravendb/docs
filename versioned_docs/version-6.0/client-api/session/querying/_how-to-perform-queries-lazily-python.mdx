@@ -1,0 +1,218 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Query execution can be deferred: the query can be defined as **Lazy**, and executed 
+  at a later time, when its results are actually needed.  
+
+* This article contains examples for lazy queries. Prior to reading it, please refer 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
+  for general knowledge about RavenDB's lazy behavior and other request types that can be 
+  executed lazily within a session.
+
+* In this page:
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
+
+</Admonition>
+## Lazy query
+
+To run a [regular query](../../../client-api/session/querying/how-to-query.mdx) 
+(not a [suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
+query or a [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)) 
+lazily, use `.lazily()` as follows.  
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="python">
+{`# Define a lazy query
+lazy_employees = (
+    session.query(object_type=Employee).where_equals("first_name", "Robert")
+    # Add a call to 'Lazily'
+    .lazily()
+)
+
+employees = lazy_employees.value  # Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy count query
+
+To count query results lazily, use `count_lazily()` as follows.  
+
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="python">
+{`lazy_count = session.query(object_type=Employee).where_equals("first_name", "Robert").count_lazily()
+
+count = lazy_count.value  # Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy suggestions query
+
+To run a suggestions search lazily, use [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
+along with `.execute_lazy()` as shown below.
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="python">
+{`lazy_suggestions = (
+    session.query(object_type=Product).suggest_using(lambda builder: builder.by_field("name", "chaig"))
+    # Add a call to 'execute_lazy'
+    .execute_lazy()
+)
+
+suggest = lazy_suggestions.value  # Query is executed here
+suggestions = suggest["name"].suggestions
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy facets query
+
+To run a faceted query lazily:  
+
+* Search a predefined static index (see _Index_definition_ below)
+* Aggregate the results using a facets definition (see _Facets_definition_ below)
+* Apply `.execute_lazy()` (see _Query_ below)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Define a lazy facets query
+lazy_facets = (
+    session.query_index_type(
+        Products_ByCategoryAndPrice, Products_ByCategoryAndPrice.IndexEntry
+    ).aggregate_by_facets(facets_definition)
+    # Add a call to 'execute_lazy'
+    .execute_lazy()
+)
+
+facets = lazy_facets.value  # Query is executed here
+
+category_results = facets["Product Category"]
+price_results = facets["Price per Unit"]
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Facets_definition" label="Facets_definition">
+<CodeBlock language="python">
+{`# The facets definition used in the facets query
+facet = Facet(field_name="CategoryName")
+facet.display_field_name = "Product Category"
+
+range_facet = RangeFacet()
+range_facet.ranges = [
+    "price_per_unit < 200",
+    "price_per_unit between 200 and 400",
+    "price_per_unit between 400 and 600",
+    "price_per_unit between 600 and 800",
+    "price_per_unit >= 800",
+]
+range_facet.display_field_name = "Price per Unit"
+
+facets_definition = [facet, range_facet]
+
+with store.open_session() as session:
+    # region lazy_10
+    # Define a lazy facets query
+    lazy_facets = (
+        session.query_index_type(
+            Products_ByCategoryAndPrice, Products_ByCategoryAndPrice.IndexEntry
+        ).aggregate_by_facets(facets_definition)
+        # Add a call to 'execute_lazy'
+        .execute_lazy()
+    )
+
+    facets = lazy_facets.value  # Query is executed here
+
+    category_results = facets["Product Category"]
+    price_results = facets["Price per Unit"]
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index_definition" label="Index_definition">
+<CodeBlock language="python">
+{`# The index definition used in the facets query
+class Products_ByCategoryAndPrice(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from p in docs.Products select new {"
+            'CategoryName = LoadDocument(p.Category, "Categories").Name, PricePerUnit = p.PricePerUnit'
+            "}"
+        )
+
+    class IndexEntry:
+        def __init__(self, category_name: str, price_per_unit: int):
+            self.category_name = category_name
+            self.price_per_unit = price_per_unit
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`# Lazy query
+def lazily(self, on_eval: Callable[[List[_T]], None] = None) -> Lazy[List[_T]]: ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`# Lazy count query
+def count_lazily(self) -> Lazy[int]: ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`# Lazy suggestions query
+def execute_lazy(
+    self, on_eval: Optional[Callable[[Dict[str, SuggestionResult]], None]] = None
+) -> "Lazy[Dict[str, SuggestionResult]]": ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="python">
+{`# Lazy facet query
+def execute_lazy(
+    self, on_eval: Optional[Callable[[Dict[str, FacetResult]], None]] = None
+) -> Lazy[Dict[str, FacetResult]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                                                                                                                              | Description                                                                          |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| **on_eval** | `Callable[[List[_T]], None]`<br/>`Callable[[Dict[str, SuggestionResult]], None]` (optional)<br/>`Callable[[Dict[str, FacetResult]], None]` (optional)| An action that will be performed on the query results when the query is executed. |
+
+| Return Value                                                                                                                           |                                                                |
+|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| `Lazy[List[_T]]`<br/>`Lazy[Dict[str, SuggestionResult]]`<br/>`Lazy[Dict[str, FacetResult]]` | A lazy instance that will evaluate the query only when needed. |
+| `Lazy[int]` | The results of a lazy count query |
+
+
+

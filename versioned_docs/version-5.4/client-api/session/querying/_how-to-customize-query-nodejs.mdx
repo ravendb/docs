@@ -1,0 +1,504 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The following query customization methods that are available for the **.NET client** under `IDocumentQueryCustomization` 
+  are also available in the **Node.js client**.
+
+* These methods can be used for both a dynamic-query and an index-query.
+
+* A [query](../../../client-api/session/querying/how-to-query.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx).
+
+* Customization methods available:
+
+  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("beforequeryexecuted"))
+  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("afterqueryexecuted"))
+  - [noCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [noTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
+  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+
+</Admonition>
+## on (beforeQueryExecuted)
+
+* Use `on("beforeQueryExecuted")` to customize the query just before it is executed.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+     // Query an index
+    .query(BlogPost, BlogPosts_ByTag)
+     // Provide a callback for the 'beforeQueryExecuted' event 
+    .on("beforeQueryExecuted", query => {
+        // Can modify query parameters
+        query.skipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`Query to be executed is: \${query.query}\`);
+    })
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map(BlogPost, b => {
+            const result = [];
+
+            b.tags.forEach(item => {
+                result.push({
+                    tag: item
+                });
+            });
+
+            return result;
+
+            // This fanout index outputs multiple index entries per each document,
+            // (an index-entry per tag in from the tags list).            
+            // The query can be customized to return the documents without the duplicates,
+            // (see the query example in the first tab).  
+        })
+    }
+}
+
+class BlogPost {
+    constructor() {
+        this.id = null;
+        this.title = null;
+        this.body = null;
+        this.tags = null;
+    }
+}
+
+class TagResult {
+    constructor() {
+        this.tag = null;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_1_1" label="customize_1_1">
+<CodeBlock language="js">
+{`on("beforeQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters       | Type            | Description                                                                                                                           |
+|------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| **eventHandler** | (query) =&gt; void | A callback method that is invoked when the `beforeQueryExecuted` event is emitted.<br/>The passed query param is of type `IndexQuery`. |
+
+</Admonition>
+
+
+
+## on (afterQueryExecuted)
+
+* Use `on("afterQueryExecuted")` to access the raw query result after it is executed.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_2_0" label="customize_2_0">
+<CodeBlock language="js">
+{`let queryDuration = 0;
+
+const results = await session
+    .query(\{ collection: "employees" \})
+     // Provide a callback for the 'afterQueryExecuted' event 
+    .on("afterQueryExecuted", rawResult => \{
+        // Can access the raw query result
+        queryDuration = rawResult.durationInMs
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`$\{rawResult.lastQueryTime\}\`);
+     \})
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_2_1" label="customize_2_1">
+<CodeBlock language="js">
+{`on("afterQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters               | Type                  | Description                                                                                                                            |
+|--------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| **eventHandler** | (queryResult) =&gt; void | A callback method that is invoked when the `afterQueryExecuted` event is emitted.<br/> The passed query param is of type `QueryResult`. |
+
+</Admonition>
+
+
+
+## noCaching
+ 
+* By default, query results are cached.
+
+* You can use the `noCaching` customization to disable query caching.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_3_0" label="customize_3_0">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+     // Add a call to 'noCaching'
+    .noCaching()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_3_1" label="customize_3_1">
+<CodeBlock language="js">
+{`noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## noTracking
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `noTracking` customization to disable entity tracking.
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_4_0" label="customize_4_0">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+    // Add a call to 'noTrcking'
+    .noTracking()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_4_1" label="customize_4_1">
+<CodeBlock language="js">
+{`noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## projectionBehavior
+
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx), and projecting query results  
+  (projecting means the query returns only specific document fields instead of the full document)  
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).
+
+* If the index does Not store those fields then the fields' values will be retrieved from the documents store.
+
+* Use the `selectFields` method to customize and modify this behavior for the specified fields.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:  
+    * [Projections](../../../indexes/querying/projections.mdx)
+    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// The projection class: 
+class EmployeeProjectedDetails {
+    constructor() {
+        this.fullName = null;
+    }
+}
+
+// Define a query with a projection
+const query = session
+     // Query an index that has stored fields
+    .query(Employee, Employee_ByFullName)
+     // Use 'selectFields' to project the query results
+     // Pass the requested projection behavior (3'rd param)
+    .selectFields(["fullName"], EmployeeProjectedDetails, "FromDocumentOrThrow")
+    .all();
+
+// * Field 'fullName' is stored in the index.
+//   However, the server will try to fetch the value from the document 
+//   since the default behavior was modified to \`FromDocumentOrThrow\`.
+
+// * An exception will be thrown -
+//   since an 'Employee' document does not contain the property 'fullName'.
+//   (based on the Northwind sample data).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Employee_ByFullName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map(Employee, e => {
+            return {
+                fullName: e.firstName + " " + e.lastName
+            }
+        })
+
+        // Store field 'fullName' in the index
+        this.store("fullName", "Yes");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_5_1" label="customize_5_1">
+<CodeBlock language="js">
+{`selectFields(properties, projectionClass, projectionBehavior);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters             | Type     | Description                                                    |
+|------------------------|----------|----------------------------------------------------------------|
+| **properties**         | string[] | Fields' names for which to fetch values                        |
+| **projectionClass**    | object   | The projected results class                                    |
+| **projectionBehavior** | string   | The requested projection behavior, see available options below |
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+</Admonition>
+
+
+
+## randomOrdering
+
+* Use `RandomOrdering` to order the query results randomly.
+
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_6_0" label="customize_6_0">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    // Add a call to 'randomOrdering', can pass a seed
+    .randomOrdering("123")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_6_1" label="customize_6_1">
+<CodeBlock language="js">
+{`randomOrdering();
+randomOrdering(seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type   | Description                                                                                            |
+|------------|--------|--------------------------------------------------------------------------------------------------------|
+| **seed**   | string | Order the search results randomly using this seed. <br/> Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## timings
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_7_0" label="customize_7_0">
+<CodeBlock language="js">
+{`let timingsResults;
+
+const results = await session.query(\{ collection: "Products" \})
+    .whereEquals("firstName", "Robert")
+     // Call 'timings', pass a callback function
+     // Output param 'timingsResults' will be filled with the timings details when query returns 
+    .timings(t => timingsResults = t)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_7_1" label="customize_7_1">
+<CodeBlock language="js">
+{`timings(timingsCallback)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |----------------| - |
+| **timings** | `QueryTimings` | An _out_ param that will be filled with the timings results |
+
+| `QueryTimings` |  |  |
+| - |-----------------------------------|---------------------------------------------------|
+| **DurationInMs** | long | Total duration |
+| **Timings** | IDictionary&lt;string, QueryTimings&gt; | Dictionary with _QueryTimings_ info per time part |
+
+
+</Admonition>
+
+
+
+## waitForNonStaleResults
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+
+* Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+
+<Admonition type="note" title="">
+
+**Example**
+
+<TabItem value="customize_8_0" label="customize_8_0">
+<CodeBlock language="js">
+{`const results = await session.query(\{ collection: "Products" \})
+    .whereEquals("firstName", "Robert")
+     // Call 'waitForNonStaleResults', 
+     // Optionally, pass the time to wait. Default is 15 seconds.
+    .waitForNonStaleResults(10_000)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_8_1" label="customize_8_1">
+<CodeBlock language="js">
+{`waitForNonStaleResults();
+waitForNonStaleResults(waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters      | Type   | Description                                                                           |
+|-----------------|--------|---------------------------------------------------------------------------------------|
+| **waitTimeout** | number | Time (ms) to wait for an index to return non-stale results.<br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+

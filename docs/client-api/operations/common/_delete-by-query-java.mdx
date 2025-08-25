@@ -1,0 +1,129 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
+This operation is performed in the background on the server. 
+
+## Syntax
+
+<TabItem value="delete_by_query" label="delete_by_query">
+<CodeBlock language="java">
+{`public DeleteByQueryOperation(IndexQuery queryToDelete)
+
+public DeleteByQueryOperation(IndexQuery queryToDelete, QueryOperationOptions options)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index to perform a query on |
+| **queryToDelete** | IndexQuery | Holds all the information required to query an index |
+| **options** | QueryOperationOptions | Holds different setting options for base operations |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all documents from the server where Name == Bob using Person/ByName index
+store
+    .operations()
+    .send(new DeleteByQueryOperation(new IndexQuery("from Persons where name = 'Bob'")));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Name = 'Bob'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all documents from the server where Age > 35 using Person/ByAge index
+store
+    .operations()
+    .send(new DeleteByQueryOperation(new IndexQuery("from 'Person/ByAge' where age < 35")));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Age < 35
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// delete multiple docs with specific ids in a single run without loading them into the session
+Operation operation = store
+    .operations()
+    .sendAsync(new DeleteByQueryOperation(new IndexQuery(
+        "from People u where id(u) in ('people/1-A', 'people/3-A')"
+    )));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People u where id(u) in ('people/1-A', 'people/3-A')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="WaitForCompletion" id="waitforcompletion" href="#waitforcompletion">
+`DeleteByQueryOperation` is performed in the background on the server.    
+You have the option to **wait** for it using `waitForCompletion`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// remove all document from server where Name == Bob and Age >= 29 using People collection
+Operation operation = store.operations()
+    .sendAsync(new DeleteByQueryOperation(new IndexQuery(
+        "from People where Name = 'Bob' and Age >= 29"
+    )));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People where Name = 'Bob' and Age >= 29
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+</Admonition>
+
+## Remarks
+
+<Admonition type="warning" title="Map only indexes" id="map-only-indexes" href="#map-only-indexes"> 
+`DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
+</Admonition>
+
+<Admonition type="warning" title="Batching and Concurrency" id="batching-and-concurrency" href="#batching-and-concurrency"> 
+
+The deletion of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
+so it can happen than a document has been updated or deleted meanwhile.
+
+</Admonition>
+
+
+

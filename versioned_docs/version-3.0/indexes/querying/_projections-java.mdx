@@ -1,0 +1,161 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are couple a couple of ways to perform projections in RavenDB:
+
+- simple projections using [Select](../../indexes/querying/projections.mdx#select---basic-projections)
+- using transformer with [TransformWith](../../indexes/querying/projections.mdx#transformwith)
+
+## Select - basic projections
+
+This method uses reflection to extract all public fields and properties to fetch and perform projection to the requested type.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+	.Query<Employee, Employees_ByFirstAndLastName>()
+	.Select(x => new
+	{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var results = session
+	.Advanced
+	.DocumentQuery<Employee, Employees_ByFirstAndLastName>()
+	.Select(x => new
+	{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Employees/ByFirstAndLastName",
+		new IndexQuery
+			{
+				FieldsToFetch = new[]
+				{
+					"FirstName", 
+					"LastName"
+				}
+			});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastName()
+	{
+		Map = employees => from employee in employees
+						   select new
+							{
+								FirstName = employee.FirstName,
+								LastName = employee.LastName
+							};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? It means that, if index entry matches our query predicate, then we will try to extract all requested fields from that particular entry and if all requested fields are available in there, then we do not download it from storage. Index `Employees/ByFirstAndLastName` used in above query is not storing any fields so documents will be fetched from storage.
+
+<Admonition type="info" title="Projections and Stored fields" id="projections-and-stored-fields" href="#projections-and-stored-fields">
+If projection function only requires fields that are stored, then document will not be loaded from storage and all data will come from index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index.mdx).
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../../server/configuration/configuration-options.mdx#index-settings).
+</Admonition>
+
+So following above rule, if we create index that stores `FirstName` and `LastName` and request only those fields in query, then **data will come from index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var results = session
+	.Query<Employee, Employees_ByFirstAndLastNameWithStoredFields>()
+	.Select(x => new
+	{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var results = session
+	.Advanced
+	.DocumentQuery<Employee, Employees_ByFirstAndLastNameWithStoredFields>()
+	.Select(x => new
+	{
+		FirstName = x.FirstName,
+		LastName = x.LastName
+	})
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Employees/ByFirstAndLastNameWithStoredFields",
+		new IndexQuery
+		{
+			FieldsToFetch = new[]
+				{
+					"FirstName", 
+					"LastName"
+				}
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastNameWithStoredFields : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastNameWithStoredFields()
+	{
+		Map = employees => from employee in employees
+						   select new
+						   {
+							   FirstName = employee.FirstName,
+							   LastName = employee.LastName
+						   };
+
+		Store(x => x.FirstName, FieldStorage.Yes);
+		Store(x => x.LastName, FieldStorage.Yes);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+## TransformWith
+
+Detailed article about transformer basics can be found [here](../../transformers/what-are-transformers.mdx).
+
+

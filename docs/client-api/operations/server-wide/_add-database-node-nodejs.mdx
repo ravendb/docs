@@ -1,0 +1,92 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When creating a database, you can specify the number of replicas for that database.  
+  This determines the number of database instances in the database-group.
+
+* **The number of replicas can be dynamically increased** even after the database is up and running,  
+  by adding more nodes to the database-group.  
+
+* The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology.mdx).
+
+* Once a new node is added to the database-group,  
+  the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
+
+* In this page:
+    * [Add database node - random](../../../client-api/operations/server-wide/add-database-node.mdx#add-database-node---random)
+    * [Add database node - specific](../../../client-api/operations/server-wide/add-database-node.mdx#add-database-node---specific)
+    * [Syntax](../../../client-api/operations/server-wide/add-database-node.mdx#syntax)  
+</Admonition>
+## Add database node - random
+
+* Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
+* The node added will be a random node from the existing cluster nodes.   
+
+<TabItem value="add_1" label="add_1">
+<CodeBlock language="js">
+{`// Create the AddDatabaseNodeOperation
+// Add a random node to 'Northwind' database-group
+const addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
+
+// Execute the operation by passing it to maintenance.server.send
+const result = await documentStore.maintenance.server.send(addDatabaseNodeOp);
+
+// Can access the new topology
+const numberOfReplicas = getAllNodesFromTopology(result.topology).length;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add database node - specific
+
+* You can specify the node tag to add.  
+* This node must already exist in the cluster topology.
+
+<TabItem value="add_2" label="add_2">
+<CodeBlock language="js">
+{`// Create the AddDatabaseNodeOperation
+// Add node C to 'Northwind' database-group
+const addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C"));
+
+// Execute the operation by passing it to maintenance.server.send
+const result = await documentStore.maintenance.server.send(addDatabaseNodeOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const addDatabaseNodeOp = new AddDatabaseNodeOperation(databaseName, nodeTag?);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of a database for which to add the node. |
+| **nodeTag** | `string` | Tag of node to add.<br/>Default: If not passed then a random node from the existing cluster topology will be added. |
+
+| Object returned by send operation has: | Type | Description |
+| - | - | - |
+| raftCommandIndex | `number` | Index of the raft command that was executed |
+| name | `string` | Database name |
+| topology | `DatabaseTopology` | The database topology |
+| nodesAddedTo | `string[]` | New nodes added to the cluster topology.<br/>Will be 0 for this operation. |
+
+
+
+
+
+
+
+

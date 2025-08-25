@@ -1,0 +1,151 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following methods allow you to subscribe to index changes:
+
+- [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
+
+## forIndex
+
+Index changes for one index can be observed using `forIndex()` method.
+
+### Syntax
+
+<TabItem value="index_changes_1" label="index_changes_1">
+<CodeBlock language="js">
+{`store.changes().forIndex(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="index_changes_2" label="index_changes_2">
+<CodeBlock language="js">
+{`store.changes().forIndex("Orders/All")
+    .on("data", change => \{
+        switch (change.type) \{
+            case "None":
+                // do something
+                break;
+            case "BatchCompleted":
+                // do something
+                break;
+            case "IndexAdded":
+                // do something
+                break;
+            case "IndexRemoved":
+                // do something
+                break;
+            case "IndexDemotedToIdle":
+                // do something
+                break;
+            case "IndexPromotedFromIdle":
+                // do something
+                break;
+            case "IndexDemotedToDisabled":
+                // do something
+                break;
+            case "IndexMarkedAsErrored":
+                // do something
+                break;
+            case "SideBySideReplace":
+                // do something
+                break;
+            case "Renamed":
+                // do something
+                break;
+            case "IndexPaused":
+                // do something
+                break;
+            case "LockModeChanged":
+                // do something
+                break;
+            case "PriorityChanged":
+                // do something
+                break;
+            default:
+                throw new Error("Not supported.");
+        \}
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forAllIndexes
+
+Index changes for all indexex can be observed using `forAllIndexes()` method.
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="index_changes_3" label="index_changes_3">
+<CodeBlock language="js">
+{`store.changes().forAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="index_changes_4" label="index_changes_4">
+<CodeBlock language="js">
+{`store.changes().forAllIndexes()
+    .on("data", change => \{
+        console.log(change.type + " on index " + change.name);
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## IndexChange
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchangetypes) | Change type |
+| **name** | string | Index name |
+| **etag** | number | Index Etag |
+
+
+
+## IndexChangeTypes
+
+| Name |
+| ---- |
+| **None** |
+| **BatchCompleted** |
+| **IndexAdded** |
+| **IndexRemoved** |
+| **IndexDemotedToIdle** |
+| **IndexPromotedToIdle** |
+| **IndexDemotedToDisabled** |
+| **IndexMarkedAsErrored** |
+| **SideBySideReplace** |
+| **Renamed** |
+| **IndexPaused** |
+| **LockModeChanged** |
+| **PriorityChanged** |
+
+
+
+

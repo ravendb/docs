@@ -1,0 +1,147 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Query execution can be deferred: the query can be defined as **Lazy**, and executed 
+  at a later time, when its results are actually needed.  
+
+* This article contains examples for lazy queries. Prior to reading it, please refer 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
+  for general knowledge about RavenDB's lazy behavior and other request types that can be 
+  executed lazily within a session.
+
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
+
+* In this page:
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy Aggregation](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-aggregation)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
+
+</Admonition>
+## Lazy query
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="php">
+{`/** @var Lazy<array<Employee>> $employeesLazy */
+$employeesLazy = $session
+    ->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->lazily();
+
+/** @var array<Employee> $employees */
+$employees = $employeesLazy->getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy count query
+
+<TabItem value="lazy_5" label="lazy_5">
+<CodeBlock language="php">
+{`/** @var Lazy<int> $countLazy */
+$countLazy = $session
+    ->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->countLazily();
+
+/** @var int $count */
+$count = $countLazy->getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Lazy suggestions query
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="php">
+{`/** @var Lazy<array<string, SuggestionResult>> $suggestLazy */
+$suggestLazy = $session
+    ->query(Employee::class, Query::index("Employees_ByFullName"))
+    ->suggestUsing(function($builder) \{ $builder->byField("FullName", "johne"); \})
+    ->executeLazy();
+
+/** @var array<string, SuggestionResult> $suggest */
+$suggest = $suggestLazy->getValue(); // query will be executed here
+
+/** @var array<string> $suggestions */
+$suggestions = $suggest["FullName"]->getSuggestions();
+`}
+</CodeBlock>
+</TabItem>
+
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
+
+
+
+## Lazy aggregation
+
+<TabItem value="lazy_9" label="lazy_9">
+<CodeBlock language="php">
+{`/** @var Lazy<array<string, FacetResult>> $facetsLazy */
+$facetsLazy = $session
+    ->query(Camera::class, Query::index("Camera/Costs"))
+    ->aggregateUsing("facets/CameraFacets")
+    ->executeLazy();
+
+/** @var array<string, FacetResult> $facets */
+$facets = $facetsLazy->getValue(); // query will be executed here
+
+/** @var FacetResult $results */
+$results = $facets["manufacturer"];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="php">
+{`/**
+ * Usage
+ *   - lazily();
+ *   - lazily(Closure $onEval)
+ */
+function lazily(?Closure $onEval = null): Lazy;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="php">
+{`function countLazily(): Lazy;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="lazy_6" label="lazy_6">
+<CodeBlock language="php">
+{`/**
+ * Usage
+ *   - executeLazy();
+ *   - executeLazy(Closure $onEval)
+ */
+public function executeLazy(?Closure $onEval = null): Lazy;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type       | Description                                                           |
+|------------|------------------------------------------------------------------------------------|
+| **$onEval** | `?Closure` | An action to perform on the query results when the query is executed |
+
+| Return Value                                                                                                                           |                                                                |
+|------------------------------------------------------------------------|
+| `Lazy` | A lazy instance that will evaluate the query only when needed |
+
+
+
+

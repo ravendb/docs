@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: UpdateMetadataAsync
+
+**UpdateMetadataAsync** is used if you need to change just the file's metadata without any modification to its content.
+
+
+
+<TabItem value="update_metadata_1" label="update_metadata_1">
+<CodeBlock language="csharp">
+{`Task UpdateMetadataAsync(string filename, RavenJObject metadata, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The modified file name |
+| **metadata** | RavenJObject | New file metadata |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` skips check) |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous metadata update operation. |
+
+## Example
+
+<TabItem value="update_metadata_2" label="update_metadata_2">
+<CodeBlock language="csharp">
+{`await store
+	.AsyncFilesCommands
+	.UpdateMetadataAsync(
+		"/movies/intro.avi",
+		new RavenJObject()
+		\{
+			\{
+				"AllowRead", "None"
+			\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+

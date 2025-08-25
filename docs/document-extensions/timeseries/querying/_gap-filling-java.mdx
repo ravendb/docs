@@ -1,0 +1,77 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Time series queries can add extra data points into the gaps between entries. 
+  These data points get values extrapolated from the entries on either side of 
+  the gap. This is called _interpolation_.  
+
+* There are two interpolation methods available:  
+  1. Nearest - add values equal to the value of the nearest entry.  
+  2. Linear - place the data points on a straight line between the entries on 
+     either side.  
+
+* In this page:  
+  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/gap-filling.mdx#examples)  
+
+</Admonition>
+## Syntax
+
+To add interpolation to a time series query, start by grouping the data by some 
+unit.  
+For example, suppose you have a time series with an entry for every hour, 
+but several hours are missing (1am, 3pm, etc.), and you want to fill those 
+gaps. You will want to group by 1 hour.  
+Or suppose you have a time series with an entry for every hour, and you want to 
+fill in the gap with one data point per minute: you will group by 1 minute.  
+See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
+to learn about aggregation in queries.  
+
+Next, use:  
+
+* For RQL queries: `interpolation()`  
+
+The two interpolation modes are:  
+
+1. **Nearest**: add entries with values equal to the closest time series entry 
+before or after this data point. If the data point is exactly in the middle 
+between two entries, the data point gets the value of the earlier entry.  
+
+2. **Linear**: the data point is placed on a projected line between two entries. 
+For example, if the entry for 1:00 PM has a value 100, and the entry for 2:00 PM 
+has a value 130, the interpolated data point for 1:40 PM will have the value 120.  
+
+One data point is added for each aggregated time unit that does not contain any 
+values. When time series entries have multiple values, an interpolation will add 
+one data point for each pair of values found on *both* sides of the gap.  
+
+
+
+## Examples
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="java">
+{`IRawDocumentQuery<RawQueryResult> query = session.advanced().rawQuery(RawQueryResult.class, "declare timeseries out(p)\\n" +
+        "{\\n" +
+        "    from p.HeartRate between $start and $end\\n" +
+        "    group by 1h\\n" +
+        "    select min(), max()\\n" +
+        "}\\n" +
+        "from index 'People' as p\\n" +
+        "where p.age > 49\\n" +
+        "select out(p) as heartRate, p.name")
+        .addParameter("start", baseLine)
+        .addParameter("end", DateUtils.addDays(baseLine, 1));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

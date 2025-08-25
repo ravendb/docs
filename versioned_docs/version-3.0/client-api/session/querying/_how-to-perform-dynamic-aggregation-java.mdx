@@ -1,0 +1,163 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Dynamic aggregation can be performed using `aggregateBy` method. Internally such aggregation is an extended [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
+
+## Syntax
+
+<TabItem value="aggregate_1" label="aggregate_1">
+<CodeBlock language="java">
+{`public DynamicAggregationQuery<T> aggregateBy(String path);
+
+public DynamicAggregationQuery<T> aggregateBy(String path, String displayName);
+
+public DynamicAggregationQuery<T> aggregateBy(Path<?> path);
+
+public DynamicAggregationQuery<T> aggregateBy(Path<?> path, String displayName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | String or Path | Path (or expression from which path will be extracted) to field on which aggregation will be performed. |
+| **displayName** | String | User defined friendly name for aggregation. If `null`, field name will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| [DynamicAggregationQuery](../../../glossary/dynamic-aggregation-query.mdx)&lt;TResult&gt; | Query containing aggregation methods. |
+
+## Example I - summing
+
+<TabItem value="aggregate_2" label="aggregate_2">
+<CodeBlock language="java">
+{`// sum up all order prices
+// for each customer
+// where price is higher than 500
+QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session
+  .query(Order.class, "Orders/All")
+  .where(o.totalPrice.gt(500))
+  .aggregateBy(o.customerId)
+    .sumOn(o.totalPrice)
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+Double sum = customerAggregation.getValues().get(0).getSum();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II - counting
+
+<TabItem value="aggregate_3" label="aggregate_3">
+<CodeBlock language="java">
+{`// count all orders
+// for each customer
+// where price is higher than 500
+QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session
+  .query(Order.class, "Orders/All")
+  .where(o.totalPrice.gt(500))
+  .aggregateBy(o.customerId)
+    .countOn(o.totalPrice)
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+Integer count = customerAggregation.getValues().get(0).getCount();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III - average
+
+<TabItem value="aggregate_4" label="aggregate_4">
+<CodeBlock language="java">
+{`// count price average for orders
+// for each customer
+// where price is higher than 500
+QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session
+  .query(Order.class, "Orders/All")
+  .where(o.totalPrice.gt(500))
+  .aggregateBy(o.customerId)
+    .averageOn(o.totalPrice)
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+Double average = customerAggregation.getValues().get(0).getAverage();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example IV - maximum and minimum
+
+<TabItem value="aggregate_5" label="aggregate_5">
+<CodeBlock language="java">
+{`// count max and min price for orders
+// for each customer
+// where price is higher than 500
+QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session
+  .query(Order.class, "Orders/All")
+  .where(o.totalPrice.gt(500))
+  .aggregateBy(o.customerId)
+    .minOn(o.totalPrice)
+    .maxOn(o.totalPrice)
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+Double min = customerAggregation.getValues().get(0).getMin();
+Double max = customerAggregation.getValues().get(0).getMax();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example V - adding ranges
+
+<TabItem value="aggregate_6" label="aggregate_6">
+<CodeBlock language="java">
+{`QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session.query(Order.class, "Orders/All")
+  .aggregateBy(o.customerId)
+    .addRanges(o.totalPrice.lt(10))
+    .addRanges(o.totalPrice.goe(100).and(o.totalPrice.lt(500)))
+    .addRanges(o.totalPrice.goe(500).and(o.totalPrice.lt(1000)))
+    .addRanges(o.totalPrice.goe(1000))
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+List<FacetValue> values = customerAggregation.getValues();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example VI - multiple aggregations
+
+<TabItem value="aggregate_7" label="aggregate_7">
+<CodeBlock language="java">
+{`// sum up all order prices
+// for each customer
+// count price average for all orders
+// for each company
+QHowToPerformDynamicAggregation_Order o = QHowToPerformDynamicAggregation_Order.order;
+FacetResults aggregationResults = session
+  .query(Order.class, "Orders/All")
+  .aggregateBy(o.customerId)
+    .sumOn(o.totalPrice)
+  .andAggregateOn(o.companyId)
+    .averageOn(o.totalPrice)
+  .toList();
+
+FacetResult customerAggregation = aggregationResults.getResults().get("CustomerId");
+FacetResult companyAggregation = aggregationResults.getResults().get("CompanyId");
+
+Double sum = customerAggregation.getValues().get(0).getSum();
+Double average = companyAggregation.getValues().get(0).getAverage();
+`}
+</CodeBlock>
+</TabItem>
+
+

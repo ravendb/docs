@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**GetIndexMergeSuggestions** will retrieve all suggestions for an index merging.
+
+## Syntax
+
+<TabItem value="merge_suggestions_1" label="merge_suggestions_1">
+<CodeBlock language="java">
+{`public IndexMergeResults getIndexMergeSuggestions();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| [IndexMergeResults](../../../../glossary/index-merge-results.mdx) | Merge suggestions for indexes. |
+
+## Example
+
+<TabItem value="merge_suggestions_2" label="merge_suggestions_2">
+<CodeBlock language="java">
+{`IndexMergeResults suggestions = store.getDatabaseCommands().getIndexMergeSuggestions();
+`}
+</CodeBlock>
+</TabItem>
+
+

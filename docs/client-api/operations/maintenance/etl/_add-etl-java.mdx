@@ -1,0 +1,159 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `AddEtlOperation` method to add a new ongoing ETL task to your database.
+
+* To learn about ETL (Extract, Transfer, Load) ongoing tasks, see article [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
+  To learn how to manage ETL tasks from the Studio, see [Ongoing tasks - overview](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
+
+* In this page:
+  * [Example - add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-raven-etl)
+  * [Example - add SQL ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-sql-etl)
+  * [Example - add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-olap-etl)
+  * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl.mdx#syntax)
+
+</Admonition>
+## Example - add Raven ETL
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="java">
+{`RavenEtlConfiguration configuration = new RavenEtlConfiguration();
+configuration.setName("Employees ETL");
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setScript("loadToEmployees (\{\\n" +
+    "  Name: this.FirstName + ' ' + this.LastName,\\n" +
+    "  Title: this.Title\\n" +
+    "\});");
+
+configuration.setTransforms(Arrays.asList(transformation));
+AddEtlOperation<RavenConnectionString> operation = new AddEtlOperation<>(configuration);
+AddEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+
+**Secure servers**:
+
+To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)
+you need to
+
+1. Export the server certificate from the source server.
+2. Install it as a client certificate on the destination server.
+
+This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
+</Admonition>
+
+
+
+## Example - add SQL ETL
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="java">
+{`SqlEtlConfiguration configuration = new SqlEtlConfiguration();
+SqlEtlTable table1 = new SqlEtlTable();
+table1.setTableName("Orders");
+table1.setDocumentIdColumn("Id");
+table1.setInsertOnlyMode(false);
+
+SqlEtlTable table2 = new SqlEtlTable();
+table2.setTableName("OrderLines");
+table2.setDocumentIdColumn("OrderId");
+table2.setInsertOnlyMode(false);
+
+configuration.setSqlTables(Arrays.asList(table1, table2));
+configuration.setName("Order to SQL");
+configuration.setConnectionStringName("sql-connection-string-name");
+
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setCollections(Arrays.asList("Orders"));
+transformation.setScript("var orderData = \{\\n" +
+    "    Id: id(this),\\n" +
+    "    OrderLinesCount: this.Lines.length,\\n" +
+    "    TotalCost: 0\\n" +
+    "\};\\n" +
+    "\\n" +
+    "    for (var i = 0; i < this.Lines.length; i++) \{\\n" +
+    "        var line = this.Lines[i];\\n" +
+    "        orderData.TotalCost += line.PricePerUnit;\\n" +
+    "\\n" +
+    "        // Load to SQL table 'OrderLines'\\n" +
+    "        loadToOrderLines(\{\\n" +
+    "            OrderId: id(this),\\n" +
+    "            Qty: line.Quantity,\\n" +
+    "            Product: line.Product,\\n" +
+    "            Cost: line.PricePerUnit\\n" +
+    "        \});\\n" +
+    "    \}\\n" +
+    "    orderData.TotalCost = Math.round(orderData.TotalCost  * 100) / 100;\\n" +
+    "\\n" +
+    "    // Load to SQL table 'Orders'\\n" +
+    "    loadToOrders(orderData)");
+
+configuration.setTransforms(Arrays.asList(transformation));
+
+AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<>(configuration);
+
+AddEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Example - add OLAP ETL
+
+<TabItem value="add_olap_etl" label="add_olap_etl">
+<CodeBlock language="java">
+{`OlapEtlConfiguration configuration = new OlapEtlConfiguration();
+
+configuration.setName("Orders ETL");
+configuration.setConnectionStringName("olap-connection-string-name");
+
+Transformation transformation = new Transformation();
+transformation.setName("Script #1");
+transformation.setCollections(Arrays.asList("Orders"));
+transformation.setScript("var orderDate = new Date(this.OrderedAt);\\n"+
+    "var year = orderDate.getFullYear();\\n"+
+    "var month = orderDate.getMonth();\\n"+
+    "var key = new Date(year, month);\\n"+
+    "loadToOrders(key, \{\\n"+
+    "    Company : this.Company,\\n"+
+    "    ShipVia : this.ShipVia\\n"+
+    "\})"
+);
+
+configuration.setTransforms(Arrays.asList(transformation));
+
+AddEtlOperation<OlapConnectionString> operation = new AddEtlOperation<OlapConnectionString>(configuration);
+
+AddEtlOperationResult result = store.maintenance().send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="java">
+{`public AddEtlOperation(EtlConfiguration<T> configuration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                  | Description                                           |
+|-------------------|-----------------------|-------------------------------------------------------|
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+
+
+

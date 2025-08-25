@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetDestinationsAsync
+
+**GetDestinationsAsync** is used to retrieve all the configured synchronization destinations.
+
+
+
+<TabItem value="get_destinations_1" label="get_destinations_1">
+<CodeBlock language="csharp">
+{`Task<SynchronizationDestination[]> GetDestinationsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;SynchronizationDestination[]&gt;** | The array of synchronization destinations |
+
+## Example
+
+<TabItem value="get_destinations_2" label="get_destinations_2">
+<CodeBlock language="csharp">
+{`SynchronizationDestination[] destinations = await store.AsyncFilesCommands.Synchronization
+													.GetDestinationsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+

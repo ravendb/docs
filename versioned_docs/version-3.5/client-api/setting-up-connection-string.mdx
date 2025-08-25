@@ -5,123 +5,24 @@ sidebar_label: Setting up connection string
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SettingUpConnectionStringCsharp from './_setting-up-connection-string-csharp.mdx';
+import SettingUpConnectionStringJava from './_setting-up-connection-string-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# How to setup connection string?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-.NET named connection strings are supported by Client API. You can use them by setting the `ConnectionStringName` property value in `DocumentStore`, and the RavenDB client will load automatically configuration based on connection string's parameters.
-
-<TabItem value="connection_string_1" label="connection_string_1">
-<CodeBlock language="csharp">
-{`var store = new DocumentStore
-				\{
-					ConnectionStringName = "MyRavenConnectionStringName"
-				\};
-`}
-</CodeBlock>
-</TabItem>
-
-You can define the connection string in the application configuration file (`app.config` or `web.config`).
-
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`<connectionStrings>
-    <add name="Local" connectionString="DataDir = ~\\Data"/>
-    <add name="Server" connectionString="Url = http://localhost:8080"/>
-    <add name="Secure" connectionString="Url = http://localhost:8080;user=beam;password=up;ResourceManagerId=d5723e19-92ad-4531-adad-8611e6e05c8a"/>
-</connectionStrings>
-`}
-</CodeBlock>
-</TabItem>
-
-## Format
-
-RavenDB connection string format is:
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **ApiKey** | string | API key to use when accessing the server. |
-| (Embedded only) **DataDir** | string | Specify which directory to run from. |
-| **Enlist** | bool | Indicates if client should enlist in distributed transactions. Default: `True`. |
-| **ResourceManagerId** | Guid | Resource Manager Id that will be used by the Distributed Transaction Coordinator (DTC) service to identify Raven. A custom resource manager id will need to be configured for each Raven server instance when Raven is hosted more than once per machine. |
-| **Url** | string | Specify where to locate the server. |
-| **Failover** | string in predefined format | Failover server definition. Read more [here](../client-api/bundles/how-client-integrates-with-replication-bundle.mdx#failover-servers). |
-| **Database** or **DefaultDatabase** | string | Use a specific database, not the default one. Using this will also ensure that the database exists. |
-| **User**, **Password** and **Domain** | string | Credentials to use when accessing the server. |
-
-## Examples
-
-The following are samples of a few RavenDB connection strings:
-
-<TabItem value="connection_string_2" label="connection_string_2">
-<CodeBlock language="csharp">
-{`Url = http://ravendb.mydomain.com
-	// connect to a remote RavenDB instance at ravendb.mydomain.com, to the default database
-Url = http://ravendb.mydomain.com;Database=Northwind
-	// connect to a remote RavenDB instance at ravendb.mydomain.com, to the Northwind database there
-Url = http://ravendb.mydomain.com;User=user;Password=secret
-	// connect to a remote RavenDB instance at ravendb.mydomain.com, with the specified credentials
-Url = DataDir = ~\\App_Data\\RavenDB;Enlist=False
-	// use embedded mode with the database located in the App_Data\\RavenDB folder, without DTC support
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SettingUpConnectionStringCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-In Java we don't support named connection string, however you can pass actual connection string to `DocumentStore` by calling `parseConnectionString` on uninitialized store. The RavenDB client will load automatically configuration based on connection string's parameters.
-
-<TabItem value="connection_string_1" label="connection_string_1">
-<CodeBlock language="java">
-{`try (DocumentStore store = new DocumentStore()) \{
-  store.parseConnectionString("Url = http://localhost:8080");
-  store.initialize();
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Format
-
-RavenDB connection string format is:
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **ApiKey** | string | API key to use when accessing the server. |
-| **Url** | string | Specify where to locate the server. |
-| **Failover** | string in predefined format | Failover server definition. Read more [here](../client-api/bundles/how-client-integrates-with-replication-bundle.mdx#failover-servers). |
-| **Database** or **DefaultDatabase** | string | Use a specific database, not the default one. Using this will also ensure that the database exists. |
-
-## Examples
-
-The following are samples of a few RavenDB connection strings:
-
-<TabItem value="connection_string_2" label="connection_string_2">
-<CodeBlock language="java">
-{`Url = http://ravendb.mydomain.com
-    // connect to a remote RavenDB instance at ravendb.mydomain.com, to the default database
-Url = http://ravendb.mydomain.com;Database=Northwind
-    // connect to a remote RavenDB instance at ravendb.mydomain.com, to the Northwind database there
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SettingUpConnectionStringJava />
 </LanguageContent>
+
 
 <!---
 - [How to setup a default database?](./setting-up-default-database)

@@ -1,0 +1,47 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/?pageSize=\{pageSize\}&start=\{start\} \\
+	-X GET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **pageSize** | No | Maximum number of records that will be downloaded |
+| **start** | No | Number of records that should be skipped. Default: `0` |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | array of database names |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X GET "http://localhost:8080/databases?pageSize=8&start=0" 
+< HTTP/1.1 200 OK
+["db2","disabled","Documentation","http","NewNorthwind","NorthWind","rep1","sample"]
+`}
+</CodeBlock>
+</TabItem>
+
+

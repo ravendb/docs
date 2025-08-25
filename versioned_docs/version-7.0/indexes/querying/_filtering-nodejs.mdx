@@ -1,0 +1,526 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.
+
+* The following examples demonstrate how to add simple conditions to a query:
+  * [Where - equals](../../indexes/querying/filtering.mdx#where---equals)
+  * [Where - numeric property](../../indexes/querying/filtering.mdx#where---numeric-property)
+  * [Where - nested property](../../indexes/querying/filtering.mdx#where---nested-property)
+  * [Where - multiple values](../../indexes/querying/filtering.mdx#where---multiple-values)
+  * [Where - in](../../indexes/querying/filtering.mdx#where---in)
+  * [Where - containsAny](../../indexes/querying/filtering.mdx#where---containsany)
+  * [Where - containsAll](../../indexes/querying/filtering.mdx#where---containsall)
+  * [Where - startsWith](../../indexes/querying/filtering.mdx#where---startswith)
+  * [Where - endsWith](../../indexes/querying/filtering.mdx#where---endswith)
+  * [Where - exists](../../indexes/querying/filtering.mdx#where---exists)
+  * [Where - filter by ID](../../indexes/querying/filtering.mdx#where---filter-by-id)
+
+</Admonition>
+## Where - equals
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Basic filtering using "whereEquals":
+// ====================================
+
+const filteredEmployees = await session
+     // Query an index 
+    .query({ indexName: "Employees/ByFirstAndLastName" })
+     // The filtering predicate
+    .whereEquals("FirstName", "Robert")
+     // By default AND is applied between both 'where' predicates
+    .whereEquals("LastName", "King")
+     // Execute the query, send it to the server for processing
+    .all();
+
+// Results will include all Employee documents 
+// with FirstName equals to 'Robert' AND LastName equal to 'King'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("employees", employee => {
+            return {
+                FirstName: employee.FirstName,
+                LastName: employee.LastName
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstAndLastName"
+where FirstName == "Robert" and LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - numeric Property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "whereGreaterThan":
+// ===============================
+
+const filteredProducts = await session
+     // Query an index 
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // The filtering predicate
+    .whereGreaterThan("UnitsInStock", 20)
+    .all();
+
+// Results will include all Product documents having 'UnitsInStock' > 20
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("products", product => {
+            return {
+                UnitsInStock: product.UnitsInStock
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 20
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "whereLessThan":
+// ============================
+
+const filteredProducts = await session
+     // Query an index 
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // The filtering predicate
+    .whereLessThan("UnitsInStock", 20)
+    .all();
+
+// Results will include all Product documents having 'UnitsInStock'< 20
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("products", product => {
+            return {
+                UnitsInStock: product.UnitsInStock
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock < 20
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - nested property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter by a nested property:
+// ============================
+
+const filteredOrders = await session
+     // Query a collection
+    .query({ collection: "Orders" })
+     // Filter by the nested property 'ShipTo.City' from the Order document
+    .whereEquals("ShipTo.City", "Albuquerque")
+    .all();
+
+// * Results will include all Order documents with an order that ships to 'Albuquerque'
+// * An auto-index will be created
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.City == "Albuquerque"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - multiple values
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter by multiple values:
+// ==========================
+
+const filteredOrders = await session
+     // Query an index 
+    .query({ indexName: "Orders/ByProductNamesPerOrderLine" })
+     // Filter by multiple values 
+    .whereEquals("ProductName", "Teatime Chocolate Biscuits")
+    .all();
+
+// Results will include all Order documents that contain ALL values in "Teatime Chocolate Biscuits"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Orders_ByProductNamesPerOrderLine extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("orders", order => {
+            return {
+                // Index field 'ProductNames' will contain the product names per Order Line
+                ProductNames: order.Lines.map(x => x.ProductName)
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByProductNamesPerOrderLine"
+where ProductNames == "Teatime Chocolate Biscuits"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - in
+
+Use `whereIn` when you want to filter by a single value out of multiple given values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "whereIn":
+// ======================
+
+const filteredEmployees = await session
+     // Query an index 
+    .query({ indexName: "Employees/ByFirstAndLastName" })
+     // The filtering predicate
+    .whereIn("FirstName", [ "Robert", "Nancy" ]) 
+    .all();
+
+// Results will include all Employee documents that have either 'Robert' OR 'Nancy' in their 'FirstName' field
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("employees", employee => {
+            return {
+                FirstName: employee.FirstName,
+                LastName: employee.LastName
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstAndLastName"
+where FirstName in ("Robert", "Nancy")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - containsAny
+
+Use `containsAny` to check if an enumeration contains any of the values from the specified list.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "containsAny":
+// ==========================
+
+const filteredOrders = await session
+     // Query an index 
+    .query({ indexName: "Orders/ByProductNames" })
+     // The filtering predicate
+    .containsAny("ProductNames", ["Ravioli", "Coffee"])
+    .all();
+
+// Results will include all Order documents that have either 'Ravioli' OR 'Coffee' in their order
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Orders_ByProductNames extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("orders", order => {
+            return {
+                // Index field 'ProductNames' will contain a list of all product names
+                ProductNames: order.Lines.flatMap(x => x.ProductName.split(" "))
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByProductNames"
+where ProductNames in ("ravioli", "coffee")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - containsAll
+
+Use `containsAll` to check if an enumeration contains all of the values from the specified list.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "containsAll":
+// ==========================
+
+const filteredOrders = await session
+     // Query an index 
+    .query({ indexName: "Orders/ByProductNames" })
+     // The filtering predicate
+    .containsAll("ProductNames", ["Ravioli", "Pepper"])
+    .all();
+
+// Results will include all Order documents that have both 'Ravioli' AND 'Pepper' in their order
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Orders_ByProductNames extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("orders", order => {
+            return {
+                // Index field 'ProductNames' will contain a list of all product names
+                ProductNames: order.Lines.flatMap(x => x.ProductName.split(" "))
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByProductNames"
+where ProductNames all in ("ravioli", "pepper")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - startsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "whereStartsWith":
+// ==============================
+
+const filteredProducts = await session
+     // Query a collection
+    .query({ collection: "Products" })
+     // The filtering predicate
+    .whereStartsWith("Name", "ch")
+    .all();
+
+// * Results will include all Product documents with a name that starts with 'ch'
+// * An auto-index will be created
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products" 
+where startsWith(Name, "ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - endsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter with "whereEndsWith":
+// ===========================
+
+const filteredProducts = await session
+     // Query a collection
+    .query({ collection: "Products" })
+     // The filtering predicate
+    .whereEndsWith("Name", "es")
+    .all();
+
+// * Results will include all Product documents with a name that ends with 'es'
+// * An auto-index will be created
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where endsWith(Name, 'ra')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - exists
+
+* To find all documents in a collection that have a specified field,  
+  see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).
+  
+* To find all documents in a collection that don't have a specified field,  
+  see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+
+
+
+## Where - filter by ID
+
+* Once the property used in the `whereEquals` clause is recognized as an identity property of a given entity type,  
+  and there aren't any other fields involved in the query predicate, then this query is considered a "Collection Query".
+
+* Such collection queries that ask about documents with given IDs, or where identifiers start with a given prefix
+  and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine.
+
+* This means that querying by ID doesn't create an auto-index and has no extra cost.  
+  In terms of efficiency, it is the same as loading documents with [`session.load`](../../client-api/session/loading-entities.mdx) usage.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter by id:
+// =============
+
+const order = await session
+     // Query a collection
+    .query({ collection: "Orders" })
+     // The filtering predicate
+    .whereEquals("id", "orders/1-A")
+    .firstOrNull();
+
+// * Results will include the Order document having ID 'orders/1-A'
+// * An auto-index is NOT created
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where id() == "orders/1-A"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Filter by whereStartsWith id:
+// =============================
+
+const filteredOrders = await session
+    // Query a collection
+    .query({ collection: "Orders" })
+    // The filtering predicate
+    .whereStartsWith("id", "orders/1")
+    .all();
+
+// * Results will include all Order documents having ID that starts with 'orders/1'
+// * An auto-index is NOT created
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where startsWith(id(), "orders/1")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+

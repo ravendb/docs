@@ -1,0 +1,42 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetAsync
+
+**GetAsync** is used to get the file headers of the selected files.
+
+
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="csharp">
+{`Task<FileHeader[]> GetAsync(string[] filenames);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filenames** | string[] | Names of the files you want to get headers for. |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;FileHeader[]&gt;** | A task that represents the asynchronous get operation. The task result is the array of [`FileHeaders`](../../../../../glossary/file-header.mdx). |
+
+## Example
+
+<TabItem value="get_2" label="get_2">
+<CodeBlock language="csharp">
+{`FileHeader[] icons = await store
+	.AsyncFilesCommands
+	.GetAsync(new[]
+	\{
+		"/images/icons/small/1.png", "/images/icons/large/1.png"
+	\});
+`}
+</CodeBlock>
+</TabItem>
+

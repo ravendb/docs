@@ -1,0 +1,85 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, optimistic concurrency checks are turned **off**, which means that changes made outside our session object will be overwritten.
+Checks can be turned on by setting `setUseOptimisticConcurrency` method from `advanced` session operations to `true` and may cause `ConcurrencyExceptions` to be thrown.
+
+
+## Example I
+
+<TabItem value="optimistic_concurrency_1" label="optimistic_concurrency_1">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    session.advanced().setUseOptimisticConcurrency(true);
+
+    Product product = new Product();
+    product.setName("Some Name");
+
+    session.store(product, "products/999");
+    session.saveChanges();
+
+    try (IDocumentSession otherSession = store.openSession()) \{
+        Product otherProduct = otherSession.load(Product.class, "products/999");
+        otherProduct.setName("Other Name");
+
+        otherSession.saveChanges();
+    \}
+
+    product.setName("Better Name");
+    session.saveChanges(); //  will throw ConcurrencyException
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The above example shows how to enable optimistic concurrency for a particular session. However that can be also turned on globally, that is for all opened sessions 
+by using the convention `setDefaultUseOptimisticConcurrency`.
+
+## Example II
+
+<TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
+<CodeBlock language="java">
+{`store.getConventions().setUseOptimisticConcurrency(true);
+
+try (IDocumentSession session = store.openSession()) \{
+    boolean isSessionUsingOptimisticConcurrency
+        = session.advanced().isUseOptimisticConcurrency(); // will return true
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="Optimistic Concurrency and Replication" id="optimistic-concurrency-and-replication" href="#optimistic-concurrency-and-replication">
+
+When Optimistic Concurrency is used with Replication then we advise to set `forceReadFromMaster` when only read operations are load-balanced (FailoverBehavior.ReadFromAllServers) and you want to perform document update.
+
+<TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Product product = new Product();
+    product.setName("Some Name");
+
+    session.store(product, "products/999");
+    session.saveChanges();
+\}
+
+try (IDocumentSession session = store.openSession()) \{
+    session.advanced().setUseOptimisticConcurrency(true);
+
+    Product product = new Product();
+    product.setName("Some Other Name");
+
+    session.store(product, null, "products/999");
+    session.saveChanges(); // will NOT throw Concurrency exception
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+

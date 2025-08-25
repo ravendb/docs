@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetConflictsAsync
+
+**GetConflictsAsync** retrieves the existing conflict items.
+
+<Admonition type="info" title="Conflicts location" id="conflicts-location" href="#conflicts-location">
+Conflicts always exist in a destination file system.
+</Admonition>
+
+
+
+<TabItem value="get_conflicts_1" label="get_conflicts_1">
+<CodeBlock language="csharp">
+{`Task<ItemsPage<ConflictItem>> GetConflictsAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of items to skip |
+| **pageSize** | int | The maximum number of items to get |
+
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;ItemsPage&lt;ConflictItem&gt;&gt;** | A task that represents the asynchronous get operation. The task result is the `ItemsPage` object that contains the number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item.mdx) objects that represent the synchronization conflict. |
+
+
+## Example
+
+<TabItem value="get_conflicts_2" label="get_conflicts_2">
+<CodeBlock language="csharp">
+{`ItemsPage<ConflictItem> page = await store.AsyncFilesCommands.Synchronization
+												.GetConflictsAsync(0, 128);
+
+page.Items.ForEach(x =>
+	Console.WriteLine("Synchronization of file \{0\} from \{1\} file system resulted in conflict", 
+	x.FileName, x.RemoteServerUrl));
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,96 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* `Defer` allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server in a single batch when saveChanges is called,
+  along with any other changes/operations made on the session.  
+  Thus, all deferred commands are __executed as part of the session's saveChanges transaction__.
+
+* In this page:
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();
+
+// Define a patchRequest object for the PatchCommandData used in the 'defer' below
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.Supplier = 'suppliers/2-A';";
+
+// 'defer' is available in the session's advanced methods 
+session.advanced.defer(
+
+    // Define commands to be executed:
+    // i.e. Put a new document
+    new PutCommandDataBase("products/999-A", null, null, \{
+        "Name": "My Product",
+        "Supplier": "suppliers/1-A"
+        "@metadata": \{ "@collection": "Products" \}
+    \}),
+    
+    // Patch document
+    new PatchCommandData("products/999-A", null, patchRequest, null),
+
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+await session.saveChanges();
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `ICommandData` interface and can be deferred:
+
+- PutCommandDataBase
+- DeleteCommandData
+- DeletePrefixedCommandData
+- PatchCommandData
+- BatchPatchCommandData
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
+- CopyAttachmentCommandData
+- MoveAttachmentCommandData
+- CountersBatchCommandData
+- PutCompareExchangeCommandData
+- DeleteCompareExchangeCommandData
+- CopyTimeSeriesCommandData
+- TimeSeriesBatchCommandData
+- ForceRevisionCommandData
+  
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`session.advanced.defer(...commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - |-|-|
+| **commands** | `ICommandData[]` | Commands to be executed |
+
+
+
+

@@ -5,87 +5,24 @@ sidebar_label: ...send custom request
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SendCustomRequestUsingHttpjsonrequestfactoryCsharp from './_send-custom-request-using-httpjsonrequestfactory-csharp.mdx';
+import SendCustomRequestUsingHttpjsonrequestfactoryJava from './_send-custom-request-using-httpjsonrequestfactory-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# How to send custom request using HttpJsonRequestFactory?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Custom requests can be send using HttpJsonRequestFactory which can be accessed by `JsonRequestFactory` property in `DocumentStore`. This is the same factory that client uses for communication.
-
-Worth knowing is that factory might not always be accessible. To check if document store contains factory use `HasJsonRequestFactory`. In most of cases value of this property will be `true`. For the time being only `ShardedDocumentStore` does not contain request factory, because there is no single request factory in such document store, so to access factory you must use shards directly.
-
-## Example
-
-<TabItem value="custom_request_1" label="custom_request_1">
-<CodeBlock language="csharp">
-{`string key = "employees/1";
-
-// http://localhost:8080/databases/Northwind/docs/employees/1
-string url = store.Url // http://localhost:8080
-	.ForDatabase("Northwind") // /databases/Northwind
-	.Doc(key); // /docs/employees/1
-
-IDatabaseCommands commands = store.DatabaseCommands;
-using (HttpJsonRequest request = store
-	.JsonRequestFactory
-	.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, HttpMethod.Get, commands.PrimaryCredentials, store.Conventions)))
-\{
-	RavenJToken json = request.ReadResponseJson();
-	JsonDocument jsonDocument = SerializationHelper
-		.DeserializeJsonDocument(key, json, request.ResponseHeaders, request.ResponseStatusCode);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-<Admonition type="info" title="">
-`ForDatabase`, `Docs` extensions and many others are a part of url extensions available in `Raven.Client.Connection` namespace.
-</Admonition>
-
-
+   <SendCustomRequestUsingHttpjsonrequestfactoryCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Custom requests can be send using HttpJsonRequestFactory which can be accessed by `getJsonRequestFactory()` in `DocumentStore`. This is the same factory that client uses for communication.
-
-Worth knowing is that factory might not always be accessible. To check if document store contains factory use `hasJsonRequestFactory`. In most of cases value of this property will be `true`. 
-
-## Example
-
-<TabItem value="custom_request_1" label="custom_request_1">
-<CodeBlock language="java">
-{`String key = "employees/1";
-
-// http://localhost:8080/databases/Northwind/docs/employees/1
-String forDatabase = RavenUrlExtensions.forDatabase(store.getUrl(), "Northwind");
-String url = forDatabase + "/docs/" + key;
-
-IDatabaseCommands commands = store.getDatabaseCommands();
-HttpJsonRequest request = store
-  .getJsonRequestFactory()
-  .createHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, HttpMethods.GET, null, commands.getPrimaryCredentials(), store.getConventions()));
-
-RavenJToken json = request.readResponseJson();
-JsonDocument jsonDocument = SerializationHelper.deserializeJsonDocument(key, json, request.getResponseHeaders(), request.getResponseStatusCode());
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SendCustomRequestUsingHttpjsonrequestfactoryJava />
 </LanguageContent>
+
 
 <!---
 - [Conventions related to request handling](../configuration/conventions/request-handling)

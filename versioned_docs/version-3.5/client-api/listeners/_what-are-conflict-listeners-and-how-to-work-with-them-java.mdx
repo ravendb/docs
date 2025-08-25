@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener.
+To create your own listener of this type, just implement IDocumentConflictListener interface.
+
+<TabItem value="document_conflict_listener" label="document_conflict_listener">
+<CodeBlock language="java">
+{`public interface IDocumentConflictListener \{
+
+  public boolean tryResolveConflict(String key, List<JsonDocument> results, Reference<JsonDocument> resolvedDocument);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+This example shows how to create an automatic conflict resolver by using `IDocumentConflictListener`, which will pick the newest item from the list of conflicted documents:
+
+<TabItem value="document_conflict_example" label="document_conflict_example">
+<CodeBlock language="java">
+{`public class ResolveInFavourOfNewest implements IDocumentConflictListener \{
+  @Override
+  public boolean tryResolveConflict(String key, List<JsonDocument> conflictedDocs, Reference<JsonDocument> resolvedDocument) \{
+    long maxDate = 0;
+    for (JsonDocument doc : conflictedDocs) \{
+      if (doc.getLastModified().getTime() > maxDate) \{
+        maxDate = doc.getLastModified().getTime();
+        resolvedDocument.value = doc;
+      \}
+    \}
+
+    return resolvedDocument.value != null;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

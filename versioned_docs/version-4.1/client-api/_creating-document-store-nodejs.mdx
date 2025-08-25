@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
+
+<TabItem value="document_store_ctor" label="document_store_ctor">
+<CodeBlock language="js">
+{`new DocumentStore(urls, [database], [authOptions]);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Do not open a `DocumentStore` using URL addresses that point to nodes outside your cluster.
+</Admonition>
+
+<TabItem value="document_store_creation" label="document_store_creation">
+<CodeBlock language="js">
+{`const store = new DocumentStore(["http://localhost:8080"], "Northwind");
+store.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+The above snippet is going to instantiate a communication channel between your application and the local RavenDB server instance.
+
+## Initialization
+
+A `DocumentStore` instance must be initialized before use by calling the `.initialize()` method.
+
+<Admonition type="note" title="Conventions" id="conventions" href="#conventions">
+
+After `DocumentStore` initialization, the conventions are frozen - modification attempts are going to result with error. Conventions need to be set *before* `.initialize()` is called.
+
+</Admonition>
+
+## Singleton
+
+Because the document store is a heavyweight object, there should only be one instance created per application (a singleton - simple to achieve in Node.js by wrapping it in a module). Typical initialization of a document store looks as follows:
+
+<TabItem value="document_store_holder" label="document_store_holder">
+<CodeBlock language="js">
+{`// documentStoreHolder.js
+const store = new DocumentStore("http://localhost:8080", "Northwind");
+store.initialize();
+export \{ store as documentStore \}; 
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+If you use more than one instance of `DocumentStore`, you should dispose it after use by calling its `.dispose()` method.
+</Admonition>
+
+

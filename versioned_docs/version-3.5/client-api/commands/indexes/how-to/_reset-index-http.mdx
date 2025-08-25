@@ -1,0 +1,46 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**ResetIndex** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes/\{indexName\} \\
+	-X RESET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required |  Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | name of an index to reset |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+---
+
+### Example I
+
+Reset index `Orders/Totals`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X RESET "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals" 
+< HTTP/1.1 200 OK
+\{"Reset":"Orders/Totals"\}
+`}
+</CodeBlock>
+</TabItem>
+
+

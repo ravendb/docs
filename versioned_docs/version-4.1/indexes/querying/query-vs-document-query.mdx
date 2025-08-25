@@ -5,273 +5,29 @@ sidebar_label: Query vs DocumentQuery
 sidebar_position: 15
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import QueryVsDocumentQueryCsharp from './_query-vs-document-query-csharp.mdx';
+import QueryVsDocumentQueryJava from './_query-vs-document-query-java.mdx';
+import QueryVsDocumentQueryNodejs from './_query-vs-document-query-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Querying: Query vs DocumentQuery
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are the differences between them?
-
-`DocumentQuery` is the lower level API that we use to query RavenDB, but it does not support LINQ, the mandatory data access solution in .NET. We created `Query` to be the LINQ endpoint for RavenDB. 
-
-The entire LINQ API is a wrapper of `DocumentQuery` and is built on top on that. 
-When you use `Query`, it always is translated into the `DocumentQuery` object, which then builds a RQL-syntax query that is sent to the server.
-However, we still expose `DocumentQuery` in advanced options to allow the users to have the full power of RQL available to them. 
-
-## Immutability
-
-`DocumentQuery` is mutable while `Query` is immutable. You might get different results if you try to *reuse* a query. The usage of the `Query` method in the following example:
-
-<TabItem value="immutable_query" label="immutable_query">
-<CodeBlock language="csharp">
-{`IRavenQueryable<User> query = session
-    .Query<User>()
-    .Where(x => x.Name.StartsWith("A"));
-
-IRavenQueryable<User> ageQuery = query
-    .Where(x => x.Age > 21);
-
-IRavenQueryable<User> eyeQuery = query
-    .Where(x => x.EyeColor == "blue");
-`}
-</CodeBlock>
-</TabItem>
-
-will result that the queries will be translated into following Lucene-syntax queries:
-
-`query - from Users where startsWith(Name, 'A')`
-
-`ageQuery - from Users where startsWith(Name, 'A') and Age > 21`
-
-`eyeQuery - from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
-
-The similar usage of `DocumentQuery`:
-
-<TabItem value="mutable_lucene_query" label="mutable_lucene_query">
-<CodeBlock language="csharp">
-{`IDocumentQuery<User> documentQuery = session
-    .Advanced
-    .DocumentQuery<User>()
-    .WhereStartsWith(x => x.Name, "A");
-
-IDocumentQuery<User> ageDocumentQuery = documentQuery
-    .WhereGreaterThan(x => x.Age, 21);
-
-IDocumentQuery<User> eyeDocumentQuery = documentQuery
-    .WhereEquals(x => x.EyeColor, "blue");
-
-// here all of the DocumentQuery variables are the same references
-`}
-</CodeBlock>
-</TabItem>
-
-`documentQuery - from Users where startsWith(Name, 'A')` (before creating `ageQuery`)
-
-`ageLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21` (before creating `eyeDocumentQuery`)
-
-`eyeLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
-
-In results, all created Lucene queries are the same query (actually the same instance). This is an important hint that you should be aware if you are going to reuse `DocumentQuery`.
-
-## Default Query Operator
-
-Starting from version 4.0, the `Query` and `DocumentQuery` have an identical default operator `AND` (previously `Query` used `AND` and `DocumentQuery` used `OR`). You are able to change this behavior by using `UsingDefaultOperator`:
-        
-<TabItem value="default_operator" label="default_operator">
-<CodeBlock language="csharp">
-{`session
-    .Advanced
-    .DocumentQuery<User>()
-    .UsingDefaultOperator(QueryOperator.Or);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <QueryVsDocumentQueryCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Unlike .NET client, Java client offers single API for querying documents. 
-
-Below you can find examples of equivalent calls. 
-
-
-`query` method in `DocumentSession` is shorthand for calling `session.advanced().documentQuery`.
-
-<TabItem value="query_1a" label="query_1a">
-<CodeBlock language="java">
-{`session.query(Order.class)
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_1b" label="query_1b">
-<CodeBlock language="java">
-{`session.advanced().documentQuery(Order.class)
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_2a" label="query_2a">
-<CodeBlock language="java">
-{`session.query(Order.class, Orders_ByShipToAndLines.class)
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_2b" label="query_2b">
-<CodeBlock language="java">
-{`session.advanced().documentQuery(Order.class, Orders_ByShipToAndLines.class)
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_3a" label="query_3a">
-<CodeBlock language="java">
-{`session.query(Order.class, Query.index("Orders/ByShipToAndLines"))
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_3b" label="query_3b">
-<CodeBlock language="java">
-{`session.advanced().documentQuery(Order.class, "Orders/ByShipToAndLines", null, false);
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_4a" label="query_4a">
-<CodeBlock language="java">
-{`session.query(Order.class, Query.collection("orders"))
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_4b" label="query_4b">
-<CodeBlock language="java">
-{`session.advanced().documentQuery(Order.class, null, "orders", false);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <QueryVsDocumentQueryJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-Unlike .NET, Node.js client offers single API for querying documents. 
-
-Below you can find examples of equivalent calls. 
-
-`query()` method in `DocumentSession` is shorthand for calling `session.advanced.documentQuery()`.
-
-<TabItem value="query_1a" label="query_1a">
-<CodeBlock language="js">
-{`session.query(Order);
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_1b" label="query_1b">
-<CodeBlock language="js">
-{`session.advanced.documentQuery(Order);
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_2a" label="query_2a">
-<CodeBlock language="js">
-{`session.query(\{ indexName: "Orders/ByShipToAndLines" \});
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_2b" label="query_2b">
-<CodeBlock language="js">
-{`session.advanced.documentQuery(\{ indexName: "Orders/ByShipToAndLines" \});
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_3a" label="query_3a">
-<CodeBlock language="js">
-{`session.query(\{ indexName: "Orders/ByShipToAndLines" \});
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_3b" label="query_3b">
-<CodeBlock language="js">
-{`session.advanced.documentQuery(\{ 
-    indexName: "Orders/ByShipToAndLines", 
-    isMapReduce: false,
-    collection: null
-\});
-`}
-</CodeBlock>
-</TabItem>
-
----
-
-<TabItem value="query_4a" label="query_4a">
-<CodeBlock language="js">
-{`session.query(\{ collection: "orders" \});
-`}
-</CodeBlock>
-</TabItem>
-
-is equivalent to:
-
-<TabItem value="query_4b" label="query_4b">
-<CodeBlock language="js">
-{`session.advanced.documentQuery(\{ 
-    collection: "orders",
-    indexName: null,
-    isMapReduce: false
-\});
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <QueryVsDocumentQueryNodejs />
 </LanguageContent>
+
 
 <!---
 ### Querying

@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Use **StreamQuery** method to stream results of a selected index according to a specified query.
+
+## Syntax
+
+<TabItem value="stream_query_1" label="stream_query_1">
+<CodeBlock language="java">
+{`public CloseableIterator<RavenJObject> streamQuery(String index, IndexQuery query, Reference<QueryHeaderInformation> queryHeaderInfo);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | A name of an index to query |
+| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
+| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information.mdx)&gt; | Information about performed query |
+
+| Return Value | |
+| ------------- | ----- |
+| IEnumerator`<RavenJObject>` | Enumerator with query results |
+| Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information.mdx)&gt; | Information about performed query |
+
+## Example
+
+<TabItem value="stream_query_2" label="stream_query_2">
+<CodeBlock language="java">
+{`Reference<QueryHeaderInformation> queryHeaderInfoRef = new Reference<>();
+try (CloseableIterator<RavenJObject> iterator = store.getDatabaseCommands().streamQuery("Orders/Totals", new IndexQuery("Company:companies/1"), queryHeaderInfoRef)) \{
+
+  while (iterator.hasNext()) \{
+    RavenJObject order = iterator.next();
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

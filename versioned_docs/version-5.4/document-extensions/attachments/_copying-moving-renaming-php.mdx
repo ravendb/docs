@@ -1,0 +1,96 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Attachments can be copied, moved, or renamed using built-in session methods.  
+All of those actions are executed when `saveChanges` is called and take place on the server-side,  
+removing the need to transfer the entire attachment binary data over the network in order to perform the action.
+
+## Copy attachment
+
+Attachment can be copied using one of the `session.advanced.attachments.copy` methods:
+
+### Syntax
+
+<TabItem value="copy_0" label="copy_0">
+<CodeBlock language="php">
+{`function copy(object|string $sourceIdOrEntity, ?string $sourceName, object|string $destinationIdOrEntity, ?string $destinationName): void;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="copy_1" label="copy_1">
+<CodeBlock language="php">
+{`$employee1 = $session->load(Employee::class, "employees/1-A");
+$employee2 = $session->load(Employee::class, "employees/2-A");
+
+$session->advanced()->attachments()->copy($employee1, "photo.jpg", $employee2, "photo-copy.jpg");
+
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Move attachment
+
+Attachment can be moved using one of the `session.advanced.attachments.move` methods:
+
+### Syntax
+
+<TabItem value="move_0" label="move_0">
+<CodeBlock language="php">
+{`public function move(object|string $sourceIdOrEntity, ?string $sourceName, object|string $destinationIdOrEntity, ?string $destinationName): void;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="move_1" label="move_1">
+<CodeBlock language="php">
+{`$employee1 = $session->load(Employee::class, "employees/1-A");
+$employee2 = $session->load(Employee::class, "employees/2-A");
+
+$session->advanced()->attachments()->move($employee1, "photo.jpg", $employee2, "photo.jpg");
+
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Rename attachment
+
+Attachment can be renamed using one of the `session.advanced.attachments.rename` methods:
+
+### Syntax
+
+<TabItem value="rename_0" label="rename_0">
+<CodeBlock language="php">
+{`function rename(string|object $idOrEntity, ?string $name, ?string $newName): void;
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="rename_1" label="rename_1">
+<CodeBlock language="php">
+{`$employee = $session->load(Employee::class, "employees/1-A");
+
+$session->advanced()->attachments()->rename($employee, "photo.jpg", "photo-new.jpg");
+
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

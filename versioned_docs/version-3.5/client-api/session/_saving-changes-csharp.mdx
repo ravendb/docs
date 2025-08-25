@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
+
+## Syntax
+
+<TabItem value="saving_changes_1" label="saving_changes_1">
+<CodeBlock language="csharp">
+{`void SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="saving_changes_2" label="saving_changes_2">
+<CodeBlock language="csharp">
+{`// storing new entity
+session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Waiting for indexes" id="waiting-for-indexes" href="#waiting-for-indexes">
+
+You can ask the server to wait until the indexes are caught up with this particular write after save changes.
+You can also set a timeout and whatever to throw or not. 
+You can specify indexes that you want to wait for. If you don't specify anything, RavenDB will automatically select just the indexes that are impacted by this write.
+
+<TabItem value="saving_changes_3" label="saving_changes_3">
+<CodeBlock language="csharp">
+{`session.Advanced.WaitForIndexesAfterSaveChanges(
+    timeout: TimeSpan.FromSeconds(30),
+    throwOnTimeout: true,
+    indexes: new[] \{ "index/1", "index/2" \});
+
+session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+

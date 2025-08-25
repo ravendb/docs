@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: RetryRenamingAsync
+
+**RetryRenamingAsync** runs a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks.mdx) article for details.
+
+
+
+<TabItem value="retry_renaming_1" label="retry_renaming_1">
+<CodeBlock language="csharp">
+{`Task RetryRenamingAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** |  A task that represents the asynchronous operation |
+
+## Example
+
+<TabItem value="retry_renaming_2" label="retry_renaming_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Storage
+		.RetryRenamingAsync();
+`}
+</CodeBlock>
+</TabItem>
+

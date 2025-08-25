@@ -5,169 +5,24 @@ sidebar_label: Set Index Priority
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SetIndexPriorityCsharp from './_set-index-priority-csharp.mdx';
+import SetIndexPriorityJava from './_set-index-priority-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Change Index Priority
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
-
-## Syntax
-
-<TabItem value="set_priority_1" label="set_priority_1">
-<CodeBlock language="csharp">
-{`public SetIndexesPriorityOperation(string indexName, IndexPriority priority);
-public SetIndexesPriorityOperation(Parameters parameters);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="set_priority_2" label="set_priority_2">
-<CodeBlock language="csharp">
-{`public enum IndexPriority
-\{
-    Low = 0,
-    Normal = 1,
-    High = 2
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="set_priority_3" label="set_priority_3">
-<CodeBlock language="csharp">
-{`public class Parameters
-\{
-    public string[] IndexNames \{ get; set; \}
-    public IndexPriority Priority \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | name of an index to change priority for |
-| **priority** | IndexingPriority | new index priority |
-| **parameters** | SetIndexesPriorityOperation.Parameters | list of indexes + new index priority |
-
-## Example I
-
-<TabItem value="set_priority_4" label="set_priority_4">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High));
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="set_priority_5" label="set_priority_5">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new SetIndexesPriorityOperation(new SetIndexesPriorityOperation.Parameters
-\{
-    IndexNames = new []\{ "Orders/Totals", "Orders/ByCompany" \},
-    Priority = IndexPriority.Low
-\}));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SetIndexPriorityCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
-
-## Syntax
-
-<TabItem value="set_priority_1" label="set_priority_1">
-<CodeBlock language="java">
-{`public SetIndexesPriorityOperation(String indexName, IndexPriority priority) \{
-public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parameters)
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="set_priority_2" label="set_priority_2">
-<CodeBlock language="java">
-{`public enum IndexPriority \{
-    LOW,
-    NORMAL,
-    HIGH
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="set_priority_3" label="set_priority_3">
-<CodeBlock language="java">
-{`public static class Parameters \{
-    private String[] indexNames;
-    private IndexPriority priority;
-
-    public String[] getIndexNames() \{
-        return indexNames;
-    \}
-
-    public void setIndexNames(String[] indexNames) \{
-        this.indexNames = indexNames;
-    \}
-
-    public IndexPriority getPriority() \{
-        return priority;
-    \}
-
-    public void setPriority(IndexPriority priority) \{
-        this.priority = priority;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | String | name of an index to change priority for |
-| **priority** | IndexingPriority | new index priority |
-| **parameters** | SetIndexesPriorityOperation.Parameters | list of indexes + new index priority |
-
-## Example I
-
-<TabItem value="set_priority_4" label="set_priority_4">
-<CodeBlock language="java">
-{`store.maintenance().send(
-    new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.HIGH));
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="set_priority_5" label="set_priority_5">
-<CodeBlock language="java">
-{`SetIndexesPriorityOperation.Parameters parameters = new SetIndexesPriorityOperation.Parameters();
-parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
-parameters.setPriority(IndexPriority.LOW);
-
-store.maintenance().send(new SetIndexesPriorityOperation(parameters));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <SetIndexPriorityJava />
 </LanguageContent>
+
 
 <!---
 ### Indexes

@@ -1,0 +1,56 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can modify ETL task by using **UpdateEtlOperation**.
+
+## Syntax
+
+<TabItem value="update_etl_operation" label="update_etl_operation">
+<CodeBlock language="csharp">
+{`public UpdateEtlOperation(long taskId, EtlConfiguration<T> configuration)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **taskId** | long | Current ETL task ID | 
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+## Example
+
+<TabItem value="update_etl_example" label="update_etl_example">
+<CodeBlock language="csharp">
+{`// AddEtlOperationResult addEtlResult = store.Maintenance.Send(new AddEtlOperation<RavenConnectionString>() \{ ... \});
+
+UpdateEtlOperation<RavenConnectionString> operation = new UpdateEtlOperation<RavenConnectionString>(
+    addEtlResult.TaskId,
+    new RavenEtlConfiguration
+    \{
+        ConnectionStringName = "raven-connection-string-name",
+        Name = "Employees ETL",
+        Transforms =
+        \{
+            new Transformation
+            \{
+                Name = "Script #1",
+                Collections =
+                \{
+                    "Employees"
+                \},
+                Script = @"loadToEmployees (\{
+                        Name: this.FirstName + ' ' + this.LastName,
+                        Title: this.Title
+                \});"
+            \}
+        \}
+    \});
+
+UpdateEtlOperationResult result = store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To update entity with latest changes from server `refresh` method from `advanced()` session operations can be used.
+
+## Syntax
+
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="java">
+{`<T> void refresh(T entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be refreshed |
+
+## Example
+
+<TabItem value="refresh_2" label="refresh_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+Assert.assertEquals("Doe", employee.getLastName());
+
+// LastName changed to 'Shmoe'
+
+session.advanced().refresh(employee);
+
+Assert.assertEquals("Shmoe", employee.getLastName());
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
+

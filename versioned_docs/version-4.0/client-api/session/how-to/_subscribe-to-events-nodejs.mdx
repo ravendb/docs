@@ -1,0 +1,143 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
+
+The listener is invoked when a particular action is executed on an entity or querying is performed.
+
+<Admonition type="info" title="Subscribing to an event" id="subscribing-to-an-event" href="#subscribing-to-an-event">
+Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.advanced` which will overwrite the existing event for the current session. 
+</Admonition>
+
+## beforeStore event
+
+This event is invoked as a part of `saveChanges()`, but before it is actually sent to the server.
+
+The callback passes the argument `BeforeStoreEventArgs` that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+Say we want to discontinue all of the products that are not in stock. After we add a listener to the event, it's going to emit on every stored entity.
+
+<TabItem value="store_session" label="store_session">
+<CodeBlock language="js">
+{`// subscribe to the event
+store.on("beforeStore", (args) => \{
+    if (args.entity instanceof Product) \{
+        const product = args.entity;
+        if (product.unitsInStock === 0) \{
+            product.discontinued = true;
+        \}
+    \}
+\});
+
+\{
+    const session = store.openSession();
+    const product1 = new Product();
+    product1.name = "RavenDB v3.5";
+    product1.unitsInStock = 0;
+
+    await session.store(product1);
+
+    const product2 = new Product();
+    product2.name = "RavenDB v4.0";
+    product2.unitsInStock = 1000;
+    await session.store(product2);
+
+    await session.saveChanges();  // Here's where the event is emitted
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## beforeDelete event
+
+This event is invoked as a part of `saveChanges()`, but before it actually sends the deleted entities to the server.
+
+It takes the argument `BeforeDeleteEventArgs`, that consists of the `Session` entity's ID and the entity itself.
+
+### Example
+
+To prevent anyone from deleting entities we can create a listener as follows:
+
+<TabItem value="delete_session" label="delete_session">
+<CodeBlock language="js">
+{`// subscribe to the event
+store.on("beforeDelete", args => \{
+    throw new Error("Not implemented");
+\});
+
+// open a session and delete entity
+\{
+    const session = store.openSession();
+    const product = await session.load("products/1-A");
+
+    session.delete(product);
+
+    await session.saveChanges(); // "Not implemented" error will be thrown here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## afterSaveChanges event
+
+This event is invoked after the `saveChanges()` is returned. It takes the argument `AfterSaveChangesEventArgs` that consists of the `Session` entity's ID and the entity itself with the updated metadata from the server.
+
+### Example
+
+If we want to log each entity that was saved, we can create a method as follows:
+
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
+<CodeBlock language="js">
+{`store.on("afterSaveChanges", args => \{
+    log("Document " + args.documentId + " was saved.");
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## beforeQuery event
+
+This event is invoked just before the query is sent to the server.
+
+It takes the argument `BeforeQueryEventArgs`, that consists of the `Session` and the `IDocumentQueryCustomization`.
+
+### Example I
+
+If you want to disable caching of all query results, you can implement the method as follows:
+
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
+<CodeBlock language="js">
+{`store.on("beforeQuery", args => \{
+    args.queryCustomization.noCaching();
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:
+
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
+<CodeBlock language="js">
+{`store.on("beforeQuery", args => \{
+    args.queryCustomization
+        .waitForNonStaleResults(30000);
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

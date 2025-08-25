@@ -1,0 +1,99 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Single entity can be checked for changes using [hasChanged()](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges()`  method and the `whatChanged()` method are available in the `advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="what_changed_1" label="what_changed_1">
+<CodeBlock language="js">
+{`session.advanced.hasChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="what_changed_2" label="what_changed_2">
+<CodeBlock language="js">
+{`\{
+    const session = store.openSession();
+
+    assert.ok(!session.advanced.hasChanges());
+
+    const employee = new Employee();
+    employee.firstName = "John";
+    employee.lastName = "Doe";
+
+    await session.store(employee);
+
+    assert.ok(session.advanced.hasChanges());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="what_changed_3" label="what_changed_3">
+<CodeBlock language="js">
+{`session.advanced.whatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| `{ [id]: DocumentsChanges[] }` | Object containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="what_changed_4" label="what_changed_4">
+<CodeBlock language="js">
+{`\{
+    const session = store.openSession();
+
+    const employee = new Employee();
+    employee.firstName = "John";
+    employee.lastName = "Doe";
+
+    await session.store(employee);
+
+    const changes = session.advanced.whatChanged();
+    const employeeChanges = changes["employees/1-A"];
+    const change =
+        employeeChanges[0].change; // "DocumentAdded"
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="what_changed_5" label="what_changed_5">
+<CodeBlock language="js">
+{`const session = store.openSession();
+const employee = await session.load("employees/1-A"); // 'Joe Doe'
+employee.firstName = "John";
+employee.lastName = "Shmoe";
+
+const changes = session.advanced.whatChanged();
+const employeeChanges = changes["employees/1-A"];
+const change1 = employeeChanges[0]; // "FieldChanged"
+const change2 = employeeChanges[1]; // "FieldChanged"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

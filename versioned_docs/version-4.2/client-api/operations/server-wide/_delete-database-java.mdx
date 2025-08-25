@@ -1,0 +1,101 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to delete databases from a server, with a possibility to remove all the data from hard drive.
+
+## Syntax
+
+<TabItem value="delete_database_syntax" label="delete_database_syntax">
+<CodeBlock language="java">
+{`public DeleteDatabasesOperation(String databaseName, boolean hardDelete)
+
+public DeleteDatabasesOperation(String databaseName, boolean hardDelete, String fromNode)
+
+public DeleteDatabasesOperation(String databaseName, boolean hardDelete, String fromNode, Duration timeToWaitForConfirmation)
+
+public DeleteDatabasesOperation(Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="delete_parameters" label="delete_parameters">
+<CodeBlock language="java">
+{`public static class Parameters \{
+    private String[] databaseNames;
+    private boolean hardDelete;
+    private String[] fromNodes;
+    private Duration timeToWaitForConfirmation;
+
+    public String[] getDatabaseNames() \{
+        return databaseNames;
+    \}
+
+    public void setDatabaseNames(String[] databaseNames) \{
+        this.databaseNames = databaseNames;
+    \}
+
+    public boolean isHardDelete() \{
+        return hardDelete;
+    \}
+
+    public void setHardDelete(boolean hardDelete) \{
+        this.hardDelete = hardDelete;
+    \}
+
+    public String[] getFromNodes() \{
+        return fromNodes;
+    \}
+
+    public void setFromNodes(String[] fromNodes) \{
+        this.fromNodes = fromNodes;
+    \}
+
+    public Duration getTimeToWaitForConfirmation() \{
+        return timeToWaitForConfirmation;
+    \}
+
+    public void setTimeToWaitForConfirmation(Duration timeToWaitForConfirmation) \{
+        this.timeToWaitForConfirmation = timeToWaitForConfirmation;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | String | Name of a database to delete |
+| **HardDelete** | boolean | Should all data be removed (data files, indexing files, etc.). |
+| **FromNode** | String | Remove the database just from a specific node. Default: `null` which would delete from all |
+| **TimeToWaitForConfirmation** | Duration | Time to wait for confirmation. Default: `null` will user server default (15 seconds) |
+
+## Example I
+
+<TabItem value="DeleteDatabases" label="DeleteDatabases">
+<CodeBlock language="java">
+{`DeleteDatabasesOperation.Parameters parameters = new DeleteDatabasesOperation.Parameters();
+parameters.setDatabaseNames(new String[]\{ "MyNewDatabase", "OtherDatabaseToDelete" \});
+parameters.setHardDelete(true);
+parameters.setFromNodes(new String[]\{ "A", "C" \}); //optional
+parameters.setTimeToWaitForConfirmation(Duration.ofSeconds(30)); // optional
+
+store.maintenance()
+    .server().send(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+In order to delete just one database from a server, you can also use this constructor
+
+<TabItem value="DeleteDatabase" label="DeleteDatabase">
+<CodeBlock language="java">
+{`store.maintenance().server().send(
+    new DeleteDatabasesOperation("MyNewDatabase", true, null, null));
+`}
+</CodeBlock>
+</TabItem>
+

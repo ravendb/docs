@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **EnableIndexOperation** is used to turn on the indexing for a given index.
+
+
+## Syntax
+
+<TabItem value="enable_1" label="enable_1">
+<CodeBlock language="java">
+{`public EnableIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to enable indexing |
+
+## Example
+
+<TabItem value="enable_2" label="enable_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new EnableIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
+  
+* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
+
+* In this page:
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
+
+</Admonition>
+## Get client-configuration
+
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="php">
+{`// Define the get client-configuration operation
+$getClientConfigOp = new GetClientConfigurationOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+/** @var GetClientConfigurationResult $result */
+$result = $store->maintenance()->send($getClientConfigOp);
+
+$clientConfiguration = $result->getConfiguration();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`public GetClientConfigurationOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`// Executing the operation returns the following object:
+class GetClientConfigurationResult implements ResultInterface
+    private ?int $etag = null;
+    private ?ClientConfiguration $configuration;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,44 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`UrlFor` is a helper method that returns full url for a given document key.
+
+## Syntax
+
+<TabItem value="full_url_1" label="full_url_1">
+<CodeBlock language="csharp">
+{`string UrlFor(string documentKey);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentKey** | string | Key of a document for which full url will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Full url for a given document key |
+
+## Example I
+
+<TabItem value="full_url_2" label="full_url_2">
+<CodeBlock language="csharp">
+{`// http://localhost:8080/databases/Northwind/docs/employees/1
+string url = store.DatabaseCommands.UrlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="full_url_3" label="full_url_3">
+<CodeBlock language="csharp">
+{`// http://localhost:8080/docs/employees/1
+string url = store.DatabaseCommands.ForSystemDatabase().UrlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+

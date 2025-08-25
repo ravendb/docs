@@ -1,0 +1,51 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To check with what version of server commands you are working use `GetBuildNumber` command from `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="build_number_1" label="build_number_1">
+<CodeBlock language="csharp">
+{`BuildNumber GetBuildNumber();
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="buildnumber" label="buildnumber">
+<CodeBlock language="csharp">
+{`public class BuildNumber
+\{
+	public string ProductVersion \{ get; set; \}
+
+	public string BuildVersion \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | BuildNumber | Information about current product (server) version and build number. |
+| ------------- | ------------- | ----- |
+| **ProductVersion** | string | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
+| **BuildVersion** | string | String indicating current build version e.g. `"3260"` |
+
+## Example
+
+<TabItem value="build_number_2" label="build_number_2">
+<CodeBlock language="csharp">
+{`BuildNumber buildNumber = store
+	.DatabaseCommands
+	.GlobalAdmin
+	.GetBuildNumber();
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+`BuildVersion` for custom builds is `"13"`
+

@@ -5,136 +5,24 @@ sidebar_label: ...switch commands to a different database
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import SwitchCommandsToADifferentDatabaseCsharp from './_switch-commands-to-a-different-database-csharp.mdx';
+import SwitchCommandsToADifferentDatabaseJava from './_switch-commands-to-a-different-database-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: How to switch command to a different database?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-By default, commands available directly in store are working on a default database that was setup for that store. To switch commands to a different database that is available on that server use **ForDatabase** method.
-
-## ForDatabase
-
-<TabItem value="for_database_1" label="for_database_1">
-<CodeBlock language="csharp">
-{`IDatabaseCommands ForDatabase(string database);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | string | name of a database for which you want to get new commands |
-
-| Return Value | |
-| ------------- | ----- |
-| IDatabaseCommands | New instance of commands that is scoped to the requested database. |
-
-### Example
-
-<TabItem value="for_database_3" label="for_database_3">
-<CodeBlock language="csharp">
-{`IDatabaseCommands commands = store.DatabaseCommands.ForDatabase("otherDatabase");
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## ForSystemDatabase
-
-<TabItem value="for_database_2" label="for_database_2">
-<CodeBlock language="csharp">
-{`IDatabaseCommands ForSystemDatabase();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| IDatabaseCommands | Method returns new instance of commands that is scoped to the system database. |
-
-### Example
-
-<TabItem value="for_database_4" label="for_database_4">
-<CodeBlock language="csharp">
-{`IDatabaseCommands systemCommands = store.DatabaseCommands.ForSystemDatabase();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <SwitchCommandsToADifferentDatabaseCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-By default, commands available directly in store are working on a default database that was setup for that store. To switch commands to a different database that is available on that server use **ForDatabase** method.
-
-## ForDatabase
-
-<TabItem value="for_database_1" label="for_database_1">
-<CodeBlock language="java">
-{`public IDatabaseCommands forDatabase(String database);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **database** | String | name of a database for which you want to get new commands |
-
-| Return Value | |
-| ------------- | ----- |
-| IDatabaseCommands | New instance of commands that is scoped to the requested database. |
-
-### Example
-
-<TabItem value="for_database_3" label="for_database_3">
-<CodeBlock language="java">
-{`IDatabaseCommands commands = store.getDatabaseCommands().forDatabase("otherDatabase");
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## ForSystemDatabase
-
-<TabItem value="for_database_2" label="for_database_2">
-<CodeBlock language="java">
-{`public IDatabaseCommands forSystemDatabase();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| IDatabaseCommands | Method returns new instance of commands that is scoped to the system database. |
-
-### Example
-
-<TabItem value="for_database_4" label="for_database_4">
-<CodeBlock language="java">
-{`IDatabaseCommands systemCommands = store.getDatabaseCommands().forSystemDatabase();
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-
+   <SwitchCommandsToADifferentDatabaseJava />
 </LanguageContent>
+
 
 <!---
 - [How to switch commands credentials?](../../../client-api/commands/how-to/switch-commands-credentials)

@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**DeleteIndexOperation** is used to remove an index from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`public DeleteIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to delete |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new DeleteIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+

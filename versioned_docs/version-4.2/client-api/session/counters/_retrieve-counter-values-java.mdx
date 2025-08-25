@@ -1,0 +1,122 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use [countersFor](../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object).`get` to retrieve the value of **a single Counter**,  
+  or [countersFor](../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object).`getAll` to retrieve the values of **all the Counters of a document**.  
+
+* In this page:  
+
+  * [get Method - Retrieve a single Counter's value](../../../client-api/session/counters/retrieve-counter-values.mdx#get-method---retrieve-a-single-counter)  
+      - [get Syntax](../../../client-api/session/counters/retrieve-counter-values.mdx#get-syntax)  
+      - [get Usage](../../../client-api/session/counters/retrieve-counter-values.mdx#get-usage-flow)  
+      - [get Code Sample](../../../client-api/session/counters/retrieve-counter-values.mdx#get-code-sample)  
+
+  * [getAll Method - Retrieve all Counters of a document](../../../client-api/session/counters/retrieve-counter-values.mdx#getall-method---retrieve-all-counters-of-a-document)  
+      - [getAll Syntax](../../../client-api/session/counters/retrieve-counter-values.mdx#getall-syntax)  
+      - [getAll Usage](../../../client-api/session/counters/retrieve-counter-values.mdx#getall-usage-flow)  
+      - [getAll Code Sample](../../../client-api/session/counters/retrieve-counter-values.mdx#getall-code-sample)
+</Admonition>
+## Get Method - Retrieve a single Counter's value
+
+#### Get Syntax:
+
+* Use `get` to retrieve the current value of a single Counter.  
+
+<TabItem value="Get-definition" label="Get-definition">
+<CodeBlock language="java">
+{`long get(String counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|:-------------:|:-------------:|:-------------:|
+| `counterName` |  String | Counter's name |
+
+| Return Type | Description |
+|:-------------:|:-------------:|
+| `long` | Counter's current value |
+
+#### Get Usage Flow:
+
+  * Open a session  
+  * Create an instance of `countersFor`.  
+      * Either pass `countersFor` an explicit document ID, -or-  
+      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../client-api/session/loading-entities.mdx#load).  
+  * Execute `countersFor.get`
+
+<Admonition type="note" title="">
+
+#### Get Code Sample:
+
+<TabItem value="counters_region_Get" label="counters_region_Get">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass CountersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Use \`countersFor.get\` to retrieve a Counter's value
+    Long daysLeft = documentCounters.get("daysLeftForSale");
+    System.out.println("Days Left For Sale: " + daysLeft);
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+## getAll Method - Retrieve ALL Counters of a document
+
+#### getAll Syntax:
+
+* Use `getAll` to retrieve all names and values of a document's Counters.  
+
+<TabItem value="getAll-definition" label="getAll-definition">
+<CodeBlock language="java">
+{`Map<String, Long> getAll();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type |Description |
+|:-------------:|:-------------:|
+| Map&lt;String, Long&gt; | Map of Counter names and values |
+
+#### getAll Usage Flow:
+
+* Open a session.
+* Create an instance of `countersFor`.  
+   * Either pass `countersFor` an explicit document ID, -or-  
+   * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../client-api/session/loading-entities.mdx#load).  
+* Execute `countersFor.getAll`.
+
+<Admonition type="note" title="">
+
+#### getAll Code Sample:
+<TabItem value="counters_region_GetAll" label="counters_region_GetAll">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass countersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+    Map<String, Long> counters = documentCounters.getAll();
+
+    // list counters' names and values
+    for (Map.Entry<String, Long> kvp : counters.entrySet()) \{
+        System.out.println("counter name: " + kvp.getKey() + ", counter value: " + kvp.getValue());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+
+

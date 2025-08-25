@@ -1,0 +1,232 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
+TestDriver uses an [Embedded](../server/embedded.mdx) package with the same set of [prerequisites](../server/embedded.mdx#prerequisites) to run the Server.
+
+- [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
+- [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
+- [ConfigureServer](../start/test-driver.mdx#configureserver)
+- [Unit test](../start/test-driver.mdx#unittest)
+- [Complete example](../start/test-driver.mdx#complete-example)
+- [CI Servers](../start/test-driver.mdx#continuous-integration-servers)
+
+## RavenTestDriver
+
+First, we define a class that derives from Raven's TestDriver.
+Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx##complete-example) of the page).
+
+### Properties and Methods
+| Signature | Description |
+| ----------| ----- |
+| **protected virtual string DatabaseDumpFilePath =&gt; null;** | Allows you to override the path to the database dump file that will be loaded when calling ImportDatabase. |
+| **protected virtual Stream DatabaseDumpFileStream =&gt; null;** |  Allows you to override the stream containing the database dump that will be loaded when calling ImportDatabase.  |
+| **public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, TimeSpan? waitForIndexingTimeout = null)** | Gets you an IDocumentStore instance for the requested database. |
+| **protected virtual void PreInitialize(IDocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
+| **protected virtual void SetupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
+| **protected event EventHandler DriverDisposed;** |An event that is raised when the test driver has been disposed of. |
+| **public static void ConfigureServer(TestServerOptions options)** |Allows you to configure your server before running it|
+| **public void WaitForIndexing(IDocumentStore store, string database = null, TimeSpan? timeout = null)** | Allows you to wait for indexes to become non-stale. |
+| **public void WaitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
+| **protected virtual void OpenBrowser(string url)** | Allows you to open the browser. |
+| **public virtual void Dispose()** | Allows you to dispose of the server. |
+
+
+
+## PreInitialize
+
+Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
+
+### Example
+
+<TabItem value="test_driver_PreInitialize" label="test_driver_PreInitialize">
+<CodeBlock language="csharp">
+{`//This allows us to modify the conventions of the store we get from 'GetDocumentStore'
+protected override void PreInitialize(IDocumentStore documentStore)
+\{
+    documentStore.Conventions.MaxNumberOfRequestsPerSession = 50;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## UnitTest
+We'll be using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
+Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+
+### Example
+
+<TabItem value="test_driver_MyFirstTest" label="test_driver_MyFirstTest">
+<CodeBlock language="csharp">
+{`[Fact]
+public void MyFirstTest()
+\{
+    using (var store = GetDocumentStore())
+    \{
+        store.ExecuteIndex(new TestDocumentByName());
+        using (var session = store.OpenSession())
+        \{
+            session.Store(new TestDocument \{ Name = "Hello world!" \});
+            session.Store(new TestDocument \{ Name = "Goodbye..." \});
+            session.SaveChanges();
+        \}
+        // If we want to query documents, sometimes we need to wait for the indexes to catch up  
+        // to prevent using stale indexes.
+        WaitForIndexing(store);
+
+        // Sometimes we want to debug the test itself. This method redirects us to the studio
+        // so that we can see if the code worked as expected (in this case, created two documents).
+        WaitForUserToContinueTheTest(store);
+
+        using (var session = store.OpenSession())
+        \{
+            var query = session.Query<TestDocument, TestDocumentByName>().Where(x => x.Name == "hello").ToList();
+            Assert.Single(query);
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+In the test we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify that the documents and index are deployed (we can remove this line once the test is working).
+At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+
+
+
+## ConfigureServer
+The `ConfigureServer` method allows you to be more in control on your server. 
+You can use it with `TestServerOptions` to change the path to the Raven server binaries or to specify where your RavenDB data is stored, security, etc.
+
+<Admonition type="info" title="TestServerOptions" id="testserveroptions" href="#testserveroptions">
+
+`TestServerOptions` inherits from [ServerOptions](../server/Embedded.mdx#getting-started). In that way you can be more in control of how the embedded server is going to run
+with just a minor change. Here you can change your ServerDirectory.
+
+</Admonition>
+
+### Example
+
+<TabItem value="test_driver_ConfigureServer" label="test_driver_ConfigureServer">
+<CodeBlock language="csharp">
+{`var testServerOptions = new TestServerOptions
+\{
+    // Looks for the newest version on your machine including 3.1.15 and any newer patches
+    // but not major new releases (default is .NET version at time of server release).
+    FrameworkVersion = "3.1.15+",
+
+    // Specifies where ravendb server binaries are located (Optional)
+    ServerDirectory = "PATH_TO_RAVENDB_SERVER",
+
+    // Specifies where ravendb data will be placed/located (Optional)
+    DataDirectory = "PATH_TO_RAVENDB_DATADIR", 
+\};
+
+ConfigureServer(testServerOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Complete Example
+
+<TabItem value="test_full_example" label="test_full_example">
+<CodeBlock language="csharp">
+{`using Raven.Client.Documents;
+using Raven.TestDriver;
+using Xunit;
+using System.Linq;
+using Raven.Client.Documents.Indexes;
+
+namespace RavenDBTestDriverFullExample
+\{
+
+    public class RavenDBTestDriver : RavenTestDriver
+    \{
+        static RavenDBTestDriver()
+        \{
+            // ConfigureServer() must be set before calling GetDocumentStore()
+            // and can only be set once per test run.
+            ConfigureServer(new TestServerOptions
+            \{
+                DataDirectory = "C:\\\\RavenDBTestDir"
+            \});
+        \}
+        // This allows us to modify the conventions of the store we get from 'GetDocumentStore'
+        protected override void PreInitialize(IDocumentStore documentStore)
+        \{
+            documentStore.Conventions.MaxNumberOfRequestsPerSession = 50;
+        \}
+
+        [Fact]
+        public void MyFirstTest()
+        \{
+            // GetDocumentStore() evokes the Document Store, which establishes and manages communication
+            // between your client application and a RavenDB cluster via HTTP requests.
+            using (var store = GetDocumentStore())
+            \{
+                store.ExecuteIndex(new TestDocumentByName());
+                using (var session = store.OpenSession())
+                \{
+                    session.Store(new TestDocument \{ Name = "Hello world!" \});
+                    session.Store(new TestDocument \{ Name = "Goodbye..." \});
+                    session.SaveChanges();
+                \}
+                // If we want to query documents, sometimes we need to wait for the indexes to catch up  
+                // to prevent using stale indexes.
+                WaitForIndexing(store);
+
+                // Sometimes we want to debug the test itself. This method redirects us to the studio
+                // so that we can see if the code worked as expected (in this case, created two documents).
+                WaitForUserToContinueTheTest(store);
+
+                // Queries are defined in the session scope.
+                // If there is no relevant index to quickly answer the query, RavenDB creates an auto-index
+                // based on the query parameters.
+                // This query will use the static index defined in lines 63-70 and filter the results by name.
+                using (var session = store.OpenSession())
+                \{
+                    var query = session.Query<TestDocument, TestDocumentByName>()
+                        .Where(x => x.Name == "hello").ToList();
+                    Assert.Single(query);
+                \}
+            \}
+        \}
+    \}
+    // AbstractIndexCreationTask allows you to create and manually define a static index. 
+    public class TestDocumentByName : AbstractIndexCreationTask<TestDocument>
+    \{
+        public TestDocumentByName()
+        \{
+            Map = docs => from doc in docs select new \{ doc.Name \};
+            Indexes.Add(x => x.Name, FieldIndexing.Search);
+        \}
+    \}
+
+    public class TestDocument
+    \{
+        public string Name \{ get; set; \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Continuous Integration Servers
+
+Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
+Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://visualstudio.microsoft.com/team-services/).
+
+
+
+

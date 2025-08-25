@@ -1,0 +1,624 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* JSON documents can have nested structures, where one document contains other objects or arrays of objects.
+
+* Use a static-index to facilitate querying for documents based on the nested data.
+
+* In this page:
+ 
+  * [Sample data](../indexes/indexing-nested-data.mdx#sample-data)
+
+  * [Simple index - SINGLE index-entry per document](../indexes/indexing-nested-data.mdx#simple-index---single-index-entry-per-document)    
+      * [The index](../indexes/indexing-nested-data.mdx#theIndex)
+      * [The index-entries](../indexes/indexing-nested-data.mdx#theIndexEntries)
+      * [Querying the index](../indexes/indexing-nested-data.mdx#queryingTheIndex)
+      * [When to use](../indexes/indexing-nested-data.mdx#whenToUse)
+
+  * [Fanout index - MULTIPLE index-entries per document](../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)   
+      * [What is a fanout index](../indexes/indexing-nested-data.mdx#whatIsFanoutIndex)
+      * [Fanout index - Map index example](../indexes/indexing-nested-data.mdx#fanoutMapIndex)
+      * [Fanout index - Map-Reduce index example](../indexes/indexing-nested-data.mdx#fanoutMapReduceIndex)
+      * [Performance hints](../indexes/indexing-nested-data.mdx#performanceHints)
+      * [Paging](../indexes/indexing-nested-data.mdx#paging)
+
+</Admonition>
+## Sample data
+
+* The examples in this article are based on the following **Classes** and **Sample Data**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Class" label="Class">
+<CodeBlock language="php">
+{`class OnlineShop
+{
+    private ?string $shopName = null;
+    private ?string $email = null;
+    public ?TShirtArray $tShirts = null; // Nested data
+
+    public function __construct(
+        ?string $shopName = null,
+        ?string $email = null,
+        ?TShirtArray $tShirts = null
+    ) {
+        $this->shopName = $shopName;
+        $this->email = $email;
+        $this->tShirts = $tShirts;
+    }
+
+    public function getShopName(): ?string
+    {
+        return $this->shopName;
+    }
+
+    public function setShopName(?string $shopName): void
+    {
+        $this->shopName = $shopName;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getTShirts(): ?TShirtArray
+    {
+        return $this->tShirts;
+    }
+
+    public function setTShirts(?TShirtArray $tShirts): void
+    {
+        $this->tShirts = $tShirts;
+    }
+}
+
+class TShirt
+{
+    private ?string $color = null;
+    private ?string $size = null;
+    private ?string $logo = null;
+    private ?float $price = null;
+    private ?int $sold = null;
+
+    public function __construct(
+        ?string $color = null,
+        ?string $size = null,
+        ?string $logo = null,
+        ?float $price = null,
+        ?int $sold = null
+    ) {
+        $this->color = $color;
+        $this->size = $size;
+        $this->logo = $logo;
+        $this->price = $price;
+        $this->sold = $sold;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): void
+    {
+        $this->size = $size;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): void
+    {
+        $this->logo = $logo;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function getSold(): ?int
+    {
+        return $this->sold;
+    }
+
+    public function setSold(?int $sold): void
+    {
+        $this->sold = $sold;
+    }
+}
+
+class TShirtArray extends TypedArray
+{
+    public function __construct()
+    {
+        parent::__construct(TShirt::class);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Sample_data" label="Sample_data">
+<CodeBlock language="php">
+{`// Creating sample data for the examples in this article:
+// ======================================================
+
+$onlineShops = [];
+
+// Shop1
+$onlineShops[] = new OnlineShop(
+    shopName: "Shop1",
+    email: "sales@shop1.com",
+    tShirts: TShirtArray::fromArray([
+        new TShirt(color: "Red", size: "S", logo: "Bytes and Beyond", price: 25, sold: 2),
+        new TShirt(color: "Red", size: "M", logo: "Bytes and Beyond", price: 25, sold: 4),
+        new TShirt(color: "Blue", size: "M", logo: "Query Everything", price: 28, sold: 5),
+        new TShirt(color: "Green", size: "L", logo: "Data Driver", price: 30, sold:3)
+    ])
+);
+
+// Shop2
+$onlineShops[] = new OnlineShop(
+        shopName: "Shop2",
+        email: "sales@shop2.com",
+        tShirts: TShirtArray::fromArray([
+            new TShirt(color: "Blue", size: "S", logo: "Coffee, Code, Repeat", price: 22, sold: 12 ),
+            new TShirt(color: "Blue", size: "M", logo: "Coffee, Code, Repeat", price: 22, sold: 7 ),
+            new TShirt(color: "Green", size: "M", logo: "Big Data Dreamer", price: 25, sold: 9 ),
+            new TShirt(color: "Black", size: "L", logo: "Data Mining Expert", price: 20, sold: 11)
+        ])
+);
+
+// Shop3
+$onlineShops[] = new OnlineShop(
+    shopName: "Shop3",
+    email: "sales@shop3.com",
+    tShirts: TShirtArray::fromArray([
+        new TShirt(color: "Red", size: "S", logo: "Bytes of Wisdom", price: 18, sold: 2 ),
+        new TShirt(color: "Blue", size: "M", logo: "Data Geek", price: 20, sold: 6 ),
+        new TShirt(color: "Black", size: "L", logo: "Data Revolution", price: 15, sold: 8 ),
+        new TShirt(color: "Black", size: "XL", logo: "Data Revolution", price: 15, sold: 10 )
+    ])
+);
+
+$session = $store->openSession();
+try {
+    /** @var OnlineShop $shop */
+    foreach ($onlineShops as $shop) {
+        $session->store($shop);
+    }
+
+    $session->SaveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+
+
+## Simple index - Single index-entry per document
+
+* <a id="theIndex"/> **The index**:
+<TabItem value="simple_index" label="simple_index">
+<CodeBlock language="php">
+{`_query_1
+                // Query for all shop documents that have a red TShirt
+                $shopsThatHaveRedShirts = $session
+                    ->query(Shops_ByTShirt_Simple_IndexEntry::class, Shops_ByTShirt_Simple::class)
+                     // Filter query results by a nested value
+                    ->containsAny("colors", [ "red" ])
+                    ->ofType(OnlineShop::class)
+                    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+* <a id="theIndexEntries"/> **The index-entries**:
+
+     ![Simple - index-entries](./assets/indexing-nested-data-1.png)
+
+     1. The index-entries content is visible from the Studio [Query view](../studio/database/queries/query-view.mdx).
+
+     2. Check option: _Show raw index-entries instead of Matching documents_.
+
+     3. Each row represents an **index-entry**.  
+        The index has a single index-entry per document (3 entries in this example).  
+
+     4. The index-field contains a collection of ALL nested values from the document.  
+        e.g. The third **index-entry** has the following values in the _Colors_ **index-field**:  
+        `{"black", "blue", "red"}`
+
+* <a id="queryingTheIndex"/> **Querying the index**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Query for all shop documents that have a red TShirt
+$shopsThatHaveRedShirts = $session
+    ->query(Shops_ByTShirt_Simple_IndexEntry::class, Shops_ByTShirt_Simple::class)
+     // Filter query results by a nested value
+    ->containsAny("colors", [ "red" ])
+    ->ofType(OnlineShop::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Shops/ByTShirt/Simple"
+where Colors == "red"
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+<TabItem value="results_1" label="results_1">
+<CodeBlock language="php">
+{`// Results will include the following shop documents:
+// ==================================================
+// * Shop1
+// * Shop3
+`}
+</CodeBlock>
+</TabItem>
+
+* <a id="whenToUse"/> **When to use**:
+
+   * This type of index structure is effective for retrieving documents when filtering the query by any of the inner nested values that were indexed.
+
+   * However, due to the way the index-entries are generated, this index **cannot** provide results for a query searching for documents that contain 
+     specific sub-objects which satisfy some `and_also` condition.   
+     For example:   
+<TabItem value="results_2" label="results_2">
+<CodeBlock language="php">
+{`// You want to query for shops containing "Large Green TShirts",
+// aiming to get only "Shop1" as a result since it has such a combination,
+// so you attempt this query:
+$greenAndLarge = $session
+    ->query(Shops_ByTShirt_Simple_IndexEntry::class, Shops_ByTShirt_Simple::class)
+    ->whereEquals("color", "green")
+    ->andAlso()
+    ->whereEquals("size", "L")
+    ->ofType(OnlineShop::class)
+    ->toList();
+
+// But, the results of this query will include BOTH "Shop1" & "Shop2"
+// since the index-entries do not keep the original sub-objects structure.
+`}
+</CodeBlock>
+</TabItem>
+
+   * To address this, you must use a **Fanout index** - as described below.
+
+
+
+## Fanout index - Multiple index-entries per document
+
+* <a id="whatIsFanoutIndex"/> **What is a Fanout index**:
+
+     * A fanout index is an index that outputs multiple index-entries per document.  
+       A separate index-entry is created for each nested sub-object from the document.
+ 
+     * The fanout index is useful when you need to retrieve documents matching query criteria  
+       that search for specific sub-objects that comply with some logical conditions.
+
+* <a id="fanoutMapIndex"/> **Fanout index - Map index example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ_index" label="LINQ_index">
+<CodeBlock language="php">
+{`// A fanout map-index:
+// ===================
+class Shops_ByTShirt_Fanout_IndexEntry
+{
+    // The index-fields:
+    private ?string $color = null;
+    private ?string $size = null;
+    private ?string $logo = null;
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): void
+    {
+        $this->size = $size;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): void
+    {
+        $this->logo = $logo;
+    }
+}
+
+class Shops_ByTShirt_Fanout extends AbstractIndexCreationTask
+{
+        public function __construct()
+        {
+            parent::__construct();
+
+            $this->map =
+                "from shop in docs.OnlineShops " .
+                "from shirt in shop.t_shirts " .
+                // Creating MULTIPLE index-entries per document,
+                // an index-entry for each sub-object in the TShirts list
+                "select new {" .
+                "    color = shirt.color," .
+                "    size = shirt.size," .
+                "    logo = shirt.logo" .
+                "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript_index" label="JavaScript_index">
+<CodeBlock language="php">
+{`class Shops_ByTShirt_JS extends AbstractJavaScriptIndexCreationTask
+{
+        public function __construct()
+        {
+            parent::__construct();
+
+            $this->setMaps([
+                "map('OnlineShops', function (shop){ 
+                       var res = [];
+                       shop.t_shirts.forEach(shirt => {
+                           res.push({
+                               color: shirt.color,
+                               size: shirt.size,
+                               logo: shirt.logo
+                           })
+                        });
+                        return res;
+                    })
+                "
+            ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Query the fanout index:
+// =======================
+$shopsThatHaveMediumRedShirts = $session
+    ->query(Shops_ByTShirt_Fanout_IndexEntry::class, Shops_ByTShirt_Fanout::class)
+     // Query for documents that have a "Medium Red TShirt"
+     ->whereEquals("color", "red")
+    ->andAlso()
+    ->whereEquals("size", "M")
+    ->ofType(OnlineShop::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Shops/ByTShirt/Fanout" 
+where Color == "red" and Size == "M"
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+<TabItem value="results_3" label="results_3">
+<CodeBlock language="php">
+{`// Query results:
+// ==============
+
+// Only the 'Shop1' document will be returned,
+// since it is the only document that has the requested combination within the TShirt list.
+`}
+</CodeBlock>
+</TabItem>
+
+* <a id="fanoutMapIndexIndexEntries"/> **The index-entries**:
+  ![Fanout - index-entries](./assets/indexing-nested-data-2.png)
+
+     1. The index-entries content is visible from the Studio [Query view](../studio/database/queries/query-view.mdx).
+
+     2. Check option: _Show raw index-entries instead of Matching documents_.
+
+     3. Each row represents an **index-entry**.  
+        Each index-entry corresponds to an inner item in the TShirt list.
+
+     4. In this example, the total number of index-entries is **12**,  
+        which is the total number of inner items in the TShirt list in all **3** documents in the collection.
+
+* <a id="fanoutMapReduceIndex"/> **Fanout index - Map-Reduce index example**:
+
+     * The fanout index concept applies to map-reduce indexes as well:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Fanout_index" label="Fanout_index">
+<CodeBlock language="php">
+{`// A fanout map-reduce index:
+// ==========================
+class Sales_ByTShirtColor_Fanout_IndexEntry {
+    // The index-fields:
+    private ?string $color = null;
+    private ?int $itemsSold = null;
+    private ?float $totalSales = null;
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+
+    public function getItemsSold(): ?int
+    {
+        return $this->itemsSold;
+    }
+
+    public function setItemsSold(?int $itemsSold): void
+    {
+        $this->itemsSold = $itemsSold;
+    }
+
+    public function getTotalSales(): ?float
+    {
+        return $this->totalSales;
+    }
+
+    public function setTotalSales(?float $totalSales): void
+    {
+        $this->totalSales = $totalSales;
+    }
+}
+class Sales_ByTShirtColor_Fanout extends  AbstractIndexCreationTask
+{
+
+        public function __construct()
+        {
+            parent::__construct();
+
+            # Creating MULTIPLE index-entries per document,
+            # an index-entry for each sub-object in the TShirts list
+            $this->map =
+                "from shop in docs.OnlineShops " .
+                "from shirt in shop.t_shirts " .
+                // Creating MULTIPLE index-entries per document,
+                // an index-entry for each sub-object in the TShirts list
+                "select new {" .
+                "    color = shirt.color, " .
+                "    items_sold = shirt.sold, " .
+                "    total_sales = shirt.price * shirt.sold" .
+                "}";
+
+            $this->reduce =
+                "from result in results " .
+                "group result by result.color " .
+                "into g select new {" .
+                "    color = g.Key," .
+                    // Calculate sales per color
+                "    items_sold = g.Sum(x => x.items_sold)," .
+                "    total_sales = g.Sum(x => x.total_sales)" .
+                "}";
+
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+          </Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Query the fanout index:
+// =======================
+/** @var Sales_ByTShirtColor_Fanout_IndexEntry $queryResult */
+$queryResult = $session
+    ->query(Sales_ByTShirtColor_Fanout_IndexEntry::class, Sales_ByTShirtColor_Fanout::class)
+     // Query for index-entries that contain "black"
+     ->whereEquals("color", "black")
+    ->firstOrDefault();
+
+// Get total sales for black TShirts
+$blackShirtsSales = $queryResult?->getTotalSales() ?? 0;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Sales/ByTShirtColor/Fanout"
+where Color == "black"
+`}
+</CodeBlock>
+</TabItem>
+          </Tabs>
+
+* <a id="performanceHints"/> **Fanout index - Performance hints**:
+
+     * Fanout indexes are typically more resource-intensive than other indexes as RavenDB has to index a large number of index-entries. 
+       This increased workload can lead to higher CPU and memory utilization, potentially causing a decline in the overall performance of the index.
+
+     * When the number of index-entries generated from a single document exceeds a configurable limit,  
+       RavenDB will issue a **High indexing fanout ratio** alert in the Studio notification center.
+
+     * You can control when this performance hint is created by setting the 
+       [PerformanceHints.Indexing.MaxIndexOutputsPerDocument](../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxindexoutputsperdocument) configuration key 
+       (default is 1024).
+
+     * So, for example, adding another OnlineShop document with a `tShirt` object containing 1025 items  
+       will trigger the following alert:  
+       
+          ![Figure 1. High indexing fanout ratio notification](./assets/fanout-index-performance-hint-1.png)
+
+     * Clicking the 'Details' button will show the following info:  
+
+          ![Figure 2. Fanout index, performance hint details](./assets/fanout-index-performance-hint-2.png)
+
+* <a id="paging"/> **Fanout index - Paging**:
+
+     * A fanout index has more index-entries than the number of documents in the collection indexed.  
+       Multiple index-entries "point" to the same document from which they originated,  
+       as can be seen in the above [index-entries](../indexes/indexing-nested-data.mdx#fanoutMapIndexIndexEntries) example.
+
+     * When making a fanout index query that should return full documents (without projecting results),  
+       the `TotalResults` property (available via the `QueryStatistics` object) will contain  
+       the total number of index-entries and Not the total number of resulting documents.
+
+     * **To overcome this when paging results**, you must take into account the number of "duplicate"  
+       index-entries that are skipped internally by the server when serving the resulting documents.  
+
+     * Please refer to [paging through tampered results](../indexes/querying/paging.mdx#paging-through-tampered-results) for further explanation and examples. 
+
+
+
+

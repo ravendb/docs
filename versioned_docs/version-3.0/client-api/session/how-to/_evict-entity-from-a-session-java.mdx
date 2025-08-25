@@ -1,0 +1,54 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+We can clear all session operations and stop tracking of all entities by using [clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes there is need to only to do a cleanup only for one entity. For this purpose `evict` was introduced.
+
+## Syntax
+
+<TabItem value="evict_1" label="evict_1">
+<CodeBlock language="java">
+{`<T> void evict(T entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be evicted |
+
+## Example I
+
+<TabItem value="evict_2" label="evict_2">
+<CodeBlock language="java">
+{`Employee employee1 = new Employee();
+employee1.setFirstName("John");
+employee1.setLastName("Doe");
+
+Employee employee2 = new Employee();
+employee2.setFirstName("Joe");
+employee2.setLastName("Shmoe");
+
+session.store(employee1);
+session.store(employee2);
+
+session.advanced().evict(employee1);
+
+session.saveChanges(); // only 'Joe Shmoe' will be saved
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="evict_3" label="evict_3">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");//loading from serer
+employee = session.load(Employee.class, "employees/1-A"); // no server call
+session.advanced().evict(employee);
+employee = session.load(Employee.class, "employees/1-A"); // loading form server
+`}
+</CodeBlock>
+</TabItem>
+

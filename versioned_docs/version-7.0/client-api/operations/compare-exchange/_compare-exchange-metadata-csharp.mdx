@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* RavenDB 5.0 added metadata to compare exchange values.  
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/compare-exchange-metadata.mdx#syntax)
+
+</Admonition>
+## Syntax
+
+A compare exchange value's metadata is very similar to a 
+[document's metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
+
+The metadata can be used to set [compare exchange expiration](../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx).  
+
+The metadata is accessible as a root property of the compare exchange value object:  
+
+<TabItem value="metadata_0" label="metadata_0">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession session = store.OpenAsyncSession(
+                                       new SessionOptions \{ 
+                                           TransactionMode = TransactionMode.ClusterWide 
+                                       \}))
+\{
+    // Create a new compare exchange value
+    var cmpxchgValue = session.Advanced.ClusterTransaction.CreateCompareExchangeValue("key", "value");
+
+    // Add a field to the metadata
+    // with a value of type string
+    cmpxchgValue.Metadata["Field name"] = "some value";
+
+    // Retrieve metadata as a dictionary
+    IDictionary<string, object> cmpxchgMetadata = cmpxchgValue.Metadata;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+You can send it as a parameter of the 
+[Put Compare Exchange Value operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx):  
+
+<TabItem value="metadata_1" label="metadata_1">
+<CodeBlock language="csharp">
+{`// Create some metadata
+var cmpxchgMetadata = new MetadataAsDictionary \{
+                          ["Year"] = "2020" 
+                      \};
+
+// Create/update the compare exchange value "best"
+await documentStore.Operations.SendAsync(
+    new PutCompareExchangeValueOperation<User>(
+        "best", 
+        new User \{ Name = "Alice" \}, 
+        0, 
+        cmpxchgMetadata));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+

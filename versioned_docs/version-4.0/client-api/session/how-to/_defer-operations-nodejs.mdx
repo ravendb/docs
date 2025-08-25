@@ -1,0 +1,95 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Operations can be deferred till `saveChanges()` is called by using `defer()` method in `advanced` session operations. There are three types of commands that can be deferred:
+
+- PutCommandData
+- DeleteCommandData
+- DeletePrefixedCommandData
+- PatchCommandData
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
+
+## Syntax
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();
+
+// Define a patchRequest object for the PatchCommandData used in the 'defer' below
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.Supplier = 'suppliers/2-A';";
+
+// 'defer' is available in the session's advanced methods 
+session.advanced.defer(
+
+    // Define commands to be executed:
+    // i.e. Put a new document
+    new PutCommandDataBase("products/999-A", null, null, \{
+        "Name": "My Product",
+        "Supplier": "suppliers/1-A"
+        "@metadata": \{ "@collection": "Products" \}
+    \}),
+    
+    // Patch document
+    new PatchCommandData("products/999-A", null, patchRequest, null),
+
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+await session.saveChanges();
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| commands | `ICommandData[]` | Command objects implementing `ICommandData` interface. |
+
+## Example
+
+<TabItem value="defer_2" label="defer_2">
+<CodeBlock language="js">
+{`const value1 = \{
+    "name": "My Product",
+    "supplier": "suppliers/999-A",
+    "@metadata": \{
+        "@collection": "Users"
+    \}
+\};
+
+const putCommand1 =
+    new PutCommandDataWithJson("products/999-A",
+        null,
+        value1);
+
+const value2 = \{
+    "name": "My Product",
+    "supplier": "suppliers/999-A",
+    "@metadata": \{
+        "@collection": "Suppliers"
+    \}
+\};
+
+const putCommand2 =
+    new PutCommandDataWithJson("suppliers/999-A",
+        null,
+        value2);
+
+const command3 = new DeleteCommandData("products/1-A", null);
+
+session.advanced.defer(putCommand1, putCommand2, command3);
+`}
+</CodeBlock>
+</TabItem>
+
+

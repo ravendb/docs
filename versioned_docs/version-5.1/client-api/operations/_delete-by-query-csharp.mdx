@@ -1,0 +1,184 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
+This operation is performed in the background on the server. 
+
+## Syntax
+
+<TabItem value="delete_by_query" label="delete_by_query">
+<CodeBlock language="csharp">
+{`DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
+    Expression<Func<TEntity, bool>> expression,
+    QueryOperationOptions options = null)
+    where TIndexCreator : AbstractIndexCreationTask, new();
+
+DeleteByQueryOperation DeleteByQueryOperation<TEntity>(
+    string indexName, Expression<Func<TEntity, bool>> expression,
+    QueryOperationOptions options = null);
+
+DeleteByQueryOperation DeleteByQueryOperation(
+    IndexQuery queryToDelete, QueryOperationOptions options = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index to perform a query on |
+| **expression** | Expression&lt;Func&lt;T, bool&gt;&gt; | The LINQ expression (the query that will be performed) |
+| **queryToDelete** | IndexQuery | Holds all the information required to query an index |
+| **options** | QueryOperationOptions | Holds different setting options for base operations |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// remove all documents from the server where Name == Bob using Person/ByName index
+var operation = store
+    .Operations
+    .Send(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// remove all documents from the server where Name == Bob using Person/ByName index
+var operation = await store
+    .Operations
+    .SendAsync(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Name = 'Bob'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// remove all documents from the server where Age > 35 using Person/ByAge index
+var operation = store
+    .Operations
+    .Send(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`//remove all documents from the server where Age > 35 using Person/ByAge index
+var operation = await store
+    .Operations
+    .SendAsync(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Person/ByName' where Age < 35
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// delete multiple docs with specific ids in a single run without loading them into the session
+var operation = store
+    .Operations
+    .Send(new DeleteByQueryOperation(new IndexQuery
+    {
+        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
+    }));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// delete multiple docs with specific ids in a single run without loading them into the session
+var operation = await store
+    .Operations
+    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+    {
+        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
+    }));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People u where id(u) in ('people/1-A', 'people/3-A')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="WaitForCompletion" id="waitforcompletion" href="#waitforcompletion">
+`DeleteByQueryOperation` is performed in the background on the server.    
+You have the option to **wait** for it using `WaitForCompletion`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// remove all document from server where Name == Bob and Age >= 29 using People collection
+var operation = store
+    .Operations
+    .Send(new DeleteByQueryOperation(new IndexQuery
+    {
+        Query = "from People where Name = 'Bob' and Age >= 29"
+    }));
+
+operation.WaitForCompletion(TimeSpan.FromSeconds(15));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// remove all document from server where Name == Bob and Age >= 29 using People collection
+var operation = await store
+    .Operations
+    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+    {
+        Query = "from People where Name = 'Bob' and Age >= 29"
+    }));
+
+await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(15));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from People where Name = 'Bob' and Age >= 29
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+</Admonition>
+
+## Remarks
+
+<Admonition type="warning" title="Map only indexes" id="map-only-indexes" href="#map-only-indexes"> 
+`DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
+</Admonition>
+
+<Admonition type="warning" title="Batching and Concurrency" id="batching-and-concurrency" href="#batching-and-concurrency"> 
+
+The deletion of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
+so it can happen than a document has been updated or deleted meanwhile.
+
+</Admonition>
+
+

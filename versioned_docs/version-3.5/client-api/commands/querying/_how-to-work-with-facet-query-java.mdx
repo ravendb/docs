@@ -1,0 +1,200 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are two methods that allow you to send a Facet query to a database:   
+- [GetFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
+- [GetMultiFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
+
+## GetFacets
+
+There are few overloads for the **GetFacets** method and the main difference between them is a source of the facets. In one facets are passed as a parameter, in the other user must provide a `key` to a `facet setup` document.
+
+### Syntax
+
+<TabItem value="get_facets_1" label="get_facets_1">
+<CodeBlock language="java">
+{`public FacetResults getFacets(String index, IndexQuery query, List<Facet> facets) ;
+
+public FacetResults getFacets(String index, IndexQuery query, List<Facet> facets, int start) ;
+
+public FacetResults getFacets(String index, IndexQuery query, List<Facet> facets, int start, Integer pageSize) ;
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_facets_2" label="get_facets_2">
+<CodeBlock language="java">
+{`public FacetResults getFacets(String index, IndexQuery query, String facetSetupDoc);
+
+public FacetResults getFacets(String index, IndexQuery query, String facetSetupDoc, int start);
+
+public FacetResults getFacets(String index, IndexQuery query, String facetSetupDoc, int start, Integer pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | String | A name of an index to query |
+| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
+| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **start** | int | number of results that should be skipped. Default: `0`. |
+| **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+
+### Example I
+
+<TabItem value="get_facets_3" label="get_facets_3">
+<CodeBlock language="java">
+{`// For the Manufacturer field look at the documents and return a count for each unique Term found
+// For the Cost field, return the count of the following ranges:
+//      Cost <= 200.0
+//      200.0 <= Cost <= 400.0
+//      400.0 <= Cost <= 600.0
+//      600.0 <= Cost <= 800.0
+//      Cost >= 800.0
+// For the Megapixels field, return the count of the following ranges:
+//      Megapixels <= 3.0
+//      3.0 <= Megapixels <= 7.0
+//      7.0 <= Megapixels <= 10.0
+//      Megapixels >= 10.0
+
+Facet facet1 = new Facet();
+facet1.setName("Manufacturer");
+
+Facet facet2 = new Facet();
+facet2.setName("Cost_Range");
+facet2.setMode(FacetMode.RANGES);
+facet2.setRanges(Arrays.asList("[NULL TO Dx200.0]",
+                                  "[Dx300.0 TO Dx400.0]",
+                                  "[Dx500.0 TO Dx600.0]",
+                                  "[Dx700.0 TO Dx800.0]",
+                                  "[Dx900.0 TO NULL]"));
+
+Facet facet3 = new Facet();
+facet3.setName("Megapixels_Range");
+facet3.setMode(FacetMode.RANGES);
+facet3.setRanges(Arrays.asList( "[NULL TO Dx3.0]",
+                                  "[Dx4.0 TO Dx7.0]",
+                                  "[Dx8.0 TO Dx10.0]",
+                                  "[Dx11.0 TO NULL]"));
+
+List<Facet> facets = Arrays.asList(facet1, facet2, facet3);
+FacetResults facetResults = store.getDatabaseCommands().getFacets("Camera/Costs", new IndexQuery(), facets);
+FacetResult manufacturerResults = facetResults.getResults().get("Manufacturer");
+FacetResult costResults = facetResults.getResults().get("Cost_Range");
+FacetResult megapixelResults = facetResults.getResults().get("Megapixels_Range");
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_facets_4" label="get_facets_4">
+<CodeBlock language="java">
+{`// For the Manufacturer field look at the documents and return a count for each unique Term found
+// For the Cost field, return the count of the following ranges:
+//      Cost <= 200.0
+//      200.0 <= Cost <= 400.0
+//      400.0 <= Cost <= 600.0
+//      600.0 <= Cost <= 800.0
+//      Cost >= 800.0
+// For the Megapixels field, return the count of the following ranges:
+//      Megapixels <= 3.0
+//      3.0 <= Megapixels <= 7.0
+//      7.0 <= Megapixels <= 10.0
+//      Megapixels >= 10.0
+
+Facet facet1 = new Facet();
+facet1.setName("Manufacturer");
+
+Facet facet2 = new Facet();
+facet2.setName("Cost_Range");
+facet2.setMode(FacetMode.RANGES);
+facet2.setRanges(Arrays.asList("[NULL TO Dx200.0]",
+                                  "[Dx300.0 TO Dx400.0]",
+                                  "[Dx500.0 TO Dx600.0]",
+                                  "[Dx700.0 TO Dx800.0]",
+                                  "[Dx900.0 TO NULL]"));
+
+Facet facet3 = new Facet();
+facet3.setName("Megapixels_Range");
+facet3.setMode(FacetMode.RANGES);
+facet3.setRanges(Arrays.asList( "[NULL TO Dx3.0]",
+                                  "[Dx4.0 TO Dx7.0]",
+                                  "[Dx8.0 TO Dx10.0]",
+                                  "[Dx11.0 TO NULL]"));
+
+List<Facet> facets = Arrays.asList(facet1, facet2, facet3);
+FacetSetup facetsSetup = new FacetSetup("facets/CameraFacets", facets);
+store.getDatabaseCommands().put("facets/CameraFacets", null, RavenJObject.fromObject(facetsSetup), new RavenJObject());
+
+FacetResults facetResults = store.getDatabaseCommands().getFacets("Camera/Costs", new IndexQuery(), "facets/CameraFacets");
+FacetResult manufacturerResults = facetResults.getResults().get("Manufacturer");
+FacetResult costResults = facetResults.getResults().get("Cost_Range");
+FacetResult megapixelResults = facetResults.getResults().get("Megapixels_Range");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetMultiFacets
+
+Sending multiple facet queries is achievable by using `GetMultiFacets` method.
+
+### Syntax
+
+<TabItem value="get_facets_5" label="get_facets_5">
+<CodeBlock language="java">
+{`public FacetResults[] getMultiFacets(FacetQuery[] facetedQueries);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facetedQueries** | [FacetQuery](../../../glossary/facet-query.mdx)[] | List of the faceted queries that will be executed on the server-side. |
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResult](../../../glossary/facet-results.mdx#facetresult)[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
+
+### Example
+
+<TabItem value="get_facets_6" label="get_facets_6">
+<CodeBlock language="java">
+{`FacetQuery facetsQuery1 = new FacetQuery();
+facetsQuery1.setIndexName("Camera/Costs");
+facetsQuery1.setFacetSetupDoc("facets/CameraFacets1");
+facetsQuery1.setQuery(new IndexQuery());
+
+FacetQuery facetsQuery2 = new FacetQuery();
+facetsQuery2.setIndexName("Camera/Costs");
+facetsQuery2.setFacetSetupDoc("facets/CameraFacets2");
+facetsQuery2.setQuery(new IndexQuery());
+
+FacetQuery facetsQuery3 = new FacetQuery();
+facetsQuery3.setIndexName("Camera/Costs");
+facetsQuery3.setFacetSetupDoc("facets/CameraFacets3");
+facetsQuery3.setQuery(new IndexQuery());
+
+FacetResults[] facetResults = store.getDatabaseCommands().getMultiFacets(new FacetQuery[] \{
+  facetsQuery1, facetsQuery2, facetsQuery3
+\});
+Map<String, FacetResult> facetResults1 = facetResults[0].getResults();
+Map<String, FacetResult> facetResults2 = facetResults[1].getResults();
+Map<String, FacetResult> facetResults3 = facetResults[2].getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

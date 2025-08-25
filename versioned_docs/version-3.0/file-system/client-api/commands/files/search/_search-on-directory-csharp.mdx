@@ -1,0 +1,54 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: SearchOnDirectoryAsync
+
+The **SearchOnDirectoryAsync** method returns files located in a given directory and matching specified file name search pattern. 
+
+
+
+<TabItem value="search_on_directory_1" label="search_on_directory_1">
+<CodeBlock language="csharp">
+{`Task<SearchResults> SearchOnDirectoryAsync(string folder, FilesSortOptions options = FilesSortOptions.Default, 
+										string fileNameSearchPattern = "", int start = 0, int pageSize = 1024);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **folder** | string | The directory path to look for files |
+| **options** | FilesSortOptions | It determines the sorting options when returning results |
+| **fileNameSearchPattern** | string | The pattern that a file name has to match ('?' any single character, '*' any characters, default: empty string - means that a matching file name is skipped) |
+| **start** | int | The number of files that should be skipped |
+| **pageSize** | int | The maximum number of files that will be returned |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;SearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`SearchResults`](../../../../../glossary/search-results.mdx) object which represents results of a specified query. |
+
+## Example
+
+<TabItem value="search_on_directory_2" label="search_on_directory_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.UploadAsync("1.doc", stream);
+await store.AsyncFilesCommands.UploadAsync("2.txt", stream);
+await store.AsyncFilesCommands.UploadAsync("3.toc", stream);
+await store.AsyncFilesCommands.UploadAsync("/backups/1.doc", stream);
+
+SearchResults result = await store
+	.AsyncFilesCommands
+	.SearchOnDirectoryAsync(
+		"/", 
+		FilesSortOptions.Name | FilesSortOptions.Desc,
+		"*.?oc"
+	); // will return 3.toc and 1.doc
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,110 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `TimeSeriesFor.Delete` for the following actions:
+    * **Delete a single time series entry**
+    * **Delete a range of entries**
+    * **Delete the whole time series**:  
+      To remove the whole time series simply delete all its entries.
+
+* In this page:  
+    * [`Delete` usage](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/delete.mdx#examples)
+      * [Delete single entry](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-single-entry)
+      * [Delete range of entries](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-range-of-entries)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
+  
+</Admonition>
+## `Delete` usage
+
+**Flow**:
+
+* Open a session.  
+* Create an instance of `TimeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, or -   
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Delete`:
+    * Provide a single timestamp to delete a specific entry, or -  
+    * Specify a range of timestamps to delete multiple entries.
+* Call `session.SaveChanges` for the action to take effect on the server.  
+
+**Note**:
+
+* If the specified document doesn't exist, a `DocumentDoesNotExistException` is thrown.
+* Attempting to delete nonexistent entries results in a no-op and generates no exception.
+* To delete the whole time series simply delete all its entries.  
+  The series is removed when all its entries are deleted.
+* Deleting a document deletes all its time series as well.
+
+
+
+## Examples
+
+In the following examples we delete time series entries appended by sample code in the 
+[Append](../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
+#### Delete single entry:
+
+<TabItem value="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point" label="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point">
+<CodeBlock language="csharp">
+{`// Delete a single entry
+using (var session = store.OpenSession())
+\{
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Delete(baseline.AddMinutes(1));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Delete range of entries:
+
+<TabItem value="timeseries_region_TimeSeriesFor-Delete-Time-Points-Range" label="timeseries_region_TimeSeriesFor-Delete-Time-Points-Range">
+<CodeBlock language="csharp">
+{`// Delete a range of entries from the time series
+using (var session = store.OpenSession())
+\{
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Delete(baseline.AddSeconds(0), baseline.AddSeconds(9));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="TimeSeriesFor-Delete-definition-single-timepoint" label="TimeSeriesFor-Delete-definition-single-timepoint">
+<CodeBlock language="csharp">
+{`// Delete a single time-series entry
+void Delete(DateTime at);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="TimeSeriesFor-Delete-definition-range-of-timepoints" label="TimeSeriesFor-Delete-definition-range-of-timepoints">
+<CodeBlock language="csharp">
+{`// Delete a range of time-series entries
+void Delete(DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type        | Description                                 |
+|-----------|-------------|:--------------------------------------------|
+| **at**    | `DateTime`  | Timestamp of a time series entry to delete. |
+| **from**  | `DateTime?` | Delete the time series entries range that starts at this timestamp (inclusive).<br/>Default: `DateTime.MinValue` |
+| **to**    | `DateTime?` | Delete the time series entries range that ends at this timestamp (inclusive).<br/>Default: `DateTime.MaxValue`   |
+
+
+
+

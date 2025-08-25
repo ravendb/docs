@@ -1,0 +1,245 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This operation is used to get counters' values for a specific document.  
+It can be used to get the value of a single counter, multiple counters' values, or all counters' values.
+
+## Syntax
+
+#### Get Single Counter
+
+<TabItem value="get_single_counter" label="get_single_counter">
+<CodeBlock language="csharp">
+{`public GetCountersOperation(string docId, string counter, bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | The ID of the document that holds the counters |
+| **counter** | string | The name of the counter to get |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+
+<Admonition type="info" title="">
+
+**Return Full Results flag:**  
+
+If RavenDB is running in a distributed cluster, and the database resides on several nodes,
+a counter can have a different *local* value on each database node, and the total counter value is the
+sum of all the local values of this counter from each node.  
+In order to get the counter values per database node, set the `returnFullResults` flag to `true`
+
+</Admonition>
+#### Get Multiple Counters 
+
+<TabItem value="get_multiple_counters" label="get_multiple_counters">
+<CodeBlock language="csharp">
+{`public GetCountersOperation(string docId, string[] counters, bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | The ID of the document that holds the counters |
+| **counters** | string[] | The names of the counters to get |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+#### Get All Counters of a Document 
+
+<TabItem value="get_all_counters" label="get_all_counters">
+<CodeBlock language="csharp">
+{`public GetCountersOperation(string docId, bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | The ID of the document that holds the counters |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+
+
+
+## Return Value
+
+The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
+
+<TabItem value="counters_detail" label="counters_detail">
+<CodeBlock language="csharp">
+{`public class CountersDetail
+\{
+    public List<CounterDetail> Counters;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="counter_detail" label="counter_detail">
+<CodeBlock language="csharp">
+{`public class CounterDetail
+\{
+    public string DocumentId; // ID of the document that holds the counter
+    public string CounterName; // The counter name
+    public long TotalValue; // Total counter value
+    public Dictionary<string, long> CounterValues; // A dictionary of counter values per database node
+    public long Etag; // Counter Etag
+    public string ChangeVector; // Change vector of the counter
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+Assume we have a `users/1` document that holds 3 counters:  
+`likes`, `dislikes` and `downloads` -  with values 10, 20 and 30 (respectively)
+
+### Example #1 : Get single counter
+
+<TabItem value="get_counters1" label="get_counters1">
+<CodeBlock language="csharp">
+{`var operationResult = store.Operations
+    .Send(new GetCountersOperation("users/1", "likes"));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 10,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #2 : Get multiple counters 
+
+<TabItem value="get_counters2" label="get_counters2">
+<CodeBlock language="csharp">
+{`var operationResult = store.Operations
+    .Send(new GetCountersOperation("users/1", new []\{"likes", "dislikes" \}));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 10,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/1",
+			"CounterName" : "dislikes",
+			"TotalValue" : 20,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #3 : Get all counters 
+
+<TabItem value="get_counters3" label="get_counters3">
+<CodeBlock language="csharp">
+{`var operationResult = store.Operations
+    .Send(new GetCountersOperation("users/1"));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 10,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/1",
+			"CounterName" : "dislikes",
+			"TotalValue" : 20,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/1",
+			"CounterName" : "downloads",
+			"TotalValue" : 30,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example #4 : Include full values in the result
+
+<TabItem value="get_counters4" label="get_counters4">
+<CodeBlock language="csharp">
+{`var operationResult = store.Operations
+    .Send(new GetCountersOperation("users/1", "likes", true));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 10,
+			"CounterValues" : 
+            \{
+                "A:35-UuCp420vs0u+URADcGVURA" : 5,
+                "B:83-SeCFU29daUOxfjUcAlLiJw" : 3,
+                "C:27-7i7GP8bOOkGYLNflO/rSeg" : 2,
+            \}
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

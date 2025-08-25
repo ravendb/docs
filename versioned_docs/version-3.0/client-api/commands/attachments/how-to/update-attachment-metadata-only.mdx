@@ -5,146 +5,29 @@ sidebar_label: ...update attachment metadata only
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import UpdateAttachmentMetadataOnlyCsharp from './_update-attachment-metadata-only-csharp.mdx';
+import UpdateAttachmentMetadataOnlyJava from './_update-attachment-metadata-only-java.mdx';
+import UpdateAttachmentMetadataOnlyHttp from './_update-attachment-metadata-only-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Attachments: How to update an attachment metadata only?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
-
-## Syntax
-
-<TabItem value="update_1" label="update_1">
-<CodeBlock language="csharp">
-{`void UpdateAttachmentMetadata(string key, Etag etag, RavenJObject metadata);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | key under which attachment is stored |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
-| **metadata** | RavenJObject | attachment metadata |
-
-## Example
-
-<TabItem value="update_2" label="update_2">
-<CodeBlock language="csharp">
-{`JsonDocumentMetadata attachment = store.DatabaseCommands.Head("albums/holidays/sea.jpg");
-RavenJObject metadata = attachment.Metadata;
-metadata["Description"] = "Holidays 2012";
-
-store
-	.DatabaseCommands
-	.UpdateAttachmentMetadata("albums/holidays/sea.jpg", attachment.Etag, metadata);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <UpdateAttachmentMetadataOnlyCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
-
-## Syntax
-
-<TabItem value="update_1" label="update_1">
-<CodeBlock language="java">
-{`@Deprecated
-public void updateAttachmentMetadata(String key, Etag etag, RavenJObject metadata);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | String | key under which attachment is stored |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
-| **metadata** | RavenJObject | attachment metadata |
-
-## Example
-
-<TabItem value="update_2" label="update_2">
-<CodeBlock language="java">
-{`JsonDocumentMetadata attachment = store.getDatabaseCommands().head("albums/holidays/sea.jpg");
-RavenJObject metadata = attachment.getMetadata();
-metadata.add("Description", "Holidays 2012");
-
-store.getDatabaseCommands().updateAttachmentMetadata("albums/holidays/sea.jpg", attachment.getEtag(), metadata);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <UpdateAttachmentMetadataOnlyJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/static/\{key\} \\
-	-X POST
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **key** | Yes |  key under which attachment is stored |
-
-| Header | Required | Description |
-| --------| ------- | --- |
-| any header | No |  metadata |
-| **If-None-Match** | No | current attachment etag, used for concurrency checks |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| payload | etag |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X POST "http://localhost:8080/databases/sample/static/sea.jpg" \\
-	--header "Description: Holidays"
-
-< HTTP/1.1 200 OK
-< ETag: "02000000-0000-0002-0000-000000000003"
-"02000000-0000-0002-0000-000000000003"
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <UpdateAttachmentMetadataOnlyHttp />
 </LanguageContent>
+
 
 <!---
 - [How to get attachment metadata only?](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)

@@ -1,0 +1,436 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To execute facet (aggregation) query using the session `Query` method, use the `AggregateBy` or `AggregateUsing` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using a straightforward and fluent API.
+
+## Syntax
+
+<TabItem value="facet_1" label="facet_1">
+<CodeBlock language="csharp">
+{`IAggregationQuery<T> AggregateBy<T>(FacetBase facet);
+
+IAggregationQuery<T> AggregateBy<T>(IEnumerable<FacetBase> facets);
+
+IAggregationQuery<T> AggregateBy<T>(Action<IFacetBuilder<T>> builder);
+
+IAggregationQuery<T> AggregateUsing<T>(string facetSetupDocumentKey);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facet** | FacetBase | `FacetBase` implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
+| **facets** | `IEnumerable<FacetBase>` | Enumerable containing `FacetBase` implementations |
+| **builder** | `Action<IFacetFactory<T>>` | Builder with a fluent API that constructs a `FacetBase` instance |
+| **facetSetupDocumentId** | string | ID of a document containing `FacetSetup` | 
+
+### Facet & RangeFacet
+
+<Admonition type="info" title="Facet vs RangeFacet" id="facet-vs-rangefacet" href="#facet-vs-rangefacet">
+`RangeFacet` allows you to split the results of the calculations into several ranges, in contrast to `Facet` where whole spectrum of results will be used to generate a single outcome.
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Facet" label="Facet">
+<CodeBlock language="csharp">
+{`public class Facet
+{
+    public string FieldName { get; set; }
+
+    public FacetOptions Options { get; set; }
+
+    public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+
+    public string DisplayFieldName { get; set; }
+}
+
+public class Facet<T>
+{
+    public Expression<Func<T, object>> FieldName { get; set; }
+
+    public FacetOptions Options { get; set; }
+
+    public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+
+    public string DisplayFieldName { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RangeFacet" label="RangeFacet">
+<CodeBlock language="csharp">
+{`public class RangeFacet
+{
+    public List<string> Ranges { get; set; }
+
+    public FacetOptions Options { get; set; }
+
+    public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+
+    public string DisplayFieldName { get; set; }
+}
+
+public class RangeFacet<T>
+{
+    public List<Expression<Func<T, bool>>> Ranges { get; set; }
+
+    public FacetOptions Options { get; set; }
+
+    public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+
+    public string DisplayFieldName { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FacetAggregation" label="FacetAggregation">
+<CodeBlock language="csharp">
+{`public enum FacetAggregation
+{
+    None,
+    Max,
+    Min,
+    Average,
+    Sum
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Builder
+
+<TabItem value="facet_7_1" label="facet_7_1">
+<CodeBlock language="csharp">
+{`IFacetOperations<T> ByRanges(Expression<Func<T, bool>> path, params Expression<Func<T, bool>>[] paths);
+
+IFacetOperations<T> ByField(Expression<Func<T, object>> path);
+
+IFacetOperations<T> ByField(string fieldName);
+
+IFacetOperations<T> WithDisplayName(string displayName);
+
+IFacetOperations<T> WithOptions(FacetOptions options);
+
+IFacetOperations<T> SumOn(Expression<Func<T, object>> path);
+
+IFacetOperations<T> MinOn(Expression<Func<T, object>> path);
+
+IFacetOperations<T> MaxOn(Expression<Func<T, object>> path);
+
+IFacetOperations<T> AverageOn(Expression<Func<T, object>> path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | Points to the index field that should be used for operation (`ByRanges`, `ByField`) or to document field that should be used for aggregation (`SumOn`, `MinOn`, `MaxOn`, `AverageOn`) |
+| **fieldName** | string | Points to the index field that should be used for operation (`ByRanges`, `ByField`) or to document field that should be used for aggregation (`SumOn`, `MinOn`, `MaxOn`, `AverageOn`) |
+| **displayName** | string | If set, results of a facet will be returned under this name |
+| **options** | `FacetOptions` | Non-default options that should be used for operation |
+
+### Options
+
+<TabItem value="facet_7_2" label="facet_7_2">
+<CodeBlock language="csharp">
+{`public FacetTermSortMode TermSortMode \{ get; set; \} = FacetTermSortMode.ValueAsc;
+
+public bool IncludeRemainingTerms \{ get; set; \}
+
+public int Start \{ get; set; \}
+
+public int PageSize \{ get; set; \} = int.MaxValue;
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **TermSortMode** | `FacetTermSortMode` | Indicates how terms should be sorted (`ValueAsc`, `ValueDesc`, `CountAsc`, `CountDesc`) |
+| **IncludeRemainingTerms** | bool | Indicates if remaining terms should be included in results |
+| **Start** | int | Used to skip given number of facet results in the outcome |
+| **PageSize** | int | Used to limit facet results to the given value |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facets = session
+    .Query<Camera>("Camera/Costs")
+    .AggregateBy(new Facet
+    {
+        FieldName = "Manufacturer",
+        Options = new FacetOptions
+        {
+            TermSortMode = FacetTermSortMode.CountDesc
+        }
+    })
+    .AndAggregateBy(new RangeFacet<Camera>
+    {
+        Ranges =
+        {
+            camera => camera.Cost < 200m,
+            camera => camera.Cost >= 200m && camera.Cost < 400m,
+            camera => camera.Cost >= 400m && camera.Cost < 600m,
+            camera => camera.Cost >= 600m && camera.Cost < 800m,
+            camera => camera.Cost >= 800m
+        },
+        Aggregations =
+        {
+            { FacetAggregation.Average, "Cost" }
+        }
+    })
+    .AndAggregateBy(new RangeFacet<Camera>
+    {
+        Ranges =
+        {
+            camera => camera.Megapixels < 3.0,
+            camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+            camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+            camera => camera.Megapixels >= 10.0
+        }
+    })
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facets = await asyncSession
+    .Query<Camera>("Camera/Costs")
+    .AggregateBy(new Facet
+    {
+        FieldName = "Manufacturer",
+        Options = new FacetOptions
+        {
+            TermSortMode = FacetTermSortMode.CountDesc
+        }
+    })
+    .AndAggregateBy(new RangeFacet<Camera>
+    {
+        Ranges =
+        {
+            camera => camera.Cost < 200m,
+            camera => camera.Cost >= 200m && camera.Cost < 400m,
+            camera => camera.Cost >= 400m && camera.Cost < 600m,
+            camera => camera.Cost >= 600m && camera.Cost < 800m,
+            camera => camera.Cost >= 800m
+        },
+        Aggregations =
+        {
+            { FacetAggregation.Average, "Cost" }
+        }
+    })
+    .AndAggregateBy(new RangeFacet<Camera>
+    {
+        Ranges =
+        {
+            camera => camera.Megapixels < 3.0,
+            camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+            camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+            camera => camera.Megapixels >= 10.0
+        }
+    })
+    .ExecuteAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(Manufacturer), 
+facet(Cost < 200, Cost >= 200 AND Cost < 400, Cost >= 400 AND Cost < 600, Cost >= 600 AND Cost < 800, Cost >= 800),
+facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Megapixels < 10, Megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facets = session
+    .Query<Camera>("Camera/Costs")
+    .AggregateBy(builder => builder
+        .ByField(x => x.Manufacturer)
+        .WithOptions(new FacetOptions
+        {
+            TermSortMode = FacetTermSortMode.CountDesc
+        }))
+    .AndAggregateBy(builder => builder
+        .ByRanges(
+            camera => camera.Cost < 200m,
+            camera => camera.Cost >= 200m && camera.Cost < 400m,
+            camera => camera.Cost >= 400m && camera.Cost < 600m,
+            camera => camera.Cost >= 600m && camera.Cost < 800m,
+            camera => camera.Cost >= 800m)
+        .AverageOn(x => x.Cost))
+    .AndAggregateBy(builder => builder
+        .ByRanges(
+            camera => camera.Megapixels < 3.0,
+            camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+            camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+            camera => camera.Megapixels >= 10.0))
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Dictionary<string, FacetResult> facets = await asyncSession
+    .Query<Camera>("Camera/Costs")
+    .AggregateBy(builder => builder
+        .ByField(x => x.Manufacturer)
+        .WithOptions(new FacetOptions
+        {
+            TermSortMode = FacetTermSortMode.CountDesc
+        }))
+    .AndAggregateBy(builder => builder
+        .ByRanges(
+            camera => camera.Cost < 200m,
+            camera => camera.Cost >= 200m && camera.Cost < 400m,
+            camera => camera.Cost >= 400m && camera.Cost < 600m,
+            camera => camera.Cost >= 600m && camera.Cost < 800m,
+            camera => camera.Cost >= 800m)
+        .AverageOn(x => x.Cost))
+    .AndAggregateBy(builder => builder
+        .ByRanges(
+            camera => camera.Megapixels < 3.0,
+            camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+            camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+            camera => camera.Megapixels >= 10.0))
+    .ExecuteAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(Manufacturer), 
+facet(Cost < 200, Cost >= 200 AND Cost < 400, Cost >= 400 AND Cost < 600, Cost >= 600 AND Cost < 800, Cost >= 800),
+facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Megapixels < 10, Megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Store(new FacetSetup
+{
+    Facets = new List<Facet>
+        {
+            new Facet
+            {
+                FieldName = "Manufacturer"
+            }
+        },
+    RangeFacets = new List<RangeFacet>
+        {
+            new RangeFacet<Camera>
+            {
+                Ranges =
+                {
+                    camera => camera.Cost < 200m,
+                    camera => camera.Cost >= 200m && camera.Cost < 400m,
+                    camera => camera.Cost >= 400m && camera.Cost < 600m,
+                    camera => camera.Cost >= 600m && camera.Cost < 800m,
+                    camera => camera.Cost >= 800m
+                }
+            },
+            new RangeFacet<Camera>
+            {
+                Ranges =
+                {
+                    camera => camera.Megapixels < 3.0,
+                    camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+                    camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+                    camera => camera.Megapixels >= 10.0
+                }
+            }
+        }
+}, "facets/CameraFacets");
+
+session.SaveChanges();
+
+Dictionary<string, FacetResult> facets = session
+    .Query<Camera>("Camera/Costs")
+    .AggregateUsing("facets/CameraFacets")
+    .Execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await asyncSession.StoreAsync(new FacetSetup
+{
+    Facets = new List<Facet>
+        {
+            new Facet
+            {
+                FieldName = "Manufacturer"
+            }
+        },
+    RangeFacets = new List<RangeFacet>
+        {
+            new RangeFacet<Camera>
+            {
+                Ranges =
+                {
+                    camera => camera.Cost < 200m,
+                    camera => camera.Cost >= 200m && camera.Cost < 400m,
+                    camera => camera.Cost >= 400m && camera.Cost < 600m,
+                    camera => camera.Cost >= 600m && camera.Cost < 800m,
+                    camera => camera.Cost >= 800m
+                }
+            },
+            new RangeFacet<Camera>
+            {
+                Ranges =
+                {
+                    camera => camera.Megapixels < 3.0,
+                    camera => camera.Megapixels >= 3.0 && camera.Megapixels < 7.0,
+                    camera => camera.Megapixels >= 7.0 && camera.Megapixels < 10.0,
+                    camera => camera.Megapixels >= 10.0
+                }
+            }
+        }
+}, "facets/CameraFacets");
+
+await asyncSession.SaveChangesAsync();
+
+Dictionary<string, FacetResult> facets = await asyncSession
+    .Query<Camera>("Camera/Costs")
+    .AggregateUsing("facets/CameraFacets")
+    .ExecuteAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select facet(id('facets/CameraFacets'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="warning" title="">
+`AggregateBy` only supports aggregation by a single field. If you want to aggregate by multiple fields, you need to emit a single field that contains all values.
+</Admonition>
+
+

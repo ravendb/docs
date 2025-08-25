@@ -5,120 +5,24 @@ sidebar_label: ...get entity counters
 sidebar_position: 10
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetEntityCountersCsharp from './_get-entity-counters-csharp.mdx';
+import GetEntityCountersNodejs from './_get-entity-counters-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "nodejs"];
 
-
-# How to Get Entity Counters
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* When a document is loaded to the session,  
-  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
-
-* If the document has __Counters__, the document metadata will also contain its counter names.  
-  The counter names are available for each entity using the `GetCountersFor()` method from the `Advanced` session operations.
-
-* In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
-</Admonition>
-## Get entity counters
-
-<TabItem value="example" label="example">
-<CodeBlock language="csharp">
-{`// Load a document
-var employee = session.Load<Employee>("employees/1-A");
-
-// Get counter names from the loaded entity
-List<string> counterNames = session.Advanced.GetCountersFor(employee);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`List<string> GetCountersFor<T>(T instance);
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| - | - | - |
-| **instance** | T | Instance of an entity for which counter names will be returned. |
-
-| Return Value | |
-| - | - |
-| `List<string>` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br/>An exception is thrown if the `instance` is not tracked by the session. |
-
-
-
-
+   <GetEntityCountersCsharp />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* When a document is loaded to the session,  
-  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
-
-* If the document has __Counters__, the document metadata will also contain its counter names.  
-  The counter names are available for each entity using the `getCountersFor()` method from the `advanced` session operations.
-
-* In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
-</Admonition>
-## Get entity counters
-
-<TabItem value="example" label="example">
-<CodeBlock language="js">
-{`// Load a document
-const employee = await session.load("employees/1-A");
-
-// Get counter names from the loaded entity
-const counterNames = session.advanced.getCountersFor(employee);    
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`getCountersFor(entity);
-`}
-</CodeBlock>
-</TabItem>
-
-
-| Parameters | | |
-| - | - | - |
-| **entity** | T | The entity for which counter names will be returned. |
-
-| Return Value | |
-| - | - |
-| `string[]` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br/>An exception is thrown if the entity is not tracked by the session. |
-
-
-
-
+   <GetEntityCountersNodejs />
 </LanguageContent>
+
 
 <!---
 ### Session

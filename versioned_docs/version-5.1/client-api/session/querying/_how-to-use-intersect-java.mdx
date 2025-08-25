@@ -1,0 +1,102 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries, use the `intersect` method which enables RavenDB to perform server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> intersect();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+List<TShirt> tShirts = session
+    .query(TShirt.class, TShirts_ByManufacturerColorSizeAndReleaseYear.class)
+    .whereEquals("manufacturer", "Raven")
+    .intersect()
+    .whereEquals("color", "Blue")
+    .andAlso()
+    .whereEquals("size", "Small")
+    .intersect()
+    .whereEquals("color", "Gray")
+    .andAlso()
+    .whereEquals("size", "Large")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class TShirts_ByManufacturerColorSizeAndReleaseYear extends AbstractIndexCreationTask {
+    public static class Result {
+        private String manufacturer;
+        private String color;
+        private String size;
+        private int releaseYear;
+
+        public String getManufacturer() {
+            return manufacturer;
+        }
+
+        public void setManufacturer(String manufacturer) {
+            this.manufacturer = manufacturer;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public String getSize() {
+            return size;
+        }
+
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        public int getReleaseYear() {
+            return releaseYear;
+        }
+
+        public void setReleaseYear(int releaseYear) {
+            this.releaseYear = releaseYear;
+        }
+    }
+
+    public TShirts_ByManufacturerColorSizeAndReleaseYear() {
+        map = "docs.TShirts.SelectMany(tshirt => tshirt.types, (tshirt, type) => new {" +
+            "    manufacturer = tshirt.manufacturer," +
+            "    color = type.color," +
+            "    size = type.size," +
+            "    releaseYear = tshirt.releaseYear" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

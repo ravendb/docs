@@ -5,187 +5,24 @@ sidebar_label: ...use MoreLikeThis?
 sidebar_position: 12
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import UseMorelikethisCsharp from './_use-morelikethis-csharp.mdx';
+import UseMorelikethisJava from './_use-morelikethis-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Session: How to use MoreLikeThis?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-`MoreLikeThis` is available through extension method in `Advanced` session operations. This method returns articles similar to the provided input.
-
-## Syntax
-
-<TabItem value="more_like_this_1" label="more_like_this_1">
-<CodeBlock language="csharp">
-{`TResult[] MoreLikeThis<TResult, TIndexCreator>(
-	this ISyncAdvancedSessionOperation advancedSession,
-	MoreLikeThisQuery parameters) 
-	where TIndexCreator : AbstractIndexCreationTask, new() \{ ... \}
-
-TResult[] MoreLikeThis<TResult>(
-	this ISyncAdvancedSessionOperation advancedSession,
-	string index,
-	string documentId) \{ ... \}
-
-TResult[] MoreLikeThis<TTransformer, TResult, TIndexCreator>(
-	this ISyncAdvancedSessionOperation advancedSession,
-	string documentId)
-	where TIndexCreator : AbstractIndexCreationTask, new()
-	where TTransformer : AbstractTransformerCreationTask, new() \{ ... \}
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | string | Name of an index on which query will be executed. |
-| **documentId** | string | Id of a document for which similarities will be searched. |
-| **parameters** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed. |
-
-| Return Value | |
-| ------------- | ----- |
-| TResult[] | Array of similar documents returned as entities. |
-
-## Example I
-
-<TabItem value="more_like_this_2" label="more_like_this_2">
-<CodeBlock language="csharp">
-{`// Search for similar articles to 'articles/1'
-// using 'Articles/MoreLikeThis' index and search only field 'Body'
-Article[] articles = session
-	.Advanced
-	.MoreLikeThis<Article>(
-		"Articles/MoreLikeThis",
-		null,
-		new MoreLikeThisQuery
-		\{
-			IndexName = "Articles/MoreLikeThis", 
-			DocumentId = "articles/1", 
-			Fields = new[] \{ "Body" \}
-		\});
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="more_like_this_4" label="more_like_this_4">
-<CodeBlock language="csharp">
-{`// Search for similar articles to 'articles/1'
-// using 'Articles/MoreLikeThis' index and search only field 'Body'
-// where article category is 'IT'
-Article[] articles = session
-	.Advanced
-	.MoreLikeThis<Article>(
-		"Articles/MoreLikeThis",
-		null,
-		new MoreLikeThisQuery
-		\{
-			IndexName = "Articles/MoreLikeThis",
-			DocumentId = "articles/1",
-			Fields = new[] \{ "Body" \},
-			AdditionalQuery = "Category:IT"
-		\});
-`}
-</CodeBlock>
-</TabItem>
-
-## Remarks
-
-Do not forget to add following **using** statement which contains necessary extensions:
-
-<TabItem value="more_like_this_3" label="more_like_this_3">
-<CodeBlock language="csharp">
-{`using Raven.Abstractions.Data;
-using Raven.Client.Bundles.MoreLikeThis;
-using Raven.Client.Document;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <UseMorelikethisCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-`MoreLikeThis` is available through `advanced()` in session operations. This method returns articles similar to the provided input.
-
-## Syntax
-
-<TabItem value="more_like_this_1" label="more_like_this_1">
-<CodeBlock language="java">
-{`public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, String documentId);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, MoreLikeThisQuery parameters);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, String index, String documentId);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, Class<? extends AbstractTransformerCreationTask> transformerClass, String documentId);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, Class<? extends AbstractIndexCreationTask> indexCreator, Class<? extends AbstractTransformerCreationTask> transformerClass, MoreLikeThisQuery parameters);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, String index, String transformer, String documentId);
-
-public <T> T[] moreLikeThis(Class<T> entityClass, String index, String transformer, MoreLikeThisQuery parameters);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | String | Name of an index on which query will be executed. |
-| **documentId** | String | Id of a document for which similarities will be searched. |
-| **parameters** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed. |
-
-| Return Value | |
-| ------------- | ----- |
-| T[] | Array of similar documents returned as entities. |
-
-## Example I
-
-<TabItem value="more_like_this_2" label="more_like_this_2">
-<CodeBlock language="java">
-{`// Search for similar articles to 'articles/1'
-// using 'Articles/MoreLikeThis' index and search only field 'Body'
-MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
-moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
-moreLikeThisQuery.setDocumentId("articles/1");
-moreLikeThisQuery.setFields(new String[] \{ "Body" \});
-
-Article[] articles = session.advanced()
-  .moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="more_like_this_4" label="more_like_this_4">
-<CodeBlock language="java">
-{`// Search for similar articles to 'articles/1'
-// using 'Articles/MoreLikeThis' index and search only field 'Body'
-// where article category is 'IT'
-MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
-moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
-moreLikeThisQuery.setDocumentId("articles/1");
-moreLikeThisQuery.setFields(new String[] \{ "Body" \});
-moreLikeThisQuery.setAdditionalQuery("Category:IT");
-session.advanced().moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <UseMorelikethisJava />
 </LanguageContent>
+
 
 <!---
 - [Server : Bundles : MoreLikeThis](../../../server/bundles/more-like-this)

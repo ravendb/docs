@@ -1,0 +1,117 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) 
+  (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support.mdx)).  
+ 
+* When opening a session, the session's mode can be set to either:  
+    * **Single-Node** - transaction is executed on a specific node and then replicated
+    * **Cluster-Wide** - transaction is registered for execution on all nodes in an atomic fashion
+
+* In this page:  
+    * [Open a cluster transaction](../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)
+    * [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
+     
+</Admonition>
+## Open a cluster transaction
+
+* To work with a cluster transaction open a **cluster-wide session**,  
+  by explicitly setting the `TransactionMode` to `TransactionMode.ClusterWide`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession(new SessionOptions
+{
+    // Set mode to be cluster-wide
+    TransactionMode = TransactionMode.ClusterWide
+
+    // Session will be single-node when either:
+    //   * Mode is not specified
+    //   * Explicitly set TransactionMode.SingleNode
+}))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenAsyncSession(new SessionOptions
+{
+    // Set mode to be cluster-wide
+    TransactionMode = TransactionMode.ClusterWide
+    
+    // Session will be single-node when either:
+    //   * Mode is not specified
+    //   * Explicitly set TransactionMode.SingleNode
+}))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Similar to the single-node session,  
+  any CRUD operations can be made on the cluster-wide session and the session will track them as usual.
+
+
+
+## Cluster-wide transaction vs. Single-node transaction
+
+<Admonition type="note" title="">
+#### Cluster-Wide
+* Cluster-wide transactions are **fully ACID** transactions across all the database-group nodes.  
+  Implemented by the Raft algorithm, the cluster must first reach a consensus.  
+  Once the majority of the nodes have approved the transaction,  
+  the transaction is registered for execution in the transaction queue of all nodes in an atomic fashion.  
+* The transaction will either **succeed on all nodes or be rolled-back**.
+    * The transaction is considered successful only when successfully registered on all the database-group nodes.
+      Once executed on all nodes, the data is consistent and available on all nodes.  
+    * A failure to register the transaction on any node will cause the transaction to roll-back on all nodes and changes will Not be applied.
+* The only **actions available** are:
+    * PUT / DELETE a document
+    * PUT / DELETE a compare-exchange item
+* To prevent from concurrent documents modifications,  
+  the server creates [Atomic-Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) that will be associated with the documents.  
+  An Atomic-Guard will be created when:
+    * A new document is created
+    * Modifying an existing document that doesn't have yet an Atomic-Guard
+* Cluster-wide transactions are **conflict-free**.
+* The cluster-wide transaction is considered **more expensive and less performant**  
+  since a cluster consensus is required prior to execution.  
+* **Prefer a cluster-wide transaction when**:
+    * Prioritizing consistency over performance & availability
+    * When you would rather fail if a successful operation on all nodes cannot be ensured
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Single-Node
+* A single-node transaction is considered successful once executed successfully on the node the client is communicating with.
+  The data is **immediately available** on that node, and it will be **eventually-consistent** across all the other database nodes when the replication process takes place soon after.
+* **Any action is available** except for PUT / DELETE a compare-exchange item.  
+  No Atomic-Guards are created by the server.
+* **Conflicts** may occur when two concurrent transactions modify the same document on different nodes at the same time.
+  They are resolved according to the defined conflict settings, either by using the latest version (default) or by following a conflict resolution script.  
+  Revisions are created for the conflicting documents so that any document can be recovered.
+* The single-node transaction is considered **faster and less expensive**,  
+  as no cluster consensus is required for its execution.
+* **Prefer a single-node transaction when**:  
+    * Prioritizing performance & availability over consistency
+    * When immediate data persistence is crucial
+    * When you must ensure data is written even when other nodes are not reachable at the moment
+    * And - when resolving occasional conflicts is acceptable
+
+</Admonition>
+
+<Admonition type="info" title="Transactions in RavenDB" id="transactions-in-ravendb" href="#transactions-in-ravendb">
+
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
+
+</Admonition>
+
+
+
+

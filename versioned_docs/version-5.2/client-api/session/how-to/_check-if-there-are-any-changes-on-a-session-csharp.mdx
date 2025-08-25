@@ -1,0 +1,97 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Single entity can be checked for changes using [HasChanged](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `HasChanges` property and the `WhatChanged` method are available in the `Advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="what_changed_1" label="what_changed_1">
+<CodeBlock language="csharp">
+{`bool HasChanges \{ get; \}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="what_changed_2" label="what_changed_2">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	Assert.False(session.Advanced.HasChanges);
+
+	session.Store(new Employee
+					  \{
+						  FirstName = "John",
+						  LastName = "Doe"
+					  \});
+
+	Assert.True(session.Advanced.HasChanges);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="what_changed_3" label="what_changed_3">
+<CodeBlock language="csharp">
+{`IDictionary<string, DocumentsChanges[]> WhatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| IDictionary&lt;string, DocumentsChanges[]&gt; | Dictionary containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="what_changed_4" label="what_changed_4">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	session.Store(new Employee
+	\{
+		FirstName = "Joe",
+		LastName = "Doe"
+	\});
+
+	IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+	DocumentsChanges[] employeeChanges = changes["employees/1-A"];
+	DocumentsChanges.ChangeType change = employeeChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="what_changed_5" label="what_changed_5">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())
+\{
+	Employee employee = session.Load<Employee>("employees/1-A"); // 'Joe Doe'
+	employee.FirstName = "John";
+	employee.LastName = "Shmoe";
+
+	IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+	DocumentsChanges[] employeeChanges = changes["employees/1-A"];
+	DocumentsChanges change1 = employeeChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
+	DocumentsChanges change2 = employeeChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

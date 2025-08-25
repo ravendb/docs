@@ -1,0 +1,47 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When working in a RavenDB cluster, a database can reside on multiple nodes. When the client needs to send a request to the server, it can have several nodes to choose from.
+
+The choice of the node depends on the value of `ReadBalanceBehavior`, which is taken from the current **conventions** (read more about it [here](../../../client-api/configuration/load-balance-and-failover.mdx)).
+
+In order to find out what is the current node that the session sends its requests to, use the `getCurrentSessionNode()` method  from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="js">
+{`session.advanced.getCurrentSessionNode();
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The return value of `getCurrentSessionNode()` is a **ServerNode** object
+
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="js">
+{`ServerNode \{
+    url: "https://localhost:8080",
+    database: "Database",
+    clusterTag: "A",
+    serverRole: "Member" // Role can be one of: "None", "Promotable", "Member", "Rehab" 
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="js">
+{`const serverNode = session.advanced.getCurrentSessionNode();
+console.log(serverNode.url);
+`}
+</CodeBlock>
+</TabItem>
+
+

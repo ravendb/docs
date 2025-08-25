@@ -1,0 +1,162 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* `more_like_this` returns a list of documents that are related to a given document.  
+* This feature can be used, for example, to show a list of related articles at the 
+  bottom of the currently-read article page, as done in many news sites.  
+* To accomplish this, RavenDB uses the Lucene contrib project `MoreLikeThis` feature.  
+
+* In this page:
+
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
+
+</Admonition>
+## Setup
+
+To be able to work, `more_like_this` requires access to the index text.  
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
+
+<TabItem value="more_like_this_4" label="more_like_this_4">
+<CodeBlock language="python">
+{`from ravendb import AbstractIndexCreationTask, MoreLikeThisOptions
+from ravendb.documents.indexes.definitions import FieldStorage
+from ravendb.documents.queries.more_like_this import MoreLikeThisStopWords
+
+from examples_base import ExampleBase
+
+
+class Article:
+    def __init__(self, Id: str = None, name: str = None, article_type: str = None):
+        self.Id = Id
+        self.name = name
+        self.article_type = article_type
+
+
+class Articles_ByArticleBody(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from doc in docs.Articles select \{ doc.article_body \}"
+        self._store("article_body", FieldStorage.YES)
+        self._analyze("article_body", "StandardAnalyzer")
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Basic Usage
+
+Many `more_like_this` options are set by default.  
+The simplest mode will satisfy most usage scenarios.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`articles = list(
+    session.query_index_type(Articles_ByArticleBody, Article).more_like_this(
+        lambda builder: builder.using_document(lambda x: x.where_equals("id()", "articles/1"))
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/ByArticleBody' 
+where morelikethis(id() = 'articles/1')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+`more_like_this` will use **all** the fields defined in an index.  
+To use only specific fields, pass these fields in the `MoreLikeThisOptions` fields property.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`options = MoreLikeThisOptions(fields=["article_body"])
+articles = list(
+    session.query_index_type(Articles_ByArticleBody, Article).more_like_this(
+        lambda builder: builder.using_document(
+            lambda x: x.where_equals("id()", "articles/1")
+        ).with_options(options)
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Articles/ByArticleBody' 
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "ArticleBody" ] }')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Options
+
+Default parameters can be changed by manipulating `MoreLikeThisOptions` properties and passing them 
+to `more_like_this`.
+
+| Option | Type | Description |
+| ------------- | ------------- | ----- |
+| **minimum_term_frequency** | `int` | Ignores terms with less than this frequency in the source doc |
+| **maximum_query_terms** | `int` | Returns a query with no more than this many terms |
+| **maximum_number_of_tokens_parsed** | `int` | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
+| **minimum_word_length** | `int` | Ignores words less than this length or, if 0, then this has no effect |
+| **maximum_word_length** | `int` | Ignores words greater than this length or if 0 then this has no effect |
+| **minimum_document_frequency** | `int` | Ignores words which do not occur in at least this many documents |
+| **maximum_document_frequency** | `int` | Ignores words which occur in more than this many documents |
+| **maximum_document_frequency_percentage** | `int` | Ignores words which occur in more than this percentage of documents |
+| **boost** | `bool` | Boost terms in query based on score |
+| **boost_factor** | `float` |  Boost factor when boosting based on score |
+| **stop_words_document_id** | `str` | Document ID containing custom stop words |
+| **fields** | `List[str]` | Fields to compare |
+
+
+
+## Stop Words
+
+Some Lucene analyzers have a built-in list of common English words that are usually not useful 
+for searching, like "a", "as", "the", etc.  
+These words, called *stop words*, are considered uninteresting and are ignored.  
+If a used analyzer does not support *stop words*, or you need to overload these terms, you can 
+specify your own set of stop words.  
+A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="python">
+{`stop_words = MoreLikeThisStopWords(stop_words=["I", "A", "Be"])
+session.store(stop_words, "Config/Stopwords")
+`}
+</CodeBlock>
+</TabItem>
+
+The document ID will then be set in the `MoreLikeThisOptions`.
+
+
+
+## Remarks
+
+<Admonition type="info" title="">
+Please note that default values for settings, like `MinimumDocumentFrequency`, `MinimumTermFrequency`, 
+and `MinimumWordLength`, may result in filtering out related articles, especially with a small data set 
+(e.g. during development). 
+</Admonition>
+
+
+
+

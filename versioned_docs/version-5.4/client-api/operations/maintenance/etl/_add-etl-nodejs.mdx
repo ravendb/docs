@@ -1,0 +1,95 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can add ETL task by using **AddEtlOperation**.
+
+## Usage
+
+<TabItem value="add_etl_operation" label="add_etl_operation">
+<CodeBlock language="js">
+{`const operation = new AddEtlOperation(etlConfiguration);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
+
+## Example - Add Raven ETL
+
+<TabItem value="add_raven_etl" label="add_raven_etl">
+<CodeBlock language="js">
+{`const etlConfigurationRvn = Object.assign(new RavenEtlConfiguration(), \{
+    connectionStringName: "raven-connection-string-name",
+    disabled: false,
+    name: "etlRvn"
+\});
+
+const transformationRvn = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+etlConfigurationRvn.transforms = [transformationRvn];
+
+const operationRvn = new AddEtlOperation(etlConfigurationRvn);
+const etlResultRvn = await store.maintenance.send(operationRvn);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add Sql ETL
+
+<TabItem value="add_sql_etl" label="add_sql_etl">
+<CodeBlock language="js">
+{`const transformation = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+const table1 = \{
+    documentIdColumn: "Id",
+    insertOnlyMode: false,
+    tableName: "Users"
+\};
+
+const etlConfigurationSql = Object.assign(new SqlEtlConfiguration(), \{
+    connectionStringName: "sql-connection-string-name",
+    disabled: false,
+    name: "etlSql",
+    transforms: [transformation],
+    sqlTables: [table1]
+\});
+
+const operationSql = new AddEtlOperation(etlConfigurationSql);
+const etlResult = await store.maintenance.send(operationSql);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Add OLAP ETL
+
+<TabItem value="add_olap_etl" label="add_olap_etl">
+<CodeBlock language="js">
+{`const transformationOlap = \{
+    applyToAllDocuments: true,
+    name: "Script #1"
+\};
+
+const etlConfigurationOlap = Object.assign(new OlapEtlConfiguration(), \{
+    connectionStringName: "olap-connection-string-name",
+    disabled: false,
+    name: "etlOlap",
+    transforms: [transformationOlap],
+\});
+
+const operationOlap = new AddEtlOperation(etlConfigurationOlap);
+const etlResultOlap = await store.maintenance.send(operationOlap);
+`}
+</CodeBlock>
+</TabItem>
+
+

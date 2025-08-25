@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store an attachment in RavenDB, you need to first create a document.  
+Then, you can attach an attachment to the document using the `session.advanced.attachments.store` method.  
+
+Just like documents, sttachments are a part of the session and will only be saved on the server 
+when `save_changes` is executed (read more about saving changes in session [here](../../client-api/session/saving-changes.mdx)).
+
+## Syntax
+
+Attachments can be stored using `session.advanced.attachments.store`:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="python">
+{`def store(
+    self,
+    entity_or_document_id: Union[object, str],
+    name: str,
+    stream: bytes,
+    content_type: str = None,
+    change_vector: str = None,
+): ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    with open("001.jpg", "r") as file1:
+        file1_data = file1.read()
+        file2_data = b"file_2_content"  # Mock
+        file3_data = b"file_3_content"  # Mock
+        file4_data = b"file_4_content"  # Mock
+        album = Album(
+            name="Holidays",
+            description="Holidays travel pictures of the all family",
+            tags=["Holidays Travel", "All Family"],
+        )
+        session.store(album, "albums/1")
+
+        session.advanced.attachments.store("albums/1", "001.jpg", file1_data, "image/jpeg")
+        session.advanced.attachments.store("albums/1", "002.jpg", file2_data, "image/jpeg")
+        session.advanced.attachments.store("albums/1", "003.jpg", file3_data, "image/jpeg")
+        session.advanced.attachments.store("albums/1", "004.jpg", file4_data, "image/jpeg")
+
+        session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+

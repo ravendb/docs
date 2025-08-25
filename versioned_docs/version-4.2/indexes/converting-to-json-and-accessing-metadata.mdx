@@ -5,259 +5,29 @@ sidebar_label: Converting to JSON and Accessing Metadata
 sidebar_position: 21
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import ConvertingToJsonAndAccessingMetadataCsharp from './_converting-to-json-and-accessing-metadata-csharp.mdx';
+import ConvertingToJsonAndAccessingMetadataJava from './_converting-to-json-and-accessing-metadata-java.mdx';
+import ConvertingToJsonAndAccessingMetadataNodejs from './_converting-to-json-and-accessing-metadata-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Indexes: Converting to JSON and Accessing Metadata
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Entities passed to an index can be converted to JSON using `AsJson` method. There is also a possibility to access metadata for a specified object using `MetadataFor` method.
-
-## AsJson - Converting to JSON
-
-<TabItem value="indexes_1" label="indexes_1">
-<CodeBlock language="csharp">
-{`public class Products_AllProperties : AbstractIndexCreationTask<Product, Products_AllProperties.Result>
-\{
-    public class Result
-    \{
-        public string Query \{ get; set; \}
-    \}
-
-    public Products_AllProperties()
-    \{
-        Map = products => from product in products
-            select new
-            \{
-                // convert product to JSON and select all properties from it
-                Query = AsJson(product).Select(x => x.Value)
-            \};
-
-        // mark 'Query' field as analyzed which enables full text search operations
-        Index(x => x.Query, FieldIndexing.Search);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_2" label="indexes_2">
-<CodeBlock language="csharp">
-{`IList<Product> results = session
-	.Query<Products_AllProperties.Result, Products_AllProperties>()
-	.Where(x => x.Query == "Chocolade")
-	.OfType<Product>()
-	.ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-## MetadataFor - Accessing Metadata
-
-<TabItem value="indexes_3" label="indexes_3">
-<CodeBlock language="csharp">
-{`public class Products_WithMetadata : AbstractIndexCreationTask<Product>
-\{
-	public class Result
-	\{
-		public DateTime LastModified \{ get; set; \}
-	\}
-
-	public Products_WithMetadata()
-	\{
-		Map = products => from product in products
-					let metadata = MetadataFor(product)
-					select new
-					\{
-						LastModified = metadata.Value<DateTime>("@last-modified")
-					\};
-	\}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_4" label="indexes_4">
-<CodeBlock language="csharp">
-{`IList<Product> results = session
-	.Query<Products_WithMetadata.Result, Products_WithMetadata>()
-	.OrderByDescending(x => x.LastModified)
-	.OfType<Product>()
-	.ToList();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ConvertingToJsonAndAccessingMetadataCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Entities passed to an index can be converted to JSON using `AsJson` method. There is also a possibility to access metadata for a specified object using `MetadataFor` method.
-
-## AsJson - Converting to JSON
-
-<TabItem value="indexes_1" label="indexes_1">
-<CodeBlock language="java">
-{`public static class Products_AllProperties extends AbstractIndexCreationTask \{
-    public static class Result \{
-        private String query;
-
-        public String getQuery() \{
-            return query;
-        \}
-
-        public void setQuery(String query) \{
-            this.query = query;
-        \}
-    \}
-
-    public Products_AllProperties() \{
-        map = "docs.Products.Select(product => new \{ " +
-            // convert product to JSON and select all properties from it
-            "    Query = this.AsJson(product).Select(x => x.Value) " +
-            "\})";
-
-        // mark 'query' field as analyzed which enables full text search operations
-        index("Query", FieldIndexing.SEARCH);;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_2" label="indexes_2">
-<CodeBlock language="java">
-{`List<Product> results = session
-    .query(Products_AllProperties.Result.class, Products_AllProperties.class)
-    .whereEquals("Query", "Chocolade")
-    .ofType(Product.class)
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-
-## MetadataFor - Accessing Metadata
-
-<TabItem value="indexes_3" label="indexes_3">
-<CodeBlock language="java">
-{`public static class Products_WithMetadata extends AbstractIndexCreationTask \{
-    public static class Result \{
-        private Date lastModified;
-
-        public Date getLastModified() \{
-            return lastModified;
-        \}
-
-        public void setLastModified(Date lastModified) \{
-            this.lastModified = lastModified;
-        \}
-    \}
-
-    public Products_WithMetadata() \{
-        map = "docs.Products.Select(product => new \{ " +
-            "    Product = Product, " +
-            "    Metadata = this.MetadataFor(product) " +
-            "\}).Select(this0 => new \{ " +
-            "    LastModified = this0.metadata.Value<DateTime>(\\"Last-Modified\\") " +
-            "\})";
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_4" label="indexes_4">
-<CodeBlock language="java">
-{`List<Product> results = session
-    .query(Products_WithMetadata.Result.class, Products_WithMetadata.class)
-    .orderByDescending("LastModified")
-    .ofType(Product.class)
-    .toList();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ConvertingToJsonAndAccessingMetadataJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-Entities passed to an index can be converted to JSON using `AsJson` method. There is also a possibility to access metadata for a specified object using `MetadataFor` method.
-
-## AsJson - Converting to JSON
-
-<TabItem value="indexes_1" label="indexes_1">
-<CodeBlock language="js">
-{`class Products_AllProperties extends AbstractIndexCreationTask \{
-
-    constructor() \{
-        super();
-        this.map = "docs.Products.Select(product => new \{\\n" +
-            // convert product to JSON and select all properties from it
-            "    Query = this.AsJson(product).Select(x => x.Value)\\n" +
-            "\})";
-
-        // mark 'query' field as analyzed which enables full text search operations
-        this.index("Query", "Search");
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_2" label="indexes_2">
-<CodeBlock language="js">
-{`const results = await session
-    .query(\{ indexName: "Products/AllProperties" \})
-    .whereEquals("Query", "Chocolade")
-    .ofType(Product)
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-
-## MetadataFor - Accessing Metadata
-
-<TabItem value="indexes_3" label="indexes_3">
-<CodeBlock language="js">
-{`class Products_WithMetadata extends AbstractIndexCreationTask \{
-    constructor() \{
-        super();
-        this.map = "docs.Products.Select(product => new \{\\n" +
-            "    Product = product,\\n" +
-            "    Metadata = this.MetadataFor(product)\\n" +
-            "\}).Select(this_0 => new \{\\n" +
-            "       LastModified = this_0.Metadata.Value<DateTime>(\\'Last-Modified'\\)\\n"+
-            "   \})";
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="indexes_4" label="indexes_4">
-<CodeBlock language="js">
-{`const results = await session
-    .query(\{ indexName: "Products/WithMetadata" \})
-    .orderByDescending("LastModified")
-    .ofType(Product)
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <ConvertingToJsonAndAccessingMetadataNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

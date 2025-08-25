@@ -1,0 +1,456 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching.mdx).  
+
+* Use the `search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers.mdx#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching.mdx), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results.mdx).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
+  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
+  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
+  * [Search operators](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
+  * [Search options](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
+  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
+  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session
+    # Make a dynamic query on Employees collection
+    .query(object_type=Employee)
+    # * Call 'Search' to make a Full-Text search
+    # * Search is case-insensitive
+    # * Look for documents containing the term 'University' within their 'Notes' field
+    .search("Notes", "University")
+)
+# Results will contain Employee documents that have
+# any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers.mdx#ravendb) (RavenStandardAnalyzer). 
+    Calling the `search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the **same field** in a single search method.
+
+* By default, the logical operator between these terms is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
+
+<Admonition type="note" title="">
+
+**Pass terms in a string**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass multiple terms in a single string, separated by spaces.
+    # * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    #   within their 'Notes' field
+    .search("Notes", "University Sales Japanese")
+)
+
+# * Results will contain Employee documents that have at least one of the specified terms.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in **different fields** by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Look for documents containing:
+    #   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .search("Notes", "French").search("Title", "President")
+)
+# * Results will contain Employee documents that have
+#   at least one of the specified fields with the specified terms.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where (search(Notes, "French") or search(Title, "President"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company)
+    # * Look for documents that contain:
+    #   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .search("Address", "USA London")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search operators
+
+* By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
+
+* This can be modified using the `@operator` parameter as follows: 
+
+<Admonition type="note" title="">
+
+**AND**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass \`@operator\` with 'SearchOperator.AND'
+    .search("Notes", "College German", operator=SearchOperator.AND)
+)
+# * Results will contain Employee documents that have BOTH 'College' AND 'German'
+#   in their 'Notes' field.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**OR**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass \`@operator\` with 'SearchOperator.OR' (or don't pass this param at all)
+    .search("Notes", "College German", operator=SearchOperator.OR)
+)
+# * Results will contain Employee documents that have BOTH 'College' OR 'German'
+#   in their 'Notes' field.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search options
+
+Search options allow to:  
+
+* Negate a search criteria.  
+* Specify the logical operator used between **consecutive search calls**.  
+
+<Admonition type="note" title="">
+
+**Negate search**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company)
+    .open_subclause()
+    # Call 'Not' to negate the next search call
+    .not_()
+    .search("Address", "USA")
+    .close_subclause()
+)
+# * Results will contain Company documents are NOT located in 'USA'
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where (exists(Address) and not search(Address, "USA"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Default behavior between search calls**:
+
+* By default, the logical operator between consecutive search methods is **OR**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company).where_equals("Contact.Title", "Owner")
+    # Operator AND will be used with previous 'where_equals' predicate
+    .search("Address.Country", "France")
+    # Operator OR will be used between the two 'search' calls by default
+    .search("Name", "Markets")
+)
+
+# * Results will contain Company documents that have:
+#   ('Owner' as the 'Contact.Title')
+#   AND
+#   (are located in 'France' OR have 'Markets' in their 'Name' field)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+where Contact.Title == "Owner" and
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Use options as bit flags**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.advanced.document_query(object_type=Employee)
+    .search("Notes", "French")
+    # Call 'AndAlso' so that operator AND will be used with previous 'Search' call
+    .and_also()
+    .open_subclause()
+    # Call 'Not' to negate the next search call
+    .not_()
+    .search("Title", "Manager")
+    .close_subclause()
+)
+
+# * Results will contain Employee documents that have:
+#   ('French' in their 'Notes' field)
+#   AND
+#   (do NOT have 'Manager' in their 'Title' field)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is 
+    not advised as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # Use '*' to replace one or more characters
+    .search("Notes", "art*")
+    .search("Notes", "*logy")
+    .search("Notes", "*mark*")
+)
+
+# Results will contain Employee documents that have in their 'Notes' field:
+# (terms that start with 'art')  OR
+# (terms that end with 'logy') OR
+# (terms that have the text 'mark' in the middle)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`def search(self, field_name: str, search_terms: str, operator: SearchOperator = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                                | Description                                                                                                                                                              |
+|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **field_name** | `str` | Name of the searched field. |
+| **search_terms** | `str` | A string containing the term or terms (separated by spaces) to search for. |
+| **operator** | `SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br/>**Can be**: `SearchOperator.OR` or `SearchOperator.AND`<br/>**Default**: `SearchOperation.OR` |
+
+| Return Type         | Description   |
+| ------------------- | ------------- |
+| `DocumentQuery[_T]` | The same object used for the query |
+
+
+
+

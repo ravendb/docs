@@ -5,84 +5,24 @@ sidebar_label: Pause Index
 sidebar_position: 8
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import StopIndexCsharp from './_stop-index-csharp.mdx';
+import StopIndexJava from './_stop-index-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Stop an Index
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The **StopIndexOperation** is used to stop indexing for an index. 
-
-<Admonition type="note" title="">
-Indexing will be resumed automatically after server restart.
-</Admonition>
-
-### Syntax
-
-<TabItem value="stop_1" label="stop_1">
-<CodeBlock language="csharp">
-{`public StopIndexOperation(string indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | string | name of an index to stop indexing |
-
-### Example
-
-<TabItem value="stop_2" label="stop_2">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new StopIndexOperation("Orders/Totals"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StopIndexCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-The **StopIndexOperation** is used to stop indexing for an index. 
-
-<Admonition type="note" title="">
-Indexing will be resumed automatically after server restart.
-</Admonition>
-
-### Syntax
-
-<TabItem value="stop_1" label="stop_1">
-<CodeBlock language="java">
-{`public StopIndexOperation(String indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | name of an index to stop indexing |
-
-### Example
-
-<TabItem value="stop_2" label="stop_2">
-<CodeBlock language="java">
-{`store.maintenance().send(new StopIndexOperation("Orders/Totals"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <StopIndexJava />
 </LanguageContent>
+
 
 <!---
 ### Indexes

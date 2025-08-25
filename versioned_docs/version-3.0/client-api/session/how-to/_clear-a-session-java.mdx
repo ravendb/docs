@@ -1,0 +1,32 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To clear session state, that is to stop tracking entities and remove all pending commands, etc. `clear` method is used from `advanced()` session operations.
+
+## Syntax
+
+<TabItem value="clear_1" label="clear_1">
+<CodeBlock language="java">
+{`void clear()
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="clear_2" label="clear_2">
+<CodeBlock language="java">
+{`Employee employee = new Employee();
+employee.setFirstName("John");
+employee.setLastName("Doe");
+session.store(employee);
+
+session.advanced().clear();
+
+session.saveChanges(); // nothing will hapen
+`}
+</CodeBlock>
+</TabItem>
+

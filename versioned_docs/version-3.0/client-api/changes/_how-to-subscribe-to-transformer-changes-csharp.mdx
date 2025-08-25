@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+All transformer changes can be tracked using `ForAllTransformers` method.
+
+## Syntax
+
+<TabItem value="transformer_changes_1" label="transformer_changes_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<TransformerChangeNotification>
+	ForAllTransformers();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask&lt;[TransformerChangeNotification](../../glossary/transformer-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all transformers. |
+
+Type: IObservableWithTask&lt;[TransformerChangeNotification](../../glossary/transformer-change-notification.mdx)&gt;   
+Observable that allows to add subscriptions to notifications for all transformers.
+
+## Example
+
+<TabItem value="transformer_changes_2" label="transformer_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+	.Changes()
+	.ForAllTransformers()
+	.Subscribe(
+		change =>
+		\{
+			switch (change.Type)
+			\{
+				case TransformerChangeTypes.TransformerAdded:
+					// do something
+					break;
+				case TransformerChangeTypes.TransformerRemoved:
+					// do something
+					break;
+			\}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+
+

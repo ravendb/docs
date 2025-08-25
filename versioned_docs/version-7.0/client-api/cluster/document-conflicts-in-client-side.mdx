@@ -5,218 +5,24 @@ sidebar_label: Document Conflict Exceptions at Client-Side
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DocumentConflictsInClientSideCsharp from './_document-conflicts-in-client-side-csharp.mdx';
+import DocumentConflictsInClientSideJava from './_document-conflicts-in-client-side-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Cluster: Document Conflicts in Client-side
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-  
-## What are conflicts?
-When two or more changes of a single document are done concurrently in two separate nodes, 
-RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
-
-<Admonition type="note" title="">
-By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
-</Admonition>
-  
-## When is a conflict exception thrown?
-DocumentConflictException will be thrown for any access of a conflicted document.
-Fetching attachments of a conflicted document will throw `InvalidOperationException` on the server.
-
-## How can the conflict can be resolved from the client side?
- * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
-
-<TabItem value="PUT_Sample" label="PUT_Sample">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
-\{
-    session.Store(new User \{Name = "John Doe"\}, "users/123"); // users/123 is a conflicted document
-    session.SaveChanges(); //when this request is finished, the conflict for users/132 is resolved.
-\}
-`}
-</CodeBlock>
-</TabItem>
-
- * DELETE of a conflicted document will resolve its conflict.  
-
-<TabItem value="DELETE_Sample" label="DELETE_Sample">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
-\{
-    session.Delete("users/123"); // users/123 is a conflicted document
-    session.SaveChanges(); //when this request is finished, the conflict for users/132 is resolved.
-\}                
-`}
-</CodeBlock>
-</TabItem>
-
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector.mdx).
-
-## Modifying conflict resolution from the client-side
-In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.
-<TabItem value="Modify_conflict_resolution_sample" label="Modify_conflict_resolution_sample">
-<CodeBlock language="csharp">
-{`using (var documentStore = new DocumentStore
-\{
-    Urls = new []\{ "http://<url of a database>" \},
-    Database = "<database name>"
-\})
-\{
-    var resolveByCollection = new Dictionary<string, ScriptResolver>
-    \{
-        \{
-            "ShoppingCarts", new ScriptResolver //specify conflict resolution for collection
-            \{
-                // conflict resolution script is written in javascript
-                Script = @"
-                var final = docs[0];
-                for(var i = 1; i < docs.length; i++)
-                \{
-                    var currentCart = docs[i];
-                    for(var j = 0; j < currentCart.Items.length; j++)
-                    \{
-                        var item = currentCart.Items[j];
-                        var match = final.Items
-                                         .find( i => i.ProductId == item.ProductId);
-                        if(!match)
-                        \{
-                            // not in cart, add
-                            final.Items.push(item);
-                        \}
-                        else
-                        \{
-                            match.Quantity = Math.max(
-                                        item.Quantity ,
-                                        match.Quantity);
-                        \}
-                    \}
-                \}
-                return final; // the conflict will be resolved to this variant
-                "
-            \}
-        \}
-    \};
-
-    var op = new ModifyConflictSolverOperation(
-        documentStore.Database,
-        resolveByCollection,    //we specify conflict resolution scripts by document collection 
-        resolveToLatest: true); // if true, RavenDB will resolve conflict to the latest
-                                // if there is no resolver defined for a given collection or
-                                // the script returns null
-
-    await documentStore.Maintenance.Server.SendAsync(op);
-\}                
-`}
-</CodeBlock>
-</TabItem>
-
+   <DocumentConflictsInClientSideCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-  
-## What are conflicts?
-When two or more changes of a single document are done concurrently in two separate nodes, 
-RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
-
-<Admonition type="note" title="">
-By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
-</Admonition>
-  
-## When is a conflict exception thrown?
-DocumentConflictException will be thrown for any access of a conflicted document.
-Fetching attachments of a conflicted document will throw `InvalidOperationException` on the server.
-
-## How can the conflict can be resolved from the client side?
- * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
-
-<TabItem value="PUT_Sample" label="PUT_Sample">
-<CodeBlock language="java">
-{`try (IDocumentSession session = store.openSession()) \{
-    User user = new User();
-    user.setName("John Doe");
-
-    session.store(user, "users/123");
-    // users/123 is a conflicted document
-    session.saveChanges();
-    // when this request is finished, the conflict for user/132 is resolved.
-\}
-`}
-</CodeBlock>
-</TabItem>
-
- * DELETE of a conflicted document will resolve its conflict.  
-
-<TabItem value="DELETE_Sample" label="DELETE_Sample">
-<CodeBlock language="java">
-{`try (IDocumentSession session = store.openSession()) \{
-    session.delete("users/123"); // users/123 is a conflicted document
-    session.saveChanges(); //when this request is finished, the conflict for users/132 is resolved.
-\}
-`}
-</CodeBlock>
-</TabItem>
-
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector.mdx).
-
-## Modifying conflict resolution from the client-side
-In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.
-<TabItem value="Modify_conflict_resolution_sample" label="Modify_conflict_resolution_sample">
-<CodeBlock language="java">
-{`try (IDocumentStore documentStore = new DocumentStore(
-    new String[] \{ "http://<url of a database>" \}, "<database name>")) \{
-
-    Map<String, ScriptResolver> resolveByCollection = new HashMap<>();
-    ScriptResolver scriptResolver = new ScriptResolver();
-    scriptResolver.setScript(
-        "  var final = docs[0];" +
-        "  for(var i = 1; i < docs.length; i++)" +
-        "  \{" +
-        "      var currentCart = docs[i];" +
-        "      for(var j = 0; j < currentCart.Items.length; j++)" +
-        "      \{" +
-        "          var item = currentCart.Items[j];" +
-        "          var match = final.Items" +
-        "                           .find( i => i.ProductId == item.ProductId);" +
-        "          if (!match)" +
-        "          \{" +
-        "              // not in cart, add" +
-        "              final.Items.push(item);" +
-        "          \} else \{ " +
-        "              match.Quantity = Math.max(" +
-        "                          item.Quantity ," +
-        "                          match.Quantity);" +
-        "          \}" +
-        "      \}" +
-        "  \}" +
-        "  return final; // the conflict will be resolved to this variant");
-    resolveByCollection.put("ShoppingCarts", scriptResolver);
-
-    ModifyConflictSolverOperation op = new ModifyConflictSolverOperation(
-        documentStore.getDatabase(),
-        resolveByCollection,  //we specify conflict resolution scripts by document collection
-        true // if true, RavenDB will resolve conflict to the latest
-        // if there is no resolver defined for a given collection or
-        // the script returns null
-    );
-
-    store.maintenance().server().send(op);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <DocumentConflictsInClientSideJava />
 </LanguageContent>
+
 
 <!---
 

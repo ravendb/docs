@@ -1,0 +1,91 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on RavenDB, we start by obtaining a new Session object from the document store. The Session object will contain everything we need to perform any operation necessary.
+
+<TabItem value="session_usage_1" label="session_usage_1">
+<CodeBlock language="java">
+{`// Obtain a Session from your Document Store
+try (IDocumentSession session = store.openSession()) \{
+
+    // Create a new entity
+    Company entity = new Company();
+    entity.setName("Company");
+    
+    // Store the entity in the Session's internal map
+    session.store(entity);
+    // From now on, any changes that will be made to the entity will be tracked by the Session.
+    // However, the changes will be persisted to the server only when 'SaveChanges()' is called.
+    
+    session.saveChanges();
+    // At this point the entity is persisted to the database as a new document.
+    // Since no database was specified when opening the Session, the Default Database is used.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
+
+<Admonition type="note" title="Storing Entities" id="storing-entities" href="#storing-entities"> 
+You can read more about storing data with the session [here](./storing-entities).
+</Admonition>
+
+
+## Unit of Work
+
+The Client API implements the Unit of Work pattern. That has several implications:
+
+* In the context of a single session, a single document (identified by its ID) always resolves to the same instance.
+
+<TabItem value="session_usage_3" label="session_usage_3">
+<CodeBlock language="java">
+{`// A document is fetched from the server
+Company entity1 = session.load(Company.class, companyId);
+
+// Loading the same document will now retrieve its entity from the Session's map
+Company entity2 = session.load(Company.class, companyId);
+
+// This command will Not throw an exception
+Assert.assertSame(entity1, entity2);
+`}
+</CodeBlock>
+</TabItem>
+
+* The session manages change tracking for all the entities that it has either loaded or stored.
+
+<TabItem value="session_usage_2" label="session_usage_2">
+<CodeBlock language="java">
+{`// Open a session
+try (IDocumentSession session = store.openSession()) \{
+    // Load an existing document to the Session using its ID
+    // The loaded entity will be added to the session's internal map
+    Company entity = session.load(Company.class, companyId);
+    
+    // Edit the entity, the Session will track this change
+    entity.setName("NewCompanyName");
+
+    session.saveChanges();
+    // At this point, the change made is persisted to the existing document in the database
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Batching
+
+One of the most expensive operations in an application is making remote calls. The RavenDB Client API optimizes this for you by batching all write calls to the RavenDB server into a single call. This is the default behavior whenever using the Session object, you don't have to do anything to enable it. This also ensures that writes to the database are always executed in a single transaction, no matter how many operations you are actually executing.
+
+## Remarks
+
+A very common problem with all ORMs and ORM-like APIs is the Select N+1 problem. This is relevant to any database API which is designed to work like an ORM, RavenDB Client API included.
+How RavenDB API attempts to mitigate this is not immediate, and should never be reached if RavenDB is being utilized correctly. Remote calls are expensive and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
+
+<Admonition type="note" title="Configuring the maximum requests in a session" id="configuring-the-maximum-requests-in-a-session" href="#configuring-the-maximum-requests-in-a-session"> 
+By default, the maximum requests count in the session is 30.
+This can be changed by the DocumentConventions::maxNumberOfRequestsPerSession property.
+</Admonition>
+
+

@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Upon document creation, providing a collection name with a pipe symbol (`|`) 
+  will cause the server to generate an ID for the new document called an **identity**.  
+  E.g. `companies|`
+ 
+* The identity document ID is unique across the entire cluster within the database scope.  
+  It is composed of the provided collection name and an integer value that is continuously incremented.
+
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
+
+* Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
+
+<Admonition type="info" title="">
+Learn more about identities in:
+[Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+</Admonition>
+
+* In this page:
+
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
+
+</Admonition>
+## Get identities operation 
+
+<TabItem value="get_identities" label="get_identities">
+<CodeBlock language="js">
+{`// Create a document with an identity ID:
+// ======================================
+
+const session = documentStore.openSession();
+const company = new Company();
+company.name = "RavenDB";
+
+// Request the server to generate an identity ID for the new document. Pass:
+//   * The entity to store
+//   * The collection name with a pipe (|) postfix 
+await session.store(company, "companies|");
+
+// If this is the first identity created for this collection,
+// and if the identity value was not customized
+// then a document with an identity ID "companies/1" will be created
+await session.saveChanges();
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+const getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to maintenance.send
+const identities = await store.maintenance.send(getIdentitiesOp);
+
+// Results
+const latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const getIdentitiesOp = new GetIdentitiesOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

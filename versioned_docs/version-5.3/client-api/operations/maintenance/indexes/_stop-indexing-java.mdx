@@ -1,0 +1,32 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**StopIndexingOperation** is used to pause indexing for the entire database.
+
+Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) to stop single index.
+
+<Admonition type="note" title="">
+Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="java">
+{`public StopIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+

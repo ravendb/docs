@@ -1,0 +1,56 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**UpdateAttachmentMetadata** is used to update an attachment's metadata in a database.
+
+## Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/static/\{key\} \\
+	-X POST
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **key** | Yes |  key under which the attachment is stored |
+
+| Header | Required | Description |
+| --------| ------- | --- |
+| any header | No |  metadata |
+| **If-None-Match** | No | current attachment etag, used for concurrency checks |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| payload | etag |
+
+---
+
+## Example
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/sample/static/sea.jpg" \\
+	--header "Description: Holidays"
+
+< HTTP/1.1 200 OK
+< ETag: "02000000-0000-0002-0000-000000000003"
+"02000000-0000-0002-0000-000000000003"
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To find similar or related documents use the **MoreLikeThis** method from commands.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="java">
+{`public MultiLoadResult moreLikeThis(MoreLikeThisQuery query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed |
+
+| Return Value | |
+| ------------- | ----- |
+| [MultiLoadResult](../../../glossary/multi-load-result.mdx) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="java">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="java">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+moreLikeThisQuery.setDocumentId("articles/1");
+moreLikeThisQuery.setFields(new String[] \{ "Body" \});
+moreLikeThisQuery.setAdditionalQuery("Category:IT");
+MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+`}
+</CodeBlock>
+</TabItem>
+
+

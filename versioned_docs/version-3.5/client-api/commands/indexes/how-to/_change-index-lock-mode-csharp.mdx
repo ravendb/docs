@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetIndexLock** method allows you to change index lock mode for a given index.
+
+## Syntax
+
+<TabItem value="change_index_lock_1" label="change_index_lock_1">
+<CodeBlock language="csharp">
+{`void SetIndexLock(string name, IndexLockMode lockMode);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+
+## Example
+
+<TabItem value="change_index_lock_2" label="change_index_lock_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.SetIndexLock("Orders/Totals", IndexLockMode.LockedIgnore);
+`}
+</CodeBlock>
+</TabItem>
+
+

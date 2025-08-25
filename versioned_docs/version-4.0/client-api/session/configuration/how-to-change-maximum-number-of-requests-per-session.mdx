@@ -5,123 +5,29 @@ sidebar_label: How to Change Maximum Number of Requests per Session
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToChangeMaximumNumberOfRequestsPerSessionCsharp from './_how-to-change-maximum-number-of-requests-per-session-csharp.mdx';
+import HowToChangeMaximumNumberOfRequestsPerSessionJava from './_how-to-change-maximum-number-of-requests-per-session-java.mdx';
+import HowToChangeMaximumNumberOfRequestsPerSessionNodejs from './_how-to-change-maximum-number-of-requests-per-session-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Session: How to Change Maximum Number of Requests per Session
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-By default, maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as close to **1** as possible. If the limit is reached, it is a sure sign of either a `Select N+1` problem or other misuse of the session object.
-
-Nevertheless, if needed, this number can be changed for single session or for all sessions.
-
-## Single session
-
-To change maximum number of requests in a single session just manipulate `MaxNumberOfRequestsPerSession` property value from `Advanced` session operations.
-
-<TabItem value="max_requests_1" label="max_requests_1">
-<CodeBlock language="csharp">
-{`session.Advanced.MaxNumberOfRequestsPerSession = 50;
-`}
-</CodeBlock>
-</TabItem>
-
-## All sessions
-
-To change maximum number of requests for all sessions (on particular store) the `MaxNumberOfRequestsPerSession` property from DocumentStore `Conventions` must be changed.
-
-<TabItem value="max_requests_2" label="max_requests_2">
-<CodeBlock language="csharp">
-{`store.Conventions.MaxNumberOfRequestsPerSession = 100;
-`}
-</CodeBlock>
-</TabItem>
-
-<Admonition type="info" title="Injecting MaxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
-The maximum number of requests for all sessions can also be configured via injected client configuration from the Server. You can read more about this [here](../../../studio/server/client-configuration.mdx). 
-</Admonition>
-
-
+   <HowToChangeMaximumNumberOfRequestsPerSessionCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-By default, maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as close to **1** as possible. If the limit is reached, it is a sure sign of either a `Select N+1` problem or other misuse of the session object.
-
-Nevertheless, if needed, this number can be changed for single session or for all sessions.
-
-## Single session
-
-To change maximum number of requests in a single session just manipulate `maxNumberOfRequestsPerSession` field value from `advanced` session operations.
-
-<TabItem value="max_requests_1" label="max_requests_1">
-<CodeBlock language="java">
-{`session.advanced().setMaxNumberOfRequestsPerSession(50);
-`}
-</CodeBlock>
-</TabItem>
-
-## All sessions
-
-To change maximum number of requests for all sessions (on particular store) the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
-
-<TabItem value="max_requests_2" label="max_requests_2">
-<CodeBlock language="java">
-{`store.getConventions().setMaxNumberOfRequestsPerSession(100);
-`}
-</CodeBlock>
-</TabItem>
-
-<Admonition type="info" title="Injecting maxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
-The maximum number of requests for all sessions can also be configured via injected client configuration from the Server. You can read more about this [here](../../../studio/server/client-configuration.mdx). 
-</Admonition>
-
-
+   <HowToChangeMaximumNumberOfRequestsPerSessionJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-By default, maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as close to **1** as possible. If the limit is reached, it is a sure sign of either a `Select N+1` problem or other misuse of the session object.
-
-Nevertheless, if needed, this number can be changed for single session or for all sessions.
-
-## Single session
-
-To change maximum number of requests in a single session just manipulate `maxNumberOfRequestsPerSession` field value from `advanced` session operations.
-
-<TabItem value="max_requests_1" label="max_requests_1">
-<CodeBlock language="js">
-{`session.advanced.maxNumberOfRequestsPerSession = 50;
-`}
-</CodeBlock>
-</TabItem>
-
-## All sessions
-
-To change maximum number of requests for all sessions (on particular store) the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
-
-<TabItem value="max_requests_2" label="max_requests_2">
-<CodeBlock language="js">
-{`store.conventions.maxNumberOfRequestsPerSession = 100;
-`}
-</CodeBlock>
-</TabItem>
-
-<Admonition type="info" title="Injecting maxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
-The maximum number of requests for all sessions can also be configured via injected client configuration from the Server. You can read more about this [here](../../../studio/server/client-configuration.mdx). 
-</Admonition>
-
-
+   <HowToChangeMaximumNumberOfRequestsPerSessionNodejs />
 </LanguageContent>
+
 
 <!---
 ### Configuration

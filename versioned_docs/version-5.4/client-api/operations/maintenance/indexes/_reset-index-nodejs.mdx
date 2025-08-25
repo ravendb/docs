@@ -1,0 +1,61 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `ResetIndexOperation` to rebuild an index:  
+  * All existing indexed data will be removed.  
+  * All items matched by the index definition will be re-indexed.  
+
+* **Indexes scope**:  
+  * Both static and auto indexes can be reset.
+
+* **Nodes scope**:  
+  * When resetting an index from the **client**:  
+    The index is reset only on the preferred node only, and Not on all the database-group nodes.  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
+    The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index.mdx) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index.mdx), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
+
+* In this page:
+    * [Reset index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
+
+</Admonition>
+## Reset index
+
+<TabItem value="reset" label="reset">
+<CodeBlock language="js">
+{`// Define the reset index operation, pass index name
+const resetIndexOp = new ResetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if index does not exist
+await store.maintenance.send(resetIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const resetIndexOp = new ResetIndexOperation(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to reset |
+
+
+
+

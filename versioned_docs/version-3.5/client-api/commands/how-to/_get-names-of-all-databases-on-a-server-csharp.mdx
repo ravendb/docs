@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To download all available database names from a server, use the `GetDatabaseNames` command from `GlobalAdmin`.
+
+## Syntax
+
+<TabItem value="get_database_names_1" label="get_database_names_1">
+<CodeBlock language="csharp">
+{`string[] GetDatabaseNames(int pageSize, int start = 0);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped. Default: `0` |
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of all databases on a server |
+
+## Example
+
+<TabItem value="get_database_names_2" label="get_database_names_2">
+<CodeBlock language="csharp">
+{`string[] databaseNames = store
+	.DatabaseCommands
+	.GlobalAdmin
+	.GetDatabaseNames(10);
+`}
+</CodeBlock>
+</TabItem>
+
+

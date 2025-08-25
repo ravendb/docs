@@ -5,187 +5,29 @@ sidebar_label: How to work with Suggestion query?
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToWorkWithSuggestionQueryCsharp from './_how-to-work-with-suggestion-query-csharp.mdx';
+import HowToWorkWithSuggestionQueryJava from './_how-to-work-with-suggestion-query-java.mdx';
+import HowToWorkWithSuggestionQueryHttp from './_how-to-work-with-suggestion-query-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: Querying: How to work with Suggestion query?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To take advantage of a suggestion feature use the **Suggest** method from the commands.
-
-## Syntax
-
-<TabItem value="suggest_1" label="suggest_1">
-<CodeBlock language="csharp">
-{`SuggestionQueryResult Suggest(string index, SuggestionQuery suggestionQuery);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | string | A name of an index to query. |
-| **suggestionQuery** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
-
-| Return Value | |
-| ------------- | ----- |
-| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing an array of all suggestions for executed query |
-
-## Example
-
-<TabItem value="suggest_2" label="suggest_2">
-<CodeBlock language="csharp">
-{`// Get suggestions for 'johne' using 'FullName' field in 'Users/ByFullName' index
-SuggestionQueryResult result = store
-	.DatabaseCommands
-	.Suggest(
-		"Users/ByFullName",
-		new SuggestionQuery
-			\{
-				Field = "FullName",
-				Term = "johne",
-				MaxSuggestions = 10
-			\});
-
-Console.WriteLine("Did you mean?");
-
-foreach (string suggestion in result.Suggestions)
-\{
-	Console.WriteLine("\\t\{0\}", suggestion);
-\}
-
-// Did you mean?
-//		john
-//		jones
-//		johnson
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithSuggestionQueryCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To take advantage of a suggestion feature use the **Suggest** method from the commands.
-
-## Syntax
-
-<TabItem value="suggest_1" label="suggest_1">
-<CodeBlock language="java">
-{`public SuggestionQueryResult suggest(String index, SuggestionQuery suggestionQuery);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | String | A name of an index to query. |
-| **suggestionQuery** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
-
-| Return Value | |
-| ------------- | ----- |
-| [SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx) | Result containing an array of all suggestions for executed query |
-
-## Example
-
-<TabItem value="suggest_2" label="suggest_2">
-<CodeBlock language="java">
-{`// Get suggestions for 'johne' using 'FullName' field in 'Users/ByFullName' index
-SuggestionQuery suggestionQuery = new SuggestionQuery();
-suggestionQuery.setField("FullName");
-suggestionQuery.setTerm("johne");
-suggestionQuery.setMaxSuggestions(10);
-SuggestionQueryResult result = store.getDatabaseCommands().suggest("Users/ByFullName", suggestionQuery);
-
-System.out.println("Did you mean?");
-
-for (String suggestion: result.getSuggestions()) \{
-  System.out.println("\\t" + suggestion);
-\}
-// Did you mean?
-//      john
-//      jones
-//      johnson
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithSuggestionQueryJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-To take advantage of a suggestion feature use the **Suggest** endpoint.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/suggest/\{indexName\}? \\
-		&term=\{term\} \\
-		&field=\{field\} \\
-		&max=\{max\} \\
-		&popularity=\{popularity\} \\
-		&distance=\{distance\} \\
-		&accuracy=\{accuracy\} \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **index** | Yes | A name of an index to query. |
-| **term** | Yes | term used to compute suggestions |
-| **field** | Yes | field used for suggestions |
-| **max** | No | maximum number of suggestions |
-| **popularity** | No | sort results by popularity |
-| **distance** | No | method used for computing distance |
-| **accuracy** | No | accuracy level |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **Suggestions** | array of suggestions |
-
-| Header | Description |
-| -------- | - |
-| **ETag** | index etag |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X GET "http://localhost:8080/databases/NorthWind/suggest/Users/ByFullName?term=johne&field=FullName&max=10&popularity=false&distance=Levenshtein" 
-
-< HTTP/1.1 200 OK
-\{ "Suggestions" : [ "john", "jones", "johnson" ] \}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToWorkWithSuggestionQueryHttp />
 </LanguageContent>
+
 
 <!---
 - [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)

@@ -1,0 +1,60 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
+  
+* Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
+
+* In this page:
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
+
+</Admonition>
+## Get client-configuration
+
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="python">
+{`# Define the get client-configuration operation
+get_client_config_op = GetClientConfigurationOperation()
+
+# Execute the operation by passing it to maintenance.send
+result = store.maintenance.send(get_client_config_op)
+
+client_configuration = result.configuration
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`class GetClientConfigurationOperation(MaintenanceOperation): ...
+
+# no __init__ (default)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`# Executing the operation returns the following object:
+class Result:
+    def __init__(self, etag: int, configuration: ClientConfiguration):
+        # The configuration Etag
+        self.etag = etag
+        # The current client-configuration deployed on the server for the database
+        self.configuration = configuration
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

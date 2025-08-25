@@ -5,145 +5,24 @@ sidebar_label: Download
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DownloadCsharp from './_download-csharp.mdx';
+import DownloadHttp from './_download-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: DownloadAsync
-
-The **DownloadAsync** method is used to retrieve the file's content and metadata.
-
-
-
-<TabItem value="download_1" label="download_1">
-<CodeBlock language="csharp">
-{`Task<Stream> DownloadAsync(string filename, Reference<RavenJObject> metadata = null, long? from = null, long? to = null);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **filename** | string | The name of a downloaded file |
-| **metadata** | Reference&lt;RavenJObject&gt; | Reference of metadata object where downloaded file metadata will be placed (if not `null`, default: `null`)  |
-| **from** | long? | The number of the first byte in a range when a partial download is requested |
-| **to** | long? | The number of the last byte in a range when a partial download is requested|
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;Stream&gt;** | A task that represents the asynchronous download operation. The task result is a file's content represented by a readable stream. |
-
-## Example
-
-<TabItem value="download_2" label="download_2">
-<CodeBlock language="csharp">
-{`var metadata = new Reference<RavenJObject>();
-
-var data = await store
-	.AsyncFilesCommands
-	.DownloadAsync(
-		"/movies/intro.avi",
-		metadata,
-		from: 0,
-		to: 200);
-`}
-</CodeBlock>
-</TabItem>
-
+   <DownloadCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: Download
-
-The **GET** method is used to retrieve the file's content and metadata.
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/fs/\{fileSystemName\}/files/\{name\}  \\
-	-X GET \\
-    --header "Range:bytes=\{from\}-\{to\}"
-    > \{localFileName\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **name** | Yes | The name of the file to download |
-
-| Header | Required | Description |
-| --------| ------- | --- |
-| **Range** | No |  Used to retrieve partial content. If not specified, the the entire file is downloaded. |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-| `404` | Not found |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **Binary data** | The requested bytes of the file's content are returned |
-| **Metadata** | The files' metadata is returned in the response headers |
-
----
-
-## Examples
-
-In order to download the `/movies/intro.avi` file and store it locally under `intro.avi` name, use the following command:
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-v -X GET http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi > intro.avi
-HTTP/1.1 200 OK
-< Content-Length: 1338
-< Content-MD5: 3501b7763d91fa9239f2ba64ff850a03
-< Last-Modified: Fri, 10 Apr 2015 09:07:29 GMT
-< ETag: "00000000-0000-0003-0000-000000000006"
-< AllowRead: Everyone
-< RavenFS-Size: 1338
-< Raven-Creation-Date: 2015-04-10T09:07:26.8940842+00:00
-< Raven-Last-Modified: 2015-04-10T09:07:29.6474663+00:00
-< Creation-Date: 2015-04-10T09:07:26.8940842Z
-< Raven-Synchronization-History: [\{"Version":16385,"ServerId":"d7bfdb4c-a463-4f75-93fb-cb60e4d3a08f"\}]
-< Raven-Synchronization-Version: 16385
-< Raven-Synchronization-Source: d7bfdb4c-a463-4f75-93fb-cb60e4d3a08f
-< Raven-Server-Build: 3.0.3660
-`}
-</CodeBlock>
-</TabItem>
-
-If you are interested in retrieving just the range of bytes, you need to provide `Range` header. The below command will return just 40 bytes:
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	-v -X GET http://localhost:8080/fs/NorthwindFS/files/movies/intro.avi \\ 
-    --header "Range:bytes=10-50" > partial_intro.avi
-HTTP/1.1 200 OK
-< Content-Range: bytes 10-49/1338
-`}
-</CodeBlock>
-</TabItem>
-
+   <DownloadHttp />
 </LanguageContent>
+
 
 <!---
 

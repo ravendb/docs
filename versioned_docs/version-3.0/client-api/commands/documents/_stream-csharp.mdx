@@ -1,0 +1,51 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**StreamDocs** is used to stream documents which match chosen criteria from a database.
+
+## Syntax
+
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="csharp">
+{`IEnumerator<RavenJObject> StreamDocs(
+    Etag fromEtag = null,
+    string startsWith = null,
+    string matches = null,
+    int start = 0,
+    int pageSize = int.MaxValue,
+    string exclude = null,
+    RavenPagingInformation pagingInformation = null,
+    string skipAfter = null,
+    string transformer = null,
+    Dictionary<string, RavenJToken> transformerParameters = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fromEtag** | Etag | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
+| **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side |
+| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
+
+## Example
+
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="csharp">
+{`IEnumerator<RavenJObject> enumerator = store.DatabaseCommands.StreamDocs(null, "products/");
+while (enumerator.MoveNext())
+\{
+    RavenJObject document = enumerator.Current;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,192 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to the server.  
+  This reduces the number of remote calls and allows several operations to share the same transaction.
+
+* All the commands sent in the batch are executed as a **single transaction** on the node the client communicated with.
+  If any command fails, the entire batch is rolled back, ensuring data integrity.
+
+* The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
+
+* In this page:
+    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
+    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
+    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="">
+
+#### Send multiple commands - using the Store's request executor:
+<TabItem value="batch_1" label="batch_1">
+<CodeBlock language="js">
+{`// This patch request will be used in the following 'PatchCommandData' command
+let patchRequest = new PatchRequest();
+patchRequest.script = "this.HomePhone = 'New phone number'";
+
+// Define the list of batch commands to execute
+const commands = [
+    new PutCommandDataBase("employees/999", null, null, \{
+        FirstName: "James",
+        "@metadata": \{
+            "@collection": "employees"
+        \}
+    \}),
+
+    new PatchCommandData("employees/2-A", null, patchRequest),
+
+    new DeleteCommandData("employees/3-A", null)
+];
+
+// Define the 'SingleNodeBatchCommand' command
+const batchCommand = new SingleNodeBatchCommand(documentStore.conventions, commands);
+
+// Execute the batch command,
+// all the 3 commands defined in the list will be executed in a single transaction
+await documentStore.getRequestExecutor().execute(batchCommand);
+
+// Can access the batch command results
+const commandResults = batchCommand.result.results;
+assert.equal(commandResults.length, 3);
+assert.equal(commandResults[0].type, "PUT");
+assert.equal(commandResults[0]["@id"], "employees/999");
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Send multiple commands - using the Session's request executor:
+* `SingleNodeBatchCommand` can also be executed using the session's request executor.
+
+* Note that the transaction created for the HTTP request when executing `SingleNodeBatchCommand`
+  is separate from the transaction initiated by the session's [saveChanges](../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
+  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support.mdx).
+
+<TabItem value="batch_2" label="batch_2">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();
+
+// This patch request will be used in the following 'PatchCommandData' command
+let patchRequest = new PatchRequest();
+patchRequest.script = "this.HomePhone = 'New phone number'";
+
+// Define the list of batch commands to execute
+const commands = [
+    new PutCommandDataBase("employees/999", null, null, \{
+        FirstName: "James",
+        "@metadata": \{
+            "@collection": "employees"
+        \}
+    \}),
+
+    new PatchCommandData("employees/2-A", null, patchRequest),
+
+    new DeleteCommandData("employees/3-A", null)
+];
+
+// Define the 'SingleNodeBatchCommand' command
+const batchCommand = new SingleNodeBatchCommand(documentStore.conventions, commands);
+
+// Execute the batch command,
+// all the 3 commands defined in the list will be executed in a single transaction
+await session.advanced.requestExecutor.execute(batchCommand);
+
+// Can access the batch command results
+const commandResults = batchCommand.result.results;
+assert.equal(commandResults.length, 3);
+assert.equal(commandResults[0].type, "PUT");
+assert.equal(commandResults[0]["@id"], "employees/999");
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Available batch commands
+
+* **The following commands can be sent in a batch via `SingleNodeBatchCommand`**:
+
+    * BatchPatchCommandData
+    * CopyAttachmentCommandData
+    * CountersBatchCommandData
+    * DeleteAttachmentCommandData
+    * DeleteCommandData
+    * DeleteCompareExchangeCommandData
+    * DeletePrefixedCommandData
+    * ForceRevisionCommandData
+    * IncrementalTimeSeriesBatchCommandData
+    * JsonPatchCommandData
+    * MoveAttachmentCommandData
+    * PatchCommandData
+    * PutAttachmentCommandData
+    * PutCommandData
+    * PutCompareExchangeCommandData
+    * TimeSeriesBatchCommandData
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`SingleNodeBatchCommand(conventions, commands);
+SingleNodeBatchCommand(conventions, commands, batchOptions);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The batchOptions object:
+\{
+    replicationOptions; // ReplicationBatchOptions
+    indexOptions;       // IndexBatchOptions
+    shardedOptions;     // ShardedBatchOptions
+\}
+
+// The ReplicationBatchOptions object:
+\{
+    timeout?;        // number
+    throwOnTimeout?; // boolean
+    replicas?;       // number
+    majority?;       // boolean
+\}
+
+// The IndexBatchOptions object:
+\{
+    timeout?;        // number
+    throwOnTimeout?; // boolean
+    indexes?;        // string[]
+\}
+
+// The ShardedBatchOptions object:
+\{
+    batchBehavior; // ShardedBatchBehavior
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`// Executing \`SingleNodeBatchCommand\` returns the following object:
+// ================================================================
+
+class BatchCommandResult \{
+    results; // any[]
+    transactionIndex; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

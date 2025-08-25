@@ -1,0 +1,29 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side. In order to determine the collection name that an entity belongs to
+there is special convention which return the collection name based on the type of an entity: [`findCollectionName`](../../configuration/identifier-generation/global.mdx#findcollectionname).
+
+## Example
+
+By default a collection name is pluralized form of a name of an entity type. For example objects of type `Category` will belong to `Categories` collection. However if your intention
+is to classify them as `ProductGroups` use the following code:
+
+<TabItem value="custom_collection_name" label="custom_collection_name">
+<CodeBlock language="java">
+{`store.getConventions().setFindCollectionName(clazz -> \{
+    if (Category.class.isAssignableFrom(clazz)) \{
+        return "ProductGroups";
+    \}
+
+    return DocumentConventions.defaultGetCollectionName(clazz);
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
+
+

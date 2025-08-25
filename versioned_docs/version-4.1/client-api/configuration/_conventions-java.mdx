@@ -1,0 +1,144 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Conventions give you the ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
+
+<TabItem value="conventions_1" label="conventions_1">
+<CodeBlock language="java">
+{`try (IDocumentStore store = new DocumentStore()) \{
+    DocumentConventions conventions = store.getConventions();
+    // customizations go here
+
+    store.initialize();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+You will find many settings to overwrite, allowing you to adjust the client according to your needs. The conventions apply to many different client behaviors. Some of them are grouped and described in the separate articles of this section.
+
+<Admonition type="info" title="">
+All customizations need to be set before `DocumentStore.initialize()` is called.
+</Admonition>
+
+## MaxHttpCacheSize
+
+If you need to modify the maximum http cache size, you can use the following setting:
+
+<TabItem value="MaxHttpCacheSize" label="MaxHttpCacheSize">
+<CodeBlock language="java">
+{`conventions.setMaxHttpCacheSize(256 * 1024 * 1024);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Default size" id="default-size" href="#default-size">
+
+The default value of this setting is configured to 128 MB.
+
+The cache is created per database you use.
+
+</Admonition>
+
+<Admonition type="note" title="Disable caching" id="disable-caching" href="#disable-caching"> 
+
+To disable the caching globally you can set the `maxHttpCacheSize` value to zero:
+
+<TabItem value="disable_cache" label="disable_cache">
+<CodeBlock language="java">
+{`conventions.setMaxHttpCacheSize(0);
+`}
+</CodeBlock>
+</TabItem>
+
+**In this scenario, all the requests will be sent to the server to fetch the data.**
+
+</Admonition>
+
+## MaxNumberOfRequestsPerSession
+
+Gets or sets maximum number of GET requests per session. Default: `30`.
+
+<TabItem value="MaxNumberOfRequestsPerSession" label="MaxNumberOfRequestsPerSession">
+<CodeBlock language="java">
+{`conventions.setMaxNumberOfRequestsPerSession(10);
+`}
+</CodeBlock>
+</TabItem>
+
+## UseOptimisticConcurrency
+
+Controls whether optimistic concurrency is set to true by default for all future sessions. Default: `false`.
+
+<TabItem value="UseOptimisticConcurrency" label="UseOptimisticConcurrency">
+<CodeBlock language="java">
+{`conventions.setUseOptimisticConcurrency(true);
+`}
+</CodeBlock>
+</TabItem>
+
+## DisableTopologyUpdates
+
+Forces you to disable updates of database topology. Default: `false`.
+
+<TabItem value="DisableTopologyUpdates" label="DisableTopologyUpdates">
+<CodeBlock language="java">
+{`conventions.setDisableTopologyUpdates(false);
+`}
+</CodeBlock>
+</TabItem>
+
+## SaveEnumsAsIntegers
+
+It determines if Java `Enum` types should be saved as integers or strings. Default: `false`.
+
+<TabItem value="SaveEnumsAsIntegers" label="SaveEnumsAsIntegers">
+<CodeBlock language="java">
+{`conventions.setSaveEnumsAsIntegers(true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## UseCompression
+
+It determines if the client will send headers to the server indicating that it allows compression to be used. Default: `true`.
+
+<TabItem value="UseCompression" label="UseCompression">
+<CodeBlock language="java">
+{`conventions.setUseCompression(true);
+`}
+</CodeBlock>
+</TabItem>
+
+## Changing fields/properties naming convention 
+
+By default whatever casing convention you use in your entities' fields will be reflected server-side.
+
+If following language-specific field casing conventions RavenDB clients use different field/properties naming conventions:
+
+| Language | Default convention | Example |
+| ------------- | ----- | --- |
+| C# | PascalCase | OrderLines |
+| Java | camelCase | orderLines |
+| JavaScript | camelCase | orderLines |
+
+This can be configured to allow inter-language operability e.g. store data PascalCase, but keep fields in the application code camelCase.
+
+### Using PascalCase in Java client
+
+You have to set *property naming strategy*:
+
+<TabItem value="PropertyCasing" label="PropertyCasing">
+<CodeBlock language="java">
+{`conventions.getEntityMapper()
+    .setPropertyNamingStrategy(
+        new JsonExtensions.DotNetNamingStrategy());
+`}
+</CodeBlock>
+</TabItem>
+
+
+

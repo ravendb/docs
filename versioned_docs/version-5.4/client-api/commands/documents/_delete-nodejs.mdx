@@ -1,0 +1,49 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `DeleteDocumentCommand` to remove a document from the database.
+
+* In this page:
+
+    * [Example](../../../client-api/commands/documents/delete.mdx#example)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="delete" label="delete">
+<CodeBlock language="js">
+{`_document_1
+        // Define the Delete Command
+        // Pass the document ID & whether to make a concurrency check
+        const command = new DeleteDocumentCommand("employees/1-A", null);
+
+        // Send the command to the server using the Store's Request Executor
+        await documentStore.getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`DeleteDocumentCommand(id, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                             |
+|------------------|----------|-------------------------------------------------------------------------|
+| **id**           | `string` | ID of a document to be deleted                                          |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+
+
+

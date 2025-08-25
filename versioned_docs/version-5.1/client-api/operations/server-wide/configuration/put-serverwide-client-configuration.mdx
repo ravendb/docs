@@ -5,53 +5,19 @@ sidebar_label: Put Server Wide Client Configuration
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PutServerwideClientConfigurationCsharp from './_put-serverwide-client-configuration-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Operations: Server: How to Put Server-Wide Client Configuration
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**PutServerWideClientConfigurationOperation** is used to save a server-wide client configuration on the server. It allows you to override the client's settings remotely.  
-
-<Admonition type="note" title="">
-`ClientConfiguration` defined at the database level overrides the server-wide client configuration.
-</Admonition>
-
-## Syntax
-
-<TabItem value="config_2_0" label="config_2_0">
-<CodeBlock language="csharp">
-{`public PutServerWideClientConfigurationOperation(ClientConfiguration configuration)
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-<TabItem value="config_2_2" label="config_2_2">
-<CodeBlock language="csharp">
-{`ClientConfiguration clientConfiguration = new ClientConfiguration
-\{
-    MaxNumberOfRequestsPerSession = 100,
-    ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
-\};
-
-store.Maintenance.Server.Send(new PutServerWideClientConfigurationOperation(clientConfiguration));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutServerwideClientConfigurationCsharp />
 </LanguageContent>
+
 
 <!---
 - [How to get Server-Wide client configuration?](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)

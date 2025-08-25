@@ -5,94 +5,29 @@ sidebar_label: Querying
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import QueryingCsharp from './_querying-csharp.mdx';
+import QueryingJava from './_querying-java.mdx';
+import QueryingNodejs from './_querying-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Conventions: Querying
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-## FindPropertyNameForIndex and FindPropertyNameForDynamicIndex
-
-These two conventions specify functions that are used to find the indexed property name for a static index or a dynamic one. This can be useful when you are indexing nested properties 
-of complex types. Their default implementations are:
-
-<TabItem value="find_prop_name" label="find_prop_name">
-<CodeBlock language="csharp">
-{`FindPropertyNameForIndex = (indexedType, indexName, path, prop) =>
-    (path + prop).Replace(",", "_").Replace(".", "_"),
-
-FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path + prop,
-`}
-</CodeBlock>
-</TabItem>
-
-The arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
-
-## ThrowIfQueryPageSizeIsNotSet
-
-Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `ThrowIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
-should prevent from executing queries if their page size is not explicitly set. 
-
-Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
-
-<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
-<CodeBlock language="csharp">
-{`ThrowIfQueryPageSizeIsNotSet = true
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <QueryingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-## ThrowIfQueryPageSizeIsNotSet
-
-Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `ThrowIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
-should prevent from executing queries if their page size is not explicitly set. 
-
-Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
-
-<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
-<CodeBlock language="java">
-{`store.getConventions().setThrowIfQueryPageSizeIsNotSet(true);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <QueryingJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-
-## ThrowIfQueryPageSizeIsNotSet
-
-Since RavenDB 4.0 there is no limitation for the number of results returned for a single query by the server. The `throwIfQueryPageSizeIsNotSet` convention decides whether RavenDB Client
-should prevent from executing queries if their page size is not explicitly set. 
-
-Enabling this configuration at development stage can be useful to pinpoint all the possible performance bottlenecks.
-
-<TabItem value="throw_if_query_page_is_not_set" label="throw_if_query_page_is_not_set">
-<CodeBlock language="js">
-{`store.conventions.throwIfQueryPageSizeIsNotSet = true;
-`}
-</CodeBlock>
-</TabItem>
-
-
-
+   <QueryingNodejs />
 </LanguageContent>
+
 
 <!---
 ### Conventions

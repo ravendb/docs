@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**DeleteAttachment** is used to remove an attachment from a database.
+
+## Syntax
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="csharp">
+{`void DeleteAttachment(string key, Etag etag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of an attachment to delete |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.DeleteAttachment("albums/holidays/sea.jpg", null);
+`}
+</CodeBlock>
+</TabItem>
+
+

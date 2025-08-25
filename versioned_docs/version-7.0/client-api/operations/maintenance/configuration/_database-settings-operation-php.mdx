@@ -1,0 +1,134 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+  
+* The default database configuration settings can be customized:
+
+  * From the Client API - as described in this article.
+
+  * From Studio - via the [Database Settings](../../../../studio/database/settings/database-settings.mdx#database-settings) view.
+
+* In this page:  
+
+  * [Put database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation)
+
+  * [Get database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#get-database-settings-operation)
+
+<Admonition type="warning" title="">
+Do not modify the database settings unless you are an expert and know what you're doing.  
+</Admonition>
+
+</Admonition>
+
+## Put database settings operation
+
+* Use `PutDatabaseSettingsOperation` to modify the default database configuration.
+
+* Only **database-level** settings can be customized using this operation.  
+  See the [Configuration overview](../../../../server/configuration/configuration-options.mdx) article to learn how to customize the **server-level** settings.  
+
+* Note: for the changes to take effect, the database must be **reloaded**.  
+  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx).  
+  See the following example:
+
+<TabItem value="put_database_settings" label="put_database_settings">
+<CodeBlock language="php">
+{`// 1. Modify the database settings:
+// ================================
+
+// Define the settings dictionary with the key-value pairs to set, for example:
+$settings = [
+    "Databases.QueryTimeoutInSec" => "350",
+    "Indexing.Static.DeploymentMode" => "Rolling"
+];
+
+// Define the put database settings operation,
+// specify the database name & pass the settings dictionary
+$putDatabaseSettingsOp = new PutDatabaseSettingsOperation($documentStore->getDatabase(), $settings);
+
+// Execute the operation by passing it to Maintenance.Send
+$documentStore->maintenance()->send($putDatabaseSettingsOp);
+
+// 2. RELOAD the database for the change to take effect:
+// =====================================================
+
+// Disable database
+$disableDatabaseOp = new ToggleDatabasesStateOperation($documentStore->getDatabase(), true);
+$documentStore->maintenance()->server()->send($disableDatabaseOp);
+
+// Enable database
+$enableDatabaseOp = new ToggleDatabasesStateOperation($documentStore->getDatabase(), false);
+$documentStore->maintenance()->server()->send($enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`PutDatabaseSettingsOperation(?string $databaseName, StringMap|array|null $configurationSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type       | Description                                      |
+|-----------------------|------------|--------------------------------------------------|
+| $databaseName          | `?string` | Name of the database to change the settings for. |
+| $configurationSettings | `StringMap`<br/>`array`<br/>`null` | The configuration settings to set.               |
+
+
+
+
+## Get database settings operation
+
+* Use `GetDatabaseSettingsOperation` to get the configuration settings that were customized for the database.  
+
+* Only settings that have been changed will be retrieved.
+
+<TabItem value="get_database_settings" label="get_database_settings">
+<CodeBlock language="php">
+{`// Define the get database settings operation, specify the database name
+$getDatabaseSettingsOp = new GetDatabaseSettingsOperation($documentStore->getDatabase());
+
+// Execute the operation by passing it to Maintenance.Send
+/** @var DatabaseSettings $customizedSettings */
+$customizedSettings = $documentStore->maintenance()->send($getDatabaseSettingsOp);
+
+// Get the customized value
+$customizedValue = $customizedSettings->getSettings()["Databases.QueryTimeoutInSec"];
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`GetDatabaseSettingsOperation(?string $databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type      | Description                                            |
+|--------------|-----------|--------------------------------------------------------|
+| $databaseName | `?string` | The database name to get the customized settings for. |
+
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="php">
+{`// Executing the operation returns the following object:
+class DatabaseSettings
+\{
+// Configuration settings that have been customized
+    private ?StringMap $settings = null;
+    // ...getter and setter
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

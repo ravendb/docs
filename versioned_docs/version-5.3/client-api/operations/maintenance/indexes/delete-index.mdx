@@ -5,149 +5,29 @@ sidebar_label: Delete Index
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DeleteIndexCsharp from './_delete-index-csharp.mdx';
+import DeleteIndexJava from './_delete-index-java.mdx';
+import DeleteIndexNodejs from './_delete-index-nodejs.mdx';
+
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-
-# Delete Index Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `DeleteIndexOperation` to remove an index from the database.
-
-* The index will be deleted from all the database-group nodes.
-
-* In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
-
-</Admonition>
-## Delete index example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define the delete index operation, specify the index name
-var deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
-
-// Execute the operation by passing it to Maintenance.Send
-store.Maintenance.Send(deleteIndexOp);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define the delete index errors operation, specify the index name
-var deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
-                
-// Execute the operation by passing it to Maintenance.SendAsync
-await store.Maintenance.SendAsync(deleteIndexOp);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`public DeleteIndexOperation(string indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters    | Type | Description |
-|- | - | - |
-| __indexName__ | string | Name of index to delete |
-
-
-
-
+   <DeleteIndexCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**DeleteIndexOperation** is used to remove an index from a database.
-
-## Syntax
-
-<TabItem value="delete_1" label="delete_1">
-<CodeBlock language="java">
-{`public DeleteIndexOperation(String indexName)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | name of an index to delete |
-
-## Example
-
-<TabItem value="delete_2" label="delete_2">
-<CodeBlock language="java">
-{`store.maintenance().send(new DeleteIndexOperation("Orders/Totals"));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DeleteIndexJava />
 </LanguageContent>
+
 <LanguageContent language="nodejs">
-
-<Admonition type="note" title="">
-
-* Use `DeleteIndexOperation` to remove an index from the database.
-
-* The index will be deleted from all the database-group nodes.
-
-* In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
-
-</Admonition>
-## Delete index example
-
-<TabItem value="delete_index" label="delete_index">
-<CodeBlock language="js">
-{`// Define the delete index operation, specify the index name
-const deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
-
-// Execute the operation by passing it to maintenance.send
-await store.maintenance.send(deleteIndexOp);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`const deleteIndexOp = new DeleteIndexOperation(indexName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters    | Type | Description |
-|- | - | - |
-| __indexName__ | string | Name of index to delete |
-
-
-
-
+   <DeleteIndexNodejs />
 </LanguageContent>
+
 
 <!---
 ### Indexes

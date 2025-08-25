@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities are grouped on the server side into [collections](../../faq/what-is-a-collection.mdx).  
+A collection's name is determined by the type of the entities in it.  
+To find the name of an entity's collection, use [`findCollectionName`](../../configuration/identifier-generation/global.mdx#findcollectionname).  
+
+## Example
+
+By default, a collection name is the pluralized form of an entity's type.  
+Entities of type `Category`, for example, will belong to the `Categories` collection.  
+To modify this behavior, use `setFindCollectionName`.  
+
+<TabItem value="custom_collection_name" label="custom_collection_name">
+<CodeBlock language="php">
+{`$store->getConventions()->setFindCollectionName(function($className) \{
+    if (is_subclass_of($className, Category::class)) \{
+        return "ProductGroups";
+    \}
+
+    return DocumentConventions::defaultGetCollectionName($className);
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
+
+

@@ -1,0 +1,100 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Transformers can be used with session queries using `TransformWith` method.
+
+## Syntax
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<TResult> TransformWith<TTransformer, TResult>()
+	where TTransformer : AbstractTransformerCreationTask, new();
+
+IRavenQueryable<TResult> TransformWith<TResult>(string transformerName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **transformerName** | string | Name of a transformer to use. |
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example I
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`// return up to 128 entities from 'Products' collection
+// transform results using 'Products_Name' transformer
+// which returns only 'Name' property, rest will be 'null'
+List<Product> results = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Products_Name, Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+Loading document inside transformer and projecting results to different type.
+
+<TabItem value="transformers_5" label="transformers_5">
+<CodeBlock language="csharp">
+{`public class ProductWithCategoryAndSupplier
+\{
+	public string Name \{ get; set; \}
+
+	public Supplier Supplier \{ get; set; \}
+
+	public Category Category \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_4" label="transformers_4">
+<CodeBlock language="csharp">
+{`public class Products_WithCategoryAndSupplier : AbstractTransformerCreationTask<Product>
+\{
+	public Products_WithCategoryAndSupplier()
+	\{
+		TransformResults =
+			products => from product in products 
+						select new
+						\{
+							Name = product.Name,
+							Category = LoadDocument<Category>(product.Category),
+							Supplier = LoadDocument<Supplier>(product.Supplier)
+						\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_3" label="transformers_3">
+<CodeBlock language="csharp">
+{`// return 1 entity from 'Products' collection
+// transform results using 'Products_WithCategoryAndSupplier' transformer
+// project results to 'ProductWithCategoryAndSupplier' class
+ProductWithCategoryAndSupplier product = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Products_WithCategoryAndSupplier, ProductWithCategoryAndSupplier>()
+	.First();
+
+Assert.Equal("Chocolade", product.Name);
+Assert.Equal("Confections", product.Category.Name);
+Assert.Equal("Zaanse Snoepfabriek", product.Supplier.Name);
+`}
+</CodeBlock>
+</TabItem>
+
+

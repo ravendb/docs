@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Global Identifier Generation Conventions
+
+
+
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection.mdx) on the server side. Collection names are also used to build document identifiers. 
+
+<TabItem value="find_type_collection_name" label="find_type_collection_name">
+<CodeBlock language="js">
+{`conventions.findCollectionName =
+    type => // function that provides the collection name based on the entity type 
+`}
+</CodeBlock>
+</TabItem>
+
+## TransformClassCollectionNameToDocumentIdPrefix
+
+Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `transformClassCollectionNameToDocumentIdPrefix()` which takes the collection name and produces the prefix:
+
+<TabItem value="transform_collection_name_to_prefix" label="transform_collection_name_to_prefix">
+<CodeBlock language="js">
+{`conventions.transformClassCollectionNameToDocumentIdPrefix =
+    collectionName => // transform the collection name to the prefix of an identifier, e.g. [prefix]/12
+`}
+</CodeBlock>
+</TabItem>
+
+Its default behavior is that for a collection which contains one upper character it simply converts it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
+
+## FindJsTypeName and FindJsType
+
+In the metadata of all documents stored by RavenDB Node.js Client, you can find the following property which specifies the client-side type. For instance:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Raven-Node-Type": "Customer"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This property is used by RavenDB client to perform a conversion between a JS object and a JSON document stored in a database. A function responsible for retrieving the JS type of an entity is defined by `findJsTypeName()` convention:
+
+<TabItem value="find_type_name" label="find_type_name">
+<CodeBlock language="js">
+{`conventions.findJsTypeName = 
+    type => // determine the type name based on type
+`}
+</CodeBlock>
+</TabItem>
+
+To properly perform the reverse conversion that is from a JSON result into a JS object, we need to retrieve the JS type from the `Raven-Node-Type` metadata:
+
+<TabItem value="find_clr_type" label="find_clr_type">
+<CodeBlock language="js">
+{`conventions.findJsType((id, doc) => \{
+        const metadata = doc["@metadata"];
+        if (metadata) \{
+            const jsType = metadata["Raven-Node-Type"];
+            return this.getJsTypeByDocumentType(jsType);
+        \}
+
+        return null;
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+## FindIdentityPropertyNameFromCollectionName
+
+It can happen that sometimes the results returned by the server don't have identifiers defined (for example if you run a projection query) however they have `@collection` in metadata.
+
+To perform the conversion into a JS object, a function that finds the identity property name for a given collection name is applied:
+
+<TabItem value="find_identity_property_name_from_collection_name" label="find_identity_property_name_from_collection_name">
+<CodeBlock language="js">
+{`conventions.findIdentityPropertyNameFromCollectionName =
+    collectionName => "id";
+`}
+</CodeBlock>
+</TabItem>
+
+## IdentityPartsSeparator
+
+By default, convention document identifiers have the following format: `[collectionName]/[identityValue]-[nodeTag]`. The slash character (`/`) separates the two parts of an identifier.
+You can overwrite it by using `IdentityPartsSeparator` convention. Its default definition is:
+
+<TabItem value="identity_part_separator" label="identity_part_separator">
+<CodeBlock language="js">
+{`conventions.identityPartsSeparator = "/";
+`}
+</CodeBlock>
+</TabItem>
+
+## FindCollectionNameForObjectLiteral
+
+This convention is *not defined by default*. It's only useful when using object literals as entities. It defines how the client obtains a collection name for an object literal. If it's undefined object literals stored with `session.store()` are going to land up in `@empty` collection having a UUID for an ID. 
+
+For instance here's mapping of the *category* field to collection name:
+<TabItem value="find_collection_name_for_object_literal" label="find_collection_name_for_object_literal">
+<CodeBlock language="js">
+{`conventions.findCollectionNameForObjectLiteral = 
+    entity => entity["category"]; 
+    // function that provides the collection name based on the entity object
+`}
+</CodeBlock>
+</TabItem>
+
+

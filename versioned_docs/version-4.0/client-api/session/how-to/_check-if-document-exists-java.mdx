@@ -1,0 +1,38 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+In order to check if a document with specific ID exists in the database, use the `exists` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="java">
+{`boolean exists(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ---------- | ---------- | ----- |
+| **id** | String | ID of the document to check the existence of. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if a document with the given ID exists. |
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="java">
+{`boolean exists = session.advanced().exists("employees/1-A");
+
+if (exists) \{
+    // do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

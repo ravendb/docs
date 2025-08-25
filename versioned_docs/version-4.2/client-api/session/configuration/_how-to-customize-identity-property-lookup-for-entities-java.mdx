@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The client must know which property of your entity is considered as an identity. By default, it always looks for the `id` field (case-sensitive). This behavior can be changed by overwriting one of our conventions called `findIdentityProperty`.
+
+## Syntax
+
+<TabItem value="identity_1" label="identity_1">
+<CodeBlock language="java">
+{`public void setFindIdentityProperty(Function<PropertyDescriptor, Boolean> findIdentityProperty);
+`}
+</CodeBlock>
+</TabItem>
+
+`PropertyDescriptor` will represent the property of a stored entity, and return value (bool) will indicate if given member is an identity property.
+
+## Example
+
+The simplest example would be to check if the property name is equal to 'Identifier'.
+
+<TabItem value="identity_2" label="identity_2">
+<CodeBlock language="java">
+{`store.getConventions().setFindIdentityProperty(property -> "Identifier".equals(property.getName()));
+`}
+</CodeBlock>
+</TabItem>
+
+

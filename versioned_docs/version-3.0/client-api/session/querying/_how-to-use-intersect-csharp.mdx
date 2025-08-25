@@ -1,0 +1,39 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To return only documents that match **all** provided sub-queries we have introduced `Intersect` extension that enables us to do server-side intersection queries.
+
+## Syntax
+
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Intersect<T>();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+
+## Example
+
+<TabItem value="intersect_2" label="intersect_2">
+<CodeBlock language="csharp">
+{`// return all T-shirts that are manufactured by 'Raven'
+// and contain both 'Small Blue' and 'Large Gray' types
+IList<TShirt> tshirts = session.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+    .Where(x => x.Manufacturer == "Raven")
+    .Intersect()
+    .Where(x => x.Color == "Blue" && x.Size == "Small")
+    .Intersect()
+    .Where(x => x.Color == "Gray" && x.Size == "Large")
+    .OfType<TShirt>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+

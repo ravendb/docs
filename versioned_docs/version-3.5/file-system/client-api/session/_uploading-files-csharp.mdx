@@ -1,0 +1,108 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Registering an upload
+
+In order to register a file upload within the session, you can use one of four overloads of the `RegisterUpload` method.
+
+
+
+First two overloads allow you to register an upload by specifying the file's full path and content. The content can be represented either by the stream object or the write action that is allowed to the directly write to the HTTP request stream:
+
+<TabItem value="register_upload_1" label="register_upload_1">
+<CodeBlock language="csharp">
+{`void RegisterUpload(string path, Stream stream, RavenJObject metadata = null, Etag etag = null);
+void RegisterUpload(string path, long fileSize, Action<Stream> write, RavenJObject metadata = null, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+Next two overloads accept the `FileHeader` object, which represents the file in the session, instead of the file's full path.
+
+<TabItem value="register_upload_2" label="register_upload_2">
+<CodeBlock language="csharp">
+{`void RegisterUpload(FileHeader file, Stream stream, Etag etag = null);
+void RegisterUpload(FileHeader file, long fileSize, Action<Stream> write, Etag etag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string | The full path of the file |
+| **file** | [FileHeader](../../../glossary/file-header.mdx) | The file represented by the `FileHeader` |
+| **stream** | Stream | The file content that will be copied to the HTTP request |
+| **fileSize** | long | The declared number of bytes to write in **write** action |
+| **write** | Action&lt;Stream&gt; | The action which writes file content bytes directly to the HTTP request stream |
+| **metadata** | RavenJObject | The file's metadata |
+| **etag** | Etag | Current file Etag, used for concurrency checks (`null` will skip the check) |
+
+## Example I
+
+The below code will upload an entire file stored on a local disk to RavenFS:
+
+<TabItem value="register_upload_3" label="register_upload_3">
+<CodeBlock language="csharp">
+{`using (Stream content = File.OpenRead(@"C:\\intro.avi"))
+\{
+	session.RegisterUpload("/movies/intro.avi", content);
+
+	await session.SaveChangesAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="File content" id="file-content" href="#file-content">
+The actual upload is made when the `SaveChangesAsync` is run. The stream, which is file content, needs to be available to read at that moment.
+The stream value must not be disposed _before_ the save changes call.
+</Admonition>
+
+## Example II
+
+You can also generate the file content dynamically:
+
+<TabItem value="register_upload_4" label="register_upload_4">
+<CodeBlock language="csharp">
+{`session.RegisterUpload("random.bin", 128, stream =>
+\{
+	var bytes = new byte[128];
+	new Random().NextBytes(bytes);
+
+	stream.Write(bytes, 0, 128);
+\});
+
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Possible `BadRequestException`" id="possible-badrequestexception" href="#possible-badrequestexception">
+If the write action puts fewer bytes than declared, RavenFS will detect this and cancel the upload by throwing the `BadRequestException` when the `SaveChangesAsync` is called.
+</Admonition>
+
+## Example III
+
+This example uploads a file only if it doesn't exits in RavenFS or if a local file was modified at least one hour later than the remote one:
+
+<TabItem value="register_upload_5" label="register_upload_5">
+<CodeBlock language="csharp">
+{`FileHeader ravenFile = await session.LoadFileAsync("/movies/intro.avi");
+
+string localFile = @"C:\\intro.avi";
+
+if (ravenFile == null || new FileInfo(localFile).LastWriteTime - ravenFile.LastModified > TimeSpan.FromHours(1))
+\{
+	using (Stream content = File.OpenRead(localFile))
+	\{
+		session.RegisterUpload(ravenFile, content);
+
+		await session.SaveChangesAsync();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+

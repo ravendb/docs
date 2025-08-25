@@ -1,0 +1,212 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Following methods allow you to subscribe to document changes:
+
+- [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+
+## forDocument
+
+Single document changes can be observed using `forDocument` method.
+
+### Syntax
+
+<TabItem value="document_changes_1" label="document_changes_1">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocument(String docId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | String | ID of a document for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+
+### Example
+
+<TabItem value="document_changes_2" label="document_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store.changes()
+    .forDocument("employees/1")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case PUT:
+                // do something
+                break;
+            case DELETE:
+                // do something
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forDocumentsInCollection
+
+To observe all document changes in particular collection use `forDocumentInCollection` method. This method filters documents by `@collection` metadata property value.
+
+### Syntax
+
+<TabItem value="document_changes_3" label="document_changes_3">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocumentsInCollection(String collectionName);
+
+IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **collectionName** | String | Name of document collection for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+
+<Admonition type="info" title="">
+Overload with `TEntity` type uses `conventions.GetCollectionName` to get collection name.
+</Admonition>
+
+### Example
+
+<TabItem value="document_changes_4" label="document_changes_4">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forDocumentsInCollection(Employee.class)
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+or
+
+<TabItem value="document_changes_5" label="document_changes_5">
+<CodeBlock language="java">
+{`String collectionName = store.getConventions().getFindCollectionName().apply(Employee.class);
+CleanCloseable subscription = store
+    .changes()
+    .forDocumentsInCollection(collectionName)
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forDocumentsStartingWith
+
+To observe all document changes for documents with ID that contains given prefix use `forDocumentsStartingWith` method.
+
+### Syntax
+
+<TabItem value="document_changes_9" label="document_changes_9">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forDocumentsStartingWith(String docIdPrefix);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docIdPrefix** | String | Document ID prefix for which notifications will be processed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+
+### Example
+
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forAllDocuments
+
+To observe all document changes use `forAllDocuments` method.
+
+### Syntax
+
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
+<CodeBlock language="java">
+{`IChangesObservable<DocumentChange> forAllDocuments();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+
+### Example
+
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forAllDocuments()
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on document " + change.getId());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## DocumentChange
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
+| **Id** | String | Document identifier |
+| **CollectionName** | String | Document's collection name |
+| **TypeName** | String | Type name |
+| **ChangeVector** | String | Document's ChangeVector|
+
+
+
+## DocumentChangeTypes
+
+| Name |
+| ---- |
+| **NONE** |
+| **PUT** |
+| **DELETE** |
+| **BULK_INSERT_STARTED** |
+| **BULK_INSERT_ENDED** |
+| **BULK_INSERT_ERROR** |
+| **DELETE_ON_TOMBSTONE_REPLICATION** |
+| **CONFLICT** |
+| **COMMON** |
+
+
+
+

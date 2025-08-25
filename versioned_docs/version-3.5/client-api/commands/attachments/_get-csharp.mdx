@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to download attachments from a database:   
+- [GetAttachment](../../../client-api/commands/attachments/get.mdx#getattachment)   
+- [GetAttachments](../../../client-api/commands/attachments/get.mdx#getattachments)   
+
+## **GetAttachment**
+
+**GetAttachment** can be used to download a single attachment.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`Attachment GetAttachment(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the attachment you want to download |
+
+| Return Value | |
+| ------------- | ----- |
+| [Attachment](../../../glossary/attachment.mdx) | Object that represents attachment. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="csharp">
+{`Attachment attachment = store
+	.DatabaseCommands
+	.GetAttachment("albums/holidays/sea.jpg"); // null if does not exist
+
+Stream data = attachment.Data();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## GetAttachments
+
+**GetAttachments** can be used to download attachment information for multiple attachments.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`AttachmentInformation[] GetAttachments(int start, Etag startEtag, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Indicates how many attachments should be skipped |
+| **startEtag** | Etag | ETag from which to start |
+| **batchSize** | int | maximum number of attachments that will be downloaded |
+
+| Return Value | |
+| ------------- | ----- |
+| [AttachmentInformation](../../../glossary/attachment-information.mdx) | Object that represents attachment metadata information. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="csharp">
+{`AttachmentInformation[] attachments = store
+	.DatabaseCommands
+	.GetAttachments(start: 0, startEtag: Etag.Empty, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

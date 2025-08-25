@@ -1,0 +1,273 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The following query customization options are available in the `IDocumentQueryCustomization` interface:
+
+- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+
+## BeforeQueryExecuted
+
+Allows you to modify the index query just before it's executed.
+
+<TabItem value="customize_1_0" label="customize_1_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+IDocumentQueryCustomization removeBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;IndexQuery&gt; | Action that will modify IndexQuery. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1" label="customize_1_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().addBeforeQueryExecutedListener(
+        // set 'pageSize' to 10
+        q -> q.setPageSize(10)));
+
+session.query(Employee.class).toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterQueryExecuted
+
+Allows you to retrieve a raw query result after it's executed.
+
+<TabItem value="customize_1_0_0" label="customize_1_0_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addAfterQueryExecutedListener(Consumer<QueryResult> action);
+IDocumentQueryCustomization removeAfterQueryExecutedListener(Consumer<QueryResult> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;QueryResult&gt; | Action that has the query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1_0" label="customize_1_1_0">
+<CodeBlock language="java">
+{`AtomicReference<Duration> queryDuration = new AtomicReference<>();
+
+session.query(Employee.class)
+    .addAfterQueryExecutedListener(result -> \{
+        queryDuration.set(Duration.ofMillis(result.getDurationInMs()));
+    \})
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterStreamExecuted
+
+Allows you to retrieve a raw result of the streaming query.
+
+<TabItem value="customize_1_0_1" label="customize_1_0_1">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addAfterStreamExecutedListener(Consumer<ObjectNode> action);
+IDocumentQueryCustomization removeAfterStreamExecutedListener(Consumer<ObjectNode> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;ObjectNode&gt; | Action that has the single query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_1_1_1" label="customize_1_1_1">
+<CodeBlock language="java">
+{`Reference<Long> totalStreamedResultsSize = new Reference<Long>(0L);
+
+session.query(Employee.class)
+    .addAfterStreamExecutedListener(result -> \{
+        totalStreamedResultsSize.value += result.size();
+    \})
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoCaching
+
+By default, queries are cached. To disable query caching use the `noCaching` customization.
+
+<TabItem value="customize_2_0" label="customize_2_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_2_1" label="customize_2_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noCaching()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoTracking
+
+To disable entity tracking by `session` use `noTracking`. Usage of this option will prevent holding the query results in memory.
+
+<TabItem value="customize_3_0" label="customize_3_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_3_1" label="customize_3_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noTracking()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RandomOrdering
+
+To order results randomly, use the `randomOrdering` method.
+
+<TabItem value="customize_4_0" label="customize_4_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization randomOrdering();
+
+IDocumentQueryCustomization randomOrdering(String seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **seed** | String | Seed used for ordering. Useful when repeatable random queries are needed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_4_1" label="customize_4_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().randomOrdering());
+
+//result will be ordered randomly each time
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WaitForNonStaleResults
+
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. If the query won't be able to return 
+non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
+
+<Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">
+If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
+It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
+
+If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
+</Admonition>
+
+
+<TabItem value="customize_8_0" label="customize_8_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization waitForNonStaleResults();
+
+IDocumentQueryCustomization waitForNonStaleResults(Duration waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | Duration | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="customize_8_1" label="customize_8_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().waitForNonStaleResults());
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

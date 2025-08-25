@@ -1,0 +1,164 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data.mdx)) or any common data between types.
+
+## AddMap
+
+`addMap()` method is used to map fields from a single collection e.g. `Dogs`.
+
+Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="js">
+{`class Dog extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="js">
+{`class Cat extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="js">
+{`class Animal {
+    constructor(name) {
+        this.name = name;
+    } 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we can define our index using `addMap` in the following way:
+
+<TabItem value="multi_map_4" label="multi_map_4">
+<CodeBlock language="js">
+{`class Animals_ByName extends AbstractMultiMapIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.addMap(\`docs.Cats.Select(c => new \{     
+            name = c.name 
+        \})\`);
+
+        this.addMap(\`docs.Dogs.Select(d => new \{     
+            name = d.name 
+        \})\`);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Animals/ByName" })
+    .whereEquals("name", "Mitzy")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Polymorphic Data
+
+Please read more in our dedicated article on indexing polymorphic data. This article can be found [here](../indexes/indexing-polymorphic-data.mdx).
+
+## Searching Across Multiple Collections
+
+Another great application of Multi-Map indexes is smart-search. To search for products, companies, or employees by their name, you need to define the following index:
+
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
+<CodeBlock language="js">
+{`class Smart_Search extends AbstractMultiMapIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.addMap(\`docs.Companies.Select(c => new \{     
+            id = Id(c),     
+            content = new string[] \{         
+                c.name     
+            \},     
+            displayName = c.name,     
+            collection = this.MetadataFor(c)["@collection"] 
+        \})\`);
+
+
+        this.addMap(\`docs.Products.Select(p => new \{     
+            id = Id(p),     
+            content = new string[] \{         
+                p.name     
+            \},     
+            displayName = p.name,     
+            collection = this.MetadataFor(p)["@collection"] 
+        \})\`);
+
+        this.addMap(\`docs.Employees.Select(e => new \{     
+            id = Id(e),     
+            content = new string[] \{         
+                e.firstName,         
+                e.lastName     
+            \},     
+            displayName = (e.firstName + " ") + e.lastName,     
+            collection = this.MetadataFor(e)["@collection"] 
+        \})\`);
+
+        // mark 'content' field as analyzed which enables full text search operations
+        this.index("content", "Search");
+
+        // storing fields so when projection (e.g. ProjectInto)
+        // requests only those fields
+        // then data will come from index only, not from storage
+        this.store("id", "Yes");
+        this.store("displayName", "Yes");
+        this.store("collection", "Yes");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
+<CodeBlock language="js">
+{`const results = await session
+    .query(\{ indexName: "Smart/Search" \})
+    .search("Content", "Lau*")
+    .selectFields([ "id", "displayName", "collection" ])
+    .all();
+
+for (const result of results) \{
+    console.log(result.collection + ": " + result.displayName);
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products: Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+Remember that all map functions **must** output objects with **identical** shape (field names have to match).
+</Admonition>
+
+

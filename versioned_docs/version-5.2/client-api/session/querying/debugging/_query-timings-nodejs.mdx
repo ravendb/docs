@@ -1,0 +1,97 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When making a query,  
+  you can request to get detailed stats of the time spent by RavenDB on each part of the query.  
+  E.g. duration of search, loading documents, transforming results, total duration, etc.
+
+* By default, the timings stats are Not included in the query results, to avoid the measuring overhead.
+
+* __To include the query timings__ in the query results:  
+  add a call to `timings()` in your query code, or add `include timings()` to an RQL query.  
+  See examples below.
+
+* In this page:
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+
+</Admonition>
+## Include timings in a query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define an object that will receive the timings results
+let timingsResults;
+
+const results = await session.query({ collection: "Products" })
+    // Call timings, pass a callback function
+    // Output param 'timingsResults' will be filled with the timings details when query returns 
+    .timings(t => timingsResults = t)
+    // Define query criteria
+    // i.e. search for docs containing Syrup -or- Lager in their Name field
+    .search("Name", "Syrup Lager")
+    // Execute the query
+    .all();
+
+// Get total query duration:
+// =========================    
+const totalQueryDuration = timingsResults.durationInMs;
+
+// Get specific parts duration:
+// ============================
+const optimizerDuration = timingsResults.timings.optimizer.durationInMs;
+// or: timingsResults.timings["optimizer"].durationInMs;    
+const luceneDuration = timingsResults.timings.query.timings.lucene.durationInMs;
+// or: timingsResults.timings["query"].timings.["lucene"].durationInMs;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where search(Name, "Syrup") or search(Name, "Lager")
+include timings()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## View timings
+
+* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view.mdx) in the Studio.  
+
+* Running an RQL query with `include timings()` will show an additional __Timings Tab__  
+  with a graphical representation of the time spent in each query part.
+
+![Figure 1. Include timings graphical results](./assets/include-timings.png)
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`query.timings(timingsCallback)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter           | Type                        | Description                                                                                                                                                                    |
+|---------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __timingsCallback__ | `(timingsCallback) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `QueryTimings` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
+
+| `QueryTimings`   |                                |                                                   |
+|------------------|--------------------------------|---------------------------------------------------|
+| __durationInMs__ | `number`                       | Total duration                                    |
+| __timings__      | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+
+
+

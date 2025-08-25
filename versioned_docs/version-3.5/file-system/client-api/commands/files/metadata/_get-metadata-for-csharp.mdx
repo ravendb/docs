@@ -1,0 +1,39 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetMetadataForAsync
+
+**GetMetadataForAsync** is used to retrieve the file's metadata.
+
+
+
+<TabItem value="get_metadata_1" label="get_metadata_1">
+<CodeBlock language="csharp">
+{`Task<RavenJObject> GetMetadataForAsync(string filename);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **filename** | string | The name of a file |
+
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;RavenJObject&gt;** |  A task that represents the asynchronous metadata download operation. The task result is the file's metadata. |
+
+## Example
+
+<TabItem value="get_metadata_2" label="get_metadata_2">
+<CodeBlock language="csharp">
+{`var metadata = await store
+	.AsyncFilesCommands
+	.GetMetadataForAsync("/movies/intro.avi");
+`}
+</CodeBlock>
+</TabItem>
+

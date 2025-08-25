@@ -1,0 +1,963 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Map-Reduce indexes** allow complex ***data aggregation*** that can be queried on 
+  with very little cost, regardless of the data size.  
+
+* To expedite queries and prevent performance degradation during queries, the aggregation 
+  is done during the indexing phase, _not_ at query time.  
+
+* Once new data enters the database, or existing documents are modified,  
+  the Map-Reduce index will re-calculate the aggregated data so that the 
+  aggregation results are always available and up-to-date.  
+
+* The aggregation computation is done in two separate consecutive actions:  
+  * **The `map` stage:**  
+    This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
+  * **The `reduce` stage:**  
+    This second stage groups the specified requested fields that were indexed in the Map stage,  
+    and then runs the Reduce function to get a final aggregation result per field value.  
+
+* In this page: 
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)
+   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)
+   * [Remarks](../indexes/map-reduce-indexes.mdx#remarks)  
+
+</Admonition>
+
+## Creating Map Reduce Indexes
+
+When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
+is an additional reduce function defined in the index definition.  
+To deploy an index we need to create a definition and deploy it using one of the ways described in the 
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
+#### Example I - Count
+
+Let's assume that we want to count the number of products for each category.  
+To do it, we can create the following index using `LoadDocument` inside:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce" label="Map_Reduce">
+<CodeBlock language="php">
+{`class Products_ByCategory_Result
+{
+    public ?string $category = null;
+    public ?int $count = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+}
+
+class Products_ByCategory extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new { " .
+            "    Product = Product, " .
+            "    CategoryName = (this.LoadDocument(product.Category, \\"Categories\\")).Name " .
+            "}).Select(this0 => new { " .
+            "    Category = this0.CategoryName, " .
+            "    Count = 1 " .
+            "})";
+
+        $this->reduce = "results.GroupBy(result => result.Category).Select(g => new { " .
+            "    Category = g.Key, " .
+            "    Count = Enumerable.Sum(g, x => ((int) x.Count)) " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="php">
+{`class Products_ByCategory_Result
+{
+    private ?string $category = null;
+    public ?int $count = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+}
+class Products_ByCategory extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('products', function(p){
+                return {
+                    Category: load(p.Category, 'Categories').Name,
+                    Count: 1
+                }
+            })"
+        ]);
+
+        $this->setReduce(
+            "groupBy(x => x.Category)
+                    .aggregate(g => {
+                        return {
+                            Category: g.key,
+                            Count: g.values.reduce((count, val) => val.Count + count, 0)
+                        };
+                    })"
+        );
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+and issue the query:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Products_ByCategory_Result> $results */
+$results = $session
+    ->query(Products_ByCategory_Result::class, Products_ByCategory::class)
+    ->whereEquals("Category", "Seafood")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from 'Products/ByCategory'
+where Category == 'Seafood'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The above query will return one result for _Seafood_ with the appropriate number of products from that category.
+#### Example II - Average
+
+In this example, we will count an average product price for each category.  
+The index definition:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce" label="Map_Reduce">
+<CodeBlock language="php">
+{`class Products_Average_ByCategory_Result
+{
+    private ?string $category = null;
+    private ?float $priceSum = null;
+    private ?float $priceAverage = null;
+    private ?int $productCount = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getPriceSum(): ?float
+    {
+        return $this->priceSum;
+    }
+
+    public function setPriceSum(?float $priceSum): void
+    {
+        $this->priceSum = $priceSum;
+    }
+
+    public function getPriceAverage(): ?float
+    {
+        return $this->priceAverage;
+    }
+
+    public function setPriceAverage(?float $priceAverage): void
+    {
+        $this->priceAverage = $priceAverage;
+    }
+
+    public function getProductCount(): ?int
+    {
+        return $this->productCount;
+    }
+
+    public function setProductCount(?int $productCount): void
+    {
+        $this->productCount = $productCount;
+    }
+}
+
+class Products_Average_ByCategory extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new { " .
+            "    Product = Product, " .
+            "    CategoryName = (this.LoadDocument(product.Category, \\"Categories\\")).Name " .
+            "}).Select(this0 => new { " .
+            "    Category = this0.CategoryName, " .
+            "    PriceSum = this0.Product.PricePerUnit, " .
+            "    PriceAverage = 0, " .
+            "    ProductCount = 1 " .
+            "})";
+
+        $this->reduce = "results.GroupBy(result => result.Category).Select(g => new { " .
+            "    g = g, " .
+            "    ProductCount = Enumerable.Sum(g, x => ((int) x.ProductCount)) " .
+            "}).Select(this0 => new { " .
+            "    this0 = this0, " .
+            "    PriceSum = Enumerable.Sum(this0.g, x0 => ((decimal) x0.PriceSum)) " .
+            "}).Select(this1 => new { " .
+            "    Category = this1.this0.g.Key, " .
+            "    PriceSum = this1.PriceSum, " .
+            "    PriceAverage = this1.PriceSum / ((decimal) this1.this0.ProductCount), " .
+            "    ProductCount = this1.this0.ProductCount " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="php">
+{`class Products_Average_ByCategory_Result
+{
+    private ?string $category = null;
+    private ?float $priceSum = null;
+    private ?float $priceAverage = null;
+    private ?int $productCount = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getPriceSum(): ?float
+    {
+        return $this->priceSum;
+    }
+
+    public function setPriceSum(?float $priceSum): void
+    {
+        $this->priceSum = $priceSum;
+    }
+
+    public function getPriceAverage(): ?float
+    {
+        return $this->priceAverage;
+    }
+
+    public function setPriceAverage(?float $priceAverage): void
+    {
+        $this->priceAverage = $priceAverage;
+    }
+
+    public function getProductCount(): ?int
+    {
+        return $this->productCount;
+    }
+
+    public function setProductCount(?int $productCount): void
+    {
+        $this->productCount = $productCount;
+    }
+}
+class Products_Average_ByCategory extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('products', function(product){
+                return {
+                    Category: load(product.Category, 'Categories').Name,
+                    PriceSum: product.PricePerUnit,
+                    PriceAverage: 0,
+                    ProductCount: 1
+                }
+            })"
+        ]);
+
+        $this->setReduce("groupBy(x => x.Category)
+                    .aggregate(g => {
+                        var pricesum = g.values.reduce((sum,x) => x.PriceSum + sum,0);
+                        var productcount = g.values.reduce((sum,x) => x.ProductCount + sum,0);
+                        return {
+                            Category: g.key,
+                            PriceSum: pricesum,
+                            ProductCount: productcount,
+                            PriceAverage: pricesum / productcount
+                        }
+                    })");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+and the query:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Products_Average_ByCategory_Result> $results */
+$results = $session
+    ->query(Products_Average_ByCategory_Result::class, Products_Average_ByCategory::class)
+    ->whereEquals("Category", "Seafood")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from 'Products/Average/ByCategory'
+where Category == 'Seafood'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example III - Calculations
+
+This example illustrates how we can put some calculations inside an index using 
+one of the indexes available in the sample database (`Product/Sales`).
+
+We want to know how many times each product was ordered and how much we earned for it.  
+To extract that information, we need to define the following index:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce" label="Map_Reduce">
+<CodeBlock language="php">
+{`class Product_Sales_Result
+{
+    private ?string $product = null;
+    private ?int $count = null;
+    private ?float $total = null;
+
+    public function getProduct(): ?string
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?string $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?float $total): void
+    {
+        $this->total = $total;
+    }
+}
+
+class Product_Sales extends AbstractIndexCreationTask
+{
+        public function __construct()
+        {
+            parent::__construct();
+
+            $this->map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " .
+                "    Product = line.Product, " .
+                "    Count = 1, " .
+                "    Total = (((decimal) line.Quantity) * line.PricePerUnit) * (1M - line.Discount) " .
+                "})";
+
+
+            $this->reduce = "results.GroupBy(result => result.Product).Select(g => new { " .
+                "    Product = g.Key, " .
+                "    Count = Enumerable.Sum(g, x => ((int) x.Count)), " .
+                "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total)) " .
+                "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="php">
+{`class Product_Sales_Result
+{
+    private ?string $product = null;
+    private ?int $count = null;
+    private ?float $total = null;
+
+    public function getProduct(): ?string
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?string $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?float $total): void
+    {
+        $this->total = $total;
+    }
+}
+class Product_Sales extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('orders', function(order){
+                    var res = [];
+                    order.Lines.forEach(l => {
+                        res.push({
+                            Product: l.Product,
+                            Count: 1,
+                            Total:  (l.Quantity * l.PricePerUnit) * (1- l.Discount)
+                        })
+                    });
+                    return res;
+                })"
+        ]);
+
+        $this->setReduce("groupBy(x => x.Product)
+            .aggregate(g => {
+                return {
+                    Product : g.key,
+                    Count: g.values.reduce((sum, x) => x.Count + sum, 0),
+                    Total: g.values.reduce((sum, x) => x.Total + sum, 0)
+                }
+            })");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And run the query:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Product_Sales_Result> $results */
+$results = $session
+    ->query(Product_Sales_Result::class, Product_Sales::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from 'Product/Sales'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Creating Multi-Map-Reduce Indexes
+
+A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
+
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
+or with API as shown below.  
+
+In the following code sample, we want the number of companies, suppliers, and employees per city.  
+We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
+We then define the reduce phase.  
+<TabItem value="multi_map_reduce_LINQ" label="multi_map_reduce_LINQ">
+<CodeBlock language="php">
+{`class Cities_Details_IndexEntry
+\{
+    private ?string $city = null;
+    private ?int $companies = null;
+    private ?int $employees = null;
+    private ?int $suppliers = null;
+
+    public function getCity(): ?string
+    \{
+        return $this->city;
+    \}
+
+    public function setCity(?string $city): void
+    \{
+        $this->city = $city;
+    \}
+
+    public function getCompanies(): ?int
+    \{
+        return $this->companies;
+    \}
+
+    public function setCompanies(?int $companies): void
+    \{
+        $this->companies = $companies;
+    \}
+
+    public function getEmployees(): ?int
+    \{
+        return $this->employees;
+    \}
+
+    public function setEmployees(?int $employees): void
+    \{
+        $this->employees = $employees;
+    \}
+
+    public function getSuppliers(): ?int
+    \{
+        return $this->suppliers;
+    \}
+
+    public function setSuppliers(?int $suppliers): void
+    \{
+        $this->suppliers = $suppliers;
+    \}
+\}
+
+class Cities_Details extends AbstractMultiMapIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        // Map employees collection.
+        $this->addMap("docs.Employees.SelectMany(e => new \{ " .
+            "    City = e.Address.City, " .
+            "    Companies = 0, " .
+            "    Suppliers = 0, " .
+            "    Employees = 1 " .
+            "\})");
+
+        // Map companies collection.
+        $this->addMap("docs.Companies.SelectMany(c => new \{ " .
+            "    City = c.Address.City, " .
+            "    Companies = 1, " .
+            "    Suppliers = 0, " .
+            "    Employees = 0 " .
+            "\})");
+
+        // Map suppliers collection.
+        $this->addMap("docs.Suppliers.SelectMany(s => new \{ " .
+            "    City = s.Address.City, " .
+            "    Companies = 0, " .
+            "    Suppliers = 1, " .
+            "    Employees = 0 " .
+            "\})");
+
+
+        $this->reduce = "results.GroupBy(result => result.Product).Select(g => new \{ " .
+            "    Product = g.Key, " .
+            "    Count = Enumerable.Sum(g, x => ((int) x.Count)), " .
+            "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total)) " .
+            "\})";
+
+        // Apply reduction/aggregation on multi-map results.
+        $this->reduce = "results.GroupBy(result => result.City).Select(g => new \{ " .
+            "    City = g.Key, " .
+            "    Companies = Enumerable.Sum(g, x => ((int) x.Companies)), " .
+            "    Suppliers = Enumerable.Sum(g, x => ((int) x.Suppliers)), " .
+            "    Employees = Enumerable.Sum(g, x => ((int) x.Employees)), " .
+            "\})";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+A query on the index:
+<TabItem value="multi-map-reduce-index-query" label="multi-map-reduce-index-query">
+<CodeBlock language="php">
+{`// Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
+/** @var array<Cities_Details_IndexEntry> $commerceDetails */
+$commerceDetails = $session
+    ->query(Cities_Details_IndexEntry::class, Cities_Details::class)
+    ->whereGreaterThan("Companies", 5)
+    ->orderBy("City")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+You can see this sample described in detail in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+</Admonition>
+
+
+
+## Reduce Results as Artificial Documents
+
+#### Map-Reduce Output Documents
+
+In addition to storing the aggregation results in the index, the map-reduce index can also output 
+those reduce results as documents to a specified collection. In order to create these documents, 
+called _"artificial",_ you need to define the target collection using the `outputReduceToCollection` 
+property in the index definition.  
+
+Writing map-reduce outputs into documents allows you to define additional indexes on top of them 
+that give you the option to create recursive map-reduce operations. This makes it cheap and easy 
+to, for example, recursively create daily, monthly, and yearly summaries on the same data.  
+
+In addition, you can also apply the usual operations on artificial documents (e.g. data 
+subscriptions or ETL).  
+
+If the aggregation value for a given reduce key changes, we overwrite the output document. If the 
+given reduce key no longer has a result, the output document will be removed.  
+
+#### Reference Documents
+
+To help organize these output documents, the map-reduce index can also create an additional 
+collection of artificial _reference documents_. These documents aggregate the output documents 
+and store their document IDs in an array field `ReduceOutputs`.  
+
+The document IDs of reference documents are customized to follow some pattern. The format you 
+give to their document ID also determines how the output documents are grouped.  
+
+Because reference documents have well known, predictable IDs, they are easier to plug into 
+indexes and other operations, and can serve as an intermediary for the output documents whose 
+IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion.  
+
+Learn more about how to configure output and reference documents in the 
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx) article.  
+### Artificial Document Properties  
+
+#### IDs
+
+The identifiers of **map reduce output documents** have three components in this format:  
+
+`<Output collection name>/<incrementing value>/<hash of reduce key values>`  
+
+The index in the [example](../indexes/map-reduce-indexes.mdx#example) below may generate 
+an output document ID like this:  
+
+`DailyProductSales/35/14369232530304891504`  
+
+* "DailyProductSales" is the collection name specified for the output documents.  
+* The middle part is an incrementing integer assigned by the server. This number grows by some 
+amount whenever the index definition is modified. This can be useful because when an index definition 
+changes, there is a brief transition phase when the new output documents are being created, but the 
+old output documents haven't been deleted yet (this phase is called 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
+During this phase, the output collection contains output documents created both by the old version 
+and the new version of the index, and they can be distinguished by this value: the new output 
+documents will always have a higher value (by 1 or more).  
+* The last part of the document ID (the unique part) is the hash of the reduce key values - in this 
+case: `hash(Product, Month)`.  
+
+The identifiers of **reference documents** follow some pattern you choose, and this pattern 
+determines which output documents are held by a given reference document.  
+
+The index in this [example](../indexes/map-reduce-indexes.mdx#example) has this pattern for 
+reference documents:  
+
+`sales/daily/{Date:yyyy-MM-dd}`
+
+And this produces reference document IDs like this:
+
+`sales/daily/1998-05-06`
+
+The pattern is built using the same syntax as 
+[the `StringBuilder.AppendFormat` method](https://docs.microsoft.com/en-us/dotnet/api/system.text.stringbuilder.appendformat). 
+See [here](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings) 
+to learn about the date formatting in particular.  
+#### Metadata
+
+Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`"@flags": "Artificial, FromIndex"
+`}
+</CodeBlock>
+</TabItem>
+
+These flags are used internally by the database to filter out artificial documents during replication.  
+### Syntax
+
+The map-reduce output documents are configured with these properties of 
+`IndexDefinition`:  
+
+<TabItem value="syntax_0" label="syntax_0">
+<CodeBlock language="php">
+{`private ?string $outputReduceToCollection = null;
+
+private ?string $patternReferencesCollectionName = null;
+
+// Using IndexDefinition
+private ?string $patternForOutputReduceToCollectionReferences = null;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **outputReduceToCollection** | `str` | Collection name for the output documents. |
+| **patternReferencesCollectionName** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
+| **patternForOutputReduceToCollectionReferences** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
+#### Example:
+
+Here is a map-reduce index with output documents and reference documents:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce" label="Map_Reduce">
+<CodeBlock language="php">
+{`class DailyProductSale
+{
+    public ?string $product = null;
+    public ?DateTime $date = null;
+    public ?int $count = null;
+    public ?float $total = null;
+
+    public function getProduct(): ?string
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?string $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(?DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?float $total): void
+    {
+        $this->total = $total;
+    }
+}
+
+class ProductSales_ByDate extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " .
+            "    Product = line.Product, " .
+            "    Date = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, order.OrderedAt.Day), " .
+            "    Count = 1, " .
+            "    Total = (((decimal) line.Quantity) * line.PricePerUnit) * (1M - line.Discount) " .
+            "})";
+
+
+        $this->reduce = "results.GroupBy(result => new { " .
+            "    Product = result.Product, " .
+            "    Date = result.Date " .
+            "}).Select(g => new { " .
+            "    Product = g.Key.Product, " .
+            "    Date = g.Key.Date, " .
+            "    Count = Enumerable.Sum(g, x => ((int) x.Count)), " .
+            "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total)) " .
+            "})";
+
+        $this->outputReduceToCollection = "DailyProductSales";
+        $this->patternReferencesCollectionName = "DailyProductSales/References";
+        $this->patternForOutputReduceToCollectionReferences = "sales/daily/{Date:yyyy-MM-dd}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+<CodeBlock language="php">
+{`class Product_Sales_ByDate extends AbstractIndexCreationTask
+{
+    public function createIndexDefinition(): IndexDefinition
+    {
+        $indexDefinition = new IndexDefinition();
+        $indexDefinition->setMaps([
+            "from order in docs.Orders
+            from line in order.Lines
+            select new {
+                line.Product,
+                Date = order.OrderedAt,
+                Profit = line.Quantity * line.PricePerUnit * (1 - line.Discount)
+            };"
+        ]);
+        $indexDefinition->setReduce(
+            "from r in results
+              group r by new { r.OrderedAt, r.Product }
+              into g
+              select new {
+                  Product = g.Key.Product,
+                  Date = g.Key.Date,
+                  Profit = g.Sum(r => r.Profit)
+              };"
+        );
+
+        $indexDefinition->setOutputReduceToCollection( "DailyProductSales");
+        $indexDefinition->setPatternReferencesCollectionName("DailyProductSales/References");
+        $indexDefinition->setPatternForOutputReduceToCollectionReferences("sales/daily/{Date:yyyy-MM-dd}");
+
+        return $indexDefinition;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the index example above (which inherits `AbstractIndexCreationTask`), 
+the reference document ID pattern is set with the expression:  
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`self._pattern_for_output_reduce_to_collection_references = "sales/daily/\{Date:yyyy-MM-dd\}"
+`}
+</CodeBlock>
+</TabItem>  
+
+This gives the reference documents IDs in this general format: `sales/monthly/1998-05-01`. 
+The reference document with that ID contains the IDs of all the output documents from the 
+month of May 1998.  
+
+
+In the **JavaScript** index example (which uses `IndexDefinition`), 
+the reference document ID pattern is set with a `string`:  
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`pattern_for_output_reduce_to_collection_references="sales/daily/\{Date:yyyy-MM-dd\}"
+`}
+</CodeBlock>
+</TabItem>  
+
+This gives the reference documents IDs in this general format: `sales/daily/1998-05-06`. 
+The reference document with that ID contains the IDs of all the output documents from 
+May 6th 1998.  
+
+
+
+## Remarks
+
+#### Saving documents
+
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
+are stored immediately after the indexing transaction completes.  
+#### Recursive indexing loop
+
+It is **forbidden** to output reduce results to collections such as the following:  
+
+- A collection that the current index is already working on.  
+  E.g., an index on a `DailyInvoices` collection outputs to `DailyInvoices`.  
+- A collection that the current index is loading a document from.  
+  E.g., an index with `LoadDocument(id, "Invoices")` outputs to `Invoices`.  
+- Two collections, each processed by a map-reduce indexes,  
+  when each index outputs to the second collection.  
+  E.g.,  
+  An index on the `Invoices` collection outputs to the `DailyInvoices` collection,  
+  while an index on `DailyInvoices` outputs to `Invoices`.  
+
+When an attempt to create such an infinite indexing loop is 
+detected a detailed error is generated.  
+#### Output to an Existing collection
+
+Creating a map-reduce index which defines an output collection that already 
+exists and contains documents, will result in an error.  
+Delete all documents from the target collection before creating the index, 
+or output results to a different collection.  
+#### Modification of Artificial Documents
+
+Artificial documents can be loaded and queried just like regular documents.  
+However, it is **not** recommended to edit artificial documents manually since 
+any index results update would overwrite all manual modifications made in them.  
+
+
+
+

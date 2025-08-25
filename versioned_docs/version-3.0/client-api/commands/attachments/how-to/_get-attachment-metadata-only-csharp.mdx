@@ -1,0 +1,87 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to download attachment metadata from a database:   
+- [HeadAttachment](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only.mdx#head)   
+- [GetAttachmentHeadersStartingWith](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only.mdx#getattachmentheadersstartingwith)   
+
+## **HeadAttachment**
+
+**HeadAttachment** can be used to download attachment metadata for a single attachment.
+
+### Syntax
+
+<TabItem value="head_1_0" label="head_1_0">
+<CodeBlock language="csharp">
+{`Attachment HeadAttachment(string key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the attachment you want to download metadata for |
+
+| Return Value | |
+| ------------- | ----- |
+| [Attachment](../../../../glossary/attachment.mdx) | Object that represents attachment. |
+
+### Example
+
+<TabItem value="head_1_1" label="head_1_1">
+<CodeBlock language="csharp">
+{`Attachment attachment = store
+	.DatabaseCommands
+	.HeadAttachment("albums/holidays/sea.jpg"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **GetAttachmentHeadersStartingWith**
+
+**GetAttachmentHeadersStartingWith** can be used to download attachment metadata for a multiple attachments.
+
+### Syntax
+
+<TabItem value="head_2_0" label="head_2_0">
+<CodeBlock language="csharp">
+{`IEnumerable<Attachment> GetAttachmentHeadersStartingWith(
+	string idPrefix,
+	int start,
+	int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which attachments should be returned |
+| **start** | int | number of attachments that should be skipped |
+| **pageSize** | int | maximum number of attachments that will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| [AttachmentInformation](../../../../glossary/attachment-information.mdx) | Object that represents attachment metadata information. |
+
+### Example
+
+<TabItem value="head_2_1" label="head_2_1">
+<CodeBlock language="csharp">
+{`IEnumerable<Attachment> attachments = store
+	.DatabaseCommands
+	.GetAttachmentHeadersStartingWith("albums/holidays/", 0, 10);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+**Data** property in `Attachment` will return empty stream for the above methods.
+
+

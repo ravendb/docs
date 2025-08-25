@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to retrieve transformers from a database:   
+- [GetTransformer](../../../client-api/commands/transformers/get.mdx#gettransformer)   
+- [GetTransformers](../../../client-api/commands/transformers/get.mdx#gettransformers)   
+
+## GetTransformer
+
+**GetTransformer** is used to retrieve a single transformer
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="csharp">
+{`TransformerDefinition GetTransformer(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | transformer name | 
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing transformer. |
+
+### Example
+
+<TabItem value="get_1_1" label="get_1_1">
+<CodeBlock language="csharp">
+{`TransformerDefinition transformer = store
+	.DatabaseCommands
+	.GetTransformer("Order/Statistics"); // returns null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetTransformers
+
+**GetTransformers** is used to retrieve a multiple transformers
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="csharp">
+{`TransformerDefinition[] GetTransformers(int start, int pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of transformers that will be retrieved |
+
+| Return Value | |
+| ------------- | ----- |
+| [TransformerDefinition](../../../glossary/transformer-definition.mdx) | Instance of TransformerDefinition representing a transformer. |
+
+### Example
+
+<TabItem value="get_2_1" label="get_2_1">
+<CodeBlock language="csharp">
+{`TransformerDefinition[] transformers = store
+	.DatabaseCommands
+	.GetTransformers(0, 128);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+

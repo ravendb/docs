@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#How to subscribe to synchronization conflicts?
+
+Synchronization conflicts can be tracked by using `ForConflicts` method. You will receive notifications when a new conflicts is created or an existing one is resolved.
+
+
+
+<TabItem value="for_conflicts_1" label="for_conflicts_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<ConflictNotification> ForConflicts();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **IObservableWithTask&lt;[ConflictNotification](../../../glossary/conflict-notification.mdx)&gt;** | The observable that allows to add subscriptions to received notifications |
+
+## Example
+
+<TabItem value="for_conflicts_2" label="for_conflicts_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+	.Changes()
+	.ForConflicts()
+	.Subscribe(conflict =>
+	\{
+		switch (conflict.Status)
+		\{
+			case ConflictStatus.Detected:
+				Console.WriteLine("New conflict! File name: \{0\}", conflict.FileName);
+				break;
+			case ConflictStatus.Resolved:
+				Console.WriteLine("Conflict resolved! File name: \{0\}", conflict.FileName);
+				break;
+		\}
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+

@@ -1,0 +1,51 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**PutTransformer** is used to add a transformer to a database.
+
+## Syntax
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="csharp">
+{`string PutTransformer(string name, TransformerDefinition transformerDef);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of a transformer |
+| **transformerDef** | [TransformerDefinition](../../../glossary/transformer-definition.mdx) | definition of a transformer |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Transformer **name**. |
+
+## Example
+
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="csharp">
+{`string transformerName = store
+	.DatabaseCommands
+	.PutTransformer(
+		"Order/Statistics",
+		new TransformerDefinition
+		\{
+			TransformResults = @"from order in results
+								select new
+								\{
+									order.OrderedAt,
+									order.Status,
+									order.CustomerId,
+									CustomerName = LoadDocument(order.CustomerId).Name,
+									LinesCount = order.Lines.Count
+								\}",
+                        Name = "Order/Statistics"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+

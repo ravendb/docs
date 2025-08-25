@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Custom requests can be send using HttpJsonRequestFactory which can be accessed by `JsonRequestFactory` property in `DocumentStore`. This is the same factory that client uses for communication.
+
+Worth knowing is that factory might not always be accessible. To check if document store contains factory use `HasJsonRequestFactory`. In most of cases value of this property will be `true`. For the time being only `ShardedDocumentStore` does not contain request factory, because there is no single request factory in such document store, so to access factory you must use shards directly.
+
+## Example
+
+<TabItem value="custom_request_1" label="custom_request_1">
+<CodeBlock language="csharp">
+{`string key = "employees/1";
+
+// http://localhost:8080/databases/Northwind/docs/employees/1
+string url = store.Url // http://localhost:8080
+	.ForDatabase("Northwind") // /databases/Northwind
+	.Doc(key); // /docs/employees/1
+
+IDatabaseCommands commands = store.DatabaseCommands;
+using (HttpJsonRequest request = store
+	.JsonRequestFactory
+	.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, HttpMethod.Get, commands.PrimaryCredentials, store.Conventions)))
+\{
+	RavenJToken json = request.ReadResponseJson();
+	JsonDocument jsonDocument = SerializationHelper
+		.DeserializeJsonDocument(key, json, request.ResponseHeaders, request.ResponseStatusCode);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+`ForDatabase`, `Docs` extensions and many others are a part of url extensions available in `Raven.Client.Connection` namespace.
+</Admonition>
+
+

@@ -1,0 +1,489 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../client-api/session/querying/how-to-query.mdx) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) from advanced session operations or low-level [Command](../../client-api/commands/querying/how-to-query-a-database.mdx)). Following example demonstrates how to add a simple conditions to query using all those methods.
+
+## Where
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> results = session
+	.Query<Employee, Employees_ByFirstAndLastName>()		// query 'Employees/ByFirstAndLastName' index
+	.Where(x => x.FirstName == "Robert" && x.LastName == "King")	// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> results = session
+	.Advanced
+	.DocumentQuery<Employee, Employees_ByFirstAndLastName>()	// query 'Employees/ByFirstAndLastName' index
+	.WhereEquals(x => x.FirstName, "Robert")			// filtering predicates
+	.AndAlso()							// by default OR is between each condition
+	.WhereEquals(x => x.LastName, "King")				// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Employees/ByFirstAndLastName",
+		new IndexQuery
+			{
+				Query = "FirstName:Robert AND LastName:King"
+			});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastName()
+	{
+		Map = employees => from employee in employees
+						   select new
+							{
+								FirstName = employee.FirstName,
+								LastName = employee.LastName
+							};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where - numeric property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Product, Products_ByUnitsInStock>()		// query 'Products/ByUnitsInStock' index
+	.Where(x => x.UnitsInStock > 50)			// filtering predicates
+	.ToList();						// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByUnitsInStock>()	// query 'Products/ByUnitsInStock' index
+	.WhereGreaterThan(x => x.UnitsInStock, 50)		// filtering predicates
+	.ToList();						// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Products/ByUnitsInStock",
+		new IndexQuery
+		{
+			Query = "UnitsInStock_Range:{Ix50 TO NULL}"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`private class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+	public Products_ByUnitsInStock()
+	{
+		Map = products => from product in products
+						  select new
+							{
+								product.UnitsInStock
+							};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+<Admonition type="info" title="The importance of types in queries" id="the-importance-of-types-in-queries" href="#the-importance-of-types-in-queries">
+
+Let's consider the following index and queries:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByTotalPrice : AbstractIndexCreationTask<Order>
+{
+	public class Result
+	{
+		public decimal TotalPrice;
+	}
+
+	public Orders_ByTotalPrice()
+	{
+		Map = orders => from order in orders
+						select new
+						{
+							TotalPrice = order.Lines.Sum(x => (x.Quantity * x.PricePerUnit) * (1 - x.Discount))
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Query<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
+	.Where(x => x.TotalPrice > 50)
+	.OfType<Order>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Advanced
+	.DocumentQuery<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
+	.WhereGreaterThan(x => x.TotalPrice, 50)
+	.OfType<Order>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Orders/ByTotalPrice",
+		new IndexQuery
+		{
+			Query = "TotalPrice_Range:{Dx50 TO NULL}"
+		});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Note that `PricePerUnit` is of type `decimal` in `Order` entity, so indexed `TotalPrice` value  will be `decimal` too. In oder to
+properly query such index, we need to preserve types in queries. That is why `Orders_ByTotalPrice.Result.TotalPrice` is `decimal` and 
+`IndexQuery.Query` has `Dx` prefix specified before the actual value. Types of properties in predicates have to match types of indexed fields.
+
+* More about the need to use `OfType` here, you can find in [projections article](../../client-api/session/querying/how-to-perform-projection.mdx#oftype-(as)---simple-projection).
+
+</Admonition>
+
+## Where - nested property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Query<Order, Order_ByOrderLinesCount>()	// query 'Order/ByOrderLinesCount' index
+	.Where(x => x.Lines.Count > 50)			// filtering predicates
+	.ToList();					// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Advanced
+	.DocumentQuery<Order, Order_ByOrderLinesCount>()	// query 'Order/ByOrderLinesCount' index
+	.WhereGreaterThan(x => x.Lines.Count, 50)		// filtering predicates
+	.ToList();						// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Order/ByOrderLinesCount",
+		new IndexQuery
+		{
+			Query = "Lines.Count_Range:{Ix50 TO NULL}"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`private class Order_ByOrderLinesCount : AbstractIndexCreationTask<Order>
+{
+	public Order_ByOrderLinesCount()
+	{
+		Map = orders => from order in orders
+						select new
+						{
+							Lines_Count = order.Lines.Count
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + Any
+
+`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on a values from this collection. For example, let's retrieve all orders that contain a `OrderLine` with a given product.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Query<Order, Order_ByOrderLines_ProductName>()					// query 'Order/ByOrderLines/ProductName' index
+	.Where(x => x.Lines.Any(l => l.ProductName == "Teatime Chocolate Biscuits"))	// filtering predicates
+	.ToList();									// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Order> results = session
+	.Advanced
+	.DocumentQuery<Order, Order_ByOrderLines_ProductName>()		// query 'Order/ByOrderLines/ProductName' index
+	.WhereEquals("Lines_ProductName", "Teatime Chocolate Biscuits")	// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Order/ByOrderLinesCount",
+		new IndexQuery
+		{
+			Query = "Lines_ProductName:\\"Teatime Chocolate Biscuits\\""
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Order_ByOrderLines_ProductName : AbstractIndexCreationTask<Order>
+{
+	public Order_ByOrderLines_ProductName()
+	{
+		Map = orders => from order in orders
+						select new
+						{
+							Lines_ProductName = order.Lines.Select(x => x.ProductName)
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Where + In
+
+When you want to check single value against multiple values `In` operator can become handy. E.g. to retrieve all employees that `FirstName` is either `Robert` or `Nancy` we can issue following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> results = session
+	.Query<Employee, Employees_ByFirstAndLastName>()	// query 'Employees/ByFirstAndLastName' index
+	.Where(x => x.FirstName.In("Robert", "Nancy"))		// filtering predicates (remember to add \`Raven.Client.Linq\` namespace to usings)
+	.ToList();						// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> results = session
+	.Advanced
+	.DocumentQuery<Employee, Employees_ByFirstAndLastName>()	// query 'Employees/ByFirstAndLastName' index
+	.WhereIn(x => x.FirstName, new[] { "Robert", "Nancy" })		// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"Employees/ByFirstAndLastName",
+		new IndexQuery
+		{
+			Query = "@in<FirstName>:(Robert, Nancy)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByFirstAndLastName()
+	{
+		Map = employees => from employee in employees
+						   select new
+							{
+								FirstName = employee.FirstName,
+								LastName = employee.LastName
+							};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` extension method.
+</Admonition>
+
+## Where + ContainsAny
+
+To check if enumeration contains **any** of the values from a specified collection you can use `ContainsAny` method.
+
+Let's assume that we want to return all `BlogPosts` that contain any of the specified `Tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+	.Query<BlogPost, BlogPosts_ByTags>()					// query 'BlogPosts/ByTags' index
+	.Where(x => x.Tags.ContainsAny(new[] { "Development", "Research" }))	// filtering predicates (remember to add \`Raven.Client.Linq\` namespace to usings)
+	.ToList();								// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+	.Advanced
+	.DocumentQuery<BlogPost, BlogPosts_ByTags>()			// query 'BlogPosts/ByTags' index
+	.ContainsAny("Tags", new[] { "Development", "Research" })	// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"BlogPosts/ByTags",
+		new IndexQuery
+		{
+			Query = "(Tags:Development OR Tags:Research)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByTags : AbstractIndexCreationTask<BlogPost>
+{
+	public BlogPosts_ByTags()
+	{
+		Map = posts => from post in posts
+					   select new
+						{
+							post.Tags
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `ContainsAny` extension method.
+</Admonition>
+
+## Where + ContainsAll
+
+To check if enumeration contains **all** of the values from a specified collection you can use `ContainsAll` method.
+
+Let's assume that we want to return all `BlogPosts` that contain all of the specified `Tags`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+	.Query<BlogPost, BlogPosts_ByTags>()					// query 'BlogPosts/ByTags' index
+	.Where(x => x.Tags.ContainsAll(new[] { "Development", "Research" }))	// filtering predicates (remember to add \`Raven.Client.Linq\` namespace to usings)
+	.ToList();								// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<BlogPost> results = session
+	.Advanced
+	.DocumentQuery<BlogPost, BlogPosts_ByTags>()			// query 'BlogPosts/ByTags' index
+	.ContainsAll("Tags", new[] { "Development", "Research" })	// filtering predicates
+	.ToList();							// materialize query by sending it to server for processing
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Commands" label="Commands">
+<CodeBlock language="csharp">
+{`QueryResult result = store
+	.DatabaseCommands
+	.Query(
+		"BlogPosts/ByTags",
+		new IndexQuery
+		{
+			Query = "(Tags:Development AND Tags:Research)"
+		});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByTags : AbstractIndexCreationTask<BlogPost>
+{
+	public BlogPosts_ByTags()
+	{
+		Map = posts => from post in posts
+					   select new
+						{
+							post.Tags
+						};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `ContainsAll` extension method.
+</Admonition>
+
+## Remarks
+
+<Admonition type="info" title="">
+Underneath, `Query` and `DocumentQuery` are converting predicates to `IndexQuery` class so they can issue a query from **low-level command method**.
+</Admonition>
+
+<Admonition type="note" title="">
+By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](../../indexes/querying/paging.mdx).
+</Admonition>
+
+

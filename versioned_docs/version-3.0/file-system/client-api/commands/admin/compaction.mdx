@@ -5,125 +5,24 @@ sidebar_label: Compaction
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import CompactionCsharp from './_compaction-csharp.mdx';
+import CompactionHttp from './_compaction-http.mdx';
+
 export const supportedLanguages = ["csharp", "http"];
 
-
-## Syntax
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Commands: StartCompact
-
-**StartCompact** initializes the compaction of the indicated file system. This operation makes the file system offline for the time of compaction.
-
-
-
-<TabItem value="start_compact_1" label="start_compact_1">
-<CodeBlock language="csharp">
-{`Task<long> StartCompact(string filesystemName);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **filesystemName** | string | The name of a file system to compact |
-
----
-
-| Return Value | |
-| ------------- | ------------- |
-| **Task&lt;long&gt;** | A task that represents the asynchronous restore operation. The task result is the operation identifier. |
-
-
-## Example
-
-<TabItem value="start_compact_2" label="start_compact_2">
-<CodeBlock language="csharp">
-{`long compactOperationId = await store.AsyncFilesCommands.Admin
-									.StartCompact("NorthwindFS");
-`}
-</CodeBlock>
-</TabItem>
-
-If you need to wait until the operation finishes, you will have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
-
-<TabItem value="start_compact_3" label="start_compact_3">
-<CodeBlock language="csharp">
-{`using (var sysDbStore = new DocumentStore
-\{
-	Url = "http://localhost:8080/"
-\}.Initialize())
-\{
-	await new Operation((AsyncServerClient)sysDbStore.AsyncDatabaseCommands, compactOperationId)
-				.WaitForCompletionAsync();
-\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <CompactionCsharp />
 </LanguageContent>
+
 <LanguageContent language="http">
-#Commands: StartCompact
-
-The **POST** method initializes the compaction of the indicated file system. This operation makes the file system offline for the time of compaction.
-
-
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverUrl\}/admin/fs/compact?filesystem=\{filesystemName\}  \\
-	-X POST 
-    -d ""
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| Empty |
-
-| Query parameter | Required | Description |
-| ------------- | -- | ---- |
-| **filesystemName** | Yes | The name of a file system to compact |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| **OperationId** | The operation identifier |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://localhost:8080/admin/fs/compact?filesystem=NorthwindFS  \\
-	-X POST \\
-	-d ""
-< HTTP/1.1 200 OK
-
-\{"OperationId":1\}
-`}
-</CodeBlock>
-</TabItem>
-
+   <CompactionHttp />
 </LanguageContent>
+
 
 <!---
 

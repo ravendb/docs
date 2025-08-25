@@ -1,0 +1,84 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Unlike .NET client, Java client offers single API for querying documents. 
+
+Below you can find examples of equivalent calls. 
+
+
+`query` method in `DocumentSession` is shorthand for calling `session.advanced().documentQuery`.
+
+<TabItem value="query_1a" label="query_1a">
+<CodeBlock language="java">
+{`session.query(Order.class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_1b" label="query_1b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class)
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="query_2a" label="query_2a">
+<CodeBlock language="java">
+{`session.query(Order.class, Orders_ByShipToAndLines.class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_2b" label="query_2b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, Orders_ByShipToAndLines.class)
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="query_3a" label="query_3a">
+<CodeBlock language="java">
+{`session.query(Order.class, Query.index("Orders/ByShipToAndLines"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_3b" label="query_3b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, "Orders/ByShipToAndLines", null, false);
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="query_4a" label="query_4a">
+<CodeBlock language="java">
+{`session.query(Order.class, Query.collection("orders"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="query_4b" label="query_4b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, null, "orders", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -1,0 +1,143 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, optimistic concurrency checks are **disabled**. Changes made outside our session object will be overwritten. Concurrent changes to the same document will use
+the Last Write Wins strategy so a lost update anomaly is possible with the default configuration of the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
+
+You can enable the optimistic concurrency strategy either globally, at the document store level or a per session basis.  
+In either case, with optimistic concurrency enabled, RavenDB will generate a concurrency exception (and abort all
+modifications in the current transaction) when trying to save a document that has been modified on the server side after the client loaded and modified it.
+
+The `ConcurrencyException` that might be thrown upon the `saveChanges` call, needs to be handled by the caller.  
+The operation can be retried (the document needs to be reloaded since it got changed meanwhile) or handle the error in a way that is suitable in a given scenario.
+
+<Admonition type="warning" title="">
+Note that `useOptimisticConcurrency` only applies to documents that has been _modified_ by the session. Loading documents `users/1-A` and `users/2-A` in a session, modifying
+`users/1-A` and then calling `saveChanges` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
+If the session were to try to save to `users/2-A` as well with optimistic concurrency enabled, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
+will be cancelled.
+</Admonition>
+
+You can also control optimistic concurrency per specific document. To enable it, [provide a Change Vector to Store](../../../client-api/session/storing-entities.mdx).  
+If you do not provide a change vector or if the change vector is `null`, optimistic concurrency will be disabled.  
+
+Setting the 'Change Vector' to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exists.
+
+Setting optimistic concurrency per specific document overrides the use of the `useOptimisticConcurrency` field from the `advanced` session operations.
+
+<Admonition type="info" title="">
+For a detailed description of transactions and concurrency control in RavenDB please refer to the  
+[Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
+</Admonition>
+
+## Enabling for a specific Session
+
+<TabItem value="optimistic_concurrency_1" label="optimistic_concurrency_1">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    session.advanced().setUseOptimisticConcurrency(true);
+
+    Product product = new Product();
+    product.setName("Some Name");
+
+    session.store(product, "products/999");
+    session.saveChanges();
+
+    try (IDocumentSession otherSession = store.openSession()) \{
+        Product otherProduct = otherSession.load(Product.class, "products/999");
+        otherProduct.setName("Other Name");
+
+        otherSession.saveChanges();
+    \}
+
+    product.setName("Better Name");
+    session.saveChanges(); //  will throw ConcurrencyException
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="">
+
+* Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted
+  if the version of the document sent in the `saveChanges()` call matches its version from the time it was initially read (loaded from the server).
+
+* Note that it's necessary to enable optimistic concurrency for ALL sessions that modify the documents for which you want to guarantee that no writes will be silently discarded.
+  If optimistic concurrency is enabled in some sessions but not in others, and they modify the same documents, the risk of the lost update anomaly still exists.
+
+</Admonition>
+
+## Enabling Globally
+
+The first example shows how to enable optimistic concurrency for a particular session. 
+This can be also enabled globally, for all opened sessions by using the convention `store.getConventions().setUseOptimisticConcurrency`.
+
+<TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
+<CodeBlock language="java">
+{`store.getConventions().setUseOptimisticConcurrency(true);
+
+try (IDocumentSession session = store.openSession()) \{
+    boolean isSessionUsingOptimisticConcurrency
+        = session.advanced().isUseOptimisticConcurrency(); // will return true
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Disabling Optimistic Concurrency for a Single Document when it is Enabled on Session
+
+Optimistic concurrency can be disabled for a single document by passing `null` as a change vector value to `store` method even when it is enabled for an entire session (or globally).
+
+<TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Product product = new Product();
+    product.setName("Some Name");
+
+    session.store(product, "products/999");
+    session.saveChanges();
+\}
+
+try (IDocumentSession session = store.openSession()) \{
+    session.advanced().setUseOptimisticConcurrency(true);
+
+    Product product = new Product();
+    product.setName("Some Other Name");
+
+    session.store(product, null, "products/999");
+    session.saveChanges(); // will NOT throw Concurrency exception
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Enabling Optimistic Concurrency for a New Document when it is Disabled on Session
+
+Optimistic concurrency can be enabled for a new document by passing `""` as a change vector value to `store` method even when it is disabled for an entire session (or globally).
+It will cause to throw `ConcurrencyException` if the document already exists.
+
+<TabItem value="optimistic_concurrency_4" label="optimistic_concurrency_4">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Product product = new Product();
+    product.setName("Some Name");
+    session.store(product, "products/999");
+    session.saveChanges();
+\}
+
+try (IDocumentSession session = store.openSession()) \{
+    session.advanced().setUseOptimisticConcurrency(false); // default value
+
+    Product product = new Product();
+    product.setName("Some Other Name");
+
+    session.store(product, "", "products/999");
+    session.saveChanges(); // will throw Concurrency exception
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

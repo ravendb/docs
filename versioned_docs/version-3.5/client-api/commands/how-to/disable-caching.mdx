@@ -5,130 +5,24 @@ sidebar_label: ...disable caching
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import DisableCachingCsharp from './_disable-caching-csharp.mdx';
+import DisableCachingJava from './_disable-caching-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Commands: How to disable caching?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To disable caching in Commands use `DisableAllCaching` method.
-
-## Syntax
-
-<TabItem value="disable_caching_1" label="disable_caching_1">
-<CodeBlock language="csharp">
-{`IDisposable DisableAllCaching();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| IDisposable | Method that will re-enable caching when disposed. |
-
-## Example
-
-<TabItem value="disable_caching_2" label="disable_caching_2">
-<CodeBlock language="csharp">
-{`store.DatabaseCommands.Put("employees/1", null, new RavenJObject(), new RavenJObject());
-store.DatabaseCommands.Put("employees/2", null, new RavenJObject(), new RavenJObject());
-
-store.DatabaseCommands.Get("employees/1"); // Response: '200 OK'
-Assert.Equal(0, store.JsonRequestFactory.NumberOfCachedRequests); // not read from cache
-Assert.Equal(1, store.JsonRequestFactory.CurrentCacheSize); // employees/1 in cache
-
-store.DatabaseCommands.Get("employees/1"); // Response: '304 Not Modified'
-Assert.Equal(1, store.JsonRequestFactory.NumberOfCachedRequests); // read from cache
-Assert.Equal(1, store.JsonRequestFactory.CurrentCacheSize); // employees/1 in cache
-
-store.DatabaseCommands.Get("employees/1"); // Response: '304 Not Modified'
-Assert.Equal(2, store.JsonRequestFactory.NumberOfCachedRequests); // read from cache
-Assert.Equal(1, store.JsonRequestFactory.CurrentCacheSize); // employees/1 in cache
-
-// disable read from cache however can write to cache
-using (store.DatabaseCommands.DisableAllCaching())
-\{
-    store.DatabaseCommands.Get("employees/2"); // Response: '200 OK'
-    Assert.Equal(2, store.JsonRequestFactory.NumberOfCachedRequests); // not read from cache
-    Assert.Equal(2, store.JsonRequestFactory.CurrentCacheSize); // employees/1 and employees/2 in cache
-    store.DatabaseCommands.Get("employees/2"); // Response: '200 OK'
-    Assert.Equal(2, store.JsonRequestFactory.NumberOfCachedRequests); // not read from cache
-    Assert.Equal(2, store.JsonRequestFactory.CurrentCacheSize); // employees/1 and employees/2 in cache
-\}
-
-store.DatabaseCommands.Get("employees/2"); // Response: '304 Not Modified'
-Assert.Equal(3, store.JsonRequestFactory.NumberOfCachedRequests); // read from cache
-Assert.Equal(2, store.JsonRequestFactory.CurrentCacheSize); // employees/1 and employees/2 in cache
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DisableCachingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To disable caching in Commands use `disableAllCaching` method.
-
-## Syntax
-
-<TabItem value="disable_caching_1" label="disable_caching_1">
-<CodeBlock language="java">
-{`public AutoCloseable disableAllCaching();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| AutoCloseable | Method that will re-enable caching when disposed. |
-
-## Example
-
-<TabItem value="disable_caching_2" label="disable_caching_2">
-<CodeBlock language="java">
-{`store.getDatabaseCommands().put("employees/1", null, new RavenJObject(), new RavenJObject());
-store.getDatabaseCommands().put("employees/2", null, new RavenJObject(), new RavenJObject());
-
-store.getDatabaseCommands().get("employees/1"); // Response: '200 OK'
-assertEquals(0, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
-assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
-
-store.getDatabaseCommands().get("employees/1"); // Response: '304 Not Modified'
-assertEquals(1, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
-assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
-
-store.getDatabaseCommands().get("employees/1"); // Response: '304 Not Modified'
-assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
-assertEquals(1, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 in cache
-
-try (AutoCloseable disableCache = store.getDatabaseCommands().disableAllCaching()) \{
-  store.getDatabaseCommands().get("employees/2"); // Response: '200 OK'
-  assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
-  assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
-  store.getDatabaseCommands().get("employees/2"); // Response: '200 OK'
-  assertEquals(2, store.getJsonRequestFactory().getNumOfCachedRequests()); // not read from cache
-  assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
-\}
-
-store.getDatabaseCommands().get("employees/2"); // Response: '304 Not Modified'
-assertEquals(3, store.getJsonRequestFactory().getNumOfCachedRequests()); // read from cache
-assertEquals(2, store.getJsonRequestFactory().getCurrentCacheSize()); // employees/1 and employees/2 in cache
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <DisableCachingJava />
 </LanguageContent>
+
 
 <!---
 - [Conventions related to caching](../../configuration/conventions/caching)

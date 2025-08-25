@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* All the Counters for a document are deleted when the document is deleted.  
+
+* You can also use the [countersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`delete` method to remove a specific Counter from a document.  
+
+* In this page:
+    - [`delete ` Syntax](../../document-extensions/counters/delete.mdx#delete-syntax)
+    - [`delete ` Usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    - [Code Sample](../../document-extensions/counters/delete.mdx#code-sample)
+</Admonition>
+## `delete ` Syntax
+
+<TabItem value="Delete-definition" label="Delete-definition">
+<CodeBlock language="java">
+{`void delete(String counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|:-------------:|:-------------:|:-------------:|
+| `counterName` |  String | Counter's name |
+
+
+## `delete ` Usage
+
+*  **Flow**:  
+  * Open a session  
+  * Create an instance of `countersFor`.  
+      * Either pass `countersFor` an explicit document ID, -or-  
+      * Pass it an entity tracked by the session, e.g. a document object 
+        returned from `session.query` or from `session.load`.  
+  * Execute `countersFor.delete`
+  * Execute `session.saveChanges` for the changes to take effect  
+
+* **Note**:
+    * A Counter you deleted will be removed only after the execution of `saveChanges()`.  
+    * Deleting a document deletes its Counters as well.  
+    * `delete` will **not** generate an error if the Counter doesn't exist.  
+
+
+
+## Code Sample
+<TabItem value="counters_region_Delete" label="counters_region_Delete">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass CountersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Delete the "productLikes" Counter
+    documentCounters.delete("productLikes");
+
+    // 4. Save changes to the session
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -1,0 +1,365 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When making a [Full-Text Search query](../../indexes/querying/searching.mdx),  
+  in addition to retrieving documents that contain the searched terms in the results,  
+  you can also request to get a list of text fragments that highlight the searched terms.  
+
+* This article provides examples of highlighting search results when querying a static-index.  
+  __Prior to this article__, please refer to [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results.mdx) for general knowledge about Highlighting,  
+  and for dynamic-queries examples.
+
+* In order to search and get fragments with highlighted terms when querying a static-index,  
+  the index field on which you search must be configured for highlighting,  
+  see examples below. 
+
+* In this page:
+  * [Highlight results - Map index](../../indexes/querying/highlighting.mdx#highlight-results---map-index)
+  * [Highlight results - Map-Reduce index](../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index)
+  * [Customize highlight tags](../../indexes/querying/highlighting.mdx#customize-highlight-tags)
+
+</Admonition>
+## Highlight results - Map index
+
+<Admonition type="note" title="">
+
+__Configure a Map index for highlighting__:
+In order to search and get fragments with highlighted terms,  
+the index-field on which you search __must be configured with__:
+
+   * Store the index-field in the index
+
+   * Configure the index-field for Full-Text search  
+
+   * Store the index-field term vector with position and offsets  
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
+{`// Define a Map index:
+// ===================
+class Employees_ByNotes extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        this.map("employees", employee => \{
+            return \{
+                EmployeeNotes: employee.Notes[0]
+            \};
+        \});
+
+        // Configure index-field 'EmployeeNotes' for highlighting:
+        // =======================================================
+        this.store("EmployeeNotes", "Yes");
+        this.index("EmployeeNotes", "Search");
+        this.termVector("EmployeeNotes", "WithPositionsAndOffsets");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Query the index with `search`__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define a param that will get the highlighted text fragments
+let managerHighlights;
+
+const employeesResults = await session
+     // Query the map index
+    .query({ indexName: "Employees/ByNotes" })
+     // Search for documents containing the term 'manager'
+    .search("EmployeeNotes", "manager")
+     // Request to highlight the searched term by calling 'highlight'
+    .highlight({
+        fieldName: "EmployeeNotes",
+        fragmentLength: 35,
+        fragmentCount: 2
+    }, x => { managerHighlights = x; })
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNotes"
+where search(EmployeeNotes, "manager")
+include highlight(EmployeeNotes, 35, 2)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Query the index with `whereEquals`__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define a param that will get the highlighted text fragments
+let managerHighlights;
+
+const employeesResults = await session
+    // Query the map index
+    .query({ indexName: "Employees/ByNotes" })
+    // Search for documents containing the term 'manager'
+    .whereEquals("EmployeeNotes", "manager")
+    // Request to highlight the searched term by calling 'highlight'
+    .highlight({
+        fieldName: "EmployeeNotes",
+        fragmentLength: 35,
+        fragmentCount: 2
+    }, x => { managerHighlights = x; })
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNotes"
+where EmployeeNotes == "manager"
+include highlight(EmployeeNotes, 35, 2)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Process results__:
+<TabItem value="highlight_3" label="highlight_3">
+<CodeBlock language="js">
+{`// 'employeesResults' contains all Employee DOCUMENTS that contain the term 'manager'.
+// 'managerHighlights' contains the text FRAGMENTS that highlight the 'manager' term.
+
+let fragmentsHtml = "<ul>";
+
+employeesResults.forEach((employee) => \{
+    // Call 'getFragments' to get all fragments for the specified employee id
+    let fragments = managerHighlights.getFragments(employee.id);
+    
+    fragments.forEach((fragment) => \{
+        fragmentsHtml += \`<li>Doc: $\{employee.id\}</li>\`
+        fragmentsHtml += \`<li>Fragment: $\{fragment\}</li>\`;
+        fragmentsHtml += \`<li></li>\`;
+    \});
+\});
+
+fragmentsHtml += "</ul>";
+
+// The resulting fragmentsHtml:
+// ============================
+
+// <ul>
+//   <li>Doc: employees/2-A</li>
+//   <li>Fragment:  to sales <b style="background:yellow">manager</b> in January</li>
+//   <li></li>
+//   <li>Doc: employees/5-A</li>
+//   <li>Fragment:  to sales <b style="background:yellow">manager</b> in March</li>
+//   <li></li>
+// </ul>
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## Highlight results - Map-Reduce index
+
+<Admonition type="note" title="">
+
+__Configure a Map-Reduce index for highlighting__:
+In order to search and get fragments with highlighted terms in a Map-Reduce index:  
+
+  * The index-field on which you __search__ must be configured with:
+
+      * Store the index-field in the index
+     
+      * Configure the index-field for Full-Text search
+
+      * Store the index-field term vector with position and offsets
+
+  * The index-field by which you __group-by__ must be stored in the index.
+
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="js">
+{`// Define a Map-Reduce index:
+// ==========================
+class ContactDetailsPerCountry extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        // The 'map' function defines what will be indexed from each document in the collection
+        this.map("companies", company => \{
+            return \{
+                Country: company.Address.Country,
+                ContactDetails: company.Contact.Name + " " + company.Contact.Title
+            \};
+        \});
+
+        // The 'reduce' function specifies how data is grouped and aggregated
+        this.reduce(results => results.groupBy(x => x.Country).aggregate(g => \{
+            return \{
+                // Set 'Country' as the group-by key
+                // 'ContactDetails' will be grouped per 'Country'
+                Country: g.key,
+
+                // Specify the aggregation
+                // here we use 'join' as the aggregation function
+                ContactDetails: g.values.map(x => x.ContactDetails).join(' ')
+            \}
+        \}));
+
+        // Configure index-field 'Country' for highlighting:
+        // =================================================
+        this.store("Country", "Yes");
+
+        // Configure index-field 'ContactDetails' for highlighting:
+        // =======================================================
+        this.store("ContactDetails", "Yes");
+        this.index("ContactDetails", "Search");
+        this.termVector("ContactDetails", "WithPositionsAndOffsets");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Query the index__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define the key by which the resulting fragments are grouped:
+// ============================================================
+const options = {
+    // Set 'groupKey' to be the index's group-by key
+    // The resulting fragments will be grouped per 'Country'
+    groupKey: "Country"
+};
+
+let agentHighlights;
+
+// Query the map-reduce index:
+// ===========================
+const detailsPerCountry  = await session
+    .query({ indexName: "ContactDetailsPerCountry" })
+     // Search for results containing the term 'agent'
+    .search("ContactDetails", "agent")
+     // Request to highlight the searched term by calling 'highlight'
+     // Pass the defined 'options'
+    .highlight({
+        fieldName: "ContactDetails",
+        fragmentLength: 35,
+        fragmentCount: 2,
+        ...options
+    }, x => { agentHighlights = x; })
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "ContactDetailsPerCountry"
+where search(ContactDetails, "agent")
+include highlight(ContactDetails, 35, 2, $p0)
+{"p0":{"groupKey":"Country"}}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+__Process results__:
+<TabItem value="highlight_5" label="highlight_5">
+<CodeBlock language="js">
+{`// 'detailsPerCountry' contains the contacts details grouped per country.
+// 'agentHighlights' contains the text FRAGMENTS that highlight the 'agent' term.
+
+let fragmentsHtml = "<ul>";
+
+employeesResults.forEach((item) => \{
+    // Call 'getFragments' to get all fragments for the specified country key
+    let fragments = agentHighlights.getFragments(item.Country);
+    
+    fragments.forEach((fragment) => \{
+        fragmentsHtml += \`<li>Doc: $\{item.Country\}</li>\`
+        fragmentsHtml += \`<li>Fragment: $\{fragment\}</li>\`;
+        fragmentsHtml += \`<li></li>\`;
+    \});
+\});
+
+fragmentsHtml += "</ul>";
+
+// The resulting fragmentsHtml:
+// ============================
+
+// <ul>
+//   <li>Country: UK</li>
+//   <li>Fragment: Devon Sales <b style="background:yellow">Agent</b> Helen Bennett</li>
+//   <li></li>
+//   <li>Country: France</li>
+//   <li>Fragment: Sales <b style="background:yellow">Agent</b> Carine Schmit</li>
+//   <li></li>
+//   <li>Country: France</li>
+//   <li>Fragment: Saveley Sales <b style="background:yellow">Agent</b> Paul Henriot</li>
+//   <li></li>
+//   <li>Country: Argentina</li>
+//   <li>Fragment: Simpson Sales <b style="background:yellow">Agent</b> Yvonne Moncad</li>
+//   <li></li>
+//   <li>Country: Argentina</li>
+//   <li>Fragment: Moncada Sales <b style="background:yellow">Agent</b> Sergio</li>
+//   <li></li>
+//   <li>Country: Brazil</li>
+//   <li>Fragment: Sales <b style="background:yellow">Agent</b> Anabela</li>
+//   <li></li>
+//   <li>Country: Belgium</li>
+//   <li>Fragment: Dewey Sales <b style="background:yellow">Agent</b> Pascale</li>
+//   <li></li>
+// </ul>
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## Customize highlight tags
+
+* __Default tags__:  
+
+  * Please refer to [Highlight tags](../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
+
+* __Customizing tags__:  
+
+  * The default html tags that wrap the highlighted terms can be customized to any other tags.  
+  
+  * Customizing the wrapping tags when querying an index is done exactly the same as when making  
+    a dynamic query where the `preTags` and `postTags` parameters are passed to the `highlight` method.
+  
+  * Follow the example in [Highlight - customize tags](../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags).
+
+
+
+

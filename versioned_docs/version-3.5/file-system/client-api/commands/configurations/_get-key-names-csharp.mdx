@@ -1,0 +1,42 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Commands: GetKeyNamesAsync
+
+**GetKeyNamesAsync** retrieves names of all stored configurations.
+
+
+
+<TabItem value="get_key_names_1" label="get_key_names_1">
+<CodeBlock language="csharp">
+{`Task<string[]> GetKeyNamesAsync(int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | The number of results that should be skipped |
+| **pageSize** | int | The maximum number of results that will be returned |
+---
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;string[]&gt;** |A task that represents the asynchronous operation. The result is the array of configuration names.  |
+
+## Example
+
+The below code will retrieve first 25 names of the existing configurations.
+
+<TabItem value="get_key_names_2" label="get_key_names_2">
+<CodeBlock language="csharp">
+{`string[] names = await store
+	.AsyncFilesCommands
+	.Configuration
+	.GetKeyNamesAsync();
+`}
+</CodeBlock>
+</TabItem>
+

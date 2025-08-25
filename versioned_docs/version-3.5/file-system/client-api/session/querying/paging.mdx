@@ -5,77 +5,19 @@ sidebar_label: Paging
 sidebar_position: 3
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PagingCsharp from './_paging-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-#Paging
-
-Paging is the process of splitting a set of results into pages and reading one page at a time. This is useful for optimizing bandwidth traffic, optimizing hardware usage, or simply because no user can handle huge amounts of data at once.
-
-<Admonition type="note" title="Safe By Default" id="safe-by-default" href="#safe-by-default">
-The default value of the page size on the client side is 128.
-</Admonition>
-
-
-
-In order to overwrite the default page size use the `Take` method:
-
-<TabItem value="paging_1" label="paging_1">
-<CodeBlock language="csharp">
-{`List<FileHeader> results = await session.Query()
-							.Take(10)
-							.ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-## Skip
-
-Use the `Skip` method to specify the number of results to skip to be able to get the results from the next pages:
-
-<TabItem value="paging_2" label="paging_2">
-<CodeBlock language="csharp">
-{`List<FileHeader> results = await session.Query()
-							.Skip(10)
-							.ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-The following code retrieves all files; each page contains no more that 10 items:
-
-<TabItem value="paging_3" label="paging_3">
-<CodeBlock language="csharp">
-{`const int pageSize = 10;
-int start = 0;
-List<FileHeader> results;
-
-do
-\{
-	results = await session.Query()
-							.Skip(start)
-							.Take(pageSize)
-							.ToListAsync();
-
-	start += pageSize;
-
-\} while (results.Count == pageSize);
-`}
-</CodeBlock>
-</TabItem>
+   <PagingCsharp />
 </LanguageContent>
+
 
 <!---
 

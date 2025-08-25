@@ -1,0 +1,183 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `TimeSeriesFor.Append` for the following actions:
+    * **Creating a new time series**  
+      Appending an entry to a time series that doesn't exist yet  
+      will create the time series and add it the new entry.
+    * **Creating a new time series entry**  
+      Appending a new entry to an existing time series  
+      will add the entry to the series at the specified timestamp.
+    * **Modifying an existing time series entry**  
+      Use `Append` to update the data of an existing entry with the specified timestamp.
+
+* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
+
+* To append **multiple** entries in a single transaction you can:  
+  * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).
+  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
+    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx). 
+* In this page:
+    * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
+
+</Admonition>
+## `Append` usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `TimeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Append` and pass it the time series entry details.
+* Call `session.SaveChanges` for the action to take effect on the server.
+
+**Note**:
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `SaveChanges` is executed.
+
+<TabItem value="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
+<CodeBlock language="csharp">
+{`var baseline = DateTime.Today;
+
+// Append 10 HeartRate values
+using (var session = store.OpenSession())
+\{
+    session.Store(new User \{ Name = "John" \}, "users/john");
+
+    ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "HeartRates");
+
+    for (int i = 0; i < 10; i++)
+    \{
+        tsf.Append(baseline.AddSeconds(i), new[] \{ 67d \}, "watches/fitbit");
+    \}
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    session.Store(new User { Name = "John" }, "users/john");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(1),
+        new[] { 52, 54, 63.5, 51.4, 9824 }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(2),
+        new[] { 54, 55, 61.5, 49.4, 8400 }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(3),
+        new[] { 55, 57, 65.5, 50, 9020 }, "companies/kitchenAppliances");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    session.Store(new User { Name = "John" }, "users/john");
+
+    // Call 'Append' with the custom StockPrice class
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(1), new StockPrice
+    {
+        Open = 52,
+        Close = 54,
+        High = 63.5,
+        Low = 51.4,
+        Volume = 9824,
+    }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(2), new StockPrice
+    {
+        Open = 54,
+        Close = 55,
+        High = 61.5,
+        Low = 49.4,
+        Volume = 8400,
+    }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(3), new StockPrice
+    {
+        Open = 55,
+        Close = 57,
+        High = 65.5,
+        Low = 50,
+        Volume = 9020,
+    }, "companies/kitchenAppliances");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="TimeSeriesFor-Append-definition-double" label="TimeSeriesFor-Append-definition-double">
+<CodeBlock language="csharp">
+{`// Append an entry with a single value (double)
+void Append(DateTime timestamp, double value, string tag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="TimeSeriesFor-Append-definition-inum" label="TimeSeriesFor-Append-definition-inum">
+<CodeBlock language="csharp">
+{`// Append an entry with multiple values (IEnumerable)
+void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                  | Description                   |
+|---------------|-----------------------|-------------------------------|
+| **timestamp** | `DateTime`            | Time series entry's timestamp |
+| **value**     | `double`              | Entry's value                 |
+| **values**    | `IEnumerable<double>` | Entry's values                |
+| **tag**       | `string`              | An optional tag for the entry |
+
+
+
+

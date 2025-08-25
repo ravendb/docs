@@ -1,0 +1,50 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## What are conflicts?
+When two or more changes of a single document are done concurrently in two separate nodes, 
+RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
+For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
+
+<Admonition type="note" title="">
+By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
+</Admonition>
+  
+## When is a conflict exception thrown?
+DocumentConflictException will be thrown for any access of a conflicted document.
+Fetching attachments of a conflicted document will throw `InvalidOperationException` on the server.
+
+## How can the conflict can be resolved from the client side?
+ * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
+
+<TabItem value="PUT_Sample" label="PUT_Sample">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    User user = new User();
+    user.setName("John Doe");
+
+    session.store(user, "users/123");
+    // users/123 is a conflicted document
+    session.saveChanges();
+    // when this request is finished, the conflict for user/132 is resolved.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+ * DELETE of a conflicted document will resolve its conflict.  
+
+<TabItem value="DELETE_Sample" label="DELETE_Sample">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    session.delete("users/123"); // users/123 is a conflicted document
+    session.saveChanges(); //when this request is finished, the conflict for users/132 is resolved.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/change-vector.mdx).
+

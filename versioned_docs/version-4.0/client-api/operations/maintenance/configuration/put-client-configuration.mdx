@@ -5,87 +5,24 @@ sidebar_label: Put Client Configuration
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import PutClientConfigurationCsharp from './_put-client-configuration-csharp.mdx';
+import PutClientConfigurationJava from './_put-client-configuration-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Put Client Configuration
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**PutClientConfigurationOperation** is used to save a client configuration on the server. It allows you to override client's settings remotely. 
-
-## Syntax
-
-<TabItem value="config_2_0" label="config_2_0">
-<CodeBlock language="csharp">
-{`public PutClientConfigurationOperation(ClientConfiguration configuration)
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **configuration** | `ClientConfiguration` | configuration which will be used by client API |
-
-## Example
-
-<TabItem value="config_2_2" label="config_2_2">
-<CodeBlock language="csharp">
-{`ClientConfiguration clientConfiguration = new ClientConfiguration
-\{
-    MaxNumberOfRequestsPerSession = 100,
-    ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
-\};
-
-store.Maintenance.Send(new PutClientConfigurationOperation(clientConfiguration));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutClientConfigurationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**PutClientConfigurationOperation** is used to save a client configuration on the server. It allows you to override client's settings remotely. 
-
-## Syntax
-
-<TabItem value="config_2_0" label="config_2_0">
-<CodeBlock language="java">
-{`PutClientConfigurationCommand(ClientConfiguration configuration)
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **configuration** | `ClientConfiguration` | configuration which will be used by client API |
-
-## Example
-
-<TabItem value="config_2_2" label="config_2_2">
-<CodeBlock language="java">
-{`ClientConfiguration clientConfiguration = new ClientConfiguration();
-clientConfiguration.setMaxNumberOfRequestsPerSession(100);
-clientConfiguration.setReadBalanceBehavior(ReadBalanceBehavior.FASTEST_NODE);
-
-store.maintenance().send(
-    new PutClientConfigurationOperation(clientConfiguration));
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <PutClientConfigurationJava />
 </LanguageContent>
+
 
 <!---
 ### Studio

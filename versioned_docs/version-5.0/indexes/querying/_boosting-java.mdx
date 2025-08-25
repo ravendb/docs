@@ -1,0 +1,70 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Indexing in RavenDB is built upon the Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+
+You can improve your searching mechanism and provide users with much more accurate results.
+
+## Examples
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("hobbies", "I love sport")
+    .boost(10)
+    .search("hobbies", "but also like reading books")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This search will promote users who do sports before book readers and they will be placed at the top of the results list.
+
+---
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .whereStartsWith("name", "G")
+    .boost(10)
+    .whereStartsWith("name", "A")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where boost(startsWith(Name, 'G'), 10) or boost(startsWith(Name, 'A'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This shows users which name starts with letter 'G' or 'A'. Results which starts with 'G' go first. 
+
+## Remarks
+
+<Admonition type="info" title="">
+Boosting is also available at the index definition level. You can read more about it [here](../../indexes/boosting.mdx).
+</Admonition>
+
+

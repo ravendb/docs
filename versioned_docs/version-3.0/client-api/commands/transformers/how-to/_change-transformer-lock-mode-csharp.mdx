@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
+
+## Syntax
+
+<TabItem value="change_transformer_lock_1" label="change_transformer_lock_1">
+<CodeBlock language="csharp">
+{`void SetTransformerLock(string name, TransformerLockMode lockMode);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of a transformer to change lock mode for |
+| **lockMode** | TransformerLockMode | new transformer lock mode |
+
+## Example
+
+<TabItem value="change_transformer_lock_2" label="change_transformer_lock_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.SetTransformerLock("Orders/Company", TransformerLockMode.LockedIgnore);
+`}
+</CodeBlock>
+</TabItem>
+
+

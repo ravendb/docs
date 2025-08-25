@@ -1,0 +1,183 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The **Data Subscription** feature supports subscribing not only to documents, but also to 
+  [document revisions](../../../document-extensions/revisions/overview.mdx).  
+* The revisions support is defined within the subscription.   
+  A [Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) 
+  must be defined for the subscribed collection.  
+* While a regular subscription processes a single document, a Revisions subscription processes 
+  **pairs of subsequent document revisions**.  
+    
+    Using this functionality allows you to keep track of each change made in a document, 
+    as well as compare pairs of subsequent versions of the document.  
+    
+    Both revisions are accessible for filtering and projection.  
+
+* In this page:  
+  * [Revisions Processing Order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-order)  
+  * [Simple Declaration and Usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-declaration-and-usage)   
+  * [Revisions Processing and Projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-and-projection)  
+
+</Admonition>
+## Revisions Processing Order
+
+The Revisions feature allows the tracking of changes made in a document, 
+by storing the audit trail of its changes over time. An audit trail entry 
+is called a **Document Revision**, and is comprised of a document snapshot.  
+Read more about revisions [here](../../../document-extensions/revisions/overview.mdx).  
+
+In a data subscription, revisions will be processed in pairs of subsequent entries.  
+For example: 
+Consider the following User document:  
+
+`{  
+    Name:'James',  
+    Age:'21'  
+}`  
+
+We update the User document twice, in separate operations:  
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
+
+The data subscriptions revisions processing mechanism will receive pairs of revisions 
+in the following order:  
+
+| # | Previous | Current  |
+|---|---|-----| 
+| 1 | `null` | `{ Name:'James', Age:'21' }`  |
+| 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
+| 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
+ 
+<Admonition type="warning" title="">
+The revisions subscription will be able to function properly only if 
+the revisions it needs to process are available. Please make sure that 
+your revisions configuration doesn't purge revisions before the subscription 
+had the chance to process them.  
+</Admonition>
+
+
+
+## Simple Declaration and Usage
+Here we declare a simple revisions subscription that will send pairs of subsequent document revisions to the client:
+
+Creation:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`name = store.Subscriptions.Create(
+    new SubscriptionCreationOptions<Revision<Order>>());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+{
+    Query = @"From Orders (Revisions = true)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Consumption:
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
+<CodeBlock language="csharp">
+{`SubscriptionWorker<Revision<Order>> revisionsWorker = 
+    // Specify <Revision<Order>> as the type of the processed items
+    store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+await revisionsWorker.Run((SubscriptionBatch<Revision<Order>> batch) =>
+\{
+    foreach (var item in batch.Items)
+    \{
+        // Access the previous revision via 'Result.Previous'
+        var previousRevision = item.Result.Previous;
+
+        // Access the current revision via 'Result.Current'
+        var currentRevision = item.Result.Current;
+
+        // Provide your own processing logic:
+        ProcessOrderRevisions(previousRevision, currentRevision);
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Revisions Processing and Projection
+Here we declare a revisions subscription that will filter and project data from revisions pairs:
+
+Creation:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`name = store.Subscriptions.Create(
+    new SubscriptionCreationOptions<Revision<Order>>()
+    {
+        Filter = tuple => tuple.Current.Lines.Count > tuple.Previous.Lines.Count,
+        Projection = tuple => new
+        {
+            PreviousRevenue = tuple.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity),
+            CurrentRevenue = tuple.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity)
+        }
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc){
+                    var sum = 0;
+                    for (var i in doc.Lines) { sum += doc.Lines[i];}
+                    return sum;
+                }
+
+            From Orders (Revisions = true)
+            Where getOrderLinesSum(this.Current)  > getOrderLinesSum(this.Previous)
+            Select 
+            {
+                PreviousRevenue: getOrderLinesSum(this.Previous),
+                CurrentRevenue: getOrderLinesSum(this.Current)                            
+            }"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Consumption:
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
+<CodeBlock language="csharp">
+{`SubscriptionWorker<Revision<Order>> revisionsWorker = 
+    // Specify <Revision<Order>> as the type of the processed items
+    store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+await revisionsWorker.Run((SubscriptionBatch<Revision<Order>> batch) =>
+\{
+    foreach (var item in batch.Items)
+    \{
+        // Access the previous revision via 'Result.Previous'
+        var previousRevision = item.Result.Previous;
+
+        // Access the current revision via 'Result.Current'
+        var currentRevision = item.Result.Current;
+
+        // Provide your own processing logic:
+        ProcessOrderRevisions(previousRevision, currentRevision);
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+

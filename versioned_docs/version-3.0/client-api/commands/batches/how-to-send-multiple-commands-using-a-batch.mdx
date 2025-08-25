@@ -5,243 +5,29 @@ sidebar_label: Send Multiple Commands
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToSendMultipleCommandsUsingABatchCsharp from './_how-to-send-multiple-commands-using-a-batch-csharp.mdx';
+import HowToSendMultipleCommandsUsingABatchJava from './_how-to-send-multiple-commands-using-a-batch-java.mdx';
+import HowToSendMultipleCommandsUsingABatchHttp from './_how-to-send-multiple-commands-using-a-batch-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Batches: How to send multiple commands using a batch?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To send **multiple operations** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `Batch` should be used.
-
-## Syntax
-
-<TabItem value="batch_1" label="batch_1">
-<CodeBlock language="csharp">
-{`BatchResult[] Batch(IEnumerable<ICommandData> commandDatas);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| An array of following commands:&lt;br /&gt;- [PutCommandData](../../../glossary/put-command-data.mdx)&lt;br /&gt;- [DeleteCommandData](../../../glossary/delete-command-data.mdx)&lt;br /&gt;- [PatchCommandData](../../../glossary/patch-command-data.mdx)&lt;br /&gt;- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx) | ICommandData | Commands to process. |
-
-| Return Value | |
-| ------------- | ----- |
-| [BatchResult](../../../glossary/batch-result.mdx)[] | An array of batch results matching **exactly** the order of commands send. |
-
-## Example
-
-<TabItem value="batch_2" label="batch_2">
-<CodeBlock language="csharp">
-{`BatchResult[] results = store
-	.DatabaseCommands
-	.Batch(new ICommandData[]
-		       \{
-			       new PutCommandData
-				       \{
-					       Key = "products/999",
-						   Document = RavenJObject.FromObject(new Product
-							\{
-								Name = "My Product",
-								Supplier = "suppliers/999"
-							\}),
-							Metadata = new RavenJObject()
-				       \}, 
-				   new PutCommandData
-					   \{
-							Key = "suppliers/999",
-							Document = RavenJObject.FromObject(new Supplier
-							\{
-								Name = "My Supplier",
-							\}),
-							Metadata = new RavenJObject()
-					   \}, 
-				   new DeleteCommandData
-					   \{
-							Key = "products/2"
-					   \}
-		       \});
-`}
-</CodeBlock>
-</TabItem>
-
-## Concurrency
-
-If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were attempted will succeed.
-
-## Transactions
-
-All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
-
-
+   <HowToSendMultipleCommandsUsingABatchCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To send **multiple operations** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `Batch` should be used.
-
-## Syntax
-
-<TabItem value="batch_1" label="batch_1">
-<CodeBlock language="java">
-{`public BatchResult[] batch(List<ICommandData> commandDatas);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| An array of following commands:&lt;br /&gt;- [PutCommandData](../../../glossary/put-command-data.mdx)&lt;br /&gt;- [DeleteCommandData](../../../glossary/delete-command-data.mdx)&lt;br /&gt;- [PatchCommandData](../../../glossary/patch-command-data.mdx)&lt;br /&gt;- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx) | ICommandData | Commands to process. |
-
-| Return Value | |
-| ------------- | ----- |
-| [BatchResult](../../../glossary/batch-result.mdx)[] | An array of batch results matching **exactly** the order of commands send. |
-
-## Example
-
-<TabItem value="batch_2" label="batch_2">
-<CodeBlock language="java">
-{`Product product1 = new Product();
-product1.setName("My Product");
-product1.setSupplier("suppliers/999");
-PutCommandData put1 = new PutCommandData("products/999", null, RavenJObject.fromObject(product1), new RavenJObject());
-
-Supplier supplier = new Supplier();
-supplier.setName("My Supplier");
-PutCommandData put2 = new PutCommandData("suppliers/999", null, RavenJObject.fromObject(supplier), new RavenJObject());
-
-DeleteCommandData delete = new DeleteCommandData("products/2", null);
-
-BatchResult[] results = store.getDatabaseCommands().batch(Arrays.<ICommandData> asList(put1, put2, delete));
-`}
-</CodeBlock>
-</TabItem>
-
-## Concurrency
-
-If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were attempted will succeed.
-
-## Transactions
-
-All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
-
-
+   <HowToSendMultipleCommandsUsingABatchJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-To send **multiple operations** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `bulk_docs` endpoint should be used.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/bulk_docs \\
-	-X POST \\
-	-d @commands.txt
-`}
-</CodeBlock>
-</TabItem>
-
-### Request
-
-| Payload |
-| ------- |
-| A serialized array of following commands:&lt;br /&gt;- [PutCommandData](../../../glossary/put-command-data.mdx)&lt;br /&gt;- [DeleteCommandData](../../../glossary/delete-command-data.mdx)&lt;br /&gt;- [PatchCommandData](../../../glossary/patch-command-data.mdx)&lt;br /&gt;- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data.mdx)  Commands to process. |
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-| Return Value | Description |
-| ------------- | ------------- |
-| [BatchResult](../../../glossary/batch-result.mdx)[] | An array of batch results matching **exactly** the order of commands send. |
-
----
-
-## Example
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl -X POST "http://localhost:8080/databases/NorthWind/bulk_docs" 
--d 
-[
-	\{"Document":
-		\{"Name":"My Product","Supplier":"suppliers/999","Id":null\},
-	"Key":"products/999",
-	"Method":"PUT",
-	"AdditionalData":null,
-	"Metadata":\{\}
-\},\{
-	"Document":
-		\{"Name":"My Supplier","Id":null\},
-	"Key":"suppliers/999",
-	"Method":"PUT",
-	"AdditionalData":null,
-	"Metadata":\{\}
-\},\{
-	"Key":"products/2",
-	"Method":"DELETE",
-	"AdditionalData":null,
-	"Etag":null\}
-]
-< HTTP/1.1 200 OK
-[
-	\{
-		"Etag":"01000000-0000-0009-0000-000000000001",
-		"Method":"PUT",
-		"Key":"products/999",
-		"Metadata":\{"Last-Modified":"2014-11-12T11:38:42.3180730Z"\},
-		"AdditionalData":null,
-		"PatchResult":null,
-		"Deleted":null
-	\},
-	\{
-		"Etag":"01000000-0000-0009-0000-000000000002",
-		"Method":"PUT",
-		"Key":"suppliers/999",
-		"Metadata":\{"Last-Modified":"2014-11-12T11:38:42.3180730Z"\},
-		"AdditionalData":null,
-		"PatchResult":null,
-		"Deleted":null
-	\},
-	\{
-		"Etag":null,
-		"Method":"DELETE",
-		"Key":"products/2",
-		"Metadata":null,
-		"AdditionalData":null,
-		"PatchResult":null,
-		"Deleted":true
-	\}
-]
-`}
-</CodeBlock>
-</TabItem>
-
-## Concurrency
-
-If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were attempted will succeed.
-
-## Transactions
-
-All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
-
-
+   <HowToSendMultipleCommandsUsingABatchHttp />
 </LanguageContent>
+
 
 <!---
 - [Put](../../../client-api/commands/documents/put)

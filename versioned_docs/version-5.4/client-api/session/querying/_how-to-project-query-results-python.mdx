@@ -1,0 +1,384 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Applying a projection in a query allows you to shape the query results to meet specific requirements,  
+  delivering just the data needed instead of the original full document content. 
+
+* This article provides examples of projecting query results when making a **dynamic-query**.  
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
+
+* In this page:
+
+  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+
+  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+      * [select_fields_query_data](../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields_query_data)  
+      * [raw_query with `select`](../../../client-api/session/querying/how-to-project-query-results.mdx#raw_query-with-select)  
+      * [select_fields](../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields)  
+
+</Admonition>
+## Projections overview
+
+### What are projections:
+
+* A projection refers to the **transformation of query results** into a customized structure,  
+  modifying the shape of the data returned by the server.
+
+* Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
+  you can request a subset of the data, specifying the document fields you want to get from the server.
+
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
+
+* Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
+
+* Content from inner objects and arrays can be projected.  
+  An alias name can be given to the projected fields, and any calculations can be made within the projection.
+
+### When to use projections:
+
+* Projections allow you to tailor the query results specifically to your needs.  
+  Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  since all transformation work is done on the server side without having to send a lot of data over the wire.
+
+* Returning partial document data from the server reduces network traffic,  
+  as clients receive only relevant data required for a particular task, enhancing overall performance.  
+
+* Savings can be significant if you need to show just a bit of information from a large document. For example:  
+  the size of the result when querying for all "Orders" documents where "Company" is "companies/65-A" is 19KB.  
+  Performing the same query and projecting only the "Employee" and "OrderedAt" fields results in only 5KB.
+
+* However, when you need to actively work with the complete set of data on the client side,  
+  then do use a query without a projection to retrieve the full document from the server.
+
+### Projections are not tracked by the session:
+
+* On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
+
+* Any modification made to a projection entity will not modify the corresponding document on the server when `save_changes` is called.
+
+### Projections are the final stage in the query pipeline:
+
+* Projections are applied as the last stage in the query pipeline,  
+  after the query has been processed, filtered, sorted, and paged.
+
+* This means that the projection does Not apply to all the documents in the collection,  
+  but only to the documents matching the query predicate.
+
+* Within the projection you can only filter what data will be returned from the matching documents,  
+  but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
+
+* Only a single projection request can be made per query.  
+  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query).
+
+### The cost of projections:
+
+* Queries in RavenDB do not allow any computation to occur during the query phase.  
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
+* inside the projection.
+
+* But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
+  So RavenDB limits the total time it will spend processing a query and its projections.  
+  Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
+      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
+      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
+
+
+
+
+## Projection Methods
+
+## select_fields_query_data
+
+* The most common way to perform a query with a projection is to use the `select_fields` or `select_fields_query_data` method.  
+
+* You can specify what fields from the document you want to retrieve and even provide a complex expression.
+
+### Example - Projecting individual fields of the document:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class CompanyNameCityAndCountry:
+    def __init__(self, name: str = None, city: str = None, country: str = None):
+        self.name = name
+        self.city = city
+        self.country = country
+
+query_data = QueryData(["name", "address.city", "address.country"], ["name", "city", "country"])
+results = list(
+    session.query(object_type=Company).select_fields_query_data(CompanyNameCityAndCountry, query_data)
+)
+
+# Each resulting object in the list is not a 'Company' entity, it is a new object containing ONLY the
+# fields specified in the query_data
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+select Name, Address.City as City, Address.Country as Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example - Projecting arrays and objects:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class OrderShippingAddressAndProductNames:
+    def __init__(self, ship_to: str = None, product_names: List[str] = None):
+        self.ship_to = ship_to
+        self.product_names = product_names
+
+# Retrieve all product names from the Lines array in an Order document
+query_data = QueryData(["ship_to", "lines[].product_name"], ["ship_to", "product_names"])
+
+projected_results = list(
+    session.query(object_type=Order).select_fields_query_data(
+        OrderShippingAddressAndProductNames, query_data
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Using simple expression:
+from "Orders"
+select ShipTo, Lines[].ProductName as ProductNames
+
+// Using JavaScript object literal syntax:
+from "Orders" as x
+select {
+    ShipTo: x.ShipTo, 
+    ProductNames: x.Lines.map(y => y.ProductName)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example - Projection with expression:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class EmployeeFullName:
+    def __init__(self, full_name: str):
+        self.full_name = full_name
+
+# Use custom function in query data or raw query
+query_data = QueryData.custom_function("o", "{ full_name: o.first_name + ' ' + o.last_name }")
+projected_results = list(
+    session.query(object_type=Employee).select_fields_query_data(EmployeeFullName, query_data)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e
+select {
+    FullName: e.FirstName + " " + e.LastName
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example - Projection with calculations:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class ProductsRaport:
+    def __init__(
+        self, total_products: int = None, total_discounted_products: int = None, total_price: int = None
+    ):
+        self.total_products = total_products
+        self.total_discounted_products = total_discounted_products
+        self.total_price = total_price
+
+# Use custom function in query data or raw query
+query_data = QueryData.custom_function(
+    "o",
+    "{"
+    "total_products: o.lines.length,"
+    " total_discounted_products: o.lines.filter((line) => line.discount > 0).length,"
+    " total_price: o.lines.reduce("
+    "(accumulator, line) => accumulator + line.price_per_unit * line.quantity, 0) "
+    "}",
+)
+projected_results = list(
+    session.query(object_type=Order).select_fields_query_data(ProductsRaport, query_data)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" as x
+select {
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                  .map(l => l.PricePerUnit * l.Quantity)
+                  .reduce((a, b) => a + b, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## raw_query with `select`
+
+Data can be projected by sending the server raw RQL with the `select` keyword using the `raw_query` method.  
+
+### Example - Projection with dates:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class EmployeeAgeDetails:
+    def __init__(self, day_of_birth: str = None, month_of_birth: str = None, age: str = None):
+        self.day_of_birth = day_of_birth
+        self.month_of_birth = month_of_birth
+        self.age = age
+
+# Use custom function in query data or raw query
+results = session.advanced.raw_query(
+    "from Employees as e select {"
+    ' "day_of_birth : new Date(Date.parse(e.birthday)).getDate(),'
+    " month_of_birth : new Date(Date.parse(e.birthday)).getMonth() + 1,"
+    " age : new Date().getFullYear() - new Date(Date.parse(e.birthday)).getFullYear()"
+    "}",
+    EmployeeAgeDetails,
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select { 
+    DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example - Projection with raw JavaScript code:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`class EmployeeBirthdayAndName:
+    def __init__(self, date: str = None, name: str = None):
+        self.date = date
+        self.name = name
+
+# Use custom function in query data or raw query
+results = list(
+    session.advanced.raw_query(
+        "from Employees as e select {"
+        "date: new Date(Date.parse(e.birthday)),"
+        "name: e.first_name.substr(0,3)"
+        "}",
+        EmployeeBirthdayAndName,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select {
+    Date: new Date(Date.parse(e.Birthday)), 
+    Name: e.FirstName.substr(0, 3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example - Projection with metadata:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`projected_results = list(
+    session.advanced.raw_query(
+        "from Employees as e "
+        + "select {"
+        + "     name : e.first_name, "
+        + "     metadata : getMetadata(e)"
+        + "}",
+        EmployeeNameAndMetadata,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select {
+     Name: e.FirstName, 
+     Metadata: getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## select_fields
+
+The projected fields can also be specified using the `select_fields` method.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="python">
+{`# Lets define an array with the field names that will be projected
+# (its optional, you can pass field names as args loosely)
+projection_fields = ["name", "phone"]
+# Make a query
+projected_results = list(
+    session.advanced.document_query(object_type=Company)
+    # Call 'select_fields'
+    # Pass the projection class type & the fields to be projected from it
+    .select_fields(ContactDetails, *projection_fields)
+)
+
+# Each resulting object in the list is not a 'Company' entity
+# it is an object of type 'ContactDetails' containing data ONLY for the specified fields
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

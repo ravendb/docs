@@ -1,0 +1,66 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`DefaultDb` parameter in `DocumentStore` constructor allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [Commands](../client-api/commands/what-are-commands.mdx) or create a [Session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
+
+## Example I
+
+<TabItem value="default_database_1" label="default_database_1">
+<CodeBlock language="java">
+{`// without specifying \`database\`
+// we will need to specify the database in each action
+// if no database is passed explicitly we will get an exception
+
+try (DocumentStore store = new DocumentStore()) \{
+    store.setUrls(new String[]\{ "http://localhost:8080" \});
+    store.initialize();
+
+    try (IDocumentSession session = store.openSession("Northwind")) \{
+        // ...
+    \}
+
+    CompactSettings compactSettings = new CompactSettings();
+    compactSettings.setDatabaseName("Northwind");
+    store.maintenance().server().send(new CompactDatabaseOperation(compactSettings));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="default_database_2" label="default_database_2">
+<CodeBlock language="java">
+{`// when \`database\` is set to \`Northwind\`
+// created \`operations\` or opened \`sessions\`
+// will work on \`Northwind\` database by default
+// if no database is passed explicitly
+try (DocumentStore store = new DocumentStore(new String[]\{ "http://localhost:8080" \}, "Northwind")) \{
+    store.initialize();
+
+    try (IDocumentSession northwindSession = store.openSession()) \{
+        // ...
+    \}
+
+    store.maintenance().send(new DeleteIndexOperation("NorthwindIndex"));
+
+
+    try (IDocumentSession adventureWorksSession = store.openSession("AdventureWorks")) \{
+        // ...
+    \}
+
+    store.maintenance().forDatabase("AdventureWorks").send(new DeleteIndexOperation("AdventureWorksIndex"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="note" title="">
+By default value of `DefaultDb` property in `DocumentStore` is `null` which means that actions will be executed on `<system>` database.
+</Admonition>
+
+

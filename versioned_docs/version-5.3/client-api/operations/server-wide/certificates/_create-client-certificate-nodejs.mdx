@@ -1,0 +1,79 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can generate a client certificate using **CreateClientCertificateOperation**.  
+
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
+
+</Admonition>
+
+## Usage
+
+<TabItem value="cert_1_1" label="cert_1_1">
+<CodeBlock language="js">
+{`const cert1 = await store.maintenance.server.send(
+    new CreateClientCertificateOperation([name], [permissions], [clearance], [password]));
+`}
+</CodeBlock>
+</TabItem>
+
+`SecurityClearance` options:
+
+* `UnauthenticatedClients`  
+* `ClusterAdmin`  
+* `ClusterNode`  
+* `Operator`  
+* `ValidUser`  
+
+`DatabaseAccess ` options:
+
+* `ReadWrite`  
+* `Admin`  
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **permissions** | Record&lt;string, DatabaseAccess&gt; | Record mapping databases to access level |
+| **clearance** | SecurityClearance | Access level |
+| **password** | string | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="cert_1_4" label="cert_1_4">
+<CodeBlock language="js">
+{`// With user role set to Cluster Administrator or Operator the user of this certificate
+// is going to have access to all databases
+const clientCertificateOperation = await store.maintenance.server.send(
+    new CreateClientCertificateOperation("admin", \{\}, "Operator"));
+const certificateRawData = clientCertificateOperation.rawData;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="cert_1_5" label="cert_1_5">
+<CodeBlock language="js">
+{`// when security clearance is ValidUser, you need to specify per database permissions
+
+const clearance = \{
+    [store.database]: "ReadWrite"
+\};
+    \}
+
+t clientCertificateOperation = await store.maintenance.server.send(
+new CreateClientCertificateOperation("user1", clearance, "ValidUser", "myPassword"));
+t certificateRawData = clientCertificateOperation.rawData;
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,173 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`void SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// storing new entity
+session.Store(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// storing new entity
+await asyncSession.StoreAsync(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+## Waiting for Indexes
+
+You can ask the server to wait until the indexes are caught up with changes made within the current session before the `SaveChanges` returns.
+
+* You can set a timeout (default: 15 seconds).
+* You can specify whether you want to throw on timeout (default: `false`).
+* You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
+by this write.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.WaitForIndexesAfterSaveChanges(
+    timeout: TimeSpan.FromSeconds(30),
+    throwOnTimeout: true,
+    indexes: new[] { "index/1", "index/2" });
+
+session.Store(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`asyncSession.Advanced.WaitForIndexesAfterSaveChanges(
+    timeout: TimeSpan.FromSeconds(30),
+    throwOnTimeout: true,
+    indexes: new[] { "index/1", "index/2" });
+
+await asyncSession.StoreAsync(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+
+
+## Waiting for Replication - Write Assurance
+
+Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `SaveChanges` returns.
+It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
+when you customize [the read balance behavior](../../client-api/configuration/load-balance-and-failover.mdx#readbalancebehavior) and need to ensure the next request from the user 
+will be able to read what he or she just wrote (the next open session might access a different node).
+
+You can ask the server to wait until the replication is caught up with those particular changes.
+
+* You can set a timeout (default: 15 seconds).
+* You can specify whether you want to throw on timeout, which may happen in case of network issues (default: `true`).
+* You can specify to how many replicas (nodes) the currently saved write must be replicated, before the `SaveChanges` returns (default: 1).
+* You can specify whether the `SaveChanges` will return only when the current write was replicated to majority of the nodes (default: `false`).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.WaitForReplicationAfterSaveChanges(
+    timeout: TimeSpan.FromSeconds(30),
+    throwOnTimeout: false, //default true
+    replicas: 2, //minimum replicas to replicate
+    majority: false);
+
+session.Store(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`asyncSession.Advanced.WaitForReplicationAfterSaveChanges(
+    timeout: TimeSpan.FromSeconds(30),
+    throwOnTimeout: false, //default true
+    replicas: 2, //minimum replicas to replicate
+    majority: false);
+
+await asyncSession.StoreAsync(new Employee
+{
+    FirstName = "John",
+    LastName = "Doe"
+});
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs> 
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+The `WaitForReplicationAfterSaveChanges` waits only for replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
+</Admonition>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+
+The usage of `WaitForReplicationAfterSaveChanges` doesn't involve a distributed transaction (those are not supported since RavenDB 4.0). Even if RavenDB was not able
+to write your changes to the number of replicas you specified, the data has been already written to some nodes. You will get an error but data is already there.
+
+This is a powerful feature, but you need to be aware of the possible pitfalls of using it.
+
+</Admonition>
+
+
+
+

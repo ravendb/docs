@@ -1,0 +1,47 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
+
+## Syntax
+
+<TabItem value="timing_1" label="timing_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> timings(Reference<QueryTimings> timings);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`Reference<QueryTimings> timingsRef = new Reference<>();
+List<Product> resultsWithTimings = session.advanced().documentQuery(Product.class)
+    .timings(timingsRef)
+    .search("Name", "Syrup")
+    .toList();
+
+Map<String, QueryTimings> timingsMap = timingsRef.value.getTimings();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where search(Name, 'Syrup')
+include timings()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+When you run the query with `include timings()` in Studio, extra tab appears. 
+
+![Figure 1. Include timings graphical results](./assets/include-timings-1.png)
+

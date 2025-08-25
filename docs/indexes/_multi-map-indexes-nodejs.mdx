@@ -1,0 +1,198 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [Indexing multiple collections](../indexes/multi-map-indexes.mdx#indexing-multiple-collections)  
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)  
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)  
+
+</Admonition>
+
+## Indexing multiple collections
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="js">
+{`class Dog extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="js">
+{`class Cat extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="js">
+{`class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we can define and query our index as follows:
+
+<TabItem value="multiMapIndex_1" label="multiMapIndex_1">
+<CodeBlock language="js">
+{`class Animals_ByName extends AbstractJavaScriptMultiMapIndexCreationTask  \{
+    constructor() \{
+        super();
+
+        // Index field 'name' from the Cats collection
+        this.map('Cats', cat => \{
+            return \{
+                name: cat.name
+            \};
+        \});
+
+        // Index field 'name' from the Dogs collection
+        this.map('Dogs', dog => \{
+            return \{
+                name: dog.name
+            \};
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+     // Query the index
+    .query({ indexName: "Animals/ByName" })
+     // Look for all animals (either a cat or a dog) that are named 'Mitzy' :)
+    .whereEquals("name", "Mitzy")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Animals/ByName"
+where Name == "Mitzy"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="multiMapIndex_2" label="multiMapIndex_2">
+<CodeBlock language="js">
+{`class Smart_Search extends AbstractJavaScriptMultiMapIndexCreationTask  \{
+    constructor() \{
+        super();
+       
+        this.map('Companies', company => \{
+            return \{
+                id: id(company),
+                content: company.Name,
+                displayName: company.Name,
+                collection: this.getMetadata(company)["@collection"]
+            \};
+        \});
+
+        this.map('Products', product => \{
+            return \{
+                id: id(product),
+                content: product.Name,
+                displayName: product.Name,
+                collection: this.getMetadata(product)["@collection"]
+            \};
+        \});
+
+        this.map('Employees', employee => \{
+            return \{
+                id: id(employee),
+                content: [employee.FirstName, employee.LastName],
+                displayName: employee.FirstName + " " +  employee.LastName,
+                collection: this.getMetadata(employee)["@collection"]
+            \};
+        \});
+
+        // Mark the 'content' field with 'Search' to enable full-text search queries
+        this.index("content", "Search");
+
+        // Store fields in index so that when projecting these fields from the query
+        // the data will come from the index, and not from the storage.
+        this.store("id", "Yes");
+        this.store("collection", "Yes");
+        this.store("displayName", "Yes");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Smart/Search" })
+     // Search across all indexed collections
+    .search("content", "Lau*")
+     // Project results
+    .selectFields([ "id", "displayName", "collection" ])
+    .all();
+    
+// Results:
+// ========
+    
+for (const result of results) {
+    console.log(result.collection + ": " + result.displayName);
+    
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products:  Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Smart/Search" 
+where search(content, "Lau*")
+select id() as id, displayName, collection
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Remarks
+
+<Admonition type="info" title="">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+

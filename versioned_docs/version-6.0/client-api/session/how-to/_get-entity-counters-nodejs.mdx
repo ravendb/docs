@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When a document is loaded to the session,  
+  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
+
+* If the document has __Counters__, the document metadata will also contain its counter names.  
+  The counter names are available for each entity using the `getCountersFor()` method from the `advanced` session operations.
+
+* In this page:
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
+</Admonition>
+## Get entity counters
+
+<TabItem value="example" label="example">
+<CodeBlock language="js">
+{`// Load a document
+const employee = await session.load("employees/1-A");
+
+// Get counter names from the loaded entity
+const counterNames = session.advanced.getCountersFor(employee);    
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`getCountersFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | T | The entity for which counter names will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `string[]` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br/>An exception is thrown if the entity is not tracked by the session. |
+
+
+
+

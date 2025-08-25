@@ -1,0 +1,56 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether a document contains a certain attachment,  
+  use the method `exists()` from the `advanced.attachments` session operations.
+
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities.mdx) the document or the attachment to the session,  
+  and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<TabItem value="exists" label="exists">
+<CodeBlock language="js">
+{`const exists = await session
+    .advanced
+    .attachments
+    .exists("categories/1-A", "image.jpg");
+
+if (exists) \{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`session.advanced.attachments.exists(docId, attachmentName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The ID of the document you want to check |
+| **attachmentName** | `string` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `Promise<boolean>` | `true` - The specified attachment exists on the document<br/>`false` - The attachment does not exist on the document |
+
+
+
+

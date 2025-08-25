@@ -5,73 +5,19 @@ sidebar_label: Remove Connection String
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import RemoveConnectionStringCsharp from './_remove-connection-string-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Remove Connection String Operation
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Use `RemoveConnectionStringOperation` to remove a connection string definition from the database.
-
-* In this page:
-  * [Remove connection string](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx#remove-connecion-string)
-  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx#syntax)
-
-</Admonition>
-## Remove connection string
-
-The following example removes a RavenDB Connection String.
-
-<TabItem value="remove_raven_connection_string" label="remove_raven_connection_string">
-<CodeBlock language="csharp">
-{`var ravenConnectionString = new RavenConnectionString()
-\{
-    // Note:
-    // Only the 'Name' property of the connection string is needed for the remove operation.
-    // Other properties are not considered.
-    Name = "ravendb-connection-string-name"
-\};
-               
-// Define the remove connection string operation,
-// pass the connection string to be removed.
-var removeConStrOp
-    = new RemoveConnectionStringOperation<RavenConnectionString>(ravenConnectionString);
-
-// Execute the operation by passing it to Maintenance.Send
-store.Maintenance.Send(removeConStrOp);
-`}
-</CodeBlock>
-</TabItem>
-
-
-
-## Syntax
-
-<TabItem value="remove_connection_string" label="remove_connection_string">
-<CodeBlock language="csharp">
-{`public RemoveConnectionStringOperation(T connectionString)
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameter            | Type  | Description                                                                                                                                                              |
-|----------------------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **connectionString** | `T`   | Connection string to remove:<br/>`RavenConnectionString`<br/>`SqlConnectionString`<br/>`OlapConnectionString`<br/>`ElasticSearchConnectionString`<br/>`QueueConnectionString` |
-
-
-
-
+   <RemoveConnectionStringCsharp />
 </LanguageContent>
+
 
 <!---
 ### Connection Strings

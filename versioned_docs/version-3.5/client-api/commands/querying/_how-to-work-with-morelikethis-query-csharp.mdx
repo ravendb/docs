@@ -1,0 +1,65 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To find similar or related documents use the **MoreLikeThis** method from the commands.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="csharp">
+{`MultiLoadResult MoreLikeThis(MoreLikeThisQuery query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed |
+
+| Return Value | |
+| ------------- | ----- |
+| [MultiLoadResult](../../../glossary/multi-load-result.mdx) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="csharp">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+MultiLoadResult result = store
+	.DatabaseCommands
+	.MoreLikeThis(
+		new MoreLikeThisQuery
+			\{
+				IndexName = "Articles/MoreLikeThis",
+				DocumentId = "articles/1",
+				Fields = new[] \{ "Body" \}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="csharp">
+{`// Search for similar documents to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+MultiLoadResult result = store
+	.DatabaseCommands
+	.MoreLikeThis(
+		new MoreLikeThisQuery
+		\{
+			IndexName = "Articles/MoreLikeThis",
+			DocumentId = "articles/1",
+			Fields = new[] \{ "Body" \},
+			AdditionalQuery = "Category:IT"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+

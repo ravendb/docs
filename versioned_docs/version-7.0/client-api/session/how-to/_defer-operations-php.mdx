@@ -1,0 +1,118 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The `defer` method allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server 
+  in a single batch when `saveChanges` is called, along with any other changes/operations 
+  made on the session.  
+  Thus, all deferred commands are **executed as part of the session's `saveChanges` transaction**.
+
+* In this page:   
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="php">
+{`// Defer is available in the session's \`advanced\` methods
+$session->advanced()->defer(
+    // Define commands to be executed:
+
+    // i.e. Put a new document
+    new PutCommandDataWithJson(
+        "products/999-A",
+        null,
+        null,
+        [
+            "Name" => "My Product",
+            "Supplier" => "suppliers/1-A",
+            "@metadata" => [
+                "@collection" => "Products"
+            ]
+        ]
+    ),
+
+    // Patch document
+    new PatchCommandData(
+        "products/999-A",
+        null,
+        PatchRequest::forScript("this.Supplier = 'suppliers/2-A';"),
+        null
+    ),
+
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `CommandDataInterface` interface and can be deferred:  
+
+  - [putCommandData](../../../glossary/put-command-data.mdx)
+  - [deleteCommandData](../../../glossary/delete-command-data.mdx)
+  - deletePrefixedCommandData
+  - [patchCommandData](../../../glossary/patch-command-data.mdx)
+  - batchPatchCommandData
+  - putAttachmentCommandData
+  - deleteAttachmentCommandData
+  - [copyAttachmentCommandData](../../../glossary/copy-attachment-command-data.mdx)
+  - [moveAttachmentCommandData](../../../glossary/move-attachment-command-data.mdx)
+  - [countersBatchCommandData](../../../glossary/counters-batch-command-data.mdx)
+  - putCompareExchangeCommandData
+  - deleteCompareExchangeCommandData
+  - copyTimeSeriesCommandData
+  - timeSeriesBatchCommandData
+  - forceRevisionCommandData
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="php">
+{`/**
+ * Usage:
+ *   - defer(CommandDataInterface $command): void
+ *   - defer(CommandDataInterface ...$commands): void
+ *   - defer(array<CommandDataInterface> $commands): void
+ *
+ *   - defer(CommandDataInterface $command, array $commands): void
+ *
+ * Example:
+ *   - defer($cmd);
+ *   - defer($cmd1, $cmd2, $cmd3, $cmd4 ...)
+ *   - defer([$cmd1, $cmd2, $cmd4, $cmd4, ...])
+ *   - defer($cmd1, [$cmd2, $cmd3])
+ *
+ */
+public function defer(...$commands): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **$command** | `CommandDataInterface` | A command to be executed |
+| **$commands** | `array<CommandDataInterface>` | An array of commands to be executed |
+| **$commands** | `array` | An array of commands to be executed |
+
+
+
+

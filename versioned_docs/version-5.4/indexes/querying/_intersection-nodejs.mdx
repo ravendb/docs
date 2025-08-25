@@ -1,0 +1,161 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To allow users to `intersect` queries on the server-side and return only documents 
+  that match **all** the provided sub-queries, we introduced the query intersection feature.
+
+* In this page:
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
+
+</Admonition>
+## Intersection
+
+Let's consider a case where we have a T-Shirt class:
+
+<TabItem value="intersection_1" label="intersection_1">
+<CodeBlock language="js">
+{`class TShirt \{
+    constructor(data) \{
+        this.id = data.id;
+        this.manufacturer = data.manufacturer;
+        this.releaseYear = data.releaseYear;
+        this.types = data.types;
+    \}
+\}
+
+class TShirtType \{
+    constructor(color, size) \{
+        this.color = color;
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+We will fill our database with few records:
+
+<TabItem value="intersection_3" label="intersection_3">
+<CodeBlock language="js">
+{`const tShirt1 = new TShirt(\{
+    id: "tshirts/1",
+    manufacturer: "Raven",
+    releaseYear: 2010,
+    types: [
+        new TShirtType("Blue", "Small"),
+        new TShirtType("Black", "Small"),
+        new TShirtType("Black", "Medium"),
+        new TShirtType("Gray", "Large")
+    ]
+\});
+await session.store(tShirt1);
+
+const tShirt2 = new TShirt(\{
+    id: "tshirts/2",
+    manufacturer: "Wolf",
+    releaseYear: 2011,
+    types: [
+        new TShirtType("Blue", "Small"),
+        new TShirtType("Black", "Large"),
+        new TShirtType("Gray", "Medium")
+    ]
+\});
+await session.store(tShirt2);
+
+const tShirt3 = new TShirt(\{
+    id: "tshirts/3",
+    manufacturer: "Raven",
+    releaseYear: 2011,
+    types: [
+        new TShirtType("Yellow", "Small"),
+        new TShirtType("Gray", "Large")
+    ]
+\});
+await session.store(tShirt3);
+
+const tShirt4 = new TShirt(\{
+    id: "tshirts/4",
+    manufacturer: "Raven",
+    releaseYear: 2012,
+    types: [
+        new TShirtType("Blue", "Small"),
+        new TShirtType("Gray", "Large")
+    ]
+\});
+await session.store(tShirt4);
+`}
+</CodeBlock>
+</TabItem>
+
+Now we want to return all the T-shirts that are manufactured by `Raven` and contain both 
+`Small Blue` and `Large Gray` types.
+
+To do this, we need to use the `intersect` query method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const result = await session.query({ 
+        indexName: "TShirts/ByManufacturerColorSizeAndReleaseYear"
+    })
+    .whereEquals("manufacturer", "Raven")
+    .intersect()
+    .whereEquals("color", "Blue")
+    .andAlso()
+    .whereEquals("size", "Small")
+    .intersect()
+    .whereEquals("color", "Gray")
+    .andAlso()
+    .whereEquals("size", "large")
+    .ofType(TShirts_ByManufacturerColorSizeAndReleaseYearResult)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class TShirts_ByManufacturerColorSizeAndReleaseYearResult {
+    constructor(data) {
+        this.manufacturer = data.manufacturer;
+        this.color = data.color;
+        this.size = data.size;
+        this.releaseYear = data.releaseYear;
+    }
+}
+
+class TShirts_ByManufacturerColorSizeAndReleaseYear extends AbstractIndexCreationTask {
+
+    constructor() {
+        super();
+
+        this.map = \`docs.TShirts.SelectMany(tshirt => tshirt.types, (tshirt, type) => new {
+                manufacturer = tshirt.manufacturer,
+                color = type.color,
+                size = type.size,
+                releaseYear = tshirt.releaseYear
+            })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(manufacturer = 'Raven', color = 'Blue' and size = 'Small', color = 'Gray' and size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The above query will return `tshirts/1` and `tshirts/4`, that match **all** sub-queries.  
+`tshirts/2` will not be included in the results because it is not manufactured by `Raven`, 
+and `tshirts/3` will not be included because it is not available in `Small Blue`.  
+
+
+
+

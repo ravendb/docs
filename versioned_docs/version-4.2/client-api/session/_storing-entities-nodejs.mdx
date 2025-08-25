@@ -1,0 +1,92 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To store entities inside the **session** object, use `store()` method.
+
+## Syntax
+
+You can pass the following arguments to the `store()` method:
+
+- entity only: Stores the entity in the session, then extracts the ID from the entity or generates a new one if it's not available.
+
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="js">
+{`session.store(entity, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+- entity and an id: Stores the entity in a session with given ID.
+
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="js">
+{`session.store(entity, id);
+`}
+</CodeBlock>
+</TabItem>
+
+- entity, an id and store options: Stores the entity in a session with given ID, forces concurrency check with given change vector.
+
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="js">
+{`session.store(entity, id, [options]);
+session.store(entity, id, [documentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+All of the above calls accept an optional *callback* function as the last argument.
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity that will be stored |
+| **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
+| **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
+| **options** | object | Options object with the below properties: |
+| &nbsp;&nbsp;&nbsp;*changeVector* | string | entity *change vector* used for concurrency checks (`null` to skip check) |
+| &nbsp;&nbsp;&nbsp;*documentType* | class | class used to determine collection of the entity (extracted from entity by default)|
+| **callback** | error-first callback | (optional) callback function called when finished |
+
+| Return value | |
+| ------------- | ----- |
+| Promise | A promise resolved once entity obtained an ID and is stored in Unit of Work |
+
+<Admonition type="warning" title="Asynchronous call " id="asynchronous-call" href="#asynchronous-call">
+`store()` method is asynchronous (since it reaches out to server to get a new ID) and returns a `Promise`, so don't forget to use either `await`, `.then()` it or wait for the `callback` to be called *before* saving changes. 
+</Admonition>
+
+<Admonition type="info" title="On collection name when storing object literals " id="on-collection-name-when-storing-object-literals" href="#on-collection-name-when-storing-object-literals">
+In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
+
+<TabItem value="storing_literals_1" label="storing_literals_1">
+<CodeBlock language="js">
+{`const store = new DocumentStore(urls, database);
+store.conventions.findCollectionNameForObjectLiteral = entity => entity["collection"];
+// ...
+store.initialize();
+`}
+</CodeBlock>
+</TabItem>
+
+This needs to be done before an `initialize()` call on `DocumentStore` instance. If you fail to do so, your entites will land up in *@empty* collection having an *UUID* for an ID.
+
+</Admonition>
+
+## Example
+
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="js">
+{`const employee = new Employee("John", "Doe");
+
+// generate Id automatically
+await session.store(employee);
+
+// send all pending operations to server, in this case only \`Put\` operation
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To get a client certificate by thumbprint use **GetCertificateOperation**.
+
+## Syntax
+
+<TabItem value="get_cert_1" label="get_cert_1">
+<CodeBlock language="csharp">
+{`public GetCertificateOperation(string thumbprint)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | string | Certificate thumbprint |
+
+| Return Value | |
+| ------------- | ----- |
+| `CertificateDefinition` | Certificate definition |
+
+## Example
+
+<TabItem value="get_cert_2" label="get_cert_2">
+<CodeBlock language="csharp">
+{`string thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+CertificateDefinition definition = 
+    store.Maintenance.Server.Send(new GetCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+

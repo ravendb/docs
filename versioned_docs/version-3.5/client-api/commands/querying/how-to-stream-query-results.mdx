@@ -5,119 +5,29 @@ sidebar_label: How to stream query results?
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import HowToStreamQueryResultsCsharp from './_how-to-stream-query-results-csharp.mdx';
+import HowToStreamQueryResultsJava from './_how-to-stream-query-results-java.mdx';
+import HowToStreamQueryResultsHttp from './_how-to-stream-query-results-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: Querying: How to stream query results?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-Use **StreamQuery** method to stream results of a selected index according to a specified query.
-
-## Syntax
-
-<TabItem value="stream_query_1" label="stream_query_1">
-<CodeBlock language="csharp">
-{`IEnumerator<RavenJObject> StreamQuery(
-	string index,
-	IndexQuery query,
-	out QueryHeaderInformation queryHeaderInfo);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | string | A name of an index to query |
-| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
-| **queryHeaderInfo** | [QueryHeaderInformation ](../../../glossary/query-header-information.mdx) | Information about performed query |
-
-| Return Value | |
-| ------------- | ----- |
-| IEnumerator`<RavenJObject>` | Enumerator with query results |
-| [QueryHeaderInformation ](../../../glossary/query-header-information.mdx) | Information about performed query |
-
-## Example
-
-<TabItem value="stream_query_2" label="stream_query_2">
-<CodeBlock language="csharp">
-{`QueryHeaderInformation queryHeaderInfo;
-IEnumerator<RavenJObject> enumerator = store
-	.DatabaseCommands
-	.StreamQuery(
-		"Orders/Totals",
-		new IndexQuery
-		\{
-			Query = "Company:companies/1"
-		\},
-		out queryHeaderInfo);
-
-while (enumerator.MoveNext())
-\{
-	RavenJObject order = enumerator.Current;
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToStreamQueryResultsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-Use **StreamQuery** method to stream results of a selected index according to a specified query.
-
-## Syntax
-
-<TabItem value="stream_query_1" label="stream_query_1">
-<CodeBlock language="java">
-{`public CloseableIterator<RavenJObject> streamQuery(String index, IndexQuery query, Reference<QueryHeaderInformation> queryHeaderInfo);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **index** | String | A name of an index to query |
-| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
-| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information.mdx)&gt; | Information about performed query |
-
-| Return Value | |
-| ------------- | ----- |
-| IEnumerator`<RavenJObject>` | Enumerator with query results |
-| Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information.mdx)&gt; | Information about performed query |
-
-## Example
-
-<TabItem value="stream_query_2" label="stream_query_2">
-<CodeBlock language="java">
-{`Reference<QueryHeaderInformation> queryHeaderInfoRef = new Reference<>();
-try (CloseableIterator<RavenJObject> iterator = store.getDatabaseCommands().streamQuery("Orders/Totals", new IndexQuery("Company:companies/1"), queryHeaderInfoRef)) \{
-
-  while (iterator.hasNext()) \{
-    RavenJObject order = iterator.next();
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <HowToStreamQueryResultsJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-See [Streams](../../../client-api/commands/documents/stream.mdx)
-
+   <HowToStreamQueryResultsHttp />
 </LanguageContent>
+
 
 <!---
 - [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)

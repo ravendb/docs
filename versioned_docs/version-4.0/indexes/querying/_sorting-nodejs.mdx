@@ -1,0 +1,332 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Basics
+
+Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+To start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByDescending("UnitsInStock")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Forcing ordering type" id="forcing-ordering-type" href="#forcing-ordering-type">
+
+`OrderingType` can be forced by passing `OrderingType` explicitly to one of the `orderBy()` methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByDescending("UnitsInStock", "String")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Ordering by Score
+
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)) and this value is available in metadata information of a document under `@index-score` (the higher the value, the better the match). To order by this value you can use the `orderByScore()` or the `orderByScoreDescending()` methods:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByScore()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by score()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+## Chaining Orderings
+
+It is also possible to chain multiple orderings of the query results. 
+You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
+This can be achieved by using the `orderBy()` (`orderByDescending()`) and `orderByScore()` (`orderByScoreDescending()`) methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStockAndName" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderBy("UnitsInStock")
+    .orderByScore()
+    .orderByDescending("Name")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStockAndName extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock,
+            Name = product.Name
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStockAndName' 
+where UnitsInStock > 10
+order by UnitsInStock, score(), Name desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Random Ordering
+
+If you want to randomize the order of your results each time the query is executed, use the `randomOrdering()` method (API reference [here](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .randomOrdering()
+    .whereGreaterThan("UnitsInStock", 10)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by random()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Ordering When a Field is Searchable
+
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers.mdx), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable, and sort by it.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByName/Search" })
+    .search("Name", "Louisiana")
+    .orderByDescending("NameForSorting")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByName_Search extends AbstractIndexCreationTask {
+
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            Name = product.Name,    
+            NameForSorting = product.Name
+        })\`;
+
+        this.index("Name", "Search");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByName/Search' 
+where search(Name, 'Louisiana')
+order by NameForSorting desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## AlphaNumeric Ordering
+
+Sometimes when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+
+For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
+
+If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+
+To order in this mode you can pass the `"AlphaNumeric"` type into `orderBy()` or `orderByDescending()`:   
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderBy("Name", "AlphaNumeric")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Products.Select(product => new {    
+            UnitsInStock = product.UnitsInStock
+        })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock ' 
+where UnitsInStock > 10
+order by Name as alphanumeric
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

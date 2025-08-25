@@ -5,31 +5,19 @@ sidebar_label: BlittableJsonReaderObject
 sidebar_position: 0
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import BlittableJsonReaderObjectCsharp from './_blittable-json-reader-object-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Glossary: BlittableJsonReaderObject
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-The reader object of a blittable JSON document.
-
-### Properties
-
-| Name | Type | Description |
-| ------------- | ------------- | ----- |
-| **Count** | int | The number of properties. |
-| **Size** |  int | The size of a document in blittable format (in bytes). |
-
+   <BlittableJsonReaderObjectCsharp />
 </LanguageContent>
+
 
 <!---
 

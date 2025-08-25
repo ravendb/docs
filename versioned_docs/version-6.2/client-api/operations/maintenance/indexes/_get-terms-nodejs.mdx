@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetTermsOperation` to retrieve the **terms of an index-field**.
+
+* In this page:
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#get-terms-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms.mdx#syntax)
+
+</Admonition>
+## Get Terms example
+
+<TabItem value="get_index_terms" label="get_index_terms">
+<CodeBlock language="js">
+{`// Define the get terms operation
+// Pass the requested index-name, index-field, start value & page size
+const getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
+
+// Execute the operation by passing it to maintenance.send
+const fieldTerms = await store.maintenance.send(getTermsOp);
+
+// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="get_index_terms_syntax" label="get_index_terms_syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+const getTermsOp = new GetTermsOperation(indexName, field, fromValue);
+const getTermsOp = new GetTermsOperation(indexName, field, fromValue, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to get terms for |
+| **field** | `string` | Name of index-field to get terms for |
+| **fromValue** | `string` | The starting term from which to return results.<br/>This term is not included in the results.<br/>`null` - start from first term. |
+| **pageSize** | `number` | Number of terms to get.<br/>`undefined/null` - return all terms.  |
+
+| Return value of `store.maintenance.send(getTermsOp)` | Description |
+| - |- |
+| `string[]` | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+
+
+

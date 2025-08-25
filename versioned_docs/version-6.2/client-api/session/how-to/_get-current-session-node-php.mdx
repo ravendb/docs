@@ -1,0 +1,66 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When working in a RavenDB cluster, a database can reside on multiple nodes.  
+When the client needs to send a request to the server, it can have several nodes to choose from.
+
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) 
+to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
+
+Use the `getCurrentSessionNode` method from the `advanced` session operations 
+to find out what is the current node that the session sends its requests to.
+
+## Syntax
+
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="php">
+{`public function getCurrentSessionNode(): ServerNode;
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The return value of `getCurrentSessionNode` is a `ServerNode` object
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="php">
+{`class ServerNode
+\{
+    private ?Url $url = null;
+    private ?string $database = null;
+    private string $clusterTag;
+    private ?ServerNodeRole $serverRole = null;
+
+    public function __construct()
+    \{
+        $this->serverRole = ServerNodeRole::none();
+    \}
+
+    // ... getters and setters
+\}
+
+class ServerNodeRole
+\{
+    public static function none(): ServerNodeRole;
+    public static function promotable(): ServerNodeRole;
+    public static function member(): ServerNodeRole;
+    public static function rehab(): ServerNodeRole;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="php">
+{`$serverNode = $session->advanced()->getCurrentSessionNode();
+echo $serverNode->getUrl();
+`}
+</CodeBlock>
+</TabItem>
+
+

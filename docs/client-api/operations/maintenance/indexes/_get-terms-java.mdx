@@ -1,0 +1,43 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The **GetTermsOperation** will retrieve stored terms for a field of an index.
+
+## Syntax
+
+<TabItem value="get_terms1" label="get_terms1">
+<CodeBlock language="java">
+{`public GetTermsOperation(String indexName, String field, String fromValue)
+
+public GetTermsOperation(String indexName, String field, String fromValue, Integer pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index to get terms for |
+| **field** | String | Name of field to get terms for |
+| **fromValue** | String | The starting term from which to return results |
+| **pageSize** | Integer | Number of terms to get |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+## Example
+
+<TabItem value="get_terms2" label="get_terms2">
+<CodeBlock language="java">
+{`String[] terms = store
+    .maintenance()
+    .send(
+        new GetTermsOperation("Orders/Totals", "Employee", null));
+`}
+</CodeBlock>
+</TabItem>
+
+

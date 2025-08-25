@@ -1,0 +1,33 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
+
+## Syntax
+
+<TabItem value="saving_changes_1" label="saving_changes_1">
+<CodeBlock language="csharp">
+{`void SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="saving_changes_2" label="saving_changes_2">
+<CodeBlock language="csharp">
+{`// storing new entity
+session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

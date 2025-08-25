@@ -1,0 +1,69 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query results can be streamed using `stream` method from `advanced()` session operations.
+
+## Syntax
+
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx) or [IDocumentQuery](../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) | Query to stream results for. |
+| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator&lt;StreamResult&lt;T&gt;&gt; | Iterator with entities. |
+| [QueryHeaderInformation](../../../glossary/query-header-information.mdx) | Information about performed query. |
+
+## Example I
+
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="java">
+{`IDocumentQuery<Employee> query = session
+    .query(Employee.class, Employees_ByFirstName.class)
+    .whereEquals("FirstName", "Robert");
+
+CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
+
+while (results.hasNext()) \{
+    StreamResult<Employee> employee = results.next();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="stream_3" label="stream_3">
+<CodeBlock language="java">
+{`IDocumentQuery<Employee> query = session
+    .advanced()
+    .documentQuery(Employee.class)
+    .whereEquals("FirstName", "Robert");
+
+Reference<StreamQueryStatistics> streamQueryStatsRef = new Reference<>();
+CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query, streamQueryStatsRef);
+
+while (results.hasNext()) \{
+    StreamResult<Employee> employee = results.next();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -5,108 +5,24 @@ sidebar_label: Conflict listeners
 sidebar_position: 4
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import WhatAreConflictListenersAndHowToWorkWithThemCsharp from './_what-are-conflict-listeners-and-how-to-work-with-them-csharp.mdx';
+import WhatAreConflictListenersAndHowToWorkWithThemJava from './_what-are-conflict-listeners-and-how-to-work-with-them-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Listeners: What are conflict listeners and how to work with them?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener.
-To create your own listener of this type, just implement IDocumentConflictListener interface.
-
-<TabItem value="document_conflict_listener" label="document_conflict_listener">
-<CodeBlock language="csharp">
-{`public interface IDocumentConflictListener
-\{
-	bool TryResolveConflict(string key, JsonDocument[] conflictedDocs, 
-							out JsonDocument resolvedDocument);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-This example shows how to create an automatic conflict resolver by using `IDocumentConflictListener`, which will pick the newest item from the list of conflicted documents:
-
-<TabItem value="document_conflict_example" label="document_conflict_example">
-<CodeBlock language="csharp">
-{`public class ResolveInFavourOfNewest : IDocumentConflictListener
-\{
-	public bool TryResolveConflict(
-		string key,
-		JsonDocument[] conflictedDocs,
-		out JsonDocument resolvedDocument)
-	\{
-		DateTime? maxDate = conflictedDocs.Max(x => x.LastModified);
-		resolvedDocument = conflictedDocs
-							.FirstOrDefault(x => x.LastModified == maxDate);
-
-		if (resolvedDocument == null)
-			return false;
-
-		resolvedDocument.Metadata.Remove("@id");
-		resolvedDocument.Metadata.Remove("@etag");
-		return true;
-	\}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreConflictListenersAndHowToWorkWithThemCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener.
-To create your own listener of this type, just implement IDocumentConflictListener interface.
-
-<TabItem value="document_conflict_listener" label="document_conflict_listener">
-<CodeBlock language="java">
-{`public interface IDocumentConflictListener \{
-
-  public boolean tryResolveConflict(String key, List<JsonDocument> results, Reference<JsonDocument> resolvedDocument);
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-This example shows how to create an automatic conflict resolver by using `IDocumentConflictListener`, which will pick the newest item from the list of conflicted documents:
-
-<TabItem value="document_conflict_example" label="document_conflict_example">
-<CodeBlock language="java">
-{`public class ResolveInFavourOfNewest implements IDocumentConflictListener \{
-  @Override
-  public boolean tryResolveConflict(String key, List<JsonDocument> conflictedDocs, Reference<JsonDocument> resolvedDocument) \{
-    long maxDate = 0;
-    for (JsonDocument doc : conflictedDocs) \{
-      if (doc.getLastModified().getTime() > maxDate) \{
-        maxDate = doc.getLastModified().getTime();
-        resolvedDocument.value = doc;
-      \}
-    \}
-
-    return resolvedDocument.value != null;
-  \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <WhatAreConflictListenersAndHowToWorkWithThemJava />
 </LanguageContent>
+
 
 <!---
 - [Server : Replication : Conflicts](../../server/scaling-out/replication/replication-conflicts)

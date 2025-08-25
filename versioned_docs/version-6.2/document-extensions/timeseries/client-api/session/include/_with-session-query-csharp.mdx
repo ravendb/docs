@@ -1,0 +1,64 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When querying via `session.Query` for documents that contain time series,  
+  you can request to include their time series data in the server response.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:  
+   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#include-time-series-when-making-a-query)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#syntax)
+
+</Admonition>
+## Include time series when making a query
+
+In this example, we retrieve a document using `session.Query`  
+and _include_ entries from the document's "HeartRates" time series.
+
+<TabItem value="timeseries_region_Query-Document-And-Include-TimeSeries" label="timeseries_region_Query-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Query for a document and include a whole time-series
+    User user = session.Query<User>()
+        .Where(u => u.Name == "John")
+        .Include(includeBuilder => includeBuilder.IncludeTimeSeries("HeartRates"))
+        .FirstOrDefault();
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRates")
+        .Get();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+**`Include`** builder methods:
+
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type        | Description                                                           |
+|-----------|-------------|-----------------------------------------------------------------------|
+| **name**  | `string`    | Time series Name.                                                     |
+| **from**  | `DateTime?` | Time series range start (inclusive).<br/>Default: `DateTime.MinValue`. |
+| **to**    | `DateTime?` | Time series range end (inclusive).<br/>Default: `DateTime.MaxValue`.   |
+
+
+
+

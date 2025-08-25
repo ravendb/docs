@@ -1,0 +1,485 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [Static](../../studio/database/indexes/indexes-overview.mdx#index-types) time series indexes can be created from your client application or from the Studio.
+
+* Indexing allows for fast retrieval of the indexed time series data when querying a time series.
+
+* In this page:  
+  * [Time series indexes vs Document indexes](../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
+      * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
+  * [Syntax](../../document-extensions/timeseries/indexing.mdx#syntax)
+
+</Admonition>
+## Time series indexes vs Document indexes
+
+#### Auto-Indexes:
+
+* Time series index:  
+  Dynamic time series indexes are Not created in response to queries.
+
+* Document index:  
+  [Auto-indexes](../../studio/database/indexes/indexes-overview.mdx#indexes-types) are created in response to dynamic queries.
+#### Data source:
+
+* Time series index:
+
+    * Time series indexes process [segments](../../document-extensions/timeseries/design.mdx#segmentation) that contain time series entries.  
+      The entries are indexed through the segment they are stored in, for example, using a LINQ syntax that resembles this one:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from segment in timeseries
+from entry in segment
+...
+`}
+</CodeBlock>
+</TabItem>
+
+    * The following items can be indexed per index-entry in a time series index:
+        * Values & timestamp of a time series entry
+        * The entry tag
+        * Content from a document referenced by the tag
+        * Properties of the containing segment
+
+* Document index:
+
+    * The index processes fields from your JSON documents.  
+      Documents are indexed through the collection they belong to, for example, using this LINQ syntax:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from employee in employees
+...
+`}
+</CodeBlock>
+</TabItem>
+#### Query results:
+
+* Time series index:  
+  When [querying](../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+
+* Document index:  
+  The resulting objects are the document entities (unless results are projected).
+
+
+
+## Ways to create a time series index
+
+There are two main ways to create a time series index:
+
+1. Create a class that inherits from one of the following abstract index creation task classes:
+    * `AbstractTimeSeriesIndexCreationTask`  
+      for [map](../../indexes/map-indexes.mdx) and [map-reduce](../../indexes/map-reduce-indexes.mdx) time series indexes.  
+    * `AbstractMultiMapTimeSeriesIndexCreationTask`  
+      for [multi-map](../../indexes/multi-map-indexes.mdx) time series indexes.  
+    * `AbstractJavaScriptTimeSeriesIndexCreationTask`  
+      for static [javascript indexes](../../indexes/javascript-indexes.mdx).  
+
+2. Deploy a time series index definition via [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx):
+   * Create a `TimeSeriesIndexDefinition` directly.  
+   * Create a strongly typed index definition using `TimeSeriesIndexDefinitionBuilder`.  
+
+
+
+## Examples of time series indexes
+
+#### Map index - index single time series from single collection:
+
+* In this index, we index data from the "StockPrices" time series entries in the "Companies" collection (`TradeVolume`, `Date`).   
+
+* In addition, we index the containing document id (`DocumentID`), which is obtained from the segment,  
+  and some content from the document referenced by the entry's Tag (`EmployeeName`).
+ 
+* Each tab below presents one of the different [ways](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index) the index can be defined.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="python">
+{`class StockPriceTimeSeriesFromCompanyCollection(AbstractTimeSeriesIndexCreationTask):
+    # The index-entry:
+    # ================
+    class IndexEntry:
+        def __init__(
+            self, trade_volume: float = None, date: datetime = None, company_id: str = None, employee_name: str = None
+        ):
+            # The index-fields:
+            # =================
+            self.trade_volume = trade_volume
+            self.date = date
+            self.company_id = company_id
+            self.employee_name = employee_name
+
+    def __init__(self):
+        super().__init__()
+        self.map = """
+        from segment in timeSeries.Companies.StockPrices
+        from entry in segment.Entries
+        
+        let employee = LoadDocument(entry.Tag, "Employees")
+        
+        select new
+        {
+            trade_volume = entry.Values[4],
+            date = entry.Timestamp.Date,
+            company_id = segment.DocumentId,
+            employee_name = employee.FirstName + " " + employee.LastName
+        }
+        """
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+<CodeBlock language="python">
+{`class StockPriceTimeSeriesFromCompanyCollection_JS(AbstractJavaScriptTimeSeriesIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            timeSeries.map('Companies', 'StockPrices', function (segment) {
+
+                return segment.Entries.map(entry => {
+                    let employee = load(entry.Tag, 'Employees');
+
+                    return {
+                        trade_volume: entry.Values[4],
+                        date: new Date(entry.Timestamp.getFullYear(),
+                                       entry.Timestamp.getMonth(),
+                                       entry.Timestamp.getDate()),
+                        company_id: segment.DocumentId,
+                        employee_name: employee.FirstName + ' ' + employee.LastName
+                    };
+                });
+            })
+            """
+        }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+<CodeBlock language="python">
+{`# Define the 'index definition'
+index_definition = TimeSeriesIndexDefinition(
+    name="StockPriceTimeSeriesFromCompanyCollection",
+    maps={
+        """
+        from segment in timeSeries.Companies.StockPrices 
+        from entry in segment.Entries 
+
+        let employee = LoadDocument(entry.Tag, "Employees")
+
+        select new 
+        { 
+            trade_volume = entry.Values[4], 
+            date = entry.Timestamp.Date,
+            company_id = segment.DocumentId,
+            employee_name = employee.FirstName + ' ' + employee.LastName 
+        }
+        """
+    },
+)
+
+# Deploy the index to the server via 'PutIndexesOperation'
+store.maintenance.send(PutIndexesOperation(index_definition))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexDefinition_builder" label="IndexDefinition_builder">
+<CodeBlock language="python">
+{`# Create the index builder
+ts_index_def_builder = TimeSeriesIndexDefinitionBuilder("StockPriceTimeSeriesFromCompanyCollection")
+
+ts_index_def_builder.map = """
+    from segment in timeSeries.Companies.StockPrices
+    from entry in segment.Entries
+    select new 
+    {
+        trade_volume = entry.Values[4],
+        date = entry.Timestamp.Date,
+        company_id = segment.DocumentId,
+    }
+"""
+# Build the index definition
+index_definition_from_builder = ts_index_def_builder.to_index_definition(store.conventions)
+
+# Deploy the index to the server via 'PutIndexesOperation'
+store.maintenance.send(PutIndexesOperation(index_definition_from_builder))
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+* Querying this index, you can retrieve the indexed time series data while filtering by any of the index-fields.
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query_example_1" label="Query_example_1">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Retrieve time series data for the specified company:
+    # ====================================================
+    results = list(
+        session.query_index_type(
+            StockPriceTimeSeriesFromCompanyCollection, StockPriceTimeSeriesFromCompanyCollection.IndexEntry
+        ).where_equals("company_id", "Companies/91-A")
+    )
+
+    # Results will include data from all 'StockPrices' entries in document 'Companies/91-A'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "CompanyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="python">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "CompanyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_2" label="RQL_2">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "TradeVolume" > 150_000_000
+select distinct CompanyID
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+#### Multi-Map index - index time series from several collections:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Multi_Map_index" label="Multi_Map_index">
+<CodeBlock language="python">
+{`class Vechicles_ByLocation(AbstractMultiMapTimeSeriesIndexCreationTask):
+    class IndexEntry:
+        def __init__(
+            self, latitude: float = None, longitude: float = None, date: datetime = None, document_id: str = None
+        ):
+            self.latitude = latitude
+            self.longitude = longitude
+            self.date = date
+            self.document_id = document_id
+
+    def __init__(self):
+        super().__init__()
+        self._add_map(
+            """
+            from segment in timeSeries.Planes.GPS_Coordinates
+            from entry in segment.Entries
+            select new
+            {
+                latitude = entry.Values[0],
+                longitude = entry.Values[1],
+                date = entry.Timestamp.Date,
+                document_id = segment.DocumentId
+            }
+            """
+        )
+        self._add_map(
+            """
+            from segment in timeSeries.Ships.GPS_Coordinates
+            from entry in segment.Entries
+            select new
+            {
+                latitude = entry.Values[0],
+                longitude = entry.Values[1],
+                date = entry.Timestamp.Date,
+                document_id = segment.DocumentId
+            }
+            """
+        )
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Map-Reduce index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce_index" label="Map_Reduce_index">
+<CodeBlock language="python">
+{`class TradeVolume_PerDay_ByCountry(AbstractTimeSeriesIndexCreationTask):
+    class Result:
+        def __init__(self, total_trade_volume: float = None, date: datetime = None, country: str = None):
+            self.total_trade_volume = total_trade_volume
+            self.date = date
+            self.country = country
+
+    def __init__(self):
+        super().__init__()
+        # Define the Map part:
+        self.map = """
+        from segment in timeSeries.Companies.StockPrices
+        from entry in segment.Entries
+        
+        let company = LoadDocument(segment.DocumentId, 'Companies')
+        
+        select new
+        {
+            date = entry.Timestamp.Date,
+            country = company.Address.Country,
+            total_trade_volume = entry.Values[4],
+        }
+        """
+
+        # Define the Reduce part:
+        self._reduce = """
+        from r in results
+        group r by new {r.date, r.country}
+        into g
+        select new 
+        {
+            date = g.Key.date,
+            country = g.Key.country,
+            total_trade_volume = g.Sum(x => x.total_trade_volume)
+        }
+        """
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+### `AbstractJavaScriptTimeSeriesIndexCreationTask`
+ 
+<TabItem value="python" label="python">
+<CodeBlock language="python">
+{`class AbstractJavaScriptTimeSeriesIndexCreationTask(AbstractIndexCreationTaskBase[TimeSeriesIndexDefinition]):
+    def __init__(
+        self,
+        conventions: DocumentConventions = None,
+        priority: IndexPriority = None,
+        lock_mode: IndexLockMode = None,
+        deployment_mode: IndexDeploymentMode = None,
+        state: IndexState = None,
+    ):
+        super().__init__(conventions, priority, lock_mode, deployment_mode, state)
+        self._definition = TimeSeriesIndexDefinition()
+
+    @property
+    def maps(self) -> Set[str]:
+        return self._definition.maps
+
+    @maps.setter
+    def maps(self, maps: Set[str]):
+        self._definition.maps = maps
+
+    @property
+    def reduce(self) -> str:
+        return self._definition.reduce
+
+    @reduce.setter
+    def reduce(self, reduce: str):
+        self._definition.reduce = reduce
+`}
+</CodeBlock>
+</TabItem>
+
+Learn more about JavaScript indexes in [JavaScript Indexes](../../indexes/javascript-indexes.mdx).
+### `TimeSeriesIndexDefinition`
+
+<TabItem value="python" label="python">
+<CodeBlock language="python">
+{`class TimeSeriesIndexDefinition(IndexDefinition):
+    @property
+    def source_type(self) -> IndexSourceType:
+        return IndexSourceType.TIME_SERIES
+`}
+</CodeBlock>
+</TabItem>
+
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular 
+[`IndexDefinition`](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) 
+class from which it inherits, it is recommended to use `TimeSeriesIndexDefinition` when 
+creating a time series index definition in case additional functionality is added in 
+future versions of RavenDB.
+### `TimeSeriesIndexDefinitionBuilder`
+
+<TabItem value="python" label="python">
+<CodeBlock language="python">
+{`class TimeSeriesIndexDefinitionBuilder(AbstractIndexDefinitionBuilder[TimeSeriesIndexDefinition]):
+    def __init__(self, index_name: Optional[str] = None):
+        super().__init__(index_name)
+        self.map: Optional[str] = None
+`}
+</CodeBlock>
+</TabItem>
+### `TimeSeriesSegment`
+
+* Segment properties include the entries data and aggregated values that RavenDB automatically updates in the segment's header.
+
+* The following segment properties can be indexed:
+
+<TabItem value="python" label="python">
+<CodeBlock language="python">
+{`public sealed class TimeSeriesSegment
+\{
+    // The ID of the document this time series belongs to
+    public string DocumentId \{ get; set; \}
+ 
+    // The name of the time series this segment belongs to
+    public string Name \{ get; set; \}
+  
+    // The smallest values from all entries in the segment
+    // The first array item is the Min of all first values, etc.
+    public double[] Min \{ get; set; \}
+
+    // The largest values from all entries in the segment
+    // The first array item is the Max of all first values, etc.
+    public double[] Max \{ get; set; \}
+  
+    // The sum of all values from all entries in the segment 
+    // The first array item is the Sum of all first values, etc.
+    public double[] Sum \{ get; set; \}
+  
+    // The number of entries in the segment
+    public int Count \{ get; set; \}
+  
+    // The timestamp of the first entry in the segment
+    public DateTime Start \{ get; set; \}
+  
+    // The timestamp of the last entry in the segment
+    public DateTime End \{ get; set; \}
+  
+    // The segment's entries themselves
+    public TimeSeriesEntry[] Entries \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* These are the properties of a `TimeSeriesEntry` which can be indexed:
+
+<TabItem value="python" label="python">
+<CodeBlock language="python">
+{`public class TimeSeriesEntry
+\{
+    public DateTime Timestamp;
+    public string Tag;
+    public double[] Values;
+
+    // This is exactly equivalent to Values[0]
+    public double Value;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#How to subscribe to configuration item changes?
+
+All configuration changes can be tracked by using `ForConfiguration` method.
+
+
+
+<TabItem value="for_configuration_1" label="for_configuration_1">
+<CodeBlock language="csharp">
+{`IObservableWithTask<ConfigurationChangeNotification> ForConfiguration();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **IObservableWithTask&lt;[ConfigurationChangeNotification](../../../glossary/configuration-change-notification.mdx)&gt;** | The observable that allows to add subscriptions to received notifications |
+
+## Example
+
+<TabItem value="for_configuration_2" label="for_configuration_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+	.Changes()
+	.ForConfiguration()
+	.Subscribe(change =>
+	\{
+		switch (change.Action)
+		\{
+			case ConfigurationChangeAction.Set:
+				// do something
+				break;
+			case ConfigurationChangeAction.Delete:
+				// do something
+				break;
+		\}
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+<Admonition type="info" title="">
+To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project.
+</Admonition>
+

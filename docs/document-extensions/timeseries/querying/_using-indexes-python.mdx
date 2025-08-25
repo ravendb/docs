@@ -1,0 +1,291 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Time series index**:
+
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing.mdx) 
+      or using [Studio](../../../studio/database/indexes/create-map-index.mdx).  
+      Such an index can be queried in the same way as a regular index that indexes documents.  
+      (See [Querying an index](../../../indexes/querying/query-index.mdx)).
+    
+    * AUTO-time-series-indexes are Not generated automatically by the server when making a time series query.
+
+* **The contents of the query results**:
+
+    * Unlike a document index, where the source data are your JSON documents,  
+      the source data for a time series index are the time series entries within the documents.
+
+    * When querying a **document index**:  
+      the resulting objects are the document entities (unless results are projected).
+  
+    * When querying a **time series index**:  
+      each item in the results is of the type defined by the **index-entry** in the index definition,  
+      (unless results are projected). 
+      The documents themselves are not returned.
+
+* In this page:
+    * [Sample index](../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
+    * [Querying the index](../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
+        * [Query all time series entries](../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
+        * [Filter query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
+        * [Order query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
+        * [Project results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
+    * [Syntax](../../../document-extensions/timeseries/querying/using-indexes.mdx#syntax)
+
+</Admonition>
+## Sample Index
+
+* The following is a time series map-index that will be used in the query examples throughout this article.
+
+* Each **index-entry** consists of:
+  * Three index-fields obtained from the "HeartRates" time series entries: `BPM`, `Date`, and `Tag`.
+  * One index-field obtained from the time series [segment](../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `EmployeeID`.
+  * One index-field obtained from the loaded employee document: `EmployeeName`.
+
+* When querying this time series index:  
+  * The resulting items correspond to the time series entries that match the query predicate.  
+  * Each item in the results will be of type `TsIndex.IndexEntry`, which is the index-entry.  
+    Different result types may be returned when the query [projects the results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
+
+<TabItem value="sample_ts_index" label="sample_ts_index">
+<CodeBlock language="python">
+{`class TsIndex(AbstractTimeSeriesIndexCreationTask):
+    # The index-entry:
+    # ===============
+    class IndexEntry:
+        def __init__(
+            self,
+            bpm: float = None,
+            date: datetime = None,
+            tag: str = None,
+            employee_id: str = None,
+            employee_name: str = None,
+        ):
+            # The index-fields:
+            # =================
+            self.bpm = bpm
+            self.date = date
+            self.tag = tag
+            self.employee_id = employee_id
+            self.employee_name = employee_name
+
+    def __init__(self):
+        super().__init__()
+        self.map = """
+        from ts in timeSeries.Employees.HeartRates
+        from entry in ts.Entries
+        let employee = LoadDocument(ts.DocumentId, "Employees")
+        select new 
+        \{
+            bpm = entry.Values[0],
+            date = entry.Timestamp.Date,
+            tag = entry.Tag,
+            employee_id = ts.DocumentId,
+            employee_name = employee.FirstName + ' ' + employee.LastName
+        \}
+        """
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Querying the index 
+ 
+#### Query all time series entries:
+
+No filtering is applied in this query.  
+Results will include ALL entries from time series "HeartRates".
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(session.query_index_type(self.TsIndex, self.TsIndex.IndexEntry))
+
+    # Access results:
+    entry_result = results[0]
+    employee_name = entry_result.employee_name
+    bmp = entry_result.bpm
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(session.advanced.raw_query("from index 'TsIndex'", self.TsIndex.IndexEntry))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+`}
+</CodeBlock>
+</TabItem> 
+</Tabs>
+#### Filter query results:
+
+In this example, time series entries are filtered by the query.  
+The query predicate is applied to the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.query_index_type(self.TsIndex, self.TsIndex.IndexEntry)
+        .where_equals("employee_name", "Robert King")
+        .and_also()
+        .where_greater_than("bpm", 85)
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.advanced.raw_query(
+            "from index 'TsIndex' where employee_name == 'Robert King' and bpm > 85.0",
+            self.TsIndex.IndexEntry,
+        )
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where EmployeeName == "Robert King" and BPM > 85.0
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Order query results:
+
+Results can be ordered by any of the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.query_index_type(self.TsIndex, self.TsIndex.IndexEntry)
+        .where_less_than("bpm", 58)
+        .order_by_descending("date")
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.advanced.raw_query(
+            "from index 'TsIndex' where bpm < 58.0 order by date desc",
+            self.TsIndex.IndexEntry,
+        )
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where BPM < 58.0
+order by Date desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Project results:
+
+* Instead of returning the entire `TsIndex.IndexEntry` object for each result item,  
+  you can return only partial fields.
+
+* In this example, we query for time series entries with a very high BPM value.  
+  We retrieve entries with BPM value &gt; 100 but return only the _EmployeeID_ for each entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.query_index_type(self.TsIndex, self.TsIndex.IndexEntry)
+        .where_greater_than("bpm", 100)
+        .select_fields(self.EmployeeDetails, "employee_id")
+        .distinct()
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="python">
+{`# This class is used when projecting index-fields via DocumentQuery
+class EmployeeDetails:
+    def __init__(self, employee_name: str = None, employee_id: str = None):
+        self.employee_name = employee_name
+        self.employee_id = employee_id
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    results = list(
+        session.advanced.raw_query(
+            "from index 'TsIndex' where bpm > 100.0 select distinct employee_id",
+            self.TsIndex.IndexEntry,
+        )
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where BPM > 100.0
+select distinct EmployeeID
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+   
+* [query](../../../client-api/session/querying/how-to-query.mdx#query-overview)  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`def query(
+self, source: Optional[Query] = None, object_type: Optional[Type[_T]] = None
+) -> DocumentQuery[_T]:
+...
+`}
+</CodeBlock>
+</TabItem>
+
+* [document_query](../../../client-api/session/querying/document-query/query-vs-document-query.mdx)  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`def document_query(
+self,
+index_name: str = None,
+collection_name: str = None,
+object_type: Type[_T] = None,
+is_map_reduce: bool = False,
+) -> DocumentQuery[_T]:
+...
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

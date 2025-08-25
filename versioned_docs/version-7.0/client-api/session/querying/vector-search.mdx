@@ -5,37 +5,19 @@ sidebar_label: Vector Search Query
 sidebar_position: 18
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import VectorSearchCsharp from './_vector-search-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Vector Search
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Vector search enables you to retrieve data based on **contextual relevance**, rather than relying on exact keyword matches.
- 
-* In addition to its other capabilities, RavenDB serves as a **vector database** that allows you to efficiently store, index, and search vector representations.
-  
-* You can perform vector searches to locate documents based on their **content's similarity** to a given search item in your queries.
-
-* This feature is covered in detail in the following articles:
-
-  * [RavenDB as a Vector Database](../../../ai-integration/vector-search/ravendb-as-vector-database.mdx)
-  * [Vector Search using a Dynamic Query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
-  * [Vector Search using a Static Index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx)
-
-</Admonition>
-
+   <VectorSearchCsharp />
 </LanguageContent>
+
 
 <!---
 

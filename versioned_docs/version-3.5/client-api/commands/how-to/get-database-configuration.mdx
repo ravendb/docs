@@ -5,107 +5,29 @@ sidebar_label: ...get database configuration
 sidebar_position: 8
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetDatabaseConfigurationCsharp from './_get-database-configuration-csharp.mdx';
+import GetDatabaseConfigurationJava from './_get-database-configuration-java.mdx';
+import GetDatabaseConfigurationHttp from './_get-database-configuration-http.mdx';
+
 export const supportedLanguages = ["csharp", "java", "http"];
 
-
-# Commands: How to get database configuration?
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-`GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
-
-## Syntax
-
-<TabItem value="database_configuration_1" label="database_configuration_1">
-<CodeBlock language="csharp">
-{`RavenJObject GetDatabaseConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| RavenJObject | Database configuration in JSON format |
-
-## Example
-
-<TabItem value="database_configuration_2" label="database_configuration_2">
-<CodeBlock language="csharp">
-{`RavenJObject configuration = store
-	.DatabaseCommands
-	.Admin
-	.GetDatabaseConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDatabaseConfigurationCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-`GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
-
-## Syntax
-
-<TabItem value="database_configuration_1" label="database_configuration_1">
-<CodeBlock language="java">
-{`RavenJObject getDatabaseConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| **RavenJObject** | Database configuration in JSON format |
-
-## Example
-
-<TabItem value="database_configuration_2" label="database_configuration_2">
-<CodeBlock language="java">
-{`RavenJObject configuration = store
-	.getDatabaseCommands()
-		.getAdmin()
-		.getDatabaseConfiguration();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetDatabaseConfigurationJava />
 </LanguageContent>
+
 <LanguageContent language="http">
-
-
-`GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
-
-## Syntax
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`curl \\
-	http://\{serverName\}/databases/\{databaseName\}/debug/config \\
-	-X GET
-`}
-</CodeBlock>
-</TabItem>
-
-### Response
-
-| Status code | Description |
-| ----------- | - |
-| `200` | OK |
-
-
-
+   <GetDatabaseConfigurationHttp />
 </LanguageContent>
+
 
 <!---
 

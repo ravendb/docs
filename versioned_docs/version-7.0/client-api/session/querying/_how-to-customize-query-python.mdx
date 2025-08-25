@@ -1,0 +1,603 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query.mdx).  
+
+* The customization methods can be set for both **dynamic** and **index** queries.  
+
+* A query can be customized on the Store or Session level by calling various methods from the rich API.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
+
+* Customization methods available:
+
+  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#before_query_executed)
+  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_query_executed)
+  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_stream_executed)
+  - [no_caching](../../../client-api/session/querying/how-to-customize-query.mdx#no_caching)
+  - [no_tracking](../../../client-api/session/querying/how-to-customize-query.mdx#no_tracking)
+  - [projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [random_ordering](../../../client-api/session/querying/how-to-customize-query.mdx#random_ordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query.mdx#wait_for_non_stale_results)
+
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
+
+
+</Admonition>
+## `before_query_executed`
+
+* Use `before_query_executed` to customize the query just before it is executed.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __before_query_executed_callback(query: IndexQuery):
+    # Can modify query parameters
+    query.skip_duplicate_checking = True
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"Query to be executed is: {query.query}")
+
+results = list(
+    session.query(object_type=Employee)
+    # Call 'add_before_query_executed_listener'
+    .add_before_query_executed_listener(__before_query_executed_callback).where_equals(
+        "first_name", "Robert"
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __before_query_executed_callback(query: IndexQuery):
+    # Can modify query parameters
+    query.skip_duplicate_checking = True
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"Query to be executed is: {query.query}")
+
+results = list(
+    session.advanced.raw_query("from 'Employees' where FirstName == 'Robert'")
+    # Call 'add_before_query_executed_listener'
+    .add_before_query_executed_listener(__before_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_1_5" label="customize_1_5">
+<CodeBlock language="python">
+{`def add_before_query_executed_listener(self, action: Callable[[IndexQuery], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                     |
+|------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
+
+</Admonition>
+
+
+
+## `after_query_executed`
+
+* Use `after_query_executed` to access the raw query result after it is executed.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __after_query_executed_callback(raw_result: QueryResult):
+    # Can access the raw query result
+    query_duration = raw_result.duration_in_ms
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"{raw_result.last_query_time}")
+
+results = list(
+    session.query(object_type=Employee)
+    # Call 'add_after_query_executed_listener'
+    .add_after_query_executed_listener(__after_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __after_query_executed_callback(raw_result: QueryResult):
+    # Can access the raw query result
+    query_duration = raw_result.duration_in_ms
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"{raw_result.last_query_time}")
+
+result = list(
+    session.advanced.raw_query("from 'Employees'")
+    # Call 'add_after_query_executed_listener'
+    .add_after_query_executed_listener(__after_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_2_5" label="customize_2_5">
+<CodeBlock language="python">
+{`def add_after_query_executed_listener(self, action: Callable[[QueryResult], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                 |
+|------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
+
+</Admonition>
+
+
+
+## `after_stream_executed`
+
+* Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
+
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_3_5" label="customize_3_5">
+<CodeBlock language="python">
+{`def add_after_stream_executed_listener(self, action: Callable[[dict], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                                                                                  |
+|------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[dict], None])` | An _action_ method that recieves a single stream query result.<br/>The stream result is passed in the `dict` param. |
+
+</Admonition>
+
+
+
+## `no_caching`
+
+* By default, query results are cached. 
+
+* You can use the `no_caching` customization method to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'no_caching'
+    .no_caching().where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'no_caching'
+    .no_caching()
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_4_5" label="customize_4_5">
+<CodeBlock language="python">
+{`def no_caching(self) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## `no_tracking`
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `no_tracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'no_tracking\`
+    .no_tracking().where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'no_tracking'
+    .no_tracking()
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_5_5" label="customize_5_5">
+<CodeBlock language="python">
+{`def no_tracking(self) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## `projection`
+
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
+  <Admonition type="note" title="">
+  Projecting means the query returns only specific document fields instead of the full document.  
+  </Admonition>
+
+* If these fields are not stored in the index, the field values will be retrieved from the documents.  
+
+* Use the `select_fields` method to customize and modify this behavior.  
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+    * [Project index query results](../../../indexes/querying/projections.mdx)
+    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Employees_ByFullName, Employees_ByFullName.IndexEntry)
+    # Pass the requested projection behavior to the 'select_fields' method
+    # and specify the field that will be returned to the projection
+    .select_fields(
+        Employees_ByFullName.IndexEntry,
+        "full_name",
+        projection_behavior=ProjectionBehavior.FROM_INDEX_OR_THROW,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from index 'Employees/ByFullName' select full_name", Employees_ByFullName.IndexEntry
+    ).projection(ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFullName(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, full_name: str = None):
+            self.full_name = full_name
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "docs.Employees.Select(employee => new { "
+            "    full_name = (employee.first_name + ' ' + employee.last_name)"
+            "})"
+        )
+        self._store("full_name", FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the above example:  
+
+  * The _'full_name'_ field is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FROM_DOCUMENT_OR_THROW`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the _'full_name'_ property.  
+    (based on the Northwind sample data).  
+
+</Admonition>
+
+
+<!--
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_6_5" label="customize_6_5">
+<CodeBlock language="python">
+{`def projection(self, projection_behavior: ProjectionBehavior) -> DocumentQuery[_T]: ...
+
+class ProjectionBehavior(Enum):
+    DEFAULT = "Default"
+    FROM_INDEX = "FromIndex"
+    FROM_INDEX_OR_THROW = "FromIndexOrThrow"
+    FROM_DOCUMENT = "FromDocument"
+    FROM_DOCUMENT_OR_THROW = "FromDocumentOrThrow"
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+</Admonition>
+-->
+
+
+
+## `random_ordering`
+
+* Use `random_ordering` to order the query results randomly.  
+
+* Learn [here](../../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'random_ordering'
+    .random_ordering()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced
+    # Define an RQL query that orders the results randomly
+    .raw_query("from 'Employees' order by random()", Employee)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_7_5" label="customize_7_5">
+<CodeBlock language="python">
+{`def random_ordering(self, seed: str = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                              |
+|------------| ------------- |-------------------------------------------------------------------------------------------------|
+| **seed**   | `str` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## `timings`
+
+* When executing a query, you can retrieve query statistics that include the time spent by the server on each part of the query.  
+
+* To do this, define a callback function that takes `QueryTimings` as an argument and applies whatever 
+  logic you want to apply.  
+
+* Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __timings_callback(timings: QueryTimings):
+    logger.log(logging.DEBUG, timings.duration_in_ms)
+
+results = list(
+    session.query(object_type=Employee).where_equals("first_name", "Robert")
+    # Call 'timings'.
+    # Provide a callback for the timings result - interact with QueryTimings inside the callback
+    .timings(__timings_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __timings_callback(timings: QueryTimings):
+    logger.log(logging.DEBUG, timings.duration_in_ms)
+
+results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'timings'.
+    # Provide a callback for the timings result - interact with QueryTimings inside the callback
+    .timings(__timings_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_9_5" label="customize_9_5">
+<CodeBlock language="python">
+{`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- | ----- |
+| **timings_callback** | `Callable[[QueryTimings], None]` | An _action_ that will be called with the timings results |
+
+</Admonition>
+
+
+
+## `wait_for_non_stale_results`
+
+* All RavenDB queries provide results using an index, even when an index is not specified.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+
+* If `wait_for_non_stale_results` is used, the query will wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is unable to return non-stale results within the specified  
+  (or default) timeout.
+ 
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'wait_for_non_stale_results\`
+    .wait_for_non_stale_results(timedelta(seconds=10)).where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'", Employee)
+    # Call 'wait_for_non_stale_results\`
+    .wait_for_non_stale_results(timedelta(seconds=10))
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_8_5" label="customize_8_5">
+<CodeBlock language="python">
+{`def wait_for_non_stale_results(self, wait_timeout: timedelta = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| **wait_timeout** | `timedelta` | Time to wait for non-stale results.<br/>Default: 15 seconds |
+
+</Admonition>
+
+
+
+## `Methods return value`
+
+All of the above customization methods return the following:
+
+| `document_query` return value | |
+|-------------------------------| ----- |
+| `DocumentQuery[_T]` | Returns self for easier method chaining |
+
+
+
+

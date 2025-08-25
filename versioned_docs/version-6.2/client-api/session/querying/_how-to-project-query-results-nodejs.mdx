@@ -1,0 +1,533 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Applying a projection in a query allows you to shape the query results to meet specific requirements,  
+  delivering just the data needed instead of the original full document content.
+
+* This article provides examples of projecting query results when making a **dynamic-query**.  
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
+
+* In this article:
+    * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
+    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
+    * [Syntax](../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
+
+</Admonition>
+## Projections overview
+**What are projections**:
+
+* A projection refers to the **transformation of query results** into a customized structure,  
+  modifying the shape of the data returned by the server.
+
+* Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
+  you can request a subset of the data, specifying the document fields you want to get from the server.
+
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
+
+* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
+
+* An alias name can be given to the projected fields, and any calculations can be applied within the projection.
+**When to use projections**:
+
+* Projections allow you to tailor the query results specifically to your needs.  
+  Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+  since all transformation work is done on the server side without having to send a lot of data over the wire.
+
+* Returning partial document data from the server reduces network traffic,  
+  as clients receive only relevant data required for a particular task, enhancing overall performance.
+
+* Savings can be significant if you need to show just a bit of information from a large document. For example:  
+  the size of the result when querying for all "Orders" documents where "Company" is "companies/65-A" is 19KB.  
+  Performing the same query and projecting only the "Employee" and "OrderedAt" fields results in only 5KB.
+
+* However, when you need to actively work with the complete set of data on the client side,  
+  then do use a query without a projection to retrieve the full document from the server.
+**Projections are not tracked by the session**:
+
+* On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
+
+* Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
+**Projections are the final stage in the query pipeline**:
+
+* Projections are applied as the last stage in the query pipeline,  
+  after the query has been processed, filtered, sorted, and paged.
+
+* This means that the projection does Not apply to all the documents in the collection,  
+  but only to the documents matching the query predicate.
+
+* Within the projection you can only filter what data will be returned from the matching documents,  
+  but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
+**The cost of projections**:
+
+* Queries in RavenDB do not allow any computation to occur during the query phase.  
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example-v---projection-with-calculations)
+  inside the projection.
+
+* But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
+  So RavenDB limits the total time it will spend processing a query and its projections.  
+  Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
+  * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
+  * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
+
+
+
+## SelectFields
+
+* Use `selectFields` to specify which fields should be returned per document that is matching the query criteria.
+
+* Complex projection expressions can be provided directly with RQL via the `rawQuery` syntax,  
+  see examples below.
+
+<Admonition type="note" title="">
+
+##### Example I - Projecting individual fields of the document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Make a dynamic query on the Companies collection
+const projectedResults = await session.query({ collection: "companies" })
+     // Call 'selectFields'
+     // Pass a list of fields that will be returned per Company document
+    .selectFields([ "Name", "Address.City", "Address.Country"])
+    .all();
+
+// Each resulting object in the list is Not a 'Company' entity,
+// it is a new object containing ONLY the fields specified in the selectFields method.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "companies"
+select Name, Address.City, Address.Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example II - Projecting individual fields with alias
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define a QueryData object that will be used in the selectFields method
+const queryData = new QueryData(
+    // Specify the document-fields you want to project from the document
+    [ "Name", "Address.City", "Address.Country"],
+    // Provide an ALIAS name for each document-field
+    [ "CompanyName", "City", "Country"]);
+
+const projectedResults = await session.query({ collection: "companies" })
+    // Call 'selectFields', pass the queryData object
+    .selectFields(queryData)
+    .all();
+
+// Each resulting object in the list is Not a 'Company' entity,
+// it is a new object containing ONLY the fields specified in the selectFields method
+// using their corresponding alias names.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "companies"
+select Name as CompanyName, Address.City as City, Address.Country as Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example III - Projecting arrays and objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define the projection with QueryData if you wish to use alias names
+const queryData = new QueryData(
+    // Project the 'ShipTo' object and all product names from the Lines array in the document
+    [ "ShipTo", "Lines[].ProductName" ],
+    // Assign alias names
+    [ "ShipTo", "ProductNames" ]);
+
+const projectedResults = await session.query({ collection: "orders" })
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Using simple expression:
+from "orders"
+select ShipTo, Lines[].ProductName as ProductNames
+
+// Using JavaScript object literal syntax:
+from "Orders" as x
+select {
+    ShipTo: x.ShipTo,
+    ProductNames: x.Lines.map(y => y.ProductName)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example IV - Projection with expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define the projected data expression within a custom function.
+// Any expression can be provided for the projected content.
+const queryData = QueryData.customFunction("e", \`{
+    FullName: e.FirstName + " " + e.LastName 
+}\`);
+
+const projectedResults = await session.query({ collection: "employees" })
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "employees" as e
+select {
+    FullName: e.FirstName + " " + e.LastName
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example V - Projection with calculations
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.advanced
+     // Can provide an RQL query via the 'rawQuery' method
+    .rawQuery(\`from "Orders" as x
+               // Using JavaScript object literal syntax:
+               select {
+                   // Any calculations can be done within the projection
+                   TotalProducts: x.Lines.length,
+                   TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+                   TotalPrice: x.Lines
+                                .map(l => l.PricePerUnit * l.Quantity)
+                                .reduce((a, b) => a + b, 0) }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "orders" as x
+select {
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                 .map(l => l.PricePerUnit * l.Quantity)
+                 .reduce((a, b) => a + b, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example VI - Projecting using functions
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`// Declare a function
+               declare function output(e) {
+                   var format = p => p.FirstName + " " + p.LastName;
+                   return { 
+                       FullName: format(e)
+                   };
+               }
+               // Call the function from the projection
+               from "employees" as e select output(e)\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(e) {
+    var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(e) };
+}
+from "employees" as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example VII - Projecting using a loaded document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from "Orders" as o
+               load o.Company as c         // load the related Company document
+               select {
+                   CompanyName: c.Name,    // info from the related Company document
+                   ShippedAt: o.ShippedAt  // info from the Order document
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "orders" as o
+load o.Company as c
+select {
+    CompanyName: c.Name,
+    ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example VIII - Projection with dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from "employees" as e
+               select {
+                   DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(),
+                   MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1,
+                   Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear()
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "employees" as e
+select {
+    DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(),
+    MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear()
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example IX - Projection with metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from "employees" as e
+               select {
+                   Name: e.FirstName,
+                   Metadata: getMetadata(e) // Get the metadata
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "employees" as e
+select {
+    Name: e.FirstName,
+    Metadata: getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Example X - Projection with include:
+
+When using `include` in a projection query,  
+RavenDB includes the related document only if the included path is one of the fields in the projection.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const projectedResults = await session.query({ collection: "products" })
+     // NOTE:
+     // While the following 'include' line compiles,
+     // the related Supplier document will NOT BE INCLUDED in the query results,
+     // because 'Supplier' is not one of the projected fields in the 'selectFields' clause.
+    .include("Supplier")
+    .selectFields([ "Name", "Category"])
+     // The related Category document WILL BE INCLUDED in the query results,
+     // since 'Category' is one of the projected fields.
+    .include("Category")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "products"
+select Name, Category
+include Supplier, Category
+
+// NOTE:
+// Only the related Category document WILL BE INCLUDED in the query results.
+
+// The related Supplier document will NOT BE INCLUDED in the query results,
+// because 'Supplier' is Not one of the projected fields in the 'select' clause.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Projecting nested object types
+
+In the Node.js client, when projecting query results using the `selectFields` method (not via the `rawQuery` syntax),  
+the metadata field `@nested-object-types` from the document will be automatically added to the list of fields to project in the generated RQL that is sent to the server.
+
+<TabItem value="projections_10" label="projections_10">
+<CodeBlock language="js">
+{`// For example - Create a document with nested objects: 
+// ====================================================
+
+class User \{
+    constructor(firstName, lastName, jobDetails, lastLogin) \{
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.jobDetails = jobDetails
+        this.lastLogin = lastLogin;
+    \}
+\}
+
+class Job \{
+    constructor(company, title) \{
+        this.company = company;
+        this.title = title;
+    \}
+\}
+
+const job = new Job("RavenDB", "CEO");
+const user = new User("Ayende", "Rahien", job, new Date(2023, 11, 12));
+
+await session.store(user, "users/1");
+await session.saveChanges();
+
+// Query the users collecions:
+// ===========================
+
+class Projection \{
+    constructor(jobDetails, lastLogin) \{
+        this.jobDetails = jobDetails;
+        this.lastLogin = lastLogin;
+    \}
+\}
+
+const projectedResults = await session.query(\{ collection: "users" \})
+     // Project selected fields:
+    .selectFields(["jobDetails", "lastLogin"], Projection)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`// The following RQL is generated by the Node.js client:
+// =====================================================
+
+from "users"
+select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="projections_10_results" label="projections_10_results">
+<CodeBlock language="js">
+{`// Query results will include the following projected fields:
+// ==========================================================
+
+// \{
+//     jobDetails = \{ "company": "RavenDB", "title": "CEO" \}
+//     lastLogin = "2023-12-11T22:00:00.000Z"
+//     __PROJECTED_NESTED_OBJECT_TYPES__ = \{ "jobDetails": "Job", lastLogin": "date" \} // Nested field types 
+// \}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`selectFields(property);
+selectFields(properties);
+
+selectFields(property, projectionClass);
+selectFields(properties, projectionClass);
+selectFields(properties, projectionClass, projectionBehavior);
+
+selectFields(queryData, projectionClass);
+selectFields(queryData, projectionClass, projectionBehavior);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter              | Type        | Description                                                                                                                                             |
+|------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **property**           | `string`    | Field name to project                                                                                                                                   |
+| **properties**         | `string[]`  | List of field names to project                                                                                                                          |
+| **queryData**          | `QueryData` | Object with projection query definitions                                                                                                                |
+| **projectionClass**    | `object`    | The class type of the projected fields                                                                                                                  |
+| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../indexes/querying/projections.mdx). |
+
+
+
+

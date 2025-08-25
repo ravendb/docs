@@ -1,0 +1,258 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are few methods that allow you to retrieve documents from a database:   
+- [Get](../../../client-api/commands/documents/get.mdx#get)   
+- [Get - multiple documents](../../../client-api/commands/documents/get.mdx#get---multiple-documents)   
+- [GetDocuments](../../../client-api/commands/documents/get.mdx#getdocuments)   
+- [StartsWith](../../../client-api/commands/documents/get.mdx#startswith)  
+
+## Get
+
+**Get** can be used to retrieve a single document.
+
+### Syntax
+
+<TabItem value="get_1_0" label="get_1_0">
+<CodeBlock language="java">
+{`public JsonDocument get(String key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | String | key of the document you want to retrieve |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing the retrieved document. |
+
+### Example
+
+<TabItem value="get_1_2" label="get_1_2">
+<CodeBlock language="java">
+{`JsonDocument document = store.getDatabaseCommands().get("products/1"); // null if does not exist
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get - multiple documents
+
+**Get** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_2_0" label="get_2_0">
+<CodeBlock language="java">
+{`public MultiLoadResult get(String[] ids, String[] includes);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer, Map<String, RavenJToken> transformerParameters);
+
+public MultiLoadResult get(String[] ids, String[] includes, String transformer, Map<String, RavenJToken> transformerParameters, boolean metadataOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | String[] | array of keys of the documents you want to retrieve |
+| **includes** | String[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
+| **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
+| **transformerParameters** | Map&lt;string, RavenJToken&gt; | inputs (parameters) that will be used by transformer (default: `null`) |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default: `false`) |
+
+---
+
+<TabItem value="multiloadresult" label="multiloadresult">
+<CodeBlock language="java">
+{`public class MultiLoadResult
+\{
+  private List<RavenJObject> results;
+  private List<RavenJObject> includes;
+
+  public List<RavenJObject> getResults() \{
+    return results;
+  \}
+
+  public void setResults(List<RavenJObject> results) \{
+    this.results = results;
+  \}
+
+  public List<RavenJObject> getIncludes() \{
+    return includes;
+  \}
+
+  public void setIncludes(List<RavenJObject> includes) \{
+    this.includes = includes;
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
+| **includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
+
+### Example I
+
+<TabItem value="get_2_2" label="get_2_2">
+<CodeBlock language="java">
+{`MultiLoadResult resultsWithoutIncludes = store.getDatabaseCommands().get(new String[] \{ "products/1", "products/2" \}, null);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - using includes
+
+<TabItem value="get_2_3" label="get_2_3">
+<CodeBlock language="java">
+{`MultiLoadResult resultsWithIncludes = store.getDatabaseCommands().get(
+  new String[] \{ "products/1", "products/2" \},
+  new String[] \{ "Category" \});
+
+List<RavenJObject> results = resultsWithIncludes.getResults(); // products/1, products/2
+List<RavenJObject> includes = resultsWithIncludes.getIncludes(); // categories/1
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - missing documents
+
+<TabItem value="get_2_4" label="get_2_4">
+<CodeBlock language="java">
+{`// assuming that 'products/9999' does not exist
+MultiLoadResult resultsWithIncludes = store.getDatabaseCommands().get(
+  new String[] \{ "products/1", "products/9999", "products/3" \},
+  null
+  );
+List<RavenJObject> results = resultsWithIncludes.getResults(); // products/1, null, products/3
+List<RavenJObject> includes = resultsWithIncludes.getIncludes(); // empty
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetDocuments
+
+**GetDocuments** can be used to retrieve multiple documents.
+
+### Syntax
+
+<TabItem value="get_3_0" label="get_3_0">
+<CodeBlock language="java">
+{`public List<JsonDocument> getDocuments(int start, int pageSize);
+
+public List<JsonDocument> getDocuments(int start, int pageSize, boolean metadataOnly);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default: `false`) |  
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example
+
+<TabItem value="get_3_1" label="get_3_1">
+<CodeBlock language="java">
+{`List<JsonDocument> documents = store.getDatabaseCommands().getDocuments(0, 10, false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## StartsWith
+
+**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+
+### Syntax
+
+<TabItem value="get_4_0" label="get_4_0">
+<CodeBlock language="java">
+{`public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly, String exclude);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly, String exclude, RavenPagingInformation pagingInformation);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly,
+  String exclude, RavenPagingInformation pagingInformation, String transformer, Map<String, RavenJToken> transformerParameters);
+
+public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly,
+  String exclude, RavenPagingInformation pagingInformation, String transformer, Map<String, RavenJToken> transformerParameters, String skipAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keyPrefix** | String | prefix for which documents should be returned |
+| **matches** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side (default: `null`) |
+| **metadataOnly** | boolean | specifies if only document metadata should be returned (default : `false`) |
+| **exclude** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) (default: `null`) |
+| **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
+| **transformerParameters** | Map&lt;String, RavenJToken&gt; | inputs (parameters) that will be used by transformer (default: `null`) |
+| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json-document.mdx) | Object representing retrieved document. |
+
+### Example I
+
+<TabItem value="get_4_1" label="get_4_1">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products'
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_4_2" label="get_4_2">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products/", "1*|2*", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_4_3" label="get_4_3">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key have length of 3, begins and ends with "1"
+// and contains any character at 2nd position e.g. products/101, products/1B1
+List<JsonDocument> result = store.getDatabaseCommands().startsWith("products/", "1?1", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

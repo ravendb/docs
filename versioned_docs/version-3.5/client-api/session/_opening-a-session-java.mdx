@@ -1,0 +1,68 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To open synchronous session use `openSession` method from `DocumentStore`.
+
+## Syntax
+
+There are three overloads of `openSession` method
+
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="java">
+{`// Open session for a 'default' database configured in 'DocumentStore'
+IDocumentSession openSession();
+
+// Open session for a specified database
+IDocumentSession openSession(String database);
+
+IDocumentSession openSession(SessionOptions sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+First method is a equivalent of doing
+
+<TabItem value="open_session_2" label="open_session_2">
+<CodeBlock language="java">
+{`store.openSession(new SessionOptions());
+`}
+</CodeBlock>
+</TabItem>
+
+Second method is a equivalent of doing
+
+<TabItem value="open_session_3" label="open_session_3">
+<CodeBlock language="java">
+{`SessionOptions sessionOptions = new SessionOptions();
+sessionOptions.setDatabase(databaseName);
+store.openSession(sessionOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | [OpenSessionOptions](../../glossary/open-session-options.mdx) | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentSession | Instance of a session object that implements `IDocumentSession` interface. |
+
+## Example I
+
+<TabItem value="open_session_4" label="open_session_4">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    // code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Always remember to release session allocated resources after usage by invoking `close` method or wrapping session object in `try` statement.
+
+

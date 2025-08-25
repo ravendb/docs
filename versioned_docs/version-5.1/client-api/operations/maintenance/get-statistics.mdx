@@ -5,82 +5,24 @@ sidebar_label: Get Statistics
 sidebar_position: 1
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import GetStatisticsCsharp from './_get-statistics-csharp.mdx';
+import GetStatisticsJava from './_get-statistics-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Operations: How to Get Database Statistics
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-**GetStatisticsOperation** will retrieve database statistics like: count of documents, indexes, attachments, and more.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="csharp">
-{`public GetStatisticsOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| `DatabaseStatistics` | Database statistics |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="csharp">
-{`DatabaseStatistics stats = store.Maintenance.Send(new GetStatisticsOperation());
-long countOfDocuments = stats.CountOfDocuments;
-long countOfIndexes = stats.CountOfIndexes;
-bool isStale = stats.Indexes[0].IsStale;
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetStatisticsCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-**GetStatisticsOperation** will retrieve database statistics like: count of documents, indexes, attachments, and more.
-
-## Syntax
-
-<TabItem value="stats_1" label="stats_1">
-<CodeBlock language="java">
-{`public GetStatisticsOperation()
-`}
-</CodeBlock>
-</TabItem>
-
-| Return Value | |
-| ------------- | ----- |
-| `DatabaseStatistics` | Database statistics |
-
-## Example
-
-<TabItem value="stats_2" label="stats_2">
-<CodeBlock language="java">
-{`DatabaseStatistics stats = store.maintenance().send(new GetStatisticsOperation());
-long countOfDocuments = stats.getCountOfDocuments();
-int countOfIndexes = stats.getCountOfIndexes();
-boolean isStale = stats.getIndexes()[0].isStale();
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <GetStatisticsJava />
 </LanguageContent>
+
 
 <!---
 ### Operations

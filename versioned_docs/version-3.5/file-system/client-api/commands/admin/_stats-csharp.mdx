@@ -1,0 +1,64 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Getting file systems stats
+
+
+
+This method returns the names of all existing file systems in the server.
+
+### Syntax
+
+<TabItem value="get_names_1" label="get_names_1">
+<CodeBlock language="csharp">
+{`Task<string[]> GetNamesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;string[]&gt;** | A task that represents the asynchronous restore operation. The task result is the array containing file names |
+
+### Example
+
+<TabItem value="get_names_2" label="get_names_2">
+<CodeBlock language="csharp">
+{`string[] fsNames = await store.AsyncFilesCommands.Admin
+	.GetNamesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## GetStatisticsAsync
+
+This method returns statistics of currently loaded file systems.
+
+### Syntax
+
+<TabItem value="get_stats_1" label="get_stats_1">
+<CodeBlock language="csharp">
+{`Task<FileSystemStats[]> GetStatisticsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task&lt;FileSystemStats[]&gt;** | A task that represents the asynchronous restore operation. The task result is the array containing file names |
+
+### Example
+
+<TabItem value="get_stats_2" label="get_stats_2">
+<CodeBlock language="csharp">
+{`FileSystemStats[] fsStats = await store.AsyncFilesCommands.Admin
+									.GetStatisticsAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+

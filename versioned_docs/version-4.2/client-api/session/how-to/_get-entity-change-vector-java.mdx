@@ -1,0 +1,36 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The change-vector reflects the cluster wide point in time where something happened. It includes the unique database ID, node identifier, and the Etag of the document in the specific node.
+When a document is downloaded from the server, it contains various metadata information e.g. ID or current change-vector. Current change-vector is stored within the metadata in session and is available for each entity using the `getChangeVectorFor` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
+<CodeBlock language="java">
+{`<T> String getChangeVectorFor(T instance)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which an Etag will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Returns the current change-vector for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+## Example
+
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");
+String changeVector = session.advanced().getChangeVectorFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+

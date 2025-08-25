@@ -1,0 +1,21 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Provide statistics about the query, such as total count of matching records:
+
+<TabItem value="statistics_1" label="statistics_1">
+<CodeBlock language="csharp">
+{`FilesQueryStatistics stats;
+
+List<FileHeader> results = await session.Query()
+                            .OrderBy(x => x.Name).Statistics(out stats)
+                            .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>   
+
+| Out parameters| |
+| ------------- | ------------- |
+| stats | [FilesQueryStatistics](../../../../glossary/files-query-statistics.mdx) | Statistics about the files query |

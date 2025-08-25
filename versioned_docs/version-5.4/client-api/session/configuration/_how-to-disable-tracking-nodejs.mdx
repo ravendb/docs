@@ -1,0 +1,185 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, each session tracks changes to all entities it has either stored, loaded, or queried for.  
+  All changes are then persisted when `saveChanges` is called.  
+
+* __Tracking can be disabled__ by any of the following:  
+    * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+</Admonition>
+## Disable tracking a specific entity in session
+
+* Tracking can be disabled for a specific entity in the session.  
+* Once tracking is disabled for the entity then:
+  * Any changes made to this entity will be ignored for `saveChanges`.  
+  * Performing another `load` for this entity will Not generate another call to the server.
+  
+__Example__
+
+<TabItem value="disable_tracking_1" label="disable_tracking_1">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();        
+
+// Load a product entity - the session will track the entity by default
+const product = await session.load("products/1-A");
+
+// Call 'ignoreChangesFor' to instruct the session to ignore changes made to this entity
+session.advanded.ignoreChangesFor(product);
+
+// The following change will be ignored by SaveChanges - it will not be persisted
+product.unitsInStock += 1;
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`session.advanced.ignoreChangesFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **entity** | `object` | Instance of entity for which changes will be ignored |
+
+
+
+## Disable tracking all entities in session
+
+* Tracking can be disabled for all entities in the session's options.  
+* When tracking is disabled for the session:  
+  * Method `store` will Not be available (an exception will be thrown if used).
+  * Calling `load` or `query` will generate a call to the server and create new entities instances.
+
+<TabItem value="disable_tracking_2" label="disable_tracking_2">
+<CodeBlock language="js">
+{`const session = documentStore.openSession(\{
+    // Disable tracking for all entities in the session's options
+    noTracking: true
+\});
+
+// Load any entity, it will Not be tracked by the session
+const employee1 = await session.load("employees/1-A");
+
+// Loading again from same document will result in a new entity instance
+const employee2 = await session.load("employees/1-A");
+
+// Entities instances are not the same
+assert.notStrictEqual(company1, company2);
+
+// Calling saveChanges will throw an exception
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disable tracking query results
+
+* Tracking can be disabled for all entities resulting from a query.
+
+<TabItem value="disable_tracking_3" label="disable_tracking_3">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();
+
+// Define a query
+const employeesResults = await session.query(\{ collection: "employees" \})
+    .whereEquals("FirstName", "Robert")
+     // Set noTracking, all resulting entities will not be tracked
+    .noTracking()
+    .all();
+
+// The following modification will not be tracked for saveChanges
+const firstEmployee = employeesResults[0];
+firstEmployee.lastName = "NewName";
+
+// Change to 'firstEmployee' will not be persisted
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Customize tracking in conventions
+
+* You can further customize and fine-tune which entities will not be tracked  
+  by configuring the `shouldIgnoreEntityChanges` convention method on the document store.
+* This customization rule will apply to all sessions opened for this document store.
+
+__Example__
+
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
+<CodeBlock language="js">
+{`const customStore = new DocumentStore();
+
+// Define the 'ignore' convention on your document store
+customStore.conventions.shouldIgnoreEntityChanges =
+    (sessionOperations, entity, documentId) => \{
+        // Define for which entities tracking should be disabled 
+        // Tracking will be disabled ONLY for entities of type Employee whose firstName is Bob
+        return entity instanceof Employee && entity.firstName === "Bob";
+    \};
+customStore.initialize();
+
+const session = customStore.openSession();
+
+const employee1 = new Employee();
+employee1.firstName = "Alice";
+
+const employee2 = new Employee();
+employee2.firstName = "Bob";
+
+await session.store(employee1, "employees/1-A"); // This entity will be tracked
+await session.store(employee2, "employees/2-A"); // Changes to this entity will be ignored
+
+await session.saveChanges();   // Only employee1 will be persisted
+
+employee1.firstName = "Bob";   // Changes to this entity will now be ignored
+employee2.firstName = "Alice"; // This entity will now be tracked
+
+session.saveChanges();         // Only employee2 is persisted
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`store.conventions.shouldIgnoreEntityChanges = (sessionOperations, entity, documentId) => \{
+    // Write your logic
+    // return value:
+    //     true - entity will not be tracked 
+    //     false - entity will be tracked
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| sessionOperations | `InMemoryDocumentSessionOperations` | The session for which tracking is to be disabled |
+| entity | `object` | The entity for which tracking is to be disabled |
+| documentId | `string` | The entity's document ID |
+
+| Return Type | Description |
+| - | - |
+| `boolean` | `true` - Entity will Not be tracked<br/>`false` - Entity will be tracked |
+
+
+
+

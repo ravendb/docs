@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* After indexing has been paused with [pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
+  use `StartIndexingOperation` to __resume indexing__ for ALL indexes in the database.  
+  (Calling 'StartIndexOperation' on a single index will have no effect).
+
+* When resuming indexing from the __client__:  
+  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
+
+* When resuming indexing from the __Studio__ (from the [database list view](../../../../studio/database/databases-list-view.mdx#more-actions)):  
+  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* In this page:
+  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
+  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
+
+</Admonition>
+## Resume indexing example
+
+<TabItem value="resume_indexing" label="resume_indexing">
+<CodeBlock language="js">
+{`// Define the resume indexing operation 
+const resumeIndexingOp = new StartIndexingOperation();
+
+// Execute the operation by passing it to maintenance.send
+await store.maintenance.send(resumeIndexingOp);
+
+// At this point,
+// you can be sure that all indexes on the preferred node are 'running'
+
+// Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
+const indexingStatus = await store.maintenance.send(new GetIndexingStatusOperation());
+assert.strictEqual(indexingStatus.status, "Running");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// class name has "Start", but this is ok, this is the "Resume" operation
+const resumeIndexingOp = new StartIndexingOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

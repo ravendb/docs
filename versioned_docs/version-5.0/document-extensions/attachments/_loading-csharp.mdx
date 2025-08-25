@@ -1,0 +1,175 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to download attachments from a database:   
+
+**session.Advanced.Attachments.Get** can be used to download an attachment or multiple attachments.  
+**session.Advanced.Attachments.GetNames** can be used to download all attachment names that are attached to a document.  
+**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a revision document.  
+**session.Advanced.Attachments.Exists** can be used to determine if an attachment exists on a document.  
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`AttachmentResult Get(string documentId, string name);
+AttachmentResult Get(object entity, string name);
+IEnumerator<AttachmentEnumeratorResult> Get(IEnumerable<AttachmentRequest> attachments);
+AttachmentName[] GetNames(object entity);
+AttachmentResult GetRevision(string documentId, string name, string changeVector);
+bool Exists(string documentId, string name);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<AttachmentResult> GetAsync(string documentId, string name, CancellationToken token = default);
+Task<AttachmentResult> GetAsync(object entity, string name, CancellationToken token = default);
+Task<IEnumerator<AttachmentEnumeratorResult>> GetAsync(IEnumerable<AttachmentRequest> attachments, CancellationToken token = default);
+Task<AttachmentResult> GetRevisionAsync(string documentId, string name, string changeVector, CancellationToken token = default);
+Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    Album album = session.Load<Album>("albums/1");
+
+    using (AttachmentResult file1 = session.Advanced.Attachments.Get(album, "001.jpg"))
+    using (AttachmentResult file2 = session.Advanced.Attachments.Get("albums/1", "002.jpg"))
+    {
+        Stream stream = file1.Stream;
+
+        AttachmentDetails attachmentDetails = file1.Details;
+        string name = attachmentDetails.Name;
+        string contentType = attachmentDetails.ContentType;
+        string hash = attachmentDetails.Hash;
+        long size = attachmentDetails.Size;
+        string documentId = attachmentDetails.DocumentId;
+        string changeVector = attachmentDetails.ChangeVector;
+    }
+
+    AttachmentName[] attachmentNames = session.Advanced.Attachments.GetNames(album);
+    foreach (AttachmentName attachmentName in attachmentNames)
+    {
+        string name = attachmentName.Name;
+        string contentType = attachmentName.ContentType;
+        string hash = attachmentName.Hash;
+        long size = attachmentName.Size;
+    }
+
+    bool exists = session.Advanced.Attachments.Exists("albums/1", "003.jpg");
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    Album album = await asyncSession.LoadAsync<Album>("albums/1");
+
+    using (AttachmentResult file1 = await asyncSession.Advanced.Attachments.GetAsync(album, "001.jpg"))
+    using (AttachmentResult file2 = await asyncSession.Advanced.Attachments.GetAsync("albums/1", "002.jpg"))
+    {
+        Stream stream = file1.Stream;
+
+        AttachmentDetails attachmentDetails = file1.Details;
+        string name = attachmentDetails.Name;
+        string contentType = attachmentDetails.ContentType;
+        string hash = attachmentDetails.Hash;
+        long size = attachmentDetails.Size;
+        string documentId = attachmentDetails.DocumentId;
+        string changeVector = attachmentDetails.ChangeVector;
+    }
+
+    AttachmentName[] attachmentNames = asyncSession.Advanced.Attachments.GetNames(album);
+    foreach (AttachmentName attachmentName in attachmentNames)
+    {
+        string name = attachmentName.Name;
+        string contentType = attachmentName.ContentType;
+        string hash = attachmentName.Hash;
+        long size = attachmentName.Size;
+    }
+
+    bool exists = await asyncSession.Advanced.Attachments.ExistsAsync("albums/1", "003.jpg");
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+Here, we load multiple string attachments we previously created for a document. We then 
+go through them, and decode each attachment to its original text.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Load a user profile
+var user = session.Load<User>(userId);
+
+// Get the names of files attached to this document
+IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+// Get the attached files
+IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = session.Advanced.Attachments.Get(attachmentNames);
+
+// Go through the document's attachments
+while (attachmentsEnumerator.MoveNext())
+{
+    AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+    AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+    Stream attachmentStream = res.Stream; // attachment contents
+
+    // In this case it is a string attachment, that can be decoded back to text 
+    var ms = new MemoryStream();
+    attachmentStream.CopyTo(ms);
+    string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Load a user profile
+var user = await session.LoadAsync<User>(userId);
+
+// Get the names of files attached to this document
+IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+// Get the attached files
+IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = await session.Advanced.Attachments.GetAsync(attachmentNames);
+
+// Go through the document's attachments
+while (attachmentsEnumerator.MoveNext())
+{
+    AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+    AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+    Stream attachmentStream = res.Stream; // attachment contents
+
+    // In this case it is a string attachment, that can be decoded back to text 
+    var ms = new MemoryStream();
+    attachmentStream.CopyTo(ms);
+    string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+

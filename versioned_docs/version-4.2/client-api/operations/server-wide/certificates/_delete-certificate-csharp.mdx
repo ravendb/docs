@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can delete client certificate using **DeleteCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="delete_cert_1" label="delete_cert_1">
+<CodeBlock language="csharp">
+{`public DeleteCertificateOperation(string thumbprint)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | string | The certificate thumbprint |
+
+## Example I
+
+<TabItem value="delete_cert_2" label="delete_cert_2">
+<CodeBlock language="csharp">
+{`string thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+store.Maintenance.Server.Send(new DeleteCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+
+

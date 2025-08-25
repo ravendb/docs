@@ -1,0 +1,36 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Sorting
+
+Indexed values are sorted lexicographically, but sorting is not applied until you request it by using one of the appropriate methods:
+
+
+
+To get ordered results we need to indicate a field name to sort by:
+
+<TabItem value="sorting_1" label="sorting_1">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+							.OrderBy(x => x.Name)
+							.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+## OrderByDescending
+
+You can also retrieve results in descending order:
+
+<TabItem value="sorting_2" label="sorting_2">
+<CodeBlock language="csharp">
+{`List<FileHeader> results = await session.Query()
+							.OrderByDescending("Owner") // order descending by "Owner" metadata 
+							.ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+

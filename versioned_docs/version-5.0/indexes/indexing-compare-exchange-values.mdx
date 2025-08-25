@@ -5,155 +5,19 @@ sidebar_label: Indexing Compare Exchange Values
 sidebar_position: 20
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import IndexingCompareExchangeValuesCsharp from './_indexing-compare-exchange-values-csharp.mdx';
+
 export const supportedLanguages = ["csharp"];
 
-
-# Indexes: Indexing Compare Exchange Values
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-<Admonition type="note" title="">
-
-* Compare exchange values can be loaded within an index using the value's key.  
-
-* The index will update when the compare exchange value is updated, as well 
-as when documents are modified in the indexed collection(s).  
-
-* In this page:  
-  * [Syntax](../indexes/indexing-compare-exchange-values.mdx#syntax)  
-  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
-  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
-
-</Admonition>
-## Syntax
-
-When creating an index using `AbstractIndexCreationTask`, use the method 
-`LoadCompareExchangeValue()` to load a compare exchange value by its key.  
-
-<TabItem value="methods" label="methods">
-<CodeBlock language="csharp">
-{`//Load one compare exchange value
-T LoadCompareExchangeValue<T>(string key);
-
-//Load multiple compare exchange values
-T[] LoadCompareExchangeValue<T>(IEnumerable<string> keys);
-`}
-</CodeBlock>
-</TabItem>
-
-For javascript indexes, use the method `cmpxchg(<key>)`.
-
-| Parameter | Type | Description |
-| - | - | - |
-| **key** | `string` | The key of a particular compare exchange value. |
-| **keys** | `IEnumerable<string>` | The keys of multiple compare exchange values. |
-
-
-### Examples
-
-These indexes map the rooms in a hotel, as well as compare exchange values 
-representing the guests in those rooms.  
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="LINQ-syntax" label="LINQ-syntax">
-<CodeBlock language="csharp">
-{`private class Compare_Exchange_Index : AbstractIndexCreationTask<HotelRoom>
-{
-    public class Result
-    {
-        public string Room;
-        public string Guests;
-    }
-
-    public Compare_Exchange_Index()
-    {
-        Map = HotelRooms => from room in HotelRooms
-                            let guests = LoadCompareExchangeValue<string>(room.RoomID)
-                            select new Result
-                            {
-                                Room = room.RoomID,
-                                Guests = guests
-                            };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
-<CodeBlock language="csharp">
-{`private class Compare_Exchange_JS_Index : AbstractJavaScriptIndexCreationTask
-{
-    public Compare_Exchange_JS_Index()
-    {
-        Maps = new HashSet<string>
-        {
-            @"map('HotelRooms', function (room) { 
-                var guests = cmpxchg(room.RoomID); 
-                return { 
-                    RoomID: room.RoomID, 
-                    Guests: guests 
-                };
-            })",
-        };
-    }
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-## Querying the Index
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Return all vacant hotel rooms
-List<HotelRoom> vacantRooms = session
-    .Query<HotelRoom, Compare_Exchange_Index>()
-    .Where(x => RavenQuery.CmpXchg<string>(x.RoomID) == null)
-    .OfType<HotelRoom>()
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Return all vacant hotel rooms
-List<HotelRoom> vacantRooms = await asyncSession
-    .Query<HotelRoom, Compare_Exchange_Index>()
-    .Where(x => RavenQuery.CmpXchg<string>(x.RoomID) == null)
-    .OfType<HotelRoom>()
-    .ToListAsync();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="csharp">
-{`// Return the room occupied by VIP guests
-List<HotelRoom> VIPRooms = session
-    .Advanced.RawQuery<HotelRoom>(
-        @"from Hotelrooms as room
-        where room.Guests == cmpxchg('VIP')"
-    )
-    .ToList();
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
-
-
+   <IndexingCompareExchangeValuesCsharp />
 </LanguageContent>
+
 
 <!---
 ### Client-API

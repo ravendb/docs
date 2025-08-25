@@ -1,0 +1,98 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+`MoreLikeThis` is available through extension method in `Advanced` session operations. This method returns articles similar to the provided input.
+
+## Syntax
+
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="csharp">
+{`TResult[] MoreLikeThis<TResult, TIndexCreator>(
+	this ISyncAdvancedSessionOperation advancedSession,
+	MoreLikeThisQuery parameters) 
+	where TIndexCreator : AbstractIndexCreationTask, new() \{ ... \}
+
+TResult[] MoreLikeThis<TResult>(
+	this ISyncAdvancedSessionOperation advancedSession,
+	string index,
+	string documentId) \{ ... \}
+
+TResult[] MoreLikeThis<TTransformer, TResult, TIndexCreator>(
+	this ISyncAdvancedSessionOperation advancedSession,
+	string documentId)
+	where TIndexCreator : AbstractIndexCreationTask, new()
+	where TTransformer : AbstractTransformerCreationTask, new() \{ ... \}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | Name of an index on which query will be executed. |
+| **documentId** | string | Id of a document for which similarities will be searched. |
+| **parameters** | [MoreLikeThisQuery](../../../glossary/more-like-this-query.mdx) | A more like this query definition that will be executed. |
+
+| Return Value | |
+| ------------- | ----- |
+| TResult[] | Array of similar documents returned as entities. |
+
+## Example I
+
+<TabItem value="more_like_this_2" label="more_like_this_2">
+<CodeBlock language="csharp">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+Article[] articles = session
+	.Advanced
+	.MoreLikeThis<Article>(
+		"Articles/MoreLikeThis",
+		null,
+		new MoreLikeThisQuery
+		\{
+			IndexName = "Articles/MoreLikeThis", 
+			DocumentId = "articles/1", 
+			Fields = new[] \{ "Body" \}
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="more_like_this_4" label="more_like_this_4">
+<CodeBlock language="csharp">
+{`// Search for similar articles to 'articles/1'
+// using 'Articles/MoreLikeThis' index and search only field 'Body'
+// where article category is 'IT'
+Article[] articles = session
+	.Advanced
+	.MoreLikeThis<Article>(
+		"Articles/MoreLikeThis",
+		null,
+		new MoreLikeThisQuery
+		\{
+			IndexName = "Articles/MoreLikeThis",
+			DocumentId = "articles/1",
+			Fields = new[] \{ "Body" \},
+			AdditionalQuery = "Category:IT"
+		\});
+`}
+</CodeBlock>
+</TabItem>
+
+## Remarks
+
+Do not forget to add following **using** statement which contains necessary extensions:
+
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="csharp">
+{`using Raven.Abstractions.Data;
+using Raven.Client.Bundles.MoreLikeThis;
+using Raven.Client.Document;
+`}
+</CodeBlock>
+</TabItem>
+
+

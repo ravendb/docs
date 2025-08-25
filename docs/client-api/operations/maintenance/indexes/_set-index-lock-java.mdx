@@ -1,0 +1,83 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
+
+## Syntax
+
+<TabItem value="set_lock_mode_1" label="set_lock_mode_1">
+<CodeBlock language="java">
+{`public SetIndexesLockOperation(String indexName, IndexLockMode mode)
+public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_2" label="set_lock_mode_2">
+<CodeBlock language="java">
+{`public enum IndexLockMode \{
+    UNLOCK,
+    LOCKED_IGNORE,
+    LOCKED_ERROR
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="set_lock_mode_3" label="set_lock_mode_3">
+<CodeBlock language="java">
+{`public static class Parameters \{
+    private String[] indexNames;
+    private IndexLockMode mode;
+
+    public String[] getIndexNames() \{
+        return indexNames;
+    \}
+
+    public void setIndexNames(String[] indexNames) \{
+        this.indexNames = indexNames;
+    \}
+
+    public IndexLockMode getMode() \{
+        return mode;
+    \}
+
+    public void setMode(IndexLockMode mode) \{
+        this.mode = mode;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+| **parameters** | SetIndexesLockOperation.Parameters | list of indexes + new index lock mode |
+
+## Example I
+
+<TabItem value="set_lock_mode_4" label="set_lock_mode_4">
+<CodeBlock language="java">
+{`store.maintenance().send(new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LOCKED_IGNORE));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
+<CodeBlock language="java">
+{`SetIndexesLockOperation.Parameters parameters = new SetIndexesLockOperation.Parameters();
+parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
+parameters.setMode(IndexLockMode.LOCKED_IGNORE);
+
+store.maintenance().send(new SetIndexesLockOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+

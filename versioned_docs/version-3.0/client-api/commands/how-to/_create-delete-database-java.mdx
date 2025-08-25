@@ -1,0 +1,106 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+This article will describe the following commands that enable you to manage databases on a server:   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database.mdx#deletedatabase)   
+- [EnsureDatabaseExists](../../../client-api/commands/how-to/create-delete-database.mdx#ensuredatabaseexists---extension-method)   
+
+## **CreateDatabase**
+
+This method is used to create a new database on a server.
+
+### Syntax
+
+<TabItem value="create_database_1" label="create_database_1">
+<CodeBlock language="java">
+{`public void createDatabase(DatabaseDocument databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document.mdx) | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
+
+### Example
+
+<TabItem value="create_database_2" label="create_database_2">
+<CodeBlock language="java">
+{`// create database 'NewDatabase' with 'PeriodicExport' bundle enabled
+DatabaseDocument databaseDocument = new DatabaseDocument();
+databaseDocument.setId("NewDatabase");
+Map<String, String> settings = new HashMap<>();
+settings.put("Raven/ActiveBundles", "PeriodicExport");
+settings.put("Raven/DataDir", "~\\\\Databases\\\\NewDatabase");
+databaseDocument.setSettings(settings);
+store.getDatabaseCommands().getGlobalAdmin().createDatabase(databaseDocument);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **DeleteDatabase**
+
+This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
+
+### Syntax
+
+<TabItem value="delete_database_1" label="delete_database_1">
+<CodeBlock language="java">
+{`public void deleteDatabase(String dbName);
+public void deleteDatabase(String dbName, boolean hardDelete);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **dbName** | String | Name of a database to delete |
+| **hardDelete** | bool | Should all data be removed (data files, indexing files, etc.). Default: `false` |
+
+### Example
+
+<TabItem value="delete_database_2" label="delete_database_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getGlobalAdmin().deleteDatabase("NewDatabase", true);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## **EnsureDatabaseExists**
+
+This extension method creates database on a server with **default configuration and indexes** if that database does not exist.
+
+### Syntax
+
+<TabItem value="ensure_database_exists_1" label="ensure_database_exists_1">
+<CodeBlock language="java">
+{`public void ensureDatabaseExists(String name);
+public void ensureDatabaseExists(String name, boolean ignoreFailures);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of a database that will be created if it does not exist |
+| **ignoreFailures** | boolean | Ignore any exceptions that could have occurred during database creation. Default: `false` |
+
+### Example
+
+<TabItem value="ensure_database_exists_3" label="ensure_database_exists_3">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().getGlobalAdmin().ensureDatabaseExists("NewDatabase", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

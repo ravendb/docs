@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store.mdx).
+
+* __To operate on a different database__, use the `ForDatabase` method.  
+  (An exception is thrown if that database doesn't exist on the server).
+
+* In this page:
+    * [Common operations - ForDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operations---fordatabase)
+    * [Maintenance operations - ForDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operations---fordatabase)
+</Admonition>
+## Common operations - ForDatabase
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
+
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore)
+\{
+    // Use 'ForDatabase', get operation executor for another database
+    OperationExecutor opExecutor = documentStore.Operations.ForDatabase("AnotherDB");
+    
+    // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    var revisionsInAnotherDB = 
+        opExecutor.Send(new GetRevisionsOperation<Order>("Orders/1-A"));
+ 
+    // Without 'ForDatabase', the operation is executed "DefaultDB"
+    var revisionsInDefaultDB =
+        documentStore.Operations.Send(new GetRevisionsOperation<Company>("Company/1-A"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`OperationExecutor ForDatabase(string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | string | Name of the database to operate on |
+
+| Return Value | |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operations - ForDatabase
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
+
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore = new DocumentStore())
+\{
+    // Use 'ForDatabase', get maintenance operation executor for another database
+    MaintenanceOperationExecutor opExecutor = documentStore.Maintenance.ForDatabase("AnotherDB");
+    
+    // Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    var statsForAnotherDB =
+        opExecutor.Send(new GetStatisticsOperation());
+    
+    // Without 'ForDatabase', the stats are retrieved for "DefaultDB"
+    var statsForDefaultDB =
+        documentStore.Maintenance.Send(new GetStatisticsOperation());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__Syntax__:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`MaintenanceOperationExecutor ForDatabase(string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | string | Name of the database to operate on |
+
+| Return Value | |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+

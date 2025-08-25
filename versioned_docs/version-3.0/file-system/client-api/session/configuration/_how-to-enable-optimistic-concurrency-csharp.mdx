@@ -1,0 +1,75 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#How to enable optimistic concurrency?
+
+By default, optimistic concurrency checks are turned **off**, which means that changes made outside our session object will be overwritten if the `SaveChangesAsync` is called.
+Checks can be turned on by setting the `UseOptimisticConcurrency` property from the `Advanced` session operations to `true` and may cause the `ConcurrencyExceptions` to be thrown.
+
+
+
+<TabItem value="optimistic_concurrency_1" label="optimistic_concurrency_1">
+<CodeBlock language="csharp">
+{`using (IAsyncFilesSession session = store.OpenAsyncSession())
+\{
+	session.Advanced.UseOptimisticConcurrency = true;
+
+	session.RegisterUpload("ravendb.exe", content, new RavenJObject \{ \{ "Copyright", "hibernatingrhinos.com"\}\});
+
+	await session.SaveChangesAsync();
+
+	using (IAsyncFilesSession otherSession = store.OpenAsyncSession())
+	\{
+		FileHeader fileInOtherSession = await otherSession.LoadFileAsync("ravendb.exe");
+
+		fileInOtherSession.Metadata["Copyright"] = "Hibernating Rhinos LTD";
+
+		await otherSession.SaveChangesAsync();
+	\}
+
+	FileHeader file = await session.LoadFileAsync("ravendb.exe");
+
+	session.RegisterUpload(file, newContent);
+
+	await session.SaveChangesAsync(); // will throw ConcurrencyException
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The above example shows how to enable optimistic concurrency for a particular session. However, that can be also turned on globally, that is for all opened sessions, by using the `DefaultUseOptimisticConcurrency` convention.
+
+## Example II
+
+<TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
+<CodeBlock language="csharp">
+{`store.Conventions.DefaultUseOptimisticConcurrency = true;
+
+using (IAsyncFilesSession session = store.OpenAsyncSession())
+\{
+	bool isSessionUsingOptimisticConcurrency = session.Advanced.UseOptimisticConcurrency; // will return true
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example III
+
+You can also force the concurrency check by explicitly passing an `Etag` parameter to the `RegisterXXX` method.
+
+<TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
+<CodeBlock language="csharp">
+{`using (IAsyncFilesSession session = store.OpenAsyncSession())
+\{
+	FileHeader file = await session.LoadFileAsync("git.exe");
+
+	session.RegisterFileDeletion(file, file.Etag);
+
+	await session.SaveChangesAsync();
+\}
+`}
+</CodeBlock>
+</TabItem>
+

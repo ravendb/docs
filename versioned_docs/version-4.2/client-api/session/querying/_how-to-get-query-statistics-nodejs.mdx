@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Query statistics can provide important information about a query like duration, total number of results, staleness information, etc. To access statistics use the `statistics()` method.
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="js">
+{`query.statistics(statsCallback);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **statsCallback** | `(stats) => void` | Callback passing the `QueryStatistics` object for query. |
+
+## Example
+
+<TabItem value="stats_2" label="stats_2">
+<CodeBlock language="js">
+{`let stats;
+
+const employees = await session.query(\{ collection: "Employees" \})
+    .whereEquals("FirstName", "Robert")
+    .statistics(s => stats = s)
+    .all();
+
+const totalResults = stats.value.totalResults;
+const durationInMs = stats.value.durationInMs;
+// QueryStatistics \{
+//   isStale: false,
+//   durationInMs: 744,
+//   totalResults: 1,
+//   skippedResults: 0,
+//   timestamp: 2018-09-24T05:34:15.260Z,
+//   indexName: 'Auto/Employees/ByFirstName',
+//   indexTimestamp: 2018-09-24T05:34:15.260Z,
+//   lastQueryTime: 2018-09-24T05:34:15.260Z,
+//   resultEtag: 8426908718162809000 \}
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,147 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The **Data Subscription** feature supports subscribing not only to documents, but also to [document revisions](../../../document-extensions/revisions/overview.mdx).  
+
+* The revisions support is defined within the subscription.  
+  A [Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) must be defined for the subscribed collection.  
+
+* While a regular subscription processes a single document, a Revisions subscription processes **pairs of subsequent document revisions**.  
+    
+    Using this functionality allows you to keep track of each change made in a document, as well as compare pairs of subsequent versions of the document.  
+    
+    Both revisions are accessible for filtering and projection.  
+
+* In this page:  
+  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-order)  
+  * [Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-declaration-and-usage)   
+  * [Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-and-projection)  
+
+</Admonition>
+## Revisions processing order
+
+The Revisions feature allows the tracking of changes made in a document, by storing the audit trail of its changes over time. 
+An audit trail entry is called a **Document Revision**, and is comprised of a document snapshot.  
+Read more about revisions [here](../../../document-extensions/revisions/overview.mdx).  
+
+In a data subscription, revisions will be processed in pairs of subsequent entries.  
+For example, consider the following User document:  
+
+`{
+    Name:'James',
+    Age:'21'
+}`
+
+We update the User document twice, in separate operations:  
+
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
+
+The data subscriptions revisions processing mechanism will receive pairs of revisions in the following order:  
+
+| # | Previous                     | Current                      |
+|---|------------------------------|------------------------------| 
+| 1 | `null`                       | `{ Name:'James', Age:'21' }` |
+| 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
+| 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
+ 
+<Admonition type="warning" title="">
+The revisions subscription will be able to function properly only if the revisions it needs to process are available.
+Please make sure that your revisions configuration doesn't purge revisions before the subscription had the chance to process them.  
+</Admonition>
+
+
+
+## Simple declaration and usage
+
+Here we declare a simple revisions subscription that will send pairs of subsequent document revisions to the client:
+
+Creation:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="java">
+{`name = store.subscriptions().createForRevisions(Order.class);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="java">
+{`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+options.setQuery("from orders (Revisions = true)");
+name = store.subscriptions().createForRevisions(Order.class, options);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Consumption:
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
+<CodeBlock language="java">
+{`SubscriptionWorker<Revision<Order>> revisionWorker = store
+    .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
+revisionWorker.run(x -> \{
+    for (SubscriptionBatch.Item<Revision<Order>> documentsPair : x.getItems()) \{
+
+        Order prev = documentsPair.getResult().getPrevious();
+        Order current = documentsPair.getResult().getCurrent();
+
+        processOrderChanges(prev, current);
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Revisions processing and projection
+
+Here we declare a revisions subscription that will filter and project data from revisions pairs:
+
+Creation:
+<TabItem value="create_projected_revisions_subscription_RQL" label="create_projected_revisions_subscription_RQL">
+<CodeBlock language="java">
+{`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+options.setQuery("declare function getOrderLinesSum(doc) \{" +
+    "    var sum = 0;" +
+    "    for (var i in doc.Lines) \{ sum += doc.Lines[i]; \} " +
+    "    return sum;" +
+    "\}" +
+    "" +
+    "  from orders (Revisions = true) " +
+    " where getOrderLinesSum(this.Current) > getOrderLinesSum(this.Previous) " +
+    " select \{" +
+    "  previousRevenue: getOrderLinesSum(this.Previous)," +
+    "  currentRevenue: getOrderLinesSum(this.Current)" +
+    "\}");
+
+name = store.subscriptions().create(options);
+`}
+</CodeBlock>
+</TabItem>
+
+Consumption:
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
+<CodeBlock language="java">
+{`SubscriptionWorker<Revision<Order>> revisionWorker = store
+    .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
+revisionWorker.run(x -> \{
+    for (SubscriptionBatch.Item<Revision<Order>> documentsPair : x.getItems()) \{
+
+        Order prev = documentsPair.getResult().getPrevious();
+        Order current = documentsPair.getResult().getCurrent();
+
+        processOrderChanges(prev, current);
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

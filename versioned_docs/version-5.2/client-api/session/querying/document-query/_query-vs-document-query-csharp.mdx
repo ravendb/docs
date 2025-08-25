@@ -1,0 +1,134 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../client-api/session/querying/what-is-rql.mdx).  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+
+* The main differences between `Query` and `DocumentQuery` are outlined in this article.
+
+* In this page:
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
+
+</Admonition>
+## API support
+
+__Query__:
+
+* The `Query` API supports LINQ, the essential data access solution in .NET.
+
+* The API exposed by the _Query_ method is a wrapper of _DocumentQuery_ and is built on top of it.
+
+* When using _Query_, the query is translated into a _DocumentQuery_ object,  
+  which then builds into an RQL that is sent to the server.
+
+* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
+__DocumentQuery__:
+
+* `DocumentQuery` does Not support LINQ.
+ 
+* It exposes a lower-level API that provides more flexibility and control when building a query.
+
+* When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
+
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
+<Admonition type="note" title="">
+
+__Note__:
+
+`Query` and `DocumentQuery` can be converted to one another.  
+This enables you to take advantage of all available API methods & extensions.  
+See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
+
+</Admonition>
+
+
+
+## Immutability
+
+* `Query` is __immutable__ while `DocumentQuery` is __mutable__.  
+  You might get different results if you try to *reuse* a query.
+* The usage of the `Query` method in the following example:
+
+<TabItem value="immutable_query" label="immutable_query">
+<CodeBlock language="csharp">
+{`IRavenQueryable<User> query = session
+    .Query<User>()
+    .Where(x => x.Name.StartsWith("A"));
+
+IRavenQueryable<User> ageQuery = query
+    .Where(x => x.Age > 21);
+
+IRavenQueryable<User> eyeQuery = query
+    .Where(x => x.EyeColor == "blue");
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene-syntax queries:
+
+    `query: from Users where startsWith(Name, 'A')`
+
+    `ageQuery: from Users where startsWith(Name, 'A') and Age > 21`
+
+    `eyeQuery: from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+* A similar usage with `DocumentQuery`:
+
+<TabItem value="mutable_query" label="mutable_query">
+<CodeBlock language="csharp">
+{`IDocumentQuery<User> documentQuery = session
+    .Advanced
+    .DocumentQuery<User>()
+    .WhereStartsWith(x => x.Name, "A");
+
+IDocumentQuery<User> ageDocumentQuery = documentQuery
+    .WhereGreaterThan(x => x.Age, 21);
+
+IDocumentQuery<User> eyeDocumentQuery = documentQuery
+    .WhereEquals(x => x.EyeColor, "blue");
+
+// Here all of the DocumentQuery variables have the same reference
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene queries:
+
+    `documentQuery: from Users where startsWith(Name, 'A')`  
+    (before creating `ageDocumentQuery`)
+
+    `ageDocumentQuery: from Users where startsWith(Name, 'A') and Age > 21`  
+    (before creating `eyeDocumentQuery`)
+
+    `eyeDocumentuery: from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+
+    All created Lucene queries are the same query (actually the same instance).  
+    This is an important hint to be aware of if you are going to reuse `DocumentQuery`.
+
+
+
+## Default Query Operator
+
+* Starting from version 4.0, both `Query` and `DocumentQuery` use `AND` as the default operator.  
+  (Previously, `Query` used `AND` and `DocumentQuery` used `OR`).
+
+* This behavior can be modified by calling `UsingDefaultOperator`:
+        
+<TabItem value="default_operator" label="default_operator">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<User>()
+    .UsingDefaultOperator(QueryOperator.Or);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

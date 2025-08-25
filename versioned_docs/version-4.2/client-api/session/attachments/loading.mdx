@@ -5,195 +5,24 @@ sidebar_label: Loading
 sidebar_position: 2
 ---
 
-import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
+import LoadingCsharp from './_loading-csharp.mdx';
+import LoadingJava from './_loading-java.mdx';
+
 export const supportedLanguages = ["csharp", "java"];
 
-
-# Attachments: Loading Attachments
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
+
 <LanguageContent language="csharp">
-
-
-There are a few methods that allow you to download attachments from a database:   
-
-**session.Advanced.Attachments.Get** can be used to download an attachment.   
-**session.Advanced.Attachments.GetNames** can be used to download all attachment names that are attached to a document.   
-**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a revision document.   
-**session.Advanced.Attachments.Exists** can be used to determine if an attachment exists on a document.   
-
-## Syntax
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`AttachmentResult Get(string documentId, string name);
-AttachmentResult Get(object entity, string name);
-AttachmentName[] GetNames(object entity);
-AttachmentResult GetRevision(string documentId, string name, string changeVector);
-bool Exists(string documentId, string name);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`Task<AttachmentResult> GetAsync(string documentId, string name, CancellationToken token = default);
-Task<AttachmentResult> GetAsync(object entity, string name, CancellationToken token = default);
-Task<AttachmentResult> GetRevisionAsync(string documentId, string name, string changeVector, CancellationToken token = default);
-Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default);
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-## Example
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
-{
-    Album album = session.Load<Album>("albums/1");
-
-    using (AttachmentResult file1 = session.Advanced.Attachments.Get(album, "001.jpg"))
-    using (AttachmentResult file2 = session.Advanced.Attachments.Get("albums/1", "002.jpg"))
-    {
-        Stream stream = file1.Stream;
-
-        AttachmentDetails attachmentDetails = file1.Details;
-        string name = attachmentDetails.Name;
-        string contentType = attachmentDetails.ContentType;
-        string hash = attachmentDetails.Hash;
-        long size = attachmentDetails.Size;
-        string documentId = attachmentDetails.DocumentId;
-        string changeVector = attachmentDetails.ChangeVector;
-    }
-
-    AttachmentName[] attachmentNames = session.Advanced.Attachments.GetNames(album);
-    foreach (AttachmentName attachmentName in attachmentNames)
-    {
-        string name = attachmentName.Name;
-        string contentType = attachmentName.ContentType;
-        string hash = attachmentName.Hash;
-        long size = attachmentName.Size;
-    }
-
-    bool exists = session.Advanced.Attachments.Exists("albums/1", "003.jpg");
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (var asyncSession = store.OpenAsyncSession())
-{
-    Album album = await asyncSession.LoadAsync<Album>("albums/1");
-
-    using (AttachmentResult file1 = await asyncSession.Advanced.Attachments.GetAsync(album, "001.jpg"))
-    using (AttachmentResult file2 = await asyncSession.Advanced.Attachments.GetAsync("albums/1", "002.jpg"))
-    {
-        Stream stream = file1.Stream;
-
-        AttachmentDetails attachmentDetails = file1.Details;
-        string name = attachmentDetails.Name;
-        string contentType = attachmentDetails.ContentType;
-        string hash = attachmentDetails.Hash;
-        long size = attachmentDetails.Size;
-        string documentId = attachmentDetails.DocumentId;
-        string changeVector = attachmentDetails.ChangeVector;
-    }
-
-    AttachmentName[] attachmentNames = asyncSession.Advanced.Attachments.GetNames(album);
-    foreach (AttachmentName attachmentName in attachmentNames)
-    {
-        string name = attachmentName.Name;
-        string contentType = attachmentName.ContentType;
-        string hash = attachmentName.Hash;
-        long size = attachmentName.Size;
-    }
-
-    bool exists = await asyncSession.Advanced.Attachments.ExistsAsync("albums/1", "003.jpg");
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-
+   <LoadingCsharp />
 </LanguageContent>
+
 <LanguageContent language="java">
-
-
-There are a few methods that allow you to download attachments from a database:   
-
-**session.advanced().attachments().get** can be used to download an attachment.   
-**session.advanced().attachments().getNames** can be used to download all attachment names that are attached to a document.   
-**session.advanced().attachments().getRevision** can be used to download an attachment of a revision document.   
-**session.advanced().attachments().exists** can be used to determine if an attachment exists on a document.   
-
-## Syntax
-
-<TabItem value="GetSyntax" label="GetSyntax">
-<CodeBlock language="java">
-{`AttachmentName[] getNames(Object entity);
-
-boolean exists(String documentId, String name);
-
-CloseableAttachmentResult get(String documentId, String name);
-
-CloseableAttachmentResult get(Object entity, String name);
-
-CloseableAttachmentResult getRevision(String documentId, String name, String changeVector);
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-<TabItem value="GetAttachment" label="GetAttachment">
-<CodeBlock language="java">
-{`try (IDocumentSession session = store.openSession()) \{
-    Album album = session.load(Album.class, "albums/1");
-
-    try (CloseableAttachmentResult file1 = session
-            .advanced().attachments().get(album, "001.jpg");
-        CloseableAttachmentResult file2 = session
-            .advanced().attachments().get("albums/1", "002.jpg")) \{
-
-        InputStream inputStream = file1
-            .getData();
-
-        AttachmentDetails attachmentDetails = file1.getDetails();
-        String name = attachmentDetails.getName();
-        String contentType = attachmentDetails.getContentType();
-        String hash = attachmentDetails.getHash();
-        long size = attachmentDetails.getSize();
-        String documentId = attachmentDetails.getDocumentId();
-        String changeVector = attachmentDetails.getChangeVector();
-    \}
-
-    AttachmentName[] attachmentNames = session.advanced().attachments().getNames(album);
-    for (AttachmentName attachmentName : attachmentNames) \{
-
-        String name = attachmentName.getName();
-        String contentType = attachmentName.getContentType();
-        String hash = attachmentName.getHash();
-        long size = attachmentName.getSize();
-    \}
-
-    boolean exists = session.advanced().attachments().exists("albums/1", "003.jpg");
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-
+   <LoadingJava />
 </LanguageContent>
+
 
 <!---
 ### Attachments
