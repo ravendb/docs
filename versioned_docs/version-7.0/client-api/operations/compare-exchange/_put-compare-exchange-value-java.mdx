@@ -28,12 +28,11 @@ import CodeBlock from '@theme/CodeBlock';
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| ----------| ---- |------------ |
-| **key** | String | Object identifier under which _value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes. |
-| **value** | `T` | The value to be saved for the specified _key_. |
-| **index** | long |  * `0` if creating a new key
-* The current version of _Value_ when updating a value for an existing key. |
+| Parameter | Type   | Description                                                                                                                          |
+|-----------|--------|--------------------------------------------------------------------------------------------------------------------------------------|
+| **key**   | String | Object identifier under which _value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes. |
+| **value** | `T`    | The value to be saved for the specified _key_.                                                                                       |
+| **index** | long   | * `0` if creating a new key <br/> * The current version of _Value_ when updating a value for an existing key.                        |
 
 **Returned object**:
 <TabItem value="compare_exchange_result" label="compare_exchange_result">
@@ -71,14 +70,11 @@ import CodeBlock from '@theme/CodeBlock';
 </CodeBlock>
 </TabItem>
 
-| Return Value | Type | Description |
-| ------------ | - | - |
-| **Successful** | boolean | * _True_ if the save operation has completed successfully
-* _False_ if the save operation failed |
-| **Value** | `T` | * The value that was saved if operation was successful
-* The currently existing value in the server upon failure |
-| **Index** | long | * The version number of the value that was saved upon success
-* The currently existing version number in the server upon failure |
+| Return Value   | Type    | Description                                                                                                                            |
+|----------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|
+| **Successful** | boolean | * _True_ if the save operation has completed successfully <br/> * _False_ if the save operation failed                                 |
+| **Value**      | `T`     | * The value that was saved if operation was successful <br/> * The currently existing value in the server upon failure                 |
+| **Index**      | long    | * The version number of the value that was saved upon success <br/> * The currently existing version number in the server upon failure |
 
 <Admonition type="note" title="Note:" id="note" href="#note">
 When calling the 'Put' operation, the index from the request is compared to the index that is currently stored in the server (compare stage).  
