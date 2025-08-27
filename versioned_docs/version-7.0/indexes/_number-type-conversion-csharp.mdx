@@ -31,14 +31,10 @@ In **LINQ syntax**, use `TryConvert<T>()`:
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| - | - | - |
-| **T** | Generic type parameter | The numerical type to which you want to convert your value. Possible values:
-- `int`
-- `long`
-- `float`
-- `double` |
-| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
+| Parameter | Type                   | Description                                                                                                                                                 |
+|-----------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **T**     | Generic type parameter | The numerical type to which you want to convert your value. Possible values: <br/> - `int` <br/> - `long` <br/> - `float` <br/> - `double`                  |
+| **value** | `object`               | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value.      |
 
 In **JavaScript syntax**, use `tryConvertToNumber()`.
 
