@@ -189,12 +189,11 @@ class TimeSeriesPolicy \{
 </CodeBlock>
 </TabItem>
 
-| Property             | Description                                                                                                                                                                                                    |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**             | This string is used to create the name of the rollup time series.
-`Name` is added to the raw time series name - with `@` as a separator,<br/>e.g.: `<name of raw time series>@<name of time series policy>` |
-| **retentionTime**    | Time series entries older than this `TimeValue` are automatically deleted.                                                                                                               |
-| **aggregationTime** | The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series.                             |
+| Property            | Description                                                                                                                                                                                                                           |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**            | This string is used to create the name of the rollup time series. <br/> `Name` is added to the raw time series name - with `@` as a separator, <br/> e.g.: `<name of raw time series>@<name of time series policy>`                    |
+| **retentionTime**   | Time series entries older than this `TimeValue` are automatically deleted.                                                                                                                                                            |
+| **aggregationTime** | The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series.                                                    |
 
 <TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="js">
