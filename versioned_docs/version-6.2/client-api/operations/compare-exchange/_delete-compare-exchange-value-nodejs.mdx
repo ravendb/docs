@@ -78,13 +78,8 @@ class CompareExchangeResult \{
 </CodeBlock>
 </TabItem>
 
-| Return Value   |         |                                                                                                                                                                                                                             |
-|----------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __successful__ | boolean | &lt;ul&gt;&lt;li&gt;`true` if the delete operation was successfully completed.&lt;/li&gt;&lt;li&gt;`true` if _key_ doesn't exist.&lt;/li&gt;&lt;li&gt;`false` if the delete operation has failed,
-e.g. when the index version doesn't match.&lt;/li&gt;&lt;ul&gt;       |  
-| __value__      | object  | &lt;ul&gt;&lt;li&gt;The value that was deleted upon a successful delete.&lt;/li&gt;&lt;li&gt;`null` if _key_ doesn't exist.&lt;/li&gt;&lt;li&gt;The currently existing _value_ on the server if the delete operation has failed.&lt;/li&gt;&lt;ul&gt;                       |  
-| __index__      | number  | &lt;ul&gt;&lt;li&gt;The next available version number upon success.&lt;/li&gt;&lt;li&gt;The next available version number if _key_ doesn't exist.&lt;/li&gt;&lt;li&gt;The currently existing _index_ on the server if the delete operation has failed.&lt;/li&gt;&lt;ul&gt; |  
-
-
-
-
+| Return Value   | Type    | Description                                                                                                                                                                                                                  |
+|----------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __successful__ | boolean | <ul><li>`true` if the delete operation was successfully completed.</li><li>`true` if _key_ doesn't exist.</li><li>`false` if the delete operation has failed, e.g. when the index version doesn't match.</li></ul>           |
+| __value__      | object  | <ul><li>The value that was deleted upon a successful delete.</li><li>`null` if _key_ doesn't exist.</li><li>The currently existing _value_ on the server if the delete operation has failed.</li></ul>                       |
+| __index__      | number  | <ul><li>The next available version number upon success.</li><li>The next available version number if _key_ doesn't exist.</li><li>The currently existing _index_ on the server if the delete operation has failed.</li></ul> |
