@@ -58,8 +58,6 @@ Optional parameters (for the Add Node endpoint):
 
 See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
 
-
-
 ## Nodes states and types
 
 In Rachis every cluster node has a [state](../../../server/clustering/rachis/cluster-topology.mdx#state) and a [type](../../../server/clustering/rachis/cluster-topology.mdx#type).  
@@ -67,37 +65,31 @@ In Rachis every cluster node has a [state](../../../server/clustering/rachis/clu
 <Admonition type="note" title="">
 
 ##### Type
+
 The type defines the node's ability to **vote** on accepting a new raft command in the cluster,  
 and **elect** a new leader when needed.  
 
-| Node type      | Description                                                                                                                                                                                |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Member**     | A fully functional voting node in the cluster.                                                                                                                                             |
-| **Promotable** | A non-voting node. 
-This is an intermediate stage until node is promoted by the Leader to a Member.                                                                                    |
-| **Watcher**    | A non-voting node that is still fully managed by the cluster. 
-Can be assigned with databases and tasks. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#watcher). |
+| Node type      | Description                                                                                                                                                                                     |
+|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Member**     | A fully functional voting node in the cluster.                                                                                                                                                  |
+| **Promotable** | A non-voting node. <br/> This is an intermediate stage until node is promoted by the Leader to a Member.                                                                                        |
+| **Watcher**    | A non-voting node that is still fully managed by the cluster. <br/> Can be assigned with databases and tasks. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#watcher). |
 
 </Admonition>
 
 <Admonition type="note" title="">
 
 ##### State
+
 The Rachis state defines the **current role** of the node in the cluster.
 
-| Rachis state     | Description                                                                                                                                                                                                                                                                                                                      |
-|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Passive**      | Not a part of _any_ cluster.
-
-Every newly created RavenDB server starts at the initial **Passive** state.
-A passive node can become a Leader of a single-node-cluster,
-or it can be added to an already existing cluster.
-
-A node that is removed from the topology moves back to the **Passive** state. |
-| **Candidate**    | Has no Leader and tries to get elected for leadership.                                                                                                                                                                                                                                                                           |
-| **Follower**     | Has a Leader and operates normally.                                                                                                                                                                                                                                                                                              |
-| **Leader-Elect** | Just elected for leadership, but will take office and become the leader only after the dummy `noop` raft command was successfully applied in the cluster.                                                                                                                                                                        |
-| **Leader**       | Leader of the cluster. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#leader).                                                                                                                                                                                                                              |
+| Rachis state     | Description                                                                                                                                                                                                                                      |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Passive**      | Not a part of _any_ cluster. <br/><br/> Every newly created RavenDB server starts at the initial **Passive** state. <br/> A passive node can become a Leader of a single-node-cluster, <br/> or it can be added to an already existing cluster. <br/><br/> A node that is removed from the topology moves back to the **Passive** state. |
+| **Candidate**    | Has no Leader and tries to get elected for leadership.                                                                                                                                                                                           |
+| **Follower**     | Has a Leader and operates normally.                                                                                                                                                                                                              |
+| **Leader-Elect** | Just elected for leadership, but will take office and become the leader only after the dummy `noop` raft command was successfully applied in the cluster.                                                                                          |
+| **Leader**       | Leader of the cluster. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#leader).                                                                                                                                           |
 
 </Admonition>
 
