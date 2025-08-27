@@ -365,14 +365,14 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 </CodeBlock>
 </TabItem>
 
-| Parameter                  | Type                                            | Description                                                                                                                                                               |
-|----------------------------|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**                   | `string`                                        | The name of the time series (in one or more documents) to query                                                                                                           |
-| **start**                  | `DateTime`                                      | First parameter for `Between()`.<br/>The beginning of the time series range to filter.                                                                                     |
-| **end**                    | `DateTime`                                      | Second parameter for `Between()`.<br/>The end of the time series range to filter.                                                                                          |
-| **timePeriod**             | `Action<ITimePeriodBuilder>`                    | Expression returning a number of time units representing a time series range either at the beginning or end of the queried time series.                                   |
+| Parameter                  | Type                                            | Description                                                                                                                                                              |
+|----------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**                   | `string`                                        | The name of the time series (in one or more documents) to query                                                                                                          |
+| **start**                  | `DateTime`                                      | First parameter for `Between()`.<br/>The beginning of the time series range to filter.                                                                                   |
+| **end**                    | `DateTime`                                      | Second parameter for `Between()`.<br/>The end of the time series range to filter.                                                                                        |
+| **timePeriod**             | `Action<ITimePeriodBuilder>`                    | Expression returning a number of time units representing a time series range either at the beginning or end of the queried time series.                                  |
 | `LoadByTag` type parameter | `TTag`                                          | Time series entry tags can be just strings, but they can also be document IDs, representing a reference to a related document. `LoadByTag` takes the type of the entity. |
-| **predicate**              | `Expression<Func<TimeSeriesEntry, TTag, bool>>` |
+| **predicate**              | `Expression<Func<TimeSeriesEntry, TTag, bool>>` | |
 
 `FromLast()` and `FromFirst()` take an `ITimePeriodBuilder`, which is used to represent a range of time from milliseconds to years:
 
