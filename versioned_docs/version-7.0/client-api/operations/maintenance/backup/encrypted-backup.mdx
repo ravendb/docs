@@ -109,6 +109,7 @@ Secure the data stored on the server by
   If the database is **encrypted**, its snapshot would also be encrypted using the database encryption key.  
   If you want your snapshot to be encrypted, simply take the snapshot of an 
   [encrypted database](../../../../server/security/encryption/database-encryption.mdx#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
+
 #### Choosing Encryption Mode & Key
 
 Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
@@ -116,7 +117,8 @@ Specify whether encryption is used, and with which encryption key,
 in the **BackupEncryptionSettings** structure defined within the 
 [PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations) object.  
 
-* `BackupEncryptionSettings` definition:  
+`BackupEncryptionSettings` definition:
+  
 <TabItem value="BackupEncryptionSettings_definition" label="BackupEncryptionSettings_definition">
 <CodeBlock language="csharp">
 {`public class BackupEncryptionSettings
@@ -133,20 +135,16 @@ in the **BackupEncryptionSettings** structure defined within the
 `}
 </CodeBlock>
 </TabItem>  
-    BackupEncryptionSettings properties:  
 
-    | Property | Type | Functionality |
-    | ------------- | ------------- | ----- |
-    | **EncryptionMode** | enum | Set the encryption mode. <br/> `None` - Use **no encryption** (default mode). <br/> `UseDatabaseKey` - Use **the same key the DB is encrypted with** (Logical-Backups & Snapshots). <br/> `UseProvidedKey` - Provide **your own encryption key** (Logical-Backups only). |
-    | **Key** | string | Pass **your own encryption key** using this parameter (Logical-Backup only). <br/>
-```csharp
-{`//Use an encryption key of your choice
-EncryptionMode = EncryptionMode.UseProvidedKey,
-Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
-`}
-```
- <br/> **Note**: When Key is provided and `EncryptionMode` is set to `useDatabaseKey`, the **database key** is used (and not the provided key). |
-    `EncryptionMode` definition:  
+`BackupEncryptionSettings` properties:  
+
+| Property           | Type   | Functionality                                                                                                                                                                                                                                      |
+|--------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **EncryptionMode** | enum   | Set the encryption mode. <br/> `None` - Use **no encryption** (default mode). <br/> `UseDatabaseKey` - Use **the same key the DB is encrypted with** (Logical-Backups & Snapshots). <br/> `UseProvidedKey` - Provide **your own encryption key** (Logical-Backups only). |
+| **Key**            | string | Pass **your own encryption key** using this parameter (Logical-Backup only). <br/> <pre><code>// Use an encryption key of your choice<br/>EncryptionMode = EncryptionMode.UseProvidedKey,<br/>Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="<br/></code></pre> <br/> **Note**: When Key is provided and `EncryptionMode` is set to `useDatabaseKey`, the **database key** is used (and not the provided key). |
+
+`EncryptionMode` definition:
+  
 <TabItem value="EncryptionMode_definition" label="EncryptionMode_definition">
 <CodeBlock language="csharp">
 {`public enum EncryptionMode
@@ -158,8 +156,6 @@ Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
 `}
 </CodeBlock>
 </TabItem>  
-
-
 
 ## Creating an Encrypted Logical-Backup
 
