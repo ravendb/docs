@@ -921,17 +921,11 @@ IDocumentQueryBase<T> Search<TValue>(
 </CodeBlock>
 </TabItem>
 
-| Parameter         | Type                                | Description                                                                                                                                                              |
-|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldSelector__ | `Expression<Func<TResult>>`         | Points to the field in which you search.                                                                                                                                 |
-| __fieldName__     | string                              | Name of the field in which you search.                                                                                                                                   |
-| __searchTerms__   | string / 
-`IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for.
-Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
-| __boost__         | decimal                             | The boost value.<br/>Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results.mdx).<br/>&lt;strong&gt;Default&lt;/strong&gt; is `1.0` |
-| __options__       | `SearchOptions` enum                | Logical operator to use between consecutive Search methods.<br/> Can be `Or`, `And`, `Not`, or `Guess`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOptions.Guess`              |
-| __@operator__     | `SearchOperator` enum               | Logical operator to use between multiple terms in the same Search method.<br/>Can be `Or` or `And`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOperation.Or`                   |
-
-
-
-
+| Parameter         | Type                           | Description                                                                                                                                                              |
+|-------------------|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __fieldSelector__ | `Expression<Func<TResult>>`    | Points to the field in which you search.                                                                                                                                 |
+| __fieldName__     | string                         | Name of the field in which you search.                                                                                                                                   |
+| __searchTerms__   | string / `IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for. <br/> Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
+| __boost__         | decimal                        | The boost value. <br/> Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results.mdx). <br/> <strong>Default</strong> is `1.0` |
+| __options__       | `SearchOptions` enum           | Logical operator to use between consecutive Search methods. <br/> Can be `Or`, `And`, `Not`, or `Guess`. <br/> <strong>Default</strong> is `SearchOptions.Guess`         |
+| __@operator__     | `SearchOperator` enum          | Logical operator to use between multiple terms in the same Search method. <br/> Can be `Or` or `And`. <br/> <strong>Default</strong> is `SearchOperation.Or`             |
