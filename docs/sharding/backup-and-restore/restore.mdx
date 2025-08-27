@@ -160,28 +160,18 @@ mentioned above, allowing you to set backups **encryption settings** among other
 </TabItem>
 
 * Parameters:
-
-    | Parameter | Value | Functionality |
-    | ------------- | ------------- | ----- |
-    | **DatabaseName** | `string` | Name for the new database. |
-    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview.mdx#restoration-procedure) to restore. <br/> Ignored when restoring a sharded database. <br/> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
-    | **DataDirectory** <br/> (Optional -<br/> omit for default) | `string` | The new database data directory. <br/> <br/> **Default folder: <br/> Under the "Databases" folder <br/> In a folder carrying the restored database name.** |
-    | **EncryptionKey** <br/> (Optional -<br/> omit for default) | `string` | A key for an encrypted database. <br/> <br/> **Default behavior: <br/> Try restoring as if DB is unencrypted.**|
-    | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br/> `false` - enable ongoing tasks when Restore is complete. <br/> <br/> **Default: `false` <br/> Ongoing tasks will run when Restore is complete.**|
-    | **SkipIndexes** <br/> (Optional -<br/> omit for default) | `boolean` | `true` - disable indexes import, <br/> `false` - enable indexes import. <br/> <br/> **Default: `false` <br/> Restore all indexes.**|
-    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining paths to backup locations <br/>
-```csharp
-{`public class ShardedRestoreSettings
-\{
-  public Dictionary<int, 
-    SingleShardRestoreSetting> Shards 
-                            \{ get; set; \}
-\}
-`}
-```
- |
-    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key) |
          
+| Property | Value | Functionality |
+|-----------|-------|---------------|
+| **DatabaseName** | `string` | Name for the new database. |
+| **LastFileNameToRestore** <br/> (Optional – omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview.mdx#restoration-procedure) to restore. <br/> Ignored when restoring a sharded database. <br/> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
+| **DataDirectory** <br/> (Optional – omit for default) | `string` | The new database data directory. <br/><br/> **Default folder:** <br/> Under the "Databases" folder <br/> In a folder carrying the restored database name. |
+| **EncryptionKey** <br/> (Optional – omit for default) | `string` | A key for an encrypted database. <br/><br/> **Default behavior:** <br/> Try restoring as if DB is unencrypted. |
+| **DisableOngoingTasks** <br/> (Optional – omit for default) | `boolean` | `true` – disable ongoing tasks when Restore is complete. <br/> `false` – enable ongoing tasks when Restore is complete. <br/><br/> **Default: `false` <br/> Ongoing tasks will run when Restore is complete.** |
+| **SkipIndexes** <br/> (Optional – omit for default) | `boolean` | `true` – disable indexes import, <br/> `false` – enable indexes import. <br/><br/> **Default: `false` <br/> Restore all indexes.** |
+| **ShardRestoreSettings** | `ShardedRestoreSettings` | A dictionary of `SingleShardRestoreSetting` instances defining paths to backup locations. <br/><br/> <pre><code>public class ShardedRestoreSettings &#123;<br/>  public Dictionary&lt;int, SingleShardRestoreSetting&gt; Shards &#123; get; set; &#125;<br/>&#125;</code></pre> |
+| **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key) |
+ 
     <Admonition type="note" title="">
     Verify that RavenDB has full access to the backup locations and database files.  
     Make sure your server has write permission to `DataDirectory`.  
