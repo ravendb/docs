@@ -163,6 +163,7 @@ select timeseries (   // The \`select\` clause defines the time series query.
 `}
 </CodeBlock>
 </TabItem>
+
 ### `declare timeseries`
 
 This syntax allows you to declare a time series function (using `declare timeseries`) and call it from your query.  
@@ -171,30 +172,28 @@ It introduces greater flexibility to your queries as you can, for example, pass 
 Here is a query written in both syntaxes.  
 It first queries for users above 30. If they possess a time series named "HeartRates", it retrieves a range of its entries.
 
-<br/>
+#### With Time Series Function
 
-| With Time Series Function  | Without Time Series Function  |
-|----------------------------|-------------------------------|
-|
-```javascript
-{`// declare the time series function:
-declare timeseries ts(jogger) \{
+```sql
+// declare the time series function:
+declare timeseries ts(jogger) {
     from jogger.HeartRates 
     between 
        "2020-05-27T00:00:00.0000000Z"
       and 
        "2020-06-23T00:00:00.0000000Z"
-\}
+}
 
 from Users as jogger
 where Age > 30
 // call the time series function
 select ts(jogger)
-`}
 ```
-|
-```javascript
-{`from Users as jogger
+
+#### Without Time Series Function 
+
+```sql
+from Users as jogger
 where Age > 30
 select timeseries(
     from HeartRates 
@@ -202,11 +201,7 @@ select timeseries(
        "2020-05-27T00:00:00.0000000Z"
       and 
        "2020-06-23T00:00:00.0000000Z")
-`}
 ```
- |
-
-
 
 ## Combine time series and custom functions
 
