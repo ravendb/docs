@@ -191,14 +191,12 @@ Task<long> GenerateNextIdForAsync(string database, string collectionName);
 </CodeBlock>
 </TabItem>
 
-| Parameter          | Type     | Description                                                                                                                                 |
-|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| **database**       | `string` | The database for which to get the ID.
-`null` will get the ID for the default database set in the document store.                        |
-| **collectionName** | `string` | The collection for which to get the ID.                                                                                                     |
-| **entity**         | `object` | An instance of the specified collection.                                                                                                    |
-| **type**           | `Type`   | The collection entity type. It is usually the singular of the collection name.
-For example, collection = "Orders", then type = "Order". |
+| Parameter          | Type     | Description                                                                                                                                                             |
+|--------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **database**       | `string` | The database for which to get the ID. <br/> `null` will get the ID for the default database set in the document store.                                                  |
+| **collectionName** | `string` | The collection for which to get the ID.                                                                                                                                 |
+| **entity**         | `object` | An instance of the specified collection.                                                                                                                                |
+| **type**           | `Type`   | The collection entity type. It is usually the singular of the collection name. <br/> For example, collection = "Orders", then type = "Order".                           |
 
 | Return value  | Type   | Description                                                            |
 |---------------|--------|------------------------------------------------------------------------|
