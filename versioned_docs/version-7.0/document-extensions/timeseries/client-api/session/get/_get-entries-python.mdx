@@ -167,14 +167,12 @@ def get(
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| **from_date** (Optional) | `datetime` | Get the range of time series entries starting from this timestamp (inclusive).
-Default: `datetime.min` |
-| **to_date** (Optional) | `datetime` | Get the range of time series entries ending at this timestamp (inclusive).
-Default: `datetime.max` |
-| **start** | `int` | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
-| **page_size** | `int` | Paging page-size.<br/>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br/>Default: `int_max`, for all time series entries. |
+| Parameter                | Type       | Description                                                                                                                                         |
+|--------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from_date** (Optional) | `datetime` | Get the range of time series entries starting from this timestamp (inclusive). <br/> Default: `datetime.min`                                        |
+| **to_date** (Optional)   | `datetime` | Get the range of time series entries ending at this timestamp (inclusive). <br/> Default: `datetime.max`                                            |
+| **start**                | `int`      | Paging first entry. <br/> E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
+| **page_size**            | `int`      | Paging page-size. <br/> E.g. set `page_size` to 10 to retrieve pages of 10 entries. <br/> Default: `int_max`, for all time series entries.            |
 
 **Return Values (Optional)**
  

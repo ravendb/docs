@@ -188,14 +188,12 @@ int start = 0, int pageSize = int.MaxValue);
 </CodeBlock>
 </TabItem>
 
-| Parameter    | Type        | Description                                                                                                                                      |
-|--------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **from**     | `DateTime?` | Get the range of time series entries starting from this timestamp (inclusive).
-Default: `DateTime.MinValue`                                  |
-| **to**       | `DateTime?` | Get the range of time series entries ending at this timestamp (inclusive).
-Default: `DateTime.MaxValue`                                      |
-| **start**    | `int`       | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry. |
-| **pageSize** | `int`       | Paging page-size.<br/>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br/>Default: `int.MaxValue`, for all time series entries.         |
+| Parameter    | Type        | Description                                                                                                                                                     |
+|--------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from**     | `DateTime?` | Get the range of time series entries starting from this timestamp (inclusive). <br/> Default: `DateTime.MinValue`                                               |
+| **to**       | `DateTime?` | Get the range of time series entries ending at this timestamp (inclusive). <br/> Default: `DateTime.MaxValue`                                                   |
+| **start**    | `int`       | Paging first entry. <br/> E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry.            |
+| **pageSize** | `int`       | Paging page-size. <br/> E.g. set `pageSize` to 10 to retrieve pages of 10 entries. <br/> Default: `int.MaxValue`, for all time series entries.                  |
 
 **Return Values**
  
