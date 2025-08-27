@@ -135,26 +135,19 @@ Linebreaks are added for clarity.
 
 #### Values of `debug` parameter
 
-| Value | Description |
-| - | - |
-| **entries** | Returns the index entries instead of the complete documents, meaning only those fields that are indexed by the queried index |
-| **explain** | Used for queries on [Auto Indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes).
-Returns _just_ the name of an existing index that can be used to satisfy this query. If no appropriate index could be found, returns the next best index with an explanation of why it is not appropriate for this query - e.g. it does not index the necessary fields.
-If no index was found, this query will _not_ trigger the creation of an auto index as it normally would. |
-| **serverSideQuery** | Returns _just_ the RQL query that is run on the server side, which may look slightly different than the query sent |
-| **graph** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results analyzed as nodes and edges |
-| **detailedGraphResult** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results arranged by their corresponding parts of the query |
-
+| Value                   | Description                                                                                                                                                                                                                                                                                                                                                      |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **entries**             | Returns the index entries instead of the complete documents, meaning only those fields that are indexed by the queried index                                                                                                                                                                                                                                    |
+| **explain**             | Used for queries on [Auto Indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes). <br/> Returns _just_ the name of an existing index that can be used to satisfy this query. If no appropriate index could be found, returns the next best index with an explanation of why it is not appropriate for this query - e.g. it does not index the necessary fields. <br/> If no index was found, this query will _not_ trigger the creation of an auto index as it normally would. |
+| **serverSideQuery**     | Returns _just_ the RQL query that is run on the server side, which may look slightly different than the query sent                                                                                                                                                                                                                                               |
+| **graph**               | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results analyzed as nodes and edges                                                                                                                                                                                                                                           |
+| **detailedGraphResult** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results arranged by their corresponding parts of the query                                                                                                                                                                                                                     |
 
 #### Headers
 
-| Header | Description |
-| - | - |
-| **If-None-Match** | This optional header tells the server to check whether the requested data has been changed since the last request.
-To use it, insert the value of the header `ResponseEtag` from the response to your previous query. This value is a hash of type `long` that represents the state of the index or collection that satisfied the query. If that index or collection has not been updated, the server will respond with http status code `304` and no results will be retrieved.
-
-Note that this is regardless of the content of the query itself. |
-
+| Header            | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **If-None-Match** | This optional header tells the server to check whether the requested data has been changed since the last request.<br/><br/>To use it, insert the value of the header `ResponseEtag` from the response to your previous query. This value is a hash of type `long` that represents the state of the index or collection that satisfied the query. If that index or collection has not been updated, the server will respond with http status code `304` and no results will be retrieved. <br/><br/> Note that this is regardless of the content of the query itself. |
 
 #### Body
 
@@ -172,16 +165,14 @@ This is the general format of the request body:
 `}
 </CodeBlock>
 </TabItem>
-Depending on the shell you're using to run cURL, you will probably need to escape all 
-double quotes within the request body using a backslash: `"` -&gt; `\"`.  
 
-| Parameter | Description |
-| - | - |
-| **Query** | A query in [RQL](../../../client-api/session/querying/what-is-rql.mdx). You can insert parameters from the `QueryParameters` object with `$<parameter name>` |
-| **QueryParameters** | A list of values that can be used in the query, such as strings, ints, or documents IDs.
-Inputs from your users should always be passed as query parameters to avoid SQL injection attacks, and in general it's best practice to pass all your right-hand operands as parameters. |
+Depending on the shell you're using to run cURL,  
+you will probably need to escape all double quotes within the request body using a backslash: `"` -&gt; `\"`.  
 
-
+| Parameter           | Description                                                                                                                                                                                                                               |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Query**           | A query in [RQL](../../../client-api/session/querying/what-is-rql.mdx). You can insert parameters from the `QueryParameters` object with `$<parameter name>`                                                                              |
+| **QueryParameters** | A list of values that can be used in the query, such as strings, ints, or documents IDs. <br/> Inputs from your users should always be passed as query parameters to avoid SQL injection attacks, and in general it's best practice to pass all your right-hand operands as parameters. |
 
 ## Response Format
 
