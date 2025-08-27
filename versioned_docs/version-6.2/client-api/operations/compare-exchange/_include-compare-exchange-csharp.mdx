@@ -40,11 +40,9 @@ along with `Session.Load()` or LINQ queries.
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| - | - | - |
-| **path** | `string`;
-`Expression<Func<T, string>>`;
-`Expression<Func<T, IEnumerable<string>>>` | The key of the compare exchange value you want to include, a path to the key, or a path to a `string[]` of keys. |
+| Parameter | Type                                                                                            | Description                                                                                                      |
+|-----------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| **path**  | `string`; <br/> `Expression<Func<T, string>>`; <br/> `Expression<Func<T, IEnumerable<string>>>` | The key of the compare exchange value you want to include, a path to the key, or a path to a `string[]` of keys. |
 
 #### RQL
 
@@ -69,12 +67,9 @@ use `includes.cmpxchg()` (see the RawQuery example
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| - | - | - |
-| **key** | `string`;
-path to `string` | The key of the compare exchange value you want to include, or a path to the key. |
-
-
+| Parameter | Type                             | Description                                                                      |
+|-----------|----------------------------------|----------------------------------------------------------------------------------|
+| **key**   | `string`; <br/> path to `string` | The key of the compare exchange value you want to include, or a path to the key. |
 
 ## Examples
 
