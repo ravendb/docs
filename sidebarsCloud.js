@@ -62,6 +62,21 @@ export default {
             id: 'cloud-support',
             label: 'Support'
         },
+		{
+            type: 'doc',
+            id: 'cloud-account',
+            label: 'Account'
+        },
+		{
+            type: 'doc',
+            id: 'cloud-maintenance-troubleshooting',
+            label: 'Maintenance & Troubleshooting'
+        },
+        {
+            type: 'doc',
+            id: 'cloud-features',
+            label: 'Product Features',
+        },
         {
             type: 'doc',
             id: 'cloud-microsoft-azure-marketplace',
@@ -71,16 +86,6 @@ export default {
             type: 'doc',
             id: 'cloud-aws-marketplace',
             label: 'AWS Marketplace',
-        },
-        {
-            type: 'doc',
-            id: 'cloud-maintenance-troubleshooting',
-            label: 'Maintenance & Troubleshooting'
-        },
-        {
-            type: 'doc',
-            id: 'cloud-features',
-            label: 'Product Features',
         },
     ],
 };
