@@ -42,13 +42,11 @@ Compare exchange entries that are automatically administered by RavenDB are call
 
 * Provide the following when saving a **key**:
 
-| Parameter | Description |
-| ------------- | ---- |
-| **Key** | A string under which _Value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes. |
-| **Value** | The Value that is associated with the _Key_. 
-Can be a number, string, boolean, array or any JSON formatted object. |
-| **Index** | The _Index_ number is indicating the version of _Value_.
-The _Index_ is used for the concurrency control, similar to documents Etags. |
+| Parameter | Description                                                                                                                                 |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| **Key**   | A string under which _Value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes.                 |
+| **Value** | The Value that is associated with the _Key_. <br/> Can be a number, string, boolean, array or any JSON formatted object.                    |
+| **Index** | The _Index_ number is indicating the version of _Value_. <br/> The _Index_ is used for the concurrency control, similar to documents Etags. |
 
 * When creating a _new_ 'Compare Exchange Key', the index should be set to `0`.  
 

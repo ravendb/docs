@@ -37,10 +37,11 @@ import CodeBlock from '@theme/CodeBlock';
 </CodeBlock>
 </TabItem>
 
-| ------------- | ----- | ---- |
-| **Key** | string | The unique object identifier |
-| **Value** | `T` | The existing value that _Key_ has |
-| **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
+| Parameter | Type   | Description                                                              |
+|-----------|--------|--------------------------------------------------------------------------|
+| **Key**   | string | The unique object identifier                                             |
+| **Value** | `T`    | The existing value that _Key_ has                                        |
+| **Index** | long   | The version number of the _Value_ that is stored for the specified _Key_ |
 
 <Admonition type="info" title="Session Interface and Lazy Get" id="session-interface-and-lazy-get" href="#session-interface-and-lazy-get">
 You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 

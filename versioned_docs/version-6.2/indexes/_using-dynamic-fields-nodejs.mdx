@@ -516,21 +516,13 @@ object CreateField(string name, object value, CreateFieldOptions options);
 </CodeBlock>
 </TabItem>
 
-| Parameters       |                      |                                                                                                                                                                                    |
-|------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
-| **fieldValue**   | `object`             | Value of the dynamic-index-field
-The field Terms are derived from this value.                                                                                                  |
-| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
-
-`false` - will set `FieldStorage.No` (default value)
-`true` - will set `FieldStorate.Yes`                       |
-| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
-
-`null` - `FieldIndexing.Default` (default value)
-`false` - `FieldIndexing.Exact`
-`true` - `FieldIndexing.Search` |
-| **options**      | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                                        |
+| Parameters     | Type                | Description                                                                                                                                                     |
+|----------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldName**  | `string`            | Name of the dynamic-index-field                                                                                                                                 |
+| **fieldValue** | `object`            | Value of the dynamic-index-field <br/> The field Terms are derived from this value.                                                                             |
+| **stored**     | `bool`              | Sets [FieldStorage](../indexes/storing-data-in-index.mdx) <br/><br/> `false` - will set `FieldStorage.No` (default value) <br/> `true` - will set `FieldStorate.Yes` |
+| **analyzed**   | `bool`              | Sets [FieldIndexing](../indexes/using-analyzers.mdx) <br/><br/> `null` - `FieldIndexing.Default` (default value) <br/> `false` - `FieldIndexing.Exact` <br/> `true` - `FieldIndexing.Search` |
+| **options**    | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                     |
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|

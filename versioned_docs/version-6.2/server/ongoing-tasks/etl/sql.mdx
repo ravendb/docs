@@ -210,13 +210,15 @@ for (var i = 0; i < attachments.length; i++) \{
 * Attachments can be also accessed using the `getAttachments()` helper function   
   (instead of grabbing them from metadata).
 * The existence of an attachment can be checked by the `hasAttachment(name)` function.
+
 ### Loading to VARCHAR and NVARCHAR columns
 
 Two additional functions are designed specifically for working with VARCHAR and NVARCHAR types:
 
-| --- | --- |
-| `varchar(value, size = 50)` | Defines the parameter type as VARCHAR, with the option to specify its size<br/>(default is 50 if not provided). |
-| `nvarchar(value, size = 50)` |  Defines the parameter type as NVARCHAR, with the option to specify its size<br/>(default is 50 if not specified). |
+| Function                      | Description                                                                                  |
+|-------------------------------|----------------------------------------------------------------------------------------------|
+| `varchar(value, size = 50)`   | Defines the parameter type as VARCHAR, with the option to specify its size <br/> (default is 50 if not provided).   |
+| `nvarchar(value, size = 50)`  | Defines the parameter type as NVARCHAR, with the option to specify its size <br/> (default is 50 if not specified). |
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

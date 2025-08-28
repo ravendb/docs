@@ -138,20 +138,22 @@ loadToEmployeesWithManager(\{
 In addition to the ECMAScript 5.1 API,  
 RavenDB introduces the following functions and members that can be used in the transformation script:  
 
-|---|---|---|
-| `this` | object | The current document (with metadata) |
-| `id(document)` | function | Returns the document ID |
-| `load(id)` | function | Load another document.<br/>This will increase the maximum number of allowed steps in a script.<br/>**Note**:<br/>Changes made to the other _loaded_ document will Not trigger the ETL process.|
+| Member / Function | Type     | Description                                                                                                                                                       |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `this`            | object   | The current document (with metadata)                                                                                                                              |
+| `id(document)`    | function | Returns the document ID                                                                                                                                           |
+| `load(id)`        | function | Load another document. <br/> This will increase the maximum number of allowed steps in a script. <br/> **Note**: <br/> Changes made to the other _loaded_ document will Not trigger the ETL process. |
 
 Specific ETL functions:  
 
-|---|---|---|
-| `loadTo` | function | Load an object to the specified target.<br/>This command has several syntax options,<br/>see details [below](../../../server/ongoing-tasks/etl/basics.mdx#themethod).<br/>**Note:**<br/>An object will only be sent to the destination if the `loadTo` method is called. |
-| Attachments: |||
-| `loadAttachment(name)` | function | Load an attachment of the current document. |
-| `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document. |
-| `getAttachments()` | function | Get a collection of attachments details for the current document. Each item has the following properties:<br/> `Name`, `Hash`, `ContentType`, `Size`. |
-| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`).<br/>For details specific to Raven ETL, refer to this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments). |
+| Function / Member                       | Type     | Description                                                                                                                                                                                                 |
+|-----------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `loadTo`                                | function | Load an object to the specified target. <br/> This command has several syntax options, <br/> see details [below](../../../server/ongoing-tasks/etl/basics.mdx#themethod). <br/> **Note:** An object will only be sent to the destination if the `loadTo` method is called. |
+| **Attachments:**                        |          |                                                                                                                                                                                                             |
+| `loadAttachment(name)`                  | function | Load an attachment of the current document.                                                                                                                                                                 |
+| `hasAttachment(name)`                   | function | Check if an attachment with a given name exists for the current document.                                                                                                                                    |
+| `getAttachments()`                      | function | Get a collection of attachments details for the current document. Each item has the following properties: <br/> `Name`, `Hash`, `ContentType`, `Size`.                                                        |
+| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`). <br/> For details specific to Raven ETL, refer to this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments). |
 
 </Admonition>
 

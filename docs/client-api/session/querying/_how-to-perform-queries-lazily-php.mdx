@@ -134,14 +134,10 @@ public function executeLazy(?Closure $onEval = null): Lazy;
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type       | Description                                                           |
-|------------|------------------------------------------------------------------------------------|
-| **$onEval** | `?Closure` | An action to perform on the query results when the query is executed |
+| Parameter   | Type       | Description                                                           |
+|-------------|------------|-----------------------------------------------------------------------|
+| **$onEval** | `?Closure` | An action to perform on the query results when the query is executed  |
 
-| Return Value                                                                                                                           |                                                                |
-|------------------------------------------------------------------------|
+| Return Value | Description                                             |
+|--------------|---------------------------------------------------------|
 | `Lazy` | A lazy instance that will evaluate the query only when needed |
-
-
-
-

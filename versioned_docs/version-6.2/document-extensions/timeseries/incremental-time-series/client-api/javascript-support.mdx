@@ -44,17 +44,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Use `timeseries (doc, name)` to  choose a time series by the ID of its owner document and 
   by the series name.  
 
-       | Parameter | Type | Description 
-       |:---:|:---:| --- |
-       | doc | `string` <br/> or <br/> `document instance` | Document ID, e.g. `users/1-A` <br/> <br/> e.g. `this`  
-       | name | `string` | Incremental time series Name (e.g. `INC:StockPrice`) 
+       | Parameter | Type                                        | Description                                                                 |
+       |-----------|---------------------------------------------|-----------------------------------------------------------------------------|
+       | doc       | `string` <br/> or <br/> `document instance` | Document ID, e.g. `users/1-A` <br/><br/> e.g. `this`                        |
+       | name      | `string`                                    | Incremental time series Name (e.g. `INC:StockPrice`)                        |
 
 * Use one of the following methods to access the chosen time series:  
    * [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
    * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
    * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
-
-
 
 ## `timeseries.increment`
 

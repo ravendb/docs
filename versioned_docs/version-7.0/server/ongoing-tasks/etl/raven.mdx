@@ -613,11 +613,10 @@ Deletions can be controlled by defining deletion behavior functions in the ETL s
 method).  
 e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return false;}`  
 
-| Parameter | Type | Description | Notes |
-| - | - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |  |
-| **deleted** | `bool` | If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. 
- If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. | Optional |
+| Parameter   | Type     | Description                                                                                                                                                                           | Notes     |
+|-------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| **docId**   | `string` | The identifier of a deleted document.                                                                                                                                                 |           |
+| **deleted** | `bool`   | If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. | Optional  |
 
 | Return Value | Description |
 | - | - |
@@ -663,12 +662,11 @@ There is also a generic function to control deletion on different collections.
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |
-| **collection** | `string` | The name of a collection that ETL is working on. |
-| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. 
- If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. 
+| Parameter     | Type     | Description                                                                                                                                                                           |
+|---------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **docId**     | `string` | The identifier of a deleted document.                                                                                                                                                 |
+| **collection** | `string` | The name of a collection that ETL is working on.                                                                                                                                      |
+| **deleted**   | `bool`   | Optional and therefore doesn't affect existing code. <br/> If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. |
 
 | Return Value | Description |
 | - | - |
@@ -764,12 +762,11 @@ generic function can filter deletions by collection name.
 </CodeBlock>
 </TabItem>
 
-| Parameter | Type | Description |
-| - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |
-| **collection** | `string` | The name of a collection. |
-| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. 
- If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated.  If you set `return true` and the document was deleted in the source database, it will also delete the document in the destination database.  |
+| Parameter      | Type     | Description                                                                                                                                                                                                                     |
+|----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **docId**      | `string` | The identifier of a deleted document.                                                                                                                                                                                           |
+| **collection** | `string` | The name of a collection.                                                                                                                                                                                                       |
+| **deleted**    | `bool`   | Optional and therefore doesn't affect existing code. <br/> If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. <br/> If you set `return true` and the document was deleted in the source database, it will also delete the document in the destination database. |
 
 | Return | Description |
 | - | - |

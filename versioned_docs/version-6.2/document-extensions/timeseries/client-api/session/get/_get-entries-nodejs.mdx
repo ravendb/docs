@@ -190,18 +190,13 @@ get(from, to, includes, start, pageSize);
 </CodeBlock>
 </TabItem>
 
-
-
-
-| Parameter        | Type                       | Description                                                                                                                                                   |
-|------------------|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **from**         | `Date`                     | Get the range of time series entries starting from this timestamp (inclusive).
-Pass `null` to use the minimum date value.                                 |
-| **to**           | `Date`                     | Get the range of time series entries ending at this timestamp (inclusive).
-Pass `null` to use the maximum date value.                                     |
-| **start**        | `number`                   | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry.              |
-| **pageSize**     | `number`                   | Paging page-size.<br/>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br/>Default: the equivalent of C# `int.MaxValue`, for all time series entries. |
-| **includes**     | `(includeBuilder) => void` | Builder function with a fluent API<br/>containing the `includeTags` and `includeDocument` methods.                                                             |
+| Parameter    | Type                       | Description                                                                                                                                         |
+|--------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from**     | `Date`                     | Get the range of time series entries starting from this timestamp (inclusive). <br/> Pass `null` to use the minimum date value.                      |
+| **to**       | `Date`                     | Get the range of time series entries ending at this timestamp (inclusive). <br/> Pass `null` to use the maximum date value.                          |
+| **start**    | `number`                   | Paging first entry. <br/> E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry. |
+| **pageSize** | `number`                   | Paging page-size. <br/> E.g. set `pageSize` to 10 to retrieve pages of 10 entries. <br/> Default: the equivalent of C# `int.MaxValue`, for all time series entries. |
+| **includes** | `(includeBuilder) => void` | Builder function with a fluent API <br/> containing the `includeTags` and `includeDocument` methods.                                                 |
 
 | Return value                 |                                              |
 |------------------------------|----------------------------------------------|

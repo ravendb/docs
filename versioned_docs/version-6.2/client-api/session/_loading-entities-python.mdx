@@ -263,11 +263,9 @@ The method is accessible from the `session.advanced` operations.
 | **change_vector** | `str` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
 | **object_type**<br/>(optional) | `Type[_T]` | Object type |
 
-| Return Type | Description |
-| ------------- | ----- |
-| `ConditionalLoadResult[_T]` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.
-If the change vectors match, the method returns `default` as the entity, and the current change vector.
-If the specified document, the method returns only `default` without a change vector. |
+| Return Type                 | Description                                                                                                                                                                  |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ConditionalLoadResult[_T]` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector. <br/> If the change vectors match, the method returns `default` as the entity, and the current change vector. <br/> If the specified document, the method returns only `default` without a change vector. |
 
 ### Example
 
