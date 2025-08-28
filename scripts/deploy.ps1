@@ -44,7 +44,7 @@ param(
     [switch]$DryRun
 )
 
-$PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py' 
+$PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py'
 
 function ThrowIfEmpty {
     param (
@@ -87,6 +87,28 @@ function Process-Changelogs {
     if ($LASTEXITCODE) { throw 'build_whats_new.py failed' }
 }
 
+function Get-EnvBool([string]$Name) {
+    $v = (Get-Item -Path Env:$Name -ErrorAction SilentlyContinue).Value
+    if (-not $v) { return $false }
+    return @('1','true','yes','y','on') -contains ($v.ToString().ToLower())
+}
+
+function Prepare-RobotsTxt {
+    $root      = Join-Path -Path $PSScriptRoot -ChildPath '..'
+    $staticDir = Join-Path -Path (Resolve-Path $root) -ChildPath 'static'
+    if (-not (Test-Path -LiteralPath $staticDir)) { throw "Static folder not found at $staticDir" }
+
+    $isTest  = Get-EnvBool 'RAVENDB_DOCS_TEST_BUILD'
+    $srcName = if ($isTest) { 'robots_test.txt' } else { 'robots_prod.txt' }
+    $src     = Join-Path -Path $staticDir -ChildPath $srcName
+    $dest    = Join-Path -Path $staticDir -ChildPath 'robots.txt'
+
+    if (-not (Test-Path -LiteralPath $src)) { throw "Robots source not found: $src" }
+
+    Copy-Item -LiteralPath $src -Destination $dest -Force
+    Write-Host "robots.txt -> using '$srcName'" -ForegroundColor Cyan
+}
+
 Ensure-Dependencies
 
 ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID      'AWS_ACCESS_KEY_ID not set'
@@ -108,6 +130,8 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
+
+Prepare-RobotsTxt
 
 Write-Host "Running 'npx docusaurus build'..." -ForegroundColor Gray
 npx docusaurus build
