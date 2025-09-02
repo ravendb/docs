@@ -14,7 +14,7 @@ import IntegrationFeaturesGrid from "@site/src/components/Homepage/Features/Feat
 export default function Features() {
   return (
     <section className="mb-8">
-      <Heading as="h3">Browse by features</Heading>
+      <Heading as="h3">Browse by feature</Heading>
       <div className="mb-8">
         <AiFeaturesGrid />
       </div>

@@ -1,0 +1,468 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Compare-exchange items can be included when [loading entities](../client-api/session/loading-entities) 
+  or when making [queries](../client-api/session/querying/how-to-query).
+
+* The Session [tracks](../client-api/session/what-is-a-session-and-how-does-it-work) the included compare-exchange items,
+  which means their values can be accessed later in the same session without making additional requests to the server.
+
+* In this page:
+    * [Sample data](../compare-exchange/include-cmpxchg-items#sample-data)
+    * [Include compare-exchange items when loading](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-loading)
+    * [Include compare-exchange items when querying](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-querying)
+    * [Syntax](../compare-exchange/include-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Sample data
+
+The examples in this article are based on the following **sample data**:  
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample_documents" label="Sample_documents">
+```js
+{
+    // Create some company documents:
+    // ==============================
+
+    const session = documentStore.openSession();
+
+    const company1 = new Company();
+    company1.id = "companies/1";
+    company1.name = "Apple";
+    company1.supplier = "suppliers/1";
+    company1.workers = ["employees/1", "employees/2"];
+
+    const company2 = new Company(
+        "companies/2", "Google", "suppliers/2", ["employees/3", "employees/4"]);
+        
+    const company3 = new Company(
+        "companies/3", "Microsoft", "suppliers/3", ["employees/6", "employees/5"]);
+
+    await session.store(company1);
+    await session.store(company2);
+    await session.store(company3);
+
+    await session.saveChanges();
+}
+```
+</TabItem>
+<TabItem value="Sample_compare_exchange_items" label="Sample_compare_exchange_items">
+```js
+{
+    // Create some compare-exchange items:
+    // ===================================
+
+    // Open a session with cluster-wide mode so that we can call 'createCompareExchangeValue'
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "employees/1", "content for employee 1 ..");
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "employees/2", "content for employee 2 ..");
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "employees/3", "content for employee 3 ..");
+
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "suppliers/1", "content for supplier 1 ..");
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "suppliers/2", "content for supplier 2 ..");
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "suppliers/3", "content for supplier 3 ..");
+    
+    await session.saveChanges();
+}
+```
+</TabItem>
+<TabItem value="Company_class" label="Company_class">
+```js
+class Company {
+    constructor(
+        id = null,
+        name = "",
+        supplier = "",
+        workers = []
+
+    ) {
+        Object.assign(this, {
+            id,
+            name,
+            supplier,
+            workers
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Include compare-exchange items when loading
+
+<Admonition type="note" title="">
+
+**Include single item**:
+
+<TabItem value="" label="">
+```js
+// Open a session with cluster-wide mode to enable calling 'includeCompareExchangeValue'
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Load a company document + include a CmpXchg item:
+// =================================================
+
+// Call 'includeCompareExchangeValue' within the 'load' options,
+// pass the PATH of the document property that contains the key of the CmpXchg item to include
+const company1 = await session.load("companies/1", {
+    documentType: Company,
+    // "supplier" is the document property that holds the CmpXchg key 
+    includes: i => i.includeCompareExchangeValue("supplier")
+});
+
+// Calling 'load' has triggered a server call
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg item:
+// =================================
+
+// Call 'getCompareExchangeValue' to access the content of the included CmpXchg item,
+// pass the CmpXchg item KEY. This will NOT trigger another server call.
+const item = await session.advanced.clusterTransaction
+    .getCompareExchangeValue(company1.supplier);
+
+// You can assert that no further server calls were made
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+
+// The CmpXchg item value is available
+const value = item.value;
+```
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Include multiple items**:
+
+<TabItem value="" label="">
+```js
+// Open a session with cluster-wide mode
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Load a company document + include multiple CmpXchg items:
+// =========================================================
+
+// Call 'includeCompareExchangeValue' within the 'load' options,
+// pass the PATH of the document property that contains the list of the CmpXchg items to include
+const company1 = await session.load("companies/1", {
+    documentType: Company,
+    // "workers" is the document property that holds the list of keys 
+    includes: i => i.includeCompareExchangeValue("workers")
+});
+
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg items:
+// ==================================
+
+// Call 'getCompareExchangeValues' to access the content of the included CmpXchg items, 
+// pass the list of KEYS. This will NOT trigger another server call.
+const items = await session.advanced.clusterTransaction
+    .getCompareExchangeValues(company1.workers);
+
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+
+// The value of each item is available
+const value1 = items["employees/1"].value;
+const value2 = items["employees/2"].value;
+```
+</TabItem>
+
+</Admonition>
+
+---
+
+## Include compare-exchange items when querying
+
+<Admonition type="note" title="">
+
+**Dynamic query**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// Open a session with cluster-wide mode to enable calling 'includeCompareExchangeValue'
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Make a dynamic query + include CmpXchg items:
+// =============================================
+
+const companies = await session.query({ collection: "companies" })
+    // Call 'include' with 'includeCompareExchangeValue'
+    // pass the PATH of the document property that contains the key of the CmpXchg item to include  
+    .include(x => x.includeCompareExchangeValue("supplier"))
+    .all();
+
+// Making the query has triggered a server call
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg items:
+// ==================================
+
+const cmpXchgItems = [];
+
+for (let i = 0; i < companies.length; i++) {
+    // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+    // pass the KEY. This will NOT trigger another server call.
+    const item = await session.advanced.clusterTransaction
+        .getCompareExchangeValue(companies[i].supplier);
+
+    cmpXchgItems.push(item);
+}
+
+// You can assert that no further server calls were made
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+```
+</TabItem>
+<TabItem value="RawQuery_using_RQL" label="RawQuery_using_RQL">
+```js
+// Open a session with cluster-wide mode to enable calling 'include cmpxchg'
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Make a raw query + include CmpXchg items:
+// =========================================
+
+// In the provided RQL:
+// * Call 'include' with 'cmpxchg'
+// * Pass the PATH of the document property that contains the key of the CmpXchg item to include  
+const companies = await session.advanced
+    .rawQuery(`from companies as c
+               select c
+               include cmpxchg(c.supplier)`)
+    .all();
+
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg items:
+// ==================================
+
+const cmpXchgItems = [];
+
+for (let i = 0; i < companies.length; i++) {
+    // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+    // pass the KEY, this will NOT trigger another server call.
+    const item = await session.advanced.clusterTransaction
+        .getCompareExchangeValue(companies[i].supplier);
+
+    cmpXchgItems.push(item);
+}
+
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+```
+</TabItem>
+<TabItem value="RawQuery_using_JS_function" label="RawQuery_using_JS_function">
+```js
+// Open a session with cluster-wide mode to enable calling 'includes.cmpxchg'
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Make a raw query + include CmpXchg items using Javascript method:
+// =================================================================
+
+// In the provided RQL:
+// * Call 'includes.cmpxchg'
+// * Pass the PATH of the document property that contains the key of the CmpXchg item to include  
+const companies = await session.advanced
+    .rawQuery(`declare function includeCmpXchg(company) {
+                  includes.cmpxchg(company.supplier);
+                  return company;
+             }
+             
+            from companies as c
+            select includeCmpXchg(c)`)
+    .all();
+
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg items:
+// ==================================
+
+const cmpXchgItems = [];
+
+for (let i = 0; i < companies.length; i++) {
+    // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+    // pass the KEY. This will NOT trigger another server call.
+    const item = await session.advanced.clusterTransaction
+        .getCompareExchangeValue(companies[i].supplier);
+
+    cmpXchgItems.push(item);
+}
+
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Index query**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// Open a session with cluster-wide mode
+const session = documentStore.openSession({
+    transactionMode: "ClusterWide"
+});
+
+// Make an index query + include CmpXchg items:
+// ============================================
+
+// Call 'include' with 'includeCompareExchangeValue'
+// pass the PATH of the document property that contains the key of the CmpXchg item to include
+const companies = await session.query({ indexName: "Companies/ByName" })
+    .include(x => x.includeCompareExchangeValue("supplier"))
+    .all();
+
+const numberOfRequests = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests, 1);
+
+// Access the included CmpXchg items:
+// ==================================
+
+const cmpXchgItems = [];
+
+for (let i = 0; i < companies.length; i++) {
+    // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+    // pass the KEY. This will NOT trigger another server call.
+    const item = await session.advanced.clusterTransaction
+        .getCompareExchangeValue(companies[i].supplier);
+
+    cmpXchgItems.push(item);
+}
+
+assert.equal(session.advanced.numberOfRequests, numberOfRequests);
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// RQL that can be used with a Raw Query:
+// ======================================
+
+from index "Companies/ByName"
+include cmpxchg("supplier")
+
+// Using JS method:
+// ================
+
+declare function includeCmpXchg(company) {
+    includes.cmpxchg(company.supplier);
+    return company;
+}
+
+from index "Companies/ByName" as c
+select includeCmpXchg(c)
+```
+</TabItem>
+<TabItem value="Index" label="Index">
+```js
+class Companies_ByName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map('companies', company => {
+            return {
+                name: company.name
+            };
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+* Note:  
+  Similar to the above dynamic query example, you can query the index with a [raw query](../indexes/querying/query-index#query-an-index-by-rawquery) using the provided RQL.
+
+</Admonition>
+
+---
+
+## Syntax
+
+<Admonition type="note" title="">
+
+**When loading entities or making queries**:  
+
+* Use method `includeCompareExchangeValue()` to include compare-exchange items with `session.load()` or with queries.  
+
+<TabItem value="" label="">
+```js
+includeCompareExchangeValue(path);
+```
+</TabItem>
+
+| Parameter | Type      | Description                                                                                                |
+|-----------|-----------|------------------------------------------------------------------------------------------------------------|
+| **path**  | `string`  | The path of the document property that contains the key (or list of keys) of the CmpXchg items to include. |
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**When querying with RQL**:  
+
+* Use the [include](../client-api/session/querying/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
+
+<TabItem value="" label="">
+```sql
+include cmpxchg(key)
+```
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**When using JavaScript functions within RQL**:
+
+* Use `includes.cmpxchg()` In [JavaScript functions](../client-api/session/querying/what-is-rql.mdx#declare) within RQL queries. 
+
+<TabItem value="" label="">
+```js
+includes.cmpxchg(key);
+```
+</TabItem>
+
+| Parameter | Type      | Description                                                                      |
+|-----------|-----------|----------------------------------------------------------------------------------|
+| **key**   | `string`  | The key of the compare exchange value you want to include, or a path to the key. |
+
+</Admonition>

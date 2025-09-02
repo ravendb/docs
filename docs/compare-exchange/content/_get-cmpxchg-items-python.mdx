@@ -1,0 +1,55 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can retrieve multiple existing compare-exchange items at once using the **Client API** by either:
+  * specifying a list of unique keys, or
+  * using a common key prefix
+
+  Retrieval can be done using either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get **multiple** compare-exchange items.  
+  To get a **single** item, see [Get compare-exchange item](../compare-exchange/get-cmpxchg-item).
+
+* In this article:  
+  * [Syntax](../compare-exchange/get-cmpxchg-items#syntax)
+
+</Admonition>
+    
+---
+
+## Syntax
+
+---
+
+### `get_compare_exchange_values`  
+
+<TabItem value="" label="">
+```python
+# Get compare-exchange item using a cluster wide session:
+session.advanced.cluster_transaction.get_compare_exchange_values(keys)
+```
+</TabItem>
+
+<TabItem value="" label="">
+```python
+# Get compare-exchange item using a cluster wide session - lazily:
+session.advanced.cluster_transaction.lazily.get_compare_exchange_values(keys)
+```
+</TabItem>
+
+| Parameter     | Type        | Description                                     |
+|---------------|-------------|-------------------------------------------------|
+| **keys**      | `List[str]` | Keys of the compare-exchange items to retrieve. |
+
+| Returned object                            |  Description    |
+|--------------------------------------------|-----------------|
+| `Dict[str, CompareExchangeValue[T]]`       | A Dictionary with a compare-exchange item per key.<br/> If a key doesn't exist the value associated with it will be `None`. |
+| `Lazy[Dict[str, CompareExchangeValue[T]]]` | A Dictionary with a compare-exchange item per key.<br/> If a key doesn't exist the value associated with it will be `None`. |

@@ -1,0 +1,79 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Existing compare-exchange items can be deleted.  
+
+* An item is deleted only if the index you provide in the request matches the current index stored on the server  
+  for the specified key.
+
+* Compare-exchange items can also be deleted by adding an expiration date to them.  
+  Learn more in [Compare-exchange expiration](../compare-exchange/cmpxchg-expiration).  
+  
+* Whenever a compare-exchange item is deleted, a compare-exchange tombstone item is created for it.  
+  Tombstones are used to indicate to other RavenDB processes that the item was deleted, so they can react accordingly.  
+  E.g., indexes referencing the deleted item will update themselves to remove those references.  
+  The tombstones themselves are not removed immediately - RavenDB uses an internal cleaner task to periodically remove tombstones that are eligible for deletion.
+  See: [Cluster.CompareExchangeTombstonesCleanupIntervalInMin](../compare-exchange/configuration#clustercompareexchangetombstonescleanupintervalinmin).
+
+* In this article:  
+  * [Delete compare-exchange item using a **cluster-wide session**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-cluster-wide-session) 
+    * [Delete by item](../compare-exchange/delete-cmpxchg-items#delete-by-item)  
+    * [Delete by key and index](../compare-exchange/delete-cmpxchg-items#delete-by-key-and-index)  
+  * [Delete compare-exchange items using the **Studio**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-items-using-the-studio)
+  * [Syntax](../compare-exchange/delete-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Delete compare-exchange item using a cluster-wide session
+
+* Delete compare-exchange items using a cluster-wide session when you want the deletion to be part of a transaction committed via `saveChanges()`. 
+  This is suitable if you want to include compare-exchange deletions and document changes in the same transaction.
+  Learn more about cluster-wide sessions in [Cluster transactions - overview](../client-api/session/cluster-transaction/overview).  
+
+* Use `deleteCompareExchangeValue()` to register the deletion of an existing compare-exchange item in the session.  
+  The item will be deleted as part of the cluster-wide transaction when _saveChanges()_ is called.
+
+* If the item's index (its version) on the server is different from the index you provide,  
+  _saveChanges()_ will throw a `ClusterTransactionConcurrencyException`.  
+  This means the item was modified by another operation after it was loaded into the session.
+
+---
+
+## Delete compare-exchange items using the Studio
+
+You can delete one or multiple compare-exchange items from the Studio.
+
+![The compare-exchange view](../assets/delete-cmpxchg.png)
+
+1. Go to **Documents > Compare Exchange**.
+2. Select the compare-exchange items you want to delete.  
+3. Click **Delete**.
+
+---
+
+## Syntax
+
+---
+
+### `deleteCompareExchangeValue`  
+Delete compare-exchange item using cluster-wide session:
+
+<TabItem value="" label="">
+```csharp
+// Available overloads:
+$session->advanced()->clusterTransaction()->deleteCompareExchangeValue($item);
+$session->advanced()->clusterTransaction()->deleteCompareExchangeValue($key, $index);
+```
+</TabItem>
+
+| Parameter | Type                      | Description |
+|-----------|---------------------------|-------------|
+| **item**  | `CompareExchangeValue<T>` | The compare-exchange item to delete.         |
+| **key**   | `string`                  | The unique key of the compare-exchange item. |
+| **index** | `long`                    | The current version of the item.<br/>Deletion will only succeed if this matches the version stored on the server. |

@@ -1,0 +1,236 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* An existing compare-exchange item can be updated in the following ways:
+  * Using a cluster-wide session
+  * Using a store operation
+  * Using the Studio
+  
+* In this article:  
+  * [Update compare-exchange item using a **cluster-wide session**](../compare-exchange/update-cmpxchg-item#update-compare-exchange-item-using-a-cluster-wide-session)  
+  * [Update compare-exchange item using a **store operation**](../compare-exchange/update-cmpxchg-item#update-compare-exchange-item-using-a-store-operation)  
+  * [Update compare-exchange item using the **Studio**](../compare-exchange/update-cmpxchg-item#update-compare-exchange-item-using-the-studio)  
+  * [Syntax](../compare-exchange/update-cmpxchg-item#syntax)   
+
+</Admonition>
+
+---
+
+## Update compare-exchange item using a cluster-wide session
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Update_using_session" label="Update_using_session">
+```csharp
+// The session must be opened in cluster-wide mode.
+using (var session = store.OpenSession(
+    new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+{ 
+    // Get the existing item from the server
+    // =====================================
+
+    CompareExchangeValue<string> item = session.Advanced.ClusterTransaction
+        .GetCompareExchangeValue<string>("user1-name@example.com");
+        
+    // The item is now tracked in the session's internal state
+    // Modify the value / metadata as needed
+    // =====================================
+
+       item.Value = "users/99";
+       item.Metadata["email-type"] = "work email";
+       item.Metadata["updated-at"] = DateTime.UtcNow.ToString("o");
+
+    // Save changes for the update to take effect
+    // ==========================================
+    
+    session.SaveChanges();    
+    
+    // A 'ClusterTransactionConcurrencyException' is thrown if the compare-exchange item
+    // no longer exists on the server at the time of calling saveChanges().
+    // This can happen if another client deletes or modifies the item before your update is saved.
+}
+```
+</TabItem>
+<TabItem value="Update_using_session_async" label="Update_using_session_async">
+```csharp
+// The session must be opened in cluster-wide mode.
+using (var asyncSession = store.OpenAsyncSession(
+    new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+{ 
+    // Get the existing item from the server
+    // =====================================
+
+    CompareExchangeValue<string> item = await asyncSession.Advanced.ClusterTransaction
+        .GetCompareExchangeValueAsync<string>("user1-name@example.com");
+        
+    // The item is now tracked in the session's internal state
+    // Modify the value / metadata as needed
+    // =====================================
+
+       item.Value = "users/99";
+       item.Metadata["email-type"] = "work email";
+       item.Metadata["updated-at"] = DateTime.UtcNow.ToString("o");
+
+    // Save changes for the update to take effect
+    // ==========================================
+    
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Update compare-exchange item using a store operation
+
+* Use `PutCompareExchangeValueOperation` to **update the _value_ and/or _metadata_** of an existing compare-exchange item.
+  This operation is also used to create new compare-exchange items, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+* To perform an update, provide:
+  * The existing key
+  * A new value and/or metadata
+  * The latest index (version) of the item as last seen by the client.
+
+* The update will succeed only if the index you provide exactly matches the current index stored on the server for that key.
+  This ensures that the item hasn’t been modified by another client since you last read it.
+
+* If the index does not match, or if the specified key does not exist:
+  * The item is not updated.
+  * No exception is thrown.
+  * The operation result has `Successful = false`.
+  
+* If the update is successful:
+  * The value and/or metadata are updated.
+  * The server increments the index number of the item.
+  * The operation result has `Successful = true` and will contain the new value and new index.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Update_operation" label="Update_operation">
+```csharp
+// Get the existing item from the server
+// =====================================
+
+CompareExchangeValue<string> item = store.Operations.Send(
+    new GetCompareExchangeValueOperation<string>("user1-name@example.com"));
+
+// Modify the value / metadata as needed
+// =====================================
+
+var newValue = "users/99"; // Modify the value to be associated with the unique email key
+var newMetadata = new MetadataAsDictionary
+{
+     { "email-type", "work email" },
+     { "updated-at", DateTime.UtcNow.ToString("o") }  // Add entries / modify the metadata
+};
+
+// Update the item
+// ===============
+
+// The put operation will succeed only if the 'index' of the compare-exchange item
+// has not changed between the read and write operations.
+CompareExchangeResult<string> putResult = store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>(item.Key, newValue, item.Index, newMetadata));
+
+// Check results
+// =============
+
+bool putResultSuccessful = putResult.Successful; // Has operation succeeded
+long putResultIndex = putResult.Index;           // The new version number assigned if update succeeded
+```
+</TabItem>
+<TabItem value="Update_operation_async" label="Update_operation_async">
+```csharp
+// Get the existing item from the server
+// =====================================
+
+CompareExchangeValue<string> item = await store.Operations.SendAsync(
+    new GetCompareExchangeValueOperation<string>("user1-name@example.com"));
+
+// Modify the value / metadata as needed
+// =====================================
+
+var newValue = "users/99"; // Modify the value associated with the unique email key
+var newMetadata = new MetadataAsDictionary
+{
+     { "email-type", "work email" },
+     { "updated-at", DateTime.UtcNow.ToString("o") }  // Add entries / modify the metadata
+};
+
+// Update the item
+// ===============
+
+// The put operation will succeed only if the 'index' of the compare-exchange item
+// has not changed between the read and write operations.
+CompareExchangeResult<string> putResult = await store.Operations.SendAsync(
+    new PutCompareExchangeValueOperation<string>(item.Key, newValue, item.Index, newMetadata));
+
+// Check results
+// =============
+
+bool putResultSuccessful = putResult.Successful; // Has operation succeeded
+long putResultIndex = putResult.Index;           // The new version number assigned if update succeeded
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Update compare-exchange item using the Studio
+
+You can update any existing compare-exchange item from the Studio.
+
+![The compare-exchange view](../assets/update-cmpxchg-1.png)
+
+1. Go to **Documents > Compare Exchange**.
+2. Click to edit a compare-exchange item.
+
+---
+
+![The compare-exchange view](../assets/update-cmpxchg-2.png)
+
+1. Enter the value.
+2. Enter the metadata (optional).
+3. Click _Save_ to update the item.
+
+---
+
+## Syntax
+
+**Method**:
+
+<TabItem value="" label="">
+```csharp
+public PutCompareExchangeValueOperation(
+    string key, T value, long index, IMetadataDictionary metadata = null)
+```
+</TabItem>
+
+| Parameter    | Type     | Description                                                                                                             |
+|--------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| **key**      | `string` | The unique identifier in the database scope.                                                                            |
+| **value**    | `T`      | The value to be saved for the specified _key_.<br/>Can be any object (number, string, array, or any valid JSON object). |
+| **index**    | `long`   | The current version of the item when updating an existing item.<br/>Pass `0` to [create a new key](../compare-exchange/create-cmpxchg-items). |
+| **metadata** | `IMetadataDictionary` | Metadata to be saved for the specified key.<br/>Must be a valid JSON object. |
+
+**Returned object**:
+
+<TabItem value="" label="">
+```csharp
+public class CompareExchangeResult<T>
+{
+    public bool Successful;
+    public T Value;
+    public long Index;
+}
+```
+</TabItem>
+
+| Return Value  | Type   | Description                                                                                                                                       |
+|---------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Successful**| `bool` | <ul><li>_true_ if the put operation has completed successfully.</li><li>_false_ if the put operation failed.</li></ul>                            |
+| **Value**     | `T`    | <ul><li>Upon success - the value of the compare-exchange item that was saved.</li><li>Upon failure - the existing value on the server.</li></ul>  |
+| **Index**     | `long` | <ul><li>Upon success - the updated version (the incremented index of the modified item).</li><li>Upon failure (if indexes do not match) - the existing version from the server.</li></ul> |
