@@ -14,6 +14,13 @@ export default function AiFeaturesGrid() {
 
   const aiFeatures: Feature[] = [
     {
+      title: "AI Agents",
+      icon: "ai-agents",
+      url: `/${activeVersion.label}/ai-integration/ai-agents/ai-agents-api`,
+      description: "Database-native agents that query & act safely",
+      minimumSupportedVersion: "7.1"
+    },
+    {
       title: "Vector search",
       icon: "vector-search",
       url: `/${activeVersion.label}/ai-integration/vector-search/ravendb-as-vector-database`,
