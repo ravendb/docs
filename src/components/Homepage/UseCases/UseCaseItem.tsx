@@ -12,6 +12,7 @@ export default function UseCaseItem(props: CardWithImageProps) {
       imgSrc={imgSrc}
       imgAlt={imgAlt}
       ctaLabel={ctaLabel}
-    />
+      buttonVariant="default"
+      />
   );
 }
