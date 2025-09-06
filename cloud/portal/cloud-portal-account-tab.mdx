@@ -16,21 +16,55 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-Use your portal's Account tab to control the details we'll include in your invoices, and your payment methods.  
+This tab allows you to manage your account and payment information, user access, and user roles. 
 
 * In this page:  
    * [The Account Tab](../../cloud/portal/cloud-portal-account-tab.mdx#the-account-tab)  
+        * [Billing information management](../../cloud/portal/cloud-portal-account-tab.mdx#billing-information-management)  
+		* [User management](../../cloud/portal/cloud-portal-account-tab.mdx#user-management)
 </Admonition>
 ## The Account Tab
 
-!["Account Tab"](./assets/portal-account-tab.png)  
+!["Account Tab"](./assets/portal-account-tab.png)    
 
-* 
-   **A**. The **Account** tab lets you view and edit your **Invoice** and **Payment** information.  
-   **B**. Information you add/edit here appears on the payment invoices we provide you, normally at the end of the month.  
-   **C**. Add/Edit payment methods here. The first we try to charge is always the one you choose as 
-      [Active](../../cloud/cloud-pricing-payment-billing.mdx#credit-card).  
-   **D**. Should charging the active payment method fail, we'll continue trying through your list.  
+### Billing information management
 
+In this section you can edit the data that will be used for the invoice.
 
+!["Account Tab - Edit invoice information"](./assets/portal-account-tab-invoice-information-edit.png)
+
+In this section you can edit the email address to which invoices will be sent.  
+If a custom recipient email is not provided, the invoice is sent to the *account owner*.
+
+!["Account Tab - Edit invoice recipient"](./assets/portal-account-tab-invoice-recipient-edit.png)
+
+In this section you can manage payment cards that will be used to pay for RavenDB Cloud services.  
+You can add, remove or change the default credit card.
+
+!["Account Tab - Edit payment information"](./assets/portal-account-tab-payment-information-edit.png)
+
+### User management  
+
+In this section, you can manage all users on your account.  
+You can add or remove new users with selected roles.
+
+You can read more about *account roles* in the [Account](../../cloud/cloud-account.mdx#account-roles) page. 
+
+!["Account Tab - User management"](./assets/portal-account-tab-user-management-overview.png)
+
+   **1**. To add a new user, click the **Invite** button.
+
+!["Account Tab - Invite a user"](./assets/portal-account-tab-invite-user-wizard-select-roles.png)
+
+   **2**. Provide an *email address*.  
+   **3**. Select *account roles* for the new user.  
+
+!["Account Tab - Invite a user"](./assets/portal-account-tab-invite-user-wizard-apply-changes.png)
+
+   **4**. Submit the invitation.  
+   
+!["Account Tab - Invite a user"](./assets/portal-account-tab-invite-user-cancel-invitation-and-remove-user.png)
+
+   **5**. Click the **Remove** button to remove the user from the account.     
+   **6**. Click the **Cancel invitation** button to remove the invitation. 
 
