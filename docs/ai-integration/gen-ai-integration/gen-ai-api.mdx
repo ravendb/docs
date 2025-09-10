@@ -38,6 +38,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Defining the GenAI task](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#defining-the-genai-task)
 
 </Admonition>
+
 ## Defining a Connection string
 
 * Choose the model to connect with, by what you need from your GenAI task.  
@@ -47,18 +48,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
   but you need to pick an Ollama/OpenAI service that supports generative AI, 
   like Ollama `llama3.2` or OpenAI `gpt-4o-mini`.  
 * Learn more about connection strings [here](../../ai-integration/connection-strings/connection-strings-overview.mdx).  
+
 ### Example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="set-ollama" label="set-ollama">
-<CodeBlock language="csharp">
-{`using (var store = new DocumentStore())
+
+```csharp
+using (var store = new DocumentStore())
 {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString
     {
         // Connection string name & identifier
         Name = "ollama-cs", 
+
+        // Connection type
+        ModelType = AiModelType.Chat,
         
         // Ollama connection settings
         OllamaSettings = new OllamaSettings(
@@ -72,18 +78,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="set-open-ai" label="set-open-ai">
-<CodeBlock language="csharp">
-{`using (var store = new DocumentStore())
+
+```csharp
+using (var store = new DocumentStore())
 {
     // Define the connection string to OpenAI
     var connectionString = new AiConnectionString
     {
         // Connection string name & identifier
         Name = "open-ai-cs",
+
+        // Connection type
+        ModelType = AiModelType.Chat,
 
         // OpenAI connection settings
         OpenAiSettings = new OpenAiSettings(
@@ -97,18 +106,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 ### Syntax:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="ollama-syntax" label="ollama-syntax">
-<CodeBlock language="csharp">
-{`public class AiConnectionString
+
+```csharp
+public class AiConnectionString
 {
     public string Name { get; set; }
+    public AiModelType ModelType { get; set; }
     public string Identifier { get; set; }
     public OllamaSettings OllamaSettings { get; set; }
     ...
@@ -119,14 +130,15 @@ public class OllamaSettings : AbstractAiSettings
     public string Model { get; set; }
     public string Uri { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="open-ai-syntax" label="open-ai-syntax">
-<CodeBlock language="csharp">
-{`public class AiConnectionString
+
+```csharp
+public class AiConnectionString
 {
     public string Name { get; set; }
+    public AiModelType ModelType { get; set; }
     public string Identifier { get; set; }
     public OpenAiSettings OpenAiSettings { get; set; }
     ...
@@ -141,12 +153,9 @@ public class OpenAiSettings : AbstractAiSettings
     public string OrganizationId { get; set; }
     public string ProjectId { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-
-
 
 ## Defining the GenAI task
 
@@ -155,8 +164,9 @@ public class OpenAiSettings : AbstractAiSettings
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="use-sample-object" label="use-sample-object">
-<CodeBlock language="csharp">
-{`GenAiConfiguration config = new GenAiConfiguration
+
+```csharp
+GenAiConfiguration config = new GenAiConfiguration
 {
     // Task name
     Name = "FilterSpam",
@@ -210,12 +220,12 @@ public class OpenAiSettings : AbstractAiSettings
 // Run the task
 var GenAiOperation = new AddGenAiOperation(config);
 var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="use-json-schema" label="use-json-schema">
-<CodeBlock language="csharp">
-{`GenAiConfiguration config = new GenAiConfiguration
+
+```csharp
+GenAiConfiguration config = new GenAiConfiguration
 {
     // Task name
     Name = "FilterSpam",
@@ -284,10 +294,10 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 // Run the task
 var GenAiOperation = new AddGenAiOperation(config);
 var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 ### `GenAiConfiguration`
 
 | Parameters | Type | Description |
@@ -302,7 +312,7 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 | **SampleObject** | `string` | A [sample response object](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
 | **JsonSchema** | `string` | A [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
 | **UpdateScript** | `string` | Update script - specifies what to do with AI model replies |
-| **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object |
+| **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object) |
 
 
 

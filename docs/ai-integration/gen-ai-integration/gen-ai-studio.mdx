@@ -48,33 +48,32 @@ To use this sample through this guide, simply create a document named `posts/1` 
 following content.  
 
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+```json
+{
     "Name": "first post",
     "Body": "This is my first post",
     "Comments": [
-        \{
-            "Id": "comment/1",
-            "Text": "This article really helped me understand how indexes work in RavenDB. Great write-up!",
-            "Author": "John"
-        \},
-        \{
-            "Id": "comment/2",
-            "Text": "Learn how to make $5000/month from home! Visit click4cash.biz.example now!!!",
-            "Author": "shady_marketer"
-        \},
-        \{
-            "Id": "comment/3",
-            "Text": "I tried this approach with IO_Uring in the past, but I run into problems with security around the IO systems and the CISO didn't let us deploy that to production. It is more mature at this point?",
-            "Author": "dave"
-        \}
+      {
+       "Id": "comment/1",
+       "Text": "This article really helped me understand how indexes work in RavenDB. Great write-up!",
+       "Author": "John"
+      },
+      {
+       "Id": "comment/2",
+       "Text": "Learn how to make $5000/month from home! Visit click4cash.biz.example now!!!",
+       "Author": "shady_marketer"
+      },
+      {
+       "Id": "comment/3",
+       "Text": "I tried this approach with IO_Uring in the past, but I run into problems with security around the IO systems and the CISO didn't let us deploy that to production. It is more mature at this point?",
+       "Author": "dave"
+      }
     ],
-    "@metadata": \{
+    "@metadata": {
         "@collection": "Posts"
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 </TabItem>
 
 
@@ -154,17 +153,17 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * The purpose of the script you provide here is to format the documents' data in 
       common `Context object` that can be easily and methodically processed by the AI model.  
     * An example for a context generation script can be: 
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// go through all the comments left for this blog
-for(const comment of this.Comments)
-\{
-    // Use the \`ai.genContext\` method to generate a context object for each comment.  
-    ai.genContext(\{Text: comment.Text, Author: comment.Author, Id: comment.Id\});
-\} 
-`}
-</CodeBlock>
-</TabItem>
+      
+      <TabItem value="javascript" label="javascript">
+      ```javascript
+      // go through all the comments left for this blog
+      for(const comment of this.Comments)
+      {
+          // Use the \`ai.genContext\` method to generate a context object for each comment.  
+          ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+      } 
+      ```
+      </TabItem>
       
 
 3. <a id="generate-context-objects-playground"/>**Playground**  
@@ -217,16 +216,16 @@ for(const comment of this.Comments)
 1. **Prompt**  
    These are the instructions for the AI model.  
    For our spam filtering GenAI task, we can specify, for example:  
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`Check if the following blog post comment is spam or not.  
-A spam comment typically includes irrelevant or promotional content, excessive links, 
-misleading information, or is written with the intent to manipulate search rankings or 
-advertise products/services. 
-Consider the language, intent, and relevance of the comment to the blog post topic.
-`}
-</CodeBlock>
-</TabItem>
+  
+      <TabItem value="plain" label="plain">
+      ```plain
+      Check if the following blog post comment is spam or not.  
+      A spam comment typically includes irrelevant or promotional content, excessive links, 
+      misleading information, or is written with the intent to manipulate search rankings or 
+      advertise products/services. 
+      Consider the language, intent, and relevance of the comment to the blog post topic.
+      ```
+      </TabItem>
 
 2. **JSON schema**  
    The AI model will return a results JSON object for each context object sent to it.  
@@ -236,36 +235,35 @@ Consider the language, intent, and relevance of the comment to the blog post top
       The results object will be formatted as the sample object you provide.  
       
          E.g. if you select this option and provide this object:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{ 
-   "Blocked": true, 
-   "Reason": "Concise reason for why this comment was marked as spam or ham" 
-\}
-`}
-</CodeBlock>
-</TabItem>
-    
-         Then result objects returned by the AI model may look like:  
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
-    "Blocked": false,
-    "Reason": "Relevant and genuine"
-\}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
-    "Blocked": true,
-    "Reason": "Spam"
-\}
-`}
-</CodeBlock>
-</TabItem>
+      <TabItem value="json" label="json">
+      
+      ```json
+      { 
+        "Blocked": true, 
+        "Reason": "Concise reason for why this comment was marked as spam or ham" 
+      }
+      ```
+      </TabItem>
+          
+      Then result objects returned by the AI model may look like:  
+      <TabItem value="json" label="json">
+      
+      ```json
+      {
+          "Blocked": false,
+          "Reason": "Relevant and genuine"
+      }
+      ```
+      </TabItem>
+      <TabItem value="json" label="json">
+      
+      ```json
+      {
+          "Blocked": true,
+          "Reason": "Spam"
+      }
+      ```
+      </TabItem>
 
     * **Provide JSON schema**  
       Or you can provide not a sample, but a formal JSON schema.  
@@ -317,19 +315,19 @@ The update script set in this step, determines what actions should be taken on t
    Provide a JavaScript that processes each results object returned from the AI model and takes needed actions.  
    In our case, as the results determine whether each blog comment is spam or not, the script can react 
    to results indicating that a comment is spam, by removing the comment.  
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// Find the comment
-const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
-// Was detected as spam
-if($output.Blocked)
-\{
-    // Remove this comment
-    this.Comments.splice(idx, 1); // remove
-\}  
-`}
-</CodeBlock>
-</TabItem>
+  
+      <TabItem value="javascript" label="javascript">
+      ```javascript
+      // Find the comment
+      const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+      // Was detected as spam
+      if($output.Blocked)
+      {
+          // Remove this comment
+          this.Comments.splice(idx, 1); // remove
+      }  
+      ```
+      </TabItem>
 
 2. <a id="provide-update-script-playground"/>**Playground**  
    Use this playground to verify that your update script does what you want it to do.  
