@@ -4,201 +4,94 @@ hide_table_of_contents: true
 sidebar_label: AI Overview
 ---
 
-import CardWithImage from '@site/src/components/Common/CardWithImage';
-import CardWithImageHorizontal from '@site/src/components/Common/CardWithImageHorizontal';
-import TwoColGrid from '@site/src/components/TwoColGrid';
-import ThreeColGrid from '@site/src/components/ThreeColGrid';
-import OneColGrid from '@site/src/components/OneColGrid';
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
 
 # AI Overview
+
 Use RavenDB to ship AI functionalities faster
 
 ## Keep AI data flow in your database layer
+
 RavenDB lets you ship AI features without any duct-taped extra services. Our AI ecosystem keeps your data, AI
 pipelines, and retrieval in one place, effectively keeping your application layer thin - and letting you to focus on
-improving your app, not on reinventing the wheel. 
+improving your app, not on reinventing the wheel.
 
 Our database offers plenty of **robust, flexible, and easy-to-use** AI features tailored to your needs. You can either use
 one or combine them - on top of both new and existing databases.
 
 ## Use cases
+
 RavenDB AI Integration can help to ship any AI-related scenarios, including:
-* **Search & discovery** - Help users find things by meaning across docs, products, and media
-* **Conversational interfaces** - Natural-language access to your data with safe, scoped actions
-* **Content understanding & classification** - Auto-tagging, topic extraction, taxonomy mapping, entity linking
-* **Workflow automation** - Trigger safe actions from AI insights (drafts, exports, updates)
-* **Knowledge management (RAG)** - Ask questions over policies, wikis, and PDFs; store answers + citations
-* **Personalization & recommendations** - Behavioral + semantic relevance for feeds, items, and knowledge
-* & many more...
+
+- **Search & discovery** - Help users find things by meaning across docs, products, and media
+- **Conversational interfaces** - Natural-language access to your data with safe, scoped actions
+- **Content understanding & classification** - Auto-tagging, topic extraction, taxonomy mapping, entity linking
+- **Workflow automation** - Trigger safe actions from AI insights (drafts, exports, updates)
+- **Knowledge management (RAG)** - Ask questions over policies, wikis, and PDFs; store answers + citations
+- **Personalization & recommendations** - Behavioral + semantic relevance for feeds, items, and knowledge
+- & many more...
 
 Inspire yourself with our articles & learn more:
 
-<TwoColGrid>
-<CardWithImage
-      title="Enable AI Search in your web app in minutes"
-      description="Discover how RavenDB lets you add semantic search with vector embeddings and smarter results to your web app."
-      url="https://ravendb.net/articles/enable-ai-search-in-your-web-app-in-5-minutes"
-      imgSrc="https://ravendb.net/wp-content/uploads/2025/04/enable-ai-search-cover-530x240.jpg"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="Use RavenDB AI Agents to automate HR "
-      description="Learn how you can use RavenDB AI Agents - a powerful, secured, flexible and easy-to-use template, and get inspired."
-      url="url"
-      imgIcon="ai-agents"
-      imgAlt="imgAlt"
-      buttonVariant="secondary"
-      ctaLabel="Read now"
-    />
-</TwoColGrid>
+<ColGrid colCount={2}>
+    <CardWithImage title="Enable AI Search in your web app in minutes" description="Discover how RavenDB lets you add semantic search with vector embeddings and smarter results to your web app." url="https://ravendb.net/articles/enable-ai-search-in-your-web-app-in-5-minutes" imgSrc="https://ravendb.net/wp-content/uploads/2025/04/enable-ai-search-cover-530x240.jpg" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Use RavenDB AI Agents to automate HR " description="Learn how you can use RavenDB AI Agents - a powerful, secured, flexible and easy-to-use template, and get inspired." url="url" imgIcon="ai-agents" imgAlt="imgAlt" buttonVariant="secondary" ctaLabel="Read now" />
+</ColGrid>
 
 ## AI Agents
+
 Conversational interfaces made simple - give your app a safe, tool-driven assistant that reads only what you allow and performs supervised actions right on top of your RavenDB data (7.1.2+)
 
-<TwoColGrid>
-<CardWithImage
-      title="AI Agents - Introduction"
-      description="What agents are, when to use them, and how they can enhance your application experience to your users - no matter if you need conversational experience for customers, or employees."
-      url="link"
-      imgIcon="ai-agents"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="AI Agents - Technical Overview"
-      description="Define Query tools (parameterized RQL) and Action tools (your handlers), wire chat trimming & memory, scope with parameters, run from SDKs, and debug in Studio"
-      url="url"
-      imgIcon="ai-agents"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-</TwoColGrid>
-
+<ColGrid colCount={2}>
+    <CardWithImage title="AI Agents - Introduction" description="What agents are, when to use them, and how they can enhance your application experience to your users - no matter if you need conversational experience for customers, or employees." url="link" imgIcon="ai-agents" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="AI Agents - Technical Overview" description="Define Query tools (parameterized RQL) and Action tools (your handlers), wire chat trimming & memory, scope with parameters, run from SDKs, and debug in Studio" url="url" imgIcon="ai-agents" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
 
 ## GenAI
+
 Use reasoning at scale - run LLM jobs inside the database: define context, prompt, and output schema then write results back with update scripts for governed, repeatable transforms (7.1+)
 
-<TwoColGrid>
-<CardWithImage
-      title="GenAI - Introduction"
-      description="Why in-DB GenAI: simpler pipelines, stronger governance, model freedom. Great for summaries, classification, tagging, translations, and enrichment."
-      url="link"
-      imgIcon="genai"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="GenAI - Technical Overview"
-      description="Task lifecycle, context shaping, prompt templating, JSON output validation, update scripts, retries, provider connection strings, plus Studio wizard & step playgrounds."
-      url="url"
-      imgIcon="genai"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-</TwoColGrid>
+<ColGrid colCount={2}>
+    <CardWithImage title="GenAI - Introduction" description="Why in-DB GenAI: simpler pipelines, stronger governance, model freedom. Great for summaries, classification, tagging, translations, and enrichment." url="link" imgIcon="genai" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="GenAI - Technical Overview" description="Task lifecycle, context shaping, prompt templating, JSON output validation, update scripts, retries, provider connection strings, plus Studio wizard & step playgrounds." url="url" imgIcon="genai" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
 
 ## Vector Search
+
 Search by meaning - perform semantic queries in RavenDB whether on-the-fly with dynamic RQL, via precomputed static indexes, or by indexing attachment contents to unlock fast, context-aware insights. (7.0+)
 
-<TwoColGrid>
-<CardWithImage
-      title="Vector Search - Introduction"
-      description="See how Vector Search can enhance your application in various ways, and how to effectively supercharge your system by using it"
-      url="link"
-      imgIcon="vector-search"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="Vector Search - Technical Overview"
-      description="Explore technical part of vector search - how to enable it, query with it, and how to configure it s nuances to cover any semantic search scenario."
-      url="url"
-      imgIcon="vector-search"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-</TwoColGrid>
+<ColGrid colCount={2}>
+    <CardWithImage title="Vector Search - Introduction" description="See how Vector Search can enhance your application in various ways, and how to effectively supercharge your system by using it" url="link" imgIcon="vector-search" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Vector Search - Technical Overview" description="Explore technical part of vector search - how to enable it, query with it, and how to configure it s nuances to cover any semantic search scenario." url="url" imgIcon="vector-search" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
 
 ## Embeddings generation
+
 Keep your collections semantic-ready with a server-side task that batches, caches, and stores embeddings from your chosen model/provider (7.0.1+)
 
-<TwoColGrid>
-<CardWithImage
-      title="Embeddings Generation - Introduction"
-      description="What embeddings tasks do, when to use them, and how they unlock semantic search, recommendations, and knowledge retrieval with minimal setup."
-      url="link"
-      imgIcon="ai-etl"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="Embeddings Generation - Technical Overview"
-      description="Configure per-collection fields and dimensions, choose your provider (or use built-in bge-micro-v2), handle attachments, and tune batching/caching behavior for cost and throughput."
-      url="url"
-      imgIcon="ai-etl"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-</TwoColGrid>
+<ColGrid colCount={2}>
+    <CardWithImage title="Embeddings Generation - Introduction" description="What embeddings tasks do, when to use them, and how they unlock semantic search, recommendations, and knowledge retrieval with minimal setup." url="link" imgIcon="ai-etl" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Embeddings Generation - Technical Overview" description="Configure per-collection fields and dimensions, choose your provider (or use built-in bge-micro-v2), handle attachments, and tune batching/caching behavior for cost and throughput." url="url" imgIcon="ai-etl" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
 
 ## Lives & videos
+
 Explore our engaging livestreams and videos that delve into the fascinating world of AI integration.
 
-<OneColGrid>
-<CardWithImageHorizontal
-      title="Practical AI Integration with RavenDB (webinar recording)"
-      description="A comprehensive walkthrough of RavenDBs AI features, showcasing demos to help you start with semantic search."
-      url="https://youtu.be/7DhbgfH_rSE?feature=shared"
-      imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc"
-      imgAlt="imgAlt"
-      ctaLabel="Watch now"
-    />
-<CardWithImageHorizontal
-      title="Data Pipelines for the AI Era Federico Lois, RavenDB | TechEx North America 2025"
-      description="Watch Discord session where the RavenDB team discusses and demos AI integration patterns and best practices."
-      url="https://www.youtube.com/watch?app=desktop&v=ouzcY0Jcgs4&t=180s"
-      imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQHeODBz0193ng/image-shrink_1280/B4DZd9C5bfGgAM-/0/1750149601848?e=2147483647&v=beta&t=_oResTLauIWsjkqBuDSleu-3F8cDSQx76w06OZxc4PY"
-      imgAlt="imgAlt"
-      ctaLabel="Watch now"
-    />
-<CardWithImageHorizontal
-      title="[LIVE] COD#5 GenAI & MCP"
-      description="Dive into RavenDBs vector search capabilities with community-driven discussion on implementation tips."
-      url="https://www.youtube.com/watch?v=cRuwSz8x41s"
-      imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc"
-      imgAlt="imgAlt"
-      ctaLabel="Watch now"
-    />
-</OneColGrid>
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Practical AI Integration with RavenDB (webinar recording)" description="A comprehensive walkthrough of RavenDBs AI features, showcasing demos to help you start with semantic search." url="https://youtu.be/7DhbgfH_rSE?feature=shared" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch now" />
+    <CardWithImageHorizontal title="Data Pipelines for the AI Era Federico Lois, RavenDB | TechEx North America 2025" description="Watch Discord session where the RavenDB team discusses and demos AI integration patterns and best practices." url="https://www.youtube.com/watch?app=desktop&v=ouzcY0Jcgs4&t=180s" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQHeODBz0193ng/image-shrink_1280/B4DZd9C5bfGgAM-/0/1750149601848?e=2147483647&v=beta&t=_oResTLauIWsjkqBuDSleu-3F8cDSQx76w06OZxc4PY" imgAlt="imgAlt" ctaLabel="Watch now" />
+    <CardWithImageHorizontal title="[LIVE] COD#5 GenAI & MCP" description="Dive into RavenDBs vector search capabilities with community-driven discussion on implementation tips." url="https://www.youtube.com/watch?v=cRuwSz8x41s" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch now" />
+</ColGrid>
 
 ## Deep dives, content & resources
+
 Here, you ll find a wealth of materials designed to enhance your knowledge and skills.
 
-<ThreeColGrid>
-<CardWithImage
-      title="GitHub repository: AI Search Next.js App"
-      description="A sample Next.js application demonstrating end-to-end integration of RavenDBs AI-powered semantic search."
-      imgSrc="https://ravendb.net/wp-content/uploads/2024/08/next-js-logo.png"
-      url="https://github.com/ravendb/samples-nextjs"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="Article: Vector Search by Maciej Aszyk"
-      description="An overview of RavenDB 7.0’s vector search capabilities, from dynamic RQL queries to static-index performance optimizations."
-      url="https://ravendb.net/articles/new-in-7-0-ravendbs-vector-search"
-      imgSrc="https://ravendb.net/wp-content/uploads/2025/02/vector-search-article-cover-530x240.jpg"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-<CardWithImage
-      title="Blogpost from ayende.com website blog"
-      description="A deep-dive blog post on real-world AI use cases in RavenDB, with code patterns, demos, and best practices. Jump right in!"
-      url="https://ayende.com/blog/202851-C/ravendb-7-1-the-gen-ai-release"
-      imgIcon="ai-agents"
-      imgAlt="imgAlt"
-      ctaLabel="Read now"
-    />
-</ThreeColGrid>
- 
+<ColGrid colCount={3}>
+    <CardWithImage title="GitHub repository: AI Search Next.js App" description="A sample Next.js application demonstrating end-to-end integration of RavenDBs AI-powered semantic search." imgSrc="https://ravendb.net/wp-content/uploads/2024/08/next-js-logo.png" url="https://github.com/ravendb/samples-nextjs" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Article: Vector Search by Maciej Aszyk" description="An overview of RavenDB 7.0’s vector search capabilities, from dynamic RQL queries to static-index performance optimizations." url="https://ravendb.net/articles/new-in-7-0-ravendbs-vector-search" imgSrc="https://ravendb.net/wp-content/uploads/2025/02/vector-search-article-cover-530x240.jpg" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Blogpost from ayende.com website blog" description="A deep-dive blog post on real-world AI use cases in RavenDB, with code patterns, demos, and best practices. Jump right in!" url="https://ayende.com/blog/202851-C/ravendb-7-1-the-gen-ai-release" imgIcon="ai-agents" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
