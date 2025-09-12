@@ -26,7 +26,6 @@ export default function OneColGrid({
       className={clsx(
         "grid grid-cols-1",
         gapClasses[gap],
-        equalHeight && "[&>*]:h-full",
         className,
       )}
       {...props}

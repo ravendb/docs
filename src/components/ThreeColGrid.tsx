@@ -26,7 +26,6 @@ export default function ThreeColGrid({
       className={clsx(
         "grid [grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))]",
         gapClasses[gap],
-        equalHeight && "[&>*]:h-full",
         className,
       )}
       {...props}

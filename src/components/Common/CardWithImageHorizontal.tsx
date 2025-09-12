@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import Heading from "@theme/Heading";
-import Button from "@site/src/components/Common/Button";
+import Button, { type ButtonVariant } from "@site/src/components/Common/Button";
 import { IconName } from "@site/src/typescript/iconName";
 import Badge from "@site/src/components/Common/Badge";
 import isInternalUrl from "@docusaurus/isInternalUrl";
@@ -11,7 +11,7 @@ export interface CardWithImageHorizontalProps {
   imgSrc: string;
   imgAlt?: string;
   url?: string;
-  buttonVariant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
+  buttonVariant?: ButtonVariant;
   ctaLabel?: string;
   iconName?: IconName;
 }
@@ -27,8 +27,8 @@ export default function CardWithImageHorizontal({
   iconName,
 }: CardWithImageHorizontalProps) {
   return (
-    <div className="card group flex !flex-row items-center gap-4 overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-muted/40 p-4 transition-colors">
-      <div className="basis-1/3 flex-shrink-0 overflow-hidden rounded-xl relative flex items-center">
+    <div className="card group !grid [grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))] items-center gap-4 overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-muted/40 p-4 transition-colors">
+      <div className="aspect-[400/209] overflow-hidden rounded-xl relative flex items-center">
         <img
           src={imgSrc}
           alt={imgAlt}
@@ -40,13 +40,13 @@ export default function CardWithImageHorizontal({
           </Badge>
         )}
       </div>
-      <div className="flex flex-col flex-1 min-w-0 justify-center items-start gap-1">
+      <div className="flex flex-col min-w-0 justify-center gap-1">
         <Heading as="h4" className="!mb-1">
           {title}
         </Heading>
         <p className="!mb-3 text-sm">{description}</p>
         {url && (
-          <Button variant={buttonVariant} size="sm" url={url} className="self-start">
+          <Button variant={buttonVariant} url={url}>
             {ctaLabel}
           </Button>
         )}

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import Heading from "@theme/Heading";
-import Button from "@site/src/components/Common/Button";
+import Button, { type ButtonVariant } from "@site/src/components/Common/Button";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
 import Badge from "@site/src/components/Common/Badge";
@@ -12,7 +12,7 @@ export interface CardWithImageProps {
   imgSrc: string;
   imgAlt?: string;
   url?: string;
-  buttonVariant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
+  buttonVariant?: ButtonVariant;
   ctaLabel?: string;
   iconName?: IconName;
   imgIcon?: IconName;
@@ -32,7 +32,7 @@ export default function CardWithImage({
   const hasImage = Boolean(imgSrc);
   return (
     <div className="card group flex flex-col overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-muted/40 p-4 transition-colors">
-      <div className={`flex items-center justify-center rounded-xl mb-4 overflow-hidden relative h-[132.96px] ${hasImage ? "bg-black/40" : "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]"}`}> 
+      <div className={`flex items-center justify-center rounded-xl mb-4 overflow-hidden relative aspect-[79/24] ${hasImage ? "bg-black/40" : "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]"}`}> 
         {hasImage ? (
           <img
             src={imgSrc}

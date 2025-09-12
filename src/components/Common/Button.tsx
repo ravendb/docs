@@ -5,17 +5,25 @@ import { IconName } from "@site/src/typescript/iconName";
 import { Icon } from "./Icon";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 
+export type ButtonVariant =
+| "default"
+| "outline" 
+| "ghost" 
+| "destructive" 
+| "secondary";
+
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   url?: string;
   className?: string;
-  variant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
+  variant?: ButtonVariant;
   size?: "sm" | "md" | "lg";
   iconName?: IconName;
 }
 
-const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
+const variantClasses: Record<ButtonVariant, string> = {
   default: "bg-primary !text-white dark:!text-black hover:bg-primary-darker",
   secondary: "bg-gray-300 hover:bg-gray-400 dark:bg-secondary !text-black dark:hover:bg-secondary-darker",
   outline:
@@ -49,14 +57,14 @@ export default function Button({
   );
 
   if (url) {
-    const external = !isInternalUrl(url);
+    const isExternal = !isInternalUrl(url);
     return (
       <Link
-        {...(external ? { href: url } : { to: url })}
+        {...(isExternal ? { href: url } : { to: url })}
         className={baseClasses}
       >
         {children} {iconName && <Icon icon={iconName} />}
-        {external && <Icon icon="newtab" className="ml-2" size="xs"/>}
+        {isExternal && <Icon icon="newtab" className="ml-2" size="xs"/>}
       </Link>
     );
   }

@@ -13,12 +13,12 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantClasses: Record<NonNullable<BadgeProps["variant"]>, string> = {
-  default: "bg-primary-light/80 backdrop-blur-xs !text-white rounded border border-primary/10",
-  secondary: "bg-gray-200/70 backdrop-blur-xs text-black dark:bg-secondary/70 dark:text-black rounded border border-gray-300/10 dark:border-secondary/10",
-  outline: "bg-stone-100/30 backdrop-blur-xs text-black rounded border border-black/70",
-  success: "bg-green-300/80 backdrop-blur-xs text-green-950 rounded border border-green-400/10",
-  warning: "bg-orange-300/80 backdrop-blur-xs text-orange-950 rounded border border-orange-400/10",
-  destructive: "bg-red-300/80 bacdrop-blur-xs text-red-950 rounded border border-red-400/10",
+  default: "bg-primary-light/80 backdrop-blur-xs text-white border border-primary/10 dark:text-black",
+  secondary: "bg-gray-200/70 backdrop-blur-xs text-black dark:bg-secondary/70 dark:text-black border border-gray-300/10 dark:border-secondary/10",
+  outline: "bg-stone-100/30 backdrop-blur-xs text-black border border-black/70",
+  success: "bg-green-300/80 backdrop-blur-xs text-green-950 border border-green-400/10",
+  warning: "bg-orange-300/80 backdrop-blur-xs text-orange-950 border border-orange-400/10",
+  destructive: "bg-red-300/80 backdrop-blur-xs text-red-950 border border-red-400/10",
 }
 
 const sizeClasses: Record<NonNullable<BadgeProps["size"]>, string> = {
