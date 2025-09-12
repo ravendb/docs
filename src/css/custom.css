@@ -103,6 +103,8 @@
   --color-primary-light: var(--ifm-color-primary-light);
   --color-primary-lighter: var(--ifm-color-primary-lighter);
   --color-primary-lightest: var(--ifm-color-primary-lightest);
+  --color-secondary: var(--ifm-color-secondary);
+  --color-secondary-darker: var(--ifm-color-secondary-darker);
   --color-ifm-background: var(--ifm-background-color);
   --color-ifm-background-surface: var(--ifm-background-surface-color);
   --color-ifm-menu: var(--ifm-menu-color);

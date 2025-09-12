@@ -1,18 +1,31 @@
 import * as React from "react";
 import Link from "@docusaurus/Link";
 import clsx from "clsx";
+import { IconName } from "@site/src/typescript/iconName";
+import { Icon } from "./Icon";
+import isInternalUrl from "@docusaurus/isInternalUrl";
+
+export type ButtonVariant =
+| "default"
+| "outline" 
+| "ghost" 
+| "destructive" 
+| "secondary";
+
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   url?: string;
   className?: string;
-  variant?: "default" | "outline" | "ghost" | "destructive";
+  variant?: ButtonVariant;
   size?: "sm" | "md" | "lg";
+  iconName?: IconName;
 }
 
-const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
+const variantClasses: Record<ButtonVariant, string> = {
   default: "bg-primary !text-white dark:!text-black hover:bg-primary-darker",
+  secondary: "bg-gray-300 hover:bg-gray-400 dark:bg-secondary !text-black dark:hover:bg-secondary-darker",
   outline:
     "border !text-black border-black/25 !text-foreground hover:bg-black/5 dark:!text-white dark:border-white/25 dark:hover:bg-white/5",
   ghost: "hover:bg-muted !text-foreground",
@@ -29,8 +42,9 @@ export default function Button({
   children,
   url,
   className = "",
-  variant = "default",
+  variant = "secondary",
   size = "md",
+  iconName,
   ...props
 }: ButtonProps) {
   const baseClasses = clsx(
@@ -43,16 +57,21 @@ export default function Button({
   );
 
   if (url) {
+    const isExternal = !isInternalUrl(url);
     return (
-      <Link to={url} className={baseClasses}>
-        {children}
+      <Link
+        {...(isExternal ? { href: url } : { to: url })}
+        className={baseClasses}
+      >
+        {children} {iconName && <Icon icon={iconName} />}
+        {isExternal && <Icon icon="newtab" className="ml-2" size="xs"/>}
       </Link>
     );
   }
 
   return (
     <button className={baseClasses} {...props}>
-      {children}
+      {children} {iconName && <Icon icon={iconName} />}
     </button>
   );
 }
