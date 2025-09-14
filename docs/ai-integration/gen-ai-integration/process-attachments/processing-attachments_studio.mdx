@@ -91,12 +91,14 @@ We will then embed this explanation in the original document.
 
 ### Conditional attachment:
 
-You can use conditional logic in the context generation script to include attachments only if they exist.  
-E.g., to include a PNG attachment only if it exists, use:
+When `loadAttachment` fails to load an attachment, it will return `null`.  
+You can use this to condition the delivery of an attachment on `loadAttachment`'s succees to load it.  
+Including a non-existing attachment in the context object will not generate an error, but the LLM will receive a "not found" message instead of the attachment.  
 
 ```javascript
+// Verify attachment existance before sending it to the LLM
 const img = loadAttachment("electric-circuit.png");
-if (attachment != null) {
+if (img != null) {
    ai.genContext({ ToyName: this.Name, ToyId: id(this) })
       .withPng(img);
 } else {
@@ -106,7 +108,7 @@ if (attachment != null) {
 
 ### Multiple attachments:
 
-You can include multiple attachments of the same or different types in the context object.  
+You can include multiple attachments in the context object.  
 E.g., to include both a PNG and a PDF attachment, use:
 
 ```javascript

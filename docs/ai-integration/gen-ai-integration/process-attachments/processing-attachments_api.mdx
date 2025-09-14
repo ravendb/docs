@@ -63,6 +63,17 @@ To send documents to the LLM along with their attachments using the API, define 
               .withPng(loadAttachment(`electric-circuit.png`));
            ```
 
+      <Admonition type="note" title="">
+      Additional options include:  
+      
+       * [Conditional attachment](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#conditional-attachment)  
+       * [Multiple attachments](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#multiple-attachments)  
+       * [Embedding base64-encoded images in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-base64-encoded-images-in-the-context-object)  
+       * [Embedding text in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-text-in-the-context-object)  
+       
+      </Admonition>
+
+
 * When [defining the task Prompt and JSON schema](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-prompt-and-json-schema), make sure to include in the prompt instructions for how the LLM should handle the attachments, and set in the schema fields for any information you expect the LLM to return related to the attachments.  
 
 * When [defining the task Update script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-update-script), make sure to include logic for how to handle the LLM's responses related to the attachments.  
