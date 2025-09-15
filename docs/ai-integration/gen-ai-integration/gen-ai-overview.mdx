@@ -41,6 +41,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Supported services](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#supported-services)
 
 </Admonition>
+
+<hr />
+
 ## RavenDB GenAI tasks
 
 RavenDB offers an integration of generative AI capabilities through user-defined **GenAI tasks**.  
@@ -49,12 +52,10 @@ and reacts when a document is added or modified by Retrieving the document, Gene
 based on its data, Sending these objects to a generative AI model along with instructions regarding what 
 to do with the data and how to format the reply, and potentially Acting upon the model's response.  
 
-<Admonition type="note" title="The flow" id="the-flow" href="#the-flow">
-Let's put the above stages in order.
-<br/>
-<br/>
+### The flow
+Let's put the stages described above in order.
 
-1. The task continuously monitors the collection it is associated with.  
+1. A GenAI task continuously monitors the collection it is associated with.  
 2. When a document is added or modified, the task retrieves it.  
 3. The task generates context objects based on the source document data.  
    To generate these objects, the task applies a user-defined [context generation script](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_context-objects) 
@@ -63,20 +64,17 @@ Let's put the above stages in order.
     * The task is associated with a [Connection string](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#studio_connection-string) 
       that defines how to connect to the AI model.
     * Each context object is sent via a separate connection to the AI model.  
-       - The number of concurrent connections to the AI model is configurable 
-         via the [MaxConcurrency](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#section) variable.  
+      (note that the number of concurrent connections to the AI model is configurable 
+         via the [MaxConcurrency](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#section) variable.)  
     * Each context object is sent along with a user-defined [Prompt](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_prompt), 
       that instructs the AI model what to do with the data, and 
       a user-defined [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema) 
       that instructs the AI model how to shape its response.  
 5. When the AI model returns its response, a user-defined [Update script](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_update-script) 
    is applied to handle the results.  
-</Admonition>
 
-<Admonition type="note" title="The elements" id="the-elements" href="#the-elements">
+### The elements
 These are the elements that need to be defined for a GenAI task.
-<br/>
-<br/>
 
 * [Connection string](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#studio_connection-string)  
   The connection string defines the connection to the GenAI model.  
@@ -85,16 +83,16 @@ These are the elements that need to be defined for a GenAI task.
   The context generation script goes through the source document,  
   and applies the `ai.genContext` method to create **context objects** based on the source document's data.  
   E.g. -  
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`for(const comment of this.Comments)
+  <TabItem value="javascript" label="javascript">
 
-  // Use the \`ai.genContext\` method to generate a context object for each comment.  
-  ai.genContext(\{Text: comment.Text, Author: comment.Author, Id: comment.Id\});
- 
-`}
-</CodeBlock>
-</TabItem>
+      ```javascript
+      for(const comment of this.Comments) {
+         // Use the \`ai.genContext\` method to generate a context object for each comment.  
+         ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+      }
+      ```
+      </TabItem>
+
    * RavenDB will pass the AI model **not** the source document, but the generated context objects.  
    * Producing a series of context objects that share a clear common format can add the communication 
      with the AI model a methodical, reliable aspect that is under our full control.  
@@ -105,45 +103,46 @@ These are the elements that need to be defined for a GenAI task.
   This is a JSON-based object that defines the layout of the AI model's response.  
   This object can be either an **explicit JSON schema**, or a **sample response object** 
   that RavenDB will turn to a JSON schema for us.  
-   * It is normally easier to provide a sample response object, and let RavenDB create 
-     the schema behind the scenes. E.g. -  
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sample_response_object" label="Sample_response_object">
-<CodeBlock language="json">
-{`{ 
-    "Blocked": true, 
-    "Reason": "Concise reason for why this comment was marked as spam or ham" 
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Explicit_JSON_schema" label="Explicit_JSON_schema">
-<CodeBlock language="json">
-{`{
-  "name": "some-name",
-  "strict": true,
-  "schema": {
-    "type": "object",
-    "properties": {
-      "Blocked": {
-        "type": "boolean"
-      },
-      "Reason": {
-        "type": "string",
-        "description": "Concise reason for why this comment was marked as spam or ham"
-      }
-    },
-    "required": [
-      "Blocked",
-      "Reason"
-    ],
-    "additionalProperties": false
+  
+  It is normally easier to provide a sample response object, and let RavenDB create 
+  the schema behind the scenes. E.g. -  
+  <Tabs groupId='languageSyntax'>
+  <TabItem value="Sample_response_object" label="Sample_response_object">
+   
+  ```json
+  { 
+      "Blocked": true, 
+      "Reason": "Concise reason for why this comment was marked as spam or ham" 
   }
-}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+  ```
+  </TabItem>
+  <TabItem value="Explicit_JSON_schema" label="Explicit_JSON_schema">
+
+  ```json
+  {
+    "name": "some-name",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "Blocked": {
+          "type": "boolean"
+        },
+        "Reason": {
+          "type": "string",
+          "description": "Concise reason for why this comment was marked as spam or ham"
+        }
+      },
+      "required": [
+        "Blocked",
+        "Reason"
+      ],
+      "additionalProperties": false
+    }
+  }
+  ```
+  </TabItem>
+  </Tabs>
 
 * <a id="the-elements_prompt"/>**Prompt**  
   The prompt relays to the AI model what we need it to do.  
@@ -152,16 +151,16 @@ These are the elements that need to be defined for a GenAI task.
      like the AI model to fill and with what content, the prompt can be used simply to explain 
      what we want the model to do.  
      E.g. -  
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`Check if the following blog post comment is spam or not.  
-m comment typically includes irrelevant or promotional content, excessive 
-, misleading information, or is written with the intent to manipulate search 
-ngs or advertise products/services.  
-der the language, intent, and relevance of the comment to the blog post topic.
-`}
-</CodeBlock>
-</TabItem>
+     <TabItem value="plain" label="plain">
+
+     ```plain
+     Check if the following blog post comment is spam or not.  
+     m comment typically includes irrelevant or promotional content, excessive 
+     , misleading information, or is written with the intent to manipulate search 
+     ngs or advertise products/services.  
+     der the language, intent, and relevance of the comment to the blog post topic.
+     ```
+     </TabItem>
 
 * <a id="the-elements_update-script"/>**Update Script**  
   The update script is executed when the AI model responds to a context object we've sent it.  
@@ -170,39 +169,37 @@ der the language, intent, and relevance of the comment to the blog post topic.
      Remove existing documents, and so on.  
      The following script, for example, removes a comment from a blog post if the AI has concluded 
      that the comment is spam.  
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
-if($output.Blocked)
-\{
-    this.Comments.splice(idx, 1);  
-\} 
-`}
-</CodeBlock>
-</TabItem>
+     <TabItem value="javascript" label="javascript">
+
+      ```javascript
+      const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+      if($output.Blocked)
+      {
+          this.Comments.splice(idx, 1);  
+      } 
+      ```
+      </TabItem>
 
    * The update script can also be used as an additional security measure, and apply only actions 
      that we trust not to inflict any damage.  
 
-</Admonition>
-
-<Admonition type="note" title="How to create and run a GenAI task" id="how-to-create-and-run-a-genai-task" href="#how-to-create-and-run-a-genai-task">
+### How to create and run a GenAI task
 
 * You can use [Studio's intuitive wizard](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#add-a-genai-task) 
   to create GenAI tasks. The wizard will guide you through the task creation phases, 
   exemplify where needed, and provide you with convenient, interactive, secluded "playgrounds" 
   for free interactive experimenting.  
 * You can also create GenAI tasks using the [Client API](../../ai-integration/gen-ai-integration/gen-ai-api.mdx) 
-</Admonition>
- 
 
+<hr />
 
 ## Run time
 
 Once you complete the configuration and save the task, it will start running (if enabled).  
 The task will monitor the collection associated with it, and process documents as they are 
 added or modified.  
-#### Tracking of processed document parts
+
+### Tracking of processed document parts
 
 * After creating a [context object](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#generate-context-objects) 
   of a document part and processing it, RavenDB will log this context object in 
@@ -211,7 +208,6 @@ added or modified.
 * The task will create a hash code for the context object, and log it in the document metadata.  
   <Admonition type="note" title="Hash computation" id="hash-computation" href="#hash-computation">
   When computing the hash code, the task will include these elements in the computation:  
-  <br/>
 
   * The context object  
   * The GenAI provider and model (e.g. Ollama llama3.2)  
@@ -226,16 +222,16 @@ added or modified.
   model, prompt, schema and update script, and skip reprocessing it.  
   If the new code is not found in the metadata list, the context object will be processed again.  
 
-       ![Tracking processed document parts](./assets/gen-ai_hash-flow.png)
+      ![Tracking processed document parts](./assets/gen-ai_hash-flow.png)
 
-![Metadata Identifier and Hash codes](./assets/gen-ai_metadata-identifier-and-hash-codes.png)
+      ![Metadata Identifier and Hash codes](./assets/gen-ai_metadata-identifier-and-hash-codes.png)
 
-1. **Identifier**  
-   This is the unique identifier used by the GenAI task.  
-2. **Hash codes**  
-   These two hash codes were added after processing `comment/1` and `comment/3`.  
+      1. **Identifier**  
+        This is the unique identifier used by the GenAI task.  
+      2. **Hash codes**  
+        These two hash codes were added after processing `comment/1` and `comment/3`.  
 
-
+<hr />
 
 ## Licensing
 
@@ -244,7 +240,7 @@ A `Developer` license will also enable the feature for experimentation and devel
 
 ![Licensing: RavenDB AI license](./assets/gen-ai_licensing.png)
 
-
+<hr />
 
 ## Supported services
 

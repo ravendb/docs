@@ -1,7 +1,7 @@
 ---
-title: "GenAI Integration: API"
+title: "Create GenAI Task: API"
 hide_table_of_contents: true
-sidebar_label: GenAI API
+sidebar_label: Client API
 sidebar_position: 1
 ---
 
@@ -12,7 +12,8 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# GenAI Integration: API
+# Create GenAI Task: API
+
 <Admonition type="note" title="">
 
 * A GenAI task leverages an AI model to enable intelligent processing of documents in runtime.  
@@ -26,39 +27,47 @@ import LanguageContent from "@site/src/components/LanguageContent";
       5. And finally, runs a user-defined script that potentially acts upon the results.  
 
 * The main steps in defining a GenAI task are:  
-   * Defining a [Connection string](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#defining-a-connection-string) 
+   * Defining a [Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-a-connection-string) 
      to the AI model  
-   * Defining a [Context generation script](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_context-objects)  
-   * Defining a [Prompt](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_prompt)  
-   * Defining a [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema)  
-   * Defining an [Update script](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_update-script)  
+   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_context-objects)  
+   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_prompt)  
+   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema)  
+   * Defining an [Update script](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_update-script)  
 
 * In this article:
-    * [Defining a Connection string](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#defining-a-connection-string)
-    * [Defining the GenAI task](../../ai-integration/gen-ai-integration/gen-ai-api.mdx#defining-the-genai-task)
+    * [Defining a Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-a-connection-string)
+    * [Defining the GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-the-genai-task)
 
 </Admonition>
+
+<hr />
+
 ## Defining a Connection string
 
 * Choose the model to connect with, by what you need from your GenAI task.  
   E.g., If you require security and speed above all for the duration of a rapid 
-  development phase, you may prefer a local AI service like [Ollama](../../ai-integration/connection-strings/ollama.mdx).  
+  development phase, you may prefer a local AI service like [Ollama](../../../ai-integration/connection-strings/ollama).  
 * Make sure you define the correct service: both Ollama and OpenAI are supported 
   but you need to pick an Ollama/OpenAI service that supports generative AI, 
   like Ollama `llama3.2` or OpenAI `gpt-4o-mini`.  
-* Learn more about connection strings [here](../../ai-integration/connection-strings/connection-strings-overview.mdx).  
+* Learn more about connection strings [here](../../../ai-integration/connection-strings/connection-strings-overview).  
+
 ### Example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="set-ollama" label="set-ollama">
-<CodeBlock language="csharp">
-{`using (var store = new DocumentStore())
+
+```csharp
+using (var store = new DocumentStore())
 {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString
     {
         // Connection string name & identifier
         Name = "ollama-cs", 
+
+        // Connection type
+        ModelType = AiModelType.Chat,
         
         // Ollama connection settings
         OllamaSettings = new OllamaSettings(
@@ -72,18 +81,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="set-open-ai" label="set-open-ai">
-<CodeBlock language="csharp">
-{`using (var store = new DocumentStore())
+
+```csharp
+using (var store = new DocumentStore())
 {
     // Define the connection string to OpenAI
     var connectionString = new AiConnectionString
     {
         // Connection string name & identifier
         Name = "open-ai-cs",
+
+        // Connection type
+        ModelType = AiModelType.Chat,
 
         // OpenAI connection settings
         OpenAiSettings = new OpenAiSettings(
@@ -97,18 +109,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 ### Syntax:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="ollama-syntax" label="ollama-syntax">
-<CodeBlock language="csharp">
-{`public class AiConnectionString
+
+```csharp
+public class AiConnectionString
 {
     public string Name { get; set; }
+    public AiModelType ModelType { get; set; }
     public string Identifier { get; set; }
     public OllamaSettings OllamaSettings { get; set; }
     ...
@@ -119,14 +133,15 @@ public class OllamaSettings : AbstractAiSettings
     public string Model { get; set; }
     public string Uri { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="open-ai-syntax" label="open-ai-syntax">
-<CodeBlock language="csharp">
-{`public class AiConnectionString
+
+```csharp
+public class AiConnectionString
 {
     public string Name { get; set; }
+    public AiModelType ModelType { get; set; }
     public string Identifier { get; set; }
     public OpenAiSettings OpenAiSettings { get; set; }
     ...
@@ -141,12 +156,11 @@ public class OpenAiSettings : AbstractAiSettings
     public string OrganizationId { get; set; }
     public string ProjectId { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-
+<hr />
 
 ## Defining the GenAI task
 
@@ -155,8 +169,9 @@ public class OpenAiSettings : AbstractAiSettings
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="use-sample-object" label="use-sample-object">
-<CodeBlock language="csharp">
-{`GenAiConfiguration config = new GenAiConfiguration
+
+```csharp
+GenAiConfiguration config = new GenAiConfiguration
 {
     // Task name
     Name = "FilterSpam",
@@ -192,7 +207,10 @@ public class OpenAiSettings : AbstractAiSettings
             Reason = "Concise reason for why this comment was marked as spam or ham"
         }),
 
-    // Update script - specifies what to do with AI model replies
+    // Update script - specifies what to do with AI model replies.
+    // Use $input to access the context object that was sent to the AI model.
+    // Use $output` to access the results object returned from the AI model.
+    // Use `this` to access and modify the currently processed document.
     UpdateScript = @"    
             // Find the comment
             const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
@@ -210,12 +228,12 @@ public class OpenAiSettings : AbstractAiSettings
 // Run the task
 var GenAiOperation = new AddGenAiOperation(config);
 var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="use-json-schema" label="use-json-schema">
-<CodeBlock language="csharp">
-{`GenAiConfiguration config = new GenAiConfiguration
+
+```csharp
+GenAiConfiguration config = new GenAiConfiguration
 {
     // Task name
     Name = "FilterSpam",
@@ -267,6 +285,9 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
         }",
 
     // Update script - specifies what to do with AI model replies
+    // Use $input to access the context object that was sent to the AI model.
+    // Use $output` to access the results object returned from the AI model.
+    // Use `this` to access and modify the currently processed document.
     UpdateScript = @"    
             // Find the comment
             const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
@@ -284,10 +305,10 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 // Run the task
 var GenAiOperation = new AddGenAiOperation(config);
 var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
 ### `GenAiConfiguration`
 
 | Parameters | Type | Description |
@@ -299,10 +320,10 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 | **Collection** | `string` | Name of the document collection associated with the task |
 | **GenAiTransformation** | `GenAiTransformation` | Context generation script - format for objects to be sent to the AI model |
 | **Prompt** | `string` | AI model Prompt - the instructions sent to the AI model |
-| **SampleObject** | `string` | A [sample response object](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
-| **JsonSchema** | `string` | A [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview.mdx#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
+| **SampleObject** | `string` | A [sample response object](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
+| **JsonSchema** | `string` | A [JSON schema](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
 | **UpdateScript** | `string` | Update script - specifies what to do with AI model replies |
-| **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object |
+| **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object) |
 
 
 
