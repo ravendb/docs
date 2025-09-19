@@ -1,8 +1,8 @@
 ---
-title: "AI Agents Integration: Studio"
+title: "Creating AI agents: Studio"
 hide_table_of_contents: true
-sidebar_label: Studio AI Agent Task View
-sidebar_position: 1
+sidebar_label: Studio
+sidebar_position: 2
 ---
 
 import Admonition from '@theme/Admonition';
@@ -16,19 +16,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In this article:
-   * [Create AI Agent](../../ai-integration/ai-agents/ai-agents-studio.mdx#create-ai-agent)  
-   * [Configure basic settings](../../ai-integration/ai-agents/ai-agents-studio.mdx#configure-basic-settings)
-   * [Set agent parameters](../../ai-integration/ai-agents/ai-agents-studio.mdx#set-agent-parameters)
-   * [Define agent tools](../../ai-integration/ai-agents/ai-agents-studio.mdx#define-agent-tools)
-      * [Add new query tool](../../ai-integration/ai-agents/ai-agents-studio.mdx#add-new-query-tool)
-      * [Add new action tool](../../ai-integration/ai-agents/ai-agents-studio.mdx#add-new-action-tool)
-   * [Set chat persistence](../../ai-integration/ai-agents/ai-agents-studio.mdx#set-chat-persistence)
-   * [Configure chat trimming](../../ai-integration/ai-agents/ai-agents-studio.mdx#configure-chat-trimming)
-   * [Save and Run your agent](../../ai-integration/ai-agents/ai-agents-studio.mdx#save-and-run-your-agent)
-   * [Test your agent](../../ai-integration/ai-agents/ai-agents-studio.mdx#test-your-agent)
-      * [Runtime view and Test results](../../ai-integration/ai-agents/ai-agents-studio.mdx#runtime-view-and-test-results)
+   * [Create AI Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#create-ai-agent)  
+   * [Configure basic settings](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings)
+   * [Set agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#set-agent-parameters)
+   * [Define agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#define-agent-tools)
+      * [Add query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#add-query-tools)
+      * [Add action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#add-action-tools)
+   * [Configure chat trimming](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-chat-trimming)
+   * [Save and Run your agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#save-and-run-your-agent)
+      * [Start new chat](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#start-new-chat)
+      * [Agent interaction](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#agent-interaction)
+      * [Action tool dialog](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#action-tool-dialog)
+      * [Agent results](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#agent-results)
+   * [Test your agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#test-your-agent)
+      * [Runtime view and Test results](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#runtime-view-and-test-results)
 
 </Admonition>
+
+<hr />
+
 ## Create AI Agent
 
 To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent**.
@@ -36,7 +42,7 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 ![AI Agents View](./assets/ai-agents_ai-agents-view.png)
 
 1. **AI Hub**  
-   Click to open the [AI Hub view](../../ai-integration/ai-tasks-list-view.mdx).  
+   Click to open the [AI Hub view](../../../ai-integration/ai-tasks-list-view.mdx).  
    Use this view to handle AI connection strings and tasks, and to view task statistics.  
 2. **AI Agents**  
    Click to open the AI Agents view.  
@@ -54,9 +60,9 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
    When multiple agents are created, you can filter them by a string you enter here.  
 
 5. **Defined agent**  
-   After defining an agent it is listed in this view, allowing you to run, edit, or remove the agent.
+   After defining an agent, it is listed in this view, allowing you to run, edit, or remove the agent.
 
-
+<hr />
 
 ## Configure basic settings
 
@@ -75,7 +81,7 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 
       ![Select or Create a Connection String](./assets/ai-agents_connection-string_select-or-create.png)
    
-      **Select** an existing [connection string](../../ai-integration/connection-strings/connection-strings-overview.mdx) 
+      **Select** an existing [connection string](../../../ai-integration/connection-strings/connection-strings-overview.mdx) 
       that the agent will use to connect your LLM of choice,  
       or click **Create a new AI connection string** to define a new string.  
       Your agent can use a local LLM like Ollama, or an external model like OpenAI.  
@@ -86,7 +92,7 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
    Provide a prompt that determines the LLM's role and purpose.  
    When your agent connects the LLM it will pass it your prompt, your sample object or 
    schema to shape its response by, your agent tools, and if you connect an existing 
-   conversation - the entire conversaion history.  
+   conversation - the entire conversation history.  
 
 5. **Sample response object** and **Response JSON schema**  
    Click "Sample response object" or "response JSON schema" to switch between these two tabs.  
@@ -105,13 +111,13 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
       Enter a JSON schema that defines the layout of LLM responses.  
             
          If you design a sample object and then open the schema tab, you will be given the option to 
-         translate the sample object to a scheme by clicking the "View schema" button.  
+         translate the sample object to a schema by clicking the "View schema" button.  
 
          **If you define both a sample response object and an explicit schema, only the schema will be used.**  
       
          ![Configure basic settings](./assets/ai-agents_config-basic-settings_schema.png)
-    
 
+<hr />
 
 ## Set agent parameters
 
@@ -129,12 +135,12 @@ the client will be placed in the query instead of the parameter name.
    Enter agent parameter name.  
 
 3. **Description**  
-   Explain the parameter so the LLM will understand its role.  
+   Describe the parameter so the LLM will understand its role.  
 
 4. **Remove parameter**  
-   Removea defined parameter from the list.
+   Remove a defined parameter from the list.
 
-
+<hr />
 
 ## Define agent tools
 
@@ -156,7 +162,8 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
 
 2. **Action tools**  
    Click to add a new action tool.  
-### Add new query tool
+
+### Add query tools:
 
 ![Add new query tool](./assets/ai-agents_define-agent-tools_add-query-tool.png)
 
@@ -166,7 +173,7 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
 2. **Cancel**  
    Cancel your changes or Save the query tool when it is ready.  
 
-3. **Expandq/Colllapse tool**
+3. **Expand/Collapse tool**
 
 4. **Tool name**  
    Give your query tool a meaningful name.  
@@ -182,16 +189,17 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
    Click "Sample parameters object" or "Parameters JSON schema" to switch between the two tabs.  
    Define an object with parameters that the LLM can set and request the agent to use in the query.  
    If you define both a sample response object and a schema, only the schema will be used.  
-### Add new action tool
+
+### Add action tools:
 
 ![Add new action tool](./assets/ai-agents_define-agent-tools_add-action-tool.png)
 
-1. **Add new query tool**  
+1. **Add new action tool**  
 
 2. **Cancel**  
    Cancel your changes or Save the action tool when it is ready.  
 
-3. **Expandq/Colllapse tool**
+3. **Expand/Collapse tool**
 
 4. **Tool name**  
    Give your action tool a meaningful name.  
@@ -206,9 +214,10 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
    
       If you define both a sample response object and a schema, only the schema will be used.  
 
-
+<hr />
 
 ## Configure chat trimming
+
 The LLM keeps no record of previous conversations it conducted.  
 To allow a continuous conversation, the agent sends the LLM the entire conversation history 
 when a chat is started. To minimize these transfers, you can configure the agent to summarize 
@@ -230,13 +239,13 @@ messages before sending the history to the LLM.
    
 1. **History**  
      * **Enable history**  
-       When history is enabled the chat sent to the LLM will be summarized, but copies of the 
-       original chats will be kept in a dedicated documents in the `@conversations-history` collection.  
+       When history is enabled the chat sent to the LLM will be summarized, but copies of the original chats will be kept in dedicated documents in the `@conversations-history` collection.  
      * **Set history expiration**  
-       When this option is enabled, conversations will be deleted from the `@conversations-history` collection 
-       when the their age exceeds the the period you set in the time boxes.  
-        
+       When this option is enabled, conversations will be deleted from the 
+       `@conversations-history` collection when their age exceeds the period 
+       you set in the time boxes.  
 
+<hr />
 
 ## Save and Run your agent
 
@@ -249,16 +258,16 @@ You will find your agent in the main **AI Agents** view, where you can run or ed
 ![Your agent](./assets/ai-agents_your-agent.png)
 
 1. **Start new chat**  
-   Click to run your agent.  
+   Click to start your agent.  
 
 2. **Edit agent**  
    Click to edit the agent.  
 
-## Start new chat
+### Start new chat:
 
 Starting a new chat will open the chat window, where you can provide values 
 for the parameters you defined for this agent and enter a user prompt that explains 
-the agent what you expect from this conversation.  
+to the agent what you expect from this session.  
 
 ![Run agent](./assets/ai-agents_run-agent.png)
 
@@ -282,10 +291,10 @@ the agent what you expect from this conversation.
    will be executed as `from "Orders" where ShipTo.Country == "France"`.  
 
 4. **User prompt**  
-   Use the user prompt to explain the agent your expectations from it in 
-   this conversation.  
+   Use the user prompt to explain to the agent in natural language what 
+   this session is about.  
 
-## Agent interaction 
+### Agent interaction:
         
 Running the agent presents its components and interactions.  
 
@@ -301,7 +310,7 @@ The query tools and their activity:
 You can view the raw data of the agent's activity in JSON form as well:  
 ![Raw data](./assets/ai-agents_running_raw-data.png)
 
-### Action tool dialog
+### Action tool dialog:
 
 If the agent runs action tools, you will be given a dialog that shows you the 
 information provided by the LLM when it requests the action, and a dialog inviting 
@@ -309,20 +318,20 @@ you to enter the results of the action when you finish performing it.
 
 ![Action tool waiting for client response](./assets/ai-agents_running_action-tool.png)
 
-### Agent results
+### Agent results:
 
 And finally, when the AI model finishes its work and negotiations, you will be able to see its response.
 As with all other dialog boxes, you can expand the view to see the content or minimize it to see it in its context.
 
 ![LLM answer: minimized](./assets/ai-agents_running_llm-response-minimized.png)
 
-
+<hr />
 
 ## Test your agent
 
 You can test your agent while creating or editing it, to examine its configuration 
 and operability before you deploy it. The test interface resembles the one you see 
-when you run your agent normally via Studio, but conversationa are not kept in the 
+when you run your agent normally via Studio, but conversations are not kept in the 
 `@conversations` or `@conversations-history`.  
 
 To test your agent, click **Test** at the bottom of the agent configuration view.  
@@ -341,12 +350,13 @@ To test your agent, click **Test** at the bottom of the agent configuration view
    The LLM will be able to replace these parameters with fixed values 
    when it uses query or action tools in which these parameters are embedded.  
 4. **Agent prompt**  
-   Explain the agent in natural language what this session is about.  
+   Explain to the agent in natural language what this session is about.  
 5. **Send prompt**  
    Click to pass your agent your parameter values and user prompt and run the test.  
-   You can keep sending the agent prompts and getting its replies in 
+   You can keep sending prompts to the agent and receiving its replies in 
    a continuous conversation.  
-### Runtime view and Test results
+
+### Runtime view and Test results:
 
 You will see the components that take part in the agent's run and be able 
 to enter and send requested information for action tools. Each tool can be 
