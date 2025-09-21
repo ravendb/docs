@@ -69,13 +69,12 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 ![Configure basic settings](./assets/ai-agents_config-basic-settings.png)
 
 1. **Agent name**  
-   Give your agent a meaningful name that would clarify its purpose even when multiple 
-   agents are defined.  
+   Enter a name for the agent
    E.g., **CustomerSupportAgent**  
 
 2. **Identifier**  
-   Give your agent a unique identifier.  
-   You can provide the identifier yourself, or click **Regenerate** to create it automatically.  
+   Enter a unique identifier for the agent,  
+   or click **Regenerate** to create it automatically  
 
 3. **Connection String**  
 
@@ -89,42 +88,27 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
       ![Connection String](./assets/ai-agents_connection-string.png)
 
 4. **System prompt**  
-   Provide a prompt that determines the LLM's role and purpose.  
-   When your agent connects the LLM it will pass it your prompt, your sample object or 
-   schema to shape its response by, your agent tools, and if you connect an existing 
-   conversation - the entire conversation history.  
+   Enter a prompt that determines LLM characteristics like its role and purpose.  
 
 5. **Sample response object** and **Response JSON schema**  
-   Click "Sample response object" or "response JSON schema" to switch between these two tabs.  
-   
-    * Provide a JSON-based **sample response object** that defines the layout of the AI model's reply.  
-      Design it so LLM responses would include the data you need and be easy to process 
+   Define a response JSON object for the LLM reply, either as a sample object or as a formal schema.  
+    - The response object guides the LLM in composing its replies, and can ease their parsing 
       by the client.  
-
-         Behind the scenes, RavenDB will translate your sample object to a JSON schema format 
-         before sending it to the LLM. If you prefer it, you can skip the translation phase by 
-         defining the response JSON schema yourself (see below).  
-      
-         **If you define both a sample response object and an explicit schema, only the schema will be used.**  
-
-    * **Response JSON schema**  
-      Enter a JSON schema that defines the layout of LLM responses.  
-            
-         If you design a sample object and then open the schema tab, you will be given the option to 
-         translate the sample object to a schema by clicking the "View schema" button.  
-
-         **If you define both a sample response object and an explicit schema, only the schema will be used.**  
-      
-         ![Configure basic settings](./assets/ai-agents_config-basic-settings_schema.png)
+    - Defining a sample object is normally simpler.  
+    - Behind the scenes, RavenDB will translate a sample object to a JSON schema format 
+      before sending it to the LLM, but if you prefer it you can define it yourself.  
+    - After defining a sample object, you can open the schema tab and click the "View schema" 
+      button to see the generated schema.  
+      ![Configure basic settings](./assets/ai-agents_config-basic-settings_schema.png)
 
 <hr />
 
 ## Set agent parameters
 
 Define **agent parameters**.  
-Values for agent parameters you define will be provided by the client when it runs the agent.  
-When the agent runs a query tool that includes an agent parameter, the value provided by 
-the client will be placed in the query instead of the parameter name.  
+After defining an agent parameter, it can be included in query tools RQL queries.  
+Values for agent parameters are provided by the client, when it starts a conversation.  
+[Read more about parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters).
 
 ![Set agent parameters](./assets/ai-agents_set-agent-params.png)
 
@@ -135,7 +119,7 @@ the client will be placed in the query instead of the parameter name.
    Enter agent parameter name.  
 
 3. **Description**  
-   Describe the parameter so the LLM will understand its role.  
+   Describe the parameter in plane language so the LLM would understand its purpose.  
 
 4. **Remove parameter**  
    Remove a defined parameter from the list.
@@ -145,15 +129,15 @@ the client will be placed in the query instead of the parameter name.
 ## Define agent tools
 
 Define **Query** and **Action** agent tools.  
-When the agent is executed, it will pass the LLM the list of tools you define here.  
-The LLM will then be able to trigger the execution of these tools to retrieve needed 
-data from the database or apply changes like the creation or the modification of documents.  
 
-Agent tools are **not** applied directly by the LLM, but triggered by the LLM and applied 
-by the agent or by the client.  
-When the LLM needs to apply a **query tool**, it will notify the agent which will execute 
-the query and pass its results to the LLM in the sample object you define for the tool.  
-When the LLM needs to apply an **action tool**, it will request the agent to run it.  
+* Query tools you define here can be freely used by the LLM.
+   * Query tools can trigger the agent to retrieve data from the database and return it to 
+     the LLM.  
+   * Action tools can trigger the client to perform actions such as removing a spam entry from 
+     a comments section or adding a comment to an article.  
+* The LLM has no direct access to the database or any other server property, all queries and 
+  actions are performed through the agent.  
+* [Find an AI agent usage flow chart here](../../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart)
 
 ![Define agent tools](./assets/ai-agents_define-agent-tools.png)
 
@@ -187,11 +171,11 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
    Enable to allow the LLM to trigger the execution of this query tool.  
    Disable to prevent the LLM from using this tool.  
    <Admonition type="note" title="">
-   When disabled, the LLM will not be able to trigger this tool - but if the tool is marked as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) the agent will still be able to execute it when it is started.  
+   When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) the agent will still be able to execute it when it is started.  
    </Admonition>
 
 7. **Add to initial context**  
-   Enable to mark the query tool as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries).  
+   Enable to set the query tool as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries).  
    When enabled, the agent will execute the query immediately when it starts a conversation with the LLM without waiting for the LLM to invoke the tool, to include data that is relevant for the conversation in the initial context sent to the LLM.  
    Disable to prevent the agent from executing the query on startup.  
    <Admonition type="note" title="">
@@ -203,8 +187,8 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
    Enter the query that the agent will run when the LLM requests it to use this tool.  
 
 9. **Sample parameters object** and **Parameters JSON schema**  
-   Set a sample object or a JSON schema for [LLM parameters](../../../ai-integration/ai-agents/ai-agents_overview#llm-parameters).  
-   Parameters defined here can be used in the tool's RQL query, and the LLM can fill them with values when it invokes the query tool.  
+   Set a schema (in the form of a sample object or a formal JSON schema) through which the LLM will be able to fill query parameters with values.  
+   [Read more about query parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters)  
 
 ### Add action tools:
 
@@ -237,7 +221,7 @@ When the LLM needs to apply an **action tool**, it will request the agent to run
 
 The LLM keeps no record of previous conversations it conducted.  
 To allow a continuous conversation, the agent sends the LLM the entire conversation history 
-when a chat is started. To minimize the size of these messages, you can set the agent to summarize them before sending the history to the LLM.  
+when a chat is started. To minimize the size of these messages, you can set the agent to summarize them rather than send the LLM their full length version.  
 
 ![Configure chat trimming](./assets/ai-agents_config-chat-trimming.png)
 
@@ -330,7 +314,7 @@ You can view the raw data of the agent's activity in JSON form as well:
 
 If the agent runs action tools, you will be given a dialog that shows you the 
 information provided by the LLM when it requests the action, and a dialog inviting 
-you to enter the results of the action when you finish performing it.  
+you to reply with the results of the action when you finish performing it.  
 
 ![Action tool waiting for client response](./assets/ai-agents_running_action-tool.png)
 

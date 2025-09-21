@@ -15,11 +15,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Creating AI agents: API
 <Admonition type="note" title="">
 
-* A RavenDB **AI Agent** can be used by a RavenDB client to invoke a chat or 
-  a continuous conversation between the client, an AI model, and a RavenDB database.  
+* To create an AI agent, a client defines its configuration, provides it with settings and tools, and registers the agent with the server.  
 
-* The AI agent can provide the AI model with a set of query and action tools that 
-  the LLM can use freely to access the database or trigger the user to action.  
+* Once the agent is created, the client can initiate or resume conversations, get LLM responses, and perform actions based on LLM insights.  
+
+* This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
 
 * In this article:
    * [Creating a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
@@ -33,13 +33,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
          * [Initial context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
       * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
    * [Creating a Response object and the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-response-object-and-the-agent)
-   * [Conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversations)
-      * [Continuous conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#continuous-conversations)
-      * [Stored conversations Prefix and IDs](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stored-conversations-prefix-and-ids)
-      * [Set and start the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-and-start-the-conversation)
-         * [Handle action tools requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#handle-action-tools-requests--)
-         * [Conversation reply](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-reply--)
-         * [Set user prompt and run the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-user-prompt-and-run-the-conversation--)
+   * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
+      * [Setting conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-conversation)
+      * [Creating action-tool handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-action-tool-handlers)
+      * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
+      * [Setting user prompt and running conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation)
    * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)
    * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
 
@@ -169,25 +167,24 @@ While creating the instance, pass its constructor:
 
 The agent will send the system prompt you define here to the LLM to define its basic characteristics, including its role, purpose, behavior, and the tools it can use.  
 
-Though in our example the LLM helps us find and reward productive employees, we remain careful throughout the code not to provide it with personal employee details or proprietary company information.  
-
-```csharp
-// Start setting an agent configuration
-var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
-@"You work for a human experience manager.
-The manager uses your services to find which employee has made the largest profit and to suggest 
-a reward.
-The manager provides you with the name of a country, or with the word ""everything"" to indicate 
-all countries.
-Then you:
-1. use a query tool to load all the orders sent to the selected country,
-or a query tool to load all orders sent to all countries.
-2. calculate which employee made the largest profit.
-3. use a query tool to learn in what general area this employee lives.
-4. find suitable vacations sites or other rewards based on the employee's residence area.
-5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions.
-When you're done, return these details in your answer to the user as well.");
-```
+* **Example**  
+  ```csharp
+  // Start setting an agent configuration
+  var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
+  @"You work for a human experience manager.
+  The manager uses your services to find which employee has made the largest profit and to suggest 
+  a reward.
+  The manager provides you with the name of a country, or with the word ""everything"" to indicate 
+  all countries.
+  Then you:
+  1. use a query tool to load all the orders sent to the selected country,
+  or a query tool to load all orders sent to all countries.
+  2. calculate which employee made the largest profit.
+  3. use a query tool to learn in what general area this employee lives.
+  4. find suitable vacations sites or other rewards based on the employee's residence area.
+  5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions.
+  When you're done, return these details in your answer to the user as well.");
+  ```
 
 * `AiAgentConfiguration` constructor  
   ```csharp
@@ -252,11 +249,11 @@ agent.Identifier = "reward-productive-employee";
 ```
 
 ### Add agent parameters:
-Agent parameters are optional variables, whose values are provided by the client 
-(or by a user through the client) to the agent when a chat is started.  
-The values are then embedded by the agent in query tools when the tools are used 
-by the LLM. Users and clients can provide their selections and preferences through 
-agent parameters, to focus the queries and the whole interaction on their needs.  
+Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
+Values for agent parameters are provided by the client (or by a user through the client) 
+when a chat is started.  
+When the agent is requested to use a query tool that uses agent parameters, it replaces these parameters with the values provided by the user before running the query.  
+Using agent parameters allows the client to focus the queries and the entire interaction on its current needs.  
 
 In the example below, an agent parameter is used to determine what area 
 of the world a query will handle. 
@@ -268,8 +265,9 @@ is for), and pass this instance to the `agent.Parameters.Add` method.
 * **Example**  
   ```csharp
   //  Set agent parameters
-  agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped to, " +
-                                            "or \"everywhere\" to look for orders shipped to all countries"));
+  agent.Parameters.Add(new AiAgentParameter(
+      "country", "A specific country that orders were shipped to, " +
+      "or \"everywhere\" to look for orders shipped to all countries"));
   ```
 
 * `AiAgentParameter` Definition 
@@ -279,8 +277,7 @@ is for), and pass this instance to the `agent.Parameters.Add` method.
 
 ### Set maximum number of iterations:
 You can limit the number of times that the LLM is allowed to request the usage of 
-agent tools in response to a single user prompt.  
-To change this limit use `MaxModelIterationsPerCall`.  
+agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall` to change this limit.  
 
 * **Example**  
   ```csharp
@@ -293,16 +290,14 @@ To change this limit use `MaxModelIterationsPerCall`.
   public int? MaxModelIterationsPerCall
   ```
 
+<Admonition type="note" title="">
+Note that if limiting the amount of time a user needs to wait for the LLM to respond is a main consideration, you can also stream the LLM's response to the client. Find more about streaming in the [overview](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
+</Admonition>
+
 ### Set chat trimming configuration:
 
-The LLM doesn't keep the history of previous chats. To allow a continuous conversation, 
-we include in every new message we send to the LLM the entire conversation since it started.  
-To save traffic and tokens, you can summarize older messages.  
-This can be helpful when transfer rate and cost are a concern or the context may become 
-too large to handle efficiently.  
-
-To summarize old messages create an `AiAgentChatTrimmingConfiguration` instance, 
-use this instance to configure your trimming strategy, and set the agent's `ChatTrimming` property 
+To [summarize the conversation history](../../../ai-integration/ai-agents/ai-agents_overview#chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
+use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
 with the instance.  
 
 When creating the instance, pass its constructor a summarization strategy using 
@@ -356,44 +351,41 @@ with your history settings.
 
 ## Adding agent tools
 
-You can enhance your agent with Query and Action tools, that allow the LLM 
-to query your database and trigger client actions.  
-After defining agent tools and submitting them to the LLM, it is up to the LLM 
-to decide if and when to use them. 
+* You can enhance your agent with Query and Action tools, that allow the LLM 
+  to query your database and trigger client actions, respectively  
+* After defining agent tools and submitting them to the LLM, it is up to the LLM 
+  to decide if and when to use them. 
 
 ### Query tools:
 
-Query tools provide the LLM with the ability to retrieve data from the database.  
+[Query tools](../../../ai-integration/ai-agents/ai-agents_overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
+A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
 
-A query tool includes a natural-language **description** that explains the LLM what 
-the tool is for, and an **RQL query**.  
-To use a query tool, the LLM will request the agent to apply it, and the agent will 
-run the query and pass the results to the LLM.  
-
-Both the user and the LLM can provide values to the RQL query, using parameters.  
-In the query, a parameter is defined with a `$`.  
-E.g., `where Country == $country`
-
-- To include user parameters in the query, include in the query **agent parameters** - 
-  the parameters whose values the user provides when the chat is started.  
-- To include LLM parameters in the query, define the parameters in the tool's 
-  **parameters schema**. The LLM will pass their values each time it requests 
-  the agent to run the tool.  
-
-You can define a parameters schema as either a **sample object** or a **schema**.  
-Be aware that if you define both a sample object and a schema, only the schema will be used.  
-
-Query tools are allowed to include in their RQL queries only queries for **read operations**.  
-To make changes in the database, use an action tool instead.  
+* **Passing values to query tools**  
+   * Query tools optionally include [parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters), identified by a `$` prefix.  
+     Both the user and the LLM can pass values to these parameters.  
+   * **Passing values from the user**  
+     Users can pass values to queries through **agent parameters**.  
+     If agent parameters are defined in the agent configuration -  
+       * The client has to provide values for them when initiating a conversation with the agent.  
+       * The parameters can be included in query tools RQL queries.  
+     Before running a query, the agent will replace any agent parameter included in it with its value.  
+   * **Passing values from the LLM**  
+     The LLM can pass values to queries through a **parameters schema**.  
+      * The parameters schema layout is defined as part of the query tool.  
+      * When the LLM requests the agent to run a query, it will add parameter values to the request.  
+      * You can define a parameters schema either as a **sample object** or a **formal JSON schema**.  
+        If you define both, the LLM will pass parameter values only through the JSON schema.  
+      * Before running a query, the agent will replace any parameter included in it with its value.  
 
 * **Example**  
    * The first query tool will be used by the LLM when it needs to retrieve all the 
      orders sent to any place in the world. (the system prompt instructs it to use this 
-     tool when the user enters "everywhere" when the chat is started.  
+     tool when the user enters "everywhere" when the conversation is started.)  
    * The second query tool will be used by the LLM when it needs to retrieve all the 
-     orders that were sent to a particular country. It uses the "country" agent parameter.  
+     orders that were sent to a particular country, using the `$country` agent parameter.  
    * The third tool retrieves from the database the general location of an employee.  
-     To do this it uses a $employeeId parameter, whose value is set by the LLM in its 
+     To do this it uses a `$employeeId` parameter, whose value is set by the LLM in its 
      request to run this tool.  
 
           ```csharp
@@ -459,9 +451,9 @@ To make changes in the database, use an action tool instead.
 
 #### Initial context queries:
 
-* You can mark a query tool as an [initial context query](../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query immediately when the agent is started and provide the LLM with the query results as part of the initial context.  
+* You can set a query tool as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query immediately when the agent is started and provide the LLM with the query results as part of the initial context.  
    * An initial context query is **not allowed** to use LLM parameters, since the LLM 
-     will not have the opportunity to fill them with values before the query is executed.  
+     will not have the opportunity to fill the parameters with values before the query is executed.  
    * The query **can** use agent parameters, whose values are provided by the user when the conversation is started.  
 
 *  You can also Enable or Disable a query tool using the `Options.AllowModelQueries` property.  
@@ -518,17 +510,11 @@ The two flags can be set regardless of each other.
 
 ### Action tools:
 
-Action tools allow the LLM to trigger the client to actions like modifying or adding 
-documents, or any other operation that the client is permitted to perform.  
+Action tools allow the LLM to trigger the client to action (e.g., to modify or add a document).  
+An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
 
-Unlike a query tool, an action tool does not include a query. It only includes a 
-description and a parameters schema.  
-The description informs the LLM in natural language what the tool is capable of.  
-The schema is filled by the LLM with values when it requests the agent to apply 
-the action.  
-
-In the example below, the action tool is requested to store employee's details 
-in the database. The LLM will provide these details when it requests the agent 
+In the example below, the action tool requests the client to store an employee's details 
+in the database. The LLM will provide the employee's ID andother details whenever it requests the agent 
 to apply the tool. 
 
 When the client finishes performing the action, it is required to send the LLM 
@@ -570,8 +556,8 @@ a response that explains how it went, e.g. `done`.
 ## Creating a Response object and the Agent
 
 The agent configuration is almost ready.  
-The only part still missing is an object for the LLM's response, when it 
-finishes its work and needs to reply.  
+The only element still missing is an object for the LLM's response, 
+when the LLM finishes its work and needs to reply.  
 
 Create a response object class with the fields that you want the LLM to fill in its response.  
 Then, create the agent using the `CreateAgentAsync` method and pass it a new 
@@ -599,20 +585,7 @@ what the LLM should embed in it.
   }
   ```
 
-Alternatively, you can set the agent configuration's `SampleObject` or `OutputSchema` 
-properties with, respectively, a sample object or a schema string and use a `CreateAgentAsync` 
-overload that creates the agent without passing it a response object.  
-
-A sample object is a JSON object whose properties indicate in natural language 
-what values the LLM should embed in them. A schema follows the formal format used 
-by the LLM.  
-
-A sample object is normally easier to create. Note that if you define a sample object 
-the agent will translate it to a schema in any case before passing it to the LLM.  
-
-If you define both a sample object and a schema, only the schema will be used.  
-
-* **Example**  
+* Alternatively, you can set the response object as part of the agent configuration, like so -  
   ```csharp
   // Set sample object
   agent.SampleObject = "{" +
@@ -621,6 +594,7 @@ If you define both a sample object and a schema, only the schema will be used.
                     "\"profit\": \"the profit the employee made\"" +
                           "}";
   ```
+  If you apply this option, make sure you create the agent using a `CreateAgentAsync` overload that doesn't require you to pass it a response object.  
 
 * `CreateAgentAsync` overloads  
   ```csharp
@@ -636,52 +610,36 @@ If you define both a sample object and a schema, only the schema will be used.
 
 <hr />
 
-## Conversations
+## Managing conversations
 
-A conversation is a communication session between the client, the agent, and the LLM, 
-during which the LLM may use agent tools to interact with the database and the client.  
+### Setting conversation:
 
-If [agent parameters](.../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#add-agent-parameters) 
-were defined, the agent will start the conversation only when they are entered.  
-
-### Continuous conversations:
-The LLM doesn't record its chats, but starts a new chat each time.  
-The AI agent allows a continuous conversation by storing conversations history in the 
-`@conversations` collection. When a new chat is started using the ID of a stored conversation, 
-the agent will fetch the entire conversation, send it to the LLM, and the conversation 
-will be resumed where you left off.  
-
-### Stored conversations Prefix and IDs:
-Conversations are kept in the `@conversations` collection with a prefix (such as `Chats/`) 
-that can be set when the conversation is initiated. The conversation ID that follows the prefix 
-is created automatically by RavenDB, similarly to the creation of automatic IDs for documents.  
-
-You can:  
-
-* Provide a full ID  
-* Provide a prefix that ends with `/` or `|` to trigger automatic ID creation.  
-
-### Set and start the conversation:
-
-* Set a chat using the `store.AI.Conversation` method.  
+* Set a conversation using the `store.AI.Conversation` method.  
   Pass `Conversation`:  
-   - The **agent ID**  
-   - The **conversation ID**  
-     If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
-     the conversation will be retrieved from storage and continued where you left off.  
-     If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
-   - **agent parameter values** in an `AiConversationCreationOptions` instance.  
-- Set the user prompt using the `SetUserPrompt`method.  
-  The user prompt informs the agent with the user's requests and expectations for this chat.  
-- Use the value returned by the `Conversation` method to run the chat.
+   * The **agent ID**  
+   * The **conversation ID**  
+      * Conversations are kept in the `@conversations` collection.  
+        A conversation document's name starts with a prefix (such as `Chats/`) that can be 
+        set when the conversation is initiated.  
+      * You can -  
+        **Provide a full ID**, including a prefix and the ID that follows it.  
+        **Provide a prefix that ends with `/` or `|`** to trigger automatic ID creation, 
+        similarly to the creation of automatic IDs for documents.  
+      * If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
+        the conversation will be retrieved from storage and continued where you left off.  
+      * If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
+   * Values for **agent parameters**, if defined, in an `AiConversationCreationOptions` instance.  
+* Set the user prompt using the `SetUserPrompt`method.  
+  The user prompt informs the agent of the user's requests and expectations for this chat.  
+* Use the value returned by the `Conversation` method to run the chat.
 
 * **Example**  
   ```csharp
-  // Set the chat
-  // Pass it the agent's ID, a prefix for conversations stored in @Conversations,
-  // and agent parameters' values
-  // Here, the country is simply set to "France" for the example.
-  // A user would pick a country, or enter "everywhere" for all countries.
+  // Create a conversation instance
+  // Initialize it with - 
+  // The agent's ID, 
+  // A prefix (Performers/) for conversations stored in the @Conversations collection,
+  // Agent parameters' values
   var chat = store.AI.Conversation(
       createResult.Identifier,
       "Performers/",
@@ -698,53 +656,53 @@ You can:
   void SetUserPrompt(string userPrompt);
   ```
 
-#### Handle action tools requests - 
-Handle an action tool request by passing the chat's `Handle` method the name of 
-the action tool you want to handle. When the LLM sends your agent an action request, 
-any data included in the request will reach the handler and the client will be able to use it.  
+### Creating action-tool handlers:
 
-Pass `Handle` an object to populate with the request's data. The object should 
-have the same structure you defined for the action tool's parameters schema.  
+Handle LLM action requests by creating a handler for each action tool using the conversation's `Handle` method.  
+Pass `Handle` -  
+ * The action tool's name.  
+ * An object to populate with the data sent with each action request.  
+   Make sure the object has the same structure you defined for the action tool's parameters schema.  
 
-When you finish handling the requested action `return` the LLM an indication that 
-it was done.  
+When you finish handling the requested action, `return` the LLM an indication that it was done.  
 
-```csharp
-// Handle action tool.
-// In this example, the action tool is requested to store an employee's
-// details in the database. 
-chat.Handle("store-performer-details", (Performer performer) =>
-{
-    using (var session1 = store.OpenSession())
-    {
-        // These values are passed to the client by the action tool
-        Performer rewarded = new Performer
-        {
-            suggestedReward = performer.suggestedReward,
-            employeeID = performer.employeeID,
-            profit = performer.profit
-        };
+* **Example**  
+  In this example, the action tool is requested to store an employee's details in the database.  
+  ```csharp
+  // "store-performer-details" action tool handler
+  chat.Handle("store-performer-details", (Performer performer) =>
+  {
+      using (var session = store.OpenSession())
+      {
+          // These values are passed to the client by the action tool
+          Performer rewarded = new Performer
+          {
+              suggestedReward = performer.suggestedReward,
+              employeeID = performer.employeeID,
+              profit = performer.profit
+          };
 
-        // store the values in the Performers collection in the database
-        session1.Store(rewarded);
-        session1.SaveChanges();
-    }
+          // store the values in the Performers collection in the database
+          session.Store(rewarded);
+          session.SaveChanges();
+      }
 
-    // return to the agent an indication that the action went well.
-    return "done";
-});
+      // return to the agent an indication that the action went well.
+      return "done";
+  });
 
-// An object for the LLM response
-public class Performer
-{
-    public string suggestedReward;
-    public string employeeID;
-    public string profit;
-}
-```
+  // An object for the LLM response
+  public class Performer
+  {
+      public string suggestedReward;
+      public string employeeID;
+      public string profit;
+  }
+  ```
 
-#### Conversation reply - 
-LLM replies are returned by the agent to the client in an `AiAnswer` object.  
+### Conversation response:
+
+The LLM response is returned by the agent to the client in an `AiAnswer` object.  
 The conversation status is indicated by `AiAnswer.AiConversationResult`.   
 
 * `AiAnswer`syntax  
@@ -767,16 +725,17 @@ The conversation status is indicated by `AiAnswer.AiConversationResult`.
   }
   ```
 
-#### Set user prompt and run the conversation - 
-Set the user prompt using the `SetUserPrompt` method, and run the chat with the
+### Setting user prompt and running conversation:
+
+Set the user prompt using the `SetUserPrompt` method, and run the conversation using the
 `RunAsync` method.
 <Admonition type="note" title="">
-You can also use `StreamAsync` to stream the LLM's response as it is generated.  
+You can also use `StreamAsync` to **stream** the LLM's response as it is generated.  
 Learn how to do this in the [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses) section.
 </Admonition>
 
 ```csharp
-// Set the user prompt and run the chat
+// Set the user prompt and run the conversation
 chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
 
 var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
@@ -793,12 +752,13 @@ if (LLMResponse.Status == AiConversationResult.Done)
 
 ## Full example
 
-The agent in this example helps a human experience manager to reward employees.  
-It searches, using query tools, the orders sent to a certain country or (if the 
-manager prompts it "everywhere") to all countries, and finds the employee that 
-made the largest profit.  
-It then uses another query tool to find, by the employee's ID (fetched from the 
-orders) the employee's residence region, and finds rewards based on this location.  
+The agent's user in this example is a human experience manager.  
+The agent helps its user to reward employees by searching, using query tools, 
+for orders sent to a certain country or (if the user prompts it "everywhere") 
+to all countries, and finding the employee that made the largest profit.  
+The agent then runs another query tool to find, by the employee's ID (that 
+was fetched from the retrieved orders) the employee's residence region, 
+and finds rewards suitable for the employee based on this region.  
 Finally, it uses an action tool to store the employee's ID, profit, and reward 
 suggestions in the `Performers` collection in the database, and returns the same 
 details in its final response as well.  
@@ -808,16 +768,11 @@ public async Task createAndRunAiAgent_full()
 {
     var store = new DocumentStore();
 
-    // Define the connection string to OpenAI
+    // Define connection string to OpenAI
     var connectionString = new AiConnectionString
     {
-        // Connection string name & identifier
         Name = "open-ai-cs",
-
         ModelType = AiModelType.Chat,
-
-        // OpenAI connection settings
-
         OpenAiSettings = new OpenAiSettings(
             apiKey: "your-api-key",
             endpoint: "https://api.openai.com/v1",
@@ -825,7 +780,7 @@ public async Task createAndRunAiAgent_full()
             model: "gpt-4.1")
     };
 
-    // Deploy the connection string to the server
+    // Deploy connection string to server
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
 
@@ -851,12 +806,13 @@ public async Task createAndRunAiAgent_full()
     agent.Identifier = "reward-productive-employee";
 
     //  Set agent parameters
-    agent.Parameters.Add(new AiAgentParameter("country", "A specific country that orders were shipped " +
-                                 "to, or \"everywhere\" to look for orders shipped to all countries"));
+    agent.Parameters.Add(new AiAgentParameter(
+                                  "country", "A specific country that orders were shipped to, " +
+                                  "or \"everywhere\" to look for orders shipped to all countries"));
 
     agent.Queries =
     [
-        // Set a query tool that triggers the agent to retrieve all the orders sent everywhere
+        // Set a query tool that to retrieve all orders sent everywhere
         new AiAgentToolQuery
             {
                 // Query tool name
@@ -868,13 +824,11 @@ public async Task createAndRunAiAgent_full()
                 // Query tool RQL query
                 Query = "from Orders as O select O.Employee, O.Lines.Quantity",
 
-                // Sample parameters object for the query tool
-                // The LLM can use this object to pass parameters to the query tool
+                // Sample parameters object 
                 ParametersSampleObject = "{}"
             },
         
-            // Set a query tool that triggers the agent to retrieve all the orders sent to a 
-            // specific country
+            // Set a query tool to retrieve all orders sent to a specific country
             new AiAgentToolQuery
             {
                 Name = "retrieve-orders-sent-to-a-specific-country",
@@ -886,8 +840,7 @@ public async Task createAndRunAiAgent_full()
                 ParametersSampleObject = "{}"
             },
 
-            // Set a query tool that triggers the agent to retrieve the performer's
-            // residence region details (country, city, and region) from the database
+            // Set a query tool to retrieve the performer's residence region details from the database
             new AiAgentToolQuery
             {
                 Name = "retrieve-performer-living-region",
@@ -898,13 +851,13 @@ public async Task createAndRunAiAgent_full()
                         "E.Address.City, E.Address.Region",
                 ParametersSampleObject = "{" +
                           "\"employeeId\": \"embed the employee's ID here\"" +
-                                         "}"
+                         "}"
             }
     ];
 
     agent.Actions =
     [
-        // Set an action tool that triggers the client to store the performer's details
+        // Set an action tool to store the performer's details
         new AiAgentToolAction
             {
                 Name = "store-performer-details",
@@ -922,11 +875,9 @@ public async Task createAndRunAiAgent_full()
     // Set chat trimming configuration
     AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
     {
-        // When the number of tokens stored in the conversation exceeds this limit
-        // summarization of old messages will be triggered.
+        // Summarize old messages When the number of tokens stored in the conversation exceeds this limit
         MaxTokensBeforeSummarization = 32768,
-        // The maximum number of tokens that the conversation is allowed to contain
-        // after summarization. 
+        // Max number of tokens that the conversation is allowed to contain after summarization
         MaxTokensAfterSummarization = 1024
     };
 
@@ -942,10 +893,8 @@ public async Task createAndRunAiAgent_full()
         profit = "the profit the employee made"
     });
 
-    // Set chat ID, prefix, and agent parameters.
-    // In this example the "country" agent parameter is set to "France",
-    // to trigger a query that retrieves orders sent to a particular country.
-    // Providing "everywhere" instead, will trigger another query that retrieves all orders.
+    // Set chat ID, prefix, agent parameters.
+    // (specific country activates one query tool,"everywhere" activates another)
     var chat = store.AI.Conversation(
         createResult.Identifier,
         "Performers/",
@@ -956,7 +905,7 @@ public async Task createAndRunAiAgent_full()
     {
         using (var session1 = store.OpenSession())
         {
-            // These values are passed to the client by the action tool
+            // Values sent by LLM
             Performer rewarded = new Performer
             {
                 suggestedReward = performer.suggestedReward,
@@ -964,14 +913,14 @@ public async Task createAndRunAiAgent_full()
                 profit = performer.profit
             };
 
-            // store the values in the Performers collection in the database
+            // store values in Performers collection in database
             session1.Store(rewarded);
             session1.SaveChanges();
         }
         return "done";
     });
 
-    // Set the user prompt and run the chat
+    // Set user prompt and run chat
     chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
 
     var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
