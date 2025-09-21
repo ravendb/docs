@@ -30,6 +30,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [Set chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)
    * [Adding agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools)
       * [Query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools)
+         * [Initial context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
       * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
    * [Creating a Response object and the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-response-object-and-the-agent)
    * [Conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversations)
@@ -398,16 +399,25 @@ To make changes in the database, use an action tool instead.
           ```csharp
           agent.Queries =
           [
-            // Set query tool that triggers the agent to retrieve all the orders sent everywhere
+            // Set a query tool that triggers the agent to retrieve all the orders sent everywhere
             new AiAgentToolQuery
             {
+                // Query tool name
                 Name = "retrieve-orders-sent-to-all-countries",
+
+                // Query tool description
                 Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+
+                // Query tool RQL query
                 Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+
+                // Sample parameters object for the query tool
+                // The LLM can use this object to pass parameters to the query tool
                 ParametersSampleObject = "{}"
             },
         
-            // Set query tool that triggers the agent to retrieve all the orders sent to a specific country
+            // Set a query tool that triggers the agent to retrieve all the orders sent to a 
+            // specific country
             new AiAgentToolQuery
             {
                 Name = "retrieve-orders-sent-to-a-specific-country",
@@ -418,7 +428,7 @@ To make changes in the database, use an action tool instead.
                 ParametersSampleObject = "{}"
             },
 
-            // Set query tool that triggers the agent to retrieve the performer's
+            // Set a query tool that triggers the agent to retrieve the performer's
             // residence region details (country, city, and region) from the database
             new AiAgentToolQuery
             {
@@ -447,6 +457,65 @@ To make changes in the database, use an action tool instead.
   }
   ```
 
+#### Initial context queries:
+
+* You can mark a query tool as an [initial context query](../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query immediately when the agent is started and provide the LLM with the query results as part of the initial context.  
+   * An initial context query is **not allowed** to use LLM parameters, since the LLM 
+     will not have the opportunity to fill them with values before the query is executed.  
+   * The query **can** use agent parameters, whose values are provided by the user when the conversation is started.  
+
+*  You can also Enable or Disable a query tool using the `Options.AllowModelQueries` property.  
+   * When enabled, the LLM can freely trigger the execution of this query tool.  
+   * When disabled, the LLM cannot trigger the execution of this query tool.  
+   * If the tool is set as an initial context query, it will be executed when the conversation 
+     starts even if disabled using `AllowModelQueries`.  
+
+* **Example**  
+  Set a query tool that runs when the agent is started and retrieves all the orders sent everywhere.
+  ```csharp
+  new AiAgentToolQuery
+  {
+     Name = "retrieve-orders-sent-to-all-countries",
+     Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+     Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+     ParametersSampleObject = "{}"
+
+     Options = new AiAgentToolQueryOptions
+     {
+         // The LLM is allowed to trigger the execution of this query during the conversation
+         AllowModelQueries = true,
+
+         // The query will be executed when the conversation starts 
+         // and its results will be added to the initial context
+         AddToInitialContext = true
+      }
+  }
+  ```
+
+* **Syntax**  
+  ```csharp
+  public class AiAgentToolQueryOptions : IDynamicJson
+  {
+      public bool? AllowModelQueries { get; set; }
+      public bool? AddToInitialContext { get; set; }
+  }
+    ```
+
+      |Property|Type|Description|
+      |--------|----|-----------|
+      |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
+      |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
+
+<Admonition type="note" title="">
+The two flags can be set regardless of each other.  
+* Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `false`  
+  will cause the query to be executed when the conversation starts,  
+  but the LLM will not be able to trigger its execution later in the conversation.  
+* Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `true`  
+  will cause the query to be executed when the conversation starts,  
+  and the LLM will also be able to trigger its execution later in the conversation.  
+</Admonition>
+
 ### Action tools:
 
 Action tools allow the LLM to trigger the client to actions like modifying or adding 
@@ -470,7 +539,7 @@ a response that explains how it went, e.g. `done`.
   ```csharp
   agent.Actions =
   [
-    // Set action tool that triggers the client to store the performer's details
+    // Set an action tool that triggers the client to store the performer's details
     new AiAgentToolAction
         {
             Name = "store-performer-details",
@@ -787,16 +856,25 @@ public async Task createAndRunAiAgent_full()
 
     agent.Queries =
     [
-        // Set query tool that triggers the agent to retrieve all the orders sent everywhere
+        // Set a query tool that triggers the agent to retrieve all the orders sent everywhere
         new AiAgentToolQuery
             {
+                // Query tool name
                 Name = "retrieve-orders-sent-to-all-countries",
+
+                // Query tool description
                 Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+
+                // Query tool RQL query
                 Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+
+                // Sample parameters object for the query tool
+                // The LLM can use this object to pass parameters to the query tool
                 ParametersSampleObject = "{}"
             },
         
-            // Set query tool that triggers the agent to retrieve all the orders sent to a specific country
+            // Set a query tool that triggers the agent to retrieve all the orders sent to a 
+            // specific country
             new AiAgentToolQuery
             {
                 Name = "retrieve-orders-sent-to-a-specific-country",
@@ -808,7 +886,7 @@ public async Task createAndRunAiAgent_full()
                 ParametersSampleObject = "{}"
             },
 
-            // Set query tool that triggers the agent to retrieve the performer's
+            // Set a query tool that triggers the agent to retrieve the performer's
             // residence region details (country, city, and region) from the database
             new AiAgentToolQuery
             {
@@ -826,7 +904,7 @@ public async Task createAndRunAiAgent_full()
 
     agent.Actions =
     [
-        // Set action tool that triggers the client to store the performer's details
+        // Set an action tool that triggers the client to store the performer's details
         new AiAgentToolAction
             {
                 Name = "store-performer-details",
