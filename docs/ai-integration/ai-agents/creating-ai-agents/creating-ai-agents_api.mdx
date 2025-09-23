@@ -208,7 +208,7 @@ The agent will send the system prompt you define here to the LLM to define its b
     public string SystemPrompt { get; set; }
 
     // An example object that sets the layout for the LLM's response to the user.
-    // The object is translated to a schema before we send it to the LLM.
+    // The object is translated to a schema before it is sent to the LLM.
     public string SampleObject { get; set; }
 
     // A schema that sets the layout for the LLM's response to the user.
@@ -250,7 +250,7 @@ agent.Identifier = "reward-productive-employee";
 
 ### Add agent parameters:
 Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
-Values for agent parameters are provided by the client (or by a user through the client) 
+Values for agent parameters are provided by the client, or by a user through the client, 
 when a chat is started.  
 When the agent is requested to use a query tool that uses agent parameters, it replaces these parameters with the values provided by the user before running the query.  
 Using agent parameters allows the client to focus the queries and the entire interaction on its current needs.  
@@ -259,7 +259,7 @@ In the example below, an agent parameter is used to determine what area
 of the world a query will handle. 
 
 To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
-the parameter's **name** and **description** (explaining the LLM what the parameter 
+the parameter's **name** and **description** (explaining to the LLM what the parameter 
 is for), and pass this instance to the `agent.Parameters.Add` method.  
 
 * **Example**  
@@ -296,7 +296,7 @@ Note that if limiting the amount of time a user needs to wait for the LLM to res
 
 ### Set chat trimming configuration:
 
-To [summarize the conversation history](../../../ai-integration/ai-agents/ai-agents_overview#chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
+To [summarize the conversation history](../../../ai-integration/ai-agents/ai-agents_overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
 use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
 with the instance.  
 
@@ -514,7 +514,7 @@ Action tools allow the LLM to trigger the client to action (e.g., to modify or a
 An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
 
 In the example below, the action tool requests the client to store an employee's details 
-in the database. The LLM will provide the employee's ID andother details whenever it requests the agent 
+in the database. The LLM will provide the employee's ID and other details whenever it requests the agent 
 to apply the tool. 
 
 When the client finishes performing the action, it is required to send the LLM 
@@ -534,7 +534,7 @@ a response that explains how it went, e.g. `done`.
                           "database.",
             ParametersSampleObject = "{" +
                         "\"suggestedReward\": \"embed your suggestions for a reward here\", " +
-                        "\"employeeID\": \"embed the employee’s ID here\", " +
+                        "\"employeeId\": \"embed the employee’s ID here\", " +
                         "\"profit\": \"embed the employee’s profit here\"" +
                                          "}"
         }
@@ -572,7 +572,7 @@ what the LLM should embed in it.
   var createResult = await store.AI.CreateAgentAsync(agent, new Performer
   {
     suggestedReward = "your suggestions for a reward",
-    employeeID = "the ID of the employee that made the largest profit",
+    employeeId = "the ID of the employee that made the largest profit",
     profit = "the profit the employee made"
   });
 
@@ -580,7 +580,7 @@ what the LLM should embed in it.
   public class Performer
   {
      public string suggestedReward;
-     public string employeeID;
+     public string employeeId;
      public string profit;
   }
   ```
@@ -590,7 +590,7 @@ what the LLM should embed in it.
   // Set sample object
   agent.SampleObject = "{" +
                     "\"suggestedReward\": \"your suggestions for a reward\", " +
-                    "\"employeeID\": \"the ID of the employee that made the largest profit\", " +
+                    "\"employeeId\": \"the ID of the employee that made the largest profit\", " +
                     "\"profit\": \"the profit the employee made\"" +
                           "}";
   ```
@@ -678,7 +678,7 @@ When you finish handling the requested action, `return` the LLM an indication th
           Performer rewarded = new Performer
           {
               suggestedReward = performer.suggestedReward,
-              employeeID = performer.employeeID,
+              employeeId = performer.employeeId,
               profit = performer.profit
           };
 
@@ -695,7 +695,7 @@ When you finish handling the requested action, `return` the LLM an indication th
   public class Performer
   {
       public string suggestedReward;
-      public string employeeID;
+      public string employeeId;
       public string profit;
   }
   ```
@@ -812,7 +812,7 @@ public async Task createAndRunAiAgent_full()
 
     agent.Queries =
     [
-        // Set a query tool that to retrieve all orders sent everywhere
+        // Set a query tool to retrieve all orders sent everywhere
         new AiAgentToolQuery
             {
                 // Query tool name
@@ -866,7 +866,7 @@ public async Task createAndRunAiAgent_full()
                     "the largest profit, the profit, and your suggestions for a reward, in the database.",
                 ParametersSampleObject = "{" +
                           "\"suggestedReward\": \"embed your suggestions for a reward here\", " +
-                          "\"employeeID\": \"embed the employee’s ID here\", " +
+                          "\"employeeId\": \"embed the employee’s ID here\", " +
                           "\"profit\": \"embed the employee’s profit here\"" +
                                "}"
             }
@@ -889,7 +889,7 @@ public async Task createAndRunAiAgent_full()
     var createResult = await store.AI.CreateAgentAsync(agent, new Performer
     {
         suggestedReward = "your suggestions for a reward",
-        employeeID = "the ID of the employee that made the largest profit",
+        employeeId = "the ID of the employee that made the largest profit",
         profit = "the profit the employee made"
     });
 
@@ -905,11 +905,11 @@ public async Task createAndRunAiAgent_full()
     {
         using (var session1 = store.OpenSession())
         {
-            // Values sent by LLM
+            // Values provided by the LLM
             Performer rewarded = new Performer
             {
                 suggestedReward = performer.suggestedReward,
-                employeeID = performer.employeeID,
+                employeeId = performer.employeeId,
                 profit = performer.profit
             };
 
@@ -938,7 +938,7 @@ public async Task createAndRunAiAgent_full()
 
 ## Stream LLM responses
 
-You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#stream-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-user-prompt-and-run-the-conversation--) which sends the whole response to the client when it is fully prepared.  
+You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation) which sends the whole response to the client when it is fully prepared.  
 
 Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
 

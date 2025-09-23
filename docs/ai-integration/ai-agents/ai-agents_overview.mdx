@@ -16,12 +16,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * An **AI Agent** is an ongoing service that resides on a RavenDB server.  
-  After its creation by a RavenDB client, an agent can respond to client requests by mediating between the client, an AI model, and a RavenDB database.  
+  An agent can serve RavenDB clients by [mediating](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart) between the clients, an AI model, and a RavenDB database.  
   
-* An AI agent can provide the AI model with a set of Query and Action tools.  
-  The AI model can then facilitate these tools and query the database or request the client to perform actions.  
+* Through an AI agent, the LLM acquires the ability to query the database and request the client to perform actions.  
 
-* The client gains this way the ability to communicate with an AI model that has access to the database, and to easily automate complex workflows that leverage the AI model's insights and suggestions.  
+* Granting the LLM access to a relevant data source like a company database can significantly enhance its ability to provide the client with accurate and context-aware responses, as well as reduce behaviors that harm its credibility, such as 'hallucinations' and user-pleasing bias.  
+
+* Clients can use an agent to automate complex workflows by leveraging AI capabilities like data analysis, decision-making, and understanding of natural language segments.  
 
 * In this article:
    * [Common use cases](../../ai-integration/ai-agents/ai-agents_overview#common-use-cases)  
@@ -30,9 +31,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [Initiating a conversation](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation)
    * [AI agent usage flow chart](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart)
    * [Streaming LLM responses (RavenDB 7.1.3 and up)](../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up)
-   * [Security concerns](../../ai-integration/ai-agents/ai-agents_overview#security-concerns)
-   * [AI agents and other AI features](../../ai-integration/ai-agents/ai-agents_overview#ai-agents-and-other-ai-features)
    * [Reducing throughput and expediting LLM response](../../ai-integration/ai-agents/ai-agents_overview#reducing-throughput-and-expediting-llm-response)
+   * [Security concerns](../../ai-integration/ai-agents/ai-agents_overview#security-concerns)
 
 </Admonition>
 
@@ -44,7 +44,7 @@ AI agents are designed to easily integrate AI capabilities into applications and
 
 * **Data analysis and reporting agents** can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
 
-* **Automated content generation agents** can generate summaries, add automated comments to articles and and application-generated contents, reference readers to related material, and create marketing content based on user input and stored information.
+* **Automated content generation agents** can generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
 
 * **Workflow automation agents** can automate repetitive tasks such as email sorting, spam filtering, form filling, or file organization.  
 
@@ -54,8 +54,14 @@ AI agents are designed to easily integrate AI capabilities into applications and
 
 ## Defining and running an AI agent
 
-An AI agent is defined by a client and runs on a RavenDB server.  
-Once defined, the agent can be invoked by the client to handle user requests, respond to events tracked by the client, and so on.  
+An AI agent is an ongoing AI task that can be created by RavenDB clients (providing they have database administration permissions) and reside on a RavenDB server. 
+Agents can be invoked by clients to, for example, handle user requests and respond to events tracked by the client.  
+
+```
+An agent can serve multiple clients concurrently.  
+The agent configuration, logic, and tools will be shared by all its clients.  
+Each client will maintain a different conversation instance and will be able to provide its own parameters, conduct its own conversation, and get its separate results when the conversation ends.  
+```
 
 <Admonition type="note" title="">
 * [Learn to create an AI agent using the client API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api)  
@@ -66,16 +72,22 @@ Once defined, the agent can be invoked by the client to handle user requests, re
 To define an AI agent, the client needs to specify -  
 
 * A **connection string** to the AI model.  
+  [Create a connection string using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
+  [Create a connection string using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings)  
 
-* An **agent configuration** that includes -  
+* An **agent configuration** that defines the agent.  
+  [Define an agent configuration using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#defining-an-agent-configuration)  
+  [Define an agent configuration using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings)  
+
+  An agent configuration includes -  
    * **Basic agent settings**, like the unique ID by which the system recognizes the task.  
    * A **system prompt**, that defines AI model characteristics like its role.  
    * Optional **agent parameters**.  
      Agent parameters' values are provided by the client when it starts a conversation with the agent, and can be used in queries initiated by the LLM (see **query tools** below).  
    * <a id="query-tools"/> Optional **query tools**.  
      The LLM will be able to invoke query tools freely to retrieve data from the database.  
-      * **Read only operations**  
-        Query tools are only allowed to apply **read operations**.  
+      * **Read-only operations**  
+        Query tools can apply **read operations** only.  
         To make changes in the database, use [action tools](../../ai-integration/ai-agents/ai-agents_overview#action-tools).  
       * **Database access**  
         The LLM has no direct access to the database. To use a query tool, it must send a query request to the agent, which will send the RQL query defined by the tool to the database and pass its results to the LLM.  
@@ -96,6 +108,11 @@ To define an AI agent, the client needs to specify -
     The LLM will be able to use these tools to request the client to perform actions.  
 
 ### Initiating a conversation:
+A conversation is a communication session between the client, the agent, and the LLM, 
+during which the LLM may trigger agent tools to interact with the database and the client.  
+[Initiate a conversation using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)  
+[Initiate a conversation using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#start-new-chat)  
+
 To start a conversation with the LLM, the agent will send it an **initial context** that includes -  
 
 * Pre-defined [agent configuration](../../ai-integration/ai-agents/ai-agents_overview#the-main-stages-in-defining-an-ai-agent) elements (automatically sent by the agent):  
@@ -127,7 +144,7 @@ To start a conversation with the LLM, the agent will send it an **initial contex
 
 * Optional **conversation history**  
   To continue a conversation with the LLM, the agent will need to send it the entire history of the conversation so far.  
-  Conversations are automatically kept in documents in the `@conversations` collection. The client will need to reference the agent to the conversation that it wants to continue.  
+  Conversations are automatically kept in documents in the `@conversations` collection. The client will need to reference the agent to the conversation it wants to continue.  
 
 * A **user prompt**, set by the client, that defines this part of the conversation.  
   The user prompt may be, for example, a question or a request for particular information.  
@@ -190,22 +207,7 @@ Streaming can ease the processing of lengthy LLM responses for clients, and crea
 
 Streaming is supported by most AI models, including OpenAI services like GPT-4 and Ollama models.  
 
-[Learn how to stream LLM responses using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)  
-
-<hr />
-
-## Security concerns
-
-https://issues.hibernatingrhinos.com/issue/RavenDB-24777/AI-Agent-Security-Concerns
-
-Though in our example the LLM helps us find and reward productive employees, we remain careful throughout the code not to provide it with personal employee details or proprietary company information.
-
-
-<hr />
-
-## AI agents and other AI features
-
-### AI agents and vector search
+[Streaming LLM responses using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)  
 
 <hr />
 
@@ -213,16 +215,88 @@ Though in our example the LLM helps us find and reward productive employees, we 
 
 If throughput and LLM response time are a consideration, consider these options:  
 
-### maximum number of querying iterations:
+### Set maximum number of querying iterations:
 
 You can limit the number of times that the LLM is allowed to trigger database queries in response to a single user prompt.  
-* [Set iterations limit using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-maximum-number-of-iterations)  
 
-### Chat trimming configuration:
+[Setting iterations limit using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-maximum-number-of-iterations)  
 
-The LLM doesn't keep the history of previous conversations. To allow a continuous conversation, we include in every new message we send to the LLM the history of the entire conversation since its start.  
-To save traffic and tokens, you can summarize conversations history. This can be helpful when transfer rate and cost are a concern or the context may become too large to handle efficiently.  
+### Define a chat trimming configuration:
 
-* [Configure chat trimming using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)  
-* [Configure chat trimming using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-chat-trimming)  
+The LLM doesn't keep conversations history. To allow a continuous conversation, the agent includes in every new message it sends to the LLM the history of the entire conversation since it started.  
+
+To save traffic and tokens, you can summarize conversations history using **chat trimming**. This can be helpful when transfer rate and cost are a concern or the context becomes too large to handle efficiently.  
+
+[Configuring chat trimming using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)  
+[Configuring chat trimming using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-chat-trimming)  
+
+### Optimize query tools:
+
+When creating query tools -  
+* Provide the LLM with clear instructions on how to use each query tool effectively.  
+* Narrow your queries:  
+   * Design queries to return only the data that is relevant to the agent's role and the user's prompt.  
+   * You can limit the scope of a query both in the RQL statement itself and by using agent parameters to filter results.  
+   * Avoid overly broad queries that return large datasets, as they can overwhelm the LLM and lead to slower response times.  
+   * Consider setting a limit on the number of results returned by each query to prevent excessive data transfer and processing.  
+* Supervise querying:  
+   * Test query tools with various prompts and scenarios to identify and address any performance bottlenecks.  
+   * Monitor the performance of query tools in production to identify and address any issues that arise over time.  
+   * Regularly review and update query tools to ensure they remain relevant and efficient as the database evolves.  
+
+[Creating query tools using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools)  
+[Creating query tools using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#add-query-tools)  
+
+<hr />
+
+## Security concerns
+
+### Concern: Unauthorized access to databases can lead to data breaches
+
+* **Mitigation: Read-only access**  
+  The LLM has no direct access to the database. It can only request the agent, via query tools, to query the database on its behalf, and the agent can only apply read-only operations.  
+
+* **Mitigation: DBA control**  
+  Control over the database is determined using certificates. Only users whose certificates grant them a database administrator or a higher role can create and manage agents. 
+  The DBA retains full control over connections to the AI model (through connection strings), the agent configuration, and the queries that the agent is allowed to run.  
+
+* **Mitigation: Agent scope**  
+  An AI agent is created for a specific database and has no access to other databases on the server, ensuring database-level isolation.  
+
+### Concern: Data may be compromised during transition
+
+* **Mitigation: Secure TLS (Transport Layer Security) communication**  
+  All data is transferred over HTTPS between the client, the agent, the database, and the AI model, to ensure its encryption during transit.  
+
+### Concern: Inability to trace malicious or unexpected actions related to agents
+
+* **Mitigation: Audit logging**  
+  RavenDB [admin logs](../../studio/server/debug/admin-logs/) track the creation, modification, and deletion of AI agents, as well as agent interactions with the database.  
   
+      Example of an audit log entry recorded when an agent was deleted:  
+      ```
+      Starting to process record 16 (current 15) for aiAgent_useHandleToRunChat_1. 
+      Type: DeleteAiAgentCommand. 
+      Cluster database change type: RecordChanged
+      Date	2025-09-23 22:29:45.0391
+      Level	DEBUG
+      Thread ID	58
+      Resource	aiAgent_useHandleToRunChat_1
+      Logger	Raven.Server.Documents.DocumentDatabase
+      ```
+### Concern: Sensitive data might inadvertently be memorized and reproduced by the AI model
+
+* **Mitigation: Free selection of AI model**  
+  RavenDB doesn't enforce the usage of specific providers or AI models, but gives you free choice of the services that best suit your needs and security requirements.  
+  When using the service of your choice, it is your responsibility to define safe queries and expose only the data that it is in your interest to share with the AI model.  
+
+* **Mitigation: Agent parameters**  
+  You can use [agent parameters](../../ai-integration/ai-agents/ai-agents_overview#query-parameters) to limit the scope of the defined query and the dataset subsequently transferred to the AI model.  
+
+### Concern: Validation or injection attacks crafted through malicious user input
+
+* **Mitigation: Query scope**  
+  The agent queries a limited subset of the stored data, restricting an attacker's access to the rest of the data and to data belonging to other users.  
+
+* **Mitigation: Read-only access**  
+  Query tools can apply read-only RQL queries, preventing attackers from modifying any data.

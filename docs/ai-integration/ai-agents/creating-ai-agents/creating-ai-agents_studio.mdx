@@ -107,7 +107,7 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 
 Define **agent parameters**.  
 After defining an agent parameter, it can be included in query tools RQL queries.  
-Values for agent parameters are provided by the client, when it starts a conversation.  
+Values for agent parameters are provided by the client when a conversation is started.  
 [Read more about parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters).
 
 ![Set agent parameters](./assets/ai-agents_set-agent-params.png)
@@ -119,7 +119,7 @@ Values for agent parameters are provided by the client, when it starts a convers
    Enter agent parameter name.  
 
 3. **Description**  
-   Describe the parameter in plane language so the LLM would understand its purpose.  
+   Describe the parameter in plain language so the LLM would understand its purpose.  
 
 4. **Remove parameter**  
    Remove a defined parameter from the list.
@@ -187,7 +187,7 @@ Define **Query** and **Action** agent tools.
    Enter the query that the agent will run when the LLM requests it to use this tool.  
 
 9. **Sample parameters object** and **Parameters JSON schema**  
-   Set a schema (in the form of a sample object or a formal JSON schema) through which the LLM will be able to fill query parameters with values.  
+   Set a schema (as a sample object or a formal JSON schema) that allows the LLM to fill query parameters with values.  
    [Read more about query parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters)  
 
 ### Add action tools:
@@ -211,7 +211,7 @@ Define **Query** and **Action** agent tools.
    E.g., `apply this action tool when you need to create a new summary document`  
 
 6. **Sample parameters object** and **Parameters JSON schema**  
-   Set a sample object or a JSON schema that the the LLM can populate when it invokes the action tool. The agent will pass this information to the client to guide it through the action it is requested to perform.  
+   Set a sample object or a JSON schema that the LLM can populate when it invokes the action tool. The agent will pass this information to the client to guide it through the action it is requested to perform.  
    
       If you define both a sample response object and a schema, only the schema will be used.  
 
@@ -219,7 +219,7 @@ Define **Query** and **Action** agent tools.
 
 ## Configure chat trimming
 
-The LLM keeps no record of previous conversations it conducted.  
+The LLM does not retain records of previous conversations.  
 To allow a continuous conversation, the agent sends the LLM the entire conversation history 
 when a chat is started. To minimize the size of these messages, you can set the agent to summarize them rather than send the LLM their full length version.  
 
@@ -235,15 +235,15 @@ when a chat is started. To minimize the size of these messages, you can set the 
 
 3. **Max tokens After summarization**  
    Set the maximum number of tokens that will be left in the conversation after it is summarized.  
-   Messages exceeding the set limit will be removed, starting with the oldest.  
+   Messages exceeding this limit will be removed, starting with the oldest.  
    
 1. **History**  
      * **Enable history**  
-       When history is enabled the chat sent to the LLM will be summarized, but copies of the original chats will be kept in dedicated documents in the `@conversations-history` collection.  
+       When history is enabled, the chat sent to the LLM will be summarized, but copies of the original chats will be kept in dedicated documents in the `@conversations-history` collection.  
      * **Set history expiration**  
        When this option is enabled, conversations will be deleted from the 
-       `@conversations-history` collection when their age exceeds the period 
-       you set in the time boxes.  
+       `@conversations-history` collection once their age exceeds the period 
+       you set.  
 
 <hr />
 
@@ -291,7 +291,7 @@ to the agent what you expect from this session.
    will be executed as `from "Orders" where ShipTo.Country == "France"`.  
 
 4. **User prompt**  
-   Use the user prompt to explain to the agent in natural language what 
+   Use the user prompt to explain to the agentm in natural language, what 
    this session is about.  
 
 ### Agent interaction:
@@ -314,7 +314,7 @@ You can view the raw data of the agent's activity in JSON form as well:
 
 If the agent runs action tools, you will be given a dialog that shows you the 
 information provided by the LLM when it requests the action, and a dialog inviting 
-you to reply with the results of the action when you finish performing it.  
+you to enter the results when you finish performing it.  
 
 ![Action tool waiting for client response](./assets/ai-agents_running_action-tool.png)
 
