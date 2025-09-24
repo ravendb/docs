@@ -8,17 +8,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: '--max-old-space-size=8192'
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+
+      - name: Set up swap space
+        # Pinning the third-party action to a specific commit SHA for security and stability.
+        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # Corresponds to v2.2.1
         with:
-          node-version: '18'
+          swap-size-gb: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
           cache: 'npm'
           
       - name: Install dependencies
@@ -26,6 +30,10 @@ jobs:
 
       - name: Build Docusaurus
         run: npm run build
+        env:
+        # GH runners for the public projects have 16GB of memory. This plus 10GB of swap should do
+        # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+          NODE_OPTIONS: '--max-old-space-size=24576'
         
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
