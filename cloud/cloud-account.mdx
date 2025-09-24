@@ -1,0 +1,46 @@
+---
+title: "Cloud: Account"
+hide_table_of_contents: true
+sidebar_label: Account
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Cloud: Account
+<Admonition type="note" title="">
+
+*RavenDB Cloud* allows you to manage your payment information, access, and other user roles.
+
+* In this page:
+    * [Account roles](../cloud/cloud-account.mdx#account-roles)
+    * [Multi-account configuration](../cloud/cloud-account.mdx#multi-account-configuration)
+
+</Admonition>
+## Account roles
+
+Each account user can be assigned specific roles that extend the range of functions and capabilities.
+
+| **Account role**                 | **Description**                                                                                                                                                                                                                                 |
+|----------------------------------|---------------------------------------------------------------------------------------------------|
+| Products                         | Grants full access to manage products: provision, configure, monitor, and control instances.      |                                                                                                                                                       |
+| Backups                          | Access and manage backups, restore links and downloads.                                           |
+| Billing                          | Provides visibility into billing history, current charges, remaining credits, and invoices.       |
+| API Access                       | Controls programmatic access to the platform. Generate, manage, and revoke API keys.              |
+| Support                          | Create and manage support requests for general issues or specific products, active or terminated. |
+| Account                          | Provides access to general account information.                                                   |
+| Account with User Management     | Grants permissions to manage account users. You can invite or remove team members.                |
+| Account with Billing Information | Update credit cards, billing addresses, and payment contacts for your account.                    |
+
+## Multi-account configuration
+
+It is possible to become the owner of multiple *Cloud Accounts* using the same email address.  
+This can be useful if you need to separate environments, teams, or billing contexts.   
+However, creating multiple Cloud Accounts under one email is not available through the self-service UI. 
+
+To set this up, please contact *RavenDB Cloud Support* and request a multi-account configuration.
