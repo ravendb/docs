@@ -15,31 +15,28 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Cloud: Security
 <Admonition type="note" title="">
 
-RavenDB cloud products use several layers of security.  
+*RavenDB Cloud* products use several layers of security. All instances are encrypted using *HTTPS* and *TLS* protocol version *1.2* or *1.3*. Servers and client applications authenticate each other using *X.509* certificates.
 
-* All instances are encrypted using HTTPS and TLS protocol version 1.2 or 1.3.  
-
-* Servers and client applications authenticate each other using X.509 certificates.  
-  <Admonition type="info" title="">
-  Note that a RavenDB cloud product **comes with an initial client certificate**.  
-  You need this certificate in order to access your RavenDB instances.  
-  </Admonition>
-
-* You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab.mdx#manage-product-the-security-tab) your server can be contacted by.  
-
-* Your [mandatory backup](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine) routines produce encrypted backup files.  
-
-* In this page:  
-    * [Using The Initial Client Certificate](cloud-security#using-the-initial-client-certificate)  
-    * [Using Additional Certificates](cloud-security#using-additional-certificates)  
+* In this page:
+    * [Using the initial client certificate](cloud-security#using-the-initial-client-certificate)  
+    * [Managing allowed IPs](cloud-security#managing-allowed-ips)  
+    * [Using additional certificates](cloud-security#using-additional-certificates)  
     * [Enable MFA](../cloud/cloud-security.mdx#enable-mfa)
 
 </Admonition>
-## Using The Initial Client Certificate
+
+## Using the initial client certificate
 
 A client certificate is automatically generated during the creation of your RavenDB cloud product.  
 You will need to import this certificate to your browser in order to access your cloud instances.  
-#### Download Certificate  
+  
+<Admonition type="info" title="">
+Expiration for client certificates is set to **5** years by default.  
+The certificate will be automatically regenerated **30 days** before its expiration date.  
+**RavenDB Cloud** will notify you by email **60 days** before regeneration.
+</Admonition>
+
+#### Download certificate  
 
 Go to the [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) in the cloud [portal](../cloud/portal/cloud-portal.mdx) 
 and click the **Download Certificate** button.  
@@ -53,6 +50,17 @@ When the certificate import wizard is launched, click "Next" all the way through
 !["Certificate Import Wizard"](./assets/security-002-wizard.png)  
 #### Access your product  
 
+If you're using Chrome on Windows, you will now be able to access your *RavenDB Cloud* instance. You may need to restart your browser.  
+In other cases (e.g. if you're using Firefox) you will have to import the certificate to your browser manually.  
+
+!["Server URLs"](./assets/migration-001-urls.png)  
+  
+Once the certificate is imported, please make sure your IP address is on the [allowed IPs list](#managing-allowed-ips) and then click your cloud instance's URL. 
+Your browser will prompt you to select a certificate. When you select the client certificate, your product's 
+[management studio](../7.1/studio/overview) will launch.  
+
+## Managing allowed IPs
+
 To access your product your IP address must be added to the `Allowed IPs` list.
 Allowed IPs entries are [CIDR ranges](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation) 
 that define networks from which the connection is allowed.
@@ -61,7 +69,7 @@ that define networks from which the connection is allowed.
   or IP ranges.
 - Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs
   list.
-- You can **edit the list at any time** through the Portal.
+- You can **edit the list at any time** through the Cloud Portal.
 - Regardless of the allowed IPs setting, your RavenDB Cloud **instances will always require authentication** using X.509
   certificates for access. The allowed IPs list serves as an additional layer of security, but isn't the only one.
 
@@ -79,18 +87,7 @@ If addresses in your list overlap, an error is going to be displayed upon produc
 Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
 </Admonition>
 
-If you're using Chrome on Windows, you will now be able to access your RavenDB cloud instance. You may need to restart your browser.  
-In other cases (e.g. if you're using Firefox) you will have to import the certificate to your browser manually.  
-
-!["Server URLs"](./assets/migration-001-urls.png)  
-  
-Once the certificate is imported, click your cloud instance's URL.  
-Your browser will prompt you to select a certificate. When you select the client certificate, your product's 
-[management studio](../7.1/studio/overview) will launch.  
-
-
-
-## Using Additional Certificates
+## Using additional certificates
 
 Your initial [operator-level](../7.1/server/security/authorization/security-clearance-and-permissions#operator) 
 certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.  
