@@ -20,7 +20,7 @@ git checkout main
 ## Installation
 
 ```bash
-npm install
+npm ci
 ```
 
 ## Local development
