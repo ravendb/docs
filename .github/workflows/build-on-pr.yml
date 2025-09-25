@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # env:
-    #   NODE_OPTIONS: '--max-old-space-size=8192'
     
     steps:
       - name: Checkout code
@@ -37,6 +35,8 @@ jobs:
 
           # Use 128MB per thread until it's recycled
           DOCUSAURUS_SSG_WORKER_THREAD_RECYCLER_MAX_MEMORY: '134217728'
+
+          NODE_OPTIONS: '--max-old-space-size=12288'
         
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
