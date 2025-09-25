@@ -99,7 +99,7 @@ private string GetDefaultContext(string dbName)
 \{
     // Get the string set by the web application elsewhere.
     var ctx = System.Web.HttpContext.Current;
-    if (ctx == null || ctx.Items.Contains(ContextKey) == false)
+    if (ctx == null)
     {
       // return a safe default
       return dbName;
@@ -130,14 +130,13 @@ using (var session = documentStore.OpenSession())
 {`// Open a session that will use a UNIQUE context string:
 using (var session = documentStore.OpenSession())
 \{
-    // Call SetContext, pass a unique context string for this session.
-    // In this case, a team identifier, where both employees belong to.
+    // Call 'SetContext' to assign a dedicated context string for this session.
+    // For example: "team/9-A", representing the team that the employees loaded in this session belong to.
     session.Advanced.SessionInfo.SetContext("team/9-A");
     
-    // For all Read & Write requests made in this session,
-    // node to access is calculated from the unique string & the seed defined on the store
+    // For all Read & Write requests made in this session, including the following load calls,
+    // a node to access is calculated from the unique string & the seed defined on the store
     var employee1 = session.Load<Employee>("employees/1-A");
-
     var employee2 = session.Load<Employee>("employees/3-A");
 \}
 `}
