@@ -8,8 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: '--max-old-space-size=8192'
+    # env:
+    #   NODE_OPTIONS: '--max-old-space-size=8192'
     
     steps:
       - name: Checkout code
@@ -30,13 +30,13 @@ jobs:
           # original defaults https://github.com/facebook/docusaurus/blob/main/packages/docusaurus/src/ssg/ssgEnv.ts
           
           # GH Runner has only 4 cores https://docs.github.com/en/actions/reference/runners/github-hosted-runners
-          DOCUSAURUS_SSR_CONCURRENCY: 4
+          DOCUSAURUS_SSR_CONCURRENCY: 1
 
           # Aligned with the one above
-          DOCUSAURUS_SSG_WORKER_THREAD_COUNT: 4
+          DOCUSAURUS_SSG_WORKER_THREAD_COUNT: 1
 
-          # Use 256MB per thread until it's recycled
-          DOCUSAURUS_SSG_WORKER_THREAD_RECYCLER_MAX_MEMORY: 268435456
+          # Use 128MB per thread until it's recycled
+          DOCUSAURUS_SSG_WORKER_THREAD_RECYCLER_MAX_MEMORY: 134217728
         
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
