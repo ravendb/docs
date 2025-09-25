@@ -2,7 +2,7 @@
 title: "AI agents: Overview"
 hide_table_of_contents: true
 sidebar_label: Overview
-sidebar_position: 0
+sidebar_position: 1
 ---
 
 import Admonition from '@theme/Admonition';
@@ -15,14 +15,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # AI agents: Overview
 <Admonition type="note" title="">
 
-* An **AI Agent** is an ongoing service that resides on a RavenDB server.  
-  An agent can serve RavenDB clients by [mediating](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart) between the clients, an AI model, and a RavenDB database.  
-  
-* Through an AI agent, the LLM acquires the ability to query the database and request the client to perform actions.  
+* An AI agent is a highly customizable [mediation component](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart) that an authorized client can tailor to its needs and install on the server. The agent serves the client by facilitating communication between the client, an LLM, and a RavenDB database.  
 
-* Granting the LLM access to a relevant data source like a company database can significantly enhance its ability to provide the client with accurate and context-aware responses, as well as reduce behaviors that harm its credibility, such as 'hallucinations' and user-pleasing bias.  
+* Clients can use AI agents to automate complex workflows by leveraging LLM capabilities such as data analysis, decision-making, and natural language processing.  
 
-* Clients can use an agent to automate complex workflows by leveraging AI capabilities like data analysis, decision-making, and understanding of natural language segments.  
+* The LLM can use an AI agent to query the database and request the client to perform actions.  
+
+* Granting an LLM access to a credible data source such as a company database can significantly enhance its ability to provide the client with accurate and context-aware responses. Such access can also mitigate LLM behaviors that harm its usability like 'hallucinations' and user-pleasing bias.  
+
+* Delegating the communication with the LLM to an AI agent can significantly reduce client code complexity and development overhead.
 
 * In this article:
    * [Common use cases](../../ai-integration/ai-agents/ai-agents_overview#common-use-cases)  
@@ -40,15 +41,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 AI agents are designed to easily integrate AI capabilities into applications and workflows. They can interact with users, intelligently retrieve and process data from public sites and proprietary databases, and apply actions based on roles they are requested to take and the data they have access to. Some of the tasks and applications they can be tailored to perform include:  
 
-* **Customer support chatbot agents** can answer customer queries based on information available to the public as well as internal knowledge bases, provide troubleshooting steps, and guide users through processes in real time.  
+#### Customer support chatbot agents:
+Customer support chatbot agents can answer customer queries based on information available to the public as well as internal knowledge bases, provide troubleshooting steps, and guide users through processes in real time.  
 
-* **Data analysis and reporting agents** can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
+#### Data analysis and reporting agents:
+Data analysis and reporting agents can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
 
-* **Automated content generation agents** can generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
+#### Automated content generation agents:
+Automated content generation agentscan generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
 
-* **Workflow automation agents** can automate repetitive tasks such as email sorting, spam filtering, form filling, or file organization.  
+#### Workflow automation agents:
+Workflow automation agents can automate repetitive tasks such as email sorting, spam filtering, form filling, or file organization.  
 
-* **Intelligent recommendation agents** can provide personalized recommendations based on user preferences and available data, e.g. a _library assistant_ suggesting books and other resources, an _HR office assistant_ recommending rewards for employees based on their performance and available facilities near their residence, or an _e-commerce assistant_ recommending products.  
+#### Intelligent recommendation agents:
+Intelligent recommendation agents can provide personalized recommendations based on user preferences and available data, e.g. a _library assistant_ suggesting books and other resources, an _HR office assistant_ recommending rewards for employees based on their performance and available facilities near their residence, or an _e-commerce assistant_ recommending products.  
 
 <hr />
 
