@@ -6,60 +6,66 @@ import { useLocation } from "@docusaurus/router";
 import { Share } from "yet-another-react-lightbox/plugins";
 
 function decodeHTML(html: string) {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
 }
 
 export default function MarkdownImageLightbox() {
-  const [open, setOpen] = useState(false);
-  const [slides, setSlides] = useState<{ src: string; description?: string }[]>(
-    [],
-  );
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const location = useLocation();
+    const [open, setOpen] = useState(false);
+    const [slides, setSlides] = useState<
+        { src: string; description?: string }[]
+    >([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const location = useLocation();
 
-  useEffect(() => {
-    const images = Array.from(document.querySelectorAll("img"));
+    useEffect(() => {
+        const images = Array.from(
+            document.querySelectorAll(".theme-doc-markdown img"),
+        );
 
-    const imageList: { src: string; description?: string }[] = [];
+        const imageList: { src: string; description?: string }[] = [];
 
-    images.forEach((img, index) => {
-      const src = img.getAttribute("src");
-      if (!src) {return;}
+        images.forEach((img, index) => {
+            const src = img.getAttribute("src");
+            if (!src) {
+                return;
+            }
 
-      const altRaw = img.getAttribute("alt") || "";
-      const alt = decodeHTML(altRaw);
+            const altRaw = img.getAttribute("alt") || "";
+            const alt = decodeHTML(altRaw);
 
-      imageList.push({ src, description: alt });
+            imageList.push({ src, description: alt });
 
-      if (img.classList.contains("lightbox-bound")) {return;}
+            if (img.classList.contains("lightbox-bound")) {
+                return;
+            }
 
-      img.style.cursor = "zoom-in";
-      img.classList.add("lightbox-bound");
+            img.setAttribute("style", "cursor: zoom-in");
+            img.classList.add("lightbox-bound");
 
-      img.addEventListener("click", (e) => {
-        e.preventDefault();
-        setCurrentIndex(index);
-        setOpen(true);
-      });
-    });
+            img.addEventListener("click", (e) => {
+                e.preventDefault();
+                setCurrentIndex(index);
+                setOpen(true);
+            });
+        });
 
-    setSlides(imageList);
-  }, [location.pathname]);
+        setSlides(imageList);
+    }, [location.pathname]);
 
-  return (
-    <Lightbox
-      open={open}
-      close={() => setOpen(false)}
-      index={currentIndex}
-      slides={slides}
-      plugins={[Share, Captions]}
-      captions={{
-        descriptionTextAlign: "center", // ✅ center the caption
-        descriptionMaxLines: 2, // ✅ limit lines if needed
-        showToggle: false, // ✅ hides toggle icon
-      }}
-    />
-  );
+    return (
+        <Lightbox
+            open={open}
+            close={() => setOpen(false)}
+            index={currentIndex}
+            slides={slides}
+            plugins={[Share, Captions]}
+            captions={{
+                descriptionTextAlign: "center",
+                descriptionMaxLines: 2,
+                showToggle: false,
+            }}
+        />
+    );
 }
