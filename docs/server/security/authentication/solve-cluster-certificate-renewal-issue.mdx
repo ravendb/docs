@@ -96,9 +96,7 @@ This is relevant for you -
 
 
 
-## Solutions
-
-### Solution 1:
+## Solution
 
 Register the pinning hash of the old issuer in the destination cluster. In settings.json, 
 on every node of the destination cluster add the following:  
@@ -113,33 +111,11 @@ on every node of the destination cluster add the following:
 The hash in the example is the Public Key Pinning Hash of the Let's Encrypt X3 intermediate 
 certificate authority which was previously used to sign Let's Encrypt certificates.  
 
-This solution is stronger, it ensures a smooth transparent transition when the source cluster 
+This solution ensures a smooth transparent transition when the source cluster 
 certificate will renew itself and the issuer will actually change. The advantage here is that 
 there is no downtime.  
 
 The disadvantage is that an admin needs to access the machines themselves. They need to edit 
 the settings.json file on all nodes and restart the RavenDB service (node-by-node for no downtime).  
-### Solution 2:
-
-1. In the case of ETL or External Replication, go to the source cluster and renew the Let's Encrypt 
-   cluster certificate. Then export it and register it in the destination cluster.  
-
-     * Click `Renew` on the server certificate in one of the nodes of the source cluster.  
-       ![Figure 1. Renew Server Certificate](./assets/renew_server_certificate.png)
-     * Export the new cluster certificate:  
-       ![Figure 2. Export Cluster Certificate](./assets/export_cluster_certificates.png)
-     * Use the destination cluster's Studio to upload the exported pfx file as a client certificate.  
-       ![Figure 3. Upload Client Certificat](./assets/upload-client-certificate.png)
-
-
-2. In case you are using your own Let's Encrypt client certificates, simply renew them 
-   (on your own) and re-register them in the certificate view in the Studio ([Upload client 
-   certificate](../../../studio/database/tasks/import-data/import-from-ravendb#step-#1:-prepare-servers-for-the-import-process-(secure-4.x-servers-only))).  
-
-This solution is easier and doesn't require access to the machines themselves, just an admin 
-certificate. The disadvantage is a short downtime in the service, because you must renew the 
-certificate first and only then you may export it and upload to the destination cluster.  
-This can cause some delay in the ETL or Replication service.  
-
 
 
