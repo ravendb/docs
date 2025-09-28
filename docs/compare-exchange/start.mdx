@@ -1,5 +1,5 @@
 ﻿---
-title: "Start"
+title: "Compare-Exchange: Start"
 hide_table_of_contents: true
 sidebar_label: "Start"
 sidebar_position: 0
@@ -12,37 +12,30 @@ import ColGrid from "@site/src/components/ColGrid";
 import CardWithIcon from "@site/src/components/Common/CardWithIcon";
 import Admonition from '@theme/Admonition';
 
-## Compare-exchange overview
-
 <Admonition type="note" title="">
 
-* Compare-exchange is a RavenDB feature for storing atomic, cluster-wide key-value pairs.  
+* Compare-exchange is a RavenDB feature for storing atomic, cluster-wide **key-value pairs**.  
   Each item is globally unique within the database, versioned, and managed at the cluster level,  
-  making it a reliable foundation for coordination and global consistency.
+  providing a built-in consensus mechanism for coordination and global consistency.
 
-* Each Compare-exchange item is:  
-  * Cluster-wide - visible and consistent across all nodes.
-  * Atomic - only one client can successfully modify an item at a time; each change is all-or-nothing.
-  * Versioned - every update increments the version, allowing you to detect concurrency conflicts.
-  * Flexible - values can be strings, numbers, arrays, or JSON objects.
-  * Internal to the database - compare-exchange items not replicated externally.
+* Compare-exchange is ideal for safe coordination in distributed environments, allowing you to:
+  * Enforce global uniqueness (e.g., prevent duplicate usernames or emails).
+  * Assign work to a single client or reserve a resource once.
+  * Handle concurrency safely, without external services or custom locking logic.
 
-* Compare-exchange is ideal when you need reliable coordination in distributed scenarios -  
-  assigning work to only one node, reserving a resource once, or safely handling concurrent updates.  
-  It gives you a built-in consensus mechanism, removing the need for external services or custom locking logic.
-
-* Distributed systems are hard to get right, especially when multiple nodes must agree on shared state.  
-  Compare-exchange provides a ready-to-use consensus layer inside RavenDB, allowing you to:
-  * Enforce global uniqueness (e.g., a username claimed once across the cluster).
-  * Coordinate processes across nodes without conflicts.
-  * Guarantee safe cluster-wide transactions.
+* Key Characteristics of a compare-exchange item:
+  * Cluster-wide - Visible and consistent across all nodes.
+  * Atomic - Only one client can successfully modify an item at a time (all-or-nothing updates).
+  * Versioned - Each update increments the version, enabling conflict detection.
+  * Flexible - Values can be strings, numbers, arrays, or JSON objects.
+  * Internal - Not replicated outside the database.
 
 * On this start page, you'll find:
   * [Sample use cases](../compare-exchange/start#sample-use-cases)
-  * [Documentation links](../compare-exchange/start#documentation-links)
-  * [RavenDB Demos](../compare-exchange/start#ravendb-demos)
+  * [Technical documentation links](../compare-exchange/start#technical-documentation-links-)
+  * [RavenDB Demo links](../compare-exchange/start#ravendb-demo-links)
   * [Related blog posts](../compare-exchange/start#related-blog-posts)
-  * [Related articles](../compare-exchange/start#related-articles)
+  * [Related in-depth articles](../compare-exchange/start#related-in-depth-articles)
   
 </Admonition>
 
@@ -214,7 +207,7 @@ import Admonition from '@theme/Admonition';
 
 ---
 
-### 🔗 Documentation links
+## Technical documentation links ✨
 
 * [Overview](../compare-exchange/overview) 
 * [Create Compare-Exchange Items](../compare-exchange/create-cmpxchg-items)
@@ -230,7 +223,7 @@ import Admonition from '@theme/Admonition';
 
 ---
 
-### RavenDB Demos
+## RavenDB Demo links
 
 <ColGrid colCount={2}>
     <Card
@@ -238,18 +231,18 @@ import Admonition from '@theme/Admonition';
         description="Interactive demo showing how to create a compare‑exchange item."
         url="https://demo.ravendb.net/demos/csharp/compare-exchange/create-compare-exchange"
         ctaLabel="View demo" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
         <Card
         title="Index compare-exchange item Demo"
         description="Interactive demo demonstrating indexing compare‑exchange items."
         url="https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange"
         ctaLabel="View demo" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
 </ColGrid>
 
-### Related blog posts
+## Related blog posts
 
 <ColGrid colCount={3}>
     <Card
@@ -257,25 +250,25 @@ import Admonition from '@theme/Admonition';
         description="How RavenDB uses compare-exchange to safely coordinate shared tasks across a distributed cluster."
         url="https://ayende.com/blog/182948-C/distributed-compare-exchange-operations-with-ravendb"
         ctaLabel="Read blog post" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
         <Card
         title="Cluster wide ACID transactions"
         description="Introducing RavenDB 4.1’s cluster-wide ACID transactions to ensure atomic, consistent changes across nodes."
         url="https://ayende.com/blog/183426-C/ravendb-4-1-features-cluster-wide-acid-transactions"
         ctaLabel="Read blog post" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
         <Card
         title="Complex distributed transactions with RavenDB"
         description="Implementing complex distributed transactions by combining documents and compare-exchange values for atomic consistency."
         url="https://ayende.com/blog/190978-B/complex-distributed-transactions-with-ravendb"
         ctaLabel="Read blog post" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
 </ColGrid>
 
-### Related articles
+## Related in-depth articles
 
 <ColGrid colCount={2}>
     <Card
@@ -283,13 +276,13 @@ import Admonition from '@theme/Admonition';
         description="Execute complex distributed transactions in RavenDB by coordinating documents and compare-exchange values for strong consistency."
         url="https://ravendb.net/articles/complex-distributed-transactions-with-ravendb?utm_source=chatgpt.com"
         ctaLabel="Read article" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
         <Card
         title="Simplifying atomic cluster wide transactions"
         description="How RavenDB 5.2 makes cluster-wide transactions simpler by auto-managing needed guards behind the scenes."
         url="https://ravendb.net/articles/ravendb-5-2-simplifying-atomic-cluster-wide-transactions?utm_source=chatgpt.com"
         ctaLabel="Read article" 
-        buttonVariant = "primary"
+        buttonVariant = "default"
     />
 </ColGrid>
