@@ -5,19 +5,30 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Existing compare-exchange items can be deleted.  
-
-* An item is deleted only if the index you provide in the request matches the current index stored on the server  
-  for the specified key.
+* **Custom compare-exchange items can be deleted**:  
+  You can delete your own custom compare-exchange items.
+  An item is deleted only if the index you provide in the request matches the current index stored on the server for the specified key.  
   
-* Compare-exchange items can also be deleted by adding an expiration date to them.  
+* **Delete items by expiration**:  
+  Compare-exchange items can also be deleted by adding an expiration date to them.  
   Learn more in [Compare-exchange expiration](../compare-exchange/cmpxchg-expiration).
   
-* Whenever a compare-exchange item is deleted, a compare-exchange tombstone item is created for it.  
+* **Compare-exchange tombstones**:  
+  Whenever a compare-exchange item is deleted, a compare-exchange tombstone item is created for it.  
   Tombstones are used to indicate to other RavenDB processes that the item was deleted, so they can react accordingly.  
   E.g., indexes referencing the deleted item will update themselves to remove those references.  
   The tombstones themselves are not removed immediately - RavenDB uses an internal cleaner task to periodically remove tombstones that are eligible for deletion.
   See: [Cluster.CompareExchangeTombstonesCleanupIntervalInMin](../compare-exchange/configuration#clustercompareexchangetombstonescleanupintervalinmin).
+
+* <Admonition type="warning" title="">
+  Do NOT attempt to delete [atomic guards](../compare-exchange/atomic-guards), which RavenDB uses internally to ensure ACID guarantees in cluster-wide transactions.
+  These compare-exchange items are created automatically and must not be modified or removed.  
+  
+  If your custom compare-exchange item was set up to protect the consistency of a transaction, deleting it will break the ACID guarantees.
+  Only delete or modify such items if you truly know what you're doing.    
+  </Admonition>  
+  
+---
   
 * In this article:  
   * [Delete compare-exchange item using a **cluster-wide session**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-cluster-wide-session) 
@@ -27,7 +38,6 @@ import CodeBlock from '@theme/CodeBlock';
   * [Delete compare-exchange item using a **store operation**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-store-operation)  
   * [Delete compare-exchange items using the **Studio**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-items-using-the-studio)
   * [Syntax](../compare-exchange/delete-cmpxchg-items#syntax)
-  
 
 </Admonition>
 

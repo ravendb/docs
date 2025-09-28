@@ -14,8 +14,8 @@ import Admonition from '@theme/Admonition';
 
 <Admonition type="note" title="">
 
-* Compare-exchange is a RavenDB feature for storing atomic, cluster-wide **key-value pairs**.  
-  Each item is globally unique within the database, versioned, and managed at the cluster level.
+* Compare-exchange is a RavenDB feature for storing atomic, cluster-wide **key-value pairs** where each key is a globally unique identifier in the database.
+  Items are versioned and managed at the cluster level.
   
 * Compare-exchange provides a built-in consensus mechanism ideal for safe coordination and global consistency  
   in distributed environments, allowing you to:
@@ -48,9 +48,9 @@ import Admonition from '@theme/Admonition';
 
 ### Enforce unique usernames or emails
 
-* Use Compare-Exchange to enforce global uniqueness in your database even under concurrent operations.  
+* Use compare-exchange to enforce global uniqueness in your database even under concurrent operations.  
   For example, ensure that no two users can register with the same username or email, even if they do so simultaneously on different servers.
-  Compare-Exchange guarantees that a specific value can only be claimed once across the cluster reliably and without race conditions.
+  Compare-exchange guarantees that a specific value can only be claimed once across the cluster reliably and without race conditions.
 
 * ✅ Why compare-exchange?  
       It provides a guaranteed, cluster-wide check for uniqueness.
@@ -71,20 +71,20 @@ import Admonition from '@theme/Admonition';
 
 ### Claim a job or task once
 
-* Use compare-exchange to safely assign background jobs or tasks in a distributed system,  
-  ensuring each task is picked up only once.
+* Use compare-exchange to safely assign client-side jobs or tasks in a distributed system,  
+  ensuring that each task is claimed only once.
 
 * ✅ Why compare-exchange?  
   It provides a reliable, cluster-wide locking mechanism for coordination within your database scope.
 
 * How it works:
-  * Each worker tries to create a Compare-Exchange item like (**key**: `"locks/job/1234"`, **value**: `"worker-A"`).
+  * Each worker attempts to create a compare-exchange item like (**key**: `"locks/job/1234"`, **value**: `"worker-A"`).
   * The first worker to succeed gets the job.
-  * Other workers trying to claim the same job will fail — and can back off or retry later.
+  * Other workers trying to claim the same job will fail - they can back off or retry later.
 
 * This ensures:
   * No two workers process the same job.
-  * Jobs run exactly once, even with multiple competing workers or nodes.
+  * Each job runs exactly once, even with multiple competing workers or nodes.
 
 * Also useful for:
   * Implementing mutex-style locks between clients.
@@ -94,10 +94,36 @@ import Admonition from '@theme/Admonition';
 
 <Admonition type="note" title="">
 
+### Reserve a resource  
+
+* Need to reserve a table in a restaurant app or a seat at an event?  
+  Use compare-exchange to lock the reservation and prevent double booking, even under concurrent access.
+
+* ✅ Why compare-exchange?  
+  It gives you a reliable, cluster-wide way to reserve something exactly once - no race conditions, no conflicts.
+
+* How it works:
+  * Try to create a Compare-Exchange item for the resource   
+    (e.g., **key**: `"reservations/seat/17"`, **value**: `"user/123"`).
+  * If the item doesn't exist, the reservation is successful.
+  * If it already exists, someone else claimed it - you can show an error or let the user pick another.
+
+* This pattern is useful for:
+  * Reserving seats, tables, or event slots.
+  * Assigning support engineers to incoming tickets.
+  * Allocating limited resources like promotion codes or serial numbers.
+
+* Only one client can claim the item so your reservation logic stays safe and simple, even under high load.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
 ### Prevent double processing
 
 * Use compare-exchange to make sure an operation runs only once even in a distributed setup.  
-  This is useful for avoiding things like sending the same email twice, processing the same order multiple times, or executing duplicate actions after retries.
+  This is useful for avoiding things like sending the same email twice, processing the same order multiple times,  
+  or executing duplicate actions after retries.
 
 * ✅ Why compare-exchange?  
   It acts as a once-only flag - a lightweight, atomic check to prevent duplicate processing.
@@ -113,18 +139,18 @@ import Admonition from '@theme/Admonition';
 
 <Admonition type="note" title="">
 
-### Run business logic only if data didn’t change  
+### Run business logic only if data hasn't changed  
 
-* Use compare-exchange as a version guard to make sure no one modified the data while you were working on it.  
+* Use compare-exchange as a version guard to ensure the data wasn't modified while you were working on it.  
   This is useful when applying business logic that depends on the current state of the data - like approving a request, processing a payment, or updating a workflow step.
 
 * ✅ Why compare-exchange?  
-  It helps you detect changes and avoid acting on stale or outdated data.
+  It helps detect changes and prevents acting on stale or outdated data.
 
 * How it works:
   * Load the compare-exchange item that tracks the current version or state of the resource.
-  * After performing your checks and logic, update the item - but only if the version hasn’t changed.
-  * If the item was modified in the meantime, the update fails and you can safely abort or retry.
+  * After performing your checks and logic, attempt to update the item - but only if the version is still current.
+  * If the item was modified in the meantime, the update fails and you can abort or retry your business logic.
 
 * This pattern helps you maintain correctness and consistency in flows that involve multiple steps,  
   long-running tasks, or user input.
@@ -133,40 +159,16 @@ import Admonition from '@theme/Admonition';
 
 <Admonition type="note" title="">
 
-### Reserve a resource  
-
-* Need to reserve a table in a restaurant app or a seat at an event?  
-  Use compare-exchange to lock the reservation and prevent double booking, even when multiple users act at the same time.
-
-* ✅ Why compare-exchange?  
-  It gives you a reliable, cluster-wide way to reserve something exactly once - no race conditions, no conflicts.
-
-* How it works:
-  * Try to create a Compare-Exchange item for the resource (e.g., **key**: `"reservations/seat/17"`, **value**: `"user/123"`).
-  * If the item doesn't exist, the reservation is successful.
-  * If it already exists, someone else claimed it - you can show an error or let the user pick another.
-
-* This pattern is useful for:
-  * Reserving seats, tables, or event slots.
-  * Assigning support engineers to incoming tickets.
-  * Allocating limited resources like promotion codes or serial numbers.
-
-* Only one client can claim the item so your reservation logic stays safe and simple, even under high load.
-
-</Admonition>
-
-<Admonition type="note" title="">
-
 ### Lock a document for editing  
 
-* In collaborative systems, it's common to let only one user edit a document at a time.  
-  Use Compare-Exchange to create a lightweight, distributed lock on a document.
+* In collaborative systems, it's common to allow only one user edit a document at a time.  
+  Use compare-exchange to create a lightweight, distributed lock on the document.
 
 * ✅ Why compare-exchange?  
   It ensures that only one client can acquire the lock - preventing conflicting edits across users or servers.
 
 * How it works:
-  * When a user starts editing a document (e.g., `task 72`), try to create a compare-exchange item:  
+  * When a user starts editing a document (e.g., `task/72`), try to create a compare-exchange item:  
     (**key**: `"editing/task/72"`, **value**: `"user/123"`).
   * If the item is created successfully, the user holds the lock.
   * Other users attempting the same key will fail and can be blocked, shown a message, or put into read-only mode.
@@ -185,11 +187,12 @@ import Admonition from '@theme/Admonition';
 
 ### Add safety to cluster-wide transactions
 
-* RavenDB uses **compare-exchange items** behind the scenes to protect cluster-wide transactions.
+* RavenDB uses **compare-exchange items** behind the scenes to protect cluster-wide transactions.  
+  When using cluster-wide sessions, RavenDB automatically creates internal compare-exchange entries called Atomic Guards
+  to coordinate concurrent access and prevent conflicting writes.
 
-* ✅ Why Compare-Exchange?  
-  In cluster-wide sessions, RavenDB automatically creates internal compare-exchange entries,  
-  called **atomic guards**, to coordinate concurrent access and prevent conflicting writes.
+* ✅ Why compare-exchange?  
+  It provides a Raft-based coordination mechanism that ensures consistency and safety during multi-node transactions.
 
 * How it works:
   * When you store or update a document in a cluster-wide session,  
@@ -204,7 +207,7 @@ import Admonition from '@theme/Admonition';
   * Violating ACID guarantees in multi-node clusters.
 
 * You don’t need to manage these guards manually -   
-  RavenDB handles everything automatically when you use `TransactionMode.ClusterWide`.
+  RavenDB handles everything automatically when you use a session in cluster-wide mode.
 
 </Admonition>
 
