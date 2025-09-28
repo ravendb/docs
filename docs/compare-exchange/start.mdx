@@ -15,14 +15,17 @@ import Admonition from '@theme/Admonition';
 <Admonition type="note" title="">
 
 * Compare-exchange is a RavenDB feature for storing atomic, cluster-wide **key-value pairs**.  
-  Each item is globally unique within the database, versioned, and managed at the cluster level,  
-  providing a built-in consensus mechanism for coordination and global consistency.
-
-* Compare-exchange is ideal for safe coordination in distributed environments, allowing you to:
+  Each item is globally unique within the database, versioned, and managed at the cluster level.
+  
+* Compare-exchange provides a built-in consensus mechanism ideal for safe coordination and global consistency  
+  in distributed environments, allowing you to:
   * Enforce global uniqueness (e.g., prevent duplicate usernames or emails).
   * Assign work to a single client or reserve a resource once.
   * Handle concurrency safely, without external services or custom locking logic.
-
+  
+* Compare-exchange items can also serve as a place to store shared data that lives outside of the documents -  
+  useful for values that are reused, referenced globally, or managed independently of any single document.
+  
 * Key Characteristics of a compare-exchange item:
   * Cluster-wide - Visible and consistent across all nodes.
   * Atomic - Only one client can successfully modify an item at a time (all-or-nothing updates).
