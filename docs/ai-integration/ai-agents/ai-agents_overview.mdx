@@ -39,35 +39,34 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Common use cases
 
-AI agents are designed to easily integrate AI capabilities into applications and workflows. They can interact with users, intelligently retrieve and process data from public sites and proprietary databases, and apply actions based on roles they are requested to take and the data they have access to. Some of the tasks and applications they can be tailored to perform include:  
+AI agents are designed to easily integrate AI capabilities into applications and workflows. They can interact with users, intelligently retrieve and process data from proprietary databases, and apply actions based on roles they are requested to take and the data they have access to. Some of the tasks and applications they can be tailored to perform include:  
 
-#### Customer support chatbot agents:
-Customer support chatbot agents can answer customer queries based on information available to the public as well as internal knowledge bases, provide troubleshooting steps, and guide users through processes in real time.  
+<a id="customer-support-chatbot-agents"/> **Customer support chatbot agents** can answer customer queries based on information stored in databases and internal knowledge bases, provide troubleshooting steps, and guide users through processes in real time.  
 
-#### Data analysis and reporting agents:
-Data analysis and reporting agents can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
+<a id="data-analysis-and-reporting-agents"/> **Data analysis and reporting agents** can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
 
-#### Automated content generation agents:
-Automated content generation agentscan generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
+<a id="automated-content-generation-agents"/> **Automated content generation agents** can generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
 
-#### Workflow automation agents:
-Workflow automation agents can automate repetitive tasks such as email sorting, spam filtering, form filling, or file organization.  
+<a id="workflow-automation-agents"/> **Workflow automation agents** can automate repetitive tasks such as email sorting, spam filtering, form filling, or file organization.  
 
-#### Intelligent recommendation agents:
-Intelligent recommendation agents can provide personalized recommendations based on user preferences and available data, e.g. a _library assistant_ suggesting books and other resources, an _HR office assistant_ recommending rewards for employees based on their performance and available facilities near their residence, or an _e-commerce assistant_ recommending products.  
+<a id="intelligent-recommendation-agents"/> **Intelligent recommendation agents** can provide personalized recommendations based on user preferences and available data, e.g. a _library assistant_ suggesting books and other resources, an _HR office assistant_ recommending rewards for employees based on their performance and available facilities near their residence, or an _e-commerce assistant_ recommending products.  
 
 <hr />
 
 ## Defining and running an AI agent
 
-An AI agent is an ongoing AI task that can be created by RavenDB clients (providing they have database administration permissions) and reside on a RavenDB server. 
-Agents can be invoked by clients to, for example, handle user requests and respond to events tracked by the client.  
+AI agents can be created by RavenDB clients (providing they have database administration permissions).  
+They reside on a RavenDB server, and can be invoked by clients to, for example, handle user requests and respond to events tracked by the client.  
 
-```
+<Admonition type="note" title="">
 An agent can serve multiple clients concurrently.  
-The agent configuration, logic, and tools will be shared by all its clients.  
-Each client will maintain a different conversation instance and will be able to provide its own parameters, conduct its own conversation, and get its separate results when the conversation ends.  
-```
+* The agent's **layout**, including its configuration, logic, and tools is shared by all the clients that use the agent.  
+* **Conversations** that clients conduct with the agent are isolated per client.  
+  Each client maintains its own conversation instance with the agent with complete privacy, including -  
+   * Parameter values that the client may pass to the agent  
+   * All conversation content and history  
+   * Results received when the conversation ends  
+</Admonition>
 
 <Admonition type="note" title="">
 * [Learn to create an AI agent using the client API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api)  
@@ -219,7 +218,7 @@ Streaming is supported by most AI models, including OpenAI services like GPT-4 a
 
 ## Reducing throughput and expediting LLM response
 
-If throughput and LLM response time are a consideration, consider these options:  
+If throughput and LLM response time are considerations, the following suggestions can help optimize performance:  
 
 ### Set maximum number of querying iterations:
 
