@@ -31,7 +31,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [The main stages in defining an AI agent](../../ai-integration/ai-agents/ai-agents_overview#the-main-stages-in-defining-an-ai-agent)
       * [Initiating a conversation](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation)
    * [AI agent usage flow chart](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart)
-   * [Streaming LLM responses (RavenDB 7.1.3 and up)](../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up)
+   * [Streaming LLM responses](../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses)
    * [Reducing throughput and expediting LLM response](../../ai-integration/ai-agents/ai-agents_overview#reducing-throughput-and-expediting-llm-response)
    * [Security concerns](../../ai-integration/ai-agents/ai-agents_overview#security-concerns)
 
@@ -204,7 +204,7 @@ The flow chart below illustrates interactions between the User, RavenDB client, 
 
 <hr />
 
-## Streaming LLM responses (RavenDB 7.1.3 and up)
+## Streaming LLM responses
 
 Rather than wait for the LLM to finish generating a response and then pass it in its entirety to the client, the agent can stream response chunks (determined by the LLM, e.g. words or symbols) to the client one by one, immediately as each chunk is returned by the LLM, allowing the client to process and display the response gradually.  
 

@@ -291,7 +291,7 @@ agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall`
   ```
 
 <Admonition type="note" title="">
-Note that if limiting the amount of time a user needs to wait for the LLM to respond is a main consideration, you can also stream the LLM's response to the client. Find more about streaming in the [overview](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
+Note that if limiting the amount of time a user needs to wait for the LLM to respond is a main consideration, you can also stream the LLM's response to the client. Find more about streaming in the [overview](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
 </Admonition>
 
 ### Set chat trimming configuration:
@@ -938,7 +938,7 @@ public async Task createAndRunAiAgent_full()
 
 ## Stream LLM responses
 
-You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses-ravendb-713-and-up) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation) which sends the whole response to the client when it is fully prepared.  
+You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation) which sends the whole response to the client when it is fully prepared.  
 
 Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
 
