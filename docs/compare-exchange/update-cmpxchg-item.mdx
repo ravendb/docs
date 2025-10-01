@@ -1,0 +1,37 @@
+﻿---
+title: "Update Compare-Exchange Item"
+hide_table_of_contents: true
+sidebar_label: "Update Compare-Exchange Item"
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UpdateCmpXchgItemCsharp from './content/_update-cmpxchg-item-csharp.mdx';
+import UpdateCmpXchgItemJava from './content/_update-cmpxchg-item-java.mdx';
+import UpdateCmpXchgItemNodejs from './content/_update-cmpxchg-item-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <UpdateCmpXchgItemCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <UpdateCmpXchgItemJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <UpdateCmpXchgItemNodejs />
+</LanguageContent>
+
+<!---
+### Compare Exchange
+- [Overview](../todo)
+- [Create compare-exchange item](../todo)
+- [Get compare-exchange item](../todo)
+- [Delete compare-exchange item](../todo)
+-->

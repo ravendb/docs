@@ -1,0 +1,121 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+ 
+* To retrieve an existing compare-exchange item using the **Client API**,  
+  use either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get a **single** compare-exchange item by its unique _key_.  
+  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items).
+
+* In this article:
+  * [Get item using a **store operation**](../compare-exchange/get-cmpxchg-item#get-item-using-a-store-operation)
+    * [Get compare-exchange item that has a number value](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-number-value)  
+    * [Get compare-exchange item that has a custom object value](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-custom-object-value)
+  * [Syntax](../compare-exchange/get-cmpxchg-item#syntax)
+
+</Admonition>
+
+---
+
+## Get item using a store operation
+
+* You can retrieve compare-exchange items using a [store operation](../client-api/operations/what-are-operations).  
+  Use the `GetCompareExchangeValueOperation` operation to get a compare-exchange item by its _key_.  
+
+* If the specified key does not exist, the operation returns `null`. No exception is thrown.
+
+* Examples:
+
+    #### Get compare-exchange item that has a number value
+    
+    <TabItem value="" label="">
+    ```java
+    CompareExchangeValue<Long> readResult = 
+        store.operations().send(new GetCompareExchangeValueOperation<>(Long.class, "nextClientId"));
+    
+    Long value = readResult.getValue();
+    ```
+    </TabItem>
+    
+    #### Get compare-exchange item that has a custom object value
+    
+    <TabItem value="" label="">
+    ```java
+    CompareExchangeValue<User> readResult = store.operations().send(
+          new GetCompareExchangeValueOperation<>(User.class, "AdminUser"));
+    
+    User admin = readResult.getValue();
+    ```
+    </TabItem>
+    
+---
+
+## Syntax
+
+---
+
+### `GetCompareExchangeValueOperation`  
+Get compare-exchange item using a store operation: 
+
+<TabItem value="" label="">
+```java
+GetCompareExchangeValueOperation(Class<T> clazz, String key);
+```
+</TabItem>
+
+
+| Input parameter | Type     | Description                                                     |
+|-----------------|----------|-----------------------------------------------------------------|
+| **key**         | `String` | The unique identifier of the compare-exchange item to retrieve. |
+
+| The returned object:      | Description                                                    |
+|---------------------------|----------------------------------------------------------------|
+| `CompareExchangeValue<T>` | The compare-exchange item is returned.<br/>Returns `null` if key doesn't exist. |
+
+<TabItem value="" label="">
+```java
+public class CompareExchangeValue<T> {
+  private String key; // The unique identifier of the compare-exchange item.  
+  private long index; // The compare-exchange item's version.
+  private T value;    // The existing `value` of the returned compare-exchange item. 
+
+  public CompareExchangeValue(String key, long index, T value) {
+      this.key = key; 
+      this.index = index;
+      this.value = value;
+  }
+
+  public String getKey() {
+      return key;
+  }
+
+  public void setKey(String key) {
+      this.key = key;
+  }
+
+  public long getIndex() {
+      return index;
+  }
+
+  public void setIndex(long index) {
+      this.index = index;
+  }
+
+  public T getValue() {
+      return value;
+  }
+
+  public void setValue(T value) {
+      this.value = value;
+  }
+}
+```
+</TabItem>

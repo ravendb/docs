@@ -1,0 +1,98 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can retrieve multiple existing compare-exchange items at once using the **Client API** by either:
+  * specifying a list of unique keys, or
+  * using a common key prefix
+
+  Retrieval can be done using either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get **multiple** compare-exchange items.  
+  To get a **single** item, see [Get compare-exchange item](../compare-exchange/get-cmpxchg-item).
+
+* In this article:  
+  * [Get compare-exchange items by list of keys](../compare-exchange/get-cmpxchg-items#get-compare-exchange-items-by-list-of-keys)
+  * [Get compare-exchange items by prefix](../compare-exchange/get-cmpxchg-items#get-compare-exchange-items-by-prefix)
+  * [Syntax](../compare-exchange/get-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Get compare-exchange items by list of keys
+  
+* Example:
+    
+    <TabItem value="" label="">
+    ```java    
+    Dictionary<string, CompareExchangeValue<string>> compareExchangeValues
+        = store.Operations.Send(
+            new GetCompareExchangeValuesOperation<string>(new[] { "Key-1", "Key-2" }));
+    ```
+    </TabItem>
+    
+---
+
+## Get compare-exchange items by prefix
+
+* You can retrieve compare-exchange items whose keys start with a specific **prefix**.   
+  You can also control the **maximum number of items** to return and the **starting position** for paging.
+
+* Example:
+    
+    <TabItem value="" label="">
+    ```java
+    // Get values for keys that have the common prefix 'users'
+    // Retrieve maximum 20 entries
+    Dictionary<string, CompareExchangeValue<User>> compareExchangeValues
+        = store.Operations.Send(new GetCompareExchangeValuesOperation<User>("users", 0, 20));
+    ```
+    </TabItem>
+    
+---
+
+## Syntax
+
+---
+
+### `GetCompareExchangeValuesOperation`  
+Get multiple compare-exchange items using a store operation: 
+
+<TabItem value="" label="">
+```java
+public GetCompareExchangeValuesOperation(Class<T> clazz, String[] keys, boolean materializeMetadata)
+public GetCompareExchangeValuesOperation(Class<T> clazz, String startWith, Integer start, Integer pageSize)
+```
+</TabItem>
+
+| Parameter     | Type       | Description                                           |
+|---------------|------------|-------------------------------------------------------|
+| **keys**      | `String[]` | Keys of the compare-exchange items to retrieve.       |
+| **startWith** | `String`   | The common key prefix of the items to retrieve.       |
+| **start**     | `Integer`  | The number of items that should be skipped. Default is `0`                      |
+| **pageSize**  | `Integer`  | The maximum number of values that will be retrieved. Default is `int.MaxValue`  |
+
+| Returned object                        |  Description                                      |
+|----------------------------------------|---------------------------------------------------|
+| `Map<String, CompareExchangeValue<T>>` | A Dictionary with a compare-exchange item per key |
+
+---
+
+<TabItem value="" label="">
+```java
+public class CompareExchangeValue<T>
+{
+  public readonly string Key;
+  public readonly T Value;
+  public readonly long Index;
+}
+```
+</TabItem>

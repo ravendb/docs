@@ -1,0 +1,48 @@
+﻿---
+title: "Create Compare-Exchange Items"
+hide_table_of_contents: true
+sidebar_label: "Create Compare-Exchange Items"
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CreateCmpXchgItemsCsharp from './content/_create-cmpxchg-items-csharp.mdx';
+import CreateCmpXchgItemsJava from './content/_create-cmpxchg-items-java.mdx';
+import CreateCmpXchgItemsNodejs from './content/_create-cmpxchg-items-nodejs.mdx';
+import CreateCmpXchgItemsPython from './content/_create-cmpxchg-items-python.mdx';
+import CreateCmpXchgItemsPhp from './content/_create-cmpxchg-items-php.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CreateCmpXchgItemsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CreateCmpXchgItemsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CreateCmpXchgItemsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CreateCmpXchgItemsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CreateCmpXchgItemsNodejs />
+</LanguageContent>
+
+<!---
+### Compare Exchange
+- [Overview](../todo)
+- [Get compare-exchange item](../todo)
+- [Update compare-exchange item](../todo)
+- [Delete compare-exchange item](../todo)
+-->
+

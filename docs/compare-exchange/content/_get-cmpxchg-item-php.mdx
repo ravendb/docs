@@ -1,0 +1,73 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+ 
+* To retrieve an existing compare-exchange item using the **Client API**,  
+  use either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get a **single** compare-exchange item by its unique _key_.  
+  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items).
+
+* In this article:    
+  * [Get item using a **cluster-wide session**](../compare-exchange/get-cmpxchg-item#get-item-using-a-cluster-wide-session)
+  * [Syntax](../compare-exchange/get-cmpxchg-item#syntax)
+
+</Admonition>
+
+---
+
+## Get item using a cluster-wide session
+
+* You can retrieve compare-exchange items using a [cluster-wide session](../client-api/session/cluster-transaction/overview#open-a-cluster-transaction).  
+  The session must be opened in cluster-wide mode.
+  
+* Use the `getCompareExchangeValue` advanced session method to get a compare-exchange item by its _key_.  
+  If the specified key does not exist, the method returns `null`. No exception is thrown.
+
+---
+
+## Syntax
+
+---
+
+### `getCompareExchangeValue`  
+Get compare-exchange item using a cluster wide session:
+
+<TabItem value="" label="">
+```php
+session.advanced.cluster_transaction.get_compare_exchange_value(key)
+```
+</TabItem>
+
+| Input parameter | Type     | Description                                                     |
+|-----------------|----------|-----------------------------------------------------------------|
+| **key**         | `string` | The unique identifier of the compare-exchange item to retrieve. |
+
+| The returned object:      | Description                                                    |
+|---------------------------|----------------------------------------------------------------|
+| `CompareExchangeValue<T>` | The compare-exchange item is returned.<br/>Returns `null` if key doesn't exist. |
+
+
+### `lazily()->getCompareExchangeValue`  
+Get compare-exchange item using a cluster wide session lazily:
+
+<TabItem value="" label="">
+```php
+$session->advanced()->clusterTransaction()->lazily()->getCompareExchangeValue(null, $key);
+```
+</TabItem>
+
+| Input parameter | Type     | Description                                                     |
+|-----------------|----------|-----------------------------------------------------------------|
+| **key**         | `string` | The unique identifier of the compare-exchange item to retrieve. |
+
+| The returned object:           | Description                                                    |
+|--------------------------------|----------------------------------------------------------------|
+| `Lazy<CompareExchangeValue<T>>` | The compare-exchange item is returned.<br/>Returns `None` if key doesn't exist. |
