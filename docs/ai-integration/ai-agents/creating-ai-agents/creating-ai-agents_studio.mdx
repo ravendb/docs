@@ -69,12 +69,12 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 ![Configure basic settings](./assets/ai-agents_config-basic-settings.png)
 
 1. **Agent name**  
-   Enter a name for the agent
+   Enter a name for the agent.  
    E.g., **CustomerSupportAgent**  
 
 2. **Identifier**  
    Enter a unique identifier for the agent,  
-   or click **Regenerate** to create it automatically  
+   or click **Regenerate** to create it automatically.  
 
 3. **Connection String**  
 
@@ -171,15 +171,15 @@ Define **Query** and **Action** agent tools.
    Enable to allow the LLM to trigger the execution of this query tool.  
    Disable to prevent the LLM from using this tool.  
    <Admonition type="note" title="">
-   When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) the agent will still be able to execute it when it is started.  
+   When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial-context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) the agent will still be able to execute it when it is started.  
    </Admonition>
 
 7. **Add to initial context**  
-   Enable to set the query tool as an [initial context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries).  
+   Enable to set the query tool as an [initial-context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries).  
    When enabled, the agent will execute the query immediately when it starts a conversation with the LLM without waiting for the LLM to invoke the tool, to include data that is relevant for the conversation in the initial context sent to the LLM.  
    Disable to prevent the agent from executing the query on startup.  
    <Admonition type="note" title="">
-   An initial context query is **not allowed** to use LLM parameters, since the LLM will not have the opportunity to fill the parameters with values before the query is executed.  
+   An initial-context query is **not allowed** to use LLM parameters, since the LLM will not have the opportunity to fill the parameters with values before the query is executed.  
    The query **can** use agent parameters, whose values are provided by the user when the conversation is started.  
    </Admonition>
 
@@ -219,27 +219,25 @@ Define **Query** and **Action** agent tools.
 
 ## Configure chat trimming
 
-The LLM does not retain records of previous conversations.  
-To allow a continuous conversation, the agent sends the LLM the entire conversation history 
-when a chat is started. To minimize the size of these messages, you can set the agent to summarize them rather than send the LLM their full length version.  
+LLMs have no memory of prior interactions.  
+To allow a continuous conversation, each time the agent sends to the LLM a new prompt or request, it sends along with it the whole conversation up to this point.  
+To minimize the size of such messages, you can set the agent to summarize conversations.  
 
 ![Configure chat trimming](./assets/ai-agents_config-chat-trimming.png)
 
 1. **Summarize chat**  
-   Use this option to limit the size of the conversation history. If its size breaches this 
-   limit, chat history will be summarized before it is sent to the LLM.  
+   Use this option to limit the size of the conversation history. If its size breaches this limit, chat history will be summarized before it is sent to the LLM.  
 
 2. **Max tokens Before summarization**  
-   If the conversation contains a total number of tokens larger than the limit you set here, 
-   the conversation will be summarized.  
+   If the conversation contains a total number of tokens larger than the limit you set here, the conversation will be summarized.  
 
 3. **Max tokens After summarization**  
    Set the maximum number of tokens that will be left in the conversation after it is summarized.  
    Messages exceeding this limit will be removed, starting with the oldest.  
    
-1. **History**  
+4. **History**  
      * **Enable history**  
-       When history is enabled, the chat sent to the LLM will be summarized, but copies of the original chats will be kept in dedicated documents in the `@conversations-history` collection.  
+       When history is enabled, the conversation sent to the LLM will be summarized, but a copy of the original conversation will be kept in a dedicated document in the `@conversations-history` collection.  
      * **Set history expiration**  
        When this option is enabled, conversations will be deleted from the 
        `@conversations-history` collection once their age exceeds the period 
@@ -272,11 +270,9 @@ to the agent what you expect from this session.
 ![Run agent](./assets/ai-agents_run-agent.png)
 
 1. **Conversation ID or prefix**  
-    - Entering a prefix (e.g. `Chats/`) will start a new conversation, with the prefix 
-      preceding an automatically-created conversation ID.  
-    - Entering the ID of a conversation that doesn't exist will start a new conversation as well.  
-    - Entering the ID of an existing conversation will send its history 
-      to the LLM and allow you to continue where you left off.  
+    - Entering **a prefix** (e.g. `Chats/`) will start a new conversation, with the prefix preceding an automatically-created conversation ID.  
+    - Entering **the ID of a conversation that doesn't exist yet** will also start a new conversation.  
+    - Entering **the ID of an existing conversation** will send the entire conversation to the LLM and allow you to continue where you left off.  
  
 2. **Set expiration**  
    Enable this option and set an expiration period to automatically delete conversations 
@@ -291,7 +287,7 @@ to the agent what you expect from this session.
    will be executed as `from "Orders" where ShipTo.Country == "France"`.  
 
 4. **User prompt**  
-   Use the user prompt to explain to the agentm in natural language, what 
+   Use the user prompt to explain to the agent, in natural language, what 
    this session is about.  
 
 ### Agent interaction:
@@ -329,10 +325,7 @@ As with all other dialog boxes, you can expand the view to see the content or mi
 
 ## Test your agent
 
-You can test your agent while creating or editing it, to examine its configuration 
-and operability before you deploy it. The test interface resembles the one you see 
-when you run your agent normally via Studio, but conversations are not kept in the 
-`@conversations` or `@conversations-history`.  
+You can test your agent while creating or editing it, to examine its configuration and operability before you deploy it. The test interface resembles the one you see when you run your agent normally via Studio, but conversations are not kept in the `@conversations` or `@conversations-history` collections.  
 
 To test your agent, click **Test** at the bottom of the agent configuration view.  
 
