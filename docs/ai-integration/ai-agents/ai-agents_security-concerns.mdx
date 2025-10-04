@@ -1,0 +1,95 @@
+---
+title: "AI agents: Security concerns"
+hide_table_of_contents: true
+sidebar_label: "Security concerns"
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# AI agents: Security concerns
+<Admonition type="note" title="">
+
+This page covers potential security concerns related to AI agents and the mitigation strategies for these concerns.  
+
+* On this page:
+   * [Unauthorized database access](../../ai-integration/ai-agents/ai-agents_security-concerns#unauthorized-database-access)  
+   * [Data compromise during transit](../../ai-integration/ai-agents/ai-agents_security-concerns#data-compromise-during-transit)  
+   * [Untraceable malicious or unexpected actions](../../ai-integration/ai-agents/ai-agents_security-concerns#untraceable-malicious-or-unexpected-actions)  
+   * [AI model data memorization](../../ai-integration/ai-agents/ai-agents_security-concerns#ai-model-data-memorization)  
+   * [Validation or injection attacks via user input](../../ai-integration/ai-agents/ai-agents_security-concerns#validation-or-injection-attacks-via-user-input)  
+
+</Admonition>
+
+## Unauthorized database access
+
+Concern: Unauthorized access to databases can lead to data breaches.  
+
+* **Mitigation: Read-only access**  
+  The LLM has no direct access to the database. It can only request the agent, via query tools, to query the database on its behalf, and the agent can only apply read-only operations.  
+
+* **Mitigation: DBA control**  
+  Control over the database is determined using certificates. Only users whose certificates grant them a database administrator or a higher role can create and manage agents. 
+  The DBA retains full control over connections to the AI model (through connection strings), the agent configuration, and the queries that the agent is allowed to run.  
+
+* **Mitigation: Agent scope**  
+  An AI agent is created for a specific database and has no access to other databases on the server, ensuring database-level isolation.  
+
+<hr />
+
+## Data compromise during transit
+
+Concern: Data may be compromised during transit.  
+
+* **Mitigation: Secure TLS (Transport Layer Security) communication**  
+  All data is transferred over HTTPS between the client, the agent, the database, and the AI model, to ensure its encryption during transit.  
+
+<hr />
+
+## Untraceable malicious or unexpected actions
+
+Concern: Inability to trace malicious or unexpected actions related to agents.  
+
+* **Mitigation: Audit logging**  
+  RavenDB [admin logs](../../studio/server/debug/admin-logs/) track the creation, modification, and deletion of AI agents, as well as agent interactions with the database.  
+  
+      Example of an audit log entry recorded when an agent was deleted:  
+      ```
+      Starting to process record 16 (current 15) for aiAgent_useHandleToRunChat_1. 
+      Type: DeleteAiAgentCommand. 
+      Cluster database change type: RecordChanged
+      Date	2025-09-23 22:29:45.0391
+      Level	DEBUG
+      Thread ID	58
+      Resource	aiAgent_useHandleToRunChat_1
+      Logger	Raven.Server.Documents.DocumentDatabase
+      ```
+<hr />
+
+## AI model data memorization
+
+Concern: Sensitive data might inadvertently be memorized and reproduced by the AI model.  
+
+* **Mitigation: Free selection of AI model**  
+  RavenDB doesn't enforce the usage of specific providers or AI models, but gives you free choice of the services that best suit your needs and security requirements.  
+  When using the service of your choice, it is your responsibility to define safe queries and expose only the data that it is in your interest to share with the AI model.  
+
+* **Mitigation: Agent parameters**  
+  You can use [agent parameters](../../ai-integration/ai-agents/ai-agents_overview#query-parameters) to limit the scope of the defined query and the dataset subsequently transferred to the AI model.  
+
+<hr />
+
+## Validation or injection attacks via user input
+
+Concern: Validation or injection attacks crafted through malicious user input.  
+
+* **Mitigation: Query scope**  
+  The agent queries a limited subset of the stored data, restricting an attacker's access to the rest of the data and to data belonging to other users.  
+
+* **Mitigation: Read-only access**  
+  Query tools can apply read-only RQL queries, preventing attackers from modifying any data.
