@@ -131,10 +131,6 @@ To start a conversation with the LLM, the agent will send it an **initial contex
    * Optional Action tools  
 
 * A **response object** - a JSON schema that defines the layout for the LLM response.  
-  <Admonition type="note" title="Note:">
-  When handling an agent via the API, the response object is provided to the agent not as part of the agent configuration but as the client invokes the agent.  
-  Allowing the client to define the response object each time it starts the agent gives it the ability to tailor each conversation to its current needs.  
-  </Admonition>
   
 * **Values for agent parameters**  
   If agent parameters were defined in the agent configuration, the client is required to provide their values to the agent when starting a conversation.  
@@ -150,10 +146,10 @@ To start a conversation with the LLM, the agent will send it an **initial contex
      Providing query values when starting a conversation gives the client the ability to shape and limit the scope of LLM queries by its objectives.  
      </Admonition>
 
-* Optional **stored conversation messages**  
+* **Stored conversation messages**  
   Since the LLM keeps no record of previous messages, the agent is responsible for allowing a continuous conversation. It does that by automatically recording all messages of each conversation in a dedicated document in the `@conversations` collection.  
   When the agent needs to continue a conversation, it will pull all previous messages from the `@conversations` collection document, and send them to the LLM.  
-  The conversation will remain available in the `@conversations` collection even after it ends, so it can be resumed at any future date.  
+  The conversation will remain available in the `@conversations` collection even after it ends, so it can be resumed at any future time.  
 
 * A **user prompt**, set by the client, that defines, for example, a question or a request for particular information.  
 
@@ -232,7 +228,7 @@ When creating query tools -
    * Design queries to return only the data that is relevant to the agent's role and the user's prompt.  
    * You can limit the scope of a query both in the RQL statement itself and by using agent parameters to filter results.  
    * Avoid overly broad queries that return large datasets, as they can overwhelm the LLM and lead to slower response times.  
-   * Consider setting a limit on the number of results returned by each query to prevent excessive data transfer and processing, e.g. -  
+   * Consider projecting only relevant properties and setting a limit on the number of results returned by each query to prevent excessive data transfer and processing, e.g. -  
       <Tabs groupId='languageSyntax'>
       <TabItem value="no-limit" label="no-limit">
       ```rql

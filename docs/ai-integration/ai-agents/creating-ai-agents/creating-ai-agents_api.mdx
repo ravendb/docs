@@ -253,7 +253,7 @@ agent.Identifier = "reward-productive-employee";
 ```
 
 ### Define a response object:
-Define a response object that the LLM will use to respond to the user.  
+Define a [structured output](https://platform.openai.com/docs/guides/structured-outputs) response object that the LLM will populate with its response to the user.  
 
 To define the response object, you can use the `SampleObject` and/or the `OutputSchema` property   
 * `SampleObject` is a straightforward sample of the response object that you expect the LLM to return.  
@@ -687,25 +687,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   ```csharp
   // Extract the agent configurations from the response into a new list
   var existingAgentsList = store.AI.GetAgents();
-  var newAgentsList = new List<AiAgentConfiguration>();
-
-  foreach (var newAgent in existingAgentsList.AiAgents)
-  {
-      var newAgentConfig = new AiAgentConfiguration
-      {
-          Identifier = newAgent.Identifier,
-          SystemPrompt = newAgent.SystemPrompt,
-          Parameters = newAgent.Parameters,
-          Queries = newAgent.Queries,
-          Actions = newAgent.Actions,
-          ChatTrimming = newAgent.ChatTrimming,
-          SampleObject = newAgent.SampleObject,
-          OutputSchema = newAgent.OutputSchema,
-          ConnectionStringName = newAgent.ConnectionStringName
-      };
-
-      newAgentsList.Add(newAgentConfig);
-  }
+  var agents = existingAgentsList.AiAgents;
   ```
 
 * `GetAgent` and `GetAgents` overloads  
@@ -787,8 +769,8 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
       | Property | Type | Description |
       |----------|------|-------------|
       | agentId | `string` | The agent unique ID |
-      | conversationId | `string` | The conversation unique ID |
-      | creationOptions | `AiConversationCreationOptions` | Conversation creation options |
+      | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
+      | creationOptions | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
       | changeVector | `string` | Optional change vector for concurrency control |
 
       | Return value | Description |
@@ -798,6 +780,32 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
 * `SetUserPrompt` Definition  
   ```csharp
   void SetUserPrompt(string userPrompt);
+  ```
+* `AiConversationCreationOptions` class  
+  Use this class to set conversation creation options, including values for agent parameters and the conversation's expiration time if it remains idle.  
+  ```csharp
+  // Conversation creation options, including agent parameters and idle expiration configuration
+  public class AiConversationCreationOptions
+  {
+      // Values for agent parameters defined in the agent configuration
+      // Used to provide context or input values at the start of the conversation
+      public Dictionary<string, object> Parameters { get; set; }
+
+      // Optional expiration time (in seconds)
+      // If the conversation is idle for longer than this, it will be automatically deleted
+      public int? ExpirationInSec { get; set; }
+
+      // Initializes a new conversation instance with no parameters
+      // Use when you want to configure conversation options incrementally
+      public AiConversationCreationOptions();
+
+      // Initializes a new conversation instance and passes it a set of parameter values
+      public AiConversationCreationOptions(Dictionary<string, object> parameters);
+
+      // Adds an agent parameter value for this conversation
+      // Returns the current instance to allow method chaining
+      public AiConversationCreationOptions AddParameter(string name, object value);
+  }
   ```
 
 ### Processing action-tool requests:
@@ -836,16 +844,8 @@ Handlers are typically used for simple, immediate operations like storing a docu
   {
       using (var session = store.OpenSession())
       {
-          // These values are passed to the client by the action tool
-          Performer rewarded = new Performer
-          {
-              suggestedReward = performer.suggestedReward,
-              employeeId = performer.employeeId,
-              profit = performer.profit
-          };
-
           // store the values in the Performers collection in the database
-          session.Store(rewarded);
+          session.Store(performer);
           session.SaveChanges();
       }
 
@@ -853,7 +853,7 @@ Handlers are typically used for simple, immediate operations like storing a docu
       return "done";
   });
 
-  // An object for the LLM response
+  // An object that represents the arguments provided by the LLM for this tool call
   public class Performer
   {
       public string suggestedReward;
@@ -1065,8 +1065,8 @@ Streaming the response allows the client to start processing it before it is com
 
       | Property | Type | Description |
       |----------|------|-------------|
-      | streamPropertyPath | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>Strongly recommended that this would be the <strong>first property defined in the response schema</strong>.</li></ul> |
-      | streamPropertyPath | `string` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>Strongly recommended that this would be the <strong>first property defined in the response schema</strong>.</li></ul> |
+      | streamPropertyPath | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
+      | streamPropertyPath | `string` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
       | streamedChunksCallback | `Func<string, Task>` | A callback function that is invoked with each incoming chunk of the streamed property |
       | token | `CancellationToken` | An optional token that can be used to cancel the streaming operation |
 
@@ -1238,16 +1238,8 @@ public async Task createAndRunAiAgent_full()
     {
         using (var session1 = store.OpenSession())
         {
-            // Values provided by the LLM
-            Performer rewarded = new Performer
-            {
-                suggestedReward = performer.suggestedReward,
-                employeeId = performer.employeeId,
-                profit = performer.profit
-            };
-
             // store values in Performers collection in database
-            session1.Store(rewarded);
+            session1.Store(performer);
             session1.SaveChanges();
         }
         return "done";
