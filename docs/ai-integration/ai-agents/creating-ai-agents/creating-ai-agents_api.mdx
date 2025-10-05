@@ -34,6 +34,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
          * [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
       * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
    * [Creating the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-the-agent)
+   * [Retrieving existing agent configurations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#retrieving-existing-agent-configurations)
    * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
       * [Setting a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation)
       * [Processing action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#processing-action-tool-requests)
@@ -644,16 +645,18 @@ using the `CreateAgent` method.
 
 * `CreateAgent` overloads  
   ```csharp
-  // Asynchronously creates or updates an AI agent configuration on the database, with the given schema as an example for a response object.
+  // Asynchronously creates or updates an AI agent configuration on the database, 
+  // with the given schema as an example for a response object
   Task<AiAgentConfigurationResult> CreateAgentAsync<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject, CancellationToken token = default)
   
-  // Creates or updates (synchronously) an AI agent configuration on the database.
+  // Creates or updates (synchronously) an AI agent configuration on the database
   AiAgentConfigurationResult CreateAgent(AiAgentConfiguration configuration)
   
-  // Asynchronously creates or updates an AI agent configuration on the database.
+  // Asynchronously creates or updates an AI agent configuration on the database
   Task<AiAgentConfigurationResult> CreateAgentAsync(AiAgentConfiguration configuration, CancellationToken token = default)
   
-  // Creates or updates (synchronously) an AI agent configuration on the database, with the given schema as an example for a response object.
+  // Creates or updates (synchronously) an AI agent configuration on the database, 
+  // with the given schema as an example for a response object
   AiAgentConfigurationResult CreateAgent<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject) where TSchema : new()
   ```
 
@@ -665,6 +668,78 @@ using the `CreateAgent` method.
       | Return value | Description |
       |--------------|-------------|
       | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID. |
+
+<hr />
+
+## Retrieving existing agent configurations
+
+You can retrieve the configuration of **an existing agent** using `GetAgent`.  
+
+* **Example**  
+  ```csharp
+  // Retrieve an existing agent configuration by its ID
+  var existingAgent = store.AI.GetAgent("reward-productive-employee");
+  ```
+
+You can also retrieve the configurations of **all existing agents** using `GetAgents`.  
+
+* **Example**  
+  ```csharp
+  // Extract the agent configurations from the response into a new list
+  var existingAgentsList = store.AI.GetAgents();
+  var newAgentsList = new List<AiAgentConfiguration>();
+
+  foreach (var newAgent in existingAgentsList.AiAgents)
+  {
+      var newAgentConfig = new AiAgentConfiguration
+      {
+          Identifier = newAgent.Identifier,
+          SystemPrompt = newAgent.SystemPrompt,
+          Parameters = newAgent.Parameters,
+          Queries = newAgent.Queries,
+          Actions = newAgent.Actions,
+          ChatTrimming = newAgent.ChatTrimming,
+          SampleObject = newAgent.SampleObject,
+          OutputSchema = newAgent.OutputSchema,
+          ConnectionStringName = newAgent.ConnectionStringName
+      };
+
+      newAgentsList.Add(newAgentConfig);
+  }
+  ```
+
+* `GetAgent` and `GetAgents` overloads  
+  ```csharp
+  // Synchronously retrieves the configuration of an AI agent by its ID
+  AiAgentConfiguration GetAgent(string agentId)
+
+  // Asynchronously retrieves the configuration of an AI agent by its ID
+  async Task<AiAgentConfiguration> GetAgentAsync(string agentId, CancellationToken token = default)
+
+  // Synchronously retrieves the configurations of all AI agents
+  GetAiAgentsResponse GetAgents()
+
+  // Asynchronously retrieves the configurations of all AI agents
+  Task<GetAiAgentsResponse> GetAgentsAsync(CancellationToken token = default)
+  ```
+
+      | Property | Type | Description |
+      |----------|------|-------------|
+      | agentId | `string` | The unique ID of the agent you want to retrieve |
+
+      | Return value | Description |
+      |--------------|-------------|
+      | `AiAgentConfiguration` | The agent configuration |
+      | `GetAiAgentsResponse` | The response containing a list of all agent configurations |
+  ```
+
+* `GetAiAgentsResponse` class  
+  ```csharp
+  public class GetAiAgentsResponse
+  {
+      public List<AiAgentConfiguration> AiAgents { get; set; }
+  }
+  ```
 
 <hr />
 
