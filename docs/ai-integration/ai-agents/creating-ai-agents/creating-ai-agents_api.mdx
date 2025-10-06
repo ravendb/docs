@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
          * [Action-tool Handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers)
          * [Action-tool Receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers)
       * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
-      * [Setting user prompt and running conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation)
+      * [Setting user prompt and running the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation)
    * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
    * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)
 
@@ -411,10 +411,8 @@ with your settings.
 
 ## Adding agent tools
 
-* You can enhance your agent with Query and Action tools, that allow the LLM 
-  to query your database and trigger client actions, respectively  
-* After defining agent tools and submitting them to the LLM, it is up to the LLM 
-  to decide if and when to use them. 
+You can enhance your agent with Query and Action tools, that allow the LLM to query your database and trigger client actions.  
+After defining agent tools and submitting them to the LLM, it is up to the LLM to decide if and when to use them. 
 
 ### Query tools:
 
@@ -558,15 +556,15 @@ A query tool includes a natural-language **description** that explains the LLM w
       |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
       |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
 
-<Admonition type="note" title="">
-The two flags can be set regardless of each other.  
-* Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `false`  
-  will cause the query to be executed when the conversation starts,  
-  but the LLM will not be able to trigger its execution later in the conversation.  
-* Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `true`  
-  will cause the query to be executed when the conversation starts,  
-  and the LLM will also be able to trigger its execution later in the conversation.  
-</Admonition>
+      <Admonition type="note" title="">
+      Note: the two flags can be set regardless of each other.  
+        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `false`  
+          will cause the query to be executed when the conversation starts,  
+          but the LLM will not be able to trigger its execution later in the conversation.  
+        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `true`  
+          will cause the query to be executed when the conversation starts,  
+          and the LLM will also be able to trigger its execution later in the conversation.  
+      </Admonition>
 
 ### Action tools:
 
@@ -733,6 +731,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   Pass `Conversation`:  
    * The **agent ID**  
    * The **conversation ID**  
+     The conversation ID that you provide when starting a conversation determines whether a new conversation will start, or an existing conversation will be continued.  
       * Conversations are kept in the `@conversations` collection.  
         A conversation document's name starts with a prefix (such as `Chats/`) that can be 
         set when the conversation is initiated.  
@@ -965,8 +964,7 @@ Receivers are typically used asynchronously for multi-step or delayed operations
 
 ### Conversation response:
 
-The LLM response is returned by the agent to the client in an `AiAnswer` object.  
-The conversation status is indicated by `AiAnswer.AiConversationResult`.   
+The LLM response is returned by the agent to the client in an `AiAnswer` object, with an answer to the user prompt and the conversation status, indicating whether the conversation is complete or a further "turn" is required.  
 
 * `AiAnswer`syntax  
   ```csharp
@@ -988,7 +986,7 @@ The conversation status is indicated by `AiAnswer.AiConversationResult`.
   }
   ```
 
-### Setting user prompt and running conversation:
+### Setting user prompt and running the conversation:
 
 Set the user prompt using the `SetUserPrompt` method, and run the conversation using the
 `RunAsync` method.
@@ -1017,7 +1015,7 @@ See the full example [below](../../../ai-integration/ai-agents/creating-ai-agent
 
 ## Stream LLM responses
 
-You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-conversation) which sends the whole response to the client when it is fully prepared.  
+You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
 
 Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
 
