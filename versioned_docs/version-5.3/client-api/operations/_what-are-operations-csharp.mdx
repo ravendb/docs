@@ -608,9 +608,9 @@ public async Task<TResult> WaitForCompletionAsync<TResult>(TimeSpan? timeout = n
 </TabItem>
 </Tabs>
 
-| Parameters | Type | Description |
-| - | - | - |
-| __timeout__ | `TimeSpan` | &lt;ul&gt;&lt;li&gt; __When timespan is specified__ - <br/>server throws an error if operation has Not completed within the specified time frame. No rollback action will take place.&lt;/li&gt;&lt;li&gt;`null` - <br/>WaitForCompletion will wait for operation to complete forever.&lt;/li&gt;&lt;/ul&gt; |
+| Parameters  | Type       | Description |
+|-------------|------------|-------------|
+| **timeout** | `TimeSpan` | <ul><li><strong>When timespan is specified</strong> -<br/>The server throws an error if the operation has not completed within the specified time frame. No rollback action will take place.</li><li><code>null</code> -<br/>WaitForCompletion will wait for the operation to complete forever.</li></ul> |
 
 | Return type | |
 | - | - |

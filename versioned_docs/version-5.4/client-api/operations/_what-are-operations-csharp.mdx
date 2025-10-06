@@ -686,10 +686,10 @@ public async Task<TResult> WaitForCompletionAsync<TResult>(CancellationToken tok
 </TabItem>
 </Tabs>
 
-| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
-|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **timeout** | `TimeSpan`          | &lt;ul&gt;&lt;li&gt; **When timespan is specified** - <br/>The server will throw a `TimeoutException` if operation has Not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>WaitForCompletion will wait for operation to complete forever.&lt;/li&gt;&lt;/ul&gt; |
-| **token**   | `CancellationToken` | &lt;ul&gt;&lt;li&gt; **When cancellation token is specified** - <br/>The server will throw a `TimeoutException` if operation has Not completed at cancellation time.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;/ul&gt;                                                                                      |
+| Parameter   | Type                | Description |
+|-------------|---------------------|-------------|
+| **timeout** | `TimeSpan`          | <ul><li><strong>When timespan is specified</strong> -<br/>The server will throw a `TimeoutException` if the operation has not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.</li><li>`null` -<br/>WaitForCompletion will wait for the operation to complete forever.</li></ul> |
+| **token**   | `CancellationToken` | <ul><li><strong>When cancellation token is specified</strong> -<br/>The server will throw a `TimeoutException` if the operation has not completed at cancellation time.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.</li></ul> |
 
 | Return type        |                               |
 |--------------------|-------------------------------|

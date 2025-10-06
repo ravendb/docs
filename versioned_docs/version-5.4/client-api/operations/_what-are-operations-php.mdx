@@ -478,11 +478,3 @@ public function waitForCompletion(Duration|int|null $duration = null): void;
 `}
 </CodeBlock>
 </TabItem>
-
-| Parameter   | Type         | Description                                                                                                                                                                                                                                                                                                                                           |
-|-------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **$duration** | `Duration` or `int` | &lt;ul&gt;&lt;li&gt; **When a duration is specified** - <br/>The server will throw a `TimeoutException` if the peration has Not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>`waitForCompletion` will wait for the operation to complete indefinitely.&lt;/li&gt;&lt;/ul&gt; |
-
-
-
-
