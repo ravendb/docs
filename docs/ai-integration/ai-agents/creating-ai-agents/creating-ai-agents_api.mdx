@@ -898,7 +898,7 @@ Receivers are typically used asynchronously for multi-step or delayed operations
 
 * When you **finish handling the requested action**,  
   call `AddActionResponse`. Pass it -  
-   * The action tool's name.  
+   * The action tool's ID.  
    * The response to send back to the LLM.  
      <Admonition type="note" title="">
      Note that the response can be sent at any time, even after the receiver has finished executing,  
@@ -961,6 +961,34 @@ Receivers are typically used asynchronously for multi-step or delayed operations
       | actionName | `string` | The action tool name |
       | action | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request |
       | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+
+* `AddActionResponse` Definition
+  ```csharp
+  // Closes the action request and sends the response back to the LLM
+  void AddActionResponse(string toolId, string actionResponse)
+  ```
+
+      | Property | Type | Description |
+      |----------|------|-------------|
+      | toolId | `string` | The action request unique ID |
+      | actionResponse | `string` | The response to send back to the LLM through the agent |
+
+
+* `AiAgentActionRequest` class  
+  Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
+  ```csharp
+  public class AiAgentActionRequest
+  {
+    // Action tool name
+    public string Name;
+
+    // Action tool unique ID
+    public string ToolId;
+
+    // Request arguments provided by the LLM
+    public string Arguments;
+  }
+  ```
 
 ### Conversation response:
 
