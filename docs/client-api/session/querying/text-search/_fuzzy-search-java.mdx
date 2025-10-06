@@ -3,9 +3,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-Fuzzy search is supported via `fuzzy` method.  
-This method is available only from [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values.  
-Because of that it can be used only right after `whereEquals` method.
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Fuzzy search is available only via [documentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) or RQL.
+
+* Use the `fuzzy` method when querying with `whereEquals`.
+
+* Note: this is a Lucene feature, available only for Lucene-based indexes.
 
 ## Syntax
 
