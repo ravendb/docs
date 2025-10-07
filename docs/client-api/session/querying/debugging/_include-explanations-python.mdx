@@ -92,14 +92,11 @@ include explanations()
 </CodeBlock>
 </TabItem>
 
-| Parameter                 | Type                             | Description                                                                                                                                                                                                                             |
-|---------------------------|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **explanations_callback** | `Callable[[Explanations], None]` | &lt;ul&gt;&lt;li&gt;A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.&lt;/li&gt; &lt;li&gt;You can interact with resulting Explanations inside your callback.&lt;/li&gt;&lt;/ul&gt; |
-| **options** (Optional)    | `ExplanationOptions`             | Can be a `group_key` string                                                                                                                                                                                                             |
+| Parameter                 | Type                             | Description |
+|---------------------------|----------------------------------|-------------|
+| **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li><li>You can interact with the resulting `Explanations` inside your callback.</li></ul> |
+| **options** (Optional)    | `ExplanationOptions`             | Can be a `group_key` string. |
 
-| `Explanations`         |                                                                                                                                |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| `Dict[str, List[str]]` | &lt;ul&gt;&lt;li&gt;Pass the resulting document ID for which to get score details.&lt;/li&gt;&lt;li&gt;Returns a list with all explanations.&lt;/li&gt;&lt;/ul&gt; |
-
-
-
+| `Explanations`         | Description |
+|------------------------|-------------|
+| `Dict[str, List[str]]` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |

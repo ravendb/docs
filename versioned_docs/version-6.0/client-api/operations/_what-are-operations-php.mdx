@@ -70,7 +70,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
-  See all available operations [below](../../client-api/operations/what-are-operations.mdx#operations-list).
+  See all available operations [below](../../client-api/operations/what-are-operations#the-following-common-operations-are-available).
 
 * To execute a common operation request,  
   use the `send` method on the `operations` property in the DocumentStore.
@@ -112,7 +112,8 @@ public function send(...$parameters);
 
 <Admonition type="note" title="">
 
-&lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
+#### The following common operations are available:
+
 * **Attachments**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)  
@@ -155,7 +156,7 @@ public function send(...$parameters);
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
-  See all available maintenance operations [below](../../client-api/operations/what-are-operations.mdx#maintenance-list).
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#the-following-maintenance-operations-are-available).
  
 * To execute a maintenance operation request,  
   use the `send` method on the `maintenance` property in the DocumentStore.
@@ -193,7 +194,8 @@ $status = $indexStats->getStatus(); // will be "Paused"
 
 <Admonition type="note" title="">
 
-&lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
+#### The following maintenance operations are available:
+
 * **Statistics**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)  
@@ -308,7 +310,7 @@ $status = $indexStats->getStatus(); // will be "Paused"
   Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
-  See all available operations [below](../../client-api/operations/what-are-operations.mdx#server-list).
+  See all available operations [below](../../client-api/operations/what-are-operations#the-following-server-maintenance-operations-are-available).
 
 * To execute a server-maintenance operation request,  
   use the `send` method on the `maintenance.server` property in the DocumentStore.
@@ -341,7 +343,8 @@ $version = $buildNumberResult->getBuildVersion();
 
 <Admonition type="note" title="">
 
-&lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
+#### The following server-maintenance operations are available:
+
 * **Client certificates**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
@@ -479,10 +482,6 @@ public function waitForCompletion(Duration|int|null $duration = null): void;
 </CodeBlock>
 </TabItem>
 
-| Parameter   | Type         | Description                                                                                                                                                                                                                                                                                                                                           |
-|-------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **$duration** | `Duration` or `int` | &lt;ul&gt;&lt;li&gt; **When a duration is specified** - <br/>The server will throw a `TimeoutException` if the peration has Not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>`waitForCompletion` will wait for the operation to complete indefinitely.&lt;/li&gt;&lt;/ul&gt; |
-
-
-
-
+| Parameter     | Type                | Description |
+|---------------|---------------------|-------------|
+| **$duration** | `Duration` or `int` | <ul><li><strong>When a duration is specified</strong> -<br/>The server will throw a `TimeoutException` if the operation has not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.</li><li>`null` -<br/>`waitForCompletion` will wait for the operation to complete indefinitely.</li></ul> |

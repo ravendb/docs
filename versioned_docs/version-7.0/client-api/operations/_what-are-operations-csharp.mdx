@@ -69,7 +69,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
-  See all available operations [below](../../client-api/operations/what-are-operations.mdx#operations-list).
+  See all available operations [below](../../client-api/operations/what-are-operations#the-following-common-operations-are-available).
 
 * To execute a common operation request,  
   use the `Send` method on the `Operations` property of the DocumentStore.
@@ -141,7 +141,8 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
 
 <Admonition type="note" title="">
 
-&lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
+#### The following common operations are available:
+
 * **Attachments**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)  
@@ -185,7 +186,7 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
-  See all available maintenance operations [below](../../client-api/operations/what-are-operations.mdx#maintenance-list).
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#the-following-maintenance-operations-are-available).
  
 * To execute a maintenance operation request,  
   use the `Send` method on the `Maintenance` property in the DocumentStore.
@@ -255,7 +256,8 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
 
 <Admonition type="note" title="">
 
-&lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
+#### The following maintenance operations are available:
+
 * **Statistics**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)  
@@ -382,7 +384,7 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
   Use [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
-  See all available operations [below](../../client-api/operations/what-are-operations.mdx#server-list).
+  See all available operations [below](../../client-api/operations/what-are-operations#the-following-server-maintenance-operations-are-available).
 
 * To execute a server-maintenance operation request,  
   use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
@@ -446,7 +448,8 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
 
 <Admonition type="note" title="">
 
-&lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
+#### The following server-maintenance operations are available:
+
 * **Client certificates**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
@@ -698,10 +701,10 @@ public async Task<TResult> WaitForCompletionAsync<TResult>(CancellationToken tok
 </TabItem>
 </Tabs>
 
-| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
-|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **timeout** | `TimeSpan`          | &lt;ul&gt;&lt;li&gt; **When timespan is specified** - <br/>The server will throw a `TimeoutException` if operation has not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>WaitForCompletion will wait for operation to complete forever.&lt;/li&gt;&lt;/ul&gt; |
-| **token**   | `CancellationToken` | &lt;ul&gt;&lt;li&gt; **When cancellation token is specified** - <br/>The server will throw a `TimeoutException` if operation has not completed at cancellation time.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;/ul&gt;                                                                                     |
+| Parameter   | Type                | Description |
+|-------------|---------------------|-------------|
+| **timeout** | `TimeSpan`          | <ul><li><strong>When timespan is specified</strong> -<br/>The server will throw a `TimeoutException` if the operation has not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.</li><li>`null` -<br/>WaitForCompletion will wait for the operation to complete forever.</li></ul> |
+| **token**   | `CancellationToken` | <ul><li><strong>When cancellation token is specified</strong> -<br/>The server will throw a `TimeoutException` if the operation has not completed at cancellation time.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.</li></ul> |
 
 | Return type        |                               |
 |--------------------|-------------------------------|
