@@ -263,6 +263,10 @@ ul {
   list-style: revert;
 }
 
+ul ol {
+  list-style: decimal;
+}
+
 /* Custom wrap for pre */
 pre {
   white-space: pre-wrap;
