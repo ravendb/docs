@@ -42,10 +42,36 @@ status.
 ## Cluster Health
 
 **Cluster Health** helps keep your cluster healthy by providing suggestions and incidents history.  
-This dashboard has two separated sections:
+This dashboard has three separated sections:
 
+- [Cluster Nodes Availability](cloud-maintenance-troubleshooting#cluster-nodes-availability)
 - [Incidents History](cloud-maintenance-troubleshooting#incidents-history)
 - [Suggestions](cloud-maintenance-troubleshooting#suggestions)
+
+## Cluster Nodes Availability
+
+The **Cluster Nodes Availability** section shows the availability status of each node within your cluster.
+It provides a real-time, visual overview of how reliably each node has been operating in the current month.
+
+Each node is represented by a gauge showing its availability percentage, helping you quickly assess the overall health of your system.
+The availability is calculated based on whether the node has been up and responsive.
+
+### Availability Status Thresholds
+
+Each node's status is color-coded based on its availability percentage:
+
+| Availability | Status   | Color     |
+|--------------|----------|-----------|
+| > 99.9%      | Healthy  | 🟢 Green  |
+| 95% – 99.9%  | Degraded | 🟡 Yellow |
+| < 95%        | Critical | 🔴 Red    |
+
+These thresholds help you identify which nodes might require attention:
+
+- **Healthy** nodes have consistently high uptime and are performing reliably.
+- **Degraded** nodes may have experienced occasional downtime or disruptions.
+- **Critical** nodes have had significant availability issues and may require immediate investigation.
+
 ## Incidents History
 
 The *RavenDB Cloud* monitoring system tracks incidents and cluster performance.  
