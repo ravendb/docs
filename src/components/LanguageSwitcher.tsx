@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
 import { useLanguage } from "./LanguageContext";
 import clsx from "clsx";
 
@@ -18,6 +18,12 @@ export default function LanguageSwitcher({
   supportedLanguages,
 }: LanguageSwitcherProps) {
   const { language, setLanguage } = useLanguage();
+
+  useEffect(() => {
+      if (!supportedLanguages.includes(language)) {
+          setLanguage(supportedLanguages[0]);
+      }
+  }, [supportedLanguages, language, setLanguage]);
 
   return (
     <div className="flex flex-wrap gap-2 mb-8">
