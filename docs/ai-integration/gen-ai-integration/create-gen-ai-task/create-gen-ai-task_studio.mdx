@@ -96,8 +96,8 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
    Use this view to list, configure, or remove AI tasks.  
 3. **Add AI Task**  
    Click to add an AI task.  
-4. **GenAI**  
-   Click to open a wizard that will guide you through the creation and testing of your GenAI task.  
+   ![Add a GenAI Task](./assets/gen-ai_select-ai-task-type.png)
+   Click the GenAI option to open a wizard that will guide you through the creation and testing of your GenAI task.  
    The steps of this wizard are explained below, starting with basic GenAI task settings.  
 
 <hr />
@@ -109,13 +109,13 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
 1. **Task name**  
    Give your task a meaningful name.  
 
-2. <a id="unique-identifier"/>**Identifier**  
+2. <a id="unique-identifier"/>**Unique user-defined task identifier**  
    Give your task a unique identifier.  
+    * Use only lowercase letters, numbers, and hyphens.  
     * You can provide the identifier yourself, or click **Regenerate** to create it automatically.  
-    * When you complete creating the task and run it, the task will add a metadata property 
-      to documents it processes, named after the identifier you define here. The task will 
-      use this property to keep track of document parts it had already processed.  
-      See an example [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#run-time).  
+    * When you complete creating the task and run it, the task will add a metadata property to documents it processes, named after the identifier you define here.  
+    The task will use this property to keep track of document parts it had already processed.  
+      See an example [here](../../../ai-integration/gen-ai-integration/gen-ai-overview#gen-ai-metadata).  
 
 3. **Task state**  
    Use this switch to enable or disable the task.  
@@ -185,7 +185,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * **Select a document from the source collection**  
       Select a document to test your context generation script on.  
        * To use the same sample document we're using to demonstrate the process, 
-         add [posts/1](../../../) and select it here.  
+         add [posts/1](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#sample-data) and select it here.  
        * Or if you prefer it, click `enter a document manually` and enter the sample document content yourself.  
     * To run the test, click the **Test context** button.  
       If all works well, you will see a list of context objects created by your script, one for each comment.  
@@ -367,23 +367,28 @@ The update script set in this step, determines what actions should be taken on t
 Use this final step to review your GenAI task configuration before saving and executing it.  
 If your task is enabled, it will start running when you save it.  
 
-<Admonition type="warning" title="Precautions" id="precautions" href="#precautions">
-
-* Make sure you fully understand what your task does before saving it.  
-* Be aware of any modifications it may make.  
-* Take any precaution to protect your data, including ensuring it is backed up.  
-</Admonition>
-
-![Provide update script](./assets/gen-ai_provide-update-script.png)
+![Review configuration and Save task](./assets/gen-ai_review-task-configuration.png)
 
 1. **Review Configuration**  
    Click a step's **Edit** button to view and modify its current configuration.  
    Click a script/object **Show** button to view its current content.  
    
-2. **Controls**  
+2. **Reprocess all documents**  
+    * Enable this option to have the task reprocess all documents in the source collection.  
+      <Admonition type="note" title="">
+      Note that documents that were already processed and the hash code in their metadata is identical to the hash code of the current task configuration (meaning the configuration hasn't changed since they were processed) will be skipped even if this option is enabled.  
+      </Admonition>
+    * Disable this option to have the task process only documents that it had not processed before.  
+   
+3. **Controls**  
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
       Click to return to the previous step, [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#provide-update-script).  
     * **Save**  
-      Save your task
+      Click to save your task.  
+      If enabled, saving the task will start its execution.  
+      <Admonition type="warning" title="Precautions" id="precautions" href="#precautions">
+      * Test your task and make sure you understand how it might change your documents before saving.  
+      * Take every precaution to protect your data, including ensuring it is backed up.  
+      </Admonition>
