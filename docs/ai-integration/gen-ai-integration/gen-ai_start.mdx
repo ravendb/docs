@@ -1,0 +1,62 @@
+---
+title: "GenAI: Start"
+hide_table_of_contents: true
+sidebar_label: Start
+sidebar_position: 0
+---
+
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import genAiStartOvImage from "./assets/gen-ai_start_ov-image.png";
+import genAiStartApiImage from "./assets/gen-ai_start_api-image.png";
+import genAiStartStudioImage from "./assets/gen-ai_start_studio-image.png";
+
+# GenAI: Start
+
+RavenDB Generative AI (GenAI) tasks are ongoing operations that remain active in the background, continuously monitoring a specified collection and processing documents as they are added or modified.  
+Similar to ETL tasks, a GenAI task extracts content from each processed document and transfers this content. Its destination, however, is an AI model, to which it sends the **content** along with a guiding **prompt** and a **response template**.  
+When the model responds, its reply is structured in a way that allows the task to use it effectively. For example, the task can use the response to update the source document with the requested information.  
+GenAI tasks can be used to summarize long documents, extract key details, translate texts, generate new content based on the existing data, and so on. They can be easily created using Studio or the client API, and when created via Studio, each step of their creation can be easily tested and validated before deployment.
+
+## Use cases
+
+- [Content analysis & moderation use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation)
+
+- [Data enrichment & enhancement use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement)
+
+- [Smart automation & workflows use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows)
+
+- [Enhanced search & discovery use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery)
+
+- [Business intelligence & insights use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights)
+
+
+## Technical documentation
+
+Use our technical documentation to learn more about GenAI tasks and how to create and manage them.  
+If you're new to GenAI tasks, we recommend the [overview](../../ai-integration/gen-ai-integration/gen-ai-overview) page as a good starting point.  
+
+<ColGrid colCount={3}>
+    <CardWithImage title="GenAI tasks - Overview" description="The starting point for the GenAI documentation: an overview of the feature" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Creating a GenAI task using the Client API" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api" imgSrc={genAiStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Using Studio to define and test GenAI tasks" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio" imgSrc={genAiStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
+
+## Videos
+
+Watch a webinar that explains how GenAI tasks make AI-powered workflow automation reliable and effective.  
+
+<ColGrid colCount={2}>
+    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+## In-depth articles
+
+Once you're familiar with the basics of GenAI tasks, you can take a look at these in-depth articles.
+
+<ColGrid colCount={3}>
+    <CardWithImage title="RavenDB GenAI Deep Dive" description="Article by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Survive the AI tidal wave with RavenDB & GenAI" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Unlock RavenDB GenAI potential with attachments" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/unlock-ravendb-genai-potential-with-attachments" imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>

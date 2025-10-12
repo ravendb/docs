@@ -31,14 +31,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
   when you need a live service with advanced capabilities.  
 
 * In this article:
-    * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/gen-ai-overview#ravendb-genai-tasks)
-        * [The flow](../../ai-integration/gen-ai-integration/gen-ai-overview#the-flow)
-        * [The elements](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements)
-        * [How to create and run a GenAI task](../../ai-integration/gen-ai-integration/gen-ai-overview#how-to-create-and-run-a-genai-task)
-    * [Runtime](../../ai-integration/gen-ai-integration/gen-ai-overview#runtime)
-        * [Tracking of processed document parts](../../ai-integration/gen-ai-integration/gen-ai-overview#tracking-of-processed-document-parts)
-    * [Licensing](../../ai-integration/gen-ai-integration/gen-ai-overview#licensing)
-    * [Supported services](../../ai-integration/gen-ai-integration/gen-ai-overview#supported-services)
+   * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/gen-ai-overview#ravendb-genai-tasks)
+     * [The flow](../../ai-integration/gen-ai-integration/gen-ai-overview#the-flow)
+     * [The elements](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements)
+     * [How to create and run a GenAI task](../../ai-integration/gen-ai-integration/gen-ai-overview#how-to-create-and-run-a-genai-task)
+   * [Runtime](../../ai-integration/gen-ai-integration/gen-ai-overview#runtime)
+     * [Tracking of processed document parts](../../ai-integration/gen-ai-integration/gen-ai-overview#tracking-of-processed-document-parts)
+   * [Licensing](../../ai-integration/gen-ai-integration/gen-ai-overview#licensing)
+   * [Supported services](../../ai-integration/gen-ai-integration/gen-ai-overview#supported-services)
+   * [Common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases)
 
 </Admonition>
 
@@ -47,10 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## RavenDB GenAI tasks
 
 RavenDB offers an integration of generative AI capabilities through user-defined **GenAI tasks**.  
-A GenAI task is an ongoing process that continuously monitors a document collection associated with it, 
-and reacts when a document is added or modified by Retrieving the document, Generating "context objects" 
-based on its data, Sending these objects to a generative AI model along with instructions regarding what 
-to do with the data and how to format the reply, and potentially Acting upon the model's response.  
+A GenAI task is an ongoing process that continuously monitors a document collection associated with it, and reacts when a document is added or modified by Retrieving the document, Generating "context objects" based on its data, Sending these objects to a generative AI model along with instructions regarding what to do with the data and how to format the reply, and potentially Acting upon the model's response.  
 
 ### The flow:
 Let's put the stages described above in order.
@@ -243,6 +241,50 @@ Supported services include:
 * `OpenAI` and `OpenAI-compatible` services  
 * `Ollama`  
 
+<hr />
 
+## Common use cases
+
+GenAI tasks can be used to address a wide variety of use cases. Here are some examples.  
+
+### Content analysis & moderation:
+* **Content categorization**  
+  Automatically tag and organize articles, documents, or media files
+* **Spam and content filtering**  
+  Automatically detect and flag spam, offensive, or inappropriate comments, reviews, or posts
+* **Sentiment analysis**  
+  Classify customer feedback, support tickets, or social media mentions by emotional tone
+
+### Data enrichment & enhancement:
+* **Document summarization**  
+  Generate concise summaries of lengthy reports, articles, or legal documents
+* **Data extraction**  
+  Pull key details like dates, names, amounts, or entities from unstructured text
+* **Content translation**  
+  Automatically translate documents or user-generated content
+
+### Smart automation & workflows
+* **Support ticket routing**  
+  Analyze incoming tickets and automatically assign priority levels or route to appropriate teams
+* **Compliance checking**  
+  Scan documents for regulatory compliance issues or policy violations
+* **Data quality improvement**  
+  Standardize formats, correct inconsistencies, or enrich incomplete records
+
+### Enhanced search & discovery
+* **Intelligent tagging**  
+  Generate relevant keywords and metadata for better document searchability
+* **Content recommendations**  
+  Suggest related articles, products, or resources based on document analysis
+* **Knowledge extraction**  
+  Build searchable knowledge bases from unstructured document collections
+
+### Business intelligence & insights
+* **Trend detection**  
+  Identify patterns and emerging themes in customer communications or market data
+* **Competitive analysis**  
+  Monitor and analyze competitor mentions, pricing, or product information
+* **Risk assessment**  
+  Flag potentially problematic contracts, transactions, or communications
 
 
