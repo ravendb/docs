@@ -23,9 +23,6 @@ import Admonition from '@theme/Admonition';
   * Assign work to a single client or reserve a resource once.
   * Handle concurrency safely, without external services or custom locking logic.
   
-* Compare-exchange items can also store shared or global values that aren't tied to a specific document.  
-  For example: system-wide configuration flags, shared settings, or reusable identifiers.
-  
 * Key Characteristics of a compare-exchange item:
   * Cluster-wide - Visible and consistent across all nodes in the [database group](../studio/database/settings/manage-database-group).
   * Atomic - Only one client can successfully modify an item at a time (all-or-nothing updates).

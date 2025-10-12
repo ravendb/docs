@@ -5,19 +5,30 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Compare-exchange items are **key/value pairs** where the key is unique across your database. 
+* Compare-exchange items are **key/value pairs** where the key is a globally unique identifier in the database.  
+  Items are versioned and managed at the cluster level.
 
-* Compare-exchange items can be used to coordinate work between sessions that are trying to modify a shared resource (such as a document) at the same time.
+* Compare-exchange provides a built-in consensus mechanism for safe coordination across sessions and nodes.  
+  It ensures global consistency in the database and prevents conflicts when multiple clients try to modify or reserve  
+  the same resource, allowing you to:  
+  * Enforce global uniqueness (e.g., prevent duplicate usernames or emails).
+  * Assign work to a single client or reserve a resource once.
+  * Handle concurrency safely, without external services or custom locking logic.  
 
-* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
+* Compare-exchange items are also suitable for storing shared or global values that aren't tied to a specific document -
+  such as configuration flags, feature toggles, or reusable identifiers stored under a unique key.  
+  However, [unlike regular documents](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness),
+  compare-exchange provides atomic updates, version-based conflict prevention, and Raft-based consistency for distributed safety.
+  
+* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
   * [What compare-exchange items are](../compare-exchange/overview#what-compare-exchange-items-are)  
   * [Ways to create and manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items)  
   * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness)  
   * [Example I - Email address reservation](../compare-exchange/overview#example-i---email-address-reservation)  
-  * [Example II - Reserve a shared resource](../compare-exchange/overview#example-ii---reserve-a-shared-resource)  
-  * [Example III - Ensuring unique values without using compare-exchange](../compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange)  
+  * [Example II - Reserve a shared resource](../compare-exchange/overview#example-ii---reserve-a-shared-resource)   
 
 </Admonition>
 
@@ -29,17 +40,18 @@ Compare-exchange items are key/value pairs where the key serves as a unique valu
 
 * Each compare-exchange item contains: 
   * **A key** - A unique string identifier in the database scope.
-  * **A value** - Can be any object (a number, string, array, or any valid JSON object). 
+  * **A value** - Can be any value (a number, string, array, or any valid JSON object). 
   * **Metadata** - Optional data that is associated with the compare-exchange item. Must be a valid JSON object.  
     For example, the metadata can be used to set expiration time for the compare-exchange item.  
     Learn more in [compare-exchange expiration](../compare-exchange/cmpxchg-expiration).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
-* Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap)
-  interlocked compare-exchange operation. These operations require cluster consensus to ensure consistency across all nodes.  
-  Once a consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.  
-
+* Creating and modifying a compare-exchange item follows the same principle as the [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) operation in multi-threaded systems,
+  but in RavenDB, this concept is applied to a distributed environment across multiple nodes instead of within a single multi-threaded process.  
+  These operations require cluster consensus to ensure consistency.
+  Once consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.
+  
 ---
 
 ## Ways to create and manage compare-exchange items
@@ -54,7 +66,8 @@ Compare exchange items can be created and managed using any of the following app
   You can create and manage compare-exchange items from within a [Cluster-Wide session](../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs-single-node-transaction).  
   For example, see [Create items using a cluster-wide session](../compare-exchange/create-cmpxchg-items#create-items-using-a-cluster-wide-session).     
   When using a cluster-wide session, the compare-exchange item is created as part of the cluster-wide transaction.  
-  If the session fails, the item creation also fails, and none of the nodes in the database group will store the new compare-exchange item.
+  Like any transaction, all operations either succeed as a group or are rolled back.  
+  If the transaction is not committed, the new compare-exchange item will not be stored on any node in the database group.
   
 * **Atomic Guards**  
   When creating _documents_ using a cluster-wide session, RavenDB automatically creates [Atomic Guards](../compare-exchange/atomic-guards),  
@@ -92,14 +105,27 @@ Compare exchange items can be created and managed using any of the following app
   For details about what is and what isn't replicated in [What is Replicated](../server/ongoing-tasks/external-replication#what-is-replicated).
     
 ---
+
+## Why not use regular documents to enforce uniqueness
+
+* You might consider storing a document with a predictable ID (for example, _phones/123456_) as a way to enforce uniqueness, 
+  and then checking for its existence before allowing another document to use the same value.
+
+* While this might work in a single-node setup or with external replication,
+  it does not reliably enforce uniqueness in a clustered environment.
+ 
+* If a node was not part of the cluster when the document was created, it might not be aware of its existence when it comes back online. 
+  In such cases, attempting to load the document on this node may return _null_, leading to duplicate values being inserted.
+
+* To reliably enforce uniqueness across all cluster nodes, you must use compare-exchange items,
+  which are designed for this purpose and ensure global consistency.
     
+---
+
 ## Example I - Email address reservation  
 
 The following example shows how to use compare-exchange to create documents with unique values.  
 The scope is within the database group on a single cluster. 
-
-Compare-exchange items are not externally replicated to other databases.  
-To establish uniqueness without using compare-exchange see [Example III](../compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
     
 <TabItem value="" label="">    
 ```csharp
@@ -113,20 +139,25 @@ User user = new User
 using (IDocumentSession session = store.OpenSession())
 {
     session.Store(user);
-    // At this point, the user document has an Id assigned
+    // At this point, the user object has a document ID assigned by the session.
 
-    // Try to reserve a new user email 
-    // Note: This operation takes place outside of the session transaction, 
-    //       It is a cluster-wide reservation
+    // Try to reserve the user email using a compare-exchange item.
+    // Note: This 'put compare-exchange operation' is not part of the session transaction, 
+    //       It is a separate, cluster-wide reservation.
     CompareExchangeResult<string> cmpXchgResult
         = store.Operations.Send(
+            // parameters passed to the operation:
+            // email   - the unique key of the compare-exchange item
+            // user.Id - the value associated with the key
+            // 0       - pass `0` to ensure the item is created only if it doesn't already exist.
+            // If a compare-exchange item with the given key already exists, the operation will fail.
             new PutCompareExchangeValueOperation<string>(email, user.Id, 0));
 
     if (cmpXchgResult.Successful == false)
         throw new Exception("Email is already in use");
 
-    // At this point we managed to reserve/save the user email -
-    // The document can be saved in SaveChanges
+    // At this point, the email has been successfully reserved/saved.
+    // We can now save the user document to the database.
     session.SaveChanges();
 }
 ```
@@ -235,8 +266,10 @@ public long LockResource(IDocumentStore store, string resourceName, TimeSpan dur
             // resourceName wasn't present - we managed to reserve
             return putResult.Index;
         }
-
-        // At this point, Put operation failed - someone else owns the lock or lock time expired
+        
+        // At this point, someone else owns the resource.
+        // But if their reservation has expired (e.g., the process crashed and never released it),
+        // we can try to take the lock by overwriting the value using the current index.
         if (putResult.Value.ReservedUntil < now)
         {
             // Time expired - Update the existing key with the new value
@@ -264,82 +297,6 @@ public void ReleaseResource(IDocumentStore store, string resourceName, long inde
     // We have 2 options here:
     // deleteResult.Successful is true - we managed to release resource
     // deleteResult.Successful is false - someone else took the lock due to timeout 
-}
-```
-</TabItem>
-
----
-
-## Example III - Ensuring unique values without using compare exchange  
-
-Unique values can also be ensured without using compare-exchange.
-
-The below example shows how to achieve that by using **reference documents**.  
-The reference documents' IDs will contain the unique values instead of the compare-exchange items.
-
-Using reference documents is especially useful when [External Replication](../server/ongoing-tasks/external-replication) 
-is defined between two databases that need to be synced with unique values.  
-The reference documents will replicate to the destination database, 
-as opposed to compare-exchange items, which are not externally replicated.
-
-<Admonition type="note" title="">
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../client-api/session/cluster-transaction/overview).  
-</Admonition>
-
-<TabItem value="" label="">
-```csharp
-// When you create documents that must contain a unique value such as a phone or email, etc.,
-// you can create reference documents that will have that unique value in their IDs.
-// To know if a value already exists, all you need to do is check whether a reference document with such ID exists.
-
-// The reference document class
-class UniquePhoneReference
-{
-    public class PhoneReference
-    {
-        public string Id;
-        public string CompanyId;
-    }
-
-    static void Main(string[] args)
-    {
-        // A company document class that must be created with a unique 'Phone' field
-        Company newCompany = new Company
-        {
-            Name = "companyName",
-            Phone = "phoneNumber",
-            Contact = new Contact
-            {
-                Name = "contactName",
-                Title = "contactTitle"
-            },
-        };
-
-        void CreateCompanyWithUniquePhone(Company newCompany)
-        {
-            // Open a cluster-wide session in your document store
-            using var session = DocumentStoreHolder.Store.OpenSession(
-                    new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
-                );
-
-            // Check whether the new company phone already exists
-            // by checking if there is already a reference document that has the new phone in its ID.
-            var phoneRefDocument = session.Load<PhoneReference>("phones/" + newCompany.Phone);
-            if (phoneRefDocument != null)
-            {
-                var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneRefDocument.CompanyId}";
-                throw new ConcurrencyException(msg);
-            }
-
-            // If the new phone number doesn't already exist, store the new entity
-            session.Store(newCompany);
-            // Store a new reference document with the new phone value in its ID for future checks.
-            session.Store(new PhoneReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
-
-            // May fail if called concurrently with the same phone number
-            session.SaveChanges();
-        }
-    }
 }
 ```
 </TabItem>

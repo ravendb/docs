@@ -5,16 +5,28 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Compare-exchange items are **key/value pairs** where the key is unique across your database. 
+* Compare-exchange items are **key/value pairs** where the key is a globally unique identifier in the database.  
+  Items are versioned and managed at the cluster level.
 
-* Compare-exchange items can be used to coordinate work between sessions that are trying to modify a shared resource (such as a document) at the same time.
+* Compare-exchange provides a built-in consensus mechanism for safe coordination across sessions and nodes.  
+  It ensures global consistency in the database and prevents conflicts when multiple clients try to modify or reserve  
+  the same resource, allowing you to:  
+  * Enforce global uniqueness (e.g., prevent duplicate usernames or emails).
+  * Assign work to a single client or reserve a resource once.
+  * Handle concurrency safely, without external services or custom locking logic.  
 
-* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
+* Compare-exchange items are also suitable for storing shared or global values that aren't tied to a specific document -
+  such as configuration flags, feature toggles, or reusable identifiers stored under a unique key.  
+  However, [unlike regular documents](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness),
+  compare-exchange provides atomic updates, version-based conflict prevention, and Raft-based consistency for distributed safety.
+  
+* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
   * [What compare-exchange items are](../compare-exchange/overview#what-compare-exchange-items-are)  
   * [Ways to create and manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items)  
   * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness)  
   * [Example I - Email address reservation](../compare-exchange/overview#example-i---email-address-reservation)  
   * [Example II - Reserve a shared resource](../compare-exchange/overview#example-ii---reserve-a-shared-resource)  
 
@@ -28,16 +40,17 @@ Compare-exchange items are key/value pairs where the key serves as a unique valu
 
 * Each compare-exchange item contains: 
   * **A key** - A unique string identifier in the database scope.
-  * **A value** - Can be any object (a number, string, array, or any valid JSON object). 
+  * **A value** - Can be any value (a number, string, array, or any valid JSON object). 
   * **Metadata** - Optional data that is associated with the compare-exchange item. Must be a valid JSON object.  
     For example, the metadata can be used to set expiration time for the compare-exchange item.  
     Learn more in [compare-exchange expiration](../compare-exchange/cmpxchg-expiration).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
-* Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap)
-  interlocked compare-exchange operation. These operations require cluster consensus to ensure consistency across all nodes.  
-  Once a consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.  
+* Creating and modifying a compare-exchange item follows the same principle as the [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) operation in multi-threaded systems,
+  but in RavenDB, this concept is applied to a distributed environment across multiple nodes instead of within a single multi-threaded process.  
+  These operations require cluster consensus to ensure consistency.
+  Once consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.
 
 ---
 
@@ -90,15 +103,28 @@ Compare exchange items can be created and managed using any of the following app
 * Learn more about Replication in RavenDB in [Replication overview](../server/clustering/replication/replication-overview).
   For details about what is and what isn't replicated in [What is Replicated](../server/ongoing-tasks/external-replication#what-is-replicated).
     
+ ---
+    
+ ## Why not use regular documents to enforce uniqueness
+
+* You might consider storing a document with a predictable ID (for example, _phones/123456_) as a way to enforce uniqueness, 
+  and then checking for its existence before allowing another document to use the same value.
+
+* While this might work in a single-node setup or with external replication,
+  it does not reliably enforce uniqueness in a clustered environment.
+ 
+* If a node was not part of the cluster when the document was created, it might not be aware of its existence when it comes back online. 
+  In such cases, attempting to load the document on this node may return _null_, leading to duplicate values being inserted.
+
+* To reliably enforce uniqueness across all cluster nodes, you must use compare-exchange items,
+  which are designed for this purpose and ensure global consistency.    
+    
 ---
     
 ## Example I - Email address reservation  
 
 The following example shows how to use compare-exchange to create documents with unique values.  
 The scope is within the database group on a single cluster. 
-
-Compare-exchange items are not externally replicated to other databases.  
-To establish uniqueness without using compare-exchange see [Example III](../compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
     
 <TabItem value="" label="">    
 ```java
@@ -110,21 +136,26 @@ user.setEmail(email);
 try (IDocumentSession session = store.openSession()) {
     session.store(user);
 
-    // At this point, the user document has an Id assigned
+    // At this point, the user object has a document ID assigned by the session.
 
-    // Try to reserve a new user email
-    // Note: This operation takes place outside of the session transaction,
-    //       It is a cluster-wide reservation
+    // Try to reserve the user email using a compare-exchange item.
+    // Note: This 'put compare-exchange operation' is not part of the session transaction, 
+    //       It is a separate, cluster-wide reservation.
     CompareExchangeResult<String> cmpXchgResult = store
         .operations().send(
+            // parameters passed to the operation:
+            // email - the unique key of the compare-exchange item
+            // user.getId() - the value associated with the key
+            // 0 - pass `0` to ensure the item is created only if it doesn't already exist.
+            // If a compare-exchange item with the given key already exists, the operation will fail.
             new PutCompareExchangeValueOperation<>(email, user.getId(), 0));
 
     if (!cmpXchgResult.isSuccessful()) {
         throw new RuntimeException("Email is already in use");
     }
 
-    // At this point we managed to reserve/save the user email -
-    // The document can be saved in SaveChanges
+    // At this point, the email has been successfully reserved/saved.
+    // We can now save the user document to the database.
     session.saveChanges();
 }
 ```
@@ -215,7 +246,9 @@ public long lockResource(IDocumentStore store, String resourceName, Duration dur
             return saveResult.getIndex();
         \}
 
-        // At this point, Put operation failed - someone else owns the lock or lock time expired
+        // At this point, someone else owns the resource.
+        // But if their reservation has expired (e.g., the process crashed and never released it),
+        // we can try to take the lock by overwriting the value using the current index.
         if (saveResult.getValue().reservedUntil.isBefore(now)) \{
             // Time expired - Update the existing key with the new value
             CompareExchangeResult<SharedResource> takeLockWithTimeoutResult =
