@@ -296,10 +296,15 @@ code {
 }
 
 [data-theme='dark'] .alert--secondary {
-  --ifm-alert-background-color: rgba(55, 65, 81, 0.3);
+  --ifm-alert-background-color: rgba(55, 65, 81, 0.2);
   --ifm-alert-background-color-highlight: rgba(75, 85, 99, 0.5);
-  --ifm-alert-foreground-color: rgba(243, 244, 246, 0.9);
+  --ifm-alert-foreground-color: rgba(243, 244, 246, 0.8);
   --ifm-alert-border-color: rgba(156, 163, 175, 0.6);
+}
+
+/* Custom color for bolded text placed inside alert (dark theme) */
+[data-theme='dark'] .alert strong {
+    color: rgba(243, 244, 246, 0.9);
 }
 
 /* Custom margin-bottom for tabs and admonitions followed by other elements */
