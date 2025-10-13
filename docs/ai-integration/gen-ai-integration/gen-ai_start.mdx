@@ -14,28 +14,29 @@ import genAiStartStudioImage from "./assets/gen-ai_start_studio-image.png";
 
 # GenAI: Start
 
-RavenDB Generative AI (GenAI) tasks are ongoing operations that remain active in the background, continuously monitoring a specified collection and processing documents as they are added or modified.  
-Similar to ETL tasks, a GenAI task extracts content from each processed document and transfers this content. Its destination, however, is an AI model, to which it sends the **content** along with a guiding **prompt** and a **response template**.  
-When the model responds, its reply is structured in a way that allows the task to use it effectively. For example, the task can use the response to update the source document with the requested information.  
-GenAI tasks can be used to summarize long documents, extract key details, translate texts, generate new content based on the existing data, and so on. They can be easily created using Studio or the client API, and when created via Studio, each step of their creation can be easily tested and validated before deployment.
+RavenDB Generative AI (GenAI) tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor a specified collection, processing documents as they are added or modified. Similar to ETL tasks, a GenAI task extracts content from each processed document and transfers this content. However, instead of sending it to a final destination like an ETL task would, it sends the content to an AI model along with a guiding **prompt** and a **response template**.  
+When the model responds, it structures its response according to the response template so the GenAI task will be able to use it effectively, e.g., to update the source document with the requested information or with LLM-generated insights.  
+GenAI tasks can be easily created using Studio or the client API, and when created via Studio, each step of their creation can be easily tested and validated before deployment.  
 
 ## Use cases
 
-- [Content analysis & moderation use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation)
+GenAI tasks can infuse intelligence into a wide variety of content handling scenarios, here are just a few of the categories in which they can help (click a category for a few examples in this area):
 
-- [Data enrichment & enhancement use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement)
+- [Data enrichment & enhancement use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement-use-cases)
 
-- [Smart automation & workflows use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows)
+- [Smart automation & workflows use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows-use-cases)
 
-- [Enhanced search & discovery use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery)
+- [Enhanced search & discovery use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery-use-cases)
 
-- [Business intelligence & insights use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights)
+- [Business intelligence & insights use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights-use-cases)
+
+- [Content analysis & moderation use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation-use-cases)
 
 
 ## Technical documentation
 
 Use our technical documentation to learn more about GenAI tasks and how to create and manage them.  
-If you're new to GenAI tasks, we recommend the [overview](../../ai-integration/gen-ai-integration/gen-ai-overview) page as a good starting point.  
+If you're new to GenAI tasks, the [overview](../../ai-integration/gen-ai-integration/gen-ai-overview) page as a good starting point.  
 
 <ColGrid colCount={3}>
     <CardWithImage title="GenAI tasks - Overview" description="The starting point for the GenAI documentation: an overview of the feature" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
@@ -45,7 +46,7 @@ If you're new to GenAI tasks, we recommend the [overview](../../ai-integration/g
 
 ## Videos
 
-Watch a webinar that explains how GenAI tasks make AI-powered workflow automation reliable and effective.  
+Learn how GenAI tasks help create reliable and effective AI-powered workflows.
 
 <ColGrid colCount={2}>
     <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
