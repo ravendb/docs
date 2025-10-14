@@ -2,7 +2,6 @@ import React, { type ReactNode } from "react";
 import DocItem from "@theme-original/DocItem";
 import type DocItemType from "@theme/DocItem";
 import type { WrapperProps } from "@docusaurus/types";
-import { LanguageProvider } from "../../components/LanguageContext";
 
 type Props = WrapperProps<typeof DocItemType>;
 
@@ -12,13 +11,11 @@ export default function DocItemWrapper(props: Props): ReactNode {
     title === "RavenDB Documentation" ||
     title === "RavenDB Cloud Documentation";
 
-  return (
+    return (
     <div className="wrapper row">
-      <LanguageProvider>
-        <div className="col flex-1 min-w-0">
-          <DocItem {...props} />
-        </div>
-      </LanguageProvider>
+      <div className="col flex-1 min-w-0">
+        <DocItem {...props} />
+      </div>
       {!isHomePage && <div className="col col--3 lg:block"></div>}
     </div>
   );
