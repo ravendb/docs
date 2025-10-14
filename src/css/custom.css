@@ -302,6 +302,22 @@ code {
   --ifm-alert-border-color: rgba(156, 163, 175, 0.6);
 }
 
+/* Custom styling for links placed inside alert */
+.alert {
+    --ifm-link-color: var(--ifm-color-primary);
+    
+    a {
+        text-decoration: none;
+        text-decoration-color: var(--ifm-link-color);
+    }
+
+    a:hover {
+        color: var(--ifm-link-color);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+    }
+}
+
 /* Custom margin-bottom for tabs and admonitions followed by other elements */
 [class^="tabItem"]:has(+ *), .theme-admonition:has(+ *) {
   @apply mb-4;
