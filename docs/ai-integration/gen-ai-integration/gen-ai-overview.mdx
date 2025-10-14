@@ -15,12 +15,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # GenAI Integration: Overview
 <Admonition type="note" title="">
 
-* **GenAI Integration** allows RavenDB to connect and interact with Generative AI models, 
-  introducing numerous new ways for intelligent, autonomous data processing in production.  
-  
-     A task can be built in minutes, e.g. to Classify customer inquiries based on sentiment, Generate automated responses to frequently asked questions, Escalate support tickets, Summarize lengthy documents, Provide relevant recommendations, Tag and prioritize content for efficient retrieval, Enhance data security by detecting anomalies, Optimize inventory predictions... or endless other options, bound only by our creativity.  
+* **GenAI Integration** allows RavenDB to connect and interact with Generative AI models, introducing intelligent, autonomous data processing in production.
 
-* **Ongoing GenAI tasks** can be easily defined, tested and deployed using API or Studio.  
+     A task can be built in minutes, e.g. to generate automated responses to frequently asked questions, escalate support tickets, summarize lengthy documents, enhance data security by detecting anomalies, or numerous other applications (see a few additional examples in the [common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases) section below).
+
+* **Ongoing GenAI tasks** can be easily defined, tested and deployed using [the client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api) or [Studio](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio).  
 
      While creating a GenAI task via Studio, a smart interactive environment is provided, 
      allowing each phase of the task to be tested in a secluded playground, freely and without 
@@ -151,11 +150,12 @@ These are the elements that need to be defined for a GenAI task.
      <TabItem value="plain" label="plain">
 
      ```plain
-     Check if the following blog post comment is spam or not.  
-     m comment typically includes irrelevant or promotional content, excessive 
-     , misleading information, or is written with the intent to manipulate search 
-     ngs or advertise products/services.  
-     der the language, intent, and relevance of the comment to the blog post topic.
+     Check if the following blog post comment is spam or not. 
+     A spam comment typically includes irrelevant or promotional content, 
+     excessive, misleading information, or is written with the intent to 
+     manipulate search engines or advertise products/services. 
+     Consider the language, intent, and relevance of the comment for 
+     the blog post content.
      ```
      </TabItem>
 
@@ -164,8 +164,7 @@ These are the elements that need to be defined for a GenAI task.
    * The update script can take any action, based on the information included in the model's response.  
      It can, for example, Modify the source document, Create new documents populated by AI-generated text, 
      Remove existing documents, and so on.  
-     The following script, for example, removes a comment from a blog post if the AI has concluded 
-     that the comment is spam.  
+     E.g., the following script removes a comment from a blog post if the AI model has concluded that the comment is spam.  
      <TabItem value="javascript" label="javascript">
 
       ```javascript
@@ -186,7 +185,7 @@ These are the elements that need to be defined for a GenAI task.
   to create GenAI tasks. The wizard will guide you through the task creation phases, 
   exemplify where needed, and provide you with convenient, interactive, secluded "playgrounds" 
   for free interactive experimenting.  
-* You can also create GenAI tasks using the [Client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api) 
+* Or, you can create GenAI tasks using the [Client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api). 
 
 <hr />
 
@@ -209,19 +208,21 @@ added or modified.
    * The update script
   </Admonition>
 * If the task is requested to process this document part again, it will compute a new hash code based on these elements, and compare it with the existing hash, logged in the document metadata.  
-   * If the new hash differs from the existing one, it will indicate that the content or the configuration has changed, and the task will reprocess this document part.  
+   * If the new hash differs from the existing one, it will indicate that the content and/or the configuration changed, and the task will reprocess this document part.  
    * If the new hash is identical to the existing one, the task will conclude that the context object was already processed with the exact same content and task configuration, and skip reprocessing it.  
 
-      ![Tracking processed document parts](./assets/gen-ai_overview_hash-flow.png)
+    **Tracking processed document parts**:  
+    ![Tracking processed document parts](./assets/gen-ai_overview_hash-flow.png)
 
-      <a id="gen-ai-metadata"/>![Metadata Identifier and Hash codes](./assets/gen-ai_overview_metadata.png)
+    **Hash codes in document metadata**:  
+    <a id="gen-ai-metadata"/>![Metadata Identifier and Hash codes](./assets/gen-ai_overview_metadata.png)
 
-      1. **Identifier**  
-        This is the user-defined task identifier (defined as part of the configuration).  
-      2. **Hash codes**  
-        These hash codes were created after processing the document.  
-        The codes were computed per comment, based on the comment's content and the current task configuration.  
-        When the document is processed again, the task will generate a new hash code for each comment. If the comment or the task configuration has changed, the new hash will differ from the existing one and trigger reprocessing. If none of them changed, the identical hash will indicate that no reprocessing is needed.  
+    1. **Identifier**  
+      This is the user-defined task identifier (defined as part of the configuration).  
+    2. **Hash codes**  
+      These hash codes were created after processing the document.  
+      The codes were computed per comment, based on the comment's content and the current task configuration.  
+      When the document is processed again, the task will generate a new hash code for each comment. If the comment or the task configuration has changed, the new hash will differ from the existing one and trigger reprocessing. If none of them changed, the identical hash will indicate that no reprocessing is needed.  
 
 <hr />
 
