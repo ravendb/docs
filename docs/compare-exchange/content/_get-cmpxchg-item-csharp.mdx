@@ -64,7 +64,11 @@ import CodeBlock from '@theme/CodeBlock';
          itemToCreate.Metadata["email-type"] = "work email";
          
          session.SaveChanges();
+    }
     
+    using (var session = store.OpenSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {     
         // Get the compare-exchange item:
         // ==============================
         
@@ -106,7 +110,11 @@ import CodeBlock from '@theme/CodeBlock';
         itemToCreate.Metadata["email-type"] = "work email";    
             
         await asyncSession.SaveChangesAsync();
-        
+    }
+    
+    using (var asyncSession = store.OpenAsyncSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {        
         // Get the compare-exchange item:
         // ==============================
         
@@ -148,7 +156,11 @@ import CodeBlock from '@theme/CodeBlock';
                  value: "users/1" 
          );
          session.SaveChanges();
-         
+    }
+    
+    using (var session = store.OpenSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {            
         // Get the compare-exchange item lazily:
         // =====================================
         
@@ -185,7 +197,11 @@ import CodeBlock from '@theme/CodeBlock';
             );
             
         await asyncSession.SaveChangesAsync();
-         
+    }
+    
+    using (var asyncSession = store.OpenAsyncSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {        
         // Get the compare-exchange item lazily:
         // =====================================
         

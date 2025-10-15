@@ -203,8 +203,14 @@ def print_work() -> None:
 
     try:
         ...
-        # Do some work for the duration that was set
-        # Don't exceed the duration, otherwise resource is available for someone else
+        # Do some work for the duration that was set (timedelta(minutes=20)).
+        # Don't exceed the duration, otherwise the resource won't be available for someone else.
+        
+        # In a distributed system (unlike a multi-threaded app), a process may fail or exit unexpectedly 
+        # before releasing the resource - never reaching the 'finally' block.
+        
+        # To prevent the resource from remaining locked indefinitely, 
+        # we use a timeout to expire the reservation.
     finally:
         release_resource(store, "Printer/First-Floor", reservation_index)
 
@@ -221,9 +227,9 @@ def lock_resource(document_store: DocumentStore, resource_name: str, duration: t
             # resource_name wasn't present - we managed to reserve
             return save_result.index
 
-        # At this point, someone else owns the resource.
-        # But if their reservation has expired (e.g., the process crashed and never released it),
-        # we can try to take the lock by overwriting the value using the current index.
+        # At this point, another process owns the resource.
+        # But if that process crashed and never released the resource, the reservation may have expired,
+        # so we can try to take the lock by overwriting the value using the current index.
         if save_result.value.reserved_until < now:
             # Time expired - Update the existing key with new value
             take_lock_with_timeout_result = document_store.operations.send(

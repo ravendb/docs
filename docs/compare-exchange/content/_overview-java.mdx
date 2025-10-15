@@ -223,8 +223,14 @@ public void printWork() throws InterruptedException \{
     long reservationIndex = lockResource(store, "Printer/First-Floor", Duration.ofMinutes(20));
 
     try \{
-        // Do some work for the duration that was set.
-        // Don't exceed the duration, otherwise resource is available for someone else.
+        // Do some work for the duration that was set (Duration.ofMinutes(20)).
+        // Don't exceed the duration, otherwise the resource won't be available for someone else.
+        
+        // In a distributed system (unlike a multi-threaded app), a process may fail or exit unexpectedly 
+        // before releasing the resource - never reaching the 'finally' block.
+        
+        // To prevent the resource from remaining locked indefinitely, 
+        // we use a timeout to expire the reservation.
     \} finally \{
         releaseResource(store, "Printer/First-Floor", reservationIndex);
     \}
@@ -246,9 +252,9 @@ public long lockResource(IDocumentStore store, String resourceName, Duration dur
             return saveResult.getIndex();
         \}
 
-        // At this point, someone else owns the resource.
-        // But if their reservation has expired (e.g., the process crashed and never released it),
-        // we can try to take the lock by overwriting the value using the current index.
+        // At this point, another process owns the resource.
+        // But if that process crashed and never released the resource, the reservation may have expired,
+        // so we can try to take the lock by overwriting the value using the current index.
         if (saveResult.getValue().reservedUntil.isBefore(now)) \{
             // Time expired - Update the existing key with the new value
             CompareExchangeResult<SharedResource> takeLockWithTimeoutResult =

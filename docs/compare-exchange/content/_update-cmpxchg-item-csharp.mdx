@@ -93,9 +93,9 @@ using (var asyncSession = store.OpenAsyncSession(
 * To perform an update, provide:
   * The existing key
   * A new value and/or metadata
-  * The latest index (version) of the item as last seen by the client.
+  * The expected index (version) of the item, which must match the current version stored on the server.
 
-* The update will succeed only if the index you provide exactly matches the current index stored on the server for that key.
+* The update will succeed only if the index you provide matches the current index stored on the server for that key.
   This ensures that the item hasn’t been modified by another client since you last read it.
 
 * If the index does not match, or if the specified key does not exist:

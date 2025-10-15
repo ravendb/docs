@@ -144,7 +144,7 @@ using (var session = store.OpenSession(new SessionOptions
 
     // Calling 'Load' has triggered a server call
     var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg item:
     // =================================
@@ -154,8 +154,8 @@ using (var session = store.OpenSession(new SessionOptions
     var item = session.Advanced.ClusterTransaction
         .GetCompareExchangeValue<string>(company1.Supplier);
 
-    // You can assert that no further server calls were made
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 
     // The CmpXchg item value is available
     var value = item.Value;
@@ -180,7 +180,7 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
 
     // Calling 'LoadAsync' has triggered a server call
     var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg item:
     // =================================
@@ -190,8 +190,8 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
     var item = await asyncSession.Advanced.ClusterTransaction
         .GetCompareExchangeValueAsync<string>(company1.Supplier);
 
-    // You can assert that no further server calls were made
-    Debug.Assert(asyncSession.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 
     // The CmpXchg item value is available
     var value = item.Value;
@@ -223,8 +223,8 @@ using (var session = store.OpenSession(new SessionOptions
         // "Workers" is the document property that holds the list of keys to include
         includes.IncludeCompareExchangeValue<Company>(c => c.Workers));
 
-    var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    var numberOfRequests = session.Advanced.NumberOfRequests; 
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -234,8 +234,8 @@ using (var session = store.OpenSession(new SessionOptions
     var items = session.Advanced.ClusterTransaction
         .GetCompareExchangeValues<string>(company1.Workers);
 
-    // You can assert that no further server calls were made
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 
     // The value of each item is available
     var value1 = items["employees/1"].Value;
@@ -260,7 +260,7 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
         includes.IncludeCompareExchangeValue(c => c.Workers));
 
     var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -270,8 +270,8 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
     var items = await asyncSession.Advanced.ClusterTransaction
         .GetCompareExchangeValuesAsync<string>(company1.Workers);
 
-    // You can assert that no further server calls were made
-    Debug.Assert(asyncSession.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 
     // The value of each item is available
     var value1 = items["employees/1"].Value;
@@ -311,7 +311,7 @@ using (var session = store.OpenSession(new SessionOptions
 
     // Making the query has triggered a server call
     var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -328,8 +328,8 @@ using (var session = store.OpenSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    // You can assert that no further server calls were made
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>
@@ -352,7 +352,7 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
 
     // Making the query has triggered a server call
     var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     var cmpXchgItems = new List<CompareExchangeValue<string>>();
 
@@ -366,8 +366,8 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    // You can assert that no further server calls were made
-    Debug.Assert(asyncSession.Advanced.NumberOfRequests == numberOfRequests);
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>
@@ -392,7 +392,7 @@ using (var session = store.OpenSession(new SessionOptions
         .ToList();
 
     var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -409,7 +409,7 @@ using (var session = store.OpenSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>
@@ -439,7 +439,7 @@ using (var session = store.OpenSession(new SessionOptions
         .ToList();
 
     var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -456,7 +456,7 @@ using (var session = store.OpenSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>
@@ -514,7 +514,7 @@ using (var session = store.OpenSession(new SessionOptions
         .ToList();
 
     var numberOfRequests = session.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -529,7 +529,7 @@ using (var session = store.OpenSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    Debug.Assert(session.Advanced.NumberOfRequests == numberOfRequests);
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>
@@ -552,7 +552,7 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
         .ToListAsync();
 
     var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
-    Debug.Assert(numberOfRequests == 1);
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
 
     // Access the included CmpXchg items:
     // ==================================
@@ -567,7 +567,7 @@ using (var asyncSession = store.OpenAsyncSession(new SessionOptions
         cmpXchgItems.Add(item);
     }
 
-    Debug.Assert(asyncSession.Advanced.NumberOfRequests == numberOfRequests);
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
 }
 ```
 </TabItem>

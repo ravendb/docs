@@ -80,7 +80,9 @@ await documentStore.operations.send(
     const items = await session.advanced.clusterTransaction.getCompareExchangeValues(keys);
     
     // Check results
-    assert.equal(Object.keys(items).length, 4); // 4 keys were requested
+    console.log(
+        `Number of compare-exchange items retrieved: ${Object.keys(items).length}`
+    ); // Expecting 4
     
     // Access the retrieved items
     const value = items["employees/1"].value;
@@ -102,7 +104,9 @@ await documentStore.operations.send(
     const items = await documentStore.operations.send(getCmpXchgOp);
     
     // Check results
-    assert.equal(Object.keys(items).length, 4); // 4 keys were requested
+    console.log(
+        `Number of compare-exchange items retrieved: ${Object.keys(items).length}`
+    ); // Expecting 4
     
     // Access the retrieved items
     const value = items["employees/1"].value;
@@ -137,7 +141,9 @@ await documentStore.operations.send(
     const items = await lazyItems.getValue();
     
     // Check results
-    assert.equal(Object.keys(items).length, 4); // 4 keys were requested
+    console.log(
+        `Number of compare-exchange items retrieved: ${Object.keys(items).length}`
+    ); // Expecting 4
     
     // Access the retrieved items
     const value = items["employees/1"].value;
@@ -174,7 +180,10 @@ await documentStore.operations.send(
     // Execute the operation by passing it to operations.send
     const items = await documentStore.operations.send(getCmpXchgOp);
     
-    // Results will include only compare-exchange items with keys that start with "employees" 
+    // Results will include only compare-exchange items with keys that start with "employees"
+    console.log(
+        `Number of compare-exchange items with prefix 'employees': ${Object.keys(items).length}`
+    ); // Should be 3
     ```
     </TabItem>
     </Tabs>

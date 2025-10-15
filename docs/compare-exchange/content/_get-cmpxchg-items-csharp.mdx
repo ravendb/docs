@@ -84,8 +84,8 @@ store.Operations.Send(
         Dictionary<string, CompareExchangeValue<string>> items =
             session.Advanced.ClusterTransaction.GetCompareExchangeValues<string>(keys);
         
-        // Check results    
-        Debug.Assert(items.Count == 4); // 4 keys were requested
+        // Check results
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
         
         // Access a retrieved item - an existing key
         if (items.TryGetValue("employees/1", out var item))
@@ -117,7 +117,7 @@ store.Operations.Send(
             await asyncSession.Advanced.ClusterTransaction.GetCompareExchangeValuesAsync<string>(keys);
         
         // Check results    
-        Debug.Assert(items.Count == 4); // 4 keys were requested
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
         
         // Access a retrieved item - an existing key
         if (items.TryGetValue("employees/1", out var item))
@@ -146,7 +146,7 @@ store.Operations.Send(
     Dictionary<string, CompareExchangeValue<string>> items = store.Operations.Send(getCmpXchgItemsOp);
     
     // Check results    
-    Debug.Assert(items.Count == 4); // 4 keys were requested
+    Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
     
     // Access a retrieved item - an existing key
     if (items.TryGetValue("employees/1", out var item))
@@ -176,7 +176,7 @@ store.Operations.Send(
         store.Operations.SendAsync(getCmpXchgItemsOp);
     
     // Check results    
-    Debug.Assert(items.Count == 4); // 4 keys were requested
+    Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
     
     // Access a retrieved item - an existing key
     if (items.TryGetValue("employees/1", out var item))
@@ -217,7 +217,7 @@ store.Operations.Send(
         Dictionary<string, CompareExchangeValue<string>> items = lazyItems.Value;
         
         // Check results    
-        Debug.Assert(items.Count == 4); // 4 keys were requested
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
         
         // Access a retrieved item - an existing key
         if (items.TryGetValue("employees/1", out var item))
@@ -251,7 +251,7 @@ store.Operations.Send(
         Dictionary<string, CompareExchangeValue<string>> items = await lazyItems.Value;
         
         // Check results    
-        Debug.Assert(items.Count == 4); // 4 keys were requested
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
         
         // Access a retrieved item - an existing key
         if (items.TryGetValue("employees/1", out var item))
@@ -296,7 +296,8 @@ store.Operations.Send(
                 startsWith: "employees", start: 0, pageSize: 10);
     
         // Results will include only compare-exchange items with keys that start with "employees"
-        Debug.Assert(items.Count == 3); // There are 3 keys with the "employees" prefix
+        Console.WriteLine($"Number of compare-exchange items with prefix 'employees': {items.Count}");
+        // Should be 3
     } 
     ```
     </TabItem>
@@ -316,7 +317,8 @@ store.Operations.Send(
                 startsWith: "employees", start: 0, pageSize: 10);
         
         // Results will include only compare-exchange items with keys that start with "employees"
-        Debug.Assert(items.Count == 3); // There are 3 keys with the "employees" prefix 
+        Console.WriteLine($"Number of compare-exchange items with prefix 'employees': {items.Count}");
+        // Should be 3
     }
     ```
     </TabItem>

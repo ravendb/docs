@@ -141,8 +141,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Create item using a store operation
   
-* Use the `PutCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations) to create a compare-exchange item independently, without opening a session.
-  This is ideal for stand-alone tasks where you need to perform a direct compare-exchange operation without involving document transactions.  
+* Use the `PutCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations) to create a compare-exchange item independently,  
+  without opening a session.
+  This is ideal for stand-alone tasks that don't require batching multiple commands into a single transactional session.  
+
+* Note:  
+   _PutCompareExchangeValueOperation_ is used for both **creating** and [modifying](../compare-exchange/update-cmpxchg-item) compare-exchange items.  
+  The intent of the operation is determined by the index you pass:  
+  * An index of `0` indicates a **create** operation.
+  * A non-zero index indicates a **modify** operation.
 
 * Creating a new compare-exchange item will succeed only if:
   * The passed index is 0, and
@@ -254,7 +261,7 @@ const putCmpXchgOp = new PutCompareExchangeValueOperation(key, value, index, met
 | Parameter    | Type     | Description |
 |--------------|----------|-------------|
 | **key**      | `string` | <ul><li>A unique identifier in the database scope.</li><li>Can be up to 512 bytes.</li></ul> |
-| **value**    | `object` | <ul><li>A value to be saved for the specified _key_.</li><li>Can be any object (number, string, array, or any valid JSON object).</li></ul> |
+| **value**    | `object` | <ul><li>A value to be saved for the specified _key_.</li><li>Can be any value (number, string, array, or any valid JSON object).</li></ul> |
 | **index**    | `number` | <ul><li>Pass `0` to create a new key.</li><li>When updating an existing key, pass the current number for concurrency control.</li></ul> |
 | **metadata** | `object` | <ul><li>Optional metadata to be saved for the specified _key_.</li><li>Must be a valid JSON object.</li></ul> |
 
