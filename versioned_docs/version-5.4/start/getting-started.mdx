@@ -13,20 +13,22 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Getting Started
+
 <Admonition type="note" title="">
 
 Welcome to RavenDB! 
 
-This article will get you started and guide you through all the aspects of RavenDB needed for basic understanding and a simple setup.  
+* This article will get you started with RavenDB, covering the essentials for a simple setup and basic usage.
 
-* In this page:
-   * The [Server](../start/getting-started.mdx#server) portion will focus on installation, setup & configuration of the RavenDB server  
+* The [Server section](../start/getting-started.mdx#server) covers installation, setup, and configuration of the RavenDB server:
       * [Prerequisites](../start/getting-started.mdx#prerequisites)  
       * [Installation & Setup](../start/getting-started.mdx#installation--setup)  
       * [Configuration](../start/getting-started.mdx#configuration)  
       * [Studio](../start/getting-started.mdx#studio)  
       * [Security Concerns](../start/getting-started.mdx#security-concerns)  
-   * The [Client](../start/getting-started.mdx#client) portion will describe the general logic and principles behind our client libraries 
+
+* The [Client section](../start/getting-started.mdx#client) shows how to connect your application to the RavenDB server   
+     and begin working with documents using a client library:
       * [DocumentStore](../start/getting-started.mdx#documentstore)  
       * [Session](../start/getting-started.mdx#session)  
 
@@ -44,6 +46,7 @@ RavenDB is cross-platform with support for the following operating systems:
 - Docker 
 - MacOS
 - Raspberry Pi
+
 ### Prerequisites
 
 RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
@@ -65,6 +68,7 @@ We highly recommend **updating** your **Linux OS** prior to launching the RavenD
 We highly recommend **updating** your **MacOS** and checking the [Prerequisites for .NET Core on macOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites) article written by Microsoft before launching the RavenDB Server.
 
 </Admonition>
+
 ### Installation & Setup
 
 <Admonition type="note" title="Highly Available Clusters" id="highly-available-clusters" href="#highly-available-clusters">
@@ -137,6 +141,7 @@ appearing:
 `<Studio URL>#dashboard?disableAnalytics=true`
 
 </Admonition>
+
 ### Configuration
 
 The RavenDB server uses a [settings.json](../server/configuration/configuration-options.mdx#settingsjson) file in each node `Server` folder to store the server-wide configuration options.  
@@ -190,6 +195,7 @@ RavenDB requires write permissions to the following locations:
 If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
 
 </Admonition>
+
 ### Studio
 
 <Admonition type="note" title="Free" id="free" href="#free">
@@ -204,6 +210,7 @@ Our GUI, the RavenDB Management Studio, comes **free** with **every license type
 
 After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.  
 Whenever you run the server folder script `run.ps1` the Studio opens automatically in your browser.  
+
 ### Security Concerns
 
 **We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start** to prevent potential future vulnerability.  
@@ -224,20 +231,22 @@ access control to prevent unauthorized access to your data or to explicitly allo
 
 Read more about security and how to [enable authentication here](../server/security/overview.mdx).
 
-
+---
 
 ## Client
 
-After your server is up and running, to write an application you need to acquire one of the `Client` access libraries:
+Once the server is up and running, you can start building your application using one of RavenDB’s official client libraries.  
+These libraries manage the connection to the server, handle document storage and retrieval, and give you full access to RavenDB features in your programming language.
 
-- .NET from [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
-- Java from [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
-- Node.js from [NPM](https://www.npmjs.com/package/ravendb)
-- Python from [PyPi](https://pypi.org/project/pyravendb/)
-- [Ruby](https://github.com/ravendb/ravendb-ruby-client)
-- [Go](https://github.com/ravendb/ravendb-go-client)
+Client libraries are available for the following languages:
 
----
+* .NET - `RavenDB.Client` on [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
+* Java - `ravendb` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
+* Node.js - `ravendb` on [NPM](https://www.npmjs.com/package/ravendb)
+* Python - `ravendb` on [PyPI](https://pypi.org/project/ravendb/)
+* PHP - `ravendb-php-client` on [GitHub](https://github.com/ravendb/ravendb-php-client)
+* Ruby - `ravendb-ruby-client` on [GitHub](https://github.com/ravendb/ravendb-ruby-client)
+* Go - `ravendb-go-client` on [GitHub](https://github.com/ravendb/ravendb-go-client)
 
 ### DocumentStore
 
@@ -325,8 +334,6 @@ The following articles can extend your knowledge about the `DocumentStore` and i
 - [How to Create a Document Store?](../client-api/creating-document-store.mdx)
 - [How to Setup a Default Database?](../client-api/setting-up-default-database.mdx)
 - [How to configure the Document Store using Conventions?](../client-api/configuration/conventions.mdx)
-
----
 
 ### Session
 
