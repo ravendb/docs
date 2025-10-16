@@ -1,0 +1,153 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A new compare-exchange item can be created in the following ways:
+  * Using a cluster-wide session  
+  * Using a store operation  
+  * Using the Studio   
+  
+* To create a new compare-exchange item, you must provide:  
+  * **A unique key** (string, up to 512 bytes)  
+  * **An associated value** (number, string, array, or any valid JSON object)
+  * You can optionally add **metadata** (a valid JSON object) to store extra information with the item.    
+    A common use case is to set an expiration time for the compare-exchange item in its metadata.  
+    Learn more in [Set expiration for compare-exchange items](../compare-exchange/cmpxchg-expiration).    
+ 
+* To modify an existing compare-exchange item, see: [Update compare-exchange item](../compare-exchange/update-cmpxchg-item).
+
+* In this article:  
+  * [Create item using a **store operation**](../compare-exchange/create-cmpxchg-items#create-item-using-a-store-operation)  
+  * [Create item using the **Studio**](../compare-exchange/create-cmpxchg-items#create-item-using-the-studio)
+  * [Syntax](../compare-exchange/create-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Create item using a store operation
+
+* Use the `PutCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations) to create a compare-exchange item independently,  
+  without opening a session.
+  This is ideal for stand-alone tasks that don't require batching multiple commands into a single transactional session.  
+  
+* Note:  
+   _PutCompareExchangeValueOperation_ is used for both **creating** and [modifying](../compare-exchange/update-cmpxchg-item) compare-exchange items.  
+  The intent of the operation is determined by the index you pass:  
+  * An index of `0` indicates a **create** operation.
+  * A non-zero index indicates a **modify** operation.    
+
+* Creating a new compare-exchange item will succeed only if:
+  * The passed index is 0, and
+  * The specified key does not already exist in the database.
+
+* The operation will return a failed result (no exception is thrown) in the following cases:
+  * A new key is provided, but the index is not 0.
+  * The key already exists, even if the passed index is 0.
+
+---
+
+#### Example
+
+<TabItem value="" label="">
+<CodeBlock language="java">
+{`CompareExchangeResult<String> compareExchangeResult = store.operations().send(
+    new PutCompareExchangeValueOperation<>("user1-name@example.com", "users/1", 0));
+
+boolean successful = compareExchangeResult.isSuccessful();
+// If successful is true: then Key 'user1-name@example.com' now has the value of "users/1"
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+## Create item using the Studio
+
+To create compare-exchange items using the Studio, go to **Documents > Compare Exchange**.
+
+![The compare-exchange view](../assets/create-new-cmpxchg-1.png)
+
+![The compare-exchange view](../assets/create-new-cmpxchg-2.png)
+
+1. **Key**  
+   Enter a unique identifier for the compare-exchange item (up to 512 bytes).  
+   This key must be unique across the entire database.
+2. **Value**  
+    Enter the value to associate with the key.  
+    Can be a number, string, array, or any valid JSON object.
+3. **Metadata** (optional)  
+    Add any additional data you want to store with the item.  
+    Must be a valid JSON object.  
+    Can be used to [set expiration time](../todo..) for the compare-exchange item.  
+4. **Save**  
+   Click to create the compare-exchange item.  
+   If the key already exists, an error message will be shown.
+
+---
+
+## Syntax
+
+---
+
+### `PutCompareExchangeValueOperation`  
+Create compare-exchange item using a store operation: 
+
+<TabItem value="" label="">
+<CodeBlock language="java">
+{`public PutCompareExchangeValueOperation(String key, T value, long index)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type   | Description |
+|-----------|--------|-------------|
+| **key**   | String | Object identifier under which _value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes. |
+| **value** | `T`    | The value to be saved for the specified _key_. |
+| **index** | long   | * `0` if creating a new key<br/>* The current version of _value_ when updating a value for an existing key. |
+
+**Returned object**:
+
+<TabItem value="" label="">
+<CodeBlock language="java">
+{`public class CompareExchangeResult<T> \{
+    private T value;
+    private long index;
+    private boolean successful;
+
+    public T getValue() \{
+        return value;
+    \}
+
+    public void setValue(T value) \{
+        this.value = value;
+    \}
+
+    public long getIndex() \{
+        return index;
+    \}
+
+    public void setIndex(long index) \{
+        this.index = index;
+    \}
+
+    public boolean isSuccessful() \{
+        return successful;
+    \}
+
+    public void setSuccessful(boolean successful) \{
+        this.successful = successful;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value   | Type    | Description                                                                 |
+|----------------|---------|-----------------------------------------------------------------------------|
+| **Successful** | boolean | * `true` if the save operation has completed successfully<br/>* `false` if the save operation failed |
+| **Value**      | `T`     | * The value that was saved if the operation was successful<br/>* The currently existing value in the server upon failure |
+| **Index**      | long    | * The version number of the value that was saved upon success<br/>* The currently existing version number in the server upon failure |
