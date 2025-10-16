@@ -203,14 +203,17 @@ def print_work() -> None:
 
     try:
         ...
-        # Do some work for the duration that was set (timedelta(minutes=20)).
-        # Don't exceed the duration, otherwise the resource won't be available for someone else.
-        
-        # In a distributed system (unlike a multi-threaded app), a process may fail or exit unexpectedly 
-        # before releasing the resource - never reaching the 'finally' block.
-        
-        # To prevent the resource from remaining locked indefinitely, 
-        # we use a timeout to expire the reservation.
+        # Do some work for the duration that was set (TimeSpan.FromMinutes(20)).
+        #
+        # In a distributed system (unlike a multi-threaded app), a process may crash or exit unexpectedly  
+        # without releasing the resource it reserved (i.e. never reaching the 'finally' block).  
+        # This can leave the resource locked indefinitely.
+        #
+        # To prevent that, each reservation includes a timeout (TimeSpan.FromMinutes(20)).  
+        # If the process fails or exits, the resource becomes available again once the timeout expires.
+        #
+        # Important: Ensure the work completes within the timeout period.  
+        # If it runs longer, another client may acquire the same resource at the same time.
     finally:
         release_resource(store, "Printer/First-Floor", reservation_index)
 
