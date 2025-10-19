@@ -20,11 +20,13 @@ import CodeBlock from '@theme/CodeBlock';
     * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
 
 </Admonition>
+
 ## Overview
 
 <Admonition type="note" title="">
 
 #### Attachments in RavenDB
+
 * Attachments in RavenDB allow you to associate binary files with your JSON documents.  
   You can use attachments to store images, PDFs, videos, text files, or any other format.  
 
@@ -35,9 +37,11 @@ import CodeBlock from '@theme/CodeBlock';
   Learn more in: [What are attachments](../../../document-extensions/attachments/what-are-attachments.mdx).
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 #### Indexing attachment content for vector search
+
 You can index attachment content in a vector field within a static-index,    
 enabling vector search on text or numerical data that is stored in the attachments:
 
@@ -54,7 +58,6 @@ enabling vector search on text or numerical data that is stored in the attachmen
       They must also be created using the **same model**.
 
 </Admonition>
-
 
 ## Indexing TEXT attachments
  
@@ -360,8 +363,6 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
 </CodeBlock>
 </TabItem>
 
-
-
 ## Indexing NUMERICAL attachments
 
 ### LINQ index
@@ -597,6 +598,7 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
+
 ### JS index
 
 * The following is the JavaScript index format equivalent to the [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index) shown above.
@@ -721,8 +723,6 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
 
 ## Indexing ALL attachments
 
@@ -958,7 +958,3 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
-
-
