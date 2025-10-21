@@ -13,7 +13,7 @@ const languageOptions: LanguageOption[] = [
     { label: "Java", value: "java", brand: "#f89820" },
     { label: "Python", value: "python", brand: "#fbcb24" },
     { label: "PHP", value: "php", brand: "#8993be" },
-    { label: "Node.JS", value: "nodejs", brand: "#3c873a" },
+    { label: "Node.js", value: "nodejs", brand: "#3c873a" },
 ];
 
 type LanguageSwitcherProps = {
