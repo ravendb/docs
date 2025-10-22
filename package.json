@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "npm run generate-icon-types && docusaurus start",
+    "start": "npm run generate-icon-types && docusaurus start --no-minify",
+    "start:current": "set \"DOCUSAURUS_START_VERSION_ENV=current\" && npm run generate-icon-types && docusaurus start --no-minify",
     "build": "npm run generate-icon-types && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
