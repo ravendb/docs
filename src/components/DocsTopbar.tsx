@@ -45,7 +45,7 @@ export default function DocsTopbar({
             className={clsx(
                 "sticky top-[71.46px] z-30",
                 "rounded-xl",
-                "transition-all duration-300 ease-in-out",
+                "transition-all duration-50 ease-in-out",
                 {
                     "max-h-[60px] opacity-100": isVisible,
                     "max-h-0 opacity-0": !isVisible,
