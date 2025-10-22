@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import { type DocsLanguage } from "./LanguageStore";
 
 type DocsTopbarProps = {
     title: string;
-    supportedLanguages?: string[];
+    supportedLanguages?: DocsLanguage[];
 };
 
 export default function DocsTopbar({

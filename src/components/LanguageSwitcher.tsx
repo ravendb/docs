@@ -1,8 +1,14 @@
 ﻿import React, { useEffect } from "react";
-import { useLanguage } from "./LanguageContext";
+import { useLanguage, type DocsLanguage } from "./LanguageStore";
 import clsx from "clsx";
 
-const languages = [
+interface LanguageOption {
+    label: string;
+    value: DocsLanguage;
+    brand: string;
+}
+
+const languageOptions: LanguageOption[] = [
     { label: "C#", value: "csharp", brand: "#9179E4" },
     { label: "Java", value: "java", brand: "#f89820" },
     { label: "Python", value: "python", brand: "#fbcb24" },
@@ -11,7 +17,7 @@ const languages = [
 ];
 
 type LanguageSwitcherProps = {
-    supportedLanguages: string[];
+    supportedLanguages: DocsLanguage[];
     flush?: boolean;
 };
 
@@ -21,15 +27,18 @@ export default function LanguageSwitcher({
 }: LanguageSwitcherProps) {
     const { language, setLanguage } = useLanguage();
 
+    const isCurrentLanguageSupported = supportedLanguages.includes(language);
+    const firstSupportedLanguage = supportedLanguages[0];
+
     useEffect(() => {
-        if (!supportedLanguages.includes(language)) {
-            setLanguage(supportedLanguages[0]);
+        if (!isCurrentLanguageSupported) {
+            setLanguage(firstSupportedLanguage);
         }
-    }, [supportedLanguages, language, setLanguage]);
+    }, [isCurrentLanguageSupported, firstSupportedLanguage, setLanguage]);
 
     return (
-        <div className={`flex flex-wrap gap-2 ${flush ? '' : 'mb-8'}`}>
-            {languages
+        <div className={clsx("flex flex-wrap gap-2", { 'mb-8': !flush })}>
+            {languageOptions
                 .filter((lang) => supportedLanguages.includes(lang.value))
                 .map((lang) => {
                     const isActive = language === lang.value;
