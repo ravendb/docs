@@ -30,25 +30,29 @@ import CodeBlock from '@theme/CodeBlock';
   which is the base class for all C# indexes.
 
 <TabItem value="js_index" label="js_index">
-<CodeBlock language="csharp">
-{`public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
-\{
-     Maps = new HashSet<string>()
-    \{
-        // Define a map function:
-        @"map(<CollectionName>, function(doc) \{ 
-              return \{
+```csharp
+// Inherit from 'AbstractJavaScriptIndexCreationTask' 
+public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
+{
+    public Documents_ByName_JS()
+    {
+        Maps = new HashSet<string>()
+        {
+            // Define a map function:
+            @"map(<CollectionName>, function(doc) { 
+              return {
                   Name: doc.Name
                   // ...
-              \}
-          \})",
-        
-        // ...
-    \};
-\}
-`}
-</CodeBlock>
+              }
+            })",
+            
+            // ...
+        };
+    }
+}
+```
 </TabItem>
+
 **Deploying a JavaScript index**:  
 
 * Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../indexes/creating-and-deploying.mdx#deploy-a-static-index).
