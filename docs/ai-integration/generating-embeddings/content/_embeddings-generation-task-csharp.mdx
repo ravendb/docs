@@ -74,16 +74,27 @@ import CodeBlock from '@theme/CodeBlock';
   1. **Collection**  
      Enter or select the source document collection from the dropdown.
   2. **Embeddings source**  
-     Select `Paths` to define the source content by specifying document properties.
-  3. **Source text path**  
-     Enter the property name from the document that contains the text for embedding generation.
-  4. **Chunking method**  
-     Select the method for splitting the source text into chunks.  
-     Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens).
-  5. **Max tokens per chunk**  
-     Enter the maximum number of tokens allowed per chunk (this depends on the service provider).
-  6. **Add path configuration**  
+     Select `Paths` to define the source content by document properties.
+  3. **Path configuration**  
+     Specify which document properties to extract text from, and how the text should be chunked into embeddings. 
+
+     * **Source text path**  
+       Enter the property name from the document that contains the text for embedding generation.  
+     * **Chunking method**  
+       Select the method for splitting the source text into chunks.  
+       Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens).  
+     * **Max tokens per chunk**  
+       Enter the maximum number of tokens allowed per chunk (this depends on the service provider).  
+     * **Overlap tokens**  
+       Enter the number of tokens to repeat at the start of each chunk from the end of the previous one.  
+       This helps preserve context between chunks by carrying over some tokens from one to the next.  
+       Applies only to the _"Plain Text: Split Paragraphs"_ and _"Markdown: Split Paragraphs"_ chunking methods.
+
+  4. **Add path configuration**  
      Click to add the specified to the list.
+  5. **List of paths**  
+     Displays the document properties you added for embedding generation.
+
 * **Define the embeddings source - using SCRIPT**:
   
     ![Create embeddings generation task - source by script](../assets/add-ai-task-4-script.png)
@@ -92,11 +103,17 @@ import CodeBlock from '@theme/CodeBlock';
      Select `Script` to define the source content and chunking methods using a JavaScript script.
   2. **Script**  
      Refer to section [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens) for available JavaScript methods.
-  3. **Chunking method**  
+  3. **Default chunking method**  
      The selected chunking method will be used by default when no method is specified in the script.  
      e.g., when the script contains: `Name: this.Name`.
-  4. **Max tokens per chunk**:  
-     Enter the default value to use when no specific value is set for the chunking method in the script.
+  4. **Default max tokens per chunk**:  
+     Enter the default value to use when no specific value is set for the chunking method in the script.  
+     This is the maximum number of tokens allowed per chunk (depends on the service provider).
+  5. **Default overlap tokens**  
+     Enter the default value to use when no specific value is set for the chunking method in the script.  
+     This is the number of tokens to repeat at the start of each chunk from the end of the previous one.  
+     Applies only to the _"Plain Text: Split Paragraphs"_ and _"Markdown: Split Paragraphs"_ chunking methods. 
+
 * **Define quantization and expiration -  
   for the generated embeddings from the source documents**:
 
@@ -191,8 +208,12 @@ var embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration
             Path = "Description", 
             ChunkingOptions = new()
             {
-                ChunkingMethod = ChunkingMethod.PlainTextSplitLines,
-                MaxTokensPerChunk = 2048
+                ChunkingMethod = ChunkingMethod.PlainTextSplitParagraphs,
+                MaxTokensPerChunk = 2048,
+    
+                // 'OverlapTokens' is only applicable when ChunkingMethod is 
+                // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
+                OverlapTokens = 128
             }
         },
     ],
@@ -213,8 +234,8 @@ var embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration
     EmbeddingsCacheForQueryingExpiration = TimeSpan.FromDays(14)
 };
 
-// Deploy the connection string to the server:
-// ===========================================
+// Deploy the embeddings generation task to the server:
+// ====================================================
 var addEmbeddingsGenerationTaskOp =
     new AddEmbeddingsGenerationOperation(embeddingsTaskConfiguration);
 var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationTaskOp);
@@ -256,16 +277,17 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
             // The text content will be split into chunks of up to 2048 tokens.
             Name: text.split(this.Name, 2048),
 
-            // Process the document 'Description' field using method text.splitLines().
+            // Process the document 'Description' field using method text.splitParagraphs().
             // The text content will be split into chunks of up to 2048 tokens.
-            Description: text.splitLines(this.Description, 2048)
+            // 128 overlapping tokens will be repeated at the start of each chunk 
+            // from the end of the previous one.
+            Description: text.splitParagraphs(this.Description, 2048, 128)
         });"
 },
 ```
 </TabItem>
 
-* If no chunking method is provided in the script,  
-  you can set the default chunking method and the maximum tokens per chunk to be used as follows:
+* If no chunking method is provided in the script, you can set default values as follows:  
 
 <TabItem value="create_embeddings_task_3" label="create_embeddings_task_3">
 ```csharp
@@ -280,8 +302,7 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
             Description: this.Description
         });",
     
-    // Specify the default chunking method and max tokens per chunk
-    // to use in the script
+    // Specify the default chunking options to use in the script
     ChunkingOptions = new ChunkingOptions()
     {
         ChunkingMethod = ChunkingMethod.PlainTextSplit,
@@ -340,7 +361,9 @@ These methods determine how input text is split before being sent to the provide
 
 * `PlainText: Split Paragraphs`  
   Uses the Semantic Kernel _SplitPlainTextParagraphs_ method.  
-  Combines consecutive lines to form paragraphs while ensuring each paragraph is as complete as possible without exceeding the specified token limit.
+  Combines consecutive lines to form paragraphs while ensuring each paragraph is as complete as possible without exceeding the specified token limit.  
+  Optionally, set an overlap between chunks using the _overlapTokens_ parameter, which repeats the last _n_ tokens from one chunk at the start of the next.
+  This helps preserve context continuity across paragraph boundaries.  
   
      **Applies to**:  
      Fields containing an array of plain text strings.  
@@ -360,7 +383,10 @@ These methods determine how input text is split before being sent to the provide
 * `Markdown: Split Paragraphs`  
   Uses the Semantic Kernel _SplitMarkdownParagraphs_ method.  
   Groups lines into coherent paragraphs at designated paragraph breaks while ensuring each paragraph remains within the specified token limit.
-  Preserves markdown formatting to maintain structure.
+  Markdown formatting is preserved.  
+  Optionally, set an overlap between chunks using the _overlapTokens_ parameter, which repeats the last _n_ tokens from one chunk at the start of the next.
+  This helps preserve context continuity across paragraph boundaries. 
+  
   
      **Applies to**:  
      Fields containing an array of strings with markdown content.  
@@ -384,25 +410,27 @@ These methods determine how input text is split before being sent to the provide
 // =================================
 
 // Plain text methods:
-text.split(text, maxTokensPerChunk);
-text.splitLines(text, maxTokensPerChunk);
-text.splitParagraphs(lines, maxTokensPerChunk);
+text.split(text | [text], maxTokensPerLine);
+text.splitLines(text | [text], maxTokensPerLine);
+text.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
 
 // Markdown methods:
-markdown.splitLines(text, maxTokensPerChunk);
-markdown.splitParagraphs(lines, maxTokensPerChunk);
+markdown.splitLines(text | [text], maxTokensPerLine);
+markdown.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
 
 // HTML processing:
-html.strip(htmlText, maxTokensPerChunk);
+html.strip(htmlText | [htmlText], maxTokensPerChunk);
 ```
 </TabItem>
 
-| Parameter             | Type       | Description                                  |
-|-----------------------|------------|----------------------------------------------|
-| **text**              | `string`   | A plain text or markdown string to split.    |
-| **lines**             | `string[]` | An array of text lines to split into chunks. |
-| **htmlText**          | `string`   | A string containing HTML content to process. |
-| **maxTokensPerChunk** | `number`   | The maximum tokens allowed per chunk.        |
+| Parameter                                | Type      | Description                                                       |
+|------------------------------------------|-----------|------------------------------------------------------------------ |
+| **text**                                 | `string`  | A plain text or markdown string to split.                         |
+| **line**                                 | `string`  | A single line or paragraph of text.                               |
+| **[text] / [line]**                      | `string[]`| An array of text or lines to split into chunks.                   |
+| **htmlText**                             | `string`  | A string containing HTML content to process.                      |
+| **maxTokensPerChunk / maxTokensPerLine** | `number`  | The maximum number of tokens allowed per chunk.<br/>Default is `512`. |
+| **overlapTokens**                        | `number` (optional) | The number of tokens to overlap between consecutive chunks. Helps preserve context continuity across chunks (e.g., between paragraphs).<br/>Default is `0`. |
 
 ## Syntax
 
@@ -451,6 +479,10 @@ public class ChunkingOptions
 {
     public ChunkingMethod ChunkingMethod { get; set; } // Default is PlainTextSplit
     public int MaxTokensPerChunk { get; set; } = 512;
+        
+    // 'OverlapTokens' is only applicable when ChunkingMethod is 
+    // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
+    public int OverlapTokens { get; set; } = 0;
 }
 
 public enum ChunkingMethod
