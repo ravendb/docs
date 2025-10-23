@@ -6,25 +6,27 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This article explains how to index attachments using a **static-index** to enable vector search on their content.  
-  Note: Vector search on attachment content is not available when making a [dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx).  
+  Note: Vector search on attachment content is not available when making a [dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx).  
   
-* **Prior to this article**, refer to the [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.mdx) article for general knowledge about  
+* **Prior to this article**, refer to the [Vector search using a static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx) article for general knowledge about  
   indexing a vector field.
 
 * In this article:
-    * [Overview](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
-    * [Indexing TEXT attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
-    * [Indexing NUMERICAL attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
-      * [LINQ index](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
-      * [JS index](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
-    * [Indexing ALL attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
+    * [Overview](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
+    * [Indexing TEXT attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
+      * [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
+      * [JS index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
+    * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
 
 </Admonition>
+
 ## Overview
 
 <Admonition type="note" title="">
 
 #### Attachments in RavenDB
+
 * Attachments in RavenDB allow you to associate binary files with your JSON documents.  
   You can use attachments to store images, PDFs, videos, text files, or any other format.  
 
@@ -32,12 +34,14 @@ import CodeBlock from '@theme/CodeBlock';
   They are stored as **binary data**, regardless of content type.
 
 * Attachments are handled as streams, allowing efficient upload and retrieval.  
-  Learn more in: [What are attachments](../../document-extensions/attachments/what-are-attachments.mdx).
+  Learn more in: [What are attachments](../../../document-extensions/attachments/what-are-attachments.mdx).
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 #### Indexing attachment content for vector search
+
 You can index attachment content in a vector field within a static-index,    
 enabling vector search on text or numerical data that is stored in the attachments:
 
@@ -48,13 +52,12 @@ enabling vector search on text or numerical data that is stored in the attachmen
 * **Attachments with NUMERICAL data**:  
     * While attachments can store any file type, RavenDB does Not generate embeddings from images, videos, or other non-textual content.  
       Each attachment must contain a **single** precomputed embedding vector, generated externally.  
-    * RavenDB indexes the embedding vector from the attachment in and can apply [quantization](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
+    * RavenDB indexes the embedding vector from the attachment in and can apply [quantization](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
       (e.g., index it in _Int8_ format) if this is configured.  
     * All embeddings indexed within the same vector-field in the static-index must be vectors of the **same dimension** to ensure consistency in indexing and search.
       They must also be created using the **same model**.
 
 </Admonition>
-
 
 ## Indexing TEXT attachments
  
@@ -360,8 +363,6 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
 </CodeBlock>
 </TabItem>
 
-
-
 ## Indexing NUMERICAL attachments
 
 ### LINQ index
@@ -597,9 +598,10 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
+
 ### JS index
 
-* The following is the JavaScript index format equivalent to the [LINQ index](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index) shown above.
+* The following is the JavaScript index format equivalent to the [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index) shown above.
 
 * The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
   * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  
@@ -721,8 +723,6 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
 
 ## Indexing ALL attachments
 
@@ -958,7 +958,3 @@ where vector.search(VectorFromAttachment, $queryVector)
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
-
-

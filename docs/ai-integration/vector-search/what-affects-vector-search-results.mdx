@@ -13,6 +13,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # What Affects Vector Search Results
+
 <Admonition type="note" title="">
 
 * This article explains why vector search results might not always return what you expect, even when relevant documents exist.
@@ -36,6 +37,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search)
     
 </Admonition>
+
 ## The approximate nature of HNSW
 
 * **Graph structure**:  
@@ -71,8 +73,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
     it does not guarantee exact results - only approximate matches are returned.  
     This behavior is expected in all ANN algorithms, not just HNSW.  
     If full accuracy is critical, consider using [Exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) instead.
-
-
 
 ## Indexing-time parameters
 
@@ -110,10 +110,9 @@ They help keep memory usage and indexing time under control, but may also limit 
     This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
     the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing) configuration key.
+
 For all parameters that can be defined at indexing time (including the ones above),  
 see [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition).
-
-
 
 ## Query-time parameters
 
@@ -151,11 +150,10 @@ These parameters directly affect how many results are found, how similar they ar
     * **Exact search**:  
       Performs a full comparison against all indexed vectors to guarantee the closest matches.  
       Learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) below.
+
 For all parameters that can be defined at query time, see:  
 Dynamic queries - [The dynamic query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  
 Static index queries - [Parameters used at query time](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-used-at-query-time).   
-
-
 
 ## Using exact search
 
@@ -172,6 +170,3 @@ Static index queries - [Parameters used at query time](../../ai-integration/vect
 
 * Exact search can be used with both static index queries and dynamic queries.  
   For example, see [Dynamic vector search - exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---exact-search).
-
-
-
