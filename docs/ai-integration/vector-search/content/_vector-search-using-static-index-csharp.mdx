@@ -1343,11 +1343,17 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 </Tabs>
 
 Execute a vector search using the index:  
+
   * Pass a textual search term to the `ByText` method,  
     along with the ID of the embedding generation task that will convert the text into an embedding.
+  
   * The query is only meaningful if the vector field being searched contains numerical embeddings  
     generated using the same model as the one configured in the specified task.
-  * If the specified task ID is not found, RavenDB will throw an `InvalidQueryException`.
+  
+  * If the specified task ID is not found, RavenDB will throw an `InvalidQueryException`.  
+    To avoid this error, you can verify that the specified embeddings generation task exists before issuing the query.  
+    See [Get embeddings generation task details](../ai-integration/generating-embeddings/overview#get-embeddings-generation-task-details)
+    to learn how to check which tasks are defined and what their identifiers are.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
