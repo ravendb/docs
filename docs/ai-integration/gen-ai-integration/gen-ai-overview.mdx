@@ -15,19 +15,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # GenAI Integration: Overview
 <Admonition type="note" title="">
 
-* **GenAI Integration** allows RavenDB to connect and interact with Generative AI models, introducing intelligent, autonomous data processing in production.
+* **Ongoing GenAI tasks** allow RavenDB to connect and interact with Generative AI models, introducing intelligent, autonomous data processing in production.
 
-     A task can be built in minutes, e.g. to generate automated responses to frequently asked questions, escalate support tickets, summarize lengthy documents, enhance data security by detecting anomalies, or numerous other applications (see a few additional examples in the [common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases) section below).
+* Tasks can be easily defined, tested and deployed using [the client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api) or [Studio](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio).  
 
-* **Ongoing GenAI tasks** can be easily defined, tested and deployed using [the client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api) or [Studio](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio).  
+    While creating a GenAI task via Studio, a smart interactive **test environment** is provided, allowing each phase of the task to be tested in a secluded playground, freely and without changing your data, while at the same time producing a result set that can be tried out by the next phase.  
 
-     While creating a GenAI task via Studio, a smart interactive environment is provided, 
-     allowing each phase of the task to be tested in a secluded playground, freely and without 
-     harming your data, but also produce result sets that can be tried out by the next phase.  
+* A task can be built in minutes, e.g. to generate automated responses to frequently asked questions, escalate support tickets, summarize lengthy documents, enhance data security by detecting anomalies, or numerous other applications.  
+  See a few additional examples in the [common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases) section below.
 
-* **You can use local and remote AI models**, e.g. a local `Ollama llama3.2` service during 
-  a development phase that requires speed and no additional costs, and a remote `OpenAI gpt-4o-mini` 
-  when you need a live service with advanced capabilities.  
+* You can use local and remote AI models, e.g. a local `Ollama llama3.2` service during a development phase that requires speed and no additional costs, and a remote `OpenAI gpt-4o-mini` when you need a live service with advanced capabilities.  
 
 * In this article:
    * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/gen-ai-overview#ravendb-genai-tasks)
@@ -152,7 +149,7 @@ These are the elements that need to be defined for a GenAI task.
      ```plain
      Check if the following blog post comment is spam or not. 
      A spam comment typically includes irrelevant or promotional content, 
-     excessive, misleading information, or is written with the intent to 
+     excessive links, misleading information, or is written with the intent to 
      manipulate search engines or advertise products/services. 
      Consider the language, intent, and relevance of the comment for 
      the blog post content.
