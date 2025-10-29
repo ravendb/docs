@@ -23,19 +23,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * These connection strings are then used by AI-powered features in RavenDB, such as:  
   * [Embeddings Generation Tasks](../../ai-integration/generating-embeddings/overview.mdx) -  
     use **text embedding models** to generate vector embeddings from document content for vector search.
-  * [Gen AI Tasks](../../ai-integration/gen-ai-integration/gen-ai-overview) and [AI Agents](../../ai-integration/ai-agents/ai-agents_overview) -  
+  * [Gen AI Tasks](../../ai-integration/gen-ai-integration/gen-ai-overview) and [AI Agents](../../ai-integration/ai-agents/ai-agents_overview.mdx) -  
     interact with **chat models** for reasoning, summarization, or conversational workflows.
 
-* RavenDB supports connecting to external providers such as:  
-  OpenAI, Azure OpenAI, Hugging Face, Google AI, Vertex AI, Ollama, Mistral AI,  
-  or to RavenDB’s embedded model (bge-micro-v2).
+* RavenDB supports connecting to the following external providers:  
+  [OpenAI & OpenAI compatible providers](../../ai-integration/connection-strings/open-ai.mdx),
+  [Azure OpenAI](../../ai-integration/connection-strings/azure-open-ai.mdx),  
+  [Google AI](../../ai-integration/connection-strings/google-ai.mdx),
+  [Vertex AI](../../ai-integration/connection-strings/vertex-ai.mdx),
+  [Ollama](../../ai-integration/connection-strings/ollama.mdx),
+  [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx),
+  and [Mistral AI](../../ai-integration/connection-strings/mistral-ai.mdx),  
+  or to RavenDB’s [embedded model (_bge-micro-v2_)](../../ai-integration/connection-strings/embedded.mdx).
 
 * While each task can have only one connection string,  
   you can define multiple connection strings in your database to support different providers or configurations.  
   A single connection string can also be reused across multiple tasks in the database.
 
 * The AI connection strings can be created from:  
-  * The **AI Connection Strings view** in the Studio -  
+  * The **AI Connection Strings view in the Studio** -  
     where you can create, edit, and delete connection strings that are not in use.
   * The **Client API** -  
     examples are available in the dedicated articles for each provider.
@@ -44,7 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
 * In this article:
   * [The AI Connection Strings view](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-ai-connection-strings-view)
-  * [Creating an AI connection string](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string)
+  * [Creating an AI connection string (from the Studio)](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string-from-the-studio)
     
 </Admonition>
 
@@ -63,7 +69,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 5. Edit or delete a connection string.  
    Only connection strings that are not in use by a task can be deleted.
 
-## Creating an AI connection string
+## Creating an AI connection string (from the Studio)
 
 ![create connection string](./assets/create-connection-string.png)
 
