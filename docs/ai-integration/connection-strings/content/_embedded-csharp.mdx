@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article explains how to define a connection string to the [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.  
   This model, designed exclusively for embeddings generation, is embedded within RavenDB, enabling RavenDB to seamlessly handle its
-  [embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) without requiring an external AI service.
+  [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) without requiring an external AI service.  
 
 * Running the model locally consumes processor resources and will impact RavenDB's overall performance,  
   depending on your workload and usage patterns.
@@ -29,16 +29,19 @@ import CodeBlock from '@theme/CodeBlock';
 2. **Identifier** (optional)  
    Learn more about the identifier in the [connection string identifier](../../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
 
-3. **Connector**  
+3. **Model Type**  
+   Select "Text Embeddings".
+
+4. **Connector**  
    Select **Embedded (bge-micro-v2)** from the dropdown menu.
 
-4. **Max concurrent query batches**: (optional)
-   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+5. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.  
      Requests to generate such query embeddings via the AI provider are sent in batches.
    * This parameter defines the maximum number of these batches that can be processed concurrently.  
      You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches) configuration key.
 
-5. Click **Save** to store the connection string or **Cancel** to discard changes.
+6. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 ## Define the connection string - from the Client API
 
@@ -53,6 +56,9 @@ using (var store = new DocumentStore())
         Name = "ConnectionStringToEmbedded", 
         Identifier = "identifier-to-the-connection-string", // optional
         
+        // Model type
+        ModelType = AiModelType.TextEmbeddings,
+    
         // Embedded model settings
         // No user configuration is required for the embedded model,
         // as it uses predefined values managed internally by RavenDB.
@@ -78,6 +84,7 @@ public class AiConnectionString
 {
     public string Name { get; set; }
     public string Identifier { get; set; }
+    public AiModelType ModelType { get; set; }
     public EmbeddedSettings EmbeddedSettings { get; set; }
 }
 
