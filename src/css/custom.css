@@ -331,3 +331,8 @@ code {
 [class^="tabItem"]:has(+ *), .theme-admonition:has(+ *) {
   @apply mb-4;
 }
+
+/* Custom hr color */
+hr {
+  @apply !bg-black/10 dark:!bg-white/10;
+}
