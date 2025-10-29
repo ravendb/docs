@@ -55,7 +55,7 @@ import CodeBlock from '@theme/CodeBlock';
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/ollama.mdx#configuring-a-text-embedding-model),  
-  such as the connection string _Name_, optional _Identifier_, the _URI_, and the _Model_ name.
+  including the connection string _Name_, optional _Identifier_, _URI_, and _Model_ name.
 
 * In addition, two fields are specific to chat models: _Temperature_ and _Thinking mode_. 
 
@@ -64,7 +64,10 @@ import CodeBlock from '@theme/CodeBlock';
 1. **Model Type**  
    Select "Chat".
 
-2. **Thinking mode**  
+2. **Model**  
+   Enter the name of the Ollama model to use for chat completions.
+
+3. **Thinking mode** (optional)  
    The thinking mode setting controls whether the model outputs its internal reasoning steps before returning the final answer.
    * When setting to `Enabled`:  
      the model outputs a series of intermediate reasoning steps (chain of thought) before the final answer.  
@@ -78,12 +81,12 @@ import CodeBlock from '@theme/CodeBlock';
      This value may vary depending on the selected model.  
      Set this parameter based on the trade-off between task complexity and speed/cost requirements.
 
-3. **Temperature**  
+4. **Temperature** (optional)  
    The temperature setting controls the randomness and creativity of the model’s output.  
    Valid values typically range from `0.0` to `2.0`:  
      * Higher values (e.g., `1.0` or above) produce more diverse and creative responses.
      * Lower values (e.g., `0.2`) result in more focused, consistent, and deterministic output.
-     * If not explicitly set, Ollama defaults to a temperature of `0.8`.
+     * If not explicitly set, Ollama defaults to a temperature of `0.8`.  
        See [Ollama's parameters reference](https://ollama.readthedocs.io/en/modelfile/?utm_source=chatgpt.com#valid-parameters-and-values).
 
 ---
@@ -120,8 +123,7 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -157,8 +159,7 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);    
+    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);    
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -186,13 +187,15 @@ public class OllamaSettings : AbstractAiSettings
     // The name of the model to use 
     public string Model { get; set; }
     
+    // Relevant only for chat models:
     // Control whether the model outputs its internal reasoning steps before returning the final answer.
     // 'true'  - the model outputs intermediate reasoning steps (chain of thought) before the final answer.
     // 'false' - the model returns only the final answer, without exposing intermediate steps.
     // 'null'  - the model’s default behavior is used.
     public bool? Think { get; set; }
     
-    // Control the randomness and creativity of the model’s output.
+    // Relevant only for chat models:
+    // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
