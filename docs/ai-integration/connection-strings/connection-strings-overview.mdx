@@ -13,27 +13,47 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # AI Connection Strings - Overview
+
 <Admonition type="note" title="">
+    
+* AI connection strings define how RavenDB connects to external AI models.  
+  Each connection string specifies the provider and the model to use.  
+  The model can be either a chat model or a text embedding model.
 
-* In RavenDB, you can define [Embeddings Generation Tasks](../../ai-integration/generating-embeddings/overview.mdx) that generate embeddings from the content of your documents.
-  These embeddings are stored in a dedicated collection within the database and enable vector search on your document content.
+* These connection strings are then used by AI-powered features in RavenDB, such as:  
+  * [Embeddings Generation Tasks](../../ai-integration/generating-embeddings/overview.mdx) -  
+    use **text embedding models** to generate vector embeddings from document content for vector search.
+  * [Gen AI Tasks](../../ai-integration/gen-ai-integration/gen-ai-overview) and [AI Agents](../../ai-integration/ai-agents/ai-agents_overview.mdx) -  
+    interact with **chat models** for reasoning, summarization, or conversational workflows.
 
-* Each embeddings generation task must define a **connection string** to an embedding provider.  
-  This connection string specifies where the embeddings will be generated, 
-  allowing RavenDB to integrate with external services such as OpenAI and any other OpenAI-compatible providers, as well as Azure OpenAI,  
-  Hugging Face, Google AI, Ollama, Mistral AI, or RavenDB’s embedded model (bge-micro-v2).
+* RavenDB supports connecting to the following external providers:  
+  [OpenAI & OpenAI compatible providers](../../ai-integration/connection-strings/open-ai.mdx),
+  [Azure OpenAI](../../ai-integration/connection-strings/azure-open-ai.mdx),  
+  [Google AI](../../ai-integration/connection-strings/google-ai.mdx),
+  [Vertex AI](../../ai-integration/connection-strings/vertex-ai.mdx),
+  [Ollama](../../ai-integration/connection-strings/ollama.mdx),
+  [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx),
+  and [Mistral AI](../../ai-integration/connection-strings/mistral-ai.mdx),  
+  or to RavenDB’s [embedded model (_bge-micro-v2_)](../../ai-integration/connection-strings/embedded.mdx).
 
-* While each task can have only one connection string, you can define multiple connection strings in your database to support different providers or configurations.  
+* While each task can have only one connection string,  
+  you can define multiple connection strings in your database to support different providers or configurations.  
   A single connection string can also be reused across multiple tasks in the database.
 
-* These connection strings can be created from:
-  * The **AI Connection Strings view** in the Studio, where you can create, edit, and delete connection strings that are not in use.
-  * The **Client API** - examples are available in the dedicated articles for each provider.
+* The AI connection strings can be created from:  
+  * The **AI Connection Strings view in the Studio** -  
+    where you can create, edit, and delete connection strings that are not in use.
+  * The **Client API** -  
+    examples are available in the dedicated articles for each provider.
+
+---
+ 
 * In this article:
   * [The AI Connection Strings view](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-ai-connection-strings-view)
-  * [Creating an AI connection string](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string)
+  * [Creating an AI connection string (from the Studio)](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string-from-the-studio)
     
 </Admonition>
+
 ## The AI Connection Strings view
 
 ![connection strings view](./assets/connection-strings-view.png)
@@ -49,11 +69,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 5. Edit or delete a connection string.  
    Only connection strings that are not in use by a task can be deleted.
 
-
-
-## Creating an AI connection string
+## Creating an AI connection string (from the Studio)
 
 ![create connection string](./assets/create-connection-string.png)
+
+<a id="identifier" />
 
 1. **Name**  
    Enter a unique name for the connection string.
@@ -68,25 +88,34 @@ import LanguageContent from "@site/src/components/LanguageContent";
        * The generated identifier will be: _"my-connection-string-to-google-ai"_
   
      Allowed characters: only lowercase letters (a-z), numbers (0-9), and hyphens (-).  
-     See how this identifier is used in the [embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).
+     For exmaple, see how this identifier is used in the [embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).
 
 3. **Regenerate**  
    Click "Regenerate" to automatically create an identifier based on the connection string name.
 
-4. **Connector**  
+4. **Model type**  
+   Select the type of model you want to interact with:  
+   * **Chat model**  
+     Select this type to use a conversational model for content generation and dialogue.
+   * **Text embedding model**  
+     Select this type to generate vector embeddings from your document content for vector search.
+
+5. **Connector**  
    Select an AI provider from the dropdown menu.  
-   This will open a dialog where you can configure the connection details.  
-   Configuration details for each provider are explained in the following articles:
-   * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai.mdx)
-   * [Google AI](../../ai-integration/connection-strings/google-ai.mdx)
-   * [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx)
-   * [Ollama](../../ai-integration/connection-strings/ollama.mdx)
-   * [OpenAI](../../ai-integration/connection-strings/open-ai.mdx)
-   * [Mistral AI](../../ai-integration/connection-strings/mistral-ai.mdx)
-   * [Embedded model (bge-micro-v2)](../../ai-integration/connection-strings/embedded.mdx)
+   This opens a dialog where you can configure the connection details for the selected provider.  
+   
+       The list of available providers is filtered based on the selected model type.  
+       (Some providers are currently supported in RavenDB only for text embedding models).  
+       
+       Configuration details for each provider are explained in the following articles:  
+       * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai.mdx)
+       * [Google AI](../../ai-integration/connection-strings/google-ai.mdx) (_embeddings only_)
+       * [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx) (_embeddings only_)
+       * [Ollama](../../ai-integration/connection-strings/ollama.mdx)
+       * [OpenAI](../../ai-integration/connection-strings/open-ai.mdx)
+       * [Mistral AI](../../ai-integration/connection-strings/mistral-ai.mdx) (_embeddings only_)
+       * [Vertex AI](../../ai-integration/connection-strings/vertex-ai.mdx) (_embeddings only_)
+       * [Embedded model (bge-micro-v2)](../../ai-integration/connection-strings/embedded.mdx) (_embeddings only_)
 
-5. Once you complete all configurations for the selected provider in the dialog,  
+6. Once you complete all configurations for the selected provider in the dialog,  
    save the connection string definition.
-
-
-
