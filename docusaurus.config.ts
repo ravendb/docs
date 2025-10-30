@@ -4,6 +4,8 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const isStartOnlyCurrentVersion = process.env.DOCUSAURUS_START_VERSION_ENV === 'current';
+
 const config: Config = {
   title: "RavenDB Documentation",
   tagline:
@@ -43,6 +45,7 @@ const config: Config = {
               path: "7.1"
             }
           },
+          onlyIncludeVersions: isStartOnlyCurrentVersion ? ['current'] : undefined,
           //editUrl:
           //    'https://github.com/ravendb/docs/tree/main/'
         },
