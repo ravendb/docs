@@ -1,0 +1,234 @@
+---
+title: "Frames: ContentFrame and Panel"
+hide_table_of_contents: false
+sidebar_label: Frames
+---
+
+import Admonition from '@theme/Admonition';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Frames overview
+
+This guide shows how to use content frames in MDX: lightweight `ContentFrame` for small/medium chunks and `Panel` for larger sections with a built‑in heading and body.
+
+## ContentFrame
+
+### Import
+```mdx
+import ContentFrame from '@site/src/components/ContentFrame';
+```
+
+### Basic usage
+````mdx
+<ContentFrame>
+  Text, lists, images, and even code blocks.
+
+  ```ts
+  console.log('Hello world!')
+  ```
+</ContentFrame>
+````
+
+#### Live example
+
+<ContentFrame>
+  Text, lists, images, and even code blocks.
+
+  ```ts
+  console.log('Hello world!')
+  ```
+</ContentFrame>
+
+- Comes with consistent background, border and inner spacing.
+- Has vertical margin by default.
+
+### Flush variant (removes the outer vertical margin)
+```mdx
+<ContentFrame flush>
+  <img src="/img/social-card.jpg" alt="Social card" />
+</ContentFrame>
+```
+
+#### Live example
+
+<ContentFrame flush>
+  <img src="/img/social-card.jpg" alt="Social card" />
+</ContentFrame>
+
+<div className="mt-4">
+  Need spacing after a flush frame? See: [Tailwind margin documentation](https://tailwindcss.com/docs/margin).
+</div>
+
+### Custom classes
+```mdx
+<ContentFrame className="font-mono">
+  Custom font class.
+</ContentFrame>
+```
+
+#### Live example
+
+<ContentFrame className="font-mono">
+  Custom font class.
+</ContentFrame>
+
+## Panel
+
+### Import
+```mdx
+import Panel from '@site/src/components/Panel';
+```
+
+### Basic usage with heading and body
+```mdx
+<Panel heading="Section">
+  Content of the section placed inside the panel.
+</Panel>
+```
+
+#### Live example
+
+<Panel heading="Section">
+  Content of the section placed inside the panel.
+</Panel>
+
+### Heading level
+
+Use `headingLevel` (1–6) to control the semantic level. Default is 2.
+```mdx
+<Panel heading="H3 title" headingLevel={3}>
+  Content...
+</Panel>
+```
+
+#### Live example
+
+<Panel heading="H3 title" headingLevel={3}>
+  Content...
+</Panel>
+
+The heading renders via `@theme/Heading`, so it automatically gets the anchor link. The id is generated from the `heading` text.
+
+### Flush variant (removes the outer vertical margin)
+```mdx
+<Panel heading="No outer margin" flush>
+  <img src="/img/social-card.jpg" />
+</Panel>
+```
+
+#### Live example
+
+<Panel heading="No outer margin" flush>
+  <img src="/img/social-card.jpg" />
+</Panel>
+
+<div className="mt-4">
+Need spacing after a flush frame? See: [Tailwind margin documentation](https://tailwindcss.com/docs/margin).
+</div>
+
+### Custom classes
+```mdx
+<Panel heading="With custom class" className="font-mono">
+  Content styled with a custom font.
+</Panel>
+```
+
+#### Live example
+
+<Panel heading="With custom class" className="font-mono">
+  Content styled with a custom font.
+</Panel>
+
+### Nesting frames
+
+You can combine `Panel` and `ContentFrame`:
+```mdx
+<Panel heading="Nested example">
+  <ContentFrame>
+    Short piece of content inside the panel.
+  </ContentFrame>
+</Panel>
+```
+
+#### Live example
+
+<Panel heading="Nested example">
+  <ContentFrame>
+    Short piece of content inside the panel.
+  </ContentFrame>
+</Panel>
+
+### Panels with code and tabs
+
+````mdx
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Panel heading="Example with tabs">
+  <Tabs groupId="example">
+    <TabItem value="sync" label="Sync">
+      ```csharp
+      // sample code
+      Console.WriteLine("Hello");
+      ```
+    </TabItem>
+    <TabItem value="async" label="Async">
+      ```csharp
+      await Console.Out.WriteLineAsync("Hello");
+      ```
+    </TabItem>
+  </Tabs>
+</Panel>
+````
+
+#### Live example
+
+<Panel heading="Example with tabs">
+  <Tabs groupId="example-live">
+    <TabItem value="sync" label="Sync">
+      ```csharp
+      // sample code
+      Console.WriteLine("Hello");
+      ```
+    </TabItem>
+    <TabItem value="async" label="Async">
+      ```csharp
+      await Console.Out.WriteLineAsync("Hello");
+      ```
+    </TabItem>
+  </Tabs>
+</Panel>
+
+## Best practices
+
+- Use `ContentFrame` for short, self‑contained fragments: notes, option lists, compact code examples.
+- Use `Panel` for larger sections: full blocks with headings and multi‑paragraph content.
+- Prefer `flush` when the inner content controls its own spacing (images, embedded widgets).
+- Avoid redundant wrappers — both components already provide consistent background and borders.
+
+<Admonition type="info" title="">
+Keep the heading hierarchy consistent using `headingLevel` to preserve a correct document outline.
+</Admonition>
+
+## Props
+
+### ContentFrame
+
+| Prop       | Type                | Default | Description                                     |
+| ---------- | ------------------- | ------- | ----------------------------------------------- |
+| children   | React.ReactNode     | —       | Frame content (markdown, code, images, etc.).   |
+| className  | string              | —       | Additional classes for custom styling.          |
+| flush      | boolean             | false   | Removes only the outer vertical margin.         |
+
+### Panel
+
+| Prop         | Type                      | Default | Description                                                            |
+| ------------ | ------------------------- | ------- | ---------------------------------------------------------------------- |
+| heading      | string                    | —       | Panel heading text. Used to generate the anchor id (slug).             |
+| headingLevel | 1 \| 2 \| 3 \| 4 \| 5 \| 6 | 2       | Semantic level of the heading (`h1`..`h6`).                             |
+| children     | React.ReactNode           | —       | Content placed inside the panel body.                                   |
+| className    | string                    | —       | Additional classes for custom styling.                       |
+| flush        | boolean                   | false   | Removes only the outer vertical margin.                                   |
