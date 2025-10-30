@@ -262,8 +262,11 @@ import CodeBlock from '@theme/CodeBlock';
         bool successful = resultOfDelete.Successful; // Has operation succeeded
         long indexOfItem = resultOfDelete.Index;     // The version of the deleted item
         
-        // If 'successful' is true - the compare-exchange item was deleted.
-        // If 'successful' is false - the item was not deleted (index mismatch).
+        // If 'successful' is true - the compare-exchange item was deleted.                   
+        
+        // If 'successful' is false -
+        // * The item was not deleted because the index didn't match (it was modified by someone else),
+        // * Or the item no longer existed at the time of deletion (it was already deleted).
     }
     ```
     </TabItem>
@@ -287,8 +290,11 @@ import CodeBlock from '@theme/CodeBlock';
         bool successful = resultOfDelete.Successful; // Has operation succeeded
         long indexOfItem = resultOfDelete.Index;     // The version of the deleted item
         
-        // If 'successful' is true - the compare-exchange item was deleted.
-        // If 'successful' is false - the item was not deleted (index mismatch).
+        // If 'successful' is true - the compare-exchange item was deleted.                   
+        
+        // If 'successful' is false -
+        // * The item was not deleted because the index didn't match (it was modified by someone else),
+        // * Or the item no longer existed at the time of deletion (it was already deleted).
     }
     ```
     </TabItem>
