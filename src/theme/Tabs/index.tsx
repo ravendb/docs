@@ -67,7 +67,7 @@ function TabList({
       role="tablist"
       aria-orientation="horizontal"
       className={clsx(
-        "!my-0 !px-4 flex gap-2 bg-ifm-background-surface",
+        "!my-0 !px-4 flex gap-2 bg-black/6 dark:bg-white/3 border-b border-black/10 dark:border-white/10",
         {
           "tabs--block": block,
         },
@@ -128,7 +128,7 @@ function TabContent({
     });
   }
   return (
-    <div className="p-4 bg-ifm-background">
+    <div className="p-4 bg-pre-background">
       {childTabs.map((tabItem, i) =>
         cloneElement(tabItem, {
           key: i,
@@ -144,7 +144,7 @@ function TabsComponent(props: Props): ReactNode {
   return (
     <div
       className={clsx(
-        "tabs-container overflow-hidden rounded-lg border-gray-300 dark:border-gray-700 border mb-6",
+        "tabs-container overflow-hidden rounded-lg border-black/10 dark:border-white/10 border mb-6",
         styles.tabList,
       )}
     >
