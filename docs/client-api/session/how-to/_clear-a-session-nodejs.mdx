@@ -3,32 +3,65 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-To clear session state, stop tracking entities, and remove all pending commands, 
-use the `clear()` method from the `advanced` session operations.
+<Admonition type="note" title="">
+
+* Use the `clear()` method to clear the session’s state:  
+  it **removes ALL tracked entities** and **cancels ALL pending operations** (e.g., _store_, _delete_).  
+  This is useful when you need to discard all tracked changes and reset the session state.
+    
+* To remove only a **single entity** from tracking, see [Evict a single entity](../../../client-api/session/how-to/evict-entity-from-a-session.mdx).
+
+* In this article:
+  * [Clear the session's state](../../../client-api/session/how-to/clear-a-session.mdx#clear-the-sessions-state)
+  * [Syntax](../../../client-api/session/how-to/clear-a-session.mdx#syntax)  
+    
+</Admonition>
+
+---
+
+## Clear the session's state
+
+<TabItem value="sync_session" label="sync_session">
+```js
+const session = store.openSession();
+    
+// Store a new employee
+class Employee {
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+const newEmployee = new Employee("John", "Doe");
+await session.store(newEmployee, "employees/1");    
+    
+// Load an existing employee and modify it
+const existingEmployee = await session.load("employees/2");
+existingEmployee.lastName = "UpdatedLastName";
+
+// Load another employee and mark for deletion
+const employeeToDelete = await session.load("employees/3");
+session.delete(employeeToDelete);
+
+// At this point:
+// * employees/1 is pending insert
+// * employees/2 is pending update
+// * employees/3 is pending delete
+
+// Clear the session state 
+// this will remove all tracking and pending operations
+session.advanced.clear();
+
+// saveChanges does nothing - all operations were discarded
+await session.saveChanges();
+```
+</TabItem>
 
 ## Syntax
 
-<TabItem value="clear_1" label="clear_1">
-<CodeBlock language="js">
-{`session.advanced.clear();
-`}
-</CodeBlock>
-</TabItem>
-
-## Example
-
-<TabItem value="clear_2" label="clear_2">
-<CodeBlock language="js">
-{`const employee = new Employee();
-employee.firstName = "John";
-employee.lastName = "Doe";
-await session.store(employee);
-
+<TabItem value="" label="">
+```js
 session.advanced.clear();
-
-await session.saveChanges(); // nothing will hapen
-`}
-</CodeBlock>
+```
 </TabItem>
-
 
