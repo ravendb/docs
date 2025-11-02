@@ -200,7 +200,13 @@ GenAiConfiguration config = new GenAiConfiguration
     },
 
     // AI model Prompt - the instructions sent to the AI model
-    Prompt = "Check if the following blog post comment is spam or not",
+    Prompt = @"
+        Check if the following blog post comment is spam or not. 
+        A spam comment typically includes irrelevant or promotional content, 
+        excessive links, misleading information, or is written with the intent 
+        to manipulate search engines or advertise products/services. 
+        Consider the language, intent, and relevance of the comment for 
+        the blog post content.",
 
     // Sample object - the layout for the AI model's response
     SampleObject = @"
@@ -263,7 +269,13 @@ GenAiConfiguration config = new GenAiConfiguration
     },
 
     // AI model Prompt - the instructions sent to the AI model
-    Prompt = "Check if the following blog post comment is spam or not",
+    Prompt = @"
+        Check if the following blog post comment is spam or not. 
+        A spam comment typically includes irrelevant or promotional content, 
+        excessive links, misleading information, or is written with the intent 
+        to manipulate search engines or advertise products/services. 
+        Consider the language, intent, and relevance of the comment for 
+        the blog post content.",
 
     // JSON schema - a schema to format the AI model's replies by
     JsonSchema = @"{
@@ -335,11 +347,11 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 
 The following example demonstrates how to define a GenAI task that removes spam comments from blog posts.  
 
-After creating a connection string to the AI model, the task defines a GenAI task that:  
+After creating a connection string to the AI model, the we define a GenAI task that:  
 1. Monitors the `Posts` collection.  
 2. For each document, generates a context object per each comment in the `Comments` array.  
 3. Sends each context object to the AI model with a prompt to check if the comment is spam.  
-4. Receives an AI model response per context object that classifies the comment as spam or not and specifies the reasoning for the decision.  
+4. Receives an AI model response per context object that determines whether the comment is spam or not and specifies the reasoning for the decision.  
 5. If the comment is marked as spam, the task's update script removes the comment from the `Comments` array in the document.  
 
 After running the task, its functionality is demonstrated by adding to the `Posts` collection a blog post that includes a spammy comment. Adding the post triggers the task, which will scan the post's comments and remove the one that contains spam.  
@@ -394,7 +406,13 @@ GenAiConfiguration config = new GenAiConfiguration
     },
 
     // AI model Prompt - the instructions sent to the AI model
-    Prompt = "Check if the following blog post comment is spam or not",
+    Prompt = @"
+        Check if the following blog post comment is spam or not. 
+        A spam comment typically includes irrelevant or promotional content, 
+        excessive links, misleading information, or is written with the intent 
+        to manipulate search engines or advertise products/services. 
+        Consider the language, intent, and relevance of the comment for 
+        the blog post content.",
 
     // Sample object - the layout for the AI model's response
     SampleObject = JsonConvert.SerializeObject(
@@ -451,7 +469,9 @@ using (var session = store.OpenSession())
             new
             {
                 Id = "comment/3",
-                Text = "I tried this approach with IO_Uring in the past, but I run into problems with security around the IO systems and the CISO didn't let us deploy that to production. It is more mature at this point?",
+                Text = "I tried this approach with IO_Uring in the past, but I run into problems " + 
+                    "with security around the IO systems and the CISO didn't let us deploy that to " + 
+                    "production. It is more mature at this point?",
                 Author = "dave"
             }
         }

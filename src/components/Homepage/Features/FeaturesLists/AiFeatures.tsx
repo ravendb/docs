@@ -14,7 +14,7 @@ export default function AiFeaturesGrid() {
 
   const aiFeatures: Feature[] = [
     {
-      title: "AI Agents",
+      title: "AI agents",
       icon: "ai-agents",
       url: `/${activeVersion.label}/ai-integration/ai-agents/ai-agents-api`,
       description: "Database-native agents that query & act safely",
@@ -28,7 +28,7 @@ export default function AiFeaturesGrid() {
       minimumSupportedVersion: "7.0"
     },
     {
-      title: "GenAI",
+      title: "GenAI tasks",
       icon: "genai",
       url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai-overview`,
       description: "Empower your application using intelligent task",
