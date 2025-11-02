@@ -3,33 +3,99 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-To clear session state, stop tracking entities, and remove all pending commands, 
-use the `Clear` method from the `Advanced` session operations.
+<Admonition type="note" title="">
+
+* Use the `Clear()` method to clear the session’s state:  
+  it **removes ALL tracked entities** and **cancels ALL pending operations** (e.g., _Store_, _Delete_).  
+  This is useful when you need to discard all tracked changes and reset the session state.
+    
+* To remove only a **single entity** from tracking, see [Evict a single entity](../../../client-api/session/how-to/evict-entity-from-a-session.mdx).
+
+* In this article:
+  * [Clear the session's state](../../../client-api/session/how-to/clear-a-session.mdx#clear-the-sessions-state)
+  * [Syntax](../../../client-api/session/how-to/clear-a-session.mdx#syntax)  
+    
+</Admonition>
+
+---
+
+## Clear the session's state
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync_session" label="sync_session">
+```csharp
+using (var session = store.OpenSession())
+{
+    // Store a new employee
+    var newEmployee = new Employee
+    {
+        FirstName = "John",
+        LastName = "Doe"
+    };
+    session.Store(newEmployee, "employees/1");
+
+    // Load an existing employee and modify it
+    var existingEmployee = session.Load<Employee>("employees/2");
+    existingEmployee.LastName = "UpdatedLastName";
+
+    // Load another employee and mark for deletion
+    var employeeToDelete = session.Load<Employee>("employees/3");
+    session.Delete(employeeToDelete);
+
+    // At this point:
+    // * employees/1 is pending insert
+    // * employees/2 is pending update
+    // * employees/3 is pending delete
+
+    // Clear the session state 
+    // this will remove all tracking and pending operations
+    session.Advanced.Clear();
+
+    // SaveChanges does nothing - all operations were discarded
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="async_session" label="async_session">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Store a new employee
+    var newEmployee = new Employee
+    {
+        FirstName = "John",
+        LastName = "Doe"
+    };
+    await asyncSession.StoreAsync(newEmployee, "employees/1");
+
+    // Load an existing employee and modify it
+    var existingEmployee = await asyncSession.LoadAsync<Employee>("employees/2");
+    existingEmployee.LastName = "UpdatedLastName";
+
+    // Load another employee and mark for deletion
+    var employeeToDelete = await asyncSession.LoadAsync<Employee>("employees/3");
+    asyncSession.Delete(employeeToDelete);
+
+    // At this point:
+    // * employees/1 is pending insert
+    // * employees/2 is pending update
+    // * employees/3 is pending delete
+
+    // Clear the session state 
+    // this will remove all tracking and pending operations
+    asyncSession.Advanced.Clear();
+
+    // SaveChangesAsync does nothing - all operations were discarded
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
 
 ## Syntax
 
-<TabItem value="clear_1" label="clear_1">
-<CodeBlock language="csharp">
-{`void Clear();
-`}
-</CodeBlock>
+<TabItem value="" label="">
+```csharp
+void Clear();
+```
 </TabItem>
-
-## Example
-
-<TabItem value="clear_2" label="clear_2">
-<CodeBlock language="csharp">
-{`session.Store(new Employee
-\{
-    FirstName = "John",
-    LastName = "Doe"
-\});
-
-session.Advanced.Clear();
-
-session.SaveChanges(); // nothing will happen
-`}
-</CodeBlock>
-</TabItem>
-
-
