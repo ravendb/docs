@@ -1,0 +1,116 @@
+---
+title: "AI Integration: Start"
+hide_table_of_contents: true
+sidebar_label: Start
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+
+import embedGenStartImage from "./assets/ai-start_embeddings-generation.png";
+import vectorSearchStartImage from "./assets/ai-start_vector-search.png";
+import genAiStartImage from "./assets/ai-start_gen-ai.png";
+import aiAgentsStartImage from "./assets/ai-start_ai-agents.png";
+
+
+# AI Integration: Start
+
+RavenDB is equipped with a set of powerful native AI features that can 
+be used independently or in conjunction with each other, allowing you to easily integrate advanced AI capabilities into your applications.  
+These features include [Embeddings generation](../ai-integration/ai-integration_start#embeddings-generation), [Vector search](../ai-integration/ai-integration_start#vector-search), [AI agents](../ai-integration/ai-integration_start#ai-agents), and [GenAI tasks](../ai-integration/ai-integration_start#genai-tasks).  
+
+### Embeddings generation
+[Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are mathematical representations of content, where the content is converted into high-dimensional numerical vectors that capture semantic meanings and relationships.  
+- RavenDB allows you to create embeddings for document fields and attachments, and apply **vector search operations** over the embeddings to find content by meaning or context rather than by exact keyword matches.  
+- Embeddings can be created and stored by native RavenDB [embeddings-generation tasks](../ai-integration/generating-embeddings/embeddings-generation_start) that systematically process document collections and convert document fields (like texts or arrays) into embeddings. Such tasks can use either an external AI model (such as OpenAI) or RavenDB's default embedding model.  
+- You can also store in the database embeddings created by external embeddings providers (e.g., embeddings created for images), or avoid pre-generating embeddings and let vector search operations generate them on-the-fly, while searching.  
+
+<ColGrid colCount={3}>
+ <CardWithImage title="Start page" description="Continue to the embeddings generation Start page" url="../ai-integration/generating-embeddings/embeddings-generation_start" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Overview" description="Enter the embeddings generation technical documentation" url="../ai-integration/generating-embeddings/overview" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Generate Embeddings for AI Search with RavenDB and External Models" description="Read an in-depth article about embeddings generation" url="https://ravendb.net/articles/embeddings-generation-with-ravendb" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
+
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Vector search in RavenDB" description="Watch a webinar about Embeddings generation" url="https://www.youtube.com/watch?v=zZwid8LA-e4" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+
+<Admonition type="note" title="">
+[See common embeddings-generation use cases](../ai-integration/generating-embeddings/embeddings-generation_start#use-cases)
+</Admonition>
+
+### Vector search
+[Vector search](../ai-integration/vector-search/vector-search_start) operations let you find related content by comparing embeddings, e.g. to find texts by meaning or images by context.  
+- When running a vector search, your query is converted into an embedding and compared against document embeddings. The document embeddings can be either pre-generated (by an embeddings-generation task or an external provider) or generated on-the-fly while searching.  
+- You can run vector search using either a dynamic query for ad-hoc or infrequent searches or a static index for optimized performance.  
+- Vector search is designed so other RavenDB AI features can easily use it. A [GenAI task](../../ai-integration/gen-ai-integration/gen-ai_start), for example,  can use vector search to find documents and update them with LLM-generated content, and an [AI agent](../../ai-integration/ai-agents/ai-agents_start) can use vector search to retrieve relevant data requested by the LLM.  
+
+<ColGrid colCount={3}>
+ <CardWithImage title="Start page" description="Continue to the vector search Start page" url="../ai-integration/vector-search/vector-search_start" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="RavenDB as a Vector Database" description="Enter the vector search technical documentation" url="../ai-integration/vector-search/ravendb-as-vector-database" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Using vector search with AI agents" description="Read an in-depth article about vector search" url="https://ayende.com/blog/203142-A/building-an-ai-agent-using-ravendb" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
+
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Take over the world with AI and RavenDB" description="Watch a webinar about vector search" url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+<Admonition type="note" title="">
+See common vector search use cases:
+
+[Semantic Document Discovery](../ai-integration/vector-search/vector-search_start#semantic-document-discovery)  
+[Product & Content Recommendation](../ai-integration/vector-search/vector-search_start#product--content-recommendation)  
+[Customer Support & Knowledge Management](../ai-integration/vector-search/vector-search_start#customer-support--knowledge-management)  
+[Business Intelligence & Analytics](../ai-integration/vector-search/vector-search_start#business-intelligence--analytics)  
+[Media & Content Analysis](../ai-integration/vector-search/vector-search_start#media--content-analysis)  
+[Scientific & Research Applications](../ai-integration/vector-search/vector-search_start#scientific--research-applications)  
+</Admonition>
+
+### GenAI tasks
+[GenAI tasks](../ai-integration/gen-ai-integration/gen-ai_start) are [ongoing operations](../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections, processing documents as they are added or modified.  
+- Similar to ETL tasks, a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
+- When the LLM responds, the GenAI task can use its response to, for example, update the source document, or create new documents in the database.  
+- GenAI tasks can infuse intelligence into a wide variety of content handling scenarios, like enriching documents with AI-generated summaries or classifications, translating text into different languages, or generating new content based on existing data.
+
+<ColGrid colCount={3}>
+ <CardWithImage title="Start page" description="Continue to the GenAI tasks Start page" url="../ai-integration/gen-ai-integration/gen-ai_start" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Overview" description="Enter the GenAI tasks technical documentation" url="../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="RavenDB GenAI Deep Dive" description="Read an in-depth article about GenAI" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
+
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Watch a webinar about GenAI tasks" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+<Admonition type="note" title="">
+See common GenAI tasks use cases:
+
+[Data enrichment & enhancement use cases](../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement-use-cases)  
+[Smart automation & workflows use cases](../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows-use-cases)  
+[Enhanced search & discovery use cases](../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery-use-cases)  
+[Business intelligence & insights use cases](../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights-use-cases)  
+[Content analysis & moderation use cases](../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation-use-cases)  
+</Admonition>
+
+### AI agents
+[AI agents](../ai-integration/ai-agents/ai-agents_start) are built to easily integrate AI capabilities into RavenDB clients.  
+- An AI agent is a component that resides on the server and serves as a client's proxy to an AI model; the agent can maintain a continuous conversation with the model, and enable the model to securely query a RavenDB database and request the client to perform actions.  
+- Using AI agents frees developers from the need to manage an AI model in their code, allows an almost immediate integration of numerous operational scenarios in your clients, and enhances the AI model's performance by giving it access to a credible and relevant data source.  
+
+<ColGrid colCount={3}>
+ <CardWithImage title="Start page" description="Continue to the AI agents Start page" url="../ai-integration/ai-agents/ai-agents_start" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Overview" description="Enter the AI agents technical documentation" url="../ai-integration/ai-agents/ai-agents_overview" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Practical Look at AI Agents with RavenDB" description="Read an in-depth article about AI agents" url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
+
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="How to run AI agents natively in your database" description="Watch a webinar about AI agents" url="https://www.youtube.com/watch?v=A17GSLGN-cQ" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+<Admonition type="note" title="">
+[See common AI agents use cases](../ai-integration/ai-agents/ai-agents_overview#common-use-cases)
+</Admonition>
