@@ -3,55 +3,188 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-We can clear all session operations and stop tracking of all entities using the 
-[session.advanced.clear()](../../../client-api/session/how-to/clear-a-session.mdx) method, 
-there's a need to do cleanup only for one entity. This is what `evict()` is for.
+<Admonition type="note" title="">
+    
+* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all entities that it has either stored, loaded, or queried.  
+  Any changes made to these entities are automatically persisted when `saveChanges` is called. 
+  
+* Use the `evict` method to **remove a specific entity** from the session's tracking before calling _saveChanges_.  
+  eviction stops the session from tracking the entity, removes it from the identity map and internal cache,  
+  and cancels any pending operations for that entity (e.g., Store, Delete).
+ 
+* This article explains how to **evict a single entity** from the session.    
+  To evict _all_ tracked entities and clear _all_ pending operations, use the [clear](../../../client-api/session/how-to/clear-a-session.mdx) method instead.  
+  To prevent an entity from being tracked, see [DisableTracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx).
+    
+* In this article:
+  * [Evict an entity before saving](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-before-saving)
+  * [Evict an entity to force reload from server](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-to-force-reload-from-server)    
+  * [Evict an entity from the session's delete queue](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-from-the-sessions-delete-queue)    
+  * [Limitations](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#limitations)
+  * [Syntax](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#syntax)
+    
+</Admonition>
+
+## Evict an entity before saving
+
+* Calling `evict` on an entity that is _stored_ removes it from the session’s tracking and cancels the pending store operation.  
+  As a result, the entity will not be saved to the database when _saveChanges_ is called.  
+* This can be useful if you’ve staged an entity to be stored, but then decide to discard it before committing changes.
+
+<TabItem value="" label="">
+```js
+class Employee {
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+} 
+ 
+const session = store.openSession();
+
+const employee1 = new Employee("John", "Doe");
+const employee2 = new Employee("Jane", "Doe");
+
+// Store both employees in the session
+// The session begins tracking both employee entities
+await session.store(employee1, "employees/1");
+await session.store(employee2, "employees/2");
+
+// Evict employee1
+// This removes employee1 from the session's tracking 
+// and cancels its pending store operation 
+session.advanced.evict(employee1);
+
+// Only employee2 will be saved
+await session.saveChanges();
+```
+</TabItem>
+
+## Evict an entity to force reload from server
+
+* Calling `evict` on an entity that was previously loaded removes it from the session’s tracking.  
+  The next time you call _load_ for that entity, RavenDB will fetch it from the server instead of returning the cached version.  
+* This can be useful if you want to ensure you're working with the latest version of a document,  
+  for example, if you expect the document was modified outside the session.
+
+<TabItem value="" label="">
+```js
+const session = store.openSession();`
+
+// Load an entity from the server
+// The session begins tracking the loaded entity
+let employee = await session.load("employees/1");
+console.log("number of requests = ", session.advanced.numberOfRequests); // 1
+
+// Loading the same entity again does NOT trigger a server call
+employee = await session.load("employees/1");
+console.log("number of requests = ", session.advanced.numberOfRequests); // 1
+
+// Evict the entity
+// This removes it from the session's tracking
+session.advanced.evict(employee); 
+
+// Loading the entity now DOES trigger a server call
+employee = await session.load("employees/1");
+console.log("number of requests = ", session.advanced.numberOfRequests); // 2
+```
+</TabItem>
+
+## Evict an entity from the session's delete queue
+
+* Calling `evict` on an entity that was previously marked for deletion removes it from the session's delete queue.  
+  As a result, the deletion will not be sent to the server when _saveChanges_ is called.    
+* This can be useful if you need to revert a pending deletion before committing changes.
+
+<TabItem value="" label="">
+```js
+const session = store.openSession();
+
+const employee1 = await session.load("employees/1");
+const employee2 = await session.load("employees/2");
+
+// Mark both employees for deletion
+session.delete(employee1);
+session.delete(employee2);
+
+// Remove employee1 from tracking and from delete queue
+session.advanced.evict(employee1); 
+
+// Only employee2 will be deleted
+await session.saveChanges();
+```
+</TabItem>
+
+## Limitations
+
+* `evict` cannot be called from within an [beforeStore](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore) or
+  [beforeDelete](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete) event handler.  
+  Attempting to do so will throw an exception.  
+* This is a design limitation intended to prevent changes to the session's internal state during event handlers that are triggered by _saveChanges_.
+  For example:  
+
+<TabItem value="" label="">
+```js
+{
+    const session = store.openSession();
+    await session.store(new Employee("John", "Doe"), "employees/1");
+    await session.store(new Employee("Jane", "Doe"), "employees/2");
+    await session.saveChanges();
+}
+    
+{
+    // Register event handler for 'beforeStore'
+    store.addSessionListener("beforeStore", async (args) => {
+        try {
+            const session = args.session;
+            const employee2 = await session.load("employees/2");
+            session.advanced.evict(employee2);
+        } catch (e) {
+            console.log("OnBeforeStore exception:", e.message);
+            // Expected: "Cannot Evict entity during OnBeforeStore..."
+        }
+    });
+    
+    // Register event handler for 'beforeDelete'
+    store.addSessionListener("beforeDelete", async (args) => {
+        try {
+            const session = args.session;
+            const employee2 = await session.load("employees/2");
+            session.advanced.evict(employee2);
+        } catch (e) {
+            console.log("OnBeforeDelete exception:", e.message);
+            // Expected: "Cannot Evict entity during OnBeforeDelete..."
+        }
+    });
+}
+
+// Try evicting in beforeStore
+{
+    const session = store.openSession();
+    await session.store({ firstName: "Foo3" }, "employees/3");
+    
+    await session.saveChanges(); // Triggers beforeStore
+}
+
+// Try evicting in beforeDelete
+{
+    const session = store.openSession();
+    const employee1 = await session.load("employees/1");
+    session.delete(employee1);
+    
+    await session.saveChanges(); // Triggers beforeDelete
+}
+```
+</TabItem>
 
 ## Syntax
 
-<TabItem value="evict_1" label="evict_1">
-<CodeBlock language="js">
-{`session.advanced.evict(entity);
-`}
-</CodeBlock>
+<TabItem value="" label="">
+```js
+session.advanced.evict(entity);
+```
 </TabItem>
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Entity that will be evicted |
-
-## Example I
-
-<TabItem value="evict_2" label="evict_2">
-<CodeBlock language="js">
-{`const employee1 = new Employee();
-employee1.firstName = "John";
-employee1.lastName = "Doe";
-
-const employee2 = new Employee();
-employee2.firstName = "Joe";
-employee2.lastName = "Shmoe";
-
-await session.store(employee1);
-await session.store(employee2);
-
-session.advanced.evict(employee1);
-
-await session.saveChanges();        // only 'Joe Shmoe' will be saved
-`}
-</CodeBlock>
-</TabItem>
-
-## Example II
-
-<TabItem value="evict_3" label="evict_3">
-<CodeBlock language="js">
-{`let employee = await session.load("employees/1-A"); // loading from serer
-employee = await session.load("employees/1-A");     // no server call
-session.advanced.evict(employee);
-employee = await session.load("employees/1-A");     // loading from server
-`}
-</CodeBlock>
-</TabItem>
-
-
+| Parameter  | Type   | Description                                   |
+| -----------| ------ | ----------------------------------------------|
+| **entity** | object | Instance of the entity to evict from tracking |
