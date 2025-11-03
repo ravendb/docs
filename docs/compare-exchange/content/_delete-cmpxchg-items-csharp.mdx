@@ -262,11 +262,13 @@ import CodeBlock from '@theme/CodeBlock';
         bool successful = resultOfDelete.Successful; // Has operation succeeded
         long indexOfItem = resultOfDelete.Index;     // The version of the deleted item
         
-        // If 'successful' is true - the compare-exchange item was deleted.                   
-        
+        // If 'successful' is true - the compare-exchange item was deleted.
+         
         // If 'successful' is false -
-        // * The item was not deleted because the index didn't match (it was modified by someone else),
+        // * The item was not deleted because the index didn't match (it was modified by someone else).
+        //   In this case, 'resultOfDelete.Value' will contain the current value stored on the server.
         // * Or the item no longer existed at the time of deletion (it was already deleted).
+        //   In this case, 'resultOfDelete.Value' will be null.
     }
     ```
     </TabItem>
@@ -284,17 +286,20 @@ import CodeBlock from '@theme/CodeBlock';
             itemToDelete.Key, itemToDelete.Index);
         
         // Execute the delete operation by passing it to Operations.SendAsync
-        CompareExchangeResult<string> resultOfDelete = await store.Operations.SendAsync(deleteCmpXchgOp);
+        CompareExchangeResult<string> resultOfDelete = await
+            store.Operations.SendAsync(deleteCmpXchgOp);
         
         // Check results
         bool successful = resultOfDelete.Successful; // Has operation succeeded
         long indexOfItem = resultOfDelete.Index;     // The version of the deleted item
         
-        // If 'successful' is true - the compare-exchange item was deleted.                   
-        
+        // If 'successful' is true - the compare-exchange item was deleted.
+         
         // If 'successful' is false -
-        // * The item was not deleted because the index didn't match (it was modified by someone else),
+        // * The item was not deleted because the index didn't match (it was modified by someone else).
+        //   In this case, 'resultOfDelete.Value' will contain the current value stored on the server.
         // * Or the item no longer existed at the time of deletion (it was already deleted).
+        //   In this case, 'resultOfDelete.Value' will be null.
     }
     ```
     </TabItem>
