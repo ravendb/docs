@@ -5,6 +5,8 @@ sidebar_label: Start
 sidebar_position: 0
 ---
 
+import Admonition from '@theme/Admonition';
+
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
 import ColGrid from "@site/src/components/ColGrid";
@@ -13,27 +15,36 @@ import genAiStartApiImage from "./assets/gen-ai_start_api-image.png";
 import genAiStartStudioImage from "./assets/gen-ai_start_studio-image.png";
 
 # GenAI tasks: Start
-RavenDB Generative AI (GenAI) tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor a specified collection, processing documents as they are added or modified. Similar to ETL tasks, a GenAI task extracts content from each processed document and transfers this content. However, instead of sending it to a final destination like an ETL task would, it sends the content to an AI model along with a guiding **prompt** and a **response template**.  
-When the model responds, it structures its response according to the response template so the GenAI task will be able to use it effectively, e.g., to update the source document with the requested information or with LLM-generated insights.  
-GenAI tasks can be easily created using Studio or the client API, and when created via Studio, each step of their creation can be easily tested and validated before deployment.  
+<Admonition type="note" title="">
+
+### GenAI tasks
+GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections and process documents as they are added or modified.  
+- Similar to [ETL tasks](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
+- When the LLM responds, the GenAI task can use its response to, for example, update the source document with LLM-generated content, or create new documents in the database.  
+- GenAI tasks can infuse intelligence into a wide variety of content handling scenarios.  
+  E.g., they can enrich documents with AI-generated summaries or classifications, translate text into different languages, or generate new content based on existing data.
+- You can easily create GenAI tasks using Studio or the client API.  
+  When created via Studio, each step of their creation can be easily tested and validated before deployment.  
+- [See common GenAI tasks use cases](../../ai-integration/gen-ai-integration/gen-ai_start#use-cases)
+</Admonition>
 
 ## Technical documentation
 Use our technical documentation to learn more about GenAI tasks and how to create and manage them.  
 If you're new to GenAI tasks, the [overview](../../ai-integration/gen-ai-integration/gen-ai-overview) page is a good starting point.  
 
 <ColGrid colCount={3}>
-    <CardWithImage title="GenAI tasks - Overview" description="The GenAI documentation starting point" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Creating a GenAI task using the Client API" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api" imgSrc={genAiStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Using Studio to define and test GenAI tasks" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio" imgSrc={genAiStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="GenAI tasks overview" description="Learn the concepts and flow of GenAI tasks in RavenDB" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Creating tasks via the API" description="Learn to create and use GenAI tasks using the Client API" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api" imgSrc={genAiStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Creating tasks via Studio" description="Learn to create and test GenAI tasks using Studio" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio" imgSrc={genAiStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
 
 ## In-depth articles
 Once you're familiar with the basics of GenAI tasks, you can take a look at these in-depth articles.
 
 <ColGrid colCount={3}>
-    <CardWithImage title="RavenDB GenAI Deep Dive" description="Article by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Survive the AI tidal wave with RavenDB & GenAI" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai" imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Unlock RavenDB GenAI potential with attachments" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/unlock-ravendb-genai-potential-with-attachments" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="RavenDB GenAI Deep Dive" description="A deep-dive with hands-on examples and implementation details, by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Survive the AI tidal wave with RavenDB & GenAI" description="A real-world demo using GenAI for intelligent support ticket automation, by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Unlock RavenDB GenAI potential with attachments" description="A practical guide to processing PDFs, images, and files with GenAI, by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/unlock-ravendb-genai-potential-with-attachments" imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
 
 ## Videos
