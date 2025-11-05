@@ -5,6 +5,8 @@ sidebar_label: Start
 sidebar_position: 0
 ---
 
+import Admonition from '@theme/Admonition';
+
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
 import ColGrid from "@site/src/components/ColGrid";
@@ -13,25 +15,29 @@ import aiAgentsStartApiImage from "./assets/ai-agents_start_apiImage.png";
 import aiAgentsStartStudioImage from "./assets/ai-agents_start_studioImage.png";
 
 # AI Agents: Start
-AI agents are built to easily integrate AI capabilities into RavenDB clients.  
-An AI agent serves as a client's proxy to an AI model; the agent can not only maintain a continuous conversation with the model but also enable it to securely query a RavenDB database and request the client to perform actions.  
-Using AI agents frees developers from the need to manage an AI model in their code, enhances the model by giving it access to a credible and relevant data source, and opens the door to numerous operational scenarios.  
+<Admonition type="note" title="">
+
+AI agents are server-side components that act as secure proxies between RavenDB clients and AI models. They can be easily customized to handle specific client needs, tasks or workflows, such as answering questions, performing data analysis, or automating processes.  
+ - Using AI agents frees developers from the need to manage the communication with the AI model in their code, and enables rapid integration of AI capabilities into their applications.  
+ - An agent receives requests from clients and maintains continuous conversations with AI models to fulfill them. During the conversation, the agent can enable the model to securely query a RavenDB database and request the client to perform actions.  
+- [See common AI agents use cases](../../ai-integration/ai-agents/ai-agents_start#use-cases)
+</Admonition>
 
 ## Technical documentation
 Our technical documentation explains in detail what AI agents are and how to define and use them.  
 If you're new to AI agents, we recommend the [overview](../../ai-integration/ai-agents/ai-agents_overview) page as a good starting point.  
 
 <ColGrid colCount={3}>
-    <CardWithImage title="AI Agents - Overview" description="The starting point for the AI agents documentation: an overview of the feature" url="../../ai-integration/ai-agents/ai-agents_overview" imgSrc={aiAgentsStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Creating an agent using the API" description="Defining an agent configuration, Running a continuous conversation with the LLM, and Getting results via the Client API" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api" imgSrc={aiAgentsStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Easily creating and testing an AI agent using Studio" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio" imgSrc={aiAgentsStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="AI Agents Overview" description="Basic concepts of RavenDB's native AI agents" url="../../ai-integration/ai-agents/ai-agents_overview" imgSrc={aiAgentsStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Create agents via the API" description="Define and run AI agents via the Client API" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api" imgSrc={aiAgentsStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Create agents via Studio" description="Easily create and test AI agents using Studio" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio" imgSrc={aiAgentsStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
 
 ## In-depth articles
 Once you get acquainted with AI agents, expand your expertise with a comprehensive guide that includes some practical insights.
 
 <ColGrid colCount={3}>
-    <CardWithImage title="Practical Look at AI Agents with RavenDB" description="Article by Gracjan Sadowicz" imgSrc="" url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Practical Look at AI Agents with RavenDB" description="A step-by-step tutorial for building AI agents with RavenDB, by Gracjan Sadowicz" imgSrc="" url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
 
 ## Videos
