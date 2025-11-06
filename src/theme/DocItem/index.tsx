@@ -16,7 +16,8 @@ export default function DocItemWrapper(props: Props): ReactNode {
         source?.startsWith("docs/") ||
         source?.startsWith("versioned_docs/");
     const fileName = source?.split("/").pop();
-    const isExcluded = fileName === "home.mdx" || fileName === "whats-new.mdx";
+    const isHomepage = fileName === "home.mdx";
+    const isExcluded = isHomepage || fileName === "whats-new.mdx";
 
     const supportedLanguages =
         (props.content as any)?.supportedLanguages ||
@@ -37,7 +38,7 @@ export default function DocItemWrapper(props: Props): ReactNode {
                 <div className="col flex-1 min-w-0">
                     <DocItem {...props} />
                 </div>
-                <div className="col col--3 lg:block"></div>
+                {!isHomepage && <div className="col col--3 lg:block"></div>}
             </div>
         </>
     );
