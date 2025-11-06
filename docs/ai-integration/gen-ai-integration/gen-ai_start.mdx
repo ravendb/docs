@@ -14,10 +14,9 @@ import genAiStartOvImage from "./assets/gen-ai_start_ov-image.png";
 import genAiStartApiImage from "./assets/gen-ai_start_api-image.png";
 import genAiStartStudioImage from "./assets/gen-ai_start_studio-image.png";
 
-# GenAI tasks: Start
-<Admonition type="note" title="">
+# GenAI tasks
+### Build intelligent workflows with GenAI tasks.
 
-### GenAI tasks
 GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections and process documents as they are added or modified.  
 - Similar to [ETL tasks](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
 - When the LLM responds, the GenAI task can use its response to, for example, update the source document with LLM-generated content, or create new documents in the database.  
@@ -26,7 +25,6 @@ GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/g
 - You can easily create GenAI tasks using Studio or the client API.  
   When created via Studio, each step of their creation can be easily tested and validated before deployment.  
 - [See common GenAI tasks use cases](../../ai-integration/gen-ai-integration/gen-ai_start#use-cases)
-</Admonition>
 
 ## Technical documentation
 Use our technical documentation to learn more about GenAI tasks and how to create and manage them.  
@@ -50,7 +48,7 @@ Once you're familiar with the basics of GenAI tasks, you can take a look at thes
 ## Videos
 Learn how GenAI tasks help create reliable and effective AI-powered workflows.
 
-<ColGrid colCount={2}>
+<ColGrid colCount={1}>
     <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
 </ColGrid>
 
