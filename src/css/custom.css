@@ -31,6 +31,7 @@
   --font-mono:
     "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
+    --ifm-pre-background: color-mix(in oklab, var(--ifm-background-surface-color) 72%, #FFF 28%);
   --anchor-icon: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxwYXRoIGQ9Ik0yMTAsNDZhNTEuOCw1MS44LDAsMCwwLTczLjUsMEwxMTYuNyw2NS44QTgsOCwwLDAsMCwxMjgsNzcuMWwxOS44LTE5LjhhMzYuMSwzNi4xLDAsMCwxLDUwLjksMCwzNS45LDM1LjksMCwwLDEsMCw1MC45bC0yOC4zLDI4LjNhMzYuMSwzNi4xLDAsMCwxLTUwLjksMCw4LDgsMCwxLDAtMTEuMywxMS4zLDUyLDUyLDAsMCwwLDczLjUsMEwyMTAsMTE5LjVBNTEuOCw1MS44LDAsMCwwLDIxMCw0NloiLz48cGF0aCBkPSJNMTI4LDE3OC45bC0xOS44LDE5LjhhMzYsMzYsMCwwLDEtNTAuOS01MC45bDI4LjMtMjguM2EzNi4xLDM2LjEsMCwwLDEsNTAuOSwwLDgsOCwwLDAsMCwxMS4zLTExLjMsNTIsNTIsMCwwLDAtNzMuNSwwTDQ2LDEzNi41QTUyLDUyLDAsMSwwLDExOS41LDIxMGwxOS44LTE5LjhBOCw4LDAsMCwwLDEyOCwxNzguOVoiLz48L3N2Zz4=");
   --docsearch-searchbox-focus-background: var(--ifm-background-color) !important;
   --docsearch-hit-color: var(--ifm-color-primary-lightest) !important;
@@ -47,7 +48,16 @@
   --ifm-color-primary-lightest: #86baf2;
   --ifm-navbar-background-color: var(--ifm-background-color);
   --ifm-background-surface-color: #222225;
+  --ifm-pre-background: color-mix(in oklab, var(--ifm-background-surface-color) 72%, #000 28%);
   --anchor-icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2Ij4KIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8cmVjdCBpZD0ic3ZnXzEiIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZmlsbD0iI2ZmZmZmZiIgaWQ9InN2Z18yIiBkPSJtMjEwLDQ2YTUxLjgsNTEuOCAwIDAgMCAtNzMuNSwwbC0xOS44LDE5LjhhOCw4IDAgMCAwIDExLjMsMTEuM2wxOS44LC0xOS44YTM2LjEsMzYuMSAwIDAgMSA1MC45LDBhMzUuOSwzNS45IDAgMCAxIDAsNTAuOWwtMjguMywyOC4zYTM2LjEsMzYuMSAwIDAgMSAtNTAuOSwwYTgsOCAwIDEgMCAtMTEuMywxMS4zYTUyLDUyIDAgMCAwIDczLjUsMGwyOC4zLC0yOC4zYTUxLjgsNTEuOCAwIDAgMCAwLC03My41eiIvPgogIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMyIgZD0ibTEyOCwxNzguOWwtMTkuOCwxOS44YTM2LDM2IDAgMCAxIC01MC45LC01MC45bDI4LjMsLTI4LjNhMzYuMSwzNi4xIDAgMCAxIDUwLjksMGE4LDggMCAwIDAgMTEuMywtMTEuM2E1Miw1MiAwIDAgMCAtNzMuNSwwbC0yOC4zLDI4LjNhNTIsNTIgMCAxIDAgNzMuNSw3My41bDE5LjgsLTE5LjhhOCw4IDAgMCAwIC0xMS4zLC0xMS4zeiIvPgogPC9nPgo8L3N2Zz4= ");
+}
+
+/* Ensure code blocks use the harmonized background even if theme overrides */
+.theme-code-block,
+.codeBlockContainer,
+pre[class*="language-"] {
+  --prism-background-color: var(--ifm-pre-background) !important;
+  background-color: var(--prism-background-color) !important;
 }
 
 /* Custom search variables */
@@ -330,4 +340,72 @@ code {
 /* Custom margin-bottom for tabs and admonitions followed by other elements */
 [class^="tabItem"]:has(+ *), .theme-admonition:has(+ *) {
   @apply mb-4;
+}
+
+/* Remove trailing margin from the last element inside the last div of an admonition */
+.theme-admonition > div:last-child > :last-child {
+  @apply mb-0;
+}
+
+/* Frames for documentation content */
+.content-frame {
+  @apply rounded-md border border-black/10 dark:border-white/10 p-4;
+  background-color: color-mix(in oklab, var(--ifm-background-surface-color) 85%, transparent);
+}
+
+.content-frame > :first-child {
+  @apply mt-0;
+}
+
+.content-frame > :last-child {
+  @apply mb-0;
+}
+
+.content-frame pre,
+.content-frame .theme-code-block {
+  @apply my-0;
+}
+
+.panel {
+  @apply rounded-lg border border-black/10 dark:border-white/10;
+}
+
+.panel__body {
+  padding: 1.5rem;
+  background-color: color-mix(in oklab, var(--ifm-background-surface-color) 30%, transparent);
+}
+
+.panel__body > :first-child {
+  @apply mt-0;
+}
+
+.panel__body > :last-child {
+  @apply mb-0;
+}
+
+.panel__body pre,
+.panel__body .theme-code-block {
+  @apply my-0;
+}
+
+.panel__heading {
+  @apply rounded-t-lg border-b border-black/10 dark:border-white/10 m-0;
+  padding: 0.875rem 1rem;
+}
+
+.panel__heading {
+  background-color: var(--ifm-background-surface-color);
+}
+
+.theme-code-block {
+  @apply border border-black/10 dark:border-white/10;
+}
+
+/* Remove borders for code blocks when placed inside tabs container */
+.tabs-container .theme-code-block,
+.tabs-container .codeBlockContainer,
+.tabs-container pre[class*="language-"] {
+  @apply !border-0;
+  border: 0 !important;
+  box-shadow: none !important;
 }

@@ -200,7 +200,7 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} RavenDB`,
     },
     prism: {
-      theme: prismThemes.github,
+      theme: prismThemes.nightOwlLight,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ["csharp", "java", "php"],
     },

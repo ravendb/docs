@@ -50,8 +50,8 @@ export default function LanguageSwitcher({
                             onClick={() => setLanguage(lang.value)}
                             className={clsx(
                                 "px-3 py-1.5 rounded-md border text-sm transition-colors cursor-pointer",
-                                "border-gray-300 text-gray-500 hover:bg-black/5 hover:border-gray-500 hover:text-gray-600",
-                                "dark:text-gray-300 dark:border-gray-600 dark:hover:text-gray-200 dark:hover:border-gray-400 dark:hover:bg-white/5",
+                                "border-black/10 text-gray-500 hover:bg-black/5 hover:border-black/15 hover:text-gray-600",
+                                "dark:text-gray-300 dark:border-white/10 dark:hover:text-gray-200 dark:hover:border-white/15 dark:hover:bg-white/5",
                             )}
                             style={
                                 isActive
