@@ -1,7 +1,7 @@
 ---
 title: "AI Integration: Start"
 hide_table_of_contents: true
-sidebar_label: Start
+sidebar_label: "Start"
 sidebar_position: 0
 ---
 
@@ -26,19 +26,11 @@ These features include [AI agents](../ai-integration/ai-integration_start#ai-age
 <br />
 
 ### AI agents
-AI agents are server-side components that act as secure proxies between RavenDB clients and AI models. They can be easily customized to handle specific client needs, tasks or workflows, such as answering questions, performing data analysis, or automating processes.  
- - Using AI agents frees developers from the need to manage the communication with the AI model in their code, and enables rapid integration of AI capabilities into their applications.  
- - An agent receives requests from clients and maintains continuous conversations with AI models to fulfill them. During the conversation, the agent can enable the model to securely query a RavenDB database (e.g., fetch recent orders or run vector searches on products) and request the client to perform actions (like sending emails or creating new orders).
- - You can use AI agents to quickly create an intelligent, actionable, conversational interface for your applications, in a way that abstracts much of the complexity of AI integration.
+
+AI agents are conversational proxy components that reside on the server and autonomously handle client requests using an AI model. Instead of spending your time on integrating AI capabilities into your application, you can rapidly configure AI agents using Studio or the client API. Agents can securely read from the database and request the client for actions on behalf of the AI model, infusing intelligence into the workflow. Whether you need chatbots, automated reporting, or intelligent data processing, you get immediate production-ready AI features without the integration overhead.
 
 <Admonition type="note" title="">
-See common AI agents use cases:
-
-[Customer support chatbot agents](../ai-integration/ai-agents/ai-agents_overview#customer-support-chatbot-agents)  
-[Data analysis and reporting agents](../ai-integration/ai-agents/ai-agents_overview#data-analysis-and-reporting-agents)  
-[Content generation agents](../ai-integration/ai-agents/ai-agents_overview#content-generation-agents)  
-[Workflow automation agents](../ai-integration/ai-agents/ai-agents_overview#workflow-automation-agents)  
-[Intelligent recommendation agents](../ai-integration/ai-agents/ai-agents_overview#intelligent-recommendation-agents)  
+[See common AI agents use cases](../ai-integration/ai-agents/ai-agents_start#use-cases)
 </Admonition>
 
 <Admonition type="note" title="">
@@ -58,22 +50,10 @@ See common AI agents use cases:
 <br />
 
 ### GenAI tasks
-GenAI tasks are [ongoing operations](../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections and process documents as they are added or modified.  
-- Similar to [ETL tasks](../studio/database/tasks/ongoing-tasks/ravendb-etl-task), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
-- When the LLM responds, the GenAI task can use its response to, for example, update the source document with LLM-generated content, or create new documents in the database.  
-- GenAI tasks can infuse intelligence into a wide variety of content handling scenarios.  
-  E.g., they can enrich documents with AI-generated summaries or classifications, translate text into different languages, or generate new content based on existing data.
-- You can easily create GenAI tasks using Studio or the client API.  
-  When created via Studio, each step of their creation can be easily tested and validated before deployment.  
+GenAI tasks are configurable [ongoing operations](../studio/database/tasks/ongoing-tasks/general-info) that process your documents systematically in the background using an AI model. Instead of building custom AI integration pipelines yourself, you can easily create tasks that weave AI capabilities into your data flow. They can enrich documents with AI-generated content, validate and categorize data, translate documents, or execute countless other automated workflows that leverage AI capabilities.
 
 <Admonition type="note" title="">
-See common GenAI tasks use cases:
-
-[Data enrichment & enhancement use cases](../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement-use-cases)  
-[Smart automation & workflows use cases](../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows-use-cases)  
-[Enhanced search & discovery use cases](../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery-use-cases)  
-[Business intelligence & insights use cases](../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights-use-cases)  
-[Content analysis & moderation use cases](../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation-use-cases)  
+[See common GenAI tasks use cases](../ai-integration/gen-ai-integration/gen-ai_start#use-cases)
 </Admonition>
 
 <Admonition type="note" title="">
@@ -93,11 +73,7 @@ See common GenAI tasks use cases:
 <br />
 
 ### Embeddings generation
-[Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are numeric vectors that you can create for data (like a text or an image) to capture meanings, contexts, or relationships related to the data. You can then search the data by running intelligent queries over its embeddings using [vector search](../../ai-integration/vector-search/vector-search_start) to find content by semantic similarity rather than exact matches.
- - RavenDB allows you to create embeddings using native [ongoing embeddings-generation tasks](../../ai-integration/generating-embeddings/embeddings-generation-task) that systematically process document collections and convert document fields (like texts or arrays) into embeddings. To create the embeddings, the tasks can use either an external AI model (such as OpenAI) or RavenDB's default embedding model.  
-  - You can also create embeddings using external embeddings providers and store them in your database (e.g., to handle other content types such as images).  
-  - You can avoid pre-generating embeddings, and let vector search operations generate embeddings on-the-fly, while searching.  
-  - Embeddings can be used by other RavenDB AI features, e.g., [AI agents](../../ai-integration/ai-agents/ai-agents_start) can use vector search to retrieve relevant data requested by the LLM.  
+Embeddings generation tasks transform your content into semantic vectors that enable intelligent similarity-based searches. Instead of building complex search infrastructure, you can leverage native tasks that seamlessly embed vector capabilities into your data, enabling intelligent search by meaning and context.
 
 <Admonition type="note" title="">
 [See common embeddings-generation use cases](../ai-integration/generating-embeddings/embeddings-generation_start#use-cases)
@@ -120,19 +96,10 @@ See common GenAI tasks use cases:
 <br />
 
 ### Vector search
-[Vector search](../ai-integration/vector-search/vector-search_start) operations let you find related content by comparing embeddings, e.g. to find texts by meaning or images by context.  
-- When running a vector search, your query is converted into an embedding and compared against document embeddings. The document embeddings can be either pre-generated (by an embeddings-generation task or an external provider) or generated on-the-fly while searching.  
-- You can run vector search using either a dynamic query for ad-hoc or infrequent searches or a static index for optimized performance.  
-- Vector search is designed so other RavenDB AI features can easily use it. A [GenAI task](../ai-integration/gen-ai-integration/gen-ai_start), for example,  can use vector search to find documents and update them with LLM-generated content, and an [AI agent](../ai-integration/ai-agents/ai-agents_start) can use vector search to retrieve relevant data requested by the LLM.  
+Vector search enables intelligent similarity-based discovery using embeddings rather than exact matching. Instead of developing custom similarity algorithms yourself, you can leverage native vector operations for diverse applications. Whether you need to categorize content, find similar items, or automate recommendations, vector search delivers intelligent matching capabilities that understand meaning and context.
 
 <Admonition type="note" title="">
-See common vector search use cases:
-
-[Document & Knowledge Search](../ai-integration/vector-search/vector-search_start#document--knowledge-search)  
-[Product & Content Recommendation](../ai-integration/vector-search/vector-search_start#product--content-recommendation)  
-[Customer Support Automation](../ai-integration/vector-search/vector-search_start#customer-support-automation)  
-[Business Intelligence](../ai-integration/vector-search/vector-search_start#business-intelligence)  
-[Media & Content Analysis](../ai-integration/vector-search/vector-search_start#media--content-analysis)  
+[See common vector search use cases](../ai-integration/vector-search/vector-search_start#use-cases)
 </Admonition>
 
 <Admonition type="note" title="">
