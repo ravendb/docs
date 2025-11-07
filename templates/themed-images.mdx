@@ -1,0 +1,221 @@
+---
+title: "Themed Images"
+hide_table_of_contents: false
+sidebar_label: Themed Images
+---
+
+import Admonition from '@theme/Admonition';
+import ThemedImage from '@theme/ThemedImage';
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import lightImage from '@site/static/img/templates/light-image.png';
+import darkImage from '@site/static/img/templates/dark-image.png';
+
+# Themed Images overview
+
+This guide shows how to use `ThemedImage` component to display different images for light and dark themes, ensuring optimal visual appearance in both modes.
+
+## ThemedImage
+
+### Import
+
+```mdx
+import ThemedImage from '@theme/ThemedImage';
+```
+
+### Basic usage
+
+````mdx
+import ThemedImage from '@theme/ThemedImage';
+import lightImage from '@site/static/img/templates/light-image.png';
+import darkImage from '@site/static/img/templates/dark-image.png';
+
+<ThemedImage
+  alt="Description of the image"
+  sources={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+/>
+````
+
+#### Live example
+
+<ThemedImage
+  alt="Example themed image"
+  sources={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+/>
+
+### Custom styling
+
+You can add custom CSS classes to style the image:
+
+```mdx
+<ThemedImage
+  alt="Styled image"
+  sources={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+  className="border-4 border-dotted border-pink-500"
+/>
+```
+
+#### Live example
+
+<ThemedImage
+  alt="Styled themed image"
+  sources={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+  className="border-4 border-dotted border-pink-500"
+/>
+
+### Using with imported images
+
+When importing images from your assets folder:
+
+```mdx
+import ThemedImage from '@theme/ThemedImage';
+import lightImage from '@site/static/img/templates/light-image.png';
+import darkImage from '@site/static/img/templates/dark-image.png';
+
+<ThemedImage
+  alt="API vs Studio comparison"
+  sources={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+/>
+```
+
+## Using ThemedImage in Card components
+
+Both `CardWithImage` and `CardWithImageHorizontal` support themed images by passing an object with `light` and `dark` properties to the `imgSrc` prop.
+
+### CardWithImage with themed images
+
+```mdx
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import lightImage from '@site/static/img/templates/light-image.png';
+import darkImage from '@site/static/img/templates/dark-image.png';
+
+<CardWithImage
+  title="Example Card"
+  description="Card with themed image"
+  imgSrc={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+  imgAlt="Example card image"
+/>
+```
+
+#### Live example
+
+<ColGrid colCount={1}>
+  <CardWithImage
+    title="Example Card"
+    description="Card with themed image support"
+    imgSrc={{
+      light: lightImage,
+      dark: darkImage,
+    }}
+    imgAlt="Example card"
+  />
+</ColGrid>
+
+### CardWithImageHorizontal with themed images
+
+```mdx
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import lightImage from '@site/static/img/templates/light-image.png';
+import darkImage from '@site/static/img/templates/dark-image.png';
+
+<CardWithImageHorizontal
+  title="Horizontal Card"
+  description="Horizontal card with themed image"
+  imgSrc={{
+    light: lightImage,
+    dark: darkImage,
+  }}
+  imgAlt="Horizontal card image"
+/>
+```
+
+#### Live example
+
+<ColGrid colCount={1}>
+  <CardWithImageHorizontal
+    title="Horizontal Card"
+    description="Horizontal card with themed image support"
+    imgSrc={{
+      light: lightImage,
+      dark: darkImage,
+    }}
+    imgAlt="Horizontal card"
+  />
+</ColGrid>
+
+### Fallback to single image
+
+Both card components maintain backward compatibility. If you pass a string instead of an object, they'll use a regular `<img>` tag:
+
+```mdx
+<CardWithImage
+  title="Simple Card"
+  description="Card with single image"
+  imgSrc={singleImage}
+  imgAlt="Card image"
+/>
+```
+#### Live example
+
+<ColGrid colCount={1}>
+  <CardWithImage
+    title="Simple Card"
+    description="Card with single image"
+    imgSrc={lightImage}
+    imgAlt="Card image"
+  />
+</ColGrid>
+
+## Best practices
+
+- **Always provide both images**: Ensure you have optimized versions for both light and dark themes.
+- **Use descriptive alt text**: Always include meaningful `alt` text for accessibility.
+- **Match image dimensions**: Keep light and dark variants at the same dimensions for consistent layout.
+- **Optimize images**: Use appropriate image formats and compression for web performance.
+- **Test both themes**: Verify that images look good in both light and dark modes.
+
+<Admonition type="info" title="">
+When using themed images in card components, the component automatically detects the object format and renders the appropriate image component. For single images, use a string; for themed images, use an object with `light` and `dark` properties.
+</Admonition>
+
+## Props
+
+### ThemedImage
+
+| Prop      | Type                                    | Default | Description                                                                 |
+| --------- | --------------------------------------- | ------- | --------------------------------------------------------------------------- |
+| alt       | string                                  | —       | Alternative text for the image (required for accessibility).                |
+| sources   | `{ light: string; dark: string }`         | —       | Object containing image sources for light and dark themes.                  |
+| className | string                                  | —       | Additional CSS classes for custom styling.                                  |
+| width     | number \| string                         | —       | Image width (optional).                                                     |
+| height    | number \| string                         | —       | Image height (optional).                                                    |
+| style     | React.CSSProperties                      | —       | Inline styles for the image (optional).                                     |
+
+### CardWithImage / CardWithImageHorizontal
+
+The `imgSrc` prop accepts either:
+
+- **String**: Single image URL (backward compatible)
+- **Object**: `{ light: string; dark: string }` for themed images
+
+When an object is provided, the component automatically uses `ThemedImage` internally.
+
