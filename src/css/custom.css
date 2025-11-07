@@ -409,3 +409,8 @@ code {
   border: 0 !important;
   box-shadow: none !important;
 }
+
+/* Custom hr color */
+hr {
+  @apply !bg-black/10 dark:!bg-white/10;
+}
