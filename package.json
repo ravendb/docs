@@ -5,8 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "npm run generate-icon-types && docusaurus start --no-minify",
-    "start:current": "set \"DOCUSAURUS_START_VERSION_ENV=current\" && npm run generate-icon-types && docusaurus start --no-minify",
+    "start:current": "npm run generate-icon-types && cross-env DOCUSAURUS_VERSIONS='current' docusaurus start --no-minify",
     "build": "npm run generate-icon-types && docusaurus build",
+    "build:current": "npm run generate-icon-types && cross-env DOCUSAURUS_VERSIONS='current' docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -40,6 +41,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.39.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",

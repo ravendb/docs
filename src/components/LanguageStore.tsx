@@ -26,6 +26,7 @@ export const useLanguage = (): {
     const language = useSyncExternalStore(
         subscribe,
         getLanguageFromLocalStorage,
+        () => DEFAULT_LANGUAGE,
     );
 
     const setLanguage = useCallback((newLanguage: DocsLanguage) => {
