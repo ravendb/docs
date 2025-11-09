@@ -11,6 +11,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -31,9 +33,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Counter value modification
+<Panel heading="Counter value modification">
 
 ### Value modification and replication flow
 
@@ -74,6 +74,8 @@ Note that **only the Counter's value** is replicated.
 The document itself hasn't been modified and does not require replication.  
 </Admonition>
 
+---
+    
 ### Reading a Counter's value 
 
 When a client requests a Counter's value, the server returns a single accumulated sum.  
@@ -86,9 +88,9 @@ In the following example:
     | ProductLikes | C         | **10**                             |
     |              |           | **Total value: 42 + 33 + 10 = 85** |
 
----
+</Panel>
 
-## Counter name modification
+<Panel heading="Counter name modification">
 
 **Modifying a Counter name triggers document replication**:  
 
@@ -97,9 +99,9 @@ In the following example:
 * As a result, the entire document - including the new Counter value - is replicated to all nodes in the database group.
 * Existing Counters are not replicated, since they already exist on the other nodes and their values remain unchanged.
 
----
+</Panel>
 
-## Concurrent value modification
+<Panel heading="Concurrent value modification">
 
 **The same Counter can be concurrently modified by multiple clients**.  
 
@@ -112,9 +114,9 @@ As a result:
 * Concurrent value modifications do not cause conflicts.
   For more details, see [Counters and conflicts](../../document-extensions/counters/overview#counters-and-conflicts).  
 
----
+</Panel>
 
-## Concurrent&nbsp;`Delete`&nbsp;and&nbsp;`Increment`
+<Panel heading="Concurrent&nbsp;`Delete`&nbsp;and&nbsp;`Increment`">
 
 A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview.mdx#cumulative-counter-actions), 
 as long as the Counter is not [Deleted](../../document-extensions/counters/delete.mdx).  
@@ -140,3 +142,5 @@ Different ***nodes*** may concurrently _Delete_ and _Increment_ the same Counter
 * This is considered a conflict, and RavenDB resolves it in favor of the **increment** action.
 * The incrementing node will ignore the delete action.  
 * The deleting node will delete the Counter locally, but re-create it when it receives the updated value through replication.
+    
+</Panel>
