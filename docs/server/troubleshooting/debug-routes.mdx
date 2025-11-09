@@ -37,7 +37,7 @@ For the endpoints that begin with `/databases/*/`, replace `*` with the name of 
 | /admin/debug/memory/smaps | GET | | Returns all of RavenDB's process mappings including shared/private clean/dirty memory allocations | Availabe only on Linux |
 | /admin/debug/memory/stats | GET | | Full report of memory usage including un/managed usage by thread and free memory status | |
 | /admin/debug/node/engine-logs | GET | | Rachis logs | |
-| /admin/debug/node/ping | GET | -(Optional) url-&lt;br /&gt; -(Optional)node-&lt;br /&gt;For specifying the node by url or node tag | Test the ability to reach the server | |
+| /admin/debug/node/ping | GET | <ul><li>(Optional) <strong>url</strong><br /></li><li>(Optional) <strong>node</strong></li></ul>Specifies the node by url or node tag | Test the ability to reach the server | |
 | /admin/debug/node/remote-connections | GET | | Returns connections' details of members and watchers in the cluster | |
 | /admin/debug/node/state-change-history | GET | | List the node's state transition history in the cluster | |
 | /admin/debug/proc/meminfo | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/meminfo | Availabe only on Linux |
@@ -45,9 +45,9 @@ For the endpoints that begin with `/databases/*/`, replace `*` with the name of 
 | /admin/debug/proc/status | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/status | Availabe only on Linux |
 | /admin/debug/threads/runaway | GET | | List all threads and their names, sorted by duration | |
 | /build/version | GET | | Returns product build number, major version, commit hash and full version number | |
-| /databases/*/admin/debug/cluster/txinfo | GET | -(Optional) from - Amount of result to skip&lt;br /&gt; -(Optional)take - Amount of result to take | List the incomplete [cluster transaction commands](../clustering/cluster-transactions.mdx#cluster--cluster-wide-transactions) | |
+| /databases/*/admin/debug/cluster/txinfo | GET | <ul><li>(Optional) <strong>from</strong><br />Number of results to skip</li><li>(Optional) <strong>take</strong><br />Number of results to take</li></ul> | List the incomplete [cluster transaction commands](../clustering/cluster-transactions.mdx#cluster--cluster-wide-transactions) | |
 | /databases/*/admin/debug/txinfo | GET | | List | |
-| /databases/*/debug/documents/huge | GET | | List IDs of documents which exceed `PerformanceHints.`&lt;br /&gt;`Documents.`&lt;br /&gt;`HugeDocumentSizeInMb` setting | |
+| /databases/*/debug/documents/huge | GET | | List IDs of documents which exceed `PerformanceHints.`<br />`Documents.`<br />`HugeDocumentSizeInMb` setting | |
 | /databases/*/debug/identities | GET | | | |
 | /databases/*/debug/info-package | GET | | Save debug package information for later analysis | |
 | /databases/*/debug/io-metrics | GET | | Get current IO metrics: "Writes, Flush, Sync" for each storage environment | |
