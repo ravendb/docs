@@ -45,46 +45,39 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </Admonition>
 ## General Information about External Replication Task
 
-**What is being replicated:**  
+<u>What is being replicated:</u>  
+All database documents and related data.
+* [Attachments](../../../../document-extensions/attachments/what-are-attachments.mdx)  
+* [Revisions](../../../../document-extensions/revisions/overview.mdx)  
+* [Counters](../../../../document-extensions/counters/overview.mdx)  
+* [Time Series](../../../../document-extensions/timeseries/overview.mdx)  
 
-  * All database documents and related data:  
-    * [Attachments](../../../../document-extensions/attachments/what-are-attachments.mdx)  
-    * [Revisions](../../../../document-extensions/revisions/overview.mdx)  
-    * [Counters](../../../../document-extensions/counters/overview.mdx)
-    * [Time Series](../../../../document-extensions/timeseries/overview.mdx)
-**What is _not_ being replicated:**  
+<u>What is **not** being replicated:</u>  
+Server and cluster level features.  
+* [Indexes](../../../../indexes/creating-and-deploying.mdx)  
+* [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)  
+* [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview.mdx)
+* [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+* [Identities](../../../../server/kb/document-identifier-generation.mdx#strategy--3)  
+* Ongoing tasks
+   * [ETL](../../../../server/ongoing-tasks/etl/basics.mdx)
+   * [Backup](../../../../studio/database/tasks/backup-task.mdx)
+   * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
-  * Server and cluster level features:  
-    * [Indexes](../../../../indexes/creating-and-deploying.mdx)  
-    * [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)  
-    * [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview.mdx)
-    * [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
-    * [Identities](../../../../server/kb/document-identifier-generation.mdx#strategy--3)  
-    * Ongoing tasks
-      * [ETL](../../../../server/ongoing-tasks/etl/basics.mdx)
-      * [Backup](../../../../studio/database/tasks/backup-task.mdx)
-      * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
+<Admonition type="note" title="Why are cluster-level features not replicated?" id="why-are-cluster-level-features-not-replicated" href="#why-are-cluster-level-features-not-replicated">
+RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  
+especially in scenarios where ACID transactions are critical.
 
-        <Admonition type="note" title="">
+This approach ensures that certain features, such as policies, configurations, and ongoing tasks,  
+remain specific to each cluster, avoiding potential inconsistencies.
 
-        **Why are cluster-level features not replicated?**
+To explore this concept further, refer to the [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) blog post.
+</Admonition>
 
-        RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  
-        especially in scenarios where ACID transactions are critical.
-
-        This approach ensures that certain features, such as policies, configurations, and ongoing tasks,  
-        remain specific to each cluster, avoiding potential inconsistencies.
-
-        To explore this concept further, refer to the [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) blog post.
-
-        </Admonition>
-**Conflicts:**  
-
+<u>Conflicts:</u>  
   * Two databases that have an External Replication task defined between them will detect and resolve document 
     [conflicts](../../../../server/clustering/replication/replication-conflicts.mdx) according to each database conflict resolution policy.  
   * It is recommended to have the same [conflict resolution policy configuration](../../../../server/clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
-
-
 
 ## Step-by-Step Guide
 
