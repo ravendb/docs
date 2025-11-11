@@ -11,21 +11,30 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Client Configuration (for database)
 <Admonition type="note" title="">
 
-* You can override the [client-configuration](../../../studio/server/client-configuration.mdx) that is set server-wide __per database__:
-  
- * From the Studio - as described in this article
- * From the Client API - see [put client-configuration operation](../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx#put-client-configuration-(server-wide))
+* You can **override** the [server-wide client configuration](../../../studio/server/client-configuration.mdx) per database:  
+  You can do this using:  
+  * The Studio - as described in this article  
+  * The Client API - see [Put client configuration operation](../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)  
+    
+* When set from the Studio, the client configuration is stored directly on the RavenDB server  
+  and applies to any client that connects to the specific database.
+   
+* These settings override the client's own configuration,  
+  which was initially set in your application code when initializing the _DocumentStore_.  
+  This enables administrators to dynamically control client behavior, even after the client has started running.  
+  For example, adjusting load balancing behavior on the fly in response to changing system demands.
 
-* Setting the client-configuration from the studio sets the configuration on the RavenDB server.  
-  This enables administrators to dynamically control the client behavior even after it has started running.  
-  e.g. manage load balancing of client requests on the fly in response to changing system demands.
-
+* In this article:
+  * [Set the client configuration (for database)](../../todo)
+    
 </Admonition>
-## Set the client-configuration (for database)
+
+## Set the client configuration (for database)
 
 ![Figure 1. Client Configuration Per Database](./assets/client-configuration-database-1.png)
 
@@ -63,12 +72,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
   * For a detailed explanation see: [Read Balance Behavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx).  
 
-
-
 <Admonition type="info" title="Note" id="note" href="#note">
 
 This view will be as in the above image when the general server [Client Configuration](../../../studio/server/client-configuration.mdx) is not yet defined.  
 If a general server client-configuration is defined then this view will show the __effective configuration__ for the specific database.
 
 </Admonition>
-
