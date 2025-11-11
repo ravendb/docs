@@ -1,5 +1,5 @@
 ---
-title: "AI Integration: Start"
+title: "AI Integration"
 hide_table_of_contents: true
 sidebar_label: "Start"
 sidebar_position: 0
@@ -14,104 +14,83 @@ import embedGenStartImage from "./assets/ai-start_embeddings-generation_light.pn
 import vectorSearchStartImage from "./assets/ai-start_vector-search_light.png";
 import genAiStartImage from "./assets/ai-start_gen-ai_light.png";
 import aiAgentsStartImage from "./assets/ai-start_ai-agents_light.png";
-
+import buildVsBuyStartImage from "./assets/ai-start_ai-agents_build-vs-buy.png";
+import vectorSearchIntroImage from "./assets/ai-start_vector-search_intro.png";
 
 # AI Integration
-### Use native AI features to create intelligent database applications.
+Ship AI-powered features faster with RavenDB’s native tools.
 
+### Native AI features that create intelligent applications
 RavenDB is equipped with a set of powerful native AI features that can 
 be used independently or in conjunction with each other, allowing you to easily integrate advanced AI capabilities into your applications. 
 These features include [AI agents](../ai-integration/ai-integration_start#ai-agents), [GenAI tasks](../ai-integration/ai-integration_start#genai-tasks), [Embeddings generation](../ai-integration/ai-integration_start#embeddings-generation), and [Vector search](../ai-integration/ai-integration_start#vector-search).
 
-<br />
+### Use cases
+RavenDB AI features help you ship any AI-related scenario quickly, including:  
+* [Conversational intelligence](../ai-integration/ai-agents/ai-agents_start#use-cases) - Natural-language chatbots, assistants, and interactive workflows.
+* [Automated content enrichment](../ai-integration/gen-ai-integration/gen-ai_start#use-cases) - Summarization, translation, classification, and document enhancement.
+* [Semantic representation](../ai-integration/generating-embeddings/embeddings-generation_start#use-cases) - Creating vector representations for text, images, and other data types.
+* [Similarity-based discovery](../ai-integration/vector-search/vector-search_start#use-cases) - Finding related items, aggregation, and context-aware retrieval.
+* [Personalization & recommendations](../ai-integration/vector-search/vector-search_start#use-cases) - Tailoring suggestions, feeds, and user experiences.
+* [Content moderation & compliance](../ai-integration/gen-ai-integration/gen-ai_start#use-cases) - Automatically handling sensitive, inappropriate, or non-compliant content.
+* [Knowledge management & Q&A](../ai-integration/ai-agents/ai-agents_start#use-cases) - Asking questions over policies, wikis, and documents; retrieving answers and citations.
+
+Learn More: In-Depth AI Feature Articles
+<ColGrid colCount={2}>
+    <CardWithImage title="RavenDB GenAI Deep Dive" description="A deep-dive with hands-on examples and implementation details, by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="Practical Look at AI Agents with RavenDB" description="A step-by-step tutorial for building AI agents with RavenDB, by Gracjan Sadowicz" imgSrc="" url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgAlt="imgAlt" ctaLabel="Read" />
+</ColGrid>
 
 ### AI agents
-
 AI agents are conversational proxy components that reside on the server and autonomously handle client requests using an AI model. Instead of spending your time on integrating AI capabilities into your application, you can rapidly configure AI agents using Studio or the client API. Agents can securely read from the database and request the client for actions on behalf of the AI model, infusing intelligence into the workflow. Whether you need chatbots, automated reporting, or intelligent data processing, you get immediate production-ready AI features without the integration overhead.
 
-<Admonition type="note" title="">
-[See common AI agents use cases](../ai-integration/ai-agents/ai-agents_start#use-cases)
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={3}>
- <CardWithImage title="Start page" description="Continue to the AI agents Start page" url="../ai-integration/ai-agents/ai-agents_start" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="Technical documentation" description="Enter the AI agents technical documentation" url="../ai-integration/ai-agents/ai-agents_start#technical-documentation" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="In-depth articles" description="Read in-depth article about AI agents" url="../ai-integration/ai-agents/ai-agents_start#in-depth-articles" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+<ColGrid colCount={2}>
+ <CardWithImage title="AI agents Start page" description="Continue to the AI agents Start page." url="../ai-integration/ai-agents/ai-agents_start" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Technical documentation" description="Learn how to create, deploy, manage conversations, and get results with AI agents." url="../ai-integration/ai-agents/ai-agents_start#technical-documentation" imgSrc={aiAgentsStartImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={1}>
-    <CardWithImageHorizontal title="How to run AI agents natively in your database" description="Watch a webinar about AI agents" url="https://www.youtube.com/watch?v=A17GSLGN-cQ" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
-</ColGrid>
-</Admonition>
-
-<br />
 
 ### GenAI tasks
 GenAI tasks are configurable [ongoing operations](../studio/database/tasks/ongoing-tasks/general-info) that process your documents systematically in the background using an AI model. Instead of building custom AI integration pipelines yourself, you can easily create tasks that weave AI capabilities into your data flow. They can enrich documents with AI-generated content, validate and categorize data, translate documents, or execute countless other automated workflows that leverage AI capabilities.
 
-<Admonition type="note" title="">
-[See common GenAI tasks use cases](../ai-integration/gen-ai-integration/gen-ai_start#use-cases)
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={3}>
- <CardWithImage title="Start page" description="Continue to the GenAI tasks Start page" url="../ai-integration/gen-ai-integration/gen-ai_start" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="Technical documentation" description="Enter the GenAI tasks technical documentation" url="../ai-integration/gen-ai-integration/gen-ai_start#technical-documentation" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="In-depth articles" description="Read in-depth articles about GenAI" url="../ai-integration/gen-ai-integration/gen-ai_start#in-depth-articles" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+<ColGrid colCount={2}>
+ <CardWithImage title="GenAI tasks Start page" description="Continue to the GenAI tasks Start page." url="../ai-integration/gen-ai-integration/gen-ai_start" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Technical documentation" description="Learn to create GenAI tasks that process your data and enable intelligent workflows automation." url="../ai-integration/gen-ai-integration/gen-ai_start#technical-documentation" imgSrc={genAiStartImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={1}>
-    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Watch a webinar about GenAI tasks" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
-</ColGrid>
-</Admonition>
-
-<br />
 
 ### Embeddings generation
-Embeddings generation tasks transform your content into semantic vectors that enable intelligent similarity-based searches. Instead of building complex search infrastructure, you can leverage native tasks that seamlessly embed vector capabilities into your data, enabling intelligent search by meaning and context.
+Embeddings generation tasks transform your content into semantic vectors that enable intelligent similarity-based searches. Instead of building complex search infrastructure, you can utilize native tasks that seamlessly embed vector capabilities into your data, enabling intelligent search by meaning and context.
 
-<Admonition type="note" title="">
-[See common embeddings-generation use cases](../ai-integration/generating-embeddings/embeddings-generation_start#use-cases)
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={3}>
- <CardWithImage title="Start page" description="Continue to the embeddings generation Start page" url="../ai-integration/generating-embeddings/embeddings-generation_start" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="Technical documentation" description="Enter the embeddings generation technical documentation" url="../ai-integration/generating-embeddings/embeddings-generation_start#technical-documentation" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="In-depth articles" description="Read in-depth articles about embeddings generation" url="../ai-integration/generating-embeddings/embeddings-generation_start#in-depth-articles" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+<ColGrid colCount={2}>
+ <CardWithImage title="Embeddings generation Start page" description="Continue to the embeddings generation Start page." url="../ai-integration/generating-embeddings/embeddings-generation_start" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Technical documentation" description="Learn to generate embeddings and enable intelligent searches." url="../ai-integration/generating-embeddings/embeddings-generation_start#technical-documentation" imgSrc={embedGenStartImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={1}>
-    <CardWithImageHorizontal title="Vector search in RavenDB" description="Watch a webinar about Embeddings generation" url="https://www.youtube.com/watch?v=zZwid8LA-e4" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
-</ColGrid>
-</Admonition>
-
-<br />
 
 ### Vector search
-Vector search enables intelligent similarity-based discovery using embeddings rather than exact matching. Instead of developing custom similarity algorithms yourself, you can leverage native vector operations for diverse applications. Whether you need to categorize content, find similar items, or automate recommendations, vector search delivers intelligent matching capabilities that understand meaning and context.
+Vector search enables intelligent similarity-based discovery using embeddings rather than exact matching. Instead of developing custom similarity algorithms yourself, you can employ native vector operations for diverse applications. Whether you need to categorize content, find similar items, or automate recommendations, vector search delivers intelligent matching capabilities that understand meaning and context.
 
-<Admonition type="note" title="">
-[See common vector search use cases](../ai-integration/vector-search/vector-search_start#use-cases)
-</Admonition>
-
-<Admonition type="note" title="">
-<ColGrid colCount={3}>
- <CardWithImage title="Start page" description="Continue to the vector search Start page" url="../ai-integration/vector-search/vector-search_start" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="Technical documentation" description="Enter the vector search technical documentation" url="../ai-integration/vector-search/vector-search_start#technical-documentation" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
- <CardWithImage title="In-depth articles" description="Read in-depth articles about vector search" url="../ai-integration/vector-search/vector-search_start#in-depth-articles" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+<ColGrid colCount={2}>
+ <CardWithImage title="Vector search Start page" description="Continue to the vector search Start page." url="../ai-integration/vector-search/vector-search_start" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
+ <CardWithImage title="Technical documentation" description="Learn to search your data by meaning and context." url="../ai-integration/vector-search/vector-search_start#technical-documentation" imgSrc={vectorSearchStartImage} imgAlt="imgAlt" ctaLabel="Read" />
 </ColGrid>
-</Admonition>
 
-<Admonition type="note" title="">
+### Lives & Videos
+Watch our broadcasts to see RavenDB's AI features in action and learn practical implementation techniques.
+
 <ColGrid colCount={1}>
-    <CardWithImageHorizontal title="Take over the world with AI and RavenDB" description="Watch a webinar about vector search" url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+    <CardWithImageHorizontal title="How to run AI agents natively in your database" description="Watch a webinar about AI agents." url="https://www.youtube.com/watch?v=A17GSLGN-cQ" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
 </ColGrid>
-</Admonition>
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Watch a webinar about GenAI tasks." url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Take over the world with AI and RavenDB" description="Watch a webinar about vector search." url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+</ColGrid>
+
+### Deep dives, content & resources
+Find additional resources to enhance your knowledge and skills.
+
+<ColGrid colCount={3}>
+    <CardWithImage title="Build vs. Buy" description="The difference between building an AI agent infrastructure from scratch and using RavenDB's native AI agents" imgSrc={buildVsBuyStartImage} url="https://ravendb.net/articles/build-vs-buy-the-real-cost-of-adding-ai-agents-to-your-application" imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Introduction to vector search" description="A glimpse of what can be achieved with vector search" url="https://ravendb.net/articles/new-in-7-0-ravendbs-vector-search" imgSrc={vectorSearchIntroImage} imgAlt="imgAlt" ctaLabel="Read now" />
+    <CardWithImage title="Future-proof your tech stack" description="Where Does GenAI Truly Fit" imgSrc={genAiStartImage} url="https://www.youtube.com/watch?v=OjEAWHGKyJY" imgIcon="gen-ai" imgAlt="imgAlt" ctaLabel="Read now" />
+</ColGrid>
