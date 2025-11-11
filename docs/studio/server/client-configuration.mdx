@@ -59,22 +59,30 @@ import Panel from '@site/src/components/Panel';
     For a detailed explanation see: [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx).  
     
     Available options:  
-    * [None](../../client-api/configuration/load-balance/load-balance-behavior.mdx#none-default-option):  
+    * [None](../../client-api/configuration/load-balance/load-balance-behavior.mdx#none-default-option): (default)  
       Read requests - the node the client will target will be based on the "Read balance behavior" configuration.  
       Write requests - will be sent to the [preferred node](../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
     * [Use session context](../../client-api/configuration/load-balance/load-balance-behavior.mdx#usesessioncontext):  
-      Sessions that are assigned the same context will have all their _Read_ & _Write_ requests routed to the same node.  
-      The session context is hashed from a context string (given by the client) and an optional `seed`.  
+      Select this option to allow sessions to control load balancing using a "context string".  
+      With this option selected, the session determines the target node for all ***Read*** & ***Write*** requests by **hashing**:  
+      * the session's "context string" (set in the client session),  
+      * and an optional seed value (set here or in the client session).  
+      
+      All sessions that use the same "context string" and the same seed will route their requests to the same node.  
+      This gives you fine-grained control over how requests are distributed across the cluster based on how you assign "context strings" and "seeds".
       ![Using session context](./assets/client-configuration-2.png)
 
 5. **Read balance behavior**  
-   Set the "Read_ balance method" the client will use when accessing a node with ***Read*** requests.
-   The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  
+   Set the "Read_ balance method" the client will use when accessing a node with ***Read*** requests.  
+   The selected method also affects how the client chooses a failover node for ***Read*** requests.  
    For a detailed explanation see: [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx).  
    
     Available options:  
-     * [None](../../client-api/configuration/load-balance/read-balance-behavior.mdx#none-default-option)  
+     * [None](../../client-api/configuration/load-balance/read-balance-behavior.mdx#none-default-option) (default)  
      * [Round Robin](../../client-api/configuration/load-balance/read-balance-behavior.mdx#roundrobin)  
      * [Fastest Node](../../client-api/configuration/load-balance/read-balance-behavior.mdx#fastestnode)  
+
+6. **Save**  
+   Click _Save_ to apply the changes.
 
 </Panel>

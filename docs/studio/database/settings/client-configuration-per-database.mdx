@@ -30,51 +30,60 @@ import Panel from '@site/src/components/Panel';
   For example, adjusting load balancing behavior on the fly in response to changing system demands.
 
 * In this article:
-  * [Set the client configuration (for database)](../../todo)
+  * [Set the client configuration (for database)](../../../studio/database/settings/client-configuration-per-database.mdx#set-the-client-configuration-for-database)
     
 </Admonition>
 
-## Set the client configuration (for database)
+<Panel heading="Set the client configuration (for database)">
 
-![Figure 1. Client Configuration Per Database](./assets/client-configuration-database-1.png)
+![Figure 1. Client Configuration Per Database](./assets/client-configuration-1.png)
+    
+1. Go to **Settings > Client Configuration**
 
+2. Select whether to override the server-wide client configuration:  
+   Toggle **"Use server config"** to make this database use the settings defined [server-wide](../../../studio/server/client-configuration.mdx).  
+   Toggle **"Use database config"** to override the server-wide settings with a configuration specific to this database.
+    
+3. **Identity parts separator**  
+   Set the **separator character** for automatically generated document IDs of type **identity**.  
+   You can use any single character except `|` (pipe).  
+   Default value: `/`  
+   This setting affects only IDs for identity documents created by the server.  
+   Learn more about identities in [Document identifier generation: Identity](../../../server/kb/document-identifier-generation.mdx#strategy-identity). 
 
-**1. Identity parts separator**  
+4. **Maximum number of requests per session**  
+   Set this number to restrict the number of requests (***Reads*** & ***Writes***) allowed per session when using the Client API.  
+   Default value: `30`  
 
-  * Changes the default **separator** for automatically generated document IDs.  
-    You can use any `char` except `|` (pipe).  
-    Default value: `/`  
+5. **Load balance behavior**  
+    Set the Load balance method for ***Read*** & ***Write*** requests.  
+    For a detailed explanation see: [Load balance behavior](../../../client-api/configuration/load-balance/load-balance-behavior.mdx).  
+    
+    Available options:  
+    * [None](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#none-default-option): (default)  
+      Read requests - the node the client will target will be based on the "Read balance behavior" configuration.  
+      Write requests - will be sent to the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
+    * [Use session context](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#usesessioncontext):  
+      Select this option to allow sessions to control load balancing using a "context string".  
+      With this option selected, the session determines the target node for all ***Read*** & ***Write*** requests by **hashing**:  
+      * the session's "context string" (set in the client session),  
+      * and an optional seed value (set here or in the client session).  
+      
+      All sessions that use the same "context string" and the same seed will route their requests to the same node.  
+      This gives you fine-grained control over how requests are distributed across the cluster based on how you assign "context strings" and "seeds".
+      ![Using session context](./assets/client-configuration-2.png)
 
-**2. Max number of requests per session**  
+6. **Read balance behavior**  
+   Set the "Read_ balance method" the client will use when accessing a node with ***Read*** requests.  
+   The selected method also affects how the client chooses a failover node for ***Read*** requests.  
+   For a detailed explanation see: [Read balance behavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx).  
+   
+    Available options:  
+     * [None](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#none-default-option) (default)  
+     * [Round Robin](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#roundrobin)  
+     * [Fastest Node](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#fastestnode)  
 
-  * Set this number to restrict the number of requests (***Reads*** & ***Writes***) per session in the client API.  
-    Default value: 30  
+7. **Save**  
+   Click _Save_ to apply the changes.
 
-**3. Use Session Context for Load Balancing**  
-
-  * Allow client sessions to select their topology by tag, 
-    so they'd be able to load-balance their requests.  
-  
-  * Optionally, select a hash seed to randomize the topology that clients would use.
-
-  * For a detailed explanation see: [Load Balance Behavior](../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
-
-**4. Read balance behavior**  
-
-  * Set the load-balance method that the client will use when accessing a node with ***Read*** requests.  
-    The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  
-    Note: ***Write*** requests will always access the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) calculated by the client.  
-
-  * Available options are:  
-     * _None_  
-     * _Round Robin_  
-     * _Fastest Node_  
-
-  * For a detailed explanation see: [Read Balance Behavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx).  
-
-<Admonition type="info" title="Note" id="note" href="#note">
-
-This view will be as in the above image when the general server [Client Configuration](../../../studio/server/client-configuration.mdx) is not yet defined.  
-If a general server client-configuration is defined then this view will show the __effective configuration__ for the specific database.
-
-</Admonition>
+</Panel>
