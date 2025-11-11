@@ -25,7 +25,7 @@ import Panel from '@site/src/components/Panel';
   and applies to any client that connects to any database in the cluster.
    
 * These settings override the client's own configuration,  
-  which was initially set in your application code when initializing the _DocumentStore_.  
+  which can be set in your application code when initializing the _DocumentStore_.  
   This enables administrators to dynamically control client behavior, even after the client has started running.  
   For example, adjusting load balancing behavior on the fly in response to changing system demands.
     
@@ -63,7 +63,7 @@ import Panel from '@site/src/components/Panel';
       Read requests - the node the client will target will be based on the "Read balance behavior" configuration.  
       Write requests - will be sent to the [preferred node](../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
     * [Use session context](../../client-api/configuration/load-balance/load-balance-behavior.mdx#usesessioncontext):  
-      Select this option to allow sessions to control load balancing using a "context string".  
+      Select this option to allow client sessions to control load balancing using a "context string".  
       With this option selected, the session determines the target node for all ***Read*** & ***Write*** requests by **hashing**:  
       * the session's "context string" (set in the client session),  
       * and an optional seed value (set here or in the client session).  
@@ -73,7 +73,7 @@ import Panel from '@site/src/components/Panel';
       ![Using session context](./assets/client-configuration-2.png)
 
 5. **Read balance behavior**  
-   Set the "Read_ balance method" the client will use when accessing a node with ***Read*** requests.  
+   Set the "Read balance method" the client will use when accessing a node with ***Read*** requests.  
    The selected method also affects how the client chooses a failover node for ***Read*** requests.  
    For a detailed explanation see: [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx).  
    
