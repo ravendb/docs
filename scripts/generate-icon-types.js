@@ -9,22 +9,17 @@ function generateIconTypes() {
     const files = fs.readdirSync(ICONS_DIR);
     const svgFiles = files.filter((file) => file.endsWith(".svg"));
 
-    const iconNames = svgFiles.map((file) => {
-      const name = path.basename(file, ".svg");
-      return `  | '${name}'`;
-    });
-
     const iconNamesArray = svgFiles.map((file) => {
       const name = path.basename(file, ".svg");
       return `  '${name}'`;
     });
 
-    const typesContent = `export type IconName = 
-${iconNames.join("\n")};
-
+    const typesContent = `
 export const ALL_ICON_NAMES = [
 ${iconNamesArray.join(",\n")}
 ] as const;
+
+export type IconName = typeof ALL_ICON_NAMES[number];
 `;
 
     fs.writeFileSync(TYPES_FILE, typesContent);
