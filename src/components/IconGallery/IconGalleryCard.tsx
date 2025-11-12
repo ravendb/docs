@@ -2,22 +2,21 @@ import React, { useState } from "react";
 import { Icon } from "../Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
 
-export interface IconCardProps {
+export interface IconGalleryCardProps {
   iconName: IconName;
-  onCopy?: (iconName: string) => void;
 }
 
-export default function IconCard({ iconName, onCopy }: IconCardProps) {
+export default function IconGalleryCard({ iconName }: IconGalleryCardProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(iconName);
       setCopied(true);
-      onCopy?.(iconName);
       window.setTimeout(() => setCopied(false), 2000);
-    } catch (_err) {
-      // Ignore copy errors
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to copy icon name to clipboard:", err);
     }
   };
 
@@ -41,4 +40,3 @@ export default function IconCard({ iconName, onCopy }: IconCardProps) {
     </div>
   );
 }
-
