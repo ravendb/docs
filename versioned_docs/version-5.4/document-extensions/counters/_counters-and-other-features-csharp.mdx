@@ -17,10 +17,9 @@ import CodeBlock from '@theme/CodeBlock';
   * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
   * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
   * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
-</Admonition>
 
+</Admonition>
 
 ### Counters and Indexing  
 
@@ -33,18 +32,21 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
     To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1).  
+
 ### Counters and Queries  
 
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
   This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+
 * Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
 * Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#sessionquery) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
+
 <TabItem value="counters_region_query" label="counters_region_query">
 <CodeBlock language="csharp">
 {`using (var session = docStore.OpenSession())
@@ -76,9 +78,9 @@ Create queries **using code**, or send the server **raw queries** for execution.
      A Counter's value is returned as a series of values, each maintained by one of the nodes.  
       * It is not expected of you to use this in your application.  
         Applications normally use the Counter's overall value, and very rarely refer to the value each node gives it.  
-      
         
-    `counter` and `counterRaw` samples:  
+`counter` and `counterRaw` samples:  
+
 <Tabs groupId='languageSyntax'>
 <TabItem value="counter" label="counter">
 <CodeBlock language="csharp">
@@ -108,7 +110,8 @@ var query = session.Advanced
 `}
 </CodeBlock>
 </TabItem>
-    </Tabs>
+</Tabs>
+
 ### Counters and Revisions  
 
 A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
@@ -120,6 +123,7 @@ names and values when the revision was created.
 * Revisions-creation can be initiated by **Counter-name modification**.  
    * When the Revisions feature is enabled, the creation or deletion of a Counter initiates the creation of a new document revision.  
    * Counter **value** modifications do **not** cause the creation of new revisions.  
+
 ### Counters and Smuggler  
 
 [Smuggler](../../client-api/smuggler/what-is-smuggler.mdx) is a DocumentStore property, that can be used 
@@ -129,7 +133,8 @@ database items from an existing file into the database.
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
-* To make Smuggler handle Counters, include `DatabaseItemType.Counters` in `OperateOnTypes`'s list of entities to import or export.  
+* To make Smuggler handle Counters, include `DatabaseItemType.CountersGroups` in `OperateOnTypes`'s list of entities to import or export.  
+
 <TabItem value="smuggler_options" label="smuggler_options">
 <CodeBlock language="csharp">
 {`OperateOnTypes = DatabaseItemType.Indexes
@@ -138,6 +143,7 @@ database items from an existing file into the database.
 `}
 </CodeBlock>
 </TabItem>
+
 ### Counters and Changes API
 
 [Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
@@ -146,6 +152,7 @@ You can target all Counters, or specify the ones you wish to follow.
 * **Pushed Counter Value**: **Accumulated**  
   `Changes API` methods return a Counter's value as a single sum, without specifying its value on each node.  
 * The service is initiated by **Counter Value Modification**.  
+
 ### Counters and Ongoing Tasks:
 
 Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
@@ -184,8 +191,8 @@ Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) 
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
     Documents will **not** be delivered in reaction to Counter Value modification.  
 
-
 <Admonition type="note" title="">
+
 ### Counters and Other Features: Summary
 
 Use this table to find if and how various RavenDB features are triggered by Counters, 
@@ -196,6 +203,7 @@ and how the various features handle Counter values.
     * _Countrer Value Modification_ - Feature is triggered by a Counter Value modification.  
     * _Time Schedule_ - Feature is invoked by a pre-set time routine.  
     * _No Trigger_ - Feature is executed manually, through the Studio or by a Client.  
+
 * In the **Counter Value** column:  
     * _Accumulated_ - Counter Value is handled as a single accumulated sum.  
     * _Distributed_ - Counter Value is handled as a series of values maintained by cluster nodes.  
@@ -214,72 +222,16 @@ and how the various features handle Counter values.
 | [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
-### Including Counters  
-You can [include](../../client-api/how-to/handle-document-relationships.mdx#includes) Counters while loading a document.  
-An included Counter is retrieved in the same request as its owner-document and is held by the session, 
-so it can be immediately retrieved when needed with no additional remote calls.
 
-
-* **Including Counters when using [Session.Load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
-    * Include a single Counter using `IncludeCounter`.  
-    * Include multiple Counters using `IncludeCounters`.  
-
-    `IncludeCounter` and `IncludeCounters` usage samples:  
-<Tabs groupId='languageSyntax'>
-<TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="csharp">
-{`//include single Counters
-var productPage = session.Load<Product>("products/1-C", includeBuilder =>
-        includeBuilder.IncludeCounter("ProductLikes")
-                      .IncludeCounter("ProductDislikes")
-                      .IncludeCounter("ProductDownloads"));
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="csharp">
-{`//include multiple Counters
-//note that you can combine the inclusion of Counters and documents.
-var productPage = session.Load<Product>("orders/1-A", includeBuilder =>
-        includeBuilder.IncludeDocuments("products/1-C")
-                      .IncludeCounters(new[] { "ProductLikes", "ProductDislikes" }));
-`}
-</CodeBlock>
-</TabItem>
-    </Tabs>
-
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#sessionquery)**:  
-    * Include a single Counter using `IncludeCounter`.  
-    * Include multiple Counters using `IncludeCounters`.  
-
-    `IncludeCounter` and `IncludeCounters` usage samples:  
-<Tabs groupId='languageSyntax'>
-<TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="csharp">
-{`//include a single Counter
-var query = session.Query<Product>()
-        .Include(includeBuilder =>
-         includeBuilder.IncludeCounter("ProductLikes"));
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="csharp">
-{`//include multiple Counters
-var query = session.Query<Product>()
-        .Include(includeBuilder =>
-        includeBuilder.IncludeCounters(new[] { "ProductLikes", "ProductDownloads" }));
-`}
-</CodeBlock>
-</TabItem>
-    </Tabs>
 ### Counters Bulk-Insert  
+
 `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
 Use its `CountersFor` interface's `Increment` method to add or update counters with great speed.  
 
-* Syntax  
+Syntax:  
 
-   * `CountersFor`
+* `CountersFor`
+
 <TabItem value="CountersFor-definition" label="CountersFor-definition">
 <CodeBlock language="csharp">
 {`public CountersBulkInsert CountersFor(string id)
@@ -291,7 +243,8 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
         |:-------------|:-------------|:-------------|
         | `id` | `string` | Document ID |
 
-   *   `Increment`
+* `Increment`
+
 <TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="csharp">
 {`public void Increment(string name, long delta = 1L)
@@ -312,7 +265,9 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
      The Counter Name and Value (delta to be added).
 
 * Usage Sample  
-  In this sample, we attach a counter to all User documents.
+
+In this sample, we attach a counter to all User documents.
+
 <TabItem value="bulk-insert-counters" label="bulk-insert-counters">
 <CodeBlock language="csharp">
 {`// Choose user profiles to add counters to
@@ -339,9 +294,4 @@ using (var bulkInsert = store.BulkInsert())
 \}
 `}
 </CodeBlock>
-</TabItem>  
-
-
-
-
-
+</TabItem>

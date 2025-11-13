@@ -17,7 +17,6 @@ import CodeBlock from '@theme/CodeBlock';
   * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
   * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
   * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
 </Admonition>
 
@@ -216,71 +215,6 @@ and how the various features handle Counter values.
 | [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
-### Including Counters  
-You can `include` Counters while loading a document.  
-An included Counter is retrieved in the same request as its owner-document and is 
-held by the session, so it can be immediately retrieved when needed with no additional 
-remote calls.
-
-* **Including Counters when using `Session.load`**:  
-    * Include a single Counter using `includeCounter`.  
-    * Include multiple Counters using `includeCounters`.  
-
-    `includeCounter` and `includeCounters` usage samples:  
-<Tabs groupId='languageSyntax'>
-<TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="java">
-{`//include single Counters
-Product productPage = session
-    .load(Product.class, "products/1-C", includeBuilder -> {
-        includeBuilder.includeCounter("productLikes")
-            .includeCounter("productDislikes")
-            .includeCounter("productDownloads");
-    });
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="java">
-{`//include multiple Counters
-//note that you can combine the inclusion of Counters and documents.
-
-Product productPage = session.load(Product.class, "orders/1-A", includeBuilder -> {
-    includeBuilder.includeDocuments("products/1-C")
-        .includeCounters(new String[]{"productLikes", "productDislikes"});
-});
-`}
-</CodeBlock>
-</TabItem>
-    </Tabs>
-
-* **Including Counters when using `Session.query`**:  
-    * Include a single Counter using `includeCounter`.  
-    * Include multiple Counters using `includeCounters`.  
-
-    `includeCounter` and `includeCounters` usage samples:  
-<Tabs groupId='languageSyntax'>
-<TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="java">
-{`//include a single Counter
-IDocumentQuery<Product> query = session.query(Product.class)
-    .include(includeBuilder -> {
-        includeBuilder.includeCounter("productLikes");
-    });
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="java">
-{`//include multiple Counters
-IDocumentQuery<Product> query = session.query(Product.class)
-    .include(includeBuilder -> {
-        includeBuilder.includeCounters(new String[]{"productLikes", "productDownloads"});
-    });
-`}
-</CodeBlock>
-</TabItem>
-    </Tabs>
 ### Counters Bulk-Insert  
 `store.bulkInsert` is RavenDB's high-performance data insertion operation.  
 Use its `countersFor` interface's `increment` method to add or update counters with great speed.  

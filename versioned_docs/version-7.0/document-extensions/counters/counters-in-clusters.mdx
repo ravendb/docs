@@ -1,8 +1,8 @@
 ---
-title: "Counters in Clusters"
+title: "Counters in a Cluster"
 hide_table_of_contents: true
-sidebar_label: Counters in Clusters
-sidebar_position: 6
+sidebar_label: Counters in a Cluster
+sidebar_position: 7
 ---
 
 import Admonition from '@theme/Admonition';
@@ -11,135 +11,136 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Counters in Clusters
 <Admonition type="note" title="">
 
-* This section describes Counter behaviors in a Cluster.
-  * How Counters are modified and replicated.
-  * How Counters are allowed to be modified concurrently without conflict.  
-  * In which rare cases do Counter modifications "race" against each other.  
+* This article explains how Counters behave in a cluster environment:
+  * How Counter values are modified and replicated across nodes
+  * How multiple clients can modify the same Counter concurrently without causing conflicts 
+  * When conflicting actions (such as _Delete_ and _Increment_) may occur, and how they are resolved
 
-* In this page:  
-  * [Counter-Value Modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-value-modification)  
-     * [Value modification Flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-flow)  
-     * [Value Replication Flow](../../document-extensions/counters/counters-in-clusters.mdx#value-replication-flow)  
-     * [Server Reply to Client Request](../../document-extensions/counters/counters-in-clusters.mdx#server-reply-to-client-request)  
-  * [Counter Name modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-name-modification)  
-  * [Concurrent Modification](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-modification)  
+* In this article:  
+  * [Counter value modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-value-modification)  
+     * [Value modification and replication flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication-flow) 
+     * [Reading a Counter's value](../../document-extensions/counters/counters-in-clusters.mdx#reading-a-counters-value)  
+  * [Counter name modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-name-modification)  
+  * [Concurrent value modification](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-value-modification)  
   * [Concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment)  
-     * [In a single-server system](../../document-extensions/counters/counters-in-clusters.mdx#in-a-single-server-system)  
+     * [In a single-node system](../../document-extensions/counters/counters-in-clusters.mdx#in-a-single-node-system)  
      * [In a multi-node cluster](../../document-extensions/counters/counters-in-clusters.mdx#in-a-multi-node-cluster)  
+
 </Admonition>
-## Counter-Value Modification
 
-#### Value Modification Flow
-Each node **manages its own portion** of a Counter's total value, independently from other nodes.  
+<Panel heading="Counter value modification">
 
-  &gt; In the following 3-nodes-cluster example:  
-  &gt; - The total value of the "ProductLikes" Counter is 80.  
-  &gt; - Each node independently manages a portion of this total.  
-  &gt;  
-  &gt; | Counter Name | Node Tag  | Counter Value on this node |
-  &gt; |:---:|:---:|:---:|
-  &gt; | ProductLikes | A | 42 |
-  &gt; | ProductLikes | B | 28 |
-  &gt; | ProductLikes | C | 10 |
+### Value modification and replication flow
 
-When a client modifies a Counter's value, only the portion of the Counter's value 
-**on the node this client writes to** is modified. The Counter's values on the other nodes do not change. 
+Each node **manages its own portion** of a Counter's total value, independently of the other nodes.   
+In the following 3-node cluster example: 
+  * The total value of the "ProductLikes" Counter is 80.
+  * Each node manages its own share of that total.    
+    | Counter Name | Node Tag  | Counter value on this node |
+    |--------------|-----------|----------------------------|
+    | ProductLikes | A         | 42                         |
+    | ProductLikes | B         | 28                         |
+    | ProductLikes | C         | 10                         |
 
-  &gt; In the following example:  
-  &gt; - A client has used node B to increment ProductLikes by 5.  
-  &gt; - Only node B's portion of the value is incremented.  
-  &gt;  
-  &gt; | Counter Name | Node Tag  | Counter Value per node |
-  &gt; |:---:|:---:|:---:|
-  &gt; | ProductLikes | A | 42 |
-  &gt; | ProductLikes | **B** | **33** |
-  &gt; | ProductLikes | C | 10 |
-#### Value Replication Flow
-After modifying the Counter's value locally, a node [replicates](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication) the new value to all other nodes.  
-This way each node is always kept updated with the values set for each Counter **by all nodes**.  
+When a client **modifies** a Counter’s value, only the portion stored **on the node the client writes to** is updated.  
+The Counter values on the other nodes remain unchanged.  
+In the following example:  
+  * A client writes to node B and increments the "ProductLikes" Counter by 5. 
+  * Only node B’s portion is incremented (from 28 to 33).
+    | Counter Name | Node Tag  | Counter value on this node |
+    |--------------|-----------|----------------------------|
+    | ProductLikes | A         | 42                         |
+    | ProductLikes | **B**     | **33**                     |
+    | ProductLikes | C         | 10                         |
 
-  &gt; In the following example:  
-  &gt; - The `ProductLikes` Counter is incremented by 2 on node C.  
-  &gt; - Node C sends the new node-C value (12) to nodes A and B.  
-  &gt; - All nodes are updated with the same three values.
-  &gt; 
-  &gt; | Counter Name | Node Tag  | Counter Value per node |
-  &gt; |:---:|:---:|:---:|
-  &gt; | ProductLikes | A | 42 |
-  &gt; | ProductLikes | B | 33 |
-  &gt; | ProductLikes | **C** | **12** |
+After a Counter’s value is modified on a node, that node [replicates](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication)
+the updated value to all other nodes in the cluster.  
+In the above example:  
+  * The "ProductLikes" Counter was incremented by 5 on node B.  
+  * Node B **replicates** its updated value (33) to nodes A and C.  
+  * As a result, all nodes now store the same set of per-node values:  
+    each node still manages only its own portion, but also stores the portions maintained by the other nodes.
 
-  &gt; <Admonition type="note" title="">
-  &gt; Note that **only the Counter's value** is replicated.  
-  &gt; The document itself hasn't been modified and needs no replication.  
-  &gt; </Admonition>
-#### Server Reply to Client Request  
-When a client requests a Counter's value, it gets a single accumulated sum.  
+This ensures that each node is kept up to date with the portion of the Counter's value maintained by every other node,  
+allowing it to compute the full total when the Counter is read.
 
-  &gt; In the following example, a request for ProductLikes's value will yield **85**.  
-  &gt; 
-  &gt; | Counter Name | Node Tag  | Counter Value per node |
-  &gt; |:---:|:---:|:---:|
-  &gt; | ProductLikes | A | **42** |
-  &gt; | ProductLikes | B | **33** |
-  &gt; | ProductLikes | C | **10** |
-  &gt; | | | **Total Value: 42+33+10 = 85** |
+<Admonition type="note" title="">
+Note that **only the Counter's value** is replicated.  
+The document itself hasn't been modified and does not require replication.  
+</Admonition>
 
+---
+    
+### Reading a Counter's value 
 
-## Counter Name modification
+When a client requests a Counter's value, the server returns a single accumulated sum.  
+In the following example:  
+  * A request for the value of the "ProductLikes" Counter will return **85**.
+    | Counter Name | Node Tag  | Counter value on this node         |
+    |--------------|-----------|------------------------------------|
+    | ProductLikes | A         | **42**                             |
+    | ProductLikes | B         | **33**                             |
+    | ProductLikes | C         | **10**                             |
+    |              |           | **Total value: 42 + 33 + 10 = 85** |
 
-**Replication due to a Counter Name modification**:
+</Panel>
 
-* As described in the [Overview](../../document-extensions/counters/overview.mdx#overview) section, creating or deleting a Counter triggers a document change.  
-* As a result, the whole document, including the new Counter value, is replicated to all nodes in the database group.  
-  Existing Counters aren't replicated, since they already exist on the other nodes and their values haven't changed.  
+<Panel heading="Counter name modification">
 
+**Modifying a Counter name triggers document replication**:  
 
+* Creating or deleting a Counter adds or removes the Counter name from the document’s metadata.  
+  This is considered a document-level change, which triggers **document replication** across the database group.
+* As a result, the entire document - including the new Counter value - is replicated to all nodes in the database group.
+* Existing Counters are not replicated, since they already exist on the other nodes and their values remain unchanged.
 
+</Panel>
 
-## Concurrent Modification
+<Panel heading="Concurrent value modification">
 
 **The same Counter can be concurrently modified by multiple clients**.  
 
-As described in the [Counters in a multi-node cluster](../../document-extensions/counters/counters-in-clusters.mdx#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
+As explained in the [Value modification and replication flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication-flow) section,  
+each node manages its own portion of a Counter’s value independently.  
 As a result:  
 
-* Clients can modify the same Counter concurrently.  
-* Nodes do not need to coordinate Counter modification with each other.  
-* Concurrent value modification cannot cause conflicts.
-   * Find more about Counters and conflicts in the [Overview](../../document-extensions/counters/overview.mdx#overview) section.  
+* Multiple clients can modify the same Counter at the same time.  
+* Nodes do not need to coordinate these modifications with each other.
+* Concurrent value modifications do not cause conflicts.
+  For more details, see [Counters and conflicts](../../document-extensions/counters/overview#counters-and-conflicts).  
 
+</Panel>
 
+<Panel heading="Concurrent&nbsp;`Delete`&nbsp;and&nbsp;`Increment`">
 
-## Concurrent `Delete` and `Increment`
+A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview.mdx#cumulative-counter-actions), 
+as long as the Counter is not [Deleted](../../document-extensions/counters/delete.mdx).  
+When a _Delete_ is involved, the order of execution becomes significant.  
 
-A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview.mdx#overview), as long as it doesn't [Delete](../../document-extensions/counters/delete.mdx) the Counter.  
-When Delete **is** executed, the order of execution **does** matter.  
+If [Increment](../../document-extensions/counters/create-or-modify.mdx) and [Delete](../../document-extensions/counters/delete.mdx) are called concurrently,  
+their execution order is unpredictable, and the outcome depends on the system architecture:   
+whether it's a single-node system or a multi-node cluster.
 
-* When [Increment](../../document-extensions/counters/create-or-modify.mdx) and 
-  [Delete](../../document-extensions/counters/delete.mdx) are called concurrently, 
-  their order of execution is unknown and the outcome becomes uncertain.  
-  We can identify this behavior in two different scenarios:  
-   * In a single-server system  
-   * In a multi-node cluster  
-#### In a Single-Server System
+### In a single-node system
 
-Different ***clients*** may simultaneously request to Delete and Increment the same Counter.  
+Different ***clients*** may simultaneously attempt to _Delete_ and _Increment_ the same Counter.  
+The outcome depends on the **server’s execution order**:
 
-* The result depends upon the server's **order of execution**.  
-   * If Delete is executed _last_, the Counter will be permanently deleted.  
-   * If Delete is executed _before_ Increment, the Counter will be deleted but then re-created with the value of the Increment action as its initial value.  
-#### In a Multi-Node Cluster
+   * If _Delete_ is executed **last**, the Counter is permanently deleted.  
+   * If _Delete_ is executed **before** _Increment_,  
+     the Counter is deleted but then re-created with the incremented value as its new initial value. 
 
-Different ***nodes*** may concurrently Delete and Increment the same Counter.  
+### In a multi-node cluster
 
-* It is considered a conflict, that we resolve in favor of the **increment** action.  
-* The incrementing node will simply ignore the delete action.  
-* The deleting node will delete the Counter, but re-insert it upon the incoming replication.  
+Different ***nodes*** may concurrently _Delete_ and _Increment_ the same Counter.  
 
-
-
+* This is considered a conflict, and RavenDB resolves it in favor of the **increment** action.
+* The incrementing node will ignore the delete action.  
+* The deleting node will delete the Counter locally, but re-create it when it receives the updated value through replication.
+    
+</Panel>

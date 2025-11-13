@@ -1,0 +1,515 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Counters can be included when [loading entities](../../client-api/session/loading-entities) 
+  or when making [queries](../../client-api/session/querying/how-to-query).
+ 
+* The _session_ stores the included counters in its in-memory cache,  
+  so their values can be accessed later in the same session without making additional requests to the server.
+    
+* To see how to include counters when creating a subscription, see
+  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+
+* In this article:
+    * [Sample data](../../document-extensions/counters/including-counters.mdx#sample-data)
+    * [Include counters when **loading**](../../document-extensions/counters/including-counters.mdx#include-counters-when-loading)
+      * [Include single counter](../../document-extensions/counters/including-counters.mdx#include-single-counter)
+      * [Include multiple counters](../../document-extensions/counters/including-counters.mdx#include-multiple-counters)
+      * [Include all counters](../../document-extensions/counters/including-counters.mdx#include-all-counters)
+    * [Include counters when **querying**](../../document-extensions/counters/including-counters.mdx#include-counters-when-querying)
+      * [Include single counter](../../document-extensions/counters/including-counters.mdx#include-single-counter-1)
+      * [Include multiple counters](../../document-extensions/counters/including-counters.mdx#include-multiple-counters-1)
+      * [Include all counters](../../document-extensions/counters/including-counters.mdx#include-all-counters-1)
+    * [Including multiple item types](../../document-extensions/counters/including-counters.mdx#including-multiple-item-types)
+    * [Include behavior and constraints](../../document-extensions/counters/including-counters.mdx#include-behavior-and-constraints)
+    * [Syntax](../../document-extensions/counters/including-counters.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Sample data">
+
+The examples in this article are based on the following **sample data**:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample_counters" label="Sample_counters">
+```js
+const session = store.openSession();
+
+// Increase counter "Likes" by 1, or create it with a value of 1 if it doesn't exist
+await session.countersFor("products/1-A").increment("Likes");
+
+// Increase counter "Dislikes" by 1, or create it with a value of 1 if it doesn't exist
+await session.countersFor("products/1-A").increment("Dislikes", 1);
+
+// Increase counter "Downloads" by 15, or create it with a value of 15 if it doesn't exist
+await session.countersFor("products/1-A").increment("Downloads", 15);
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Product_class" label="Product_class">
+```js
+class Product {
+    constructor({
+        Id = null,
+        Name = null,
+        Supplier = null,
+        Description = null
+    } = {}) {
+        Object.assign(this, {
+            Id,
+            Name,
+            Supplier,
+            Description
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Include counters when loading">
+
+<ContentFrame>
+
+### Include single counter:
+    
+Include a single counter using `includeCounter()`:
+
+<TabItem value="Load" label="Load">
+```js
+const session = store.openSession();
+
+// Load document "products/1-A"
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+         // Call 'includeCounter', pass the name of the counter to include
+        .includeCounter("Likes")
+    }
+);
+
+// The included counter is now cached in the session's memory.
+// Getting its value will NOT trigger a server request.
+const productLikes = await session
+    .countersFor("products/1-A")
+    .get("Likes");
+
+console.log("Number of likes:", productLikes);
+```
+</TabItem>
+
+</ContentFrame>
+    
+<ContentFrame>
+
+### Include multiple counters:
+    
+Include multiple counters using `includeCounters()`:
+
+<TabItem value="Load" label="Load">
+```js
+const session = store.openSession();
+
+// Load document "products/1-A"
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+         // Call 'includeCounters', pass a list of the counter names to include
+        .includeCounters(["Likes", "Downloads"])
+});
+
+// The included counters are now cached in the session's memory.
+// Getting their values will NOT trigger a server request.
+const productDownloads = await session
+    .countersFor("products/1-A")
+    .get("Downloads");
+
+console.log("Number of downloads:", productDownloads);
+```
+</TabItem>
+
+You can also include multiple counters by chaining multiple `includeCounter()` calls:
+
+<TabItem value="Load" label="Load">
+```js
+const session = store.openSession();
+
+// Load document "products/1-A"
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+         // Include multiple counters by chaining 'IncludeCounter' calls
+        .includeCounter("Likes")
+        .includeCounter("Downloads")
+});
+
+// The included counters are now cached in the session's memory.
+// Getting their values will NOT trigger a server request.
+const productDownloads = await session.countersFor("products/1-A").get("Downloads");
+
+console.log("Number of downloads:", productDownloads);
+```
+</TabItem>
+    
+</ContentFrame>
+
+<ContentFrame>
+    
+### Include all counters:
+    
+Include ALL counters using `includeAllCounters()`:
+
+<TabItem value="Load" label="Load">
+```js
+const session = store.openSession();
+
+// Load document "products/1-A"
+const product = await session.load("products/1-A", {
+    includes: includeBuilder =>
+        // Call 'IncludeAllCounters' to include all counters
+        includeBuilder.includeAllCounters()
+});
+
+// All counters are now cached in the session's memory.
+// Getting their values will NOT trigger a server request.
+const productDislikes = await session.countersFor("products/1-A").get("Dislikes");
+
+console.log("Number of dislikes:", productDislikes);
+```
+</TabItem>
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Include counters when querying">
+
+<ContentFrame>
+
+### Include single counter:
+
+Use `includeCounter()` to include a single counter for each resulting document.  
+The counter with the specified name will be cached in the session's memory for each document returned.  
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const session = store.openSession();
+
+// Query for Product documents
+const products = await session
+    .query({ collection: "Products" })
+     // Filter documents as needed
+    .whereEquals("Supplier", "suppliers/1-A")
+     // Include the "Likes" counter for each matching document
+    .include(includeBuilder => includeBuilder.includeCounter("Likes"))
+    .all();
+
+for (const product of products) {
+    // Access the counters included in the session
+    // Getting their values will NOT trigger a server request.
+    const productLikes = await session.countersFor(product).get("Likes");
+
+    if (productLikes !== null)
+        console.log(`Product '${product.id}' has ${productLikes} likes.`);
+    else
+        console.log(`Product '${product.id}' has no 'Likes' counter.`);
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const session = store.openSession();
+
+const products = await session.advanced
+    .rawQuery(`
+        from Products as p
+        where p.Supplier == "suppliers/1-A"
+        include counters(p, "Likes")
+    `)
+    .all();
+
+for (const product of products) {
+    const likes = await session.countersFor(product).get("Likes");
+
+    if (likes !== null)
+        console.log(`Product '${product.id}' has ${likes} likes.`);
+    else
+        console.log(`Product '${product.id}' has no 'Likes' counter.`);
+}
+```
+</TabItem>
+<TabItem value="sql" label="RQL">
+```sql
+from "Products"
+where Supplier == "suppliers/1-A"
+include counters("Likes")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Include multiple counters:
+ 
+Use `includeCounters()` to include multiple counters for each resulting document.  
+Counters with the specified names will be cached in the session's memory for each document returned.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const session = store.openSession();
+
+// Query for Product documents
+const products = await session
+    .query({ collection: "Products" })
+    // Filter documents as needed
+    .whereEquals("Supplier", "suppliers/1-A")
+    // Include multiple counters ("Likes" and "Downloads") for each matching document
+    // Alternatively, you can chain individual calls:
+    // includeBuilder.includeCounter("Likes").includeCounter("Downloads")
+    .include(includeBuilder =>
+        includeBuilder.includeCounters(["Likes", "Downloads"])
+    )
+    .all();
+
+for (const product of products) {
+    // Access the counters included in the session
+    // Getting their values will NOT trigger a server request.
+    const productLikes = await session.countersFor(product).get("Likes");
+    const productDownloads = await session.countersFor(product).get("Downloads");
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const session = store.openSession();
+
+const products = await session.advanced
+    .rawQuery(`
+        from Products
+        where Supplier == "suppliers/1-A"
+        include counters("Likes"), counters("Downloads")
+    `)
+    .all();
+
+for (const product of products) {
+    const likes = await session.countersFor(product).get("Likes");
+    const downloads = await session.countersFor(product).get("Downloads");
+}
+```
+</TabItem>
+<TabItem value="sql" label="RQL">
+```sql
+from "Products" 
+where Supplier = "suppliers/1-A"
+include counters("Likes"), counters("Downloads")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Include all counters:
+
+Use `includeAllCounters()` to include ALL counters.  
+All counters for each resulting document will be cached in the session's memory.
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const session = store.openSession();
+
+// Query for Product documents
+const products = await session
+    .query({ collection: "Products" })
+    // Filter documents as needed
+    .whereEquals("Supplier", "suppliers/1-A")
+    // Include ALL counters for each matching document
+    .include(includeBuilder => includeBuilder
+        .includeAllCounters())
+    .all();
+
+for (const product of products) {
+    // All counters for the resulting documents are now cached in the session's memory.
+    // Getting their values will NOT trigger a server request.
+    const productDislikes = await session.countersFor(product).get("Dislikes");
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const session = store.openSession();
+
+const products = await session.advanced
+    .rawQuery(`
+        from Products
+        where Supplier == "suppliers/1-A"
+        include counters()
+    `)
+    .all();
+
+for (const product of products) {
+    const productDislikes = await session.countersFor(product).get("Dislikes");
+}
+```
+</TabItem>
+<TabItem value="sql" label="RQL">
+```sql
+from "Products" 
+where Supplier == "suppliers/1-A"
+include counters()
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Including multiple item types">
+
+You can combine different include types **when loading or querying** a document using the fluent _includeBuilder_ syntax.  
+For example, you can include counters, related documents, time series, compare-exchange values, or past revisions.  
+This allows you to retrieve all related data in a single server call and avoid additional round trips later in the session.  
+
+The order in which you chain the include methods does not matter. For example:  
+
+<TabItem value="" label="">
+```js
+const session = store.openSession({
+    // Required when including compare-exchange values
+    transactionMode: "ClusterWide"
+});
+
+// Load document "products/1-A" and include multiple related items
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+         // Include counter
+        .includeCounter("Likes")
+         // Include related document
+        .includeDocuments("Supplier")
+        // Include time series
+        .includeTimeSeries("HeartRates")
+         // Include compare-exchange value
+        .includeCompareExchangeValue("document_property_that_holds_the_cmpxchg_Key")
+         // Include past revisions from last month
+        .includeRevisions(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
+});
+```
+</TabItem>
+</Panel>
+
+<Panel heading="Include behavior and constraints">
+
+The following sections describe behavior that applies when including counters - whether during **load or query**:
+* [Counters that don't exist at include time](../../document-extensions/counters/including-counters.mdx#counters-that-dont-exist-at-include-time)  
+* [Do not mix IncludeAllCounters with individual counter includes](../../document-extensions/counters/including-counters.mdx#do-not-mix-includeallcounters-with-individual-counter-includes)
+
+---
+    
+### Counters that don't exist at include time
+
+If you include a counter that does Not exist at the time of the load or query execution, this will not cause an error.  
+However:  
+* Its value will be null.
+* Accessing it later in the same session will not trigger a server request, because the counter is already cached in the session’s internal state.
+* Even if the counter is created after the _include_, no server call will be made when trying to access its value.
+* To retrieve the counter in this case, you can:
+  * Call [Clear](../../client-api/session/how-to/clear-a-session) to reset the session and discard all tracked state.
+  * Use [Evict](../../client-api/session/how-to/evict-entity-from-a-session) to remove the document (and its cached counters) from the session’s internal state.
+  * Or simply fetch the counter in a new session.  
+    
+<TabItem value="" label="">
+```js
+const session = store.openSession();
+
+// Load and include specific counters - one of them doesn't exist yet
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+        .includeCounters(["Likes", "non-existent-counter"])
+});
+
+// ...ASSUME the counter "non-existent-counter" was just created *After* the above load
+
+// Trying to get the counter's value will NOT trigger a server call.
+// The counter is already cached in the session's internal state.
+let valueOfCounter = await session.countersFor(product).get("non-existent-counter");
+console.log("Value of counter:", valueOfCounter); // null
+
+// You can call 'evict' to remove the document (and its cached counters) from the session
+session.advanced.evict(product);
+
+// Now a server call will be made to fetch the counter.
+// Note:
+// * You must specify the document ID since the entity is no longer tracked
+// * Despite the name, "non-existent-counter" now exists on the server :)
+valueOfCounter = await session.countersFor("products/1-A").get("non-existent-counter");
+console.log("Value of counter:", valueOfCounter); // whatever the current value is 
+```  
+</TabItem> 
+
+<TabItem value="" label="">
+```js
+const session = store.openSession();
+
+// Load and include ALL counters
+const product = await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder.includeAllCounters()
+});
+
+// ...ASSUME the counter "new-counter" was just created *After* the above load
+
+// No server call is made here, even if "new-counter" exists now.
+// The counter is considered tracked in the session and will return null.
+const valueOfCounter = await session.countersFor(product).get("new-counter");
+console.log("Value of counter:", valueOfCounter); // null
+```  
+</TabItem> 
+    
+--- 
+    
+### Do not mix includeAllCounters with individual counter includes 
+    
+Once you've called `includeAllCounters()`, you cannot include individual counters using `includeCounter()` or `includeCounters()` in the same include chain.
+Attempting to do so will throw an `InvalidOperationException` at runtime.    
+    
+<TabItem value="" label="">
+```js
+const session = store.openSession();
+    
+await session.load("products/1-A", {
+    includes: includeBuilder => includeBuilder
+        .includeAllCounters()
+        .includeCounter("Likes") // This will throw
+});
+```
+</TabItem> 
+</Panel>
+
+<Panel heading="Syntax">
+
+<TabItem value="" label="">
+```js
+// Available overloads:
+includeCounter(string name);
+includeCounters(string[] names);
+includeAllCounters();
+
+```
+</TabItem>
+
+| Parameter  | Type       | Description                              |
+|------------|------------|------------------------------------------|
+| **name**   | `string`   | The name of a single counter to include. |
+| **names**  | `string[]` | An array of counter names to include.    |
+    
+</Panel>
