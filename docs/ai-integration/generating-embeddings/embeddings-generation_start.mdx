@@ -10,49 +10,22 @@ import Admonition from '@theme/Admonition';
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
 import ColGrid from "@site/src/components/ColGrid";
-import embedGenStartOvImage from "./assets/embeddings-generation_start_ov-image.png";
 import embedGenStartApiImage from "./assets/embeddings-generation_start_api-image.png";
 import embedGenStartStudioImage from "./assets/embeddings-generation_start_studio-image.png";
-
+import takingOverTheWorldVideo from "../vector-search/assets/ai-start_taking-over-the-world_video.png";
+import theAItrendVideo from "../vector-search/assets/ai-start_the-AI-trend_video.png";
 
 # Generating embeddings
-### Create embeddings to enable AI-powered similarity search.
 
+### Create embeddings to enable AI-powered similarity search.
 [Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are numeric vectors that you can create for data (like a text or an image) to capture meanings, contexts, or relationships related to the data. You can then search the data by running intelligent queries over its embeddings using [vector search](../../ai-integration/vector-search/vector-search_start) to find content by similarity rather than exact match.
 - RavenDB allows you to create embeddings using native [ongoing embeddings-generation tasks](../../ai-integration/generating-embeddings/embeddings-generation-task) that systematically process document collections and convert document fields (like texts or arrays) into embeddings. To create the embeddings, the tasks can use either an external AI model (such as OpenAI) or RavenDB's default embedding model.  
 - You can also create embeddings using external embeddings providers and store them in your database (e.g., to handle other content types such as images).  
 - You can avoid pre-generating embeddings, and let vector search operations generate embeddings on-the-fly, while searching.  
 - Embeddings can be used by other RavenDB AI features. E.g., [AI agents](../../ai-integration/ai-agents/ai-agents_start) can use vector search to retrieve relevant data requested by the LLM.  
-- [See common embeddings-generation use cases](../../ai-integration/generating-embeddings/embeddings-generation_start#use-cases)
 
-## Technical documentation
-Use our technical documentation to learn about generating, storing, and using embeddings in RavenDB.  
-
-<ColGrid colCount={3}>
-    <CardWithImage title="Embeddings generation overview" description="Learn the basics of embeddings generation in RavenDB" url="../../ai-integration/generating-embeddings/overview" imgSrc={embedGenStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Embeddings generation tasks API" description="Create and configure your tasks using the client API" url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-client-api" imgSrc={embedGenStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Embeddings generation tasks UI" description="Create and configure your tasks using Studio" url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio" imgSrc={embedGenStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
-</ColGrid>
-
-## In-depth articles
-Learn more about embeddings generation and usage in RavenDB.  
-
-<ColGrid colCount={2}>
-    <CardWithImage title="Generate Embeddings for AI Search with RavenDB and External Models" description="Step-by-step setup guide for AI-powered semantic search, by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/embeddings-generation-with-ravendb" imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="The integration of embeddings generation in RavenDB" description="The reasoning and architecture behind RavenDB's embeddings feature, by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ai-integration-in-ravendb-embeddings-generation" imgAlt="imgAlt" ctaLabel="Read" />
-</ColGrid>
-
-## Videos
-Watch our online webinars to learn about embeddings generation and usage in RavenDB.
-
-<ColGrid colCount={1}>
-    <CardWithImageHorizontal title="Take over the world with AI and RavenDB" description="Practical AI integration with Oren Eini" url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
-    <CardWithImageHorizontal title="Vector search in RavenDB" description="The AI trend developers simply cannot ignore" url="https://www.youtube.com/watch?v=zZwid8LA-e4" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
-</ColGrid>
-
-## Use cases
-Embeddings generation tasks can be used to prepare your data for AI-powered search, analysis, and usage, e.g., for these data categories:
-
+### Use cases
+Embeddings generation tasks can be used to prepare your data for AI-powered search, analysis, and usage, e.g., for -  
 * **Enterprise knowledge bases**  
   Generate embeddings for thousands of documents, policies, and procedures to enable instant semantic search
 * **Legal document libraries**  
@@ -62,4 +35,23 @@ Embeddings generation tasks can be used to prepare your data for AI-powered sear
 * **Content management systems**  
   Transform blog posts, articles, and marketing materials into searchable vector representations
 
-See the [vector search](../../ai-integration/vector-search/vector-search_start#use-cases) use cases section for a few practical applications of embeddings in RavenDB.  
+### Technical documentation
+Learn about generating, storing, and using embeddings in RavenDB.  
+
+<ColGrid colCount={3}>
+    <CardWithImage title="Embeddings generation overview" description="Learn the basics of embeddings generation in RavenDB" url="../../ai-integration/generating-embeddings/overview" imgIcon="embeddings" imgAlt="Embeddings generation overview" ctaLabel="Read" />
+    <CardWithImage title="Embeddings generation tasks UI" description="Create and configure your tasks using Studio" url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio" imgIcon="embeddings" imgAlt="Embeddings generation tasks UI" ctaLabel="Read" />
+</ColGrid>
+
+#### Learn more: In-depth embeddings generation articles
+<ColGrid colCount={2}>
+    <CardWithImage title="Embeddings with RavenDB and External Models" description="Step-by-step setup guide for AI-powered semantic search, by Paweł Lachowski" imgSrc="https://ravendb.net/wp-content/uploads/2025/03/ai-search-article-cover.jpg" url="https://ravendb.net/articles/embeddings-generation-with-ravendb" imgAlt="Embeddings with RavenDB and External Models" ctaLabel="Read" />
+    <CardWithImage title="The integration of embeddings generation in RavenDB" description="The reasoning and architecture behind RavenDB's embeddings feature, by Oren Eini" imgSrc="https://ravendb.net/wp-content/uploads/2024/05/from-ayende-com.webp" url="https://ravendb.net/articles/ai-integration-in-ravendb-embeddings-generation" imgAlt="The integration of embeddings generation in RavenDB" ctaLabel="Read" />
+</ColGrid>
+
+### Related lives & Videos
+Learn more about enhancing your applications using vector search operations.
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Taking over the world with AI and RavenDB" description="Watch a webinar about vector search." url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc={takingOverTheWorldVideo} imgAlt="Taking over the world with AI and RavenDB" ctaLabel="Watch" />
+    <CardWithImageHorizontal title="Vector search in RavenDB" description="The AI trend developers simply cannot ignore " url="https://www.youtube.com/watch?v=zZwid8LA-e4" imgSrc={theAItrendVideo} imgAlt="Vector search in RavenDB" ctaLabel="Watch" />
+</ColGrid>
