@@ -442,7 +442,7 @@ const product = await session.load("products/1-A", {
 
 // Trying to get the counter's value will NOT trigger a server call.
 // The counter is already cached in the session's internal state.
-let valueOfCounter= await session.countersFor(product).get("non-existent-counter");
+let valueOfCounter = await session.countersFor(product).get("non-existent-counter");
 console.log("Value of counter:", valueOfCounter); // null
 
 // You can call 'evict' to remove the document (and its cached counters) from the session
