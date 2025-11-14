@@ -14,7 +14,6 @@ export interface CardWithImageProps {
   url?: string;
   buttonVariant?: ButtonVariant;
   ctaLabel?: string;
-  iconName?: IconName;
   imgIcon?: IconName;
 }
 
@@ -26,7 +25,6 @@ export default function CardWithImage({
   url,
   buttonVariant = "secondary",
   ctaLabel = "Read now",
-  iconName,
   imgIcon,
 }: CardWithImageProps) {
   const hasImage = Boolean(imgSrc);

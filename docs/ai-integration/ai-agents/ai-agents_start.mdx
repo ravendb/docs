@@ -10,8 +10,9 @@ import Admonition from '@theme/Admonition';
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
 import ColGrid from "@site/src/components/ColGrid";
-import aiAgentsVideo from "./assets/ai-start_ai-agents_video.png";
-import powerfulAgentsVideo from "./assets/ai-start_powerful-agents_video.png";
+import practicalLookAiAgentsImage from "../assets/practical-look-ai-agents-article-image.webp";
+
+import webinarThumbnailPlaceholder from "@site/static/img/webinar.webp";
 
 # AI Agents
 
@@ -23,30 +24,30 @@ AI agents are server-side components that act as secure proxies between RavenDB 
 
 ### Use cases
 Creating an AI agent and assigning it a role can be done in minutes using Studio or the API, making it easy to address a wide variety of use cases like -  
-* [Customer support chatbot agents](../../ai-integration/ai-agents/ai-agents_overview#customer-support-chatbot-agents)  
-* [Data analysis and reporting agents](../../ai-integration/ai-agents/ai-agents_overview#data-analysis-and-reporting-agents)  
-* [Content generation agents](../../ai-integration/ai-agents/ai-agents_overview#content-generation-agents)  
-* [Workflow automation agents](../../ai-integration/ai-agents/ai-agents_overview#workflow-automation-agents)  
-* [Intelligent recommendation agents](../../ai-integration/ai-agents/ai-agents_overview#intelligent-recommendation-agents)  
+* Customer support chatbot agents
+* Data analysis and reporting agents
+* Content generation agents
+* Workflow automation agents
+* Intelligent recommendation agents
 
 ### Technical documentation
 Use the technical documentation to learn how to create and manage AI agents, configure secure database access, enable agents to trigger client actions, and more.
 
 <ColGrid colCount={2}>
-    <CardWithImage title="AI Agents Overview" description="Learn the basic concepts of RavenDB's native AI agents" url="../../ai-integration/ai-agents/ai-agents_overview" imgIcon="ai-agents" imgAlt="AI Agents Overview" ctaLabel="Read" />
-    <CardWithImage title="Creating agents using Studio" description="Learn how to easily create and test AI agents using Studio" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio" imgIcon="ai-agents" imgAlt="Creating agents using Studio" ctaLabel="Read" />
+    <CardWithImage title="AI Agents Overview" description="Learn the basic concepts of RavenDB's native AI agents" url="../../ai-integration/ai-agents/ai-agents_overview" imgIcon="ai-agents" ctaLabel="Read" />
+    <CardWithImage title="Creating agents using Studio" description="Learn how to easily create and test AI agents using Studio" url="../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio" imgIcon="studio-config" ctaLabel="Read" />
 </ColGrid>
 
 #### Learn more: In-depth AI agents articles
-<ColGrid colCount={3}>
-    <CardWithImage title="Practical look at AI agents with RavenDB" description="A step-by-step tutorial for building AI agents with RavenDB, by Gracjan Sadowicz" imgSrc="https://ravendb.net/wp-content/uploads/2025/09/practical-look-ai-agents-article-image.jpg" url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgAlt="Practical look at AI agents with RavenDB" ctaLabel="Read" />
+<ColGrid colCount={2}>
+    <CardWithImage title="Practical look at AI agents with RavenDB" description="A step-by-step tutorial for building AI agents with RavenDB, by Gracjan Sadowicz" imgSrc={practicalLookAiAgentsImage} url="https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb" imgAlt="Practical look at AI agents with RavenDB" ctaLabel="Read" />
 </ColGrid>
 
 ### Related lives & Videos
 Watch our webinars to see AI agents in action and learn practical implementation techniques.
 
 <ColGrid colCount={1}>
-    <CardWithImageHorizontal title="How to run AI agents natively in your database" description="Watch a webinar about AI agents." url="https://www.youtube.com/watch?v=A17GSLGN-cQ" imgSrc={aiAgentsVideo} imgAlt="How to run AI agents natively in your database" ctaLabel="Watch" />
-    <CardWithImageHorizontal title="Creating powerful and secure AI agents with RavenDB" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=jzUxL9P17G4" imgSrc={powerfulAgentsVideo} imgAlt="Creating powerful and secure AI agents with RavenDB" ctaLabel="Watch" />
+    <CardWithImageHorizontal title="How to run AI agents natively in your database" description="Watch a webinar about AI agents." url="https://www.youtube.com/watch?v=A17GSLGN-cQ" imgSrc={webinarThumbnailPlaceholder} imgAlt="How to run AI agents natively in your database" ctaLabel="Watch" />
+    <CardWithImageHorizontal title="Creating powerful and secure AI agents with RavenDB" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=jzUxL9P17G4" imgSrc={webinarThumbnailPlaceholder} imgAlt="Creating powerful and secure AI agents with RavenDB" ctaLabel="Watch" />
 </ColGrid>
 
