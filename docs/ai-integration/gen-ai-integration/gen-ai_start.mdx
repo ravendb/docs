@@ -1,9 +1,11 @@
 ---
-title: "GenAI: Start"
+title: "GenAI tasks: Start"
 hide_table_of_contents: true
 sidebar_label: Start
 sidebar_position: 0
 ---
+
+import Admonition from '@theme/Admonition';
 
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
@@ -11,53 +13,48 @@ import ColGrid from "@site/src/components/ColGrid";
 import genAiStartOvImage from "./assets/gen-ai_start_ov-image.png";
 import genAiStartApiImage from "./assets/gen-ai_start_api-image.png";
 import genAiStartStudioImage from "./assets/gen-ai_start_studio-image.png";
+import unlockGenAiPotentialArticleImage from "./assets/unlock-genai-potential-article-image.webp";
+import articleGenAiImage from "./assets/article-cover-genai.webp";
 
-# GenAI: Start
+import ayendeBlogImage from "@site/static/img/from-ayende-com.webp";
+import webinarThumbnailPlaceholder from "@site/static/img/webinar.webp";
 
-RavenDB Generative AI (GenAI) tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor a specified collection, processing documents as they are added or modified. Similar to ETL tasks, a GenAI task extracts content from each processed document and transfers this content. However, instead of sending it to a final destination like an ETL task would, it sends the content to an AI model along with a guiding **prompt** and a **response template**.  
-When the model responds, it structures its response according to the response template so the GenAI task will be able to use it effectively, e.g., to update the source document with the requested information or with LLM-generated insights.  
-GenAI tasks can be easily created using Studio or the client API, and when created via Studio, each step of their creation can be easily tested and validated before deployment.  
+# GenAI tasks
 
-## Use cases
+### Build intelligent workflows with GenAI tasks.
+GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections and process documents as they are added or modified.  
+- Similar to [ETL tasks](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
+- When the LLM responds, the GenAI task can use its response to, for example, update the source document with LLM-generated content, or create new documents in the database.  
+- GenAI tasks can infuse intelligence into a wide variety of content handling scenarios.  
+  E.g., they can enrich documents with AI-generated summaries or classifications, translate text into different languages, or generate new content based on existing data.
+- You can easily create GenAI tasks using Studio or the client API.  
+  When created via Studio, each step of their creation can be easily tested and validated before deployment.  
 
-GenAI tasks can infuse intelligence into a wide variety of content handling scenarios, here are just a few of the categories in which they can help (click a category for a few examples in this area):
+### Use cases
+GenAI tasks can infuse intelligence into a wide variety of content handling scenarios. Here are some of the categories in which they can help.
+* Data enrichment & enhancement
+* Smart automation & workflows
+* Enhanced search & discovery
+* Business intelligence & insights
+* Content analysis & moderation
 
-- [Data enrichment & enhancement use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#data-enrichment--enhancement-use-cases)
-
-- [Smart automation & workflows use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#smart-automation--workflows-use-cases)
-
-- [Enhanced search & discovery use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#enhanced-search--discovery-use-cases)
-
-- [Business intelligence & insights use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#business-intelligence--insights-use-cases)
-
-- [Content analysis & moderation use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#content-analysis--moderation-use-cases)
-
-
-## Technical documentation
-
-Use our technical documentation to learn more about GenAI tasks and how to create and manage them.  
-If you're new to GenAI tasks, the [overview](../../ai-integration/gen-ai-integration/gen-ai-overview) page as a good starting point.  
-
-<ColGrid colCount={3}>
-    <CardWithImage title="GenAI tasks - Overview" description="The starting point for the GenAI documentation: an overview of the feature" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgSrc={genAiStartOvImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Creating a GenAI task using the Client API" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api" imgSrc={genAiStartApiImage} imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Using Studio to define and test GenAI tasks" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio" imgSrc={genAiStartStudioImage} imgAlt="imgAlt" ctaLabel="Read" />
-</ColGrid>
-
-## Videos
-
-Learn how GenAI tasks help create reliable and effective AI-powered workflows.
+### Technical documentation
+Learn how to create and manage tasks that intelligently process your data and transform your content.
 
 <ColGrid colCount={2}>
-    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Webinar with Oren Eini" url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc="https://media.licdn.com/dms/image/v2/D4D10AQG81cXtiYRc2w/image-shrink_800/B4DZZYYLcTHwAk-/0/1745239456036?e=2147483647&v=beta&t=yQVz6ji4wD4reOTXtlPpERK0fdpr1f2VoG_SEV9x3lc" imgAlt="imgAlt" ctaLabel="Watch" />
+    <CardWithImage title="GenAI tasks overview" description="Learn the concepts and flow of GenAI tasks in RavenDB" url="../../ai-integration/gen-ai-integration/gen-ai-overview" imgIcon="genai" ctaLabel="Read" />
+    <CardWithImage title="Creating tasks using Studio" description="Learn to create and test GenAI tasks using Studio" url="../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio" imgIcon="studio-config" ctaLabel="Read" />
 </ColGrid>
 
-## In-depth articles
-
-Once you're familiar with the basics of GenAI tasks, you can take a look at these in-depth articles.
-
+#### Learn more: In-depth GenAI tasks articles
 <ColGrid colCount={3}>
-    <CardWithImage title="RavenDB GenAI Deep Dive" description="Article by Oren Eini" imgSrc="" url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Survive the AI tidal wave with RavenDB & GenAI" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai" imgAlt="imgAlt" ctaLabel="Read" />
-    <CardWithImage title="Unlock RavenDB GenAI potential with attachments" description="Article by Paweł Lachowski" imgSrc="" url="https://ravendb.net/articles/unlock-ravendb-genai-potential-with-attachments" imgAlt="imgAlt" ctaLabel="Read" />
+    <CardWithImage title="RavenDB GenAI deep dive" description="A deep-dive with hands-on examples and implementation details, by Oren Eini" imgSrc={ayendeBlogImage} url="https://ravendb.net/articles/ravendb-genai-deep-dive" imgAlt="RavenDB GenAI Deep Dive" ctaLabel="Read" />
+    <CardWithImage title="Survive the AI tidal wave with RavenDB & GenAI" description="A real-world demo using GenAI for intelligent support ticket automation, by Paweł Lachowski" imgSrc={articleGenAiImage} url="https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai" imgAlt="Survive the AI tidal wave with RavenDB & GenAI" ctaLabel="Read" />
+    <CardWithImage title="Unlock RavenDB GenAI potential with attachments" description="A practical guide to processing PDFs, images, and files with GenAI, by Paweł Lachowski" imgSrc={unlockGenAiPotentialArticleImage} url="https://ravendb.net/articles/unlock-ravendb-genai-potential-with-attachments" imgAlt="Unlock RavenDB GenAI potential with attachments" ctaLabel="Read" />
+</ColGrid>
+
+### Related lives & Videos
+Learn how GenAI tasks help create reliable and effective AI-powered workflows.
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Why are GenAI tasks so effective" description="Watch a webinar about GenAI tasks." url="https://www.youtube.com/watch?v=NgvyeHwwVjM" imgSrc={webinarThumbnailPlaceholder} imgAlt="Why are GenAI tasks so effective" ctaLabel="Watch" />
 </ColGrid>

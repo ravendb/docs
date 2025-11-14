@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In this article:
-    * [GenAI Task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#genai-task)  
+    * [The GenAI Task wizard](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#the-genai-task-wizard)  
     * [Add a GenAI Task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#add-a-genai-task)
     * [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings)
     * [Generate context objects](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#generate-context-objects)
@@ -28,23 +28,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <hr />
 
-## GenAI Task
-
-### What does a GenAI task do?
-A GenAI task is an ongoing task that:  
-
-1. Retrieves documents from a collection of your choice.  
-2. Shapes each retrieved document into an easy-to-handle "context object".  
-3. Sends context objects one by one to an AI model for processing.  
-4. Handles the AI model's output.  
-
-### The GenAI Task wizard
+## The GenAI Task wizard
 Studio's [AI Tasks](../../../ai-integration/ai-tasks-list-view) view includes a GenAI **wizard**.  
-Using this wizard, we can easily **create and configure** our task, as well as **test each step 
+Using this wizard, you can easily **create and configure** your task, as well as **test each step 
 of its creation** in a dedicated "playground".  
 We will go through the task creation and testing sequence below, using the wizard.  
 
-### Sample data
+### Sample data:
 While demonstrating the creation and testing of a GenAI task, we will use the following 
 sample document, illustrating a blog post with an array of comments, of which one is spam.  
 We will use our GenAI task to go through the comments and identify spam entries so we can 
@@ -113,7 +103,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
    Give your task a unique identifier.  
     * Use only lowercase letters, numbers, and hyphens.  
     * You can provide the identifier yourself, or click **Regenerate** to create it automatically.  
-    * When you complete creating the task and run it, the task will add a metadata property to documents it processes, named after the identifier you define here.  
+    * When you complete and save your task and it starts running, it will add a metadata property to documents it processes, named after the identifier you define here.  
     The task will use this property to keep track of document parts it had already processed.  
       See an example [here](../../../ai-integration/gen-ai-integration/gen-ai-overview#gen-ai-metadata).  
 
@@ -121,14 +111,14 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
    Use this switch to enable or disable the task.  
 
 4. **Set responsible node**  
-   Toggle ON to pick which cluster node will be responsible for this task.  
+   Toggle ON to choose the cluster node that will be responsible for this task.  
    Toggle OFF for the cluster to pick a responsible node for you.  
 
 5. <a id="studio_connection-string"/>**Connection string**  
    The Gen AI task will use an AI model to process your data.  
    It can be a local AI model like Ollama, or an external model like OpenAI.  
    Use this bar to Select or Create the connection string that the GenAI task 
-   will use to connect the AI model.  
+   will use to connect with the AI model.  
     * You can create the connection string either here or in the dedicated 
       [AI Connection Strings](../../../ai-integration/connection-strings/connection-strings-overview) view.  
     * Here is an example for a connection string to a local [Ollama](../../../ai-integration/connection-strings/ollama) 
@@ -137,10 +127,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
          ![Ollama connection string](./assets/gen-ai_ollama-connection-string.png)
    
 6. **Steps completed**  
-   This interactive board maps the steps needed to create a GenAI task, and marks 
-   your current location in the task creation course.  
-   As you advance through the wizard you'll be able to define and test your settings, 
-   and eventually review and save your task.  
+   You can use this interactive board as you advance through the wizard to see which steps you completed and what is still to define. Click a listed configuration option to modify its settings.  
 
 <hr />
 
@@ -149,27 +136,26 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
 ![Generate context objects](./assets/gen-ai_generate-context-objects.png)
 
 1. **Source collection**  
-   Select the collection whose documents this GenAI task will process.  
-   E.g., the `Posts` collection.  
+   Select the collection whose documents this GenAI task will monitor and process.  
+   E.g., `Posts`
 
 2. <a id="studio_context-generation-script"/>**Context generation script**  
    Provide a JavaScript, that your GenAI task will run over each document it retrieves 
    from the selected collection.  
-    * The purpose of the script you provide here is to format the documents' data in 
-      common `Context object` that can be easily and methodically processed by the AI model.  
-    * An example for a context generation script can be: 
-      
-      <TabItem value="javascript" label="javascript">
-      ```javascript
-      // go through all the comments left for this blog
-      for(const comment of this.Comments)
-      {
-          // Use the `ai.genContext` method to generate a context object for each comment.  
-          ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
-      } 
-      ```
-      </TabItem>
-      
+   The purpose of this script is to form a `Context object` that contains data extracted from the document, 
+   that the AI model will be able to process effectively.  
+   E.g., 
+   <TabItem value="javascript" label="javascript">
+   ```javascript
+   // Go through all the comments that were left for this blog
+   for(const comment of this.Comments)
+   {
+       // Use the `ai.genContext` method to generate a context object for each comment,
+       // that includes the comment text, author, and id.
+       ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+   } 
+   ```
+    </TabItem>
 
 3. <a id="generate-context-objects-playground"/>**Playground**  
    Each of the steps from now on is equipped with its own playground, allowing you 
@@ -214,7 +200,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
   on its own connection, along with the prompt and JSON schema you provide in this view.  
 * The context provides the data for the model to process.  
   The prompt determines what the model should do with the data.  
-  The JSON schema formats the returned results.  
+  The JSON schema formats the returned results, so the GenAI task can use them effectively.  
 
 ![Define Prompt and JSON schema](./assets/gen-ai_define-prompt-and-json-schema.png)
 
@@ -224,22 +210,25 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
   
       <TabItem value="plain" label="plain">
       ```plain
-      Check if the following blog post comment is spam or not.  
-      A spam comment typically includes irrelevant or promotional content, excessive links, 
-      misleading information, or is written with the intent to manipulate search rankings or 
-      advertise products/services. 
-      Consider the language, intent, and relevance of the comment to the blog post topic.
-      ```
+     Check if the following blog post comment is spam or not. 
+     A spam comment typically includes irrelevant or promotional content, 
+     excessive links, misleading information, or is written with the intent to 
+     manipulate search engines or advertise products/services. 
+     Consider the language, intent, and relevance of the comment for 
+     the blog post content.
+     ```
       </TabItem>
 
 2. **JSON schema**  
    The AI model will return a results JSON object for each context object sent to it.  
-   Here, we determine what format the AI model would give the result objects it returns.  
+   The JSON schema we set here sets the layout for this results object.  
     * **Use sample object**  
-      Select this option to provide an object that the AI model will use as an example.  
-      The results object will be formatted as the sample object you provide.  
+       * Select this option to provide an object that the AI model will use as an example.  
+         The results object will be formatted as the sample object you provide.  
+       * Textual fields in the sample object can be written in natural language, 
+         guiding the AI model what to write in the results.  
       
-         E.g. if you select this option and provide this object:  
+      E.g. if you select this option and provide this object:  
       <TabItem value="json" label="json">
       
       ```json

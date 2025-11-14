@@ -1,0 +1,60 @@
+---
+title: "Generating embeddings: Start"
+hide_table_of_contents: true
+sidebar_label: Start
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import embedGenStartApiImage from "./assets/embeddings-generation_start_api-image.png";
+import embedGenStartStudioImage from "./assets/embeddings-generation_start_studio-image.png";
+import aiSearchArticleImage from "./assets/ai-search-article-cover.webp";
+
+import ayendeBlogImage from "@site/static/img/from-ayende-com.webp";
+import webinarThumbnailPlaceholder from "@site/static/img/webinar.webp";
+import discordLargeThumbnailPlaceholder from "@site/static/img/discord-lg.webp";
+
+# Generating embeddings
+
+### Create embeddings to enable AI-powered similarity search.
+[Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are numeric vectors that you can create for data (like a text or an image) to capture meanings, contexts, or relationships related to the data. You can then search the data by running intelligent queries over its embeddings using [vector search](../../ai-integration/vector-search/vector-search_start) to find content by similarity rather than exact match.
+- RavenDB allows you to create embeddings using native [ongoing embeddings-generation tasks](../../ai-integration/generating-embeddings/embeddings-generation-task) that systematically process document collections and convert document fields (like texts or arrays) into embeddings. To create the embeddings, the tasks can use either an external AI model (such as OpenAI) or RavenDB's default embedding model.  
+- You can also create embeddings using external embeddings providers and store them in your database (e.g., to handle other content types such as images).  
+- You can avoid pre-generating embeddings, and let vector search operations generate embeddings on-the-fly, while searching.  
+- Embeddings can be used by other RavenDB AI features. E.g., [AI agents](../../ai-integration/ai-agents/ai-agents_start) can use vector search to retrieve relevant data requested by the LLM.  
+
+### Use cases
+Embeddings generation tasks can be used to prepare your data for AI-powered search, analysis, and usage, e.g., for -  
+* **Enterprise knowledge bases**  
+  Generate embeddings for thousands of documents, policies, and procedures to enable instant semantic search
+* **Legal document libraries**  
+  Process case law, contracts, and regulations to build searchable legal repositories
+* **Product catalogs**  
+  Convert product descriptions, specifications, and reviews into embeddings for enhanced e-commerce search
+* **Content management systems**  
+  Transform blog posts, articles, and marketing materials into searchable vector representations
+
+### Technical documentation
+Learn about generating, storing, and using embeddings in RavenDB.  
+
+<ColGrid colCount={2}>
+    <CardWithImage title="Embeddings generation overview" description="Learn the basics of embeddings generation in RavenDB" url="../../ai-integration/generating-embeddings/overview" imgIcon="embeddings" ctaLabel="Read" />
+    <CardWithImage title="Embeddings generation tasks UI" description="Create and configure your tasks using Studio" url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio" imgIcon="studio-config" ctaLabel="Read" />
+</ColGrid>
+
+#### Learn more: In-depth embeddings generation articles
+<ColGrid colCount={2}>
+    <CardWithImage title="Embeddings with RavenDB and External Models" description="Step-by-step setup guide for AI-powered semantic search, by Paweł Lachowski" imgSrc={aiSearchArticleImage} url="https://ravendb.net/articles/embeddings-generation-with-ravendb" imgAlt="Embeddings with RavenDB and External Models" ctaLabel="Read" />
+    <CardWithImage title="The integration of embeddings generation in RavenDB" description="The reasoning and architecture behind RavenDB's embeddings feature, by Oren Eini" imgSrc={ayendeBlogImage} url="https://ravendb.net/articles/ai-integration-in-ravendb-embeddings-generation" imgAlt="The integration of embeddings generation in RavenDB" ctaLabel="Read" />
+</ColGrid>
+
+### Related lives & Videos
+Learn more about enhancing your applications using vector search operations.
+<ColGrid colCount={1}>
+    <CardWithImageHorizontal title="Taking over the world with AI and RavenDB" description="Watch a webinar about vector search." url="https://www.youtube.com/watch?v=7DhbgfH_rSE" imgSrc={webinarThumbnailPlaceholder} imgAlt="Taking over the world with AI and RavenDB" ctaLabel="Watch" />
+    <CardWithImageHorizontal title="Vector search in RavenDB" description="The AI trend developers simply cannot ignore " url="https://www.youtube.com/watch?v=zZwid8LA-e4" imgSrc={discordLargeThumbnailPlaceholder} imgAlt="Vector search in RavenDB" ctaLabel="Watch" />
+</ColGrid>
