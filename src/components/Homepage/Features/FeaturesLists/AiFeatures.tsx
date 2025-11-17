@@ -23,21 +23,21 @@ export default function AiFeaturesGrid() {
     {
       title: "Vector search",
       icon: "vector-search",
-      url: `/${activeVersion.label}/ai-integration/vector-search/ravendb-as-vector-database`,
+      url: `/${activeVersion.label}/ai-integration/vector-search/vector-search_start`,
       description: "Find contextually relevant data",
       minimumSupportedVersion: "7.0"
     },
     {
       title: "GenAI tasks",
       icon: "genai",
-      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai-overview`,
+      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai_start`,
       description: "Empower your application using intelligent task",
       minimumSupportedVersion: "7.1"
     },
     {
       title: "Embeddings generation",
       icon: "ai-etl",
-      url: `/${activeVersion.label}/ai-integration/generating-embeddings/overview`,
+      url: `/${activeVersion.label}/ai-integration/generating-embeddings/embeddings-generation_start`,
       description: "Automatically turn your data into AI-ready vectors",
       minimumSupportedVersion: "7.0"
     },
