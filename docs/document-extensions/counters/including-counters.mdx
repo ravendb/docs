@@ -1,0 +1,55 @@
+---
+title: "Including Counters"
+hide_table_of_contents: true
+sidebar_label: Including Counters
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IncludingCountersCsharp from './_including-counters-csharp.mdx';
+import IncludingCountersJava from './_including-counters-java.mdx';
+import IncludingCountersPython from './_including-counters-python.mdx';
+import IncludingCountersPhp from './_including-counters-php.mdx';
+import IncludingCountersNodejs from './_including-counters-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IncludingCountersCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IncludingCountersJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IncludingCountersPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IncludingCountersPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IncludingCountersNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio Articles
+- [Studio Counters Management](../../studio/database/document-extensions/counters#counters)
+
+### Client-API - Session Articles
+- [Counters Overview](../../document-extensions/counters/overview)
+- [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)
+- [Deleting a Counter](../../document-extensions/counters/delete)
+- [Retrieving Counter Values](../../document-extensions/counters/retrieve-counter-values)
+- [Counters in a cluster](../../document-extensions/counters/counters-in-a-cluster)
+
+### Client-API - Operations Articles
+- [Counters Operations](../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+-->
