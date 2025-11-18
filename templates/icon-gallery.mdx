@@ -1,0 +1,74 @@
+---
+title: "Icon Gallery"
+hide_table_of_contents: false
+sidebar_label: Icon Gallery
+---
+
+import IconGallery from "@site/src/components/IconGallery/IconGallery";
+import Admonition from '@theme/Admonition';
+
+# Icon Gallery
+
+This page showcases all available icons in the project along with their names. Click on any icon to copy its name to the clipboard.
+
+## Usage
+
+To use an icon in a component, import the `Icon` component and pass the icon name as the `icon` prop:
+
+```tsx
+import { Icon } from "@site/src/components/Common/Icon";
+
+<Icon icon="database" size="lg" />
+```
+
+## Available Icons
+
+<IconGallery />
+
+<Admonition type="info" title="">
+Icons are automatically loaded from the `static/icons` directory. When you add a new SVG file to this directory, the icon will automatically appear in this gallery after restarting the development server.
+</Admonition>
+
+## Icon Sizes
+
+The `Icon` component supports the following sizes:
+
+- `xs` - 16x16px (w-4 h-4)
+- `sm` - 24x24px (w-6 h-6) - default
+- `md` - 32x32px (w-8 h-8)
+- `lg` - 40x40px (w-10 h-10)
+- `xl` - 48x48px (w-12 h-12)
+
+## Usage Examples
+
+### Basic Usage
+
+```tsx
+import { Icon } from "@site/src/components/Common/Icon";
+
+<Icon icon="database" />
+```
+
+### With Custom Size
+
+```tsx
+<Icon icon="database" size="xl" />
+```
+
+### With Additional CSS Classes
+
+```tsx
+<Icon icon="database" className="text-blue-500" />
+```
+
+### In CardWithImage Component
+
+```tsx
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+
+<CardWithImage
+  title="Database"
+  description="Database icon"
+  imgIcon="database"
+/>
+```
