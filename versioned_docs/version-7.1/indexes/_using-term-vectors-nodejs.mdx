@@ -1,0 +1,58 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is leveraging the term vectors to accomplish its purposes.
+
+To create an index and enable Term Vectors on a specific field we can create an index using  the `AbstractIndexCreationTask`, then specify the term vectors there, or define our term vectors in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="js">
+{`class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`docs.Posts.Select(post => new {     
+            tags = post.tags,     
+            content = post.content 
+        })\`; 
+
+        this.index("content", "Search");
+        this.termVector("content", "WithPositionsAndOffsets");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="js">
+{`const builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
+builder.map = \`docs.Posts.Select(post => new {     
+    tags = post.tags,     
+    content = post.content 
+})\`; 
+
+builder.indexesStrings["content"] = "Search";
+builder.termVectorsStrings["content"] = "WithPositionsAndOffsets";
+
+const indexDefinition = builder.toIndexDefinition(store.conventions);
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The available Term Vector options are:
+
+| Term Vector | |
+| ----------- | - |
+| `"No"` | Do not store term vectors |
+| `"Yes"` | Store the term vectors of each document. A term vector is a list of the document's terms and their number of occurrences in that document. |
+| `"WithPositions"` | Store the term vector + token position information |
+| `"WithOffsets"` | Store the term vector + token offset information |
+| `"WithPositionsAndOffsets"` | Store the term vector + token position and offset information |
+
+

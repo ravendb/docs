@@ -1,0 +1,104 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* RavenDB Queries can be executed using `query` or `document_query`, or by passing 
+  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
+  via `raw_query`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+
+* In the Python client API, `query` methods and their equivalent `document_query` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  The Python documentation therefore often provides `query` usage samples without adding 
+  `document_query` examples as well.  
+
+* In this page:
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Mutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#mutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
+
+</Admonition>
+## API support
+
+* `query` and `document_query` queries are translated to RQL and sent to the server.  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods).  
+* Available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).  
+
+
+
+## Mutability
+
+* All Python queries (`query` and `document_query`) are **mutable**.  
+  You may get different results if you try to *reuse* a query.
+
+* The usage of the `Query` method in the following example:
+
+<TabItem value="immutable_query" label="immutable_query">
+<CodeBlock language="python">
+{`query = session.query(object_type=User).where_starts_with("name", "A")
+
+age_query = query.where_greater_than_or_equal("age", 21)
+
+eye_query = query.where_equals("eye_color", "blue")
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene-syntax queries:
+
+    `query: from Users where startsWith(name, 'A')`
+
+    `ageQuery: from Users where startsWith(name, 'A') and age > 21`
+
+    `eyeQuery: from Users where startsWith(name, 'A') and eye_color = 'blue'`
+* A similar usage with `document_query`:
+
+<TabItem value="mutable_query" label="mutable_query">
+<CodeBlock language="python">
+{`document_query = session.advanced.document_query(object_type=User).where_starts_with("name", "A")
+
+age_document_query = document_query.where_greater_than_or_equal("age", 21)
+
+eye_document_query = document_query.where_equals("eye_color", "blue")
+
+# Here all of the DocumentQuery variables have the same reference
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene queries:
+
+    `documentQuery: from Users where startsWith(name, 'A')`  
+    (before creating `ageDocumentQuery`)
+
+    `ageDocumentQuery: from Users where startsWith(name, 'A') and age > 21`  
+    (before creating `eyeDocumentQuery`)
+
+    `eyeDocumentuery: from Users where startsWith(name, 'A') and age > 21 and eye_color = 'blue'`
+
+    All created Lucene queries are the same query (actually the same instance).  
+    This is an important hint to be aware of if you are going to reuse `document_query`.
+
+
+
+## Default Query Operator
+
+* Queries use `AND` as the default operator.  
+
+* The operator can be replaced by calling `using_default_operator`:
+        
+<TabItem value="default_operator" label="default_operator">
+<CodeBlock language="python">
+{`session.advanced.document_query(object_type=User).using_default_operator(QueryOperator.OR)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

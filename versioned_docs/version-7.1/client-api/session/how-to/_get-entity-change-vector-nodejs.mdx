@@ -1,0 +1,40 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+* The change-vector reflects the cluster-wide point in time in which a change occured, and 
+  includes the unique database ID, node identifier, and document Etag in the specific node.  
+* When a document is downloaded from the server, it contains various metadata information.  
+  E.g. ID or current change-vector.  
+* The current change-vector is stored within the session metadata and is available for each 
+  entity using the `getChangeVectorFor()` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
+<CodeBlock language="js">
+{`session.advanced.getChangeVectorFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | object | Instance of an entity for which an Etag will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Returns the current change-vector for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+## Example
+
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
+<CodeBlock language="js">
+{`const employee = await session.load("employees/1-A");
+const changeVector = session.advanced.getChangeVectorFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  However, the index definitions returned are taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
+
+* In this page:
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#syntax)
+
+</Admonition>
+## Get Indexes example
+
+<TabItem value="get_indexes" label="get_indexes">
+<CodeBlock language="python">
+{`# Define the get indexes operation
+# Pass number of indexes to skip & number of indexes to retrieve
+get_index_op = GetIndexesOperation(0, 10)
+
+# Execute the operation by passing it to maintenance.send
+indexes = store.maintenance.send(get_index_op)
+
+# indexes will contain the first 10 indexes, alphabetically ordered by index name
+# Access an index definition from the resulting list:
+name = indexes[0].name
+state = indexes[0].state
+lock_mode = indexes[0].lock_mode
+deployment_mode = indexes[0].deployment_mode
+# etc.
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="get_indexes_syntax" label="get_indexes_syntax">
+<CodeBlock language="python">
+{`class GetIndexesOperation(MaintenanceOperation[List[IndexDefinition]]):
+    def __init__(self, start: int, page_size: int): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **start** | `int` | Number of indexes to skip |
+| **page_size** | `int` | Number of indexes to retrieve |
+
+| Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
+| - | - |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) classes, <br/> ordered alphabetically by index name. |
+
+
+
+

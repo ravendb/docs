@@ -1,0 +1,280 @@
+---
+title: "Customizing Data Files Locations"
+hide_table_of_contents: true
+sidebar_label: Customizing Data Files Locations
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Customizing Data Files Locations
+<Admonition type="note" title="">
+
+* The structure of [RavenDB directories](../../server/storage/directory-structure.mdx) **cannot** be changed. However:  
+    * Path for temporary files can be customized.
+    * Data files can be stored in different locations,  
+      by defining junction points (Windows) or mount points (Linux).  
+    * A script can be used to automate the different location definitions.  
+
+* In this page:
+    * [Why store data on different devices](../../server/storage/customizing-raven-data-files-locations.mdx#why-store-data-on-different-devices)
+    * [Configuring temp files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-temp-files-location)
+    * [Configuring data files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-data-files-location)
+    * [Automate storage definitions](../../server/storage/customizing-raven-data-files-locations.mdx#automate-storage-definitions)
+        * [Script example - Basic usage](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---basic-usage)
+        * [Script example - Point Indexes to different location](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---point-indexes-to-different-location)
+
+</Admonition>
+## Why store data on different devices
+
+* A file or directory can be redirected to a different storage location according to its speed, durability, etc.  
+
+* This allows organizing the files based on their usage pattern and the performance of the different devices you own.  
+  i.e. slow devices may cause a slow down when reading from _Raven.voron_.  
+
+* [Voron components](../../server/storage/directory-structure.mdx#voron-storage-environment) operate concurrently.  
+  Storing them to different locations can help avoid traffic jams and achieve better concurrency.  
+
+
+
+## Configuring temp files location
+
+* __System temporary files__  
+  By default, temporary files containing cluster data and server-wide data are written to the `Temp` folder under the System directory. 
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  The temporary files will be written to the combined path `"<Storage.TempPath>/System"`.
+
+* __Databases temporary files__  
+  By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.
+
+* __Configuration temporary files__  
+  By default, the configuration temporary files are written to the `Temp` folder under the Configuration directory per database. 
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.
+
+* __Indexes temporary files__  
+  By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  
+  Customize the path for these files by setting the [Indexing.TempPath](../../server/configuration/indexing-configuration.mdx#indexingtemppath) configuration option.  
+
+* __Backup temporary files__  
+  By default, backup temporary files are written under the `Database` directory or under `Storage.TempPath` if defined.  
+  Customize the path for these files by setting the [Backup.TempPath](../../server/configuration/backup-configuration.mdx#backuptemppath) configuration option.  
+
+<Admonition type="note" title="">
+
+Refer to article [Configuration overview](../../server/configuration/configuration-options.mdx) to learn how to set the configuration keys.
+
+</Admonition>
+
+
+
+## Configuring data files location
+
+* You can store RavenDB data files in any directory of your choice.  
+  This is done by defining __junction points__ (Windows) or __mount points__ (Linux).
+
+* If data already exists in the directory, and you want to define the junction / mount point,  
+  you need to create a backup of the data first and copy it back into the directory after executing the command.
+
+* The database must be offline when moving the database folder itself to a new point.  
+
+
+<Admonition type="note" title="">
+__Example - Moving Journals__
+
+A common practice is to store the journals on a very fast drive to achieve better write performance.
+The following command will point the `Journals` directory of the _Northwind_ database to a path on a different drive.
+
+<TabItem value="powershell" label="powershell">
+<CodeBlock language="powershell">
+{`# Windows:
+C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Journals E:\\Journals\\Northwind
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`# Linux:
+ln -s /mnt/FastDrive/Databases/Northwind/Journals ~/RavenDB/Server/RavenData/Databases/Northwind/Journals
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+__Example - Moving Indexes__
+
+To store the data of all indexes of the _Northwind_ database in the custom location,
+you can use the following command to to point the `Indexes` directory to a new location:
+
+<TabItem value="powershell" label="powershell">
+<CodeBlock language="powershell">
+{`# Windows:
+C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Indexes D:\\Indexes\\Northwind
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`# Linux:
+ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes 
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Automate storage definitions
+
+* To help automate the process, we have added the [on directory initialize](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexec) configuration option.  
+  Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.
+
+* The process is called just before the directory is created.  
+  This allows you to create a script with your own logic, defining junction/mount points as needed.  
+* RavenDB will invoke the process with the following params:
+
+    * Params passed by the user: 
+        * User arguments - optional params, set in the [optional user arguments](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexecarguments) configuration option
+  
+    * Params passed by RavenDB:
+        * The environment type (System, Database, Index, Configuration, Compaction)
+        * The database name
+        * Path of the `DataDir` directory
+        * Path of the `Temp` directory
+        * Path of the `Journals` directory
+<Admonition type="note" title="">
+#### Script example - Basic usage
+
+The following is a very simple PowerShell script example, here only to show basic usage.  
+The script is Not modifying any file location, it will only print out the value of the script params into a text file.  
+
+<TabItem value="powershell" label="powershell">
+<CodeBlock language="powershell">
+{`# script.ps1
+
+param([string]$userArg ,[string]$type, [string]$name, [string]$dataPath, [string]$tempPath, [string]$journalPath)
+Add-Content $userArg "$type $name $dataPath $tempPath $journalPath
+"
+exit 0
+`}
+</CodeBlock>
+</TabItem>
+
+The output file _outFile.txt_ is supplied as a user argument.  
+Add the script path and its user arguments to the _settings.json_ file as follows:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Setup.Mode": "None",
+    "ServerUrl": "http://127.0.0.1:8080",
+    "License.Eula.Accepted": true,
+    "Storage.OnDirectoryInitialize.Exec" :"powershell",
+    "Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\\\scripts\\\\script.ps1 c:\\\\scripts\\\\outFile.txt"
+\}
+`}
+</CodeBlock>
+</TabItem>
+  
+When launching the server and creating the Northwind database with the Northwind sample data, the script is invoked every time a directory is created.  
+Each line in _outFile.txt_ shows the values passed to the script when it was called.
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`\{
+System System C:\\RavenDB\\Server\\System C:\\RavenDB\\Server\\System\\Temp C:\\RavenDB\\Server\\System\\Journals
+
+Configuration Northwind C:\\RavenDB\\Server\\Databases\\Northwind\\Configuration C:\\RavenDB\\Server\\Databases\\Northwind\\Configuration\\Temp C:\\RavenDB\\Server\\Databases\\Northwind\\Configuration\\Journals
+
+Database Northwind C:\\RavenDB\\Server\\Databases\\Northwind C:\\RavenDB\\Server\\Databases\\Northwind\\Temp C:\\RavenDB\\Server\\Databases\\Northwind\\Journals
+
+Index Northwind C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Orders_ByCompany C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Orders_ByCompany\\Temp C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Orders_ByCompany\\Journals
+
+Index Northwind C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Product_Search C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Product_Search\\Temp C:\\RavenDB\\Server\\Databases\\Northwind\\Indexes\\Product_Search\\Journals
+
+// ... + more lines per index folder created
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Script example - Point Indexes to different location
+
+The following bash script example will point the Indexes data to a new location.  
+
+If the environment type is other than 'Database' the script will exit.  
+Else, the script will create a soft link for the `Indexes` directory.  
+
+After the script is run, the Indexes link will reside under the Database directory (See [Directory Structure](../../server/storage/directory-structure.mdx)).  
+The link will point to the new location set by variable $INDEXES_TARGET_DIR_NAME where all indexes' data will be written.  
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`#!/bin/bash
+# bash ./your-script USER_ARGS Database DB_NAME BASE_PATH TEMP_PATH JOURNALS_PATH
+
+# Use directory names as defined on your machine
+RDB_DATA_DIR="/var/lib/ravendb/data"
+INDEXES_TARGET_DIR="/mnt/ravendb-indexes"
+
+DIR_TYPE="$1"
+DB_NAME="$2"
+
+if [ "$DIR_TYPE" != 'Database' ]; then
+exit 0
+fi
+
+INDEXES_SOURCE_DIR_NAME="$\{RDB_DATA_DIR\}/Databases/$\{DB_NAME\}/Indexes"
+INDEXES_TARGET_DIR_NAME="$\{INDEXES_TARGET_DIR\}/$\{DB_NAME\}/Indexes"
+
+
+if [ -d "$INDEXES_SOURCE_DIR_NAME" ] && [ ! -L "$INDEXES_SOURCE_DIR_NAME" ]; then
+# If Indexes directory exists then exit - need manual handling
+echo "FATAL: Directory $INDEXES_SOURCE_DIR_NAME already exists."
+exit 1
+fi
+
+if [ -L "$INDEXES_SOURCE_DIR_NAME" ]; then
+exit 0
+fi
+
+mkdir -p "$INDEXES_TARGET_DIR_NAME"
+
+ln -s "$INDEXES_TARGET_DIR_NAME" "$INDEXES_SOURCE_DIR_NAME"
+`}
+</CodeBlock>
+</TabItem>
+
+Add the script to the _settings.json_ file as follows:  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+"Setup.Mode": "None",
+"ServerUrl": "http://127.0.0.1:8080",
+"License.Eula.Accepted": true,
+"Storage.OnDirectoryInitialize.Exec" :"bash",
+"Storage.OnDirectoryInitialize.Exec.Arguments" :"/scripts/your-script.sh"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+

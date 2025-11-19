@@ -1,0 +1,129 @@
+---
+title: "Sharding: Unsupported Features"
+hide_table_of_contents: true
+sidebar_label: Unsupported Features
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Sharding: Unsupported Features
+<Admonition type="note" title="">
+
+* A sharded RavenDB database generally provides the same services that 
+  a non-sharded database offers, so clients of older versions and non-sharded 
+  database are supported and existing queries, subscriptions, patches, 
+  and so on, require no modification.  
+* Find below a list of yet unimplemented features, that are currently 
+  supported by non-sharded RavenDB databases but not by sharded ones.  
+  
+* In this page:  
+   * [Unsupported Features](../sharding/unsupported.mdx#unsupported-features)  
+      * [Unsupported Indexing Features](../sharding/unsupported.mdx#unsupported-indexing-features)  
+      * [Unsupported Querying Features](../sharding/unsupported.mdx#unsupported-querying-features)  
+      * [Unsupported Document Extensions Features](../sharding/unsupported.mdx#unsupported-document-extensions-features)  
+      * [Unsupported Backup Features](../sharding/unsupported.mdx#unsupported-backup-features)  
+      * [Unsupported Import & Export Features](../sharding/unsupported.mdx#unsupported-import--export-features)  
+      * [Unsupported Migration Features](../sharding/unsupported.mdx#unsupported-migration-features)  
+      * [Unsupported Data Subscription Features](../sharding/unsupported.mdx#unsupported-data-subscription-features)  
+      * [Unsupported Integrations Features](../sharding/unsupported.mdx#unsupported-integrations-features)  
+      * [Unsupported Patching Features](../sharding/unsupported.mdx#unsupported-patching-features)  
+      * [Unsupported Replication Features](../sharding/unsupported.mdx#unsupported-replication-features)  
+  
+</Admonition>
+## Unsupported Features
+
+## Unsupported Indexing Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Rolling index deployment](../indexes/rolling-index-deployment.mdx) |  |
+| [Load Document from another shard](../sharding/indexing.mdx#unsupported-indexing-features) | Loading a document during indexing is possible only if the document resides on the shard. |
+| **Map-Reduce Output Documents** | Using [OutputReduceToCollection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) to output the results of a map-reduce index to a collection is not supported in a Sharded Database. |
+| [Custom Sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) |  |
+
+## Unsupported Querying Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Load Document from another shard](../sharding/indexing.mdx#unsupported-indexing-features) | An index or a query can only load a document if it resides on the same shard. |
+| [Load Document within a map-reduce projection](../sharding/querying.mdx#projection) |  |
+| **Stream Map-Reduce results** | [Streaming](../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query) map-reduce results is not supported in a Sharded Database. |
+| **Stream Includes and Loads** | [Streaming](../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query) Includes and Loads is not supported in a Sharded Database. |
+| Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx) | [Unsupported Querying Features](../sharding/querying.mdx#unsupported-querying-features) |
+| [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) |  |
+| [OrderByScore](../indexes/querying/sorting.mdx#ordering-by-score) |  |
+| [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) | Not supported in spatial map reduce indexes |
+| [Highlighting](../indexes/querying/highlighting.mdx) |  |
+| [Intersection](../indexes/querying/intersection.mdx) |  |
+
+
+## Unsupported Document Extensions Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| **Move Attachments** | E.g. `session.Advanced.Attachments.Move("users/1","foo","users/2","bar");` is not supported. |
+| **Copy Attachments** | E.g. `session.Advanced.Attachments.Copy("users/1","foo","users/2","bar");` is not supported. |
+| **Get multiple Attachments** | E.g. `session.Advanced.Attachments.Get(attachmentNames)` is not supported. |
+| **Copy Time Series** | E.g. `session.Advanced.Defer(new CopyTimeSeriesCommandData(id,  "Count", id2, "Count"));` is not supported. |
+
+## Unsupported Backup Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Create a Snapshot Backup](../sharding/backup-and-restore/backup.mdx#backup-type) |  |
+| [Restore from a Snapshot Backup](../sharding/backup-and-restore/restore.mdx#sharding-restore) |  |
+
+## Unsupported Import & Export Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Import from a CSV file](../studio/database/tasks/import-data/import-from-csv.mdx) |  |
+| **Import from an S3 Bucket** | using GET, Studio, smuggler, import s3 dir |
+| [Import from SQL](../studio/database/tasks/import-data/import-from-sql.mdx) | |
+| [Import from Other Databases](../studio/database/tasks/import-data/import-from-other.mdx) | Importing from databases like MongoDB and CosmosDB is not supported |
+
+## Unsupported Migration Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Migrate from RavenDB](../studio/database/tasks/import-data/import-from-ravendb.mdx) | By POST, Studio, smuggler |
+| [Migrate from SQL DB](../studio/database/tasks/import-data/import-from-sql.mdx) |  |
+
+## Unsupported Data Subscription Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions.mdx) |  |
+| [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) | Subscribing to document revisions |
+| [SubscriptionCreationOptions.ChangeVector](../sharding/subscriptions.mdx#unsupported-features) | Providing a change vector to start the processing from is not supported <br/> except for these special cases: <br/> `"LastDocument"`, `"BeginningOfTime"`, `"DoNotChange"` |
+
+## Unsupported Integrations Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [PostgreSQL](../integrations/postgresql-protocol/overview.mdx) |  |
+| [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview.mdx) | [Kafka ETL](../server/ongoing-tasks/etl/queue-etl/kafka.mdx), [RabbitMQ ETL](../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx) |
+| [Queue Sink](../server/ongoing-tasks/queue-sink/overview.mdx) | [Kafka Queue Sink](../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx), [RabbitMQ Queue Sink](../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx) |
+
+## Unsupported Patching Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [JSON patch](../client-api/operations/patching/json-patch-syntax.mdx) |  |
+
+## Unsupported Replication Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [Filtered Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx#filtered-replication) |  |
+| [Hub/Sink Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx) |  |
+| **Legacy replication** | From RavenDB 3.x instances |
+
+
+

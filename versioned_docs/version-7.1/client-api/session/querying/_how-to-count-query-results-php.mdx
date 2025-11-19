@@ -1,0 +1,53 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The following options are available to **count query results**:
+
+    * [`Count`](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
+
+</Admonition>
+## `Count`
+
+Count query results using the `Count` method.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var int $numberOfOrders */
+$numberOfOrders = $session->advanced()
+    ->documentQuery(Order::class)
+    ->whereEquals("ship_to.country", "UK")
+     // Calling 'Count' from Raven.Client.Documents.Session
+    ->Count();
+
+// The query returns the NUMBER of orders shipped to UK (int)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get count from query stats
+
+When executing a query, you can retrieve the query statistics that include the total number of results.  
+Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx).  
+
+
+
+

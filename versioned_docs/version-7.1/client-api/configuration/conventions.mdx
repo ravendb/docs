@@ -1,0 +1,42 @@
+---
+title: "Conventions"
+hide_table_of_contents: true
+sidebar_label: Conventions
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ConventionsCsharp from './_conventions-csharp.mdx';
+import ConventionsNodejs from './_conventions-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ConventionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ConventionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Conventions
+- [Querying](../../client-api/configuration/querying)
+- [Serialization](../../client-api/configuration/serialization)
+- [Load Balancing Client Requests](../../client-api/configuration/load-balance/overview)
+
+### Document Identifiers
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

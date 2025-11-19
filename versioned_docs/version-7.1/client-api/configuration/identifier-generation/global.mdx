@@ -1,0 +1,38 @@
+---
+title: "Global Identifier Generation Conventions"
+hide_table_of_contents: true
+sidebar_label: Global
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GlobalCsharp from './_global-csharp.mdx';
+import GlobalJava from './_global-java.mdx';
+import GlobalNodejs from './_global-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GlobalCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GlobalJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GlobalNodejs />
+</LanguageContent>
+
+
+<!---
+- [Document identifier generation](../../../server/kb/document-identifier-generation)
+- [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [What is a collection?](../../../client-api/faq/what-is-a-collection)
+- [Type-specific identifier generation](../../../client-api/configuration/identifier-generation/type-specific)
+
+-->

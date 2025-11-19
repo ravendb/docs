@@ -1,0 +1,44 @@
+---
+title: "Subscription Consumption Examples"
+hide_table_of_contents: true
+sidebar_label: Examples
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExamplesCsharp from './_examples-csharp.mdx';
+import ExamplesJava from './_examples-java.mdx';
+import ExamplesPython from './_examples-python.mdx';
+import ExamplesNodejs from './_examples-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExamplesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ExamplesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ExamplesPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExamplesNodejs />
+</LanguageContent>
+
+
+<!---
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+
+-->

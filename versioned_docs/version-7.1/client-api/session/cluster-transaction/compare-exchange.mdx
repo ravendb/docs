@@ -1,0 +1,45 @@
+---
+title: "Compare Exchange in Cluster-Wide Session"
+hide_table_of_contents: true
+sidebar_label: Compare Exchange
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CompareExchangeCsharp from './_compare-exchange-csharp.mdx';
+import CompareExchangePython from './_compare-exchange-python.mdx';
+import CompareExchangePhp from './_compare-exchange-php.mdx';
+import CompareExchangeNodejs from './_compare-exchange-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CompareExchangeCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CompareExchangePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CompareExchangePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CompareExchangeNodejs />
+</LanguageContent>
+
+
+<!---
+### Compare-Exchange Operations
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+
+
+-->

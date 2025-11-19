@@ -1,0 +1,54 @@
+---
+title: "Index has Changed Operation"
+hide_table_of_contents: true
+sidebar_label: Index Has Changed
+sidebar_position: 17
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexHasChangedCsharp from './_index-has-changed-csharp.mdx';
+import IndexHasChangedJava from './_index-has-changed-java.mdx';
+import IndexHasChangedPython from './_index-has-changed-python.mdx';
+import IndexHasChangedPhp from './_index-has-changed-php.mdx';
+import IndexHasChangedNodejs from './_index-has-changed-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexHasChangedCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexHasChangedJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IndexHasChangedPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IndexHasChangedPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexHasChangedNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

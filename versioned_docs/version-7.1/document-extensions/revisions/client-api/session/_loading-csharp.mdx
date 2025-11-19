@@ -1,0 +1,237 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).   
+  
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+* Use `GetFor` to retrieve all of the revisions currently kept for the specified document.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+List<Order> orderRevisions = session
+    .Advanced
+    .Revisions
+    .GetFor<Order>(id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions for document 'orders/1-A'
+// Revisions will be ordered by most recent revision first
+List<Order> orderRevisions = await asyncSession
+    .Advanced
+    .Revisions
+    .GetForAsync<Order>(id: "orders/1-A", start: 0, pageSize: 10);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`List<T> GetFor<T>(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions |
+| **start** | `int` | First revision to retrieve, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions metadata
+
+* Use `GetMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions' metadata for document 'orders/1-A'
+List<IMetadataDictionary> orderRevisionsMetadata = session
+    .Advanced
+    .Revisions
+    .GetMetadataFor(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+var metadata = orderRevisionsMetadata[0];
+var flagsValue = metadata.GetString(Constants.Documents.Metadata.Flags);
+
+Assert.Contains("Revision", flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions' metadata for document 'orders/1-A'
+List<IMetadataDictionary> orderRevisionsMetadata = await asyncSession
+    .Advanced
+    .Revisions
+    .GetMetadataForAsync(id: "orders/1-A", start: 0, pageSize: 10);
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+var metadata = orderRevisionsMetadata[0];
+var flagsValue = metadata.GetString(Constants.Documents.Metadata.Flags);
+
+Assert.Contains("Revision", flagsValue);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> GetMetadataFor(string id, int start = 0, int pageSize = 25);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions' metadata |
+| **start** | `int` | First revision to retrieve metadata for, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
+
+
+## Get revisions by creation time
+
+* Use `Get` to retrieve a revision by its **creation time**.
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get a revision by its creation time
+Order revisionFromLastYear = session
+    .Advanced
+    .Revisions
+     // If no revision was created at the specified time,
+     // then the first revision that precedes it will be returned
+    .Get<Order>("orders/1-A", DateTime.Now.AddYears(-1));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get a revision by its creation time
+Order revisionFromLastYear = await asyncSession
+    .Advanced
+    .Revisions
+    // If no revision was created at the specified time,
+    // then the first revision that precedes it will be returned
+    .GetAsync<Order>("orders/1-A", DateTime.Now.AddYears(-1));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Syntax**:
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`T Get<T>(string id, DateTime date);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | Document ID for which to retrieve the revision by creation time |
+| **date** | `DateTime ` | The revision's creation time |
+
+
+
+## Get revisions by change vector
+
+* Use `Get` to retrieve a revision or multiple revisions by their **change vectors**.  
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get revisions metadata 
+List<IMetadataDictionary> revisionsMetadata = session
+    .Advanced
+    .Revisions
+    .GetMetadataFor("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+
+// Get the revision by its change-vector
+Order revision = session
+    .Advanced
+    .Revisions
+    .Get<Order>(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get revisions metadata 
+List<IMetadataDictionary> revisionsMetadata = await asyncSession
+    .Advanced
+    .Revisions
+    .GetMetadataForAsync("orders/1-A", start: 0, pageSize: 25);
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+
+// Get the revision by its change-vector
+Order revision = await asyncSession
+    .Advanced
+    .Revisions
+    .GetAsync<Order>(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Syntax**:
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="csharp">
+{`// Get a revision by its change vector
+T Get<T>(string changeVector);
+
+// Get multiple revisions by their change vectors
+Dictionary<string, T> Get<T>(IEnumerable<string> changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | `string` | The revision's change vector |
+| **changeVectors** | `IEnumerable<string>` | Change vectors of multiple revisions |
+
+
+
+

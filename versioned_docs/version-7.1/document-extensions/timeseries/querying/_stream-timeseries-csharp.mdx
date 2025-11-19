@@ -1,0 +1,179 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This page explains how time series data can be streamed:  
+  1. Stream a time series directly.
+  2. Stream time series query results.
+
+* In this page:
+  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
+  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
+
+</Admonition>
+## Syntax
+
+### Stream a time series directly:  
+
+Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx)), 
+and call `Stream()`/`StreamAsync()`.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`IEnumerator<T> Stream(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
+
+Task<IAsyncEnumerator<T>> StreamAsync(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **from** | `DateTime?` | Start the stream from a certain time. If null, stream starts from the beginning of the time series. |
+| **to** | `DateTime?` | Stop the stream at a certain time. If null, stream stops at the end of the time series. |
+| **offset** | `TimeSpan?` | Change the timestamp of the streamed time series entries by adding this amount of time. |
+
+### Stream results of time series queries:  
+
+This syntax is the same as the syntax for streaming query results in general, 
+found [here](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+
+<TabItem value="stream_methods" label="stream_methods">
+<CodeBlock language="csharp">
+{`IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IQueryable<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IQueryable<T> query,
+    out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IDocumentQuery<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IRawDocumentQuery<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IRawDocumentQuery<T> query,
+    out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IDocumentQuery<T> query,
+    out StreamQueryStatistics streamQueryStats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx#sessionquery), [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
+| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
+
+| Return Value | Description |
+| - | - |
+| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
+
+
+
+## Examples
+
+### Example I
+
+Using `TimeSeriesFor`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
+var results = new List<TimeSeriesEntry>();
+
+using (var TSstream = timeseries.Stream())
+{
+    while (TSstream.MoveNext())
+    {
+        results.Add(TSstream.Current);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
+var results = new List<TimeSeriesEntry>();
+var TSstream = await timeseries.StreamAsync();
+
+await using (TSstream)
+{
+    while (await TSstream.MoveNextAsync())
+    {
+        results.Add(TSstream.Current);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+Using a `RawQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+    from Users
+    select timeseries (
+        from HeartRate
+    )");
+
+var results = new List<TimeSeriesEntry>();
+
+using (var docStream = session.Advanced.Stream(query))
+{
+    while (docStream.MoveNext())
+    {
+        var document = docStream.Current.Result;
+        var timeseries = document.Stream;
+        while (timeseries.MoveNext())
+        {
+            results.Add(timeseries.Current);
+        }
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.AsyncRawQuery<TimeSeriesRawResult>(@"
+    from Users
+    select timeseries (
+        from HeartRate
+    )");
+
+var results = new List<TimeSeriesEntry>();
+
+await using (var docStream = await session.Advanced.StreamAsync(query))
+{
+    while (await docStream.MoveNextAsync())
+    {
+        var document = docStream.Current.Result;
+        var timeseries = document.StreamAsync;
+        while (await timeseries.MoveNextAsync())
+        {
+            results.Add(timeseries.Current);
+        }
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+

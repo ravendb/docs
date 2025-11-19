@@ -1,0 +1,203 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.
+
+They, in turn, are built on top of the notion of Operations and Commands.
+
+Operations are an encapsulation of a set of low-level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
+
+They are available in the DocumentStore under the **operations**, **maintenance**, and **maintenance().server** methods.
+
+## Common Operations
+
+Common operations include set-based operations for [Patching](../../client-api/operations/patching/set-based.mdx) or removal of documents by using queries (more can be read [here](../../client-api/operations/common/delete-by-query.mdx)).  
+There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview.mdx) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment.mdx) and [Counters](../../client-api/operations/counters/counter-batch.mdx).
+
+### How to Send an Operation
+
+In order to execute an operation, you will need to use the `send` or `sendAsync` methods. Available overloads are:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="java">
+{`public void send(IVoidOperation operation)
+
+public void send(IVoidOperation operation, SessionInfo sessionInfo)
+
+public <TResult> TResult send(IOperation<TResult> operation)
+
+public <TResult> TResult send(IOperation<TResult> operation, SessionInfo sessionInfo)
+
+public PatchStatus send(PatchOperation operation, SessionInfo sessionInfo)
+
+public <TEntity> PatchOperation.Result<TEntity> send(Class<TEntity> entityClass, PatchOperation operation, SessionInfo sessionInfo)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="java">
+{`public Operation sendAsync(IOperation<OperationIdResult> operation)
+
+public Operation sendAsync(IOperation<OperationIdResult> operation, SessionInfo sessionInfo)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following operations are available:
+
+#### Compare Exchange
+
+* [CompareExchange](../../compare-exchange/overview)   
+
+#### Attachments
+
+* [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)
+* [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)
+* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)
+
+#### Patching
+
+* [PatchByQueryOperation](../../client-api/operations/patching/set-based.mdx)   
+* [PatchOperation](../../client-api/operations/patching/single-document.mdx)   
+
+
+#### Counters
+
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx)   
+* [GetCountersOperation](../../client-api/operations/counters/get-counters.mdx)   
+
+
+#### Misc
+
+* [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx)   
+
+### Example - Get Attachment
+
+<TabItem value="Client_Operations_1" label="Client_Operations_1">
+<CodeBlock language="java">
+{`try (CloseableAttachmentResult fetchedAttachment = store
+    .operations()
+    .send(new GetAttachmentOperation("users/1", "file.txt", AttachmentType.DOCUMENT, null))) \{
+    // do stuff with the attachment stream --> fetchedAttachment.data
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Maintenance Operations
+
+Maintenance operations include operations for changing the configuration at runtime and for management of index operations.
+
+### How to Send an Operation
+
+<TabItem value="Maintenance_Operations_api" label="Maintenance_Operations_api">
+<CodeBlock language="java">
+{`public void send(IVoidMaintenanceOperation operation)
+
+public <TResult> TResult send(IMaintenanceOperation<TResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+
+### The following maintenance operations are available:
+
+#### Client Configuration
+
+* [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)   
+* [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)   
+
+#### Indexing
+
+* [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index.mdx)   
+* [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index.mdx)   
+* [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index.mdx)   
+* [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index.mdx)   
+* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
+* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority.mdx)  
+* [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index.mdx)   
+* [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
+* [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index.mdx)   
+* [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
+* [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
+* [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index.mdx)   
+* [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
+* [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms.mdx)   
+* [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
+* [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
+
+#### Misc
+
+* [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx)   
+* [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx)     
+* [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities.mdx)   
+
+### Example - Stop Index
+
+<TabItem value="Maintenance_Operations_1" label="Maintenance_Operations_1">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexOperation("Orders/ByCompany"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Server Operations
+
+These types of operations contain various administrative and miscellaneous configuration operations.
+
+### How to Send an Operation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="java">
+{`public void send(IVoidServerOperation operation)
+
+public <TResult> TResult send(IServerOperation<TResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="java">
+{`public Operation sendAsync(IServerOperation<OperationIdResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following server-wide operations are available:
+
+
+#### Cluster Management
+
+* [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx)   
+* [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database.mdx)   
+
+#### Miscellaneous
+
+* [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names.mdx)   
+
+### Example - Get Build Number
+
+<TabItem value="Server_Operations_1" label="Server_Operations_1">
+<CodeBlock language="java">
+{`GetClientConfigurationOperation.Result result
+    = store.maintenance().send(new GetClientConfigurationOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="note" title="">
+By default, operations available in `store.operations` or `store.maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx)** method.
+</Admonition>
+
+

@@ -1,0 +1,42 @@
+---
+title: "Append & Delete Time Series Operations"
+hide_table_of_contents: true
+sidebar_label: Append & Delete
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AppendAndDeleteCsharp from './_append-and-delete-csharp.mdx';
+import AppendAndDeleteNodejs from './_append-and-delete-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AppendAndDeleteCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AppendAndDeleteNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

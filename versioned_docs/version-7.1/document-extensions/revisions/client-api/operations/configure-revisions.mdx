@@ -1,0 +1,64 @@
+---
+title: "Configure Revisions Operation"
+hide_table_of_contents: true
+sidebar_label: Configure Revisions
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ConfigureRevisionsCsharp from './_configure-revisions-csharp.mdx';
+import ConfigureRevisionsJava from './_configure-revisions-java.mdx';
+import ConfigureRevisionsPython from './_configure-revisions-python.mdx';
+import ConfigureRevisionsPhp from './_configure-revisions-php.mdx';
+import ConfigureRevisionsNodejs from './_configure-revisions-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ConfigureRevisionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ConfigureRevisionsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ConfigureRevisionsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ConfigureRevisionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ConfigureRevisionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+- [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+- [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
+
+### Client API
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+- [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)
+- [What Is a Collection](../../../../client-api/faq/what-is-a-collection)
+- [What Are Operations](../../../../client-api/operations/what-are-operations)
+- [Switch Operation Database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database)
+- [Setting Up a Default Database](../../../../client-api/setting-up-default-database)
+
+### Studio
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+- [Manage Database Group](../../../../studio/database/settings/manage-database-group)
+
+
+-->

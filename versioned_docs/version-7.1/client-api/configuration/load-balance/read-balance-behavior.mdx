@@ -1,0 +1,53 @@
+---
+title: "Read balance behavior"
+hide_table_of_contents: true
+sidebar_label: Read balance behavior
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ReadBalanceBehaviorCsharp from './_read-balance-behavior-csharp.mdx';
+import ReadBalanceBehaviorPython from './_read-balance-behavior-python.mdx';
+import ReadBalanceBehaviorPhp from './_read-balance-behavior-php.mdx';
+import ReadBalanceBehaviorNodejs from './_read-balance-behavior-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ReadBalanceBehaviorCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ReadBalanceBehaviorPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ReadBalanceBehaviorPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ReadBalanceBehaviorNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+
+### Configuration
+- [Load balancing client requests - overview](../../../client-api/configuration/load-balance/overview)
+- [Load balance behavior](../../../client-api/configuration/load-balance/load-balance-behavior)
+- [Conventions](../../../client-api/configuration/conventions)
+- [Querying](../../../client-api/configuration/querying)
+
+### Client Configuration in Studio
+- [Requests Configuration in Studio](../../../studio/server/client-configuration)
+- [Requests Configuration per Database](../../../studio/database/settings/client-configuration-per-database)
+- [Database-group-topology](../../../studio/database/settings/manage-database-group#database-group-topology---view)
+
+
+-->

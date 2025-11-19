@@ -1,0 +1,257 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The `loadBalanceBehavior` configuration allows you to specify which sessions should 
+  communicate with the same node.  
+ 
+* Sessions that are assigned the **same context** will have all their _Read_ & _Write_ 
+  requests routed to the **same node**. Gain load balancing by assigning **different contexts** 
+  to **different sessions**.  
+* In this page:
+    * [LoadBalanceBehavior options](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#loadbalancebehavior-options)
+    * [Initialize LoadBalanceBehavior on the client](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#initialize-loadbalancebehavior-on-the-client)
+    * [Set LoadBalanceBehavior on the server:](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server)
+        * [By operation](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---by-operation)
+        * [From Studio](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---from-studio)
+    * [When to use](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#when-to-use)
+     
+</Admonition>
+## LoadBalanceBehavior options 
+
+### `None` (default option)
+
+* Requests will be handled based on the `readBalanceBehavior` configuration.  
+  See the conditional flow described in [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  * **_Read_** requests:  
+    The client will calculate the target node from the configured [readBalanceBehavior Option](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options).  
+  * **_Write_** requests:  
+    Will be sent to the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
+    The data will then be replicated to all the other nodes in the database group.
+### `UseSessionContext`
+
+* **Load-balance**
+
+  * When this option is enabled, the client will calculate the target node from the session-id.  
+    The session-id is hashed from a **context string** and an optional **seed** given by the user.  
+    The context string together with the seed are referred to as **"The session context"**.
+  
+  * Per session, the client will select a node from the topology list based on this session-context.  
+    So sessions that use the **same** context will target the **same** node.
+  
+  * All **_Read & Write_** requests made on the session (i.e a query or a load request, etc.)  
+    will address this calculated node.  
+    _Read & Write_ requests that are made on the store (i.e. executing an [operation](../../../client-api/operations/what-are-operations.mdx))  
+    will go to the preferred node.
+
+  * All _Write_ requests will be replicated to all the other nodes in the database group as usual.
+
+* **Failover**  
+
+  * In case of a failure, the client will try to access the next node from the topology nodes list.
+
+
+
+## Initialize loadBalanceBehavior on the client 
+
+* The `loadBalanceBehavior` convention can be set **on the client** when initializing the Document Store.  
+  This will set the load balance behavior for the default database that is set on the store.
+
+* This setting can be **overriden** by setting 'loadBalanceBehavior' on the server, see [below](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server).
+**Initialize conventions**:
+
+<TabItem value="loadBalance_1" label="loadBalance_1">
+<CodeBlock language="js">
+{`// Initialize 'loadBalanceBehavior' on the client: 
+// ===============================================
+
+const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
+
+// Enable the session-context feature
+// If this is not enabled then a context string set in a session will be ignored 
+documentStore.conventions.loadBalanceBehavior = "UseSessionContext";
+
+// Assign a method that sets the default context string
+// This string will be used for sessions that do Not provide a context string
+// A sample getDefaultContext method is defined below
+documentStore.conventions.loadBalancerPerSessionContextSelector = getDefaultContext;
+
+// Set a seed
+// The seed is 0 by default, provide any number to override
+documentStore.conventions.loadBalancerContextSeed = 5
+
+documentStore.initialize();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="loadBalance_6" label="loadBalance_6">
+<CodeBlock language="js">
+{`// A customized method for getting a default context string 
+const getDefaultContext = (dbName) => \{
+    // Method is invoked by RavenDB with the database name
+    // Use that name - or return any string of your choice
+    return "defaultContextString";
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Session usage**:
+
+<TabItem value="loadBalance_2" label="loadBalance_2">
+<CodeBlock language="js">
+{`// Open a session that will use the DEFAULT store values:
+const session = documentStore.openSession();
+
+// For all Read & Write requests made in this session,
+// node to access is calculated from string & seed values defined on the store
+const employee = await session.load("employees/1-A");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="loadBalance_3" label="loadBalance_3">
+<CodeBlock language="js">
+{`// Open a session that will use a UNIQUE context string:
+const session = documentStore.openSession();
+
+// Call setContext, pass a unique context string for this session
+session.advanced.sessionInfo.setContext("SomeOtherContext");
+
+// For all Read & Write requests made in this session,
+// node to access is calculated from the unique string & the seed defined on the store
+const employee = await session.load("employees/1-A");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Set loadBalanceBehavior on the server 
+
+<Admonition type="note" title="">
+
+**Note**:  
+
+* Setting the load balance behavior on the server, either by an **Operation** or from the **Studio**,  
+  only 'enables the feature' and sets the seed.
+
+* For the feature to be in effect, you still need to define the context string itself:  
+  * either per session, call `session.advanced.sessionInfo.setContext`  
+  * or, on the document store, set a default value for - `loadBalancerPerSessionContextSelector`  
+
+</Admonition>
+#### Set LoadBalanceBehavior on the server - by operation:
+
+* The `loadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../client-api/operations/what-are-operations.mdx).
+
+* The operation can modify the default database only, or all databases - see examples below.
+
+* Once configuration on the server has changed, the running client will get updated with the new settings.  
+  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Operation_For_Default_Database" label="Operation_For_Default_Database">
+<CodeBlock language="js">
+{`// Setting 'loadBalanceBehavior' on the server by sending an operation:
+// ====================================================================
+
+// Define the client configuration to put on the server
+const configurationToSave = {
+    // Enable the session-context feature
+    // If this is not enabled then a context string set in a session will be ignored 
+    loadBalanceBehavior: "UseSessionContext",
+
+    // Set a seed
+    // The seed is 0 by default, provide any number to override
+    loadBalancerContextSeed: 10,
+
+    // NOTE:
+    // The session's context string is Not set on the server
+    // You still need to set it on the client:
+    //   * either as a convention on the document store
+    //   * or pass it to 'setContext' method on the session
+
+    // Configuration will be in effect when 'disabled' is set to false
+    disabled: false
+};
+
+// Define the put configuration operation for the DEFAULT database
+const putConfigurationOp = new PutClientConfigurationOperation(configurationToSave);
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putConfigurationOp);
+
+// After the operation has executed:
+// all Read & Write requests, per session, will address the node calculated from:
+//   * the seed set on the server &
+//   * the session's context string set on the client
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation_For_All_Databases" label="Operation_For_All_Databases">
+<CodeBlock language="js">
+{`// Setting 'loadBalanceBehavior' on the server by sending an operation:
+// ====================================================================
+
+// Define the client configuration to put on the server
+const configurationToSave = {
+    // Enable the session-context feature
+    // If this is not enabled then a context string set in a session will be ignored 
+    loadBalanceBehavior: "UseSessionContext",
+
+    // Set a seed
+    // The seed is 0 by default, provide any number to override
+    loadBalancerContextSeed: 10,
+
+    // NOTE:
+    // The session's context string is Not set on the server
+    // You still need to set it on the client:
+    //   * either as a convention on the document store
+    //   * or pass it to 'setContext' method on the session
+
+    // Configuration will be in effect when 'disabled' is set to false
+    disabled: false
+};
+
+// Define the put configuration operation for ALL databases
+const putConfigurationOp = new PutServerWideClientConfigurationOperation(configurationToSave);
+
+// Execute the operation by passing it to maintenance.server.send
+await documentStore.maintenance.server.send(putConfigurationOp);
+
+// After the operation has executed:
+// all Read & Write requests, per session, will address the node calculated from:
+//   * the seed set on the server &
+//   * the session's context string set on the client
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Set LoadBalanceBehavior on the server - from Studio:
+
+* The `loadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  
+  Setting it from the Studio will set this configuration directly **on the server**.
+
+* Once configuration on the server has changed, the running client will get updated with the new settings.  
+  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+
+
+
+## When to use 
+
+* Distributing _Read & Write_ requests among the cluster nodes can be beneficial  
+  when a set of sessions handle a specific set of documents or similar data.  
+  Load balancing can be achieved by routing requests from the sessions that handle similar topics to the same node, while routing other sessions to other nodes.  
+ 
+* Another usage example can be setting the session's context to be the current user.  
+  Thus spreading the _Read & Write_ requests per user that logs into the application.  
+
+* Once setting the load balance to be per session-context,  
+  in the case when detecting that many or all sessions send requests to the same node,  
+  a further level of node randomization can be added by changing the seed.  
+
+
+
+

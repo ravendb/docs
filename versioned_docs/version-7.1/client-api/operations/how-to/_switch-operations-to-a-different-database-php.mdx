@@ -1,0 +1,113 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store.mdx).
+
+* **To operate on a different database**, use the `for_database` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-fordatabase)
+    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenancefor_database)
+</Admonition>
+## Common operation: `forDatabase`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
+
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="php">
+{`// Define default database on the store
+$documentStore = new DocumentStore(
+    ["yourServerURL"],
+    "DefaultDB"
+);
+$documentStore->initialize();
+
+try \{
+    // Use 'ForDatabase', get operation executor for another database
+    /** @var OperationExecutor $opExecutor */
+    $opExecutor = $documentStore->operations()->forDatabase("AnotherDB");
+
+    // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    $revisionsInAnotherDB = $opExecutor->send(new GetRevisionsOperation(Order::class, "Orders/1-A"));
+
+    // Without 'ForDatabase', the operation is executed "DefaultDB"
+    $revisionsInDefaultDB = $documentStore->operations()->send(new GetRevisionsOperation(Company::class, "Company/1-A"));
+\} finally \{
+    $documentStore->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`public function forDatabase(?string $databaseName): OperationExecutor;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `maintenance.for_database`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
+
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="php">
+{`// Define default database on the store
+$documentStore = new DocumentStore(
+    [ "yourServerURL" ],
+    "DefaultDB"
+);
+$documentStore->initialize();
+
+try \{
+    // Use 'ForDatabase', get maintenance operation executor for another database
+    /** @var MaintenanceOperationExecutor $opExecutor */
+    $opExecutor = $documentStore->maintenance()->forDatabase("AnotherDB");
+
+    // Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    $statsForAnotherDB = $opExecutor->send(new GetStatisticsOperation());
+
+    // Without 'ForDatabase', the stats are retrieved for "DefaultDB"
+    $statsForDefaultDB = $documentStore->maintenance()->send(new GetStatisticsOperation());
+\} finally \{
+    $documentStore->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`public function forDatabase(?string $databaseName): MaintenanceOperationExecutor;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+

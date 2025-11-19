@@ -1,0 +1,166 @@
+---
+title: "Modify GenAI Task: API"
+hide_table_of_contents: true
+sidebar_label: "Client API"
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Modify GenAI Task: API
+
+<Admonition type="note" title="">
+
+* To modify an existing GenAI task, register a modified task configuration object with the server using the existing `TaskID`, via the `UpdateGenAiOperation` store operation.  
+* Note that this `TaskID` is **not** the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings) that we define as part of the task configuration, but an identifier that RavenDB uses internally to manage the task (same as it does with other ongoing tasks like ETL tasks, backup tasks, and others).  
+   * The **user-defined task identifier** is a `string` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../ai-integration/gen-ai-integration/gen-ai-overview#tracking-of-processed-document-parts) in the document metadata.  
+   * The `TaskID` is a `long` variable that is used by RavenDB to identify and manage the task.  
+     See the examples below to learn how to extract the `TaskID` and use it to register the modified task configuration.  
+
+* In this article:
+   * [Modify task configuration](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#modify-task-configuration) 
+   * [Syntax](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#syntax)  
+
+</Admonition>
+
+<hr />
+
+## Modify task configuration
+
+To modify the configuration of an existing GenAI task:  
+* Retrieve the ongoing task information using `GetOngoingTaskInfoOperation`, passing it:  
+  * The existing task's user-defined task identifier (a `string` variable).  
+  * The task type (`OngoingTaskType.GenAi` for GenAI tasks).  
+* Extract the `TaskID` (a `long` variable) from the returned `OngoingTaskInfo` object.  
+* You can -  
+   * Either **modify the existing task configuration** and change only selected sections of it  
+     (this approach is often easier as you can change only relevant details),  
+   * Or **create a new configuration object** and populate it from scratch with new settings for your task  
+     (this approach may be preferable if you want to redefine the whole configuration).  
+* Register the new or modified configuration with the server using `UpdateGenAiOperation`, passing it:  
+   * The extracted `TaskID`.  
+   * The configuration object.  
+
+### Examples:
+The below examples modify the spam-filter demonstrated in the [create GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#full-example) article, which removes spam comments from documents in the `Posts` collection.  
+ * The first example, **modify-selected-configuration-details**, demonstrates how to retrieve the existing configuration, modify selected sections of it, and register it with the server again.  
+ * The second example, **create-configuration-from-scratch**, demonstrates how to create a new configuration object, populate it with all necessary configuration details, and register it with the server again.  
+ * Both examples leave all details as configured in the original example except for the task **name**, the user-defined task **identifier**, and the **update script** - which doesn't remove spammy comments but instead adds a `Warning` property to each comment suspected as spam and explains in it why the comment might be spam.  
+
+<Tabs groupId='modifyTaskConfiguration'>
+<TabItem value="modify-selected-configuration-details" label="modify-selected-configuration-details">
+
+```csharp
+// Provide the existing user-defined task identifier to retrieve the ongoing task info
+var getTaskInfo = new GetOngoingTaskInfoOperation("spam-filter", OngoingTaskType.GenAi);
+var ongoingTask = store.Maintenance.Send(getTaskInfo); // returns existing task info
+
+// Extract the internal TaskID that RavenDB uses to manage the task
+long TaskId = ongoingTask.TaskId;
+
+// Use the existing task configuration as a base for modifications
+var modifiedConfig = ((GenAi)ongoingTask).Configuration;
+
+// Modify selected details
+modifiedConfig.Identifier = "spam-warning-filter";
+modifiedConfig.Name = "spam-warning-filter";
+modifiedConfig.UpdateScript = @"    
+            // Find the comment
+            const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+            // Was detected as spam
+            if($output.Blocked)
+            {
+                // Add a warning to the comment instead of removing it
+                this.Comments[idx].Warning = 'This comment may be spam: ' + $output.Reason;
+            }";
+
+// Update the GenAI task using the existing TaskID and the modified configuration
+store.Maintenance.Send(new UpdateGenAiOperation(TaskId, modifiedConfig));
+```
+</TabItem>
+<TabItem value="create-configuration-from-scratch" label="create-configuration-from-scratch">
+
+```csharp
+// Provide the existing user-defined task identifier to retrieve the ongoing task info
+var getTaskInfo = new GetOngoingTaskInfoOperation("spam-filter", OngoingTaskType.GenAi);
+var ongoingTask = store.Maintenance.Send(getTaskInfo);
+
+// Extract the internal TaskID that RavenDB uses to manage the task
+long TaskId = ongoingTask.TaskId;
+
+// Create and populate a new task configuration object
+GenAiConfiguration newConfig = new GenAiConfiguration
+{
+    // New user-defined task identifier
+    Identifier = "spam-warning-filter",
+
+    // New task name
+    Name = "spam-warning-filter",
+
+    // Connection string to AI model
+    ConnectionStringName = "open-ai-cs",
+
+    // Task is enabled
+    Disabled = false,
+
+    // Collection associated with the task
+    Collection = "Posts",
+
+    // Context generation script - format for objects to be sent to the AI model
+    GenAiTransformation = new GenAiTransformation
+    {
+        Script = @"
+        for(const comment of this.Comments)
+        {
+            ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});}"
+    },
+
+    // AI model Prompt - the instructions sent to the AI model
+    Prompt = "Check if the following blog post comment is spam or not",
+
+    // Sample object - the layout for the AI model's response
+    SampleObject = @"
+    {
+        ""Blocked"": true, 
+        ""Reason"": ""Concise reason for why this comment was marked as spam or ham""
+    }",
+
+    // New Update script - specifies what to do with AI model replies.
+    UpdateScript = @"    
+            // Find the comment
+            const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+            // Was detected as spam
+            if($output.Blocked)
+            {
+                // Add a warning to the comment instead of removing it
+                this.Comments[idx].Warning = 'This comment may be spam: ' + $output.Reason;
+            }",
+
+    // Max concurrent connections to AI model
+    MaxConcurrency = 4
+};
+
+// Update the GenAI task using the existing TaskID and the new configuration
+store.Maintenance.Send(new UpdateGenAiOperation(TaskId, newConfig));
+```
+</TabItem>
+</Tabs>
+
+### Syntax:
+
+* `UpdateGenAiOperation` definition:
+  ```csharp
+  public class UpdateGenAiOperation(long taskId, GenAiConfiguration configuration, StartingPointChangeVector startingPoint = null) : IMaintenanceOperation<UpdateEtlOperationResult>
+  ```
+
+      | Parameters | Type | Description |
+      | ------------- | ------------- | ----- |
+      | `taskId` | `long` | The internal RavenDB `TaskID` of the task to update. |
+      | `configuration` | `GenAiConfiguration` | The new or modified configuration for the GenAI task. |
+      | `startingPoint` | `StartingPointChangeVector` | Optional starting point for the update operation. |
+

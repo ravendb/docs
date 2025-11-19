@@ -1,0 +1,44 @@
+---
+title: "Consume Subscriptions API"
+hide_table_of_contents: true
+sidebar_label: API Overview
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ApiOverviewCsharp from './_api-overview-csharp.mdx';
+import ApiOverviewJava from './_api-overview-java.mdx';
+import ApiOverviewPython from './_api-overview-python.mdx';
+import ApiOverviewNodejs from './_api-overview-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ApiOverviewCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ApiOverviewJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ApiOverviewPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ApiOverviewNodejs />
+</LanguageContent>
+
+
+<!---
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+
+-->

@@ -1,0 +1,48 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Fuzzy search is available only via [documentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) or RQL.
+
+* Use the `fuzzy` method when querying with `whereEquals`.
+
+* Note: this is a Lucene feature, available only for Lucene-based indexes.
+
+## Syntax
+
+<TabItem value="fuzzy_1" label="fuzzy_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> fuzzy(double var1);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `double` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Company.class)
+    .whereEquals("Name", "Ernts Hnadel")
+    .fuzzy(0.5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

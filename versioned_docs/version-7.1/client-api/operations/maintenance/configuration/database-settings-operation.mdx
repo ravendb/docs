@@ -1,0 +1,43 @@
+---
+title: "Database Settings Operations"
+hide_table_of_contents: true
+sidebar_label: Database Settings Operations
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DatabaseSettingsOperationCsharp from './_database-settings-operation-csharp.mdx';
+import DatabaseSettingsOperationPhp from './_database-settings-operation-php.mdx';
+import DatabaseSettingsOperationNodejs from './_database-settings-operation-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DatabaseSettingsOperationCsharp />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DatabaseSettingsOperationPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DatabaseSettingsOperationNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio
+- [Database settings view](../../../../studio/database/settings/database-settings#database-settings)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [How to Get Client Configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration)
+- [How to Get Server-Wide Client Configuration](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+- [Toggle database state](../../../../client-api/operations/server-wide/toggle-databases-state)
+
+
+-->

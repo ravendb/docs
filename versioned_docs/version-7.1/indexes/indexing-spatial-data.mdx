@@ -1,0 +1,56 @@
+---
+title: "Indexing Spatial Data"
+hide_table_of_contents: true
+sidebar_label: Indexing Spatial Data
+sidebar_position: 15
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingSpatialDataCsharp from './_indexing-spatial-data-csharp.mdx';
+import IndexingSpatialDataJava from './_indexing-spatial-data-java.mdx';
+import IndexingSpatialDataPython from './_indexing-spatial-data-python.mdx';
+import IndexingSpatialDataPhp from './_indexing-spatial-data-php.mdx';
+import IndexingSpatialDataNodejs from './_indexing-spatial-data-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingSpatialDataCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingSpatialDataJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IndexingSpatialDataPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IndexingSpatialDataPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingSpatialDataNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [How to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)
+
+### Indexes
+- [Query a spatial index](../indexes/querying/spatial)
+
+### Studio
+- [Spatial query view](../studio/database/queries/spatial-queries-map-view)
+
+### Querying
+- [Spatial](../indexes/querying/spatial)
+
+
+-->

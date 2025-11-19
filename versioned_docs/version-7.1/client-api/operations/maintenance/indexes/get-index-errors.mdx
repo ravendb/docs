@@ -1,0 +1,54 @@
+---
+title: "Get Index Errors Operation"
+hide_table_of_contents: true
+sidebar_label: Get Index Errors
+sidebar_position: 14
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetIndexErrorsCsharp from './_get-index-errors-csharp.mdx';
+import GetIndexErrorsJava from './_get-index-errors-java.mdx';
+import GetIndexErrorsPython from './_get-index-errors-python.mdx';
+import GetIndexErrorsPhp from './_get-index-errors-php.mdx';
+import GetIndexErrorsNodejs from './_get-index-errors-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetIndexErrorsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetIndexErrorsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetIndexErrorsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetIndexErrorsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetIndexErrorsNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+- [Delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors)
+
+
+-->

@@ -1,0 +1,52 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+We can clear all session operations and stop tracking of all entities using the 
+[clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes 
+there's a need to do cleanup only for one entity. This is what `evict` is for.
+
+## Syntax
+
+<TabItem value="evict_1" label="evict_1">
+<CodeBlock language="python">
+{`def evict(self, entity: object) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity that will be evicted |
+
+## Example I
+
+<TabItem value="evict_2" label="evict_2">
+<CodeBlock language="python">
+{`employee_1 = Employee(first_name="John", last_name="Doe")
+employee_2 = Employee(first_name="Joe", last_name="Shmoe")
+
+session.store(employee_1)
+session.store(employee_2)
+
+session.advanced.evict(employee_1)
+
+session.save_changes()  # only 'Joe Shmoe' will be saved
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="evict_3" label="evict_3">
+<CodeBlock language="python">
+{`employee = session.load("employees/1-A")  # loading from server
+employee = session.load("employees/1-A")  # no server call
+session.advanced.evict(employee)
+employee = session.load("employees/1-A")  # loading form server
+`}
+</CodeBlock>
+</TabItem>
+
+

@@ -1,0 +1,68 @@
+---
+title: "Indexes: Map Indexes"
+hide_table_of_contents: true
+sidebar_label: Map Indexes
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import MapIndexesCsharp from './_map-indexes-csharp.mdx';
+import MapIndexesJava from './_map-indexes-java.mdx';
+import MapIndexesPython from './_map-indexes-python.mdx';
+import MapIndexesPhp from './_map-indexes-php.mdx';
+import MapIndexesNodejs from './_map-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <MapIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <MapIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <MapIndexesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <MapIndexesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <MapIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
+
+### Studio
+- [Create Map Index](../studio/database/indexes/create-map-index)
+
+### Code Walkthrough
+- [Static Indexes Overview](https://demo.ravendb.net/demos/csharp/static-indexes/static-indexes-overview)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Project Index Results](https://demo.ravendb.net/demos/csharp/static-indexes/project-index-results)
+- [Store Fields in Index](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+- [Static Indexes Overview](https://demo.ravendb.net/demos/python/static-indexes/static-indexes-overview)
+- [Map Index](https://demo.ravendb.net/demos/python/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/python/static-indexes/map-reduce-index)
+- [Project Index Results](https://demo.ravendb.net/demos/python/static-indexes/project-index-results)
+- [Store Fields in Index](https://demo.ravendb.net/demos/python/static-indexes/store-fields-in-index)
+
+
+-->

@@ -1,0 +1,212 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
+  from the database for the specified document.  
+
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions).
+
+* In this page:  
+   * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions)  
+   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata)  
+   * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time)  
+   * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector)  
+
+</Admonition>
+## Get all revisions
+
+* Use `getFor` to retrieve all of the revisions currently kept for the specified document.
+**Example**:
+
+<TabItem value="example_1" label="example_1">
+<CodeBlock language="js">
+{`// Get revisions for document 'orders/1-A'
+const orderRevisions = await session.advanced.revisions
+    .getFor("orders/1-A", \{
+        start: 0,
+        pageSize: 10
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.getFor(id);
+await session.advanced.revisions.getFor(id, options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions |
+| **options** | options object | Used for paging |
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// options object
+\{
+    start,   // The first revision to retrieve, used for paging. Default is 0.
+    pageSize // Number of revisions to retrieve per results page. Default is 25.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the document's revisions. <br/>Revisions will be ordered by most recent revision first. |
+
+
+
+## Get revisions metadata
+
+* Use `getMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
+**Example**:
+
+<TabItem value="example_2" label="example_2">
+<CodeBlock language="js">
+{`// Get revisions' metadata for document 'orders/1-A'
+const orderRevisionsMetadata = await session.advanced.revisions
+    .getMetadataFor("orders/1-A", \{
+        start: 0,
+        pageSize: 10
+    \});
+
+// Each item returned is a revision's metadata, as can be verified in the @flags key
+const metadata = orderRevisionsMetadata[0];
+const flagsValue = metadata[CONSTANTS.Documents.Metadata.FLAGS];
+
+assertThat(flagsValue).contains("Revision");
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.getMetadataFor(id);
+await session.advanced.revisions.getMetadataFor(id, options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions' metadata |
+| **options** | options object | Used for paging |
+
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// options object
+\{
+    start,   // The first revision to retrieve, used for paging. Default is 0.
+    pageSize // Number of revisions to retrieve per results page. Default is 25.
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to a list of the revisions metadata. |
+
+
+
+## Get revisions by creation time
+
+* Use `get` to retrieve a revision by its **creation time**.
+**Example**:
+
+<TabItem value="example_3" label="example_3">
+<CodeBlock language="js">
+{`// Creation time to use, e.g. last year: 
+const creationTime = new Date();
+creationTime.setFullYear(creationTime.getFullYear() - 1);
+
+// Get a revision by its creation time
+// If no revision was created at the specified time,
+// then the first revision that precedes it will be returned
+const orderRevision = await session.advanced.revisions
+    .get("orders/1-A", creationTime.toLocaleDateString());
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`await session.advanced.revisions.get(id, date);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which to retrieve the revision by creation time |
+| **date** | string | The revision's creation time |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the revision.<br/>If no revision was created at the specified time, then the first revision that precedes it will be returned. |
+
+
+
+## Get revisions by change vector
+
+* Use `get` to retrieve a revision or multiple revisions by their **change vectors**.
+**Example**:
+
+<TabItem value="example_4" label="example_4">
+<CodeBlock language="js">
+{`// Get revisions metadata 
+const revisionsMetadata = await session.advanced.revisions
+    .getMetadataFor("orders/1-A", \{
+        start: 0,
+        pageSize: 25
+    \});
+
+// Get the change-vector from the metadata
+var changeVector = revisionsMetadata[0][CONSTANTS.Documents.Metadata.CHANGE_VECTOR];
+
+// Get the revision by its change-vector
+const orderRevision = await session.advanced.revisions
+    .get(changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**:
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// Available overloads:
+await session.advanced.revisions.get(changeVector);
+await session.advanced.revisions.get(changeVectors);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | string | The revision's change vector |
+| **changeVectors** | string[] | Change vectors of multiple revisions |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the matching revision(s). |
+
+
+
+

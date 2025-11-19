@@ -1,0 +1,153 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To allow users to `intersect` queries on the server-side and return only documents 
+  that match **all** the provided sub-queries, we introduced the query intersection feature.
+
+* In this page:
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
+
+</Admonition>
+## Intersection
+
+Let's consider a case where we have a T-Shirt class:
+
+<TabItem value="intersection_1" label="intersection_1">
+<CodeBlock language="python">
+{`class TShirtType:
+    def __init__(self, color: str = None, size: str = None):
+        self.color = color
+        self.size = size
+
+
+class TShirt:
+    def __init__(
+        self, Id: str = None, release_year: int = None, manufacturer: str = None, types: List[TShirtType] = None
+    ):
+        self.Id = Id
+        self.release_year = release_year
+        self.manufacturer = manufacturer
+        self.types = types
+`}
+</CodeBlock>
+</TabItem>
+
+We will fill our database with a few records:
+
+<TabItem value="intersection_3" label="intersection_3">
+<CodeBlock language="python">
+{`session.store(
+    TShirt(
+        Id="tshirts/1",
+        manufacturer="Raven",
+        release_year=2010,
+        types=[
+            TShirtType(color="Blue", size="Small"),
+            TShirtType(color="Black", size="Small"),
+            TShirtType(color="Black", size="Medium"),
+            TShirtType(color="Gray", size="Large"),
+        ],
+    )
+)
+
+session.store(
+    TShirt(
+        Id="tshirts/2",
+        manufacturer="Wolf",
+        release_year=2011,
+        types=[
+            TShirtType(color="Blue", size="Small"),
+            TShirtType(color="Black", size="Large"),
+            TShirtType(color="Gray", size="Medium"),
+        ],
+    )
+)
+
+session.store(
+    TShirt(
+        Id="tshirts/3",
+        manufacturer="Raven",
+        release_year=2011,
+        types=[TShirtType(color="Yellow", size="Small"), TShirtType(color="Gray", size="Large")],
+    )
+)
+
+session.store(
+    TShirt(
+        Id="tshirts/4",
+        manufacturer="Raven",
+        release_year=2012,
+        types=[TShirtType(color="Blue", size="Small"), TShirtType(color="Gray", size="Large")],
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+
+Now we can use the `intersect` method to return all the T-shirts that are 
+manufactured by `Raven` and contain both `Small Blue` and `Large Gray` types.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(
+        TShirts_ByManufacturerColorSizeAndReleaseYear,
+        TShirts_ByManufacturerColorSizeAndReleaseYear.Result,
+    )
+    .where_equals("Manufacturer", "Raven")
+    .intersect()
+    .where_equals("Color", "Blue")
+    .and_also()
+    .where_equals("Size", "Small")
+    .intersect()
+    .where_equals("Color", "Gray")
+    .and_also()
+    .where_equals("Size", "Large")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class TShirts_ByManufacturerColorSizeAndReleaseYear(AbstractIndexCreationTask):
+    class Result:
+        def __init__(self, manufacturer: str = None, color: str = None, size: str = None, release_year: int = None):
+            self.manufacturer = manufacturer
+            self.color = color
+            self.size = size
+            self.release_year = release_year
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from tshirt in docs.TShirts from type in tshirt.types select new {"
+            "  manufacturer = tshirt.manufacturer,"
+            "  color = tshirt.color,"
+            "  size = type.size,"
+            "  release_year = tshirt.release_year"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The above query will return `tshirts/1` and `tshirts/4`, that match **all** sub-queries.  
+`tshirts/2` will not be included in the results because it is not manufactured by `Raven`, 
+and `tshirts/3` will not be included because it is not available in `Small Blue`.  
+
+
+
+

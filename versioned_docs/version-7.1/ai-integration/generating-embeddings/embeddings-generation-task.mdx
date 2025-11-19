@@ -1,0 +1,40 @@
+---
+title: "The Embeddings Generation Task"
+hide_table_of_contents: true
+sidebar_label: The Embeddings Generation Task
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import EmbeddingsGenerationTaskCsharp from './content/_embeddings-generation-task-csharp.mdx';
+
+export const supportedLanguages = ["csharp"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <EmbeddingsGenerationTaskCsharp />
+</LanguageContent>
+
+<!---
+### Vector Search
+- [RavenDB as a vector database](../../ai-integration/vector-search/ravendb-as-vector-database)
+- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
+- [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
+
+### Embeddings Generation
+- [Generating Embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [The Embedding Collections](../../ai-integration/generating-embeddings/embedding-collections)
+
+### AI Connection Strings
+- [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
+- [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
+- [Google AI](../../ai-integration/connection-strings/google-ai)
+- [Hugging Face](../../ai-integration/connection-strings/hugging-face)
+- [Ollama](../../ai-integration/connection-strings/ollama)
+- [OpenAI](../../ai-integration/connection-strings/open-ai)
+- [Mistral AI](../../ai-integration/connection-strings/mistral-ai)
+- [Embedded model](../../ai-integration/connection-strings/embedded)
+-->

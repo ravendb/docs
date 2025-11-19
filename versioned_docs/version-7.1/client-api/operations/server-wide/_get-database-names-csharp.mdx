@@ -1,0 +1,35 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To download available database names from a server, use the `GetDatabaseNames` operation.
+
+## Syntax
+
+<TabItem value="get_db_names_interface" label="get_db_names_interface">
+<CodeBlock language="csharp">
+{`public GetDatabaseNamesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped. |
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of databases on a server |
+
+## Example
+
+<TabItem value="get_db_names_sample" label="get_db_names_sample">
+<CodeBlock language="csharp">
+{`var operation = new GetDatabaseNamesOperation(0, 25);
+string[] databaseNames = store.Maintenance.Server.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+

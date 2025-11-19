@@ -1,0 +1,58 @@
+---
+title: "Paging Query Results"
+hide_table_of_contents: true
+sidebar_label: Paging
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PagingCsharp from './_paging-csharp.mdx';
+import PagingJava from './_paging-java.mdx';
+import PagingPython from './_paging-python.mdx';
+import PagingPhp from './_paging-php.mdx';
+import PagingNodejs from './_paging-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PagingCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PagingJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PagingPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <PagingPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PagingNodejs />
+</LanguageContent>
+
+
+<!---
+### Querying
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Stream query results](../../client-api/session/querying/how-to-stream-query-results)
+- [Get query statistics](../../client-api/session/querying/how-to-get-query-statistics)
+- [Basics](../../indexes/querying/query-index)
+- [Filtering](../../indexes/querying/filtering)
+- [Sorting](../../indexes/querying/sorting)
+
+### Indexes
+- [Indexing basics](../../indexes/indexing-basics)
+- [Query an index](../../indexes/querying/query-index)
+- [Filtering](../../indexes/querying/filtering)
+- [Sorting](../../indexes/querying/sorting)
+
+
+-->

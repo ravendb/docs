@@ -1,0 +1,130 @@
+---
+title: "Session: Delete Incremental Time Series"
+hide_table_of_contents: true
+sidebar_label: Delete
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: Delete Incremental Time Series
+<Admonition type="note" title="">
+
+Delete a range of incremental time series entries using `IncrementalTimeSeriesFor.Delete`.  
+
+* You can delete a **single entry** or a **range of entries**.  
+
+* In this page:  
+      * [`IncrementalTimeSeriesFor.Delete`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#incrementaltimeseriesfordelete)  
+       * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#syntax)  
+       * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#usage-flow)  
+       * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#code-samples)  
+</Admonition>
+## `IncrementalTimeSeriesFor.Delete`
+
+`IncrementalTimeSeriesFor.Delete` is used for the removal of incremental time series and 
+their entries.  
+
+* There is no need to explicitly delete an incremental time series; 
+  the series is deleted when all its entries are deleted.  
+* Attempting to delete nonexistent entries results in a no-op, 
+  generating no exception.  
+
+
+
+
+## Syntax
+
+* There are two `IncrementalTimeSeriesFor.Delete` methods:  
+   * Delete a range of time series entries  
+     -or-  
+     if values are omitted, delete the entire series.  
+<TabItem value="incremental_delete-values-range-or-all-values" label="incremental_delete-values-range-or-all-values">
+<CodeBlock language="csharp">
+{`// Delete incremental time series values range from .. to,
+// or, if values are omitted, delete the whole series.
+void Delete(DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+   * Delete a single time series entry.  
+<TabItem value="incremental_delete-value-at-timestamp" label="incremental_delete-value-at-timestamp">
+<CodeBlock language="csharp">
+{`// Delete the entry value at the specified time stamp
+void Delete(DateTime at);
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `from` (optional) | `DateTime?` | Delete the range of entries starting at this timestamp. |
+    | `to` (optional) | `DateTime?` | Delete the range of entries ending at this timestamp. |
+    | `at` | `DateTime` | Timestamp of the entry to be deleted. |
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+   * `DocumentDoesNotExistException` is thrown If the document doesn't exist.  
+   * Attempting to delete nonexistent entries results in a no-op and does not generate an exception.  
+
+
+
+## Usage Flow
+
+* Open a session  
+* Create an instance of `IncrementalTimeSeriesFor` and pass it:  
+    * An explicit document ID,  
+      -or-  
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).  
+    * The time series name.  
+      The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
+* Call `IncrementalTimeSeriesFor.Delete`.  
+* Call `session.SaveChanges` for the action to take effect on the server.  
+
+
+
+## Code Samples
+
+* Delete a single entry:  
+<TabItem value="incremental_delete-single-entry" label="incremental_delete-single-entry">
+<CodeBlock language="csharp">
+{`// Delete a single entry
+using (var session = store.OpenSession())
+\{
+    session.IncrementalTimeSeriesFor<Downloads>("companies/webstore")
+        .Delete(baseline.AddMinutes(1));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Delete a range of entries:  
+<TabItem value="incremental_delete-entries-range" label="incremental_delete-entries-range">
+<CodeBlock language="csharp">
+{`// Delete a range of entries from the time series
+using (var session = store.OpenSession())
+\{
+    session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads")
+        .Delete(baseline.AddDays(0), baseline.AddDays(9));
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -1,0 +1,130 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `whereEndsWith` to query for documents having a field that ends with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* **Note**:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query.mdx), which is much faster.
+
+* In this page:
+    * [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx#whereendswith)
+    * [whereEndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query.mdx#whereendswith-(case-sensitive))
+    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx#negate-whereendswith)
+    * [Syntax](../../../../client-api/session/querying/text-search/ends-with-query.mdx#syntax)
+
+</Admonition>
+## whereEndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const products = await session
+    .query({ collection: "Products" })
+     // Call 'whereEndsWith'
+     // Pass the document field and the postfix to search by
+    .whereEndsWith("Name", "Lager")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## whereEndsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'whereEndsWith'
+    // Pass 'true' as the 3'rd parameter to search for an EXACT postfix match
+    .whereEndsWith("Name", "Lager", true)
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate whereEndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'Not' to negate the next predicate
+    .not()
+    // Call 'whereEndWith'
+    // Pass the document field and the postfix to search by
+    .whereEndsWith("Name", "Lager")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exists(Name) and not endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+whereStartsWith(fieldName, value);
+whereStartsWith(fieldName, value, exact);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| **fieldName** | string  | The field name in which to search                                         |
+| **value**     | string  | The **postfix** string to search by                                       |
+| **exact**     | boolean | `false` - search is case-insensitive<br/>`true` - search is case-sensitive |
+
+
+
+
+

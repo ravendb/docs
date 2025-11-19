@@ -1,0 +1,211 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to retrieve,
+you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview.mdx#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# For example, in the "HeartRates" time series,
+# retrieve only entries where the value exceeds 75 BPM
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+query_string = """
+from Employees
+select timeseries (
+    from HeartRates
+    between $from and $to
+    // Use the 'where Value' clause to filter by the value
+    where Value > 75
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview.mdx#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# Retrieve only entries where the tag string content is "watches/fitbit"
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+query_string = """
+from Employees
+select timeseries (
+    from HeartRates 
+    between $from and $to 
+    // Use the 'where Tag' clause to filter entries by the tag string content
+    where Tag == 'watches/fitbit'
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# retrieve only entries where the tag string content is one of several options
+
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+optional_tags = ["watches/apple", "watches/samsung", "watches/xiaomi"]
+
+query_string = """
+from Employees 
+select timeseries (
+    from HeartRates
+    between $from and $to
+    // Use the 'where Tag in' clause to filter by various tag options
+    where Tag in ($optionalTags)
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+    .add_parameter("optionalTags", optional_tags)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview.mdx#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+query_string = """
+from Companies
+where Address.Country == 'USA'
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == 'Sales Manager'
+)"""
+
+query = session.advanced.raw_query(query_string, Company)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

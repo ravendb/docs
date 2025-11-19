@@ -1,0 +1,125 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `timeSeriesFor.delete` for the following actions:
+    * **Delete a single time series entry**
+    * **Delete a range of entries**
+    * **Delete the whole time series**
+
+* In this page:  
+    * [`delete` usage](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/delete.mdx#examples)
+      * [Delete single entry](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-single-entry)
+      * [Delete range of entries](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-range-of-entries)
+      * [Delete time series](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-time-series-1)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
+  
+</Admonition>
+## `Delete` usage
+
+**Flow**:
+
+* Open a session.  
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, or -   
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Delete`:
+    * Provide a single timestamp to delete a specific entry, or -
+    * Specify a range of timestamps to delete multiple entries.
+* Call `session.saveChanges` for the action to take effect on the server.  
+
+**Note**:
+
+* If the specified document doesn't exist, a `DocumentDoesNotExistException` is thrown.
+* Attempting to delete nonexistent entries results in a no-op and generates no exception.
+* To delete the whole time series simply delete all its entries.  
+  The series is removed when all its entries are deleted.
+* Deleting a document deletes all its time series as well.
+
+
+
+## Examples
+
+In the following examples we delete time series entries appended by sample code in the 
+[Append](../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
+#### Delete single entry:
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="js">
+{`// Get an instance of 'timeSeriesFor'
+const tsf = session.timeSeriesFor("users/john", "HeartRates");
+
+// Call 'deleteAt' to delete a specific entry
+timeStampOfEntry = new Date(baseTime.getTime() + 60_000);
+tsf.deleteAt(timeStampOfEntry);
+
+// Save changes
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+#### Delete range of entries:
+
+<TabItem value="delete_2" label="delete_2">
+<CodeBlock language="js">
+{`// Get an instance of 'timeSeriesFor'
+const tsf = session.timeSeriesFor("users/john", "HeartRates");
+
+// Delete a range of 5 entries
+FromTimeStamp = new Date(baseTime.getTime());
+ToTimeStamp = new Date(baseTime.getTime() + 60_000 * 5);
+tsf.delete(FromTimeStamp, ToTimeStamp);
+
+// Save changes
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+#### Delete time series:
+
+<TabItem value="delete_3" label="delete_3">
+<CodeBlock language="js">
+{`// Get an instance of 'timeSeriesFor'
+const tsf = session.timeSeriesFor("users/john", "HeartRates");
+
+// Delete ALL entries
+// The whole time series will be removed
+tsf.delete();
+
+// Save changes
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+// ====================
+
+delete();          // Delete all entries
+deleteAt(at);      // Delete a specific entry
+delete(from, to);  // Delete a range of enties
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type   | Description                                   |
+|-----------|--------|:----------------------------------------------|
+| **at**    | `Date` | Timestamp of the time series entry to delete. |
+| **from**  | `Date` | Delete the time series entries range that starts at this timestamp (inclusive).<br/>Pass `null` to use the minimum date value. |
+| **to**    | `Date` | Delete the time series entries range that ends at this timestamp (inclusive).<br/>Pass `null` to use the maximum date value.   |
+
+
+
+

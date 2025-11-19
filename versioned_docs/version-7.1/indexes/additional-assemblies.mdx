@@ -1,0 +1,180 @@
+---
+title: "Indexes: Additional Assemblies"
+hide_table_of_contents: true
+sidebar_label: Additional Assemblies
+sidebar_position: 29
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Indexes: Additional Assemblies
+<Admonition type="note" title="">
+
+* Index capabilities can be expanded by importing whole libraries 
+  with useful classes and methods that can then be used in the index syntax.  
+  **Additional Assemblies** make it very easy to import assemblies from:  
+   * **NuGet**  
+   * **Runtime**  
+   * **Local file**  
+
+* Indexes can be enhanced with capabilities like [machine learning image recognition](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) 
+  or [full text searching in Office files](https://ayende.com/blog/192385-A/ravendb-5-1-features-searching-in-office-documents).  
+
+* This feature is similar to the [Additional Sources](../indexes/extending-indexes.mdx) feature, 
+  that can be used to add methods and classes to an index in the form of a file or pure text.  
+  These two features can be used together: an index's Additional Sources code has access to 
+  all of the index's Additional Assemblies.  
+
+* In this page:  
+   * [Syntax](../indexes/additional-assemblies.mdx#syntax)  
+   * [Examples](../indexes/additional-assemblies.mdx#examples)  
+       * [Basic Example](../indexes/additional-assemblies.mdx#basic-example)
+       * [Complex Example](../indexes/additional-assemblies.mdx#complex-example)
+       * [Pre-Release Packages](../indexes/additional-assemblies.mdx#pre-release-packages)
+
+</Admonition>
+## Syntax
+
+Additional assemblies are defined using the `AdditionalAssembly` object.
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class AdditionalAssembly
+\{
+    public static AdditionalAssembly FromRuntime(string assemblyName, 
+                                                 HashSet<string> usings = null);
+
+    public static AdditionalAssembly FromPath(string assemblyPath, 
+                                              HashSet<string> usings = null);
+
+    public static AdditionalAssembly FromNuGet(string packageName, 
+                                               string packageVersion, 
+                                               string packageSourceUrl = null, 
+                                               HashSet<string> usings = null);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **assemblyName** | `string` | The name of an assembly to import from runtime |
+| **assemblyPath** | `string` | Local path to an assembly |
+| **packageName** | `string` | Name of a NuGet package to import |
+| **packageVersion** | `string` | The version number of the NuGet package - optional |
+| **packageSourceUrl** | `string` | The URL of the package's original source - optional |
+| **usings** | `HashSet<string>` | A set of namespaces to attach to the compiled index with `using` - optional |
+The `AdditionalAssembly`s are collected in `AdditionalAssemblies`, a property of 
+`IndexDefinition`:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public HashSet<AdditionalAssembly> AdditionalAssemblies;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+#### Basic Example
+
+This index is able to use the method `GetFileName()` from the class `Path` 
+because the namespace `System.IO` has been imported as an additional assembly. 
+It takes a `string` file path and retrieves just the file name and extension.  
+
+<TabItem value="simple_index" label="simple_index">
+<CodeBlock language="csharp">
+{`var runtimeindex = new IndexDefinition
+\{
+    Name = "Dog_Pictures",
+    Maps = \{ @"
+        from user in docs.Users
+        let fileName = Path.GetFileName(user.ImagePath)
+        where fileName = ""My_Dogs.jpeg""
+        select new \{
+            user.Name,
+            fileName
+        \}"
+    \},
+    AdditionalAssemblies = \{
+        AdditionalAssembly.FromRuntime("System.IO")
+    \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+#### Complex Example
+
+This index uses a machine learning algorithm imported from NuGet that can 
+recognize the contents of images and classify them with an appropriate tag. 
+These tags are then stored in the index just like any other term.  
+
+<TabItem value="complex_index" label="complex_index">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutIndexesOperation(new IndexDefinition
+\{
+    Name = "Photographs/Tags",
+    Maps =
+    \{
+        @"
+        from p in docs.Photographs
+        let photo = LoadAttachment(p, ""photo.png"")
+        where photo != null
+        let classified =  ImageClassifier.Classify(photo.GetContentAsStream())
+        select new \{
+            e.Name,
+            Tag = classified.Where(x => x.Value > 0.75f).Select(x => x.Key),
+            _ = classified.Select(x => CreateField(x.Key, x.Value))
+        \}"
+    \},
+    AdditionalSources = new System.Collections.Generic.Dictionary<string, string>
+    \{
+        \{
+            "ImageClassifier", 
+            @"
+            public static class ImageClassifier
+            \{
+                public static IDictionary<string, float> Classify(Stream s)
+                \{
+                    // returns a list of descriptors with a
+                    // value between 0 and 1 of how well the
+                    // image matches that descriptor.
+                \}
+            \}"
+        \}
+
+    \},
+    AdditionalAssemblies =
+    \{
+        AdditionalAssembly.FromRuntime("System.Memory"),
+        AdditionalAssembly.FromNuGet("System.Drawing.Common", "4.7.0"),
+        AdditionalAssembly.FromNuGet("Microsoft.ML", "1.5.2")
+    \}
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Pre-Release Packages
+
+Additional assemblies are allowed to include pre-release packages.
+
+<TabItem value="prerelease_assembly" label="prerelease_assembly">
+<CodeBlock language="csharp">
+{`AdditionalAssemblies = \{
+    AdditionalAssembly.FromNuGet("FlexiMvvm.Common.PreRelease", "0.10.8-prerelease")
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

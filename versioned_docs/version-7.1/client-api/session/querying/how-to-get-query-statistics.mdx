@@ -1,0 +1,49 @@
+---
+title: "Get Query Statistics"
+hide_table_of_contents: true
+sidebar_label: Get Query Statistics
+sidebar_position: 10
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToGetQueryStatisticsCsharp from './_how-to-get-query-statistics-csharp.mdx';
+import HowToGetQueryStatisticsJava from './_how-to-get-query-statistics-java.mdx';
+import HowToGetQueryStatisticsPython from './_how-to-get-query-statistics-python.mdx';
+import HowToGetQueryStatisticsPhp from './_how-to-get-query-statistics-php.mdx';
+import HowToGetQueryStatisticsNodejs from './_how-to-get-query-statistics-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToGetQueryStatisticsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToGetQueryStatisticsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToGetQueryStatisticsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToGetQueryStatisticsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToGetQueryStatisticsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to query](../../../client-api/session/querying/how-to-query)
+- [How to customize query](../../../client-api/session/querying/how-to-customize-query)
+- [Count query results](../../../client-api/session/querying/how-to-count-query-results)
+
+
+-->

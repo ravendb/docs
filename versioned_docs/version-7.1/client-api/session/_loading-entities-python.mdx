@@ -1,0 +1,407 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* There are several methods that allow users to load documents from the database and convert them to entities.
+
+* This article covers the following methods:
+
+  - [load](../../client-api/session/loading-entities.mdx#load)
+  - [load with includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [load_starting_with](../../client-api/session/loading-entities.mdx#load_starting_with)
+  - [load_starting_with_into_stream](../../client-api/session/loading-entities.mdx#load_starting_with_into_stream)
+  - [conditional_load](../../client-api/session/loading-entities.mdx#conditional_load)
+  - [stream](../../client-api/session/loading-entities.mdx#stream)
+  - [is_loaded](../../client-api/session/loading-entities.mdx#is_loaded)
+
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+
+<Admonition type="warning" title="">
+From RavenDB version 4.x onward, only string identifiers are supported.  
+If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported as well.  
+</Admonition>
+
+</Admonition>
+## load
+
+Use the `load` method to load **an entity** or **multiple entities**.  
+
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="python">
+{`def load(
+    self,
+    key_or_keys: Union[List[str], str],
+    object_type: Optional[Type[_T]] = None,
+    includes: Callable[[IncludeBuilder], None] = None,
+) -> Union[Dict[str, _T], _T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
+| **object_type**<br/>(optional) | `[Type[_T]` | Entity type to load (optional) |
+| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../client-api/how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `_T` | If a single document was requested, return an instance of the document or `None` if no document was found |
+| `Dict[str, _T]` | If multiple documents were requested, return a dictionary of document instances or `None` if no documents were found |
+
+
+### Examples
+
+* Load an entiry
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="python">
+{`employee = session.load("employees/1", Employee)
+`}
+</CodeBlock>
+</TabItem>
+
+* Load multiple entities:
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="python">
+{`employees = session.load(["employees/1", "employees/2", "employees/3"], Employee)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## load with includes
+
+When there is a 'relationship' between documents, those documents can be loaded in a 
+single request call using the `include + load` methods. Learn more in 
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+
+<Admonition type="note" title="">
+Also see:  
+
+* [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including.mdx)  
+</Admonition>
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="python">
+{`def include(self, path: str) -> LoaderWithInclude: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **path** | `str` | Search path that the server will use to look for the 'referenced' documents |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `LoaderWithInclude` | The ` include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="python">
+{`# loading 'products/1'
+# including document found in 'supplier' property
+products_by_key = session.include("supplier").load("products/1", Product)
+product = products_by_key["products/1"]
+
+supplier = session.load(product.supplier)  # this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_2_2" label="loading_entities_2_2">
+<CodeBlock language="python">
+{`# loading 'products/1'
+# including document found in 'Supplier' property
+products_by_key = session.include("Supplier").load("products/1", Product)
+product = products_by_key["products/1"]
+
+supplier = session.load(product.supplier, Supplier)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## load_starting_with
+
+To load multiple entities with a common prefix, use the `advanced` session operation `load_starting_with`.  
+<TabItem value="load_starting_with" label="load_starting_with">
+<CodeBlock language="python">
+{`def load_starting_with(
+    self,
+    id_prefix: str,
+    object_type: Optional[Type[_T]] = None,
+    matches: Optional[str] = None,
+    start: Optional[int] = None,
+    page_size: Optional[int] = None,
+    exclude: Optional[str] = None,
+    start_after: Optional[str] = None,
+) -> List[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id_prefix** | `str` |  Prefix to return the documents to |
+| **object_type**<br/>(optional) | `Type[_T]` | The object type |
+| **matches**<br/> | `str` | Pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
+| **start**<br/>(optional) | `int` | Number of documents that should be skipped  |
+| **page_size**<br/>(optional) | `int` | Maximum number of documents that will be retrieved |
+| **exclude**<br/>(optional) | `str` | Pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **start_after**<br/>(optional) | `str` | Skip document fetching until given ID is found and return documents after that ID (default: `None`) |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `List[_T]` | An array of entities matching the given parameters |
+
+### Example I
+
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="python">
+{`# return up to 128 entities with Id that starts with 'employees'
+result = session.advanced.load_starting_with("employees/", Employee, None, 0, 128)
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="python">
+{`# return up to 128 entities with Id that starts with 'employees'
+# and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+result = session.advanced.load_starting_with("employees/", Employee, "1*|2*", 0, 128)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## load_starting_with_into_stream
+
+To output multiple entities with a common prefix into a stream, use the `advanced` session operation `load_starting_with_into_stream`.  
+<TabItem value="load_starting_with_into_stream" label="load_starting_with_into_stream">
+<CodeBlock language="python">
+{`def load_starting_with_into_stream(
+    self,
+    id_prefix: str,
+    matches: str = None,
+    start: int = 0,
+    page_size: int = 25,
+    exclude: str = None,
+    start_after: str = None,
+) -> bytes: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id_prefix** | `str` |  Prefix to return the documents to |
+| **matches**<br/> | `str` | Pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | Number of documents that should be skipped  |
+| **page_size** | `int` | Maximum number of documents that will be retrieved |
+| **exclude** | `str` | Pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **start_after** | `str` | Skip document fetching until given ID is found and return documents after that ID (default: `None`) |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `bytes` | The retrieved entities, returned as a stream of bytes |
+
+### Example
+
+To stream entities from the `employees` collection, use:  
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="python">
+{`results_bytes = session.advanced.load_starting_with_into_stream("employees/")
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## conditional_load
+
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The `conditional_load` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+The method is accessible from the `session.advanced` operations.  
+
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="python">
+{`def conditional_load(
+    self, key: str, change_vector: str, object_type: Optional[Type[_T]] = None
+) -> ConditionalLoadResult[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **key** | `str` | The identifier of a document to be loaded |
+| **change_vector** | `str` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+| **object_type**<br/>(optional) | `Type[_T]` | Object type |
+
+| Return Type                 | Description                                                                                                                                                                  |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ConditionalLoadResult[_T]` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector. <br/> If the change vectors match, the method returns `default` as the entity, and the current change vector. <br/> If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="python">
+{`change_vector: Optional[str] = None
+user = User(name="Bob")
+
+with store.open_session() as session:
+    session.store(user, "users/1")
+    session.save_changes()
+
+    change_vector = session.advanced.get_change_vector_for(user)
+
+# Now session which does not track our User entity
+with store.open_session() as session:
+    # The given change vector matches
+    # the server-side change vector
+    # Does not load the document
+    result1 = session.advanced.conditional_load("users/1", change_vector)
+
+    # Modify the document
+    user.name = "Bob Smith"
+    session.store(user)
+    session.save_changes()
+
+    # Change vectors do not natch
+    # Loads the document
+    result2 = session.advanced.conditional_load("user/1", change_vector)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+&lt;!-- 
+## stream
+
+Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
+
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+
+<Admonition type="info" title="">
+Entities loaded using `stream` will be transient (not attached to session).
+</Admonition>
+
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="python">
+{`# waiting for merge, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **starts_with** | `str` | prefix for which documents should be streamed |
+| **matches** | `str` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **page_size** | `int` | maximum number of documents that will be retrieved |
+| **start_after** | `str` | skip document fetching until a given ID is found and returns documents after that ID (default: `None`) |
+| **stream_query_stats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
+| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="python">
+{`# unsupported, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+Fetch documents for a ID prefix directly into a stream:
+
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="python">
+{`results_bytes = session.advanced.load_starting_with_into_stream("employees/")
+`}
+</CodeBlock>
+</TabItem>
+
+
+--&gt;
+
+## is_loaded
+
+Use the `is_loaded` method from the `advanced` session operations
+To check if an entity is attached to a session (e.g. because it's been 
+previously loaded).  
+  
+<Admonition type="note" title="">
+`is_loaded` checks if an attempt to load a document has been already made 
+during the current session, and returns `True` even if such an attemp was 
+made and failed.  
+If, for example, the `load` method was used to load `employees/3` during 
+this session and failed because the document has been previously deleted, 
+`is_loaded` will still return `True` for `employees/3` for the remainder 
+of the session just because of the attempt to load it.  
+</Admonition>
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="python">
+{`def is_loaded(self, key: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **key** | `str` | ID of the entity whose status is checked |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `bool` | Indicates if the given entity is loaded |
+
+### Example
+
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="python">
+{`is_loaded = session.advanced.is_loaded("employees/1")  # False
+employee = session.load("employees/1")
+is_loaded = session.advanced.is_loaded("employees/1")  # True
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,205 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+  made in all the entities it has either loaded, stored, or queried for,  
+  and persists to the server only what is needed when `saveChanges` is called.
+
+* This article describes how to check for changes made in all tracked entities within the **session**.  
+  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
+ 
+* In this page:
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
+
+</Admonition>
+## Check for session changes 
+
+* The advanced session `hasChanges` property indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The `hasChanges` property is cleared (reset to `false`) after calling `saveChanges`.
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // No changes made yet - 'hasChanges' will be FALSE
+    $this->assertFalse($session->advanced()->hasChanges());
+
+    // Store a new entity within the session
+    $employee = new Employee();
+    $employee->setFirstName("John");
+    $employee->setLastName("Doe");
+
+    $session->store($employee, "employees/1-A");
+
+    // 'hasChanges' will now be TRUE
+    $this->assertTrue($session->advanced()->hasChanges());
+
+    // 'HasChanges' will reset to FALSE after saving changes
+    $session->saveChanges();
+    $this->assertFalse($session->advanced()->hasChanges());
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes 
+
+* Use the session's advanced method `whatChanged` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:  
+   * The name and path of the changed field   
+   * Its old and new values  
+   * The type of change  
+##### Example I
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Store (add) new entities, they will be tracked by the session
+    $employee = new Employee();
+    $employee->setFirstName("John");
+    $employee->setLastName("Doe");
+    $session->store($employee, "employees/1-A");
+
+    $employee = new Employee();
+    $employee->setFirstName("Jane");
+    $employee->setLastName("Doe");
+    $session->store($employee, "employees/2-A");
+
+    // Call 'WhatChanged' to get all changes in the session
+    $changes = $session->advanced()->whatChanged();
+
+    $this->assertCount(2, $changes); // 2 entities were added
+
+    // Get the change details for an entity, specify the entity ID
+    $changesForEmployee = $changes["employees/1-A"];
+    $this->assertCount(1, $changesForEmployee); // a single change for this entity (adding)
+
+    // Get the change type
+    $change = $changes[0]->getChange(); // ChangeType::DOCUMENT_ADDED
+    $this->assertTrue($change->isDocumentAdded());
+
+    $session->saveChanges();
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="changes_3" label="changes_3">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Load the entities, they will be tracked by the session
+    $employee1 = $session->load(Employee::class, "employees/1-A");// 'Joe Doe'
+    $employee2 = $session->load(Employee::class, "employees/2-A");// 'Jane Doe'
+
+    // Modify entities
+    $employee1->setFirstName("Jim");
+    $employee1->setLastName("Brown");
+    $employee2->setLastName("Smith");
+
+    // Delete an entity
+    $session->delete($employee2);
+
+    // Call 'WhatChanged' to get all changes in the session
+    $changes = $session->advanced()->whatChanged();
+
+    // Get the change details for an entity, specify the entity ID
+    $changesForEmployee = $changes["employees/1-A"];
+
+    $this->assertEquals("FirstName", $changesForEmployee[0]->getFieldName()); // Field name
+    $this->assertEquals("Jim", $changesForEmployee[0]->getFieldNewValue());   // New value
+    $this->assertTrue($changesForEmployee[0]->getChange()->isFieldChange());  // Change type
+
+    $this->assertEquals("LastName", $changesForEmployee[1]->getFieldName());  // Field name
+    $this->assertEquals("Brown", $changesForEmployee[1]->getFieldNewValue()); // New value
+    $this->assertTrue($changesForEmployee[1]->getChange()->isFieldChange());  // Change type
+
+    // Note: for employee2 - even though the LastName was changed to 'Smith',
+    // the only reported change is the latest modification, which is the delete action.
+    $changesForEmployee = $changes["employees/2-A"];
+    $this->assertTrue($changesForEmployee[0]->getChange()->isDocumentDeleted());
+
+    $session->saveChanges();
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="php">
+{`public function hasChanges(): bool;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`public function whatChanged(): array; // array<string, DocumentsChangesArray>
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | Description |
+|-------------|-------------|
+| `hasChanges(): bool;` | Indicates whether there were changes during the session |
+| `whatChanged(): array;` | Returns an array of changes per document ID |
+| `DocumentsChanges` | A list of changes made in an entity (see `ChangeType` class below for available change types) |
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="php">
+{`class DocumentsChanges
+\{
+    private mixed $fieldOldValue = null;            // Previous field value
+    private mixed $fieldNewValue = null;            // Current field value
+    private ChangeType $change;                     // Type of change that occurred
+    private ?string $fieldName = null;              // Name of field on which the change occurred
+    private ?string $fieldPath = null;              // Path of field on which the change occurred
+
+    public function getFieldFullName(): ?string;    // Path + Name of field on which the change occurred
+
+    // ... getters and setters
+\}
+
+class ChangeType
+\{
+    public function isDocumentDeleted(): bool;
+    public function isDocumentAdded(): bool;
+    public function isFieldChanged(): bool;
+    public function isNewField(): bool;
+    public function isRemovedField(): bool;
+    public function isArrayValueChanged(): bool;
+    public function isArrayValueAdded(): bool;
+    public function isArrayValueRemoved(): bool;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

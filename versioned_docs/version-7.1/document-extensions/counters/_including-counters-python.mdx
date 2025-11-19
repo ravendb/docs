@@ -1,0 +1,74 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Counters can be included when [loading entities](../../client-api/session/loading-entities) 
+  or when making [queries](../../client-api/session/querying/how-to-query).
+ 
+* The _Session_ stores the included counters in its in-memory cache,  
+  so their values can be accessed later in the same session without making additional requests to the server.
+    
+* To see how to include counters when creating a subscription, see
+  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+
+</Admonition>
+
+* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
+    * Include a single Counter using `include_counter`  
+    * Include multiple Counters using `include_counters`  
+
+    `include_counter` and `include_counters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="python">
+{`# include single Counters
+product_page = session.load(
+    "products/1-C",
+    include_builder=lambda builder: builder.include_counter("ProductLikes")
+    .include_counter("ProductDislikes")
+    .include_counter("ProductDownloads"),
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="python">
+{`# include multiple Counters
+# note that you can combine the inclusion of Counters and documents.
+product_page = session.load(
+    "orders/1-A",
+    include_builder=lambda builder: builder.include_documents("products/1-C").include_counters(
+        ["ProductLikes", "ProductDislikes"]
+    ),
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
+    * Include a single Counter using `include_counter`.  
+    * Include multiple Counters using `include_counters`.  
+
+    `include_counter` and `include_counters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="python">
+{`# include a single Counter
+query = session.query(object_type=Product).include(lambda builder: builder.include_counter("ProductLikes"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="python">
+{`# include multiple Counters
+query = session.query("Products").include(
+    lambda builder: builder.include_counters(["ProductLikes", "ProductDownloads"])
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>

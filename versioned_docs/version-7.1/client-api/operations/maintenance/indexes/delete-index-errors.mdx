@@ -1,0 +1,49 @@
+---
+title: "Delete Index Errors Operation"
+hide_table_of_contents: true
+sidebar_label: Delete Index Errors
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteIndexErrorsCsharp from './_delete-index-errors-csharp.mdx';
+import DeleteIndexErrorsPython from './_delete-index-errors-python.mdx';
+import DeleteIndexErrorsPhp from './_delete-index-errors-php.mdx';
+import DeleteIndexErrorsNodejs from './_delete-index-errors-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteIndexErrorsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DeleteIndexErrorsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DeleteIndexErrorsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteIndexErrorsNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+- [Get index errors](../../../../client-api/operations/maintenance/indexes/get-index-errors)
+
+
+-->

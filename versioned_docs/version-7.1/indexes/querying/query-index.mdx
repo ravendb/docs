@@ -1,0 +1,65 @@
+---
+title: "Querying an Index"
+hide_table_of_contents: true
+sidebar_label: Querying an Index
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import QueryIndexCsharp from './_query-index-csharp.mdx';
+import QueryIndexJava from './_query-index-java.mdx';
+import QueryIndexPython from './_query-index-python.mdx';
+import QueryIndexPhp from './_query-index-php.mdx';
+import QueryIndexNodejs from './_query-index-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <QueryIndexCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <QueryIndexJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <QueryIndexPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <QueryIndexPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <QueryIndexNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)
+
+### Querying
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+- [Projections](../../indexes/querying/projections)
+- [Sorting](../../indexes/querying/sorting)
+
+### Client API
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)
+
+### Studio
+- [Query View](../../studio/database/queries/query-view)
+
+### Code Walkthrough
+- [Scroll for Queries Section](https://demo.ravendb.net/)
+
+
+-->

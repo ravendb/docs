@@ -1,0 +1,39 @@
+---
+title: "Bulk Insert Attachments"
+hide_table_of_contents: true
+sidebar_label: Bulk Insert
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import BulkInsertCsharp from './_bulk-insert-csharp.mdx';
+import BulkInsertPython from './_bulk-insert-python.mdx';
+import BulkInsertNodejs from './_bulk-insert-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <BulkInsertCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <BulkInsertPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <BulkInsertNodejs />
+</LanguageContent>
+
+
+<!---
+### Attachments
+- [Storing](../../document-extensions/attachments/storing)
+- [Loading](../../document-extensions/attachments/loading)
+- [Deleting](../../document-extensions/attachments/deleting)
+
+
+-->

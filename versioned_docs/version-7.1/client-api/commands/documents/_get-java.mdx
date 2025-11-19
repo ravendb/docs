@@ -1,0 +1,260 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+There are a few methods that allow you to retrieve documents from a database:   
+
+- [Get single document](../../../client-api/commands/documents/get.mdx#get-single-document)   
+- [Get multiple documents](../../../client-api/commands/documents/get.mdx#get-multiple-documents)   
+- [Get paged documents](../../../client-api/commands/documents/get.mdx#get-paged-documents)   
+- [Get documents by starts with](../../../client-api/commands/documents/get.mdx#get-by-starts-with)  
+- [Get metadata only](../../../client-api/commands/documents/get.mdx#get-metadata-only)  
+
+## Get single document
+
+**GetDocumentsCommand** can be used to retrieve a single document
+
+### Syntax
+
+<TabItem value="get_interface_single" label="get_interface_single">
+<CodeBlock language="java">
+{`public GetDocumentsCommand(String id, String[] includes, boolean metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type       | Description                                               |
+|------------------|------------|-----------------------------------------------------------|
+| **id**           | `String`   | ID of the documents to get.                               |
+| **includes**     | `String[]` | Related documents to fetch along with the document.       |
+| **metadataOnly** | `boolean`  | Whether to fetch the whole document or just the metadata. |
+
+### Example
+
+<TabItem value="get_sample_single" label="get_sample_single">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand(
+    "orders/1-A", null, false);
+session.advanced().getRequestExecutor().execute(command);
+ObjectNode order = (ObjectNode) command.getResult().getResults().get(0);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get multiple documents
+
+**GetDocumentsCommand** can also be used to retrieve a list of documents.
+
+### Syntax
+
+<TabItem value="get_interface_multiple" label="get_interface_multiple">
+<CodeBlock language="java">
+{`public GetDocumentsCommand(String[] ids, String[] includes, boolean metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type       | Description                                            |
+|------------------|------------|--------------------------------------------------------|
+| **ids**          | `String[]` | IDs of the documents to get.                           |
+| **includes**     | `String`   | Related documents to fetch along with the documents.   |
+| **metadataOnly** | `boolean`  | Whether to fetch whole documents or just the metadata. |
+
+### Example I
+
+<TabItem value="get_sample_multiple" label="get_sample_multiple">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand(
+    new String[]\{"orders/1-A", "employees/3-A"\}, null, false);
+session.advanced().getRequestExecutor().execute(command);
+ObjectNode order = (ObjectNode) command.getResult().getResults().get(0);
+ObjectNode employee = (ObjectNode) command.getResult().getResults().get(1);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - Using Includes
+
+<TabItem value="get_sample_includes" label="get_sample_includes">
+<CodeBlock language="java">
+{`// Fetch emploees/5-A and his boss.
+GetDocumentsCommand command = new GetDocumentsCommand(
+    "employees/5-A", new String[]\{"ReportsTo"\}, false);
+session.advanced().getRequestExecutor().execute(command);
+
+ObjectNode employee = (ObjectNode) command.getResult().getResults().get(0);
+String bossId = employee.get("ReportsTo").asText();
+ObjectNode boss = (ObjectNode) command.getResult().getIncludes().get(bossId);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III - Missing Documents
+
+<TabItem value="get_sample_missing" label="get_sample_missing">
+<CodeBlock language="java">
+{`// Assuming that products/9999-A doesn't exist.
+GetDocumentsCommand command = new GetDocumentsCommand(
+    new String[]\{"products/1-A", "products/9999-A", "products/3-A"\}, null, false);
+session.advanced().getRequestExecutor().execute(command);
+ArrayNode products = command.getResult().getResults(); // products/1-A, null, products/3-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get paged documents
+
+**GetDocumentsCommand** can also be used to retrieve a paged set of documents.
+
+### Syntax
+
+<TabItem value="get_interface_paged" label="get_interface_paged">
+<CodeBlock language="java">
+{`public GetDocumentsCommand(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type  | Description                                          |
+|--------------|-------|------------------------------------------------------|
+| **start**    | `int` | Number of documents that should be skipped.          |
+| **pageSize** | `int` | Maximum number of documents that will be retrieved.  |
+
+### Example
+
+<TabItem value="get_sample_paged" label="get_sample_paged">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand(0, 128);
+session.advanced().getRequestExecutor().execute(command);
+ArrayNode firstDocs = command.getResult().getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get by starts with
+
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified ID prefix.
+
+### Syntax
+
+<TabItem value="get_interface_startswith" label="get_interface_startswith">
+<CodeBlock language="java">
+{`public GetDocumentsCommand(
+    String startWith,
+    String startAfter,
+    String matches,
+    String exclude,
+    int start,
+    int pageSize,
+    boolean metadataOnly)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type      | Description                                                                                                                                            |
+|------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **startsWith**   | `String`  | Prefix for which documents should be returned.                                                                                                         |
+| **startAfter**   | `String`  | Skip 'document fetching' until the given ID is found, and return documents after that ID (default: null).                                              |
+| **matches**      | `String`  | Pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters).         |
+| **exclude**      | `String`  | Pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters). |
+| **start**        | `int`     | Number of documents that should be skipped.                                                                                                            |
+| **pageSize**     | `int`     | Maximum number of documents that will be retrieved.                                                                                                    |
+| **metadataOnly** | `boolean` | Specifies whether or not only document metadata should be returned.                                                                                    |
+
+### Example I
+
+<TabItem value="get_sample_startswith" label="get_sample_startswith">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand(
+    "products",  //startWith
+    null, //startAfter
+    null, // matches
+    null, //exclude
+    0, // start
+    128, // pageSize
+    false //metadataOnly
+);
+
+session.advanced().getRequestExecutor().execute(command);
+ArrayNode products = command.getResult().getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="get_sample_startswith_matches" label="get_sample_startswith_matches">
+<CodeBlock language="java">
+{`// return up to 128 documents  with key that starts with 'products/'
+// and rest of the key begins with "1" or "2", eg. products/10, products/25
+GetDocumentsCommand command = new GetDocumentsCommand(
+    "products", //startWith
+    null, // startAfter
+    "1*|2*", // matches
+    null, // exclude
+    0, //start
+    128, //pageSize
+    false); //metadataOnly
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III
+
+<TabItem value="get_sample_startswith_matches_end" label="get_sample_startswith_matches_end">
+<CodeBlock language="java">
+{`// return up to 128 documents with key that starts with 'products/'
+// and rest of the key have length of 3, begins and ends with "1"
+// and contains any character at 2nd position e.g. products/101, products/1B1
+GetDocumentsCommand command = new GetDocumentsCommand(
+    "products", //startWith
+    null, // startAfter
+    "1?1", // matches
+    null, // exclude
+    0, //start
+    128, //pageSize
+    false); //metadataOnly
+session.advanced().getRequestExecutor().execute(command);
+ArrayNode products = command.getResult().getResults();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get metadata only
+
+**GetDocumentsCommand** can be used to retrieve the metadata of documents.
+
+### Example
+
+<TabItem value="get_metadata_only" label="get_metadata_only">
+<CodeBlock language="java">
+{`GetDocumentsCommand command = new GetDocumentsCommand("orders/1-A", null, true);
+session.advanced().getRequestExecutor().execute(command);
+        
+JsonNode result = command.getResult().getResults().get(0);
+ObjectNode documentMetadata = (ObjectNode) result.get("@metadata");
+        
+// Print out all the metadata properties.
+Iterator<String> fieldIterator = documentMetadata.fieldNames();
+        
+while (fieldIterator.hasNext()) \{
+    String field = fieldIterator.next();
+    JsonNode value = documentMetadata.get(field);
+    System.out.println(field + " = " + value);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

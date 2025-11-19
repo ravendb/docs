@@ -1,0 +1,201 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)  
+
+</Admonition>
+## Order by index-field value
+
+* Use `order_by` or `order_by_descending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session
+    # Query the index
+    .query_index_type(Products_ByUnitsInStock, Products_ByUnitsInStock.IndexEntry)
+    # Apply filtering (optional)
+    .where_greater_than("UnitsInStock", 10)
+    # Call 'order_by_descending', pass the index-field by which to order the results
+    .order_by_descending("UnitsInStock").of_type(Product)
+)
+
+# Results will be sorted by the 'UnitsInStock' value in descending order,
+# with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Products_ByUnitsInStock(AbstractIndexCreationTask):
+
+    class IndexEntry:
+        def __init__(self, units_in_stock: int = None):
+            self.units_in_stock = units_in_stock
+
+        # Handle different casing
+        @classmethod
+        def from_json(cls, json_dict: Dict[str, Any]):
+            return cls(json_dict["UnitsInStock"])
+
+    def __init__(self):
+        super().__init__()
+        self.map = "from p in products select new { UnitsInStock = p.UnitsInStock }"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+**Ordering Type**:
+
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
+
+* E.g., in the above example, ordering by `UnitsInStock` will result in `OrderingType.Int`
+  because that property data type is an integer.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) 
+  for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching.mdx), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
+
+* **When querying such index**, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Products_BySearchName(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, name: str = None, name_for_sorting: str = None):
+            # Index-field 'Name' will be configured below for full-text search
+            self.name = name
+
+            # Index-field 'NameForSorting' will be used for ordering query results
+            self.name_for_sorting = name_for_sorting
+
+        @classmethod
+        def from_json(cls, json_dict: Dict[str, Any]):
+            return cls(json_dict["Name"], json_dict["NameForSorting"])
+
+    def __init__(self):
+        super().__init__()
+        # Both index-fields are assigned the same content (The 'Name' from the document)
+        self.map = "from p in products select new {Name = p.Name, NameForSorting = p.Name}"
+
+        # Configure only the 'Name' index-field for FTS
+        self._index("Name", FieldIndexing.SEARCH)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session
+    # Query the index
+    .query_index_type(Products_BySearchName, Products_BySearchName.IndexEntry)
+    # Call 'search':
+    # Pass the index-field that was configured for FTS and the term to search for.
+    # Here we search for terms that start with "ch" within index-field 'Name'.
+    .search("Name", "ch*")
+    # Call 'order_by':
+    # Pass the other index-field by which to order the results.
+    .order_by("NameForSorting").of_type(Product)
+)
+# Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+# we get the following order:
+# =========================================================================================
+
+# "Chai"
+# "Chang"
+# "Chartreuse verte"
+# "Chef Anton's Cajun Seasoning"
+# "Chef Anton's Gumbo Mix"
+# "Chocolade"
+# "Jack's New England Clam Chowder"
+# "Pâté chinois"
+# "Teatime Chocolate Biscuits"
+
+# While ordering by the searchable 'Name' field would have produced the following order:
+# ======================================================================================
+
+# "Chai"
+# "Chang"
+# "Chartreuse verte"
+# "Chef Anton's Cajun Seasoning"
+# "Pâté chinois"
+# "Chocolade"
+# "Teatime Chocolate Biscuits"
+# "Chef Anton's Gumbo Mix"
+# "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the **same** as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
+
+
+
+

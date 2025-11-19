@@ -1,0 +1,122 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+RavenDB has an indexing mechanism built upon the Lucene engine which has a great suggestions feature. This capability allows a significant improvement of search functionalities enhancing the overall user experience of the application.
+
+Let's consider an example where the users have the option to look for products by their name. The index and query would appear as follows:
+
+<TabItem value="suggestions_1" label="suggestions_1">
+<CodeBlock language="java">
+{`public class Products_ByName extends AbstractIndexCreationTask \{
+    public Products_ByName() \{
+        map = "from product in docs.Products " +
+            "select new " +
+            "\{ " +
+            "  product.Name " +
+            "\} ";
+
+        index("Name", FieldIndexing.SEARCH); // (optional) splitting name into multiple tokens
+        suggestion("Name");// configuring suggestions
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="suggestions_2" label="suggestions_2">
+<CodeBlock language="java">
+{`Product product = session
+    .query(Product.class, Products_ByName.class)
+    .search("Name", "chaig")
+    .firstOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+
+If our database has `Northwind` samples deployed then it will not return any results. However, we can ask RavenDB for help:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`Map<String, SuggestionResult> suggestionResult = session
+    .query(Product.class, Products_ByName.class)
+    .suggestUsing(builder -> builder.byField("Name", "chaig"))
+    .execute();
+
+System.out.println("Did you mean?");
+
+for (String suggestion : suggestionResult.get("Name").getSuggestions()) {
+    System.out.println("\\t" + suggestion);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByName' 
+select suggest('Name', 'chaig')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+It will produce these suggestions:
+
+    Did you mean?
+        chang
+        chai
+
+<Admonition type="note" title="Client API" id="client-api" href="#client-api">
+
+You can read more about suggestions in our [Client API](../../client-api/session/querying/how-to-work-with-suggestions.mdx) article. 
+
+</Admonition>
+
+## Suggest Over Multiple Words
+
+RavenDB allows you to perform a suggestion query over multiple words.
+
+<TabItem value="query_suggestion_over_multiple_words" label="query_suggestion_over_multiple_words">
+<CodeBlock language="java">
+{`SuggestionOptions options = new SuggestionOptions();
+options.setAccuracy(0.4f);
+options.setPageSize(5);
+options.setDistance(StringDistanceTypes.JARO_WINKLER);
+options.setSortMode(SuggestionSortMode.POPULARITY);
+
+Map<String, SuggestionResult> resultsByMultipleWords = session
+    .query(Product.class, Products_ByName.class)
+    .suggestUsing(builder ->
+        builder.byField("Name", new String[]\{"chaig", "tof"\})
+            .withOptions(options))
+    .execute();
+
+System.out.println("Did you mean?");
+
+for (String suggestion : resultsByMultipleWords.get("Name").getSuggestions()) \{
+    System.out.println("\\t" + suggestion);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This will produce the following results:
+
+    Did you mean?
+        chai
+        chang
+        chartreuse
+        chef
+        tofu
+
+## Remarks
+
+<Admonition type="warning" title="Increased indexing time" id="increased-indexing-time" href="#increased-indexing-time">
+
+Indexes with turned on suggestions tend to use a lot more CPU power than other indexes. This can impact indexing speed (querying is not impacted).
+
+</Admonition>
+
+

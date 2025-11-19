@@ -1,0 +1,39 @@
+---
+title: "Stream Time Series Data"
+hide_table_of_contents: true
+sidebar_label: Streaming Time Series
+sidebar_position: 7
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import StreamTimeseriesCsharp from './_stream-timeseries-csharp.mdx';
+import StreamTimeseriesJava from './_stream-timeseries-java.mdx';
+
+export const supportedLanguages = ["csharp", "java"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <StreamTimeseriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <StreamTimeseriesJava />
+</LanguageContent>
+
+
+<!---
+### Document Extensions
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+- [Get Time Series Entries](../../../document-extensions/timeseries/client-api/session/get/get-entries)
+
+### Client API
+- [How To Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+
+
+-->

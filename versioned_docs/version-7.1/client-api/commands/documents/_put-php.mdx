@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
+
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="put_sample" label="put_sample">
+<CodeBlock language="php">
+{`// Create a new document
+$doc = new Category();
+$doc->setName("My category");
+$doc->setDescription("My category description");
+
+// Create metadata on the document
+$docInfo = new DocumentInfo();
+$docInfo->setCollection("Categories");
+
+// Convert your entity to a BlittableJsonReaderObject
+$jsonDoc = $session->advanced()->getEntityToJson()->convertEntityToJson($doc, $docInfo);
+
+// The Put command (parameters are document ID, changeVector check is null, the document to store)
+$command = new PutDocumentCommand("categories/999", null, $jsonDoc);
+// RequestExecutor sends the command to the server
+$session->advanced()->getRequestExecutor()->execute($command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="put_interface" label="put_interface">
+<CodeBlock language="php">
+{`PutDocumentCommand(string $idOrCopy, ?string $changeVector, array $document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **idOrCopy** | `string` | Unique ID under which document will be stored |
+| **changeVector** | `string` (optional) | Entity changeVector, used for concurrency checks (`None` to skip check) |
+| **document** | `array` | The document to store |
+
+
+
+

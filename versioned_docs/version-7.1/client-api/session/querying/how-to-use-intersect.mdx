@@ -1,0 +1,50 @@
+---
+title: "Using Intersect"
+hide_table_of_contents: true
+sidebar_label: Using Intersect
+sidebar_position: 14
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToUseIntersectCsharp from './_how-to-use-intersect-csharp.mdx';
+import HowToUseIntersectJava from './_how-to-use-intersect-java.mdx';
+import HowToUseIntersectPython from './_how-to-use-intersect-python.mdx';
+import HowToUseIntersectPhp from './_how-to-use-intersect-php.mdx';
+import HowToUseIntersectNodejs from './_how-to-use-intersect-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToUseIntersectCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToUseIntersectJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToUseIntersectPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToUseIntersectPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToUseIntersectNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+- [Intersection](../../../indexes/querying/intersection)
+
+
+-->

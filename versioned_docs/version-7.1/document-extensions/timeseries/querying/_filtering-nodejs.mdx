@@ -1,0 +1,268 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to retrieve,
+  you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* For an overview of the available time series queries, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview.mdx#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM 
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM 
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Value' clause to filter by the value
+        where Value > 75
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview.mdx#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Tag' clause to filter entries by the tag string content
+        where Tag == 'watches/fitbit'
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Retrieve only entries where the tag string content is one of several options
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// Retrieve only entries where the tag string content is one of several options
+
+const optionalTags = ["watches/apple", "watches/samsung", "watches/xiaomi"];
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Tag in' clause to filter by various tag options
+        where Tag in ($optionalTags)
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("optionalTags", optionalTags);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview.mdx#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+const tsQueryText = \`
+    from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where <property>' to filter entries by the properties of the loaded document
+        where employeeDoc.Title == "Sales Manager"\`;
+
+const query = session.query({ collection: "companies" })
+    .whereEquals("Address.Country", "USA")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+const rql = \`
+    from Companies
+    where Address.Country == 'USA'
+    select timeseries (
+        from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where <property>' to filter entries by the properties of the loaded document 
+        where employeeDoc.Title == 'Sales Manager'
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

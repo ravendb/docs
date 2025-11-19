@@ -1,0 +1,42 @@
+---
+title: "Include Time Series with Raw Queries"
+hide_table_of_contents: true
+sidebar_label: With Raw Queries
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WithRawQueriesCsharp from './_with-raw-queries-csharp.mdx';
+import WithRawQueriesNodejs from './_with-raw-queries-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WithRawQueriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WithRawQueriesNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

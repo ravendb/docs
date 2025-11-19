@@ -1,0 +1,49 @@
+---
+title: "Configure Conflict Revisions Operation"
+hide_table_of_contents: true
+sidebar_label: Configure Conflict Revisions
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ConflictRevisionsConfigurationCsharp from './_conflict-revisions-configuration-csharp.mdx';
+import ConflictRevisionsConfigurationPhp from './_conflict-revisions-configuration-php.mdx';
+import ConflictRevisionsConfigurationNodejs from './_conflict-revisions-configuration-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ConflictRevisionsConfigurationCsharp />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ConflictRevisionsConfigurationPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ConflictRevisionsConfigurationNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+- [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)
+
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+
+### Studio
+- [Conflicting Document Defaults](../../../../studio/database/settings/document-revisions#editing-the-conflicting-document-defaults)
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+
+
+-->

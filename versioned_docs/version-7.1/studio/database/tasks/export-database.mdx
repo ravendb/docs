@@ -1,0 +1,126 @@
+---
+title: "Export Database to a .ravendbdump file"
+hide_table_of_contents: true
+sidebar_label: Export Database
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Export Database to a .ravendbdump file
+<Admonition type="note" title="">
+
+* Use the **Export Database** view to export data from your database to a `.ravendbdump` file.  
+
+* `.ravendbdump` is RavenDB's format for exporting/importing a database, with backward compatibility 
+  between RavenDB versions.  
+
+* On a sharded database, data can be exported from all shards 
+  into a `.ravendbdump` file.  
+  Read about exporting data from a sharded database in the 
+  [section dedicated to this operation](../../../sharding/import-and-export.mdx#export).  
+
+* In this page:
+   * [Export Database View](../../../studio/database/tasks/export-database.mdx#export-database-view)  
+   * [Advanced Export Options](../../../studio/database/tasks/export-database.mdx#advanced-export-options)  
+
+</Admonition>
+## Export Database View
+
+The Export Database view allows you to select the data you want to export 
+and export it to a `.ravendbdump` file.  
+
+![Export Database View](./assets/export-database-studio-view.png)
+
+1. **Export Database View**  
+   Click to open the Export Database view.  
+2. **Documents and Extensions**  
+   Select the document entities you want to export.  
+    * [Attachments](../../../document-extensions/attachments/what-are-attachments.mdx)  
+    * [Counters](../../../document-extensions/counters/overview.mdx)  
+    * [Time Series](../../../document-extensions/timeseries/overview.mdx)  
+    * [Revisions](../../../document-extensions/revisions/overview.mdx)  
+3. **Cluster Entities**  
+   Select the cluster entities you want to export.  
+    * [Indexes](../../../indexes/what-are-indexes.mdx)  
+      You can remove [Analyzers](../../../indexes/using-analyzers.mdx) from exported indexes.  
+    * [Identities](../../../client-api/document-identifiers/working-with-document-identifiers.mdx)  
+    * [Compare Exchange](../../../client-api/operations/compare-exchange/overview.mdx)  
+    * [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)  
+    * [Configuration and Ongoing Tasks](../../../studio/database/tasks/import-data/import-from-ravendb.mdx#customize-configuration-and-ongoing-tasks)  
+4. **Include Artificial Documents**  
+   Toggle on to export [Artificial Documents](../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents).  
+5. **Include Conflicts**  
+   Toggle on to export [Conflicts](../../../studio/database/documents/conflicts-view.mdx).  
+6. **Encrypt exported file**  
+   Toggle on to encrypt the exported `.ravendbdump` file.  
+   When enabled, you'll be able to provide the encryption key that will be used.  
+   please **store the key in a safe place** so you can provide it when importing 
+   the stored file to decrypt the data.  
+
+      ![Provide Encryption Key](./assets/export-encryption-key.png)
+
+7. **Advanced**  
+   Click to display [advanced export settings](../../../studio/database/tasks/export-database.mdx#advanced-export-options).  
+8. **Export Database**  
+   Click to export the selected data to a `.ravendbdump` file.  
+
+
+
+## Advanced Export Options
+
+![Display Advanced Options](./assets/export-display-advanced-settings.png)
+
+Click to display the advanced export options.  
+![Advanced Export Options](./assets/export-advanced-settings.png)
+
+1. **Export all collections**  
+   **Disable** to select the collections you want to export,  
+   or keep **Enabled** to export all collections.  
+
+     ![Export collections](./assets/export-database-advanced-collections.png)
+
+       * Use the **Filter** bar to display the collection whose name includes the specified string.  
+
+2. **Use Transform script**  
+   Toggle on to enter a custom JavaScript that will be executed over each exported document.  
+
+     ![Transform Script](./assets/export-database-advanced-transfrom-script.png)
+
+       * Sample transform javascript: 
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var id = doc['@metadata']['@id'];
+if (id === 'orders/999')
+throw 'skip'; // filter-out
+`}
+</CodeBlock>
+</TabItem>
+
+3. **Customize Configuration and Ongoing Tasks**  
+   Toggle on to choose the components to export more specifically.  
+
+     ![Figure 6. Advanced Export Options - Customize Configuration and Ongoing Tasks](./assets/export-database-advanced-configuration.png)
+
+4. **Export Command**  
+   Click to create a **PowerShell**, **Cmd** or **Bash** command.  
+   Running the command you created from the selected command line window will export your data 
+   as defined by your settings.  
+
+      ![PowerShell Command](./assets/export-command-powershell.png)
+
+       **A**. Click the **Export Command** button and select the command line to prepare a command.  
+       **B**. Click to copy the created export command to the clipboard.  
+
+5. **Close Advanced**  
+   Click to close the advanced export options view.  
+6. **Export Database**  
+   Click to export the selected data by your settings to a `.ravendbdump` file.  
+
+
+

@@ -1,0 +1,35 @@
+---
+title: "How to Get Tracked Entities"
+hide_table_of_contents: true
+sidebar_label: ...get tracked entities
+sidebar_position: 12
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetTrackedEntitiesCsharp from './_get-tracked-entities-csharp.mdx';
+import GetTrackedEntitiesNodejs from './_get-tracked-entities-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetTrackedEntitiesCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetTrackedEntitiesNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a session and how does it work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [Evict entity from session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

@@ -1,0 +1,50 @@
+---
+title: "Time Series: JavaScript Support"
+hide_table_of_contents: true
+sidebar_label: JavaScript Support
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import JavascriptSupportCsharp from './_javascript-support-csharp.mdx';
+import JavascriptSupportNodejs from './_javascript-support-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <JavascriptSupportCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <JavascriptSupportNodejs />
+</LanguageContent>
+
+
+<!---
+### Javascript
+- [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine)
+
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+
+### Patching Time Series
+- [Patching in a Session](../../../document-extensions/timeseries/client-api/session/patch)
+- [Patching Operation](../../../document-extensions/timeseries/client-api/operations/patch#patchoperation)
+- [Patch By Query Operation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)
+
+### Querying and Indexing
+- [Time Series Querying](../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

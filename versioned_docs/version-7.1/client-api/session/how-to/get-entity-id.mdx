@@ -1,0 +1,46 @@
+---
+title: "Session: How to Get Entity ID"
+hide_table_of_contents: true
+sidebar_label: ...get entity id
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetEntityIdCsharp from './_get-entity-id-csharp.mdx';
+import GetEntityIdJava from './_get-entity-id-java.mdx';
+import GetEntityIdNodejs from './_get-entity-id-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetEntityIdCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetEntityIdJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetEntityIdNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../client-api/configuration/identifier-generation/type-specific)
+- [Working with document identifiers](../../document-identifiers/working-with-document-identifiers)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../server/kb/document-identifier-generation)
+- [Working with Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../client-api/configuration/identifier-generation/type-specific)
+
+
+-->

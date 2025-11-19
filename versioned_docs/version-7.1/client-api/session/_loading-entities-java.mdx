@@ -1,0 +1,396 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+There are several methods with many overloads that allow users to download documents 
+from the database and convert them to entities. This article will cover the following 
+methods:  
+
+- [Load](../../client-api/session/loading-entities.mdx#load)
+- [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+- [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+- [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+- [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+- [Stream](../../client-api/session/loading-entities.mdx#stream)
+- [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+
+</Admonition>
+## Load
+
+The most basic way to load a single entity is to use one of the `load` methods.
+
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="java">
+{`<T> T load(Class<T> clazz, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | Identifier of a document that will be loaded. |
+
+| Return Value | |
+| ------------- | ----- |
+| T | Instance of `T` or `null` if a document with a given ID does not exist. |
+
+### Example
+
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported.
+</Admonition>
+
+
+
+## Load with Includes
+
+When there is a 'relationship' between documents, those documents can be loaded in a 
+single request call using the `include + load` methods. Learn more in 
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+See also [including counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters) 
+and [including time series](../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="java">
+{`ILoaderWithInclude include(String path);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, Collection<String> ids);
+
+<TResult> TResult load(Class<TResult> clazz, String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **path** | `String` | Path in documents in which the server should look for 'referenced' documents. |
+| **ids** | `String` | Ids to load. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `ILoaderWithInclude` | The `include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
+
+### Example I
+
+We can use this code to also load an employee which made the order.
+
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="java">
+{`// loading 'products/1'
+// including document found in 'supplier' property
+Product product = session
+    .include("Supplier")
+    .load(Product.class, "products/1");
+
+Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Load - multiple entities
+
+To load multiple entities at once, use one of the following `load` overloads.
+
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
+<CodeBlock language="java">
+{`<TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
+
+<TResult> Map<String, TResult> load(Class<TResult> clazz, Collection<String> ids);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **ids** | Collection&lt;String&gt; or String... | Multiple document identifiers to load |
+
+| Return Value | |
+| ------------- | ----- |
+| Map&lt;String, T&gt; | Instance of Map which maps document identifiers to `T` or `null` if a document with given ID doesn't exist. |
+
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="java">
+{`Map<String, Employee> employees
+    = session.load(Employee.class,
+    "employees/1", "employees/2", "employees/3");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## LoadStartingWith
+
+To load multiple entities that contain a common prefix, use the `loadStartingWith` method from the `advanced` session operations.
+
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
+<CodeBlock language="java">
+{`<T> T[] loadStartingWith(Class<T> clazz, String idPrefix);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude);
+
+<T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude, String startAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | String |  prefix for which the documents should be returned  |
+| **matches** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **exclude** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | String | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+
+| Return Value | |
+| ------------- | ----- |
+| T[] | Array of entities matching given parameters. |
+
+### Example I
+
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="java">
+{`// return up to 128 entities with Id that starts with 'employees'
+Employee[] result = session
+    .advanced()
+    .loadStartingWith(Employee.class, "employees/", null, 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="java">
+{`// return up to 128 entities with Id that starts with 'employees/'
+// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
+Employee[] result = session
+    .advanced()
+    .loadStartingWith(Employee.class, "employees/", "1*|2*", 0, 128);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ConditionalLoad
+
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
+
+In other words, this method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The method is accessible from the `session.advanced()` operations.  
+
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="java">
+{`<T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **clazz** | `Class<T>` | The class of a document to be loaded. |
+| **id** | `String` | The identifier of a document to be loaded. |
+| **changeVector** | `String` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type                                       | Description                                                                                                                                                                  |
+|---------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ConditionalLoadResult&lt;T&gt; `(Class<T>, String ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector. <br/> If the change vectors match, the method returns `default` as the entity, and the current change vector. <br/> If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+
+    String changeVector;
+    User user = new User("Bob");
+
+    session.store(User.class, "users/1");
+    session.saveChanges();
+
+    changeVector = session.advanced().getChangeVectorFor(user);
+\}
+
+User user = new User("Bob");
+String changeVector = "a";
+
+try (IDocumentSession session = store.openSession()) \{
+    // New session which does not track our User entity
+
+    // The given change vector matches
+    // the server-side change vector
+    // Does not load the document
+    ConditionalLoadResult<User> result1 = session.advanced()
+        .conditionalLoad(User.class, "users/1", changeVector);
+
+    // Modify the document
+    user.setName("Bob Smith");
+    session.store(user);
+    session.saveChanges();
+
+    // Change vectors do not match
+    // Loads the document
+    ConditionalLoadResult<User> result2 = session.advanced()
+        .conditionalLoad(User.class, "users/1", changeVector);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Stream
+
+Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
+
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize);
+
+<T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize, String startAfter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **startsWith** | `String` | prefix for which documents should be streamed |
+| **matches** | `String` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `String` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **streamQueryStats** | `Reference streamQueryStats (out parameter)` | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator&lt;StreamResult&lt;T&gt;&gt; | Iterator with entities. |
+| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+
+
+### Example I
+
+Stream documents for a ID prefix:
+
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="java">
+{`try (CloseableIterator<StreamResult<Employee>> iterator =
+         session.advanced().stream(Employee.class, "employees/")) \{
+    while (iterator.hasNext()) \{
+        StreamResult<Employee> employee = iterator.next();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example 2
+
+Fetch documents for a ID prefix directly into a stream:
+
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="java">
+{`ByteArrayOutputStream baos = new ByteArrayOutputStream();
+session
+    .advanced()
+    .loadStartingWithIntoStream("employees/", baos);
+`}
+</CodeBlock>
+</TabItem>
+
+### Remarks
+
+<Admonition type="info" title="">
+Entities loaded using `stream` will be transient (not attached to session).
+</Admonition>
+
+
+
+## IsLoaded
+
+Use the `isLoaded` method from the `advanced` session operations
+To check if an entity is attached to a session (e.g. because it's been 
+previously loaded).  
+  
+<Admonition type="note" title="">
+`isLoaded` checks if an attempt to load a document has been already made 
+during the current session, and returns `true` even if such an attemp was 
+made and failed.  
+If, for example, the `load` method was used to load `employees/3` during 
+this session and failed because the document has been previously deleted, 
+`isLoaded` will still return `true` for `employees/3` for the remainder 
+of the session just because of the attempt to load it.  
+</Admonition>
+
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="java">
+{`boolean isLoaded(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | Entity ID for which the check should be performed. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if an entity with a given ID is loaded. |
+
+### Example
+
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="java">
+{`boolean isLoaded = session.advanced().isLoaded("employees/1");//false
+Employee employee = session.load(Employee.class, "employees/1");
+isLoaded = session.advanced().isLoaded("employees/1"); // true
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+

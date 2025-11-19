@@ -1,0 +1,41 @@
+---
+title: "Session: Subscribing to Session Events"
+hide_table_of_contents: true
+sidebar_label: ...subscribe to events
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SubscribeToEventsCsharp from './_subscribe-to-events-csharp.mdx';
+import SubscribeToEventsJava from './_subscribe-to-events-java.mdx';
+import SubscribeToEventsNodejs from './_subscribe-to-events-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SubscribeToEventsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SubscribeToEventsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SubscribeToEventsNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Store
+- [What is a Document Store](../../../client-api/what-is-a-document-store)
+
+### Session
+- [What is a Session and How does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Subscribe to Store Events](../../../client-api/how-to/subscribe-to-store-events)
+
+
+-->

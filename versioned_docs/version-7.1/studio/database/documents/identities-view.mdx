@@ -1,0 +1,114 @@
+---
+title: "Identities View"
+hide_table_of_contents: true
+sidebar_label: Identities View
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+<Admonition type="note" title="">
+
+* This view lists the __latest identities values__ that are set on the server for all collections where  
+  an identity was created.
+
+* You can edit existing values or set a new identity value for a collection.
+
+* Identities values can also be managed from the Client API, see [seed identity operation](../../../client-api/operations/maintenance/identities/seed-identity.mdx).
+
+* In this article:  
+  * [What is an identity](../../../studio/database/documents/identities-view.mdx#what-is-an-identity)  
+  * [The latest values](../../../studio/database/documents/identities-view.mdx#the-latest-values)  
+  * [Edit identity value](../../../studio/database/documents/identities-view.mdx#edit-identity-value)  
+  * [Add new identity](../../../studio/database/documents/identities-view.mdx#add-new-identity)  
+
+</Admonition>
+
+## What is an identity
+
+* An identity is a document ID generated automatically by the server when you provide an ID that ends with  
+  a pipe symbol (`|`) during document creation.
+
+* The identity ID is guaranteed to be **unique** in the database, across all nodes within the Database Group.
+
+* The identity document ID (e.g., `employees/5`) is composed of:
+  * The collection name (_empolyees_)  
+  * A separator chrarcter, slash (`/`) by default.  
+    You can customize this character, see [Customizing the separator character](../../../server/kb/document-identifier-generation.mdx#customizing-the-separator-character).  
+  * A numeric value that is incremented per collection whenever a new identity document is created,  
+    (_5_ in this example).
+
+* Learn more about identities in:
+  * [Document identifier generation - Identity ID](../../../server/kb/document-identifier-generation.mdx#identity-id)
+  * [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
+
+## The latest values
+
+![Figure 1. Latest identities values](./assets/identities-view-1.png)
+
+1. Navigate to **Documents &gt; Identities**
+
+2. **Document ID Prefix**  
+
+   * This string is the collection name for which an identity value was set:  
+     either [via this view](../../../studio/database/documents/identities-view.mdx#add-new-identity), 
+     or by creating a document with an identity ID as described [here](../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities).  
+   
+   * The string that shows is the collection name + a pipe suffix.  
+
+3. **Latest Value**  
+
+   * This is the latest identity value currently set on the server for the collection.
+   
+   * <Admonition type="info" title="">
+      In this example - the latest value for the _employees_ collection is `3`.  
+      This means the next document that will be created with an identity in the _employees_ collection  
+      will get the ID `employees/4`.
+     </Admonition> 
+
+4. Click to edit the latest value.
+
+5. Click to add a new identity value for another collection.
+
+## Edit identity value
+
+![Figure 2. Edit identity value](./assets/identities-view-2.png)
+
+1. **Prefix**  
+   The collection for which the value is edited.
+
+2. **Value**  
+
+   * Enter a number that will be set as the latest identity value for this collection.
+
+   * In this example we set the value to `25`.  
+     This means the next document that will be created with an identity in the _employees_ collection  
+     will get the ID `employees/26`.
+
+3. Click 'Update' to set the new value.
+
+## Add new identity
+
+![Figure 3. Add new identity](./assets/identities-view-3.png)
+
+1. **Prefix**  
+
+   * Enter the collection name for which to set an identity value.  
+     (Using the pipe suffix here is optional, e.g. can enter "users" or "users|").
+   
+   * Note: you can specify a collection name that has not been created yet.  
+
+2. **Value**
+
+    * Enter a number that will be set as the latest identity value for this collection.
+
+    * In this example we set the value to `99`.  
+      This means the next document that will be created with an identity in the _users_ collection  
+      will get the ID `users/100`.
+
+3. Click 'Create' to create the new identity.

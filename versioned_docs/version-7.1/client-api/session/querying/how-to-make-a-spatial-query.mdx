@@ -1,0 +1,53 @@
+---
+title: "Make a Spatial Query"
+hide_table_of_contents: true
+sidebar_label: Make a Spatial Query
+sidebar_position: 9
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToMakeASpatialQueryCsharp from './_how-to-make-a-spatial-query-csharp.mdx';
+import HowToMakeASpatialQueryJava from './_how-to-make-a-spatial-query-java.mdx';
+import HowToMakeASpatialQueryPython from './_how-to-make-a-spatial-query-python.mdx';
+import HowToMakeASpatialQueryNodejs from './_how-to-make-a-spatial-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToMakeASpatialQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToMakeASpatialQueryJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToMakeASpatialQueryPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToMakeASpatialQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../indexes/querying/query-index)
+
+### Indexes
+- [Indexing Spatial Data](../../../indexes/indexing-spatial-data)
+- [Query spatial index](../../../indexes/querying/spatial)
+
+### Studio
+- [Spatial query view](../../../studio/database/queries/spatial-queries-map-view)
+
+### Querying
+- [Spatial](../../../indexes/querying/spatial)
+
+
+-->
