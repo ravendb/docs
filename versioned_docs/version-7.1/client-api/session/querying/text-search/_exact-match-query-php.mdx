@@ -1,0 +1,120 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* By default, when querying strings the string comparisons are **case-insensitive**.
+
+* To perform a **case-sensitive** search, use the `whereEquals` or `whereNotEquals` 
+  method with its `exact` parameter set to `true`.  
+
+* When making a dynamic query with an exact match, the auto-index created by the server indexes 
+  the text of the document field using the [default exact analyzer](../../../../indexes/using-analyzers.mdx#ravendb) 
+  where the casing of the original text is unchanged.
+
+* In this page:
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match)
+    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-query.mdx#query-with-exact-match---nested-object)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-query.mdx#syntax)
+
+</Admonition>
+## Query with exact match
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`// load all entities from 'Employees' collection
+// where FirstName field's contents equals 'Robert' (case sensitive match)
+
+/** @var array<Employee> $employees */
+$employees = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert", true)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where exact(FirstName == "Robert")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/ByExact(FirstName)`.
+
+* This auto-index will contain the following two index-fields:
+  
+  * `FirstName`  
+    Contains terms with the text from the indexed document field 'FirstName'.  
+    Text is lower-cased and not tokenized.  
+
+  * `exact(FirstName)`  
+    Contain terms with the original text from the indexed document field 'FirstName'.  
+    Casing is exactly the same as in the original text, and the text is not tokenized.  
+    Making an exact query targets these terms to find matching documents.
+
+
+
+## Query with exact match - nested object
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`// return all entities from the 'Orders' collection which contain 
+// at least one order line with 'Teatime Chocolate Biscuits' product
+// perform a case-sensitive match
+/** @var array<Order> $orders */
+$orders = $session->query(Order::class)
+    ->whereEquals("Lines[].ProductName", "Teatime Chocolate Biscuits", true)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders" 
+where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="php">
+{`function whereEquals(string $fieldName, $value, bool $exact = false): DocumentQueryInterface;
+function whereNotEquals(string $fieldName, $value, bool $exact = false): DocumentQueryInterface;
+
+// ... rest of where methods
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                       | Description |
+|---------------|----------------------------|-------------|
+| **$fieldName** | `string` | Search-field name |
+| **$value** | `string` | string to match with match condition |
+| **$exact** | `bool` | `false` - search is case-insensitive<br/>`true` - search is case-sensitive |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `DocumentQueryInterface` | Query results |
+
+
+
+

@@ -1,0 +1,598 @@
+---
+title: "Backup"
+hide_table_of_contents: true
+sidebar_label: Backup
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Backup
+<Admonition type="note" title="">
+
+* Create a backup of your data to secure it or to preserve a copy of it in its current state for future reference.  
+
+* RavenDB's Backup task is an [Ongoing-Task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx) 
+  designed to run periodically on a pre-defined schedule.  
+  You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler.mdx#export) 
+  or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#initiate-immediate-backup-execution).  
+
+* On a [sharded](../../../../sharding/overview.mdx) database, a single backup task 
+  is defined by the user for all shards, and RavenDB automatically defines 
+  sub-tasks that create backups per shard.  
+  Read about backups on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/backup.mdx).  
+
+* In this page:  
+  * [Backup Types](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-types)  
+      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup)  
+      * [Snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot)  
+  * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-scope)  
+      * [Full Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#full-backup)  
+      * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#incremental-backup)  
+  * [Backup to Local and Remote Destinations](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations)  
+  * [Backup Retention Policy](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-retention-policy)  
+  * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#server-wide-backup)  
+  * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#initiate-immediate-backup-execution)  
+  * [Delay Backup Execution](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#delay-backup-execution)  
+  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#recommended-precautions)  
+
+</Admonition>
+## Backup Types
+
+#### Logical-Backup  
+
+* Data, index definitions, and ongoing tasks are backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview.mdx#compression) 
+  JSON files.  
+
+* During the restoration, RavenDB -  
+   * Re-inserts all data into the database.  
+   * Inserts the saved index definitions. To save space, Logical Backup stores index definitions only.  
+     After restoration, the dataset is scanned and indexed according to the definitions.
+
+* See [backup contents](../../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
+
+* Restoration time is, therefore, **slower** than when restoring from a Snapshot.  
+
+* The backup file size is **significantly smaller** than that of a Snapshot.
+
+* In addition to full data backup, Logical Backups can be defined as **incremental**, 
+  saving any changes made since the previous backup.
+
+* The following code sample defines a full-backup task that would be executed every 3 hours:  
+<TabItem value="logical_full_backup_every_3_hours" label="logical_full_backup_every_3_hours">
+<CodeBlock language="csharp">
+{`var config = new PeriodicBackupConfiguration
+\{
+    LocalSettings = new LocalSettings
+    \{
+        // Local path for storing the backup
+        FolderPath = @"E:\\RavenBackups"
+    \},
+
+    // Full Backup period (Cron expression for a 3-hours period)
+    FullBackupFrequency = "0 */3 * * *",
+
+    // Set backup type to Logical-Backup
+    BackupType = BackupType.Backup,
+
+    // Task Name
+    Name = "fullBackupTask",
+\};
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await docStore.Maintenance.SendAsync(operation);
+`}
+</CodeBlock>
+</TabItem>
+  Note the usage of [Cron scheduling](https://en.wikipedia.org/wiki/Cron) when setting backup frequency.  
+#### Snapshot
+
+* A Snapshot is a compressed binary duplication of the full database structure. 
+  This includes the data file and the journals at a given point in time.  
+  Therefore it includes fully built indexes and ongoing tasks.  
+  See [file structure](../../../../server/storage/directory-structure.mdx#storage--directory-structure) for more info.
+
+* Snapshot backups are available only for **Enterprise subscribers**.  
+
+* During restoration -
+   * Re-inserting data into the database is not required.  
+   * Re-indexing is not required.  
+
+* See [backup contents](../../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
+
+* Restoration is typically **faster** than that of a logical backup.  
+
+* Snapshot size is typically **larger** than that of a logical backup.  
+
+* If Incremental backups are created for a Snapshot-type backup: 
+   * The first backup will be a full Snapshot.
+   * The following backups will be Incremental. 
+   * [Incremental backups](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#incremental-backup) 
+     have different storage contents than Snapshots. 
+
+* Code Sample:  
+<TabItem value="backup_type_snapshot" label="backup_type_snapshot">
+<CodeBlock language="csharp">
+{`// Set backup type to Snapshot
+BackupType = BackupType.Snapshot,
+`}
+</CodeBlock>
+</TabItem>
+#### Basic Comparison Between a Logical-Backup and a Snapshot:
+
+  | Backup Type | Stored Format | Restoration speed | Size |
+  | ------ | ------ | --- | --- |
+  | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup |
+  | Logical backup |  Compressed Textual Data - JSON | Slow | Smaller than a Snapshot |
+
+<Admonition type="note" title="Make sure your server has access to the local backup path." id="make-sure-your-server-has-access-to-the-local-backup-path" href="#make-sure-your-server-has-access-to-the-local-backup-path">
+Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.  
+</Admonition>
+
+
+
+
+
+## Backup Scope
+
+As described in [the overview](../../../../server/ongoing-tasks/backup-overview.mdx#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
+
+* A Backup Task can be defined to create either a full data backup or an incremental backup.  
+  In both cases, the backup task adds a single new backup file to the backup folder each time it runs, 
+  leaving the existing backup files untouched.  
+#### Full-Backup
+
+
+* **File Format**  
+  A full-backup is a **compressed JSON file** if it is a logical 
+  backup, or a **compressed binary file** if it is a snapshot.  
+
+* **Task Ownership**  
+  There are no preliminary conditions for creating a full-backup. 
+  Any node can perform this task.  
+
+* **To run a full-backup**  
+  Set `FullBackupFrequency`.
+<TabItem value="backup_full_backup" label="backup_full_backup">
+<CodeBlock language="csharp">
+{`// A full-backup will run every 6-hours (Cron expression)
+FullBackupFrequency = "0 */6 * * *",
+`}
+</CodeBlock>
+</TabItem>
+#### Incremental-Backup
+
+* **File Format and Notes About Contents**  
+  * An incremental-backup file is **always in JSON format**. 
+    It is so even when the full-backup it is associated with is a binary snapshot.  
+  * An incremental backup stores index definitions (not full indexes).  
+    After the backup is restored, the dataset is re-indexed according to the index definitions.
+    <Admonition type="note" title="">
+    This initial re-indexing can be time-consuming on large datasets.
+    </Admonition>
+  * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector.mdx).
+
+
+* **Task Ownership**  
+  The ownership of an incremental-backup task is granted dynamically by the cluster.  
+  An incremental-backup can be executed only by the same node that currently owns the backup task.  
+  A node can run an incremental-backup, only after running full-backup at least once.  
+
+* **To run an incremental-backup**  
+  Set `IncrementalBackupFrequency`.  
+
+<TabItem value="backup_incremental_backup" label="backup_incremental_backup">
+<CodeBlock language="csharp">
+{`// An incremental-backup will run every 20 minutes (Cron expression)
+IncrementalBackupFrequency = "*/20 * * * *",
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Backup to Local and Remote Destinations
+
+* Backups can be made **locally**, as well as to a set of **remote locations** including -  
+   * A network path  
+   * An FTP/SFTP target  
+   * Azure Storage  
+   * Amazon S3  
+   * Amazon Glacier  
+   * Google Cloud  
+
+* RavenDB will store data in a local folder first, and transfer it to the remote 
+  destination from the local one.  
+   * If a local folder hasn't been specified, RavenDB will use the 
+     temp folder defined in its [Storage.TempPath](../../../../server/configuration/storage-configuration.mdx#storagetemppath) setting.  
+     If _Storage.TempPath_ is not defined, the temporary files 
+     will be created at the same location as the data file.  
+     In either case, the folder will be used as temporary storage 
+     and the local files deleted from it when the transfer is completed.  
+   * If a local folder **has** been specified, RavenDB will use it both 
+     for the transfer and as its permanent local backup location.  
+
+* Local and Remote Destinations Settings Code Sample:  
+<TabItem value="backup_remote_destinations" label="backup_remote_destinations">
+<CodeBlock language="csharp">
+{`var config = new PeriodicBackupConfiguration
+\{
+    LocalSettings = new LocalSettings
+    \{
+        FolderPath = @"E:\\RavenBackups"
+    \},
+
+    // FTP Backup settings
+    FtpSettings = new FtpSettings
+    \{
+        Url = "192.168.10.4:8080",
+        UserName = "John",
+        Password = "JohnDoe38"
+    \},
+
+    // Azure Backup settings
+    AzureSettings = new AzureSettings
+    \{
+        StorageContainer = "storageContainer",
+        RemoteFolderName = "remoteFolder",
+        AccountName = "JohnAccount",
+        AccountKey = "key"
+    \},
+
+    // Amazon S3 bucket settings.
+    S3Settings = new S3Settings
+    \{
+        AwsAccessKey = "your access key here",
+        AwsSecretKey = "your secret key here",
+        AwsRegionName = "OPTIONAL",
+        BucketName = "john-bucket"
+    \},
+
+    // Amazon Glacier settings.
+    GlacierSettings = new GlacierSettings
+    \{
+        AwsAccessKey = "your access key here",
+        AwsSecretKey = "your secret key here",
+        AwsRegionName = "OPTIONAL",
+        VaultName = "john-glacier",
+        RemoteFolderName = "john/backups"
+    \},
+
+    // Google Cloud Backup settings
+    GoogleCloudSettings = new GoogleCloudSettings
+    \{
+        BucketName = "RavenBucket",
+        RemoteFolderName = "BackupFolder",
+        GoogleCredentialsJson = "GoogleCredentialsJson"
+    \}
+
+\};
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await docStore.Maintenance.SendAsync(operation);
+`}
+</CodeBlock>
+</TabItem>
+ 
+ <Admonition type="info" title="Tip" id="tip" href="#tip">
+    Use AWS [IAM](https://aws.amazon.com/iam/) (Identity and Access Management) 
+    to restrict users access while they create backups.  
+    E.g. -  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Version": "2012-10-17",
+    "Statement": [
+        \{
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::BUCKET_NAME/*"
+        \},
+        \{
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "arn:aws:s3:::BUCKET_NAME"
+        \}
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+ </Admonition>
+
+
+## Backup Retention Policy
+
+By default, backups are stored indefinitely. The backup retention policy sets 
+a retention period, at the end of which backups are deleted. Deletion occurs 
+during the next scheduled backup task after the end of the retention period.  
+
+Full backups and their corresponding incremental backups are deleted together. 
+Before a full backup can be deleted, all of its incremental backups must be older 
+than the retention period as well.  
+
+The retention policy is a property of `PeriodicBackupConfiguration`:  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class RetentionPolicy
+\{
+    public bool Disabled \{ get; set; \}
+    public TimeSpan? MinimumBackupAgeToKeep \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **Disabled** | `bool` | If set to `true`, backups will be retained indefinitely, and not deleted. Default: false |
+| **MinimumBackupAgeToKeep** | `TimeSpan` | The minimum amount of time to retain a backup. Once a backup is older than this time span, it will be deleted during the next scheduled backup task. |
+
+#### Example
+
+<TabItem value="backup_retentionpolicy" label="backup_retentionpolicy">
+<CodeBlock language="csharp">
+{`var config = new PeriodicBackupConfiguration
+\{
+    RetentionPolicy = new RetentionPolicy
+    \{
+        Disabled = false, // False is the default value
+        MinimumBackupAgeToKeep = TimeSpan.FromDays(100)
+    \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Server-Wide Backup
+
+You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time.  
+Individual databases can be excluded from the backup. Learn more in [Studio: Server-Wide Backup](../../../../studio/server/server-wide-backup.mdx).  
+
+Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations).  
+
+#### Examples  
+
+A server-wide backup configuration that sets multiple destinations:  
+
+<TabItem value="server_wide_backup_configuration" label="server_wide_backup_configuration">
+<CodeBlock language="csharp">
+{`var putConfiguration = new ServerWideBackupConfiguration
+\{
+    Disabled = true,
+    FullBackupFrequency = "0 2 * * 0",
+    IncrementalBackupFrequency = "0 2 * * 1",
+
+    //Backups are stored in this folder first, and sent from it to remote destinations (if defined).
+    LocalSettings = new LocalSettings
+    \{
+        FolderPath = "localFolderPath"
+    \},
+
+    //FTP settings
+    FtpSettings = new FtpSettings
+    \{
+        Url = "ftps://localhost/john/backups"
+    \},
+
+    //Microsoft Azure settings.
+    AzureSettings = new AzureSettings
+    \{
+        AccountKey = "Azure Account Key",
+        AccountName = "Azure Account Name",
+        RemoteFolderName = "john/backups"
+    \},
+
+    //Amazon S3 bucket settings.
+    S3Settings = new S3Settings
+    \{
+        AwsAccessKey = "Amazon S3 Access Key",
+        AwsSecretKey = "Amazon S3 Secret Key",
+        AwsRegionName = "Amazon S3 Region Name",
+        BucketName = "john-bucket",
+        RemoteFolderName = "john/backups"
+    \},
+
+    //Amazon Glacier settings.
+    GlacierSettings = new GlacierSettings
+    \{
+        AwsAccessKey = "Amazon Glacier Access Key",
+        AwsSecretKey = "Amazon Glacier Secret Key",
+        AwsRegionName = "Amazon Glacier Region Name",
+        VaultName = "john-glacier",
+        RemoteFolderName = "john/backups"
+    \},
+
+    //Google Cloud Backup settings
+    GoogleCloudSettings = new GoogleCloudSettings
+    \{
+        BucketName = "Google Cloud Bucket",
+        RemoteFolderName = "BackupFolder",
+        GoogleCredentialsJson = "GoogleCredentialsJson"
+    \}
+\};
+
+var result = await store.Maintenance.Server.SendAsync(new PutServerWideBackupConfigurationOperation(putConfiguration));
+var serverWideConfiguration = await store.Maintenance.Server.SendAsync(new GetServerWideBackupConfigurationOperation(result.Name));
+`}
+</CodeBlock>
+</TabItem>  
+
+A server-wide backup configuration that excludes several databases:  
+
+<TabItem value="database_exclude_configuration" label="database_exclude_configuration">
+<CodeBlock language="csharp">
+{`var DBExcludeConfiguration = new ServerWideBackupConfiguration
+\{
+    Disabled = true,
+    FullBackupFrequency = "0 2 * * 0",
+    LocalSettings = new LocalSettings
+    \{
+        FolderPath = "localFolderPath"
+    \},
+    ExcludedDatabases = new []
+    \{
+        "DB1",
+        "DB2",
+        "DB5",
+        "NorthWind",
+        "DB2_Jun_2018_Backup"
+    \}
+\};
+
+var result = await store.Maintenance.Server.SendAsync(new PutServerWideBackupConfigurationOperation(DBExcludeConfiguration));
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Initiate Immediate Backup Execution
+
+The Backup task is [executed periodically](../../../../server/ongoing-tasks/backup-overview.mdx#backup--restore-overview) on its predefined schedule.  
+If needed, it can also be executed immediately.  
+
+* To execute an existing backup task immediately, use the `StartBackupOperation` method.  
+<TabItem value="initiate_immediate_backup_execution" label="initiate_immediate_backup_execution">
+<CodeBlock language="csharp">
+{`// Create a new backup task
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await docStore.Maintenance.SendAsync(operation);
+
+// Run the backup task immediately
+await docStore.Maintenance.SendAsync(new StartBackupOperation(true, result.TaskId));
+`}
+</CodeBlock>
+</TabItem>
+
+  * Definition:
+<TabItem value="start_backup_operation" label="start_backup_operation">
+<CodeBlock language="csharp">
+{`public StartBackupOperation(bool isFullBackup, long taskId)
+`}
+</CodeBlock>
+</TabItem>
+
+  * Parameters:
+    
+        | Parameter | Type | Functionality |
+        | ------ | ------ | ------ |
+        | isFullBackup | bool | true: full-backup <br/> false: incremental-backup |
+        | taskId |  long | The existing backup task ID |
+
+
+* To verify the execution results, use the `GetPeriodicBackupStatusOperation` method.  
+<TabItem value="get_backup_execution_results" label="get_backup_execution_results">
+<CodeBlock language="csharp">
+{`// Pass the the ongoing backup task ID to GetPeriodicBackupStatusOperation  
+var backupStatus = new GetPeriodicBackupStatusOperation(result.TaskId);
+`}
+</CodeBlock>
+</TabItem>
+   * Return Value:  
+     The **PeriodicBackupStatus** object returned from **GetPeriodicBackupStatusOperation** is filled with the previously configured backup parameters and with the execution results.  
+<TabItem value="periodic_backup_status" label="periodic_backup_status">
+<CodeBlock language="csharp">
+{`public class PeriodicBackupStatus : IDatabaseTaskStatus
+\{
+    public long TaskId \{ get; set; \}
+    public BackupType BackupType \{ get; set; \}
+    public bool IsFull \{ get; set; \}
+    public string NodeTag \{ get; set; \}
+    public DateTime? LastFullBackup \{ get; set; \}
+    public DateTime? LastIncrementalBackup \{ get; set; \}
+    public DateTime? LastFullBackupInternal \{ get; set; \}
+    public DateTime? LastIncrementalBackupInternal \{ get; set; \}
+    public LocalBackup LocalBackup \{ get; set; \}
+    public UploadToS3 UploadToS3;
+    public UploadToGlacier UploadToGlacier;
+    public UploadToAzure UploadToAzure;
+    public UploadToFtp UploadToFtp;
+    public long? LastEtag \{ get; set; \}
+    public LastRaftIndex LastRaftIndex \{ get; set; \}
+    public string FolderName \{ get; set; \}
+    public long? DurationInMs \{ get; set; \}
+    public long Version \{ get; set; \}
+    public Error Error \{ get; set; \}
+    public long? LastOperationId \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Delay Backup Execution
+
+The execution of a periodic backup task can be **delayed** for a given time period 
+via [Studio](../../../../studio/database/tasks/backup-task.mdx#delaying-a-running-backup-task) 
+or using the `DelayBackupOperation` store operation.  
+
+* Definition:  
+<TabItem value="DelayBackupOperationDefinition" label="DelayBackupOperationDefinition">
+<CodeBlock language="csharp">
+{`public DelayBackupOperation(long runningBackupTaskId, TimeSpan duration)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+    
+      | Parameter | Type | Functionality |
+      | ------ | ------ | ------ |
+      | runningBackupTaskId| `long` | Backup task ID |
+      | duration | `TimeSpan` | Delay Duration |
+
+* Example:  
+  To delay the execution of a running backup task pass `DelayBackupOperation` 
+  the task's ID and the delay duration.  
+<TabItem value="DelayBackupOperation" label="DelayBackupOperation">
+<CodeBlock language="csharp">
+{`// Get backup operation info
+var taskBackupInfo = await docStore.Maintenance.SendAsync(
+        new GetOngoingTaskInfoOperation(taskId, OngoingTaskType.Backup)) as OngoingTaskBackup;
+
+// Set delay duration to 10 minutes from now
+var delayDuration = TimeSpan.FromMinutes(10);
+var delayUntil = DateTime.Now + delayDuration;
+
+// Delay backup operation
+await docStore.Maintenance.SendAsync(
+        new DelayBackupOperation(taskBackupInfo.OnGoingBackup.RunningBackupTaskId, delayDuration));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Recommended Precautions
+<Admonition type="warning" title="">
+
+* **Don't substitute RavenDB's backup procedures with simply copying the database folder yourself**.  
+  The official backup procedure satisfies needs that simply copying the database folder does not. E.g. -  
+   * A reliable point-in-time freeze of backed up data.  
+   * An ACIDity of backed-up data, to keep its independence during restoration.  
+     
+* **Remove old backup files regularly**.  
+  Set the [backup retention policy](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-retention-policy)
+  to remove unneeded backup files so that they don't build up.  
+  While setting how many days to keep your backups, consider how much of a recent database history you would like to have access to.  
+
+* **Store backup files in a location other than your database's**.  
+  Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  
+  Make sure that this local folder is not where your database is stored, as a precaution to keep vacant database storage space.  
+     
+</Admonition>
+
+

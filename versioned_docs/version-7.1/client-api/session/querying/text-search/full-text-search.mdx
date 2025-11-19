@@ -1,0 +1,48 @@
+---
+title: "Full-Text Search"
+hide_table_of_contents: true
+sidebar_label: Full-Text Search
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import FullTextSearchCsharp from './_full-text-search-csharp.mdx';
+import FullTextSearchPython from './_full-text-search-python.mdx';
+import FullTextSearchPhp from './_full-text-search-php.mdx';
+import FullTextSearchNodejs from './_full-text-search-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <FullTextSearchCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <FullTextSearchPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <FullTextSearchPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <FullTextSearchNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)
+- [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-query)
+
+### Indexes
+- [Analyzers](../../../../indexes/using-analyzers)
+- [Full-text search with index](../../../../indexes/querying/searching)
+
+
+-->

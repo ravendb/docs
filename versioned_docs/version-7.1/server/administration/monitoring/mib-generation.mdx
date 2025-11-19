@@ -1,0 +1,60 @@
+---
+title: "Monitoring: MIB generation and usage"
+hide_table_of_contents: true
+sidebar_label: MIB generation
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Monitoring: MIB generation and usage
+<Admonition type="note" title="">
+
+* RavenDB allows you to generate a MIB (Management Information Base) file that contains 
+  a structured collection of SNMP OIDs.  
+
+* The MIB can be generated through RavenDB's `/monitoring/snmp/mib` endpoint, 
+  and fine-tuned using flags.  
+
+* The created MIB can be used by monitoring tools to extract RavenDB metrics via SNMP.  
+
+* In this page:  
+   * [Generating a MIB](../../../server/administration/monitoring/mib-generation.mdx#generating-a-mib)  
+      * [MIB generation endpoint](../../../server/administration/monitoring/mib-generation.mdx#mib-generation-endpoint)  
+      * [Fine-tune the OIDs list](../../../server/administration/monitoring/mib-generation.mdx#fine-tune-the-oids-list)  
+
+</Admonition>
+## Generating a MIB
+
+### MIB generation endpoint
+
+To generate a MIB, use RavenDB's HTTP `/monitoring/snmp/mib` GET endpoint.  
+You can inspect this endpoint using your browser to download a text file with 
+RavenDB's OIDs, or connect it with a monitoring tool to utilize these OIDs.  
+
+To use the endpoint, add its path to RavenDB's address (including RavenDB's port number).  
+
+- To generate a MIB for RavenDB's live test server, for example. use:  
+  [http://live-test.ravendb.net/monitoring/snmp/mib](http://live-test.ravendb.net/monitoring/snmp/mib)  
+### Fine-tune the OIDs list
+
+By default, the generated MIB includes **server** metrics OIDs. You can fine-tune 
+it to include the OIDs range your are interested in. Available options are:  
+
+* `includeServer` - Include or exclude OIDs with **server** metrics.  
+* `includeCluster` - Include or exclude OIDs with **cluster** metrics.  
+* `includeDatabases` - Include or exclude OIDs with **databases** metrics.  
+
+#### Examples:
+To include **databases** metrics OIDs, for example, you can use the `includeDatabases` flag this way:  
+[http://live-test.ravendb.net/monitoring/snmp/mib?includeDatabases=true](http://live-test.ravendb.net/monitoring/snmp/mib?includeDatabases=true)  
+Or to exclude **server** metrics OIDs use the **includeServer** flag like so:  
+[http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false](http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false)  
+
+
+

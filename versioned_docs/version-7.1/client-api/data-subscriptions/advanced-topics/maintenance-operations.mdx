@@ -1,0 +1,44 @@
+---
+title: "Data Subscriptions: Maintenance Operations"
+hide_table_of_contents: true
+sidebar_label: Maintenance Operations
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import MaintenanceOperationsCsharp from './_maintenance-operations-csharp.mdx';
+import MaintenanceOperationsJava from './_maintenance-operations-java.mdx';
+import MaintenanceOperationsNodejs from './_maintenance-operations-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <MaintenanceOperationsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <MaintenanceOperationsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <MaintenanceOperationsNodejs />
+</LanguageContent>
+
+
+<!---
+### Data Subscriptions
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+
+-->

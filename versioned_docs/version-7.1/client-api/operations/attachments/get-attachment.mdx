@@ -1,0 +1,39 @@
+---
+title: "Get Attachment Operation"
+hide_table_of_contents: true
+sidebar_label: Get Attachment
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetAttachmentCsharp from './_get-attachment-csharp.mdx';
+import GetAttachmentJava from './_get-attachment-java.mdx';
+import GetAttachmentNodejs from './_get-attachment-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetAttachmentCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetAttachmentJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetAttachmentNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+- [Put attachment](../../../client-api/operations/attachments/put-attachment)
+- [Delete attachment](../../../client-api/operations/attachments/delete-attachment)
+
+
+-->

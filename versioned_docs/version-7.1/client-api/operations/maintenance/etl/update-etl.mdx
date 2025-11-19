@@ -1,0 +1,37 @@
+---
+title: "Operations: How to Update ETL"
+hide_table_of_contents: true
+sidebar_label: Update ETL
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UpdateEtlCsharp from './_update-etl-csharp.mdx';
+import UpdateEtlJava from './_update-etl-java.mdx';
+
+export const supportedLanguages = ["csharp", "java"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <UpdateEtlCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <UpdateEtlJava />
+</LanguageContent>
+
+
+<!---
+### ETL
+- [Basics](../../../../server/ongoing-tasks/etl/basics)
+- [RavenDB ETL](../../../../server/ongoing-tasks/etl/raven)
+- [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
+
+### Studio
+- [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+
+
+-->

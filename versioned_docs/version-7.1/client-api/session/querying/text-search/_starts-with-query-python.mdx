@@ -1,0 +1,102 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can query for documents having a field that starts with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* In this page:
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#negate-startswith)
+
+</Admonition>
+## StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Call 'where_starts_with' on the field
+    # Pass the prefix to search by
+    .where_starts_with("Name", "Ch")
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## StartsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Pass 'exact=True' to search for an EXACT prefix match
+    .where_starts_with("Name", "Ch", exact=True)
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Negate next statement
+    .not_()
+    # Call 'where_starts_with' on the field
+    # Pass the prefix to search by
+    .where_starts_with("Name", "Ch")
+)
+# Results will contain only Product documents having a 'Name' field
+# that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

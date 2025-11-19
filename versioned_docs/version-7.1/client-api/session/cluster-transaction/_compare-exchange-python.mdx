@@ -1,0 +1,167 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview.mdx#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)**.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#delete-compare-exchange)
+</Admonition>
+## Create compare-exchange
+
+<Admonition type="note" title="">
+#### Example
+
+<TabItem value="new_compare_exchange_sync" label="new_compare_exchange_sync">
+<CodeBlock language="python">
+{`# The session must be first opened with cluster-wide mode
+session.advanced.cluster_transaction.create_compare_exchange_value(
+    key="Best NoSQL Transactional Database",
+    item="RavenDB",
+)
+
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+* `save_changes()` throws a `ConcurrencyException` if the key already exists.
+* A `RuntimeError` exception is thrown if the session was Not opened as **cluster-wide**.
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Syntax
+
+<TabItem value="methods_3_sync" label="methods_3_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.create_compare_exchange_value(key, value)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description                                                |
+|--------------|----------|------------------------------------------------------------|
+| **key**      | `str`    | The key for the compare-exchange item to be created<br/>This string can be up to 512 bytes |
+| **value**    | `T`      | The value to associate with this key                       |
+
+| Return Value              | Description                               |
+|---------------------------|-------------------------------------------|
+| `CompareExchangeValue[T]` | The new compare-exchange item is returned |
+</Admonition>
+
+<Admonition type="note" title="">
+#### The CompareExchangeValue
+
+| Parameters   | Type     | Description                                                         |
+|--------------|----------|---------------------------------------------------------------------|
+| **key**      | `str`    | The compare-exchange item key<br/>This string can be up to 512 bytes |
+| **value**    | `T`      | The value associated with the key                                   |
+| **index**    | `int`    | Index for concurrency control                                       |
+
+</Admonition>
+
+
+## Get compare-exchange
+
+<Admonition type="note" title="">
+#### Get single value
+
+<TabItem value="methods_1_sync" label="methods_1_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.get_compare_exchange_value(key)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description         |
+|--------------|----------|---------------------|
+| **key**      | `str`    | The key for a compare-exchange item whose value is requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `CompareExchangeValue[T]`| The requested value<br/>If the key doesn't exist the value associated with it will be `None` |
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Get multiple values
+
+<TabItem value="methods_2_sync" label="methods_2_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.get_compare_exchange_values(keys)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type        | Description               |
+|--------------|-------------|---------------------------|
+| **keys**     | `List[str]` | An array of compare-exchange keys whose values are requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Dict[str, CompareExchangeValue[T]]` | A dictionary of requested values<br/>If a key doesn't exist the value associated with it will be `None` |
+</Admonition>
+
+<Admonition type="note" title="">
+#### Get compare-exchange lazily
+
+<TabItem value="methods_sync_lazy_1" label="methods_sync_lazy_1">
+<CodeBlock language="python">
+{`# Single value
+session.advanced.cluster_transaction.lazily.get_compare_exchange_value(key)
+
+# Multiple values
+session.advanced.cluster_transaction.lazily.get_compare_exchange_values(keys)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters  | Type        | Description               |
+|-------------|-------------|---------------------------|
+| **key**     | `str`       | The key for a compare-exchange item whose value is requested |
+| **keys**    | `List[str]` | An array of compare-exchange keys whose values are requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Lazy[CompareExchangeValue[T]]`| The requested value<br/>If the key doesn't exist the value associated with it will be `None` |
+| `Lazy[Dict[str, CompareExchangeValue[T]]]` | A dictionary of requested values<br/>If a key doesn't exist the value associated with it will be `None` |
+</Admonition>
+
+
+## Delete compare-exchange
+
+To delete a compare exchange item, use either of the following methods.  
+
+<Admonition type="note" title="">
+
+<TabItem value="methods_4_sync" label="methods_4_sync">
+<CodeBlock language="python">
+{`# Delete by key & index
+session.advanced.cluster_transaction.delete_compare_exchange_value(key, index)
+
+# Delete by compare-exchange item
+session.advanced.cluster_transaction.delete_compare_exchange_value(item)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                      | Description                                     |
+|------------|---------------------------|-------------------------------------------------|
+| **key**    | `str`                     | The key for the compare-exchange item to delete |
+| **index**  | `int`                     | The index for the compare-exchange item to delete   |
+| **item**   | `CompareExchangeValue[T]` | The compare-exchange item to delete             |
+
+</Admonition>
+
+
+

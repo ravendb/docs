@@ -1,0 +1,138 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `countersFor.get` to retrieve the value of a **single Counter**,  
+  or `countersFor.getAll` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values.mdx#get-a-single-counter)  
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values.mdx#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values.mdx#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values.mdx#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
+
+</Admonition>
+## Get a single Counter's value
+
+<Admonition type="note" title="">
+
+<a id="get-usage"/> **Get usage**:  
+
+* Open a session
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `countersFor.get` to retrieve the current value of a single Counter.
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="get-example"/> **Get example**:  
+
+<TabItem value="getCounter" label="getCounter">
+<CodeBlock language="js">
+{`// Open a session
+const session = documentStore.openSession();        
+       
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Call \`get\` to retrieve a Counter's value
+const daysLeft = await documentCounters.get("DaysLeftForSale");
+
+console.log("Days Left For Sale: " + daysLeft);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="get-syntax"/> **Get syntax**:  
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`get(counter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type   | Description    |
+|------------|--------|----------------|
+| `counter`  | string | Counter's name |
+
+| Return Type                    | Description                                                                                  |
+|--------------------------------|----------------------------------------------------------------------------------------------|
+| `Promise<number>`              | A `Promise` resolving to the Counter's current value, or to `null` if counter doesn't exist. |
+
+</Admonition>
+
+
+## Get all Counters of a document
+
+<Admonition type="note" title="">
+
+<a id="getall-usage"/> **GetAll usage**: 
+
+* Open a session.  
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="getall-example"/> **GetAll example**:  
+
+<TabItem value="getAllCounters" label="getAllCounters">
+<CodeBlock language="js">
+{`// Open a session
+const session = documentStore.openSession();
+
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Call \`getAll\` to retrieve all of the document's Counters' names and values
+const allCounters = await documentCounters.getAll();
+
+for (var counter in allCounters) \{
+    console.log("counter name: " + counter + ", counter value: " + allCounters[counter]);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="getall-syntax"/> **GetAll syntax**:  
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`getAll(counters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type       | Description                                                              |
+|-------------------|--------------------------------------------------------------------------|
+| `Promise<object>` | A `Promise` resolving to a dictionary of counter values by counter names |
+
+</Admonition>
+
+
+

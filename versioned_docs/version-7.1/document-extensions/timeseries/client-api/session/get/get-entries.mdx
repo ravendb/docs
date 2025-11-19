@@ -1,0 +1,52 @@
+---
+title: "Get Time Series Entries"
+hide_table_of_contents: true
+sidebar_label: Get Entries
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetEntriesCsharp from './_get-entries-csharp.mdx';
+import GetEntriesPython from './_get-entries-python.mdx';
+import GetEntriesPhp from './_get-entries-php.mdx';
+import GetEntriesNodejs from './_get-entries-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetEntriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetEntriesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetEntriesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetEntriesNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

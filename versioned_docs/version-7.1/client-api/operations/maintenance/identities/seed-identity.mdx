@@ -1,0 +1,52 @@
+---
+title: "Seed Identity Operation"
+hide_table_of_contents: true
+sidebar_label: Seed Identity
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SeedIdentityCsharp from './_seed-identity-csharp.mdx';
+import SeedIdentityPython from './_seed-identity-python.mdx';
+import SeedIdentityPhp from './_seed-identity-php.mdx';
+import SeedIdentityNodejs from './_seed-identity-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SeedIdentityCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SeedIdentityPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <SeedIdentityPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SeedIdentityNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [Get identities](../../../../client-api/operations/maintenance/identities/get-identities)
+- [Increment next identity](../../../../client-api/operations/maintenance/identities/increment-next-identity)
+
+
+-->

@@ -1,0 +1,20 @@
+---
+title: "Glossary: RavenDB Cluster"
+hide_table_of_contents: true
+sidebar_label: RavenDB Cluster
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: RavenDB Cluster
+
+### What is a cluster?
+A group of RavenDB servers which may or may not be on the same machine. 
+This group of servers allows cluster-wide operations which execute on each node, using Raft to coordinate the execution.
+If there is a leader, the cluster guarantees that at least (n/2) + 1 nodes would have the operation executed on them. (consensus quorum)

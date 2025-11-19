@@ -1,0 +1,74 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `DeleteIndexErrorsOperation` to delete indexing errors.  
+
+* The operation will be executed only on the server node that is defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+
+* Deleting the errors will only **clear the index errors**.  
+  An index with an 'Error state' will Not be set back to 'Normal state'.  
+
+* To just get index errors see [get index errors](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx). 
+
+* In this page:
+    * [Delete errors from all indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-all-indexes)
+    * [Delete errors from specific indexes](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#delete-errors-from-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx#syntax)
+
+</Admonition>
+## Delete errors from all indexes
+
+<TabItem value="delete_errors_all" label="delete_errors_all">
+<CodeBlock language="python">
+{`# Define the delete index errors operation
+delete_index_errors_op = DeleteIndexErrorsOperation()
+
+# Execute the operation by passing it to maintenance.send
+store.maintenance.send(delete_index_errors_op)
+
+# All errors from ALL indexes are deleted
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Delete errors from specific indexes
+
+<TabItem value="delete_errors_specific" label="delete_errors_specific">
+<CodeBlock language="python">
+{`# Define the delete index errors operation from specific indexes
+delete_index_errors_op = DeleteIndexErrorsOperation(["Orders/Totals"])
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if any of the specified indexes do not exist
+store.maintenance.send(delete_index_errors_op)
+
+# Only errors from index "Orders/Totals" are deleted
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`class DeleteIndexErrorsOperation(VoidMaintenanceOperation):
+    def __init__(self, index_names: List[str] = None): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **index_names** | `List[str]` | List of index names to delete errors from.<br/>An exception is thrown if any of the specified indexes does not exist. |
+
+
+
+

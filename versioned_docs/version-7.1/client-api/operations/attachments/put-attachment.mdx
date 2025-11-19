@@ -1,0 +1,39 @@
+---
+title: "Put Attachment Operation"
+hide_table_of_contents: true
+sidebar_label: Put Attachment
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PutAttachmentCsharp from './_put-attachment-csharp.mdx';
+import PutAttachmentJava from './_put-attachment-java.mdx';
+import PutAttachmentNodejs from './_put-attachment-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PutAttachmentCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PutAttachmentJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PutAttachmentNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+- [Get attachment](../../../client-api/operations/attachments/get-attachment)
+- [Delete attachment](../../../client-api/operations/attachments/delete-attachment)
+
+
+-->

@@ -1,0 +1,58 @@
+---
+title: "Project Index Query Results"
+hide_table_of_contents: true
+sidebar_label: Projections
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ProjectionsCsharp from './_projections-csharp.mdx';
+import ProjectionsJava from './_projections-java.mdx';
+import ProjectionsPython from './_projections-python.mdx';
+import ProjectionsPhp from './_projections-php.mdx';
+import ProjectionsNodejs from './_projections-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ProjectionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ProjectionsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ProjectionsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ProjectionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ProjectionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Querying
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results)
+- [Basics](../../indexes/querying/query-index)
+
+### Indexes
+- [Querying an index](../../indexes/querying/query-index)
+
+### Knowledge Base
+- [JavaScript engine](../../server/kb/javascript-engine)
+
+### Client API
+- [How to Project Query Results](../../client-api/session/querying/how-to-project-query-results)
+
+
+-->

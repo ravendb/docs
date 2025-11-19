@@ -1,0 +1,47 @@
+---
+title: "Query for suggestions with index"
+hide_table_of_contents: true
+sidebar_label: Suggestions
+sidebar_position: 10
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SuggestionsJava from './_suggestions-java.mdx';
+import SuggestionsCsharp from './_suggestions-csharp.mdx';
+import SuggestionsPython from './_suggestions-python.mdx';
+import SuggestionsPhp from './_suggestions-php.mdx';
+import SuggestionsNodejs from './_suggestions-nodejs.mdx';
+
+export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="java">
+   <SuggestionsJava />
+</LanguageContent>
+
+<LanguageContent language="csharp">
+   <SuggestionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SuggestionsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <SuggestionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SuggestionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Query for Suggestions](../../client-api/session/querying/how-to-work-with-suggestions)
+
+
+-->

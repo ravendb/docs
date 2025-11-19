@@ -1,0 +1,53 @@
+---
+title: "Delete Index Operation"
+hide_table_of_contents: true
+sidebar_label: Delete Index
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteIndexCsharp from './_delete-index-csharp.mdx';
+import DeleteIndexJava from './_delete-index-java.mdx';
+import DeleteIndexPython from './_delete-index-python.mdx';
+import DeleteIndexPhp from './_delete-index-php.mdx';
+import DeleteIndexNodejs from './_delete-index-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteIndexCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <DeleteIndexJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DeleteIndexPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DeleteIndexPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteIndexNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Index](../../../../client-api/operations/maintenance/indexes/get-index)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+
+
+-->

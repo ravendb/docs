@@ -1,0 +1,56 @@
+---
+title: "Customize Query"
+hide_table_of_contents: true
+sidebar_label: Customize Query
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToCustomizeQueryCsharp from './_how-to-customize-query-csharp.mdx';
+import HowToCustomizeQueryJava from './_how-to-customize-query-java.mdx';
+import HowToCustomizeQueryPython from './_how-to-customize-query-python.mdx';
+import HowToCustomizeQueryPhp from './_how-to-customize-query-php.mdx';
+import HowToCustomizeQueryNodejs from './_how-to-customize-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToCustomizeQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToCustomizeQueryJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToCustomizeQueryPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToCustomizeQueryPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToCustomizeQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Subscribe to Events](../../../client-api/session/how-to/subscribe-to-events)
+- [Querying: Basics](../../../indexes/querying/query-index)
+
+### Configuration
+- [Conventions](../../../client-api/configuration/conventions)
+- [Querying](../../../client-api/configuration/querying)
+
+### Indexes
+- [Stale Indexes](../../../indexes/stale-indexes)
+
+
+-->

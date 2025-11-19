@@ -1,0 +1,49 @@
+---
+title: "Exploration Queries"
+hide_table_of_contents: true
+sidebar_label: Exploration Queries
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExplorationQueriesCsharp from './_exploration-queries-csharp.mdx';
+import ExplorationQueriesPython from './_exploration-queries-python.mdx';
+import ExplorationQueriesPhp from './_exploration-queries-php.mdx';
+import ExplorationQueriesNodejs from './_exploration-queries-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExplorationQueriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ExplorationQueriesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ExplorationQueriesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExplorationQueriesNodejs />
+</LanguageContent>
+
+
+<!---
+### Querying
+- [What is RQL](../../client-api/session/querying/what-is-rql)
+- [Query](../../client-api/session/querying/how-to-query#session.query)
+- [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery)
+- [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery)
+- [Where](../../indexes/querying/filtering)
+- [Querying an Index](../../indexes/querying/query-index)
+- [Sorting](../../indexes/querying/sorting)
+- [declare](../../client-api/session/querying/what-is-rql#declare)
+
+
+-->

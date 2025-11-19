@@ -1,0 +1,37 @@
+---
+title: "Indexes: Extending Indexes"
+hide_table_of_contents: true
+sidebar_label: Extending Indexes
+sidebar_position: 28
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExtendingIndexesCsharp from './_extending-indexes-csharp.mdx';
+import ExtendingIndexesJava from './_extending-indexes-java.mdx';
+import ExtendingIndexesNodejs from './_extending-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExtendingIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ExtendingIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExtendingIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../indexes/what-are-indexes)
+
+
+-->

@@ -1,0 +1,292 @@
+﻿---
+title: "Compare-Exchange: Start"
+hide_table_of_contents: true
+sidebar_label: "Start"
+sidebar_position: 0
+---
+
+import Card from "@site/src/components/Common/Card";
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import CardWithIcon from "@site/src/components/Common/CardWithIcon";
+import Admonition from '@theme/Admonition';
+
+<Admonition type="note" title="">
+
+* Compare-exchange is a RavenDB feature for storing atomic, cluster-wide **key-value pairs** where each key is a globally unique identifier in the database.
+  Items are versioned and managed at the cluster level.
+  
+* Compare-exchange provides a built-in consensus mechanism ideal for safe coordination and global consistency  
+  in distributed environments, allowing you to:
+  * Enforce global uniqueness (e.g., prevent duplicate usernames or emails).
+  * Assign work to a single client or reserve a resource once.
+  * Handle concurrency safely, without external services or custom locking logic.
+  
+* Key Characteristics of a compare-exchange item:
+  * Cluster-wide - Visible and consistent across all nodes in the [database group](../studio/database/settings/manage-database-group).
+  * Atomic - Only one client can successfully modify an item at a time (all-or-nothing updates).
+  * Versioned - Each update increments the version, enabling conflict detection.
+  * Flexible - Values can be strings, numbers, arrays, or JSON objects.
+  * Internal - Not replicated outside the database.
+
+* On this start page, you'll find:
+  * [Technical documentation links](../compare-exchange/start#technical-documentation-links-)
+  * [RavenDB Demo links](../compare-exchange/start#ravendb-demo-links)
+  * [Related blog posts](../compare-exchange/start#related-blog-posts)
+  * [Related in-depth articles](../compare-exchange/start#related-in-depth-articles)
+  * [Sample use cases](../compare-exchange/start#sample-use-cases)
+  
+</Admonition>
+
+---
+
+## Technical documentation links ✨
+
+* [Overview](../compare-exchange/overview) 
+* [Create Compare-Exchange Items](../compare-exchange/create-cmpxchg-items)
+* [Get Compare-Exchange Item](../compare-exchange/get-cmpxchg-item)
+* [Get Compare-Exchange Items](../compare-exchange/get-cmpxchg-items)
+* [Delete Compare-Exchange Items](../compare-exchange/delete-cmpxchg-items)
+* [Update Compare-Exchange Item](../compare-exchange/update-cmpxchg-item)
+* [Include Compare-Exchange Items](../compare-exchange/include-cmpxchg-items)
+* [Indexing Compare-Exchange Values](../compare-exchange/indexing-cmpxchg-values)
+* [Compare-Exchange in Dynamic Queries](../compare-exchange/cmpxchg-in-dynamic-queries)
+* [Compare-Exchange Expiration](../compare-exchange/cmpxchg-expiration)
+* [Atomic Guards](../compare-exchange/atomic-guards)
+
+---
+
+## RavenDB Demo links
+
+<ColGrid colCount={2}>
+    <Card
+        title="Create compare-exchange item Demo"
+        description="Interactive demo showing how to create a compare‑exchange item."
+        url="../compare-exchange/create-cmpxchg-items"
+        ctaLabel="View demo" 
+        buttonVariant = "default"
+    />
+        <Card
+        title="Index compare-exchange item Demo"
+        description="Interactive demo demonstrating indexing compare‑exchange items."
+        url="https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange"
+        ctaLabel="View demo" 
+        buttonVariant = "default"
+    />
+</ColGrid>
+
+## Related blog posts
+
+<ColGrid colCount={3}>
+    <Card
+        title="Distributed compare-exchange operations with RavenDB"
+        description="How RavenDB uses compare-exchange to safely coordinate shared tasks across a distributed cluster."
+        url="https://ayende.com/blog/182948-C/distributed-compare-exchange-operations-with-ravendb"
+        ctaLabel="Read blog post" 
+        buttonVariant = "default"
+    />
+        <Card
+        title="Cluster wide ACID transactions"
+        description="Introducing RavenDB 4.1’s cluster-wide ACID transactions to ensure atomic, consistent changes across nodes."
+        url="https://ayende.com/blog/183426-C/ravendb-4-1-features-cluster-wide-acid-transactions"
+        ctaLabel="Read blog post" 
+        buttonVariant = "default"
+    />
+        <Card
+        title="Complex distributed transactions with RavenDB"
+        description="Implementing complex distributed transactions by combining documents and compare-exchange values for atomic consistency."
+        url="https://ayende.com/blog/190978-B/complex-distributed-transactions-with-ravendb"
+        ctaLabel="Read blog post" 
+        buttonVariant = "default"
+    />
+</ColGrid>
+
+## Related in-depth articles
+
+<ColGrid colCount={2}>
+    <Card
+        title="Complex distributed transactions with RavenDB"
+        description="Execute complex distributed transactions in RavenDB by coordinating documents and compare-exchange values for strong consistency."
+        url="https://ravendb.net/articles/complex-distributed-transactions-with-ravendb?utm_source=chatgpt.com"
+        ctaLabel="Read article" 
+        buttonVariant = "default"
+    />
+        <Card
+        title="Simplifying atomic cluster wide transactions"
+        description="How RavenDB 5.2 makes cluster-wide transactions simpler by auto-managing needed guards behind the scenes."
+        url="https://ravendb.net/articles/ravendb-5-2-simplifying-atomic-cluster-wide-transactions?utm_source=chatgpt.com"
+        ctaLabel="Read article" 
+        buttonVariant = "default"
+    />
+</ColGrid>
+
+---
+
+## Sample use cases
+
+<Admonition type="note" title="">
+
+### Enforce unique usernames or emails
+
+* Use compare-exchange to enforce global uniqueness in your database even under concurrent operations.  
+  For example, ensure that no two users can register with the same username or email, even if they do so simultaneously on different servers.
+  Compare-exchange guarantees that a specific value can only be claimed once across the cluster reliably and without race conditions.
+
+* ✅ Why compare-exchange?  
+      It provides a guaranteed, cluster-wide check for uniqueness.
+
+* How it works:
+  * When a user registers, the app attempts to create a compare-exchange item like   
+    (**key**: `"emails/john@example.com"`, **value**: `"users/1-A"`).
+  * Only the first attempt to claim this key succeeds.
+  * Any concurrent or repeated attempts to claim the same key fail automatically.
+
+* This makes it easy to enforce rules like:
+  * No two users can register with the same email address.
+  * No two orders can use the same external reference ID.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Claim a job or task once
+
+* Use compare-exchange to safely assign client-side jobs or tasks in a distributed system,  
+  ensuring that each task is claimed only once.
+
+* ✅ Why compare-exchange?  
+  It provides a reliable, cluster-wide locking mechanism for coordination within your database scope.
+
+* How it works:
+  * Each worker attempts to create a compare-exchange item like (**key**: `"locks/job/1234"`, **value**: `"worker-A"`).
+  * The first worker to succeed gets the job.
+  * Other workers trying to claim the same job will fail - they can back off or retry later.
+
+* This ensures:
+  * No two workers process the same job.
+  * Each job runs exactly once, even with multiple competing workers or nodes.
+
+* Also useful for:
+  * Implementing mutex-style locks between clients.
+  * Ensuring that scheduled tasks or batch jobs run only once across the cluster.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Reserve a resource  
+
+* Need to reserve a table in a restaurant app or a seat at an event?  
+  Use compare-exchange to lock the reservation and prevent double booking, even under concurrent access.
+
+* ✅ Why compare-exchange?  
+  It gives you a reliable, cluster-wide way to reserve something exactly once - no race conditions, no conflicts.
+
+* How it works:
+  * Try to create a Compare-Exchange item for the resource   
+    (e.g., **key**: `"reservations/seat/17"`, **value**: `"user/123"`).
+  * If the item doesn't exist, the reservation is successful.
+  * If it already exists, someone else claimed it - you can show an error or let the user pick another.
+
+* This pattern is useful for:
+  * Reserving seats, tables, or event slots.
+  * Assigning support engineers to incoming tickets.
+  * Allocating limited resources like promotion codes or serial numbers.
+
+* Only one client can claim the item so your reservation logic stays safe and simple, even under high load.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Prevent double processing
+
+* Use compare-exchange to make sure an operation runs only once even in a distributed setup.  
+  This is useful for avoiding things like sending the same email twice, processing the same order multiple times,  
+  or executing duplicate actions after retries.
+
+* ✅ Why compare-exchange?  
+  It acts as a once-only flag - a lightweight, atomic check to prevent duplicate processing.
+
+* How it works:
+  * Before running the operation, try to create a compare-exchange key like `processed/orders/9876`.
+  * If the key creation succeeds - run the operation.
+  * If the key already exists - skip processing. It's already been handled.
+
+* This approach is especially useful in retry scenarios, background jobs, or any flow where idempotency matters.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Run business logic only if data hasn't changed  
+
+* Use compare-exchange as a version guard to ensure the data wasn't modified while you were working on it.  
+  This is useful when applying business logic that depends on the current state of the data - like approving a request, processing a payment, or updating a workflow step.
+
+* ✅ Why compare-exchange?  
+  It helps detect changes and prevents acting on stale or outdated data.
+
+* How it works:
+  * Load the compare-exchange item that tracks the current version or state of the resource.
+  * After performing your checks and logic, attempt to update the item - but only if the version is still current.
+  * If the item was modified in the meantime, the update fails and you can abort or retry your business logic.
+
+* This pattern helps you maintain correctness and consistency in flows that involve multiple steps,  
+  long-running tasks, or user input.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Lock a document for editing  
+
+* In collaborative systems, it's common to allow only one user edit a document at a time.  
+  Use compare-exchange to create a lightweight, distributed lock on the document.
+
+* ✅ Why compare-exchange?  
+  It ensures that only one client can acquire the lock - preventing conflicting edits across users or servers.
+
+* How it works:
+  * When a user starts editing a document (e.g., `task/72`), try to create a compare-exchange item:  
+    (**key**: `"editing/task/72"`, **value**: `"user/123"`).
+  * If the item is created successfully, the user holds the lock.
+  * Other users attempting the same key will fail and can be blocked, shown a message, or put into read-only mode.
+  * When editing is done, delete the compare-exchange item to release the lock.
+
+* This is useful for:
+  * Locking tasks, issues, or shared forms during editing.
+  * Preventing data loss or conflicts from simultaneous updates.
+  * Letting users know who’s currently editing a shared resource.
+
+* Simple to implement and works seamlessly across the cluster.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Add safety to cluster-wide transactions
+
+* When using cluster-wide sessions to handle documents, RavenDB automatically creates internal compare-exchange items,
+  called [atomic guards](../compare-exchange/atomic-guards), to enforce atomic document modifications.
+  These items coordinate access and prevent conflicting writes across nodes.  
+
+* ✅ Why compare-exchange?  
+  It provides a Raft-based coordination mechanism that ensures consistency and safety during multi-node transactions.
+
+* How it works:
+  * When you store or update a document in a cluster-wide session,  
+    RavenDB creates an atomic guard to track the document’s version across the cluster.
+  * If another session modifies the document in the meantime,  
+    your transaction fails with a `ConcurrencyException`, ensuring data consistency.
+
+* This protects you from:
+  * Writing over documents that were modified by other sessions.
+  * Acting on stale data in a distributed environment.
+  * Violating ACID guarantees in multi-node clusters.
+
+* You don’t need to manage these guards manually -   
+  RavenDB handles everything automatically when you use a session in cluster-wide mode.
+
+</Admonition>

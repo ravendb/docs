@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Upon document creation, providing a collection name with a pipe symbol (`|`) 
+  will cause the server to generate an ID for the new document called an **identity**.  
+  E.g. `companies|`
+ 
+* The identity document ID is unique across the entire cluster within the database scope.  
+  It is composed of the provided collection name and an integer value that is continuously incremented.
+
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
+
+* Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
+
+<Admonition type="info" title="">
+Learn more about identities in:
+
+* [Document identifier generation - Identity ID](../../../../server/kb/document-identifier-generation.mdx#identity-id)
+* [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
+
+</Admonition>
+
+* In this page:
+
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
+
+</Admonition>
+## Get identities operation 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var session = store.OpenSession())
+{
+    // Request the server to generate an identity ID for the new document. Pass:
+    //   * The entity to store
+    //   * The collection name with a pipe (|) postfix 
+    session.Store(new Company { Name = "RavenDB" }, "companies|");
+    
+    // If this is the first identity created for this collection,
+    // and if the identity value was not customized
+    // then a document with an identity ID "companies/1" will be created
+    session.SaveChanges();
+}
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+var getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+Dictionary<string, long> identities = store.Maintenance.Send(getIdentitiesOp);
+
+// Results
+var latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create a document with an identity ID:
+// ======================================
+
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Request the server to generate an identity ID for the new document. Pass:
+    //   * The entity to store
+    //   * The collection name with a pipe (|) postfix 
+    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+    
+    // If this is the first identity created for this collection,
+    // and if the identity value was not customized
+    // then a document with an identity ID "companies/1" will be created
+    asyncSession.SaveChangesAsync();
+}
+
+// Get identities information:
+// ===========================
+
+// Define the get identities operation
+var getIdentitiesOp = new GetIdentitiesOperation();
+
+// Execute the operation by passing it to Maintenance.SendAsync
+Dictionary<string, long> identities = await store.Maintenance.SendAsync(getIdentitiesOp);
+
+// Results
+var latestIdentityValue = identities["companies|"]; // => value will be 1
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public GetIdentitiesOperation();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,54 @@
+---
+title: "Get Index Names Operation"
+hide_table_of_contents: true
+sidebar_label: Get Index Names
+sidebar_position: 15
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetIndexNamesCsharp from './_get-index-names-csharp.mdx';
+import GetIndexNamesJava from './_get-index-names-java.mdx';
+import GetIndexNamesPython from './_get-index-names-python.mdx';
+import GetIndexNamesPhp from './_get-index-names-php.mdx';
+import GetIndexNamesNodejs from './_get-index-names-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetIndexNamesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetIndexNamesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetIndexNamesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetIndexNamesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetIndexNamesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

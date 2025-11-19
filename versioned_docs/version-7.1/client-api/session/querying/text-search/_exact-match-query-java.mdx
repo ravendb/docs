@@ -1,0 +1,73 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, the `whereXXX` methods in `query` uses a case-insensitive match.
+
+To perform a case-sensitive match you should use the `exact` parameter.
+
+### Syntax
+
+<TabItem value="query_1_0" label="query_1_0">
+<CodeBlock language="java">
+{`IDocumentQuery<T> whereEquals(String fieldName, Object value, boolean exact);
+IDocumentQuery<T> whereNotEquals(String fieldName, Object value, boolean exact);
+
+// ... rest of where methods
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | String | Object field to use |
+| **value** | Object | Predicate value |
+| **exact** | boolean | Indicates if `predicate` should be matched in case-sensitive manner |
+
+### Example I - Query With Exact Match
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert' (case sensitive match)
+List<Employee> employees = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert", true)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees where exact(FirstName == 'Robert')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Query With Inner Exact Match
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// return all entities from 'Orders' collection
+// which contain at least one order line with
+// 'Singaporean Hokkien Fried Mee' product
+// perform a case-sensitive match
+List<Order> orders = session.query(Order.class)
+    .whereEquals("Lines[].ProductName", "Singaporean Hokkien Fried Mee", true)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders 
+where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

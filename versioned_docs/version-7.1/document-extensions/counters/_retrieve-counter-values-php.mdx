@@ -1,0 +1,127 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `countersFor.get` to retrieve the values of **specific counters**,  
+  or `countersFor.getAll` to retrieve the names and values of **all counters** associated with a document.
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get values of specific counters](../../document-extensions/counters/retrieve-counter-values.mdx#get-values-of-specific-counters)  
+     * [`get` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage)  
+     * [`get` example](../../document-extensions/counters/retrieve-counter-values.mdx#example)  
+     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [`getAll` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage-1)  
+     * [`getAll` example](../../document-extensions/counters/retrieve-counter-values.mdx#example-1)  
+     * [`getAll` Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax-1)  
+
+</Admonition>
+## Get values of specific counters
+
+#### `get` usage:  
+
+* Open a session
+* Create an instance of `countersFor`.
+   * Either pass `countersFor` an explicit document ID, -or-
+   * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+     e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `countersFor.get` to retrieve counter value/s.
+   * `get("CounterName")` will return a single `int` value for the specified counter.  
+   * `get(["counter1", "counter2"]` will return an array with values for all listed counters.  
+      E.g., `[ "counter1" => 1, "counter2" => 5 ]`
+#### `get` example:  
+
+<TabItem value="counters_region_Get" label="counters_region_Get">
+<CodeBlock language="php">
+{`// 1. Open a session
+$session = $docStore->openSession();
+try \{
+    // 2. pass the countersFor constructor a document ID
+    $documentCounters = $session->countersFor("products/1-C");
+
+    // 3. Use \`countersFor.get\` to retrieve a counter's value
+    $daysLeft = $documentCounters->get("DaysLeftForSale");
+
+    echo "Days Left For Sale: " . $daysLeft . PHP_EOL;
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `get` syntax:  
+
+<TabItem value="Get-definition" label="Get-definition">
+<CodeBlock language="php">
+{`public function get(string|StringList|array $counters): null|int|array;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counters` | `string` or `StringList` or `array` | Counter names |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `int`        | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### `getAll` usage: 
+
+* Open a session.  
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+* Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
+#### `getAll` example:  
+
+<TabItem value="counters_region_GetAll" label="counters_region_GetAll">
+<CodeBlock language="php">
+{`// 1. Open a session
+$session = $docStore->openSession();
+try \{
+    // 2. Pass the countersFor constructor a document ID
+    $documentCounters = $session->countersFor("products/1-C");
+
+    // 3. Use getAll to retrieve all of the document's Counters' names and values
+    $counters = $documentCounters->getAll();
+
+    // list counters' names and values
+
+    foreach ($counters as $counterKey => $counterValue)
+    \{
+        echo "counter name: " . $counterKey . ", counter value: " . $counterValue;
+    \}
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `getAll` syntax:  
+
+<TabItem value="GetAll-definition" label="GetAll-definition">
+<CodeBlock language="php">
+{`public function getAll(): array;
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type      | Description                 |
+|------------------|-----------------------------|
+| `array` | An array of Counter names and values |
+
+
+
+

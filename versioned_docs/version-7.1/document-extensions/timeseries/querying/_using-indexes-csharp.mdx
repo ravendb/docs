@@ -1,0 +1,446 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Time series index**:
+
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing.mdx) 
+      or using [Studio](../../../studio/database/indexes/create-map-index.mdx).  
+      Such an index can be queried in the same way as a regular index that indexes documents.  
+      (See [Querying an index](../../../indexes/querying/query-index.mdx)).
+    
+    * AUTO-time-series-indexes are Not generated automatically by the server when making a time series query.
+
+* **The contents of the query results**:
+
+    * Unlike a document index, where the source data are your JSON documents,  
+      the source data for a time series index are the time series entries within the documents.
+
+    * When querying a **document index**:  
+      the resulting objects are the document entities (unless results are [projected](../../../indexes/querying/projections.mdx)).
+  
+    * When querying a **time series index**:  
+      each item in the results is of the type defined by the **index-entry** in the index definition,  
+      (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). 
+      The documents themselves are not returned.
+
+* In this page:
+    * [Sample index](../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
+    * [Querying the index](../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
+        * [Query all time series entries](../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
+        * [Filter query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
+        * [Order query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
+        * [Project results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
+    * [Syntax](../../../document-extensions/timeseries/querying/using-indexes.mdx#syntax)
+
+</Admonition>
+## Sample Index
+
+* The following is a time series map-index that will be used in the query examples throughout this article.
+
+* Each **index-entry** consists of:
+  * Three index-fields obtained from the "HeartRates" time series entries: `BPM`, `Date`, and `Tag`.
+  * One index-field obtained from the time series [segment](../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `EmployeeID`.
+  * One index-field obtained from the loaded employee document: `EmployeeName`.
+
+* When querying this time series index:  
+  * The resulting items correspond to the time series entries that match the query predicate.  
+  * Each item in the results will be of type `TsIndex.IndexEntry`, which is the index-entry.  
+    Different result types may be returned when the query [projects the results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
+
+<TabItem value="sample_ts_index" label="sample_ts_index">
+<CodeBlock language="csharp">
+{`public class TsIndex : AbstractTimeSeriesIndexCreationTask<Employee>
+\{
+    // The index-entry:
+    // ================
+    public class IndexEntry
+    \{
+        // The index-fields:
+        // =================
+        public double BPM \{ get; set; \}
+        public DateTime Date \{ get; set; \}
+        public string Tag \{ get; set; \}
+        public string EmployeeID \{ get; set; \}
+        public string EmployeeName \{ get; set; \}
+    \}
+
+    public TsIndex()
+    \{
+        AddMap("HeartRates", timeSeries => 
+            from segment in timeSeries
+            from entry in segment.Entries
+            
+            let employee = LoadDocument<Employee>(segment.DocumentId)
+            
+            // Define the content of the index-fields:
+            // =======================================
+            select new IndexEntry()
+            \{
+                BPM = entry.Values[0],
+                Date = entry.Timestamp,
+                Tag = entry.Tag,
+                EmployeeID = segment.DocumentId,
+                EmployeeName = employee.FirstName + " " + employee.LastName 
+            \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Querying the index 
+ 
+#### Query all time series entries:
+
+No filtering is applied in this query.  
+Results will include ALL entries from time series "HeartRates".
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session
+         // Query the index
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Query for all entries w/o any filtering
+        .ToList();
+    
+    // Access results:
+    TsIndex.IndexEntry entryResult = results[0];
+    string employeeName = entryResult.EmployeeName;
+    double BPM = entryResult.BPM;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    List<TsIndex.IndexEntry> results = await asyncSession
+         // Query the index
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Query for all entries w/o any filtering
+        .ToListAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+         // Query the index
+        .DocumentQuery<TsIndex.IndexEntry, TsIndex>()
+         // Query for all entries w/o any filtering
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+         // Query the index for all entries w/o any filtering
+        .RawQuery<TsIndex.IndexEntry>($@"
+              from index 'TsIndex'
+         ")
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+`}
+</CodeBlock>
+</TabItem> 
+</Tabs>
+#### Filter query results:
+
+In this example, time series entries are filtered by the query.  
+The query predicate is applied to the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve only time series entries with high BPM values for a specific employee
+        .Where(x => x.EmployeeName == "Robert King" && x.BPM > 85)
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    List<TsIndex.IndexEntry> results = await asyncSession
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve only time series entries with high BPM values for a specific employee
+        .Where(x => x.EmployeeName == "Robert King" && x.BPM > 85)
+        .ToListAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+        .DocumentQuery<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve only time series entries with high BPM values for a specific employee
+        .WhereEquals(x => x.EmployeeName, "Robert King")
+        .AndAlso()
+        .WhereGreaterThan(x => x.BPM, 85)
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+         // Retrieve only time series entries with high BPM values for a specific employee
+        .RawQuery<TsIndex.IndexEntry>($@"
+              from index 'TsIndex'
+              where EmployeeName == 'Robert King' and BPM > 85.0 
+         ")
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where EmployeeName == "Robert King" and BPM > 85.0
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Order query results:
+
+Results can be ordered by any of the index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve time series entries where employees had a low BPM value
+        .Where(x => x.BPM < 58)
+         // Order by the 'Date' index-field (descending order)
+        .OrderByDescending(x => x.Date)
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    List<TsIndex.IndexEntry> results = await asyncSession
+        .Query<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve time series entries where employees had a low BPM value
+        .Where(x => x.BPM < 58)
+         // Order by the 'Date' index-field (descending order)
+        .OrderByDescending(x => x.Date)
+        .ToListAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+        .DocumentQuery<TsIndex.IndexEntry, TsIndex>()
+         // Retrieve time series entries where employees had a low BPM value
+        .WhereLessThan(x => x.BPM, 58)
+         // Order by the 'Date' index-field (descending order)
+        .OrderByDescending(x => x.Date)
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+         // Retrieve entries with low BPM value and order by 'Date' descending
+        .RawQuery<TsIndex.IndexEntry>($@"
+              from index 'TsIndex'
+              where BPM < 58.0
+              order by Date desc
+         ")
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where BPM < 58.0
+order by Date desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Project results:
+
+* Instead of returning the entire `TsIndex.IndexEntry` object for each result item,  
+  you can return only partial fields.
+
+* Learn more about projecting query results in [Project Index Query Results](../../../indexes/querying/projections.mdx).
+
+* In this example, we query for time series entries with a very high BPM value.  
+  We retrieve entries with BPM value &gt; 100 but return only the _EmployeeID_ for each entry.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<string> results = session
+        .Query<TsIndex.IndexEntry, TsIndex>()
+        .Where(x => x.BPM > 100)
+         // Return only the EmployeeID index-field in the results
+        .Select(x => x.EmployeeID)
+         // Optionally: call 'Distinct' to remove duplicates from results
+        .Distinct()
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    List<string> results = await asyncSession
+        .Query<TsIndex.IndexEntry, TsIndex>()
+        .Where(x => x.BPM > 100)
+         // Return only the EmployeeID index-field in the results
+        .Select(x => x.EmployeeID)
+         // Optionally: call 'Distinct' to remove duplicates from results
+        .Distinct()
+        .ToListAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var fieldsToProject = new string[] {
+    "EmployeeID"
+};
+
+using (var session = store.OpenSession())
+{
+    List<EmployeeDetails> results = session.Advanced
+        .DocumentQuery<TsIndex.IndexEntry, TsIndex>()
+        .WhereGreaterThan(x => x.BPM, 100)
+         // Return only the EmployeeID index-field in the results
+        .SelectFields<EmployeeDetails>(fieldsToProject)
+         // Optionally: call 'Distinct' to remove duplicates from results
+        .Distinct()
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="csharp">
+{`// This class is used when projecting index-fields via DocumentQuery
+public class EmployeeDetails
+{
+    public string EmployeeName { get; set; }
+    public string EmployeeID { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    List<TsIndex.IndexEntry> results = session.Advanced
+         // Return only the EmployeeID index-field in the results
+        .RawQuery<TsIndex.IndexEntry>($@"
+              from index 'TsIndex'
+              where BPM > 100.0
+              select distinct EmployeeID
+         ")
+        .ToList();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "TsIndex"
+where BPM > 100.0
+select distinct EmployeeID
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+   
+* `session.Query`  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`IRavenQueryable<T> Query<T, TIndexCreator>() where TIndexCreator 
+: AbstractCommonApiForIndexes, new();
+`}
+</CodeBlock>
+</TabItem>
+
+* `DocumentQuery`  
+    
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() where TIndexCreator 
+: AbstractCommonApiForIndexes, new();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter          | Description        |
+|--------------------|--------------------|
+| **T**              | The results class  |
+| **TIndexCreator**  | Index              |
+
+
+
+

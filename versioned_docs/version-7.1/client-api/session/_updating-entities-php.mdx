@@ -1,0 +1,90 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To modify existing documents:
+
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities.mdx#load) 
+      or by a [query](../../client-api/session/querying/how-to-query.mdx#sessionquery).  
+      The entities loaded from the documents are added to the internal entities map that the session manages.  
+  
+    * **Edit** the properties you wish to change.  
+      The session will track all changes made to the loaded entities.
+
+    * **Save** to apply the changes.  
+      Once `saveChanges()` returns it is guaranteed that the data is persisted in the database.
+      
+
+
+* In this page:
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document--update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents--update)
+    
+</Admonition>
+## Load a document & update
+
+* In this example we `load` a company document and update its **PostalCode** property.  
+
+<TabItem value="load-company-and-update" label="load-company-and-update">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Load a company document
+    // The entity loaded from the document will be added to the Session's entities map
+    /** @var Company $company */
+    $company = $session->load(Company::class, "companies/1-A");
+
+    // Update the company's PostalCode
+    $address = $company->getAddress();
+    $address->setPostalCode("TheNewPostalCode");
+    $company->setAddress($address);
+
+    // Apply changes
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Query for documents & update
+
+* In this example we `query` for company documents whose **PostalCode** property is _12345_,  
+  and modify this property for the matching documents.  
+
+<TabItem value="query-companies-and-update" label="query-companies-and-update">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Query: find companies with the specified PostalCode
+    // The entities loaded from the matching documents will be added to the Session's entities map
+    $query = $session->query(Company::class)
+        ->whereEquals("address.postal_code", "12345");
+
+    $matchingCompanies = $query->toList();
+
+    // Update the PostalCode for the resulting company documents
+    for ($i = 0; $i < count($matchingCompanies); $i++) \{
+        $address = $matchingCompanies[$i]->getAddress();
+        $address->setPostalCode("TheNewPostalCode");
+        $matchingCompanies[$i]->setAddress($address);
+    \}
+
+    // Apply changes
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

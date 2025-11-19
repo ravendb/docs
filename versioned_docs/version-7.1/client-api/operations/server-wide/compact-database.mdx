@@ -1,0 +1,51 @@
+---
+title: "Compact Database Operation"
+hide_table_of_contents: true
+sidebar_label: Compact Database
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CompactDatabaseCsharp from './_compact-database-csharp.mdx';
+import CompactDatabasePython from './_compact-database-python.mdx';
+import CompactDatabasePhp from './_compact-database-php.mdx';
+import CompactDatabaseNodejs from './_compact-database-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CompactDatabaseCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CompactDatabasePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CompactDatabasePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CompactDatabaseNodejs />
+</LanguageContent>
+
+
+<!---
+### Database
+- [How to create database?](../../../client-api/operations/server-wide/create-database)
+- [How to get database statistics](../../../client-api/operations/maintenance/get-stats)
+- [How to restore a database from backup](../../../client-api/operations/server-wide/restore-backup)
+- [Switch operation to different node](../../../client-api/operations/how-to/switch-operations-to-a-different-node)
+
+### Compression
+- [Documents Compression](../../../server/storage/documents-compression)
+
+### Studio
+- [Storage Report](../../../studio/database/stats/storage-report)
+
+
+-->

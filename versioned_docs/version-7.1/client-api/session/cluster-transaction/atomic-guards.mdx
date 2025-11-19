@@ -1,0 +1,53 @@
+---
+title: "Atomic Guards"
+hide_table_of_contents: true
+sidebar_label: Atomic Guards
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AtomicGuardsCsharp from './_atomic-guards-csharp.mdx';
+import AtomicGuardsPython from './_atomic-guards-python.mdx';
+import AtomicGuardsPhp from './_atomic-guards-php.mdx';
+import AtomicGuardsNodejs from './_atomic-guards-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AtomicGuardsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <AtomicGuardsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <AtomicGuardsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AtomicGuardsNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+
+### Session
+- [Cluster-Wide Session](../../../client-api/session/cluster-transaction/overview)
+
+### Server
+- [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)
+- [Cluster-Wide Transactions ACIDity](../../../server/clustering/cluster-transactions#cluster-transaction-properties)
+- [Document Expiration](../../../server/extensions/expiration)
+
+### Additional Resources
+- [Simplifying Atomic Cluster-Wide Transactions&quot; / Oren Eini](https://ayende.com/blog/194405-A/ravendb-5-2-simplifying-atomic-cluster-wide-transactions)
+
+
+-->

@@ -1,0 +1,51 @@
+---
+title: "Operations: Server: How to Restore a Database from the Backup"
+hide_table_of_contents: true
+sidebar_label: Restore Backup
+sidebar_position: 8
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import RestoreBackupCsharp from './_restore-backup-csharp.mdx';
+import RestoreBackupJava from './_restore-backup-java.mdx';
+import RestoreBackupNodejs from './_restore-backup-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <RestoreBackupCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <RestoreBackupJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <RestoreBackupNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio Articles
+- [Create DB: From Backup](../../../studio/database/create-new-database/from-backup)
+- [Create DB: General Flow](../../../studio/database/create-new-database/general-flow)
+- [Create DB: Encrypted](../../../studio/database/create-new-database/encrypted)
+- [The Backup Task](../../../studio/database/tasks/backup-task)
+
+### Client Articles
+- [Restore](../../../client-api/operations/maintenance/backup/restore)
+- [What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)
+- [Backup](../../../client-api/operations/maintenance/backup/backup)
+
+### Server Articles
+- [Backup Overview](../../../server/ongoing-tasks/backup-overview)
+
+### Migration Articles
+- [Migration](../../../migration/server/data-migration)
+
+
+-->

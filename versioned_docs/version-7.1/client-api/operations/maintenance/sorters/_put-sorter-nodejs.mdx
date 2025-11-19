@@ -1,0 +1,85 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Lucene indexing engine allows you to create your own __Custom Sorters__   
+  where you can define how query results will be ordered based on your specific requirements.
+
+* Use `PutSortersOperation` to deploy a custom sorter to the RavenDB server.  
+  Once deployed, you can use it to sort query results for all queries made on the __database__  
+  that is scoped to your [Document Store](../../../../client-api/setting-up-default-database.mdx).  
+
+* To deploy a custom sorter that will apply cluster-wide, to all databases, see [put server-wide sorter](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx).
+
+* A custom sorter can also be uploaded to the server from the [Studio](../../../../studio/database/settings/custom-sorters.mdx).
+
+* In this page:
+    * [Put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#put-custom-sorter)
+    * [Syntax](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#syntax)
+
+</Admonition>
+## Put custom sorter
+
+* First, create your own sorter class that inherits from the Lucene class [Lucene.Net.Search.FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html).
+
+* Then, send the custom sorter to the server using the `PutSortersOperation`.
+
+<TabItem value="put_sorter" label="put_sorter">
+<CodeBlock language="js">
+{`// Create the sorter definition object
+const sorterDefinition = \{
+    // The sorter name must be the same as the sorter's class name in your code
+    name: "MySorter",
+    // The code must be compilable and include all necessary using statements (C# code)
+    code: "<code of custom sorter>"
+\};
+
+// Define the put sorters operation, pass the sorter definition
+const putSorterOp = new PutSortersOperation(sorterDefinition);
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putSorterOp);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+
+You can now order your query results using the custom sorter.  
+A query example is available [here](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`const putSorterOp = new PutSortersOperation(sortersToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type          | Description                                                 |
+|-------------------|---------------|-------------------------------------------------------------|
+| __sortersToAdd__  | `...object[]` | One or more Sorter Definition objects to send to the server |
+
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The sorter definition object 
+\{
+    name: string;
+    code: string;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

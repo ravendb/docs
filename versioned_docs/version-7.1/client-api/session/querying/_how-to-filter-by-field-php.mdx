@@ -1,0 +1,86 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To query for documents that contain a particular field, use the `whereExists` extension method.  
+
+* A document that doesn't contain the specified field will be excluded from the query results.
+
+* In this page:  
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
+
+</Admonition>
+## Filter by field name 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="whereExists" label="whereExists">
+<CodeBlock language="php">
+{`/** @var array<Employee> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->whereExists("FirstName")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain field 'FirstName' will be returned
+
+from Employees
+where exists("FirstName")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by field path 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="whereExists" label="whereExists">
+<CodeBlock language="php">
+{`$results = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->whereExists("Address.Location.Latitude")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Only documents that contain the 'Latitude' property in the specified path will be returned
+
+from Employees
+where exists("Address.Location.Latitude")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="whereexists_1" label="whereexists_1">
+<CodeBlock language="php">
+{`public function whereExists(?string $fieldName): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters     | Type      | Description                                        |
+|----------------|-----------|----------------------------------------------------|
+| **$fieldName** | `?string` | The name / path of the document field to filter by |
+
+
+
+

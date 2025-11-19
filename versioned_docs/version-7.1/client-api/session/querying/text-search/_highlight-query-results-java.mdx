@@ -1,0 +1,118 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+**Highlighting** can be a great feature for increasing search UX. To take leverage of it use `highlight` method.
+
+## Syntax
+
+<TabItem value="highlight_1" label="highlight_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> highlight(String fieldName,
+                            int fragmentLength,
+                            int fragmentCount,
+                            Reference<Highlightings> highlightings);
+
+IDocumentQuery<T> highlight(String fieldName,
+                            int fragmentLength,
+                            int fragmentCount,
+                            HighlightingOptions options,
+                            Reference<Highlightings> highlightings);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Name of a field to highlight. |
+| **path** | string | Path to a field to highlight. |
+| **fragmentLength** | int | Maximum length of text fragments that will be returned. |
+| **fragmentCount** | int | Maximum number of fragments that will be returned. |
+| **options** | `HighlightingOptions`  | Options that can be used for customization. |
+| **highlightings** | `Highlightings` | Instance of a Highlightings that contains the highlight fragments for each returned result. |
+
+### Options
+
+<TabItem value="options" label="options">
+<CodeBlock language="java">
+{`private String groupKey;
+private String[] preTags;
+private String[] postTags;
+
+// getters and setters
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **groupKey** | string | Grouping key for the results. If `null` results are grouped by document ID (default). |
+| **preTags** | `string[]` | Array of pre tags used when highlighting. |
+| **postTags** | `string[]` | Array of post tags used when highlighting. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`Reference<Highlightings> highlightingsRef = new Reference<>();
+List<SearchItem> results = session
+    .query(SearchItem.class, ContentSearchIndex.class)
+    .highlight("text", 128, 1, highlightingsRef)
+    .search("text", "raven")
+    .toList();
+
+StringBuilder builder = new StringBuilder();
+builder.append("<ul>");
+
+for (SearchItem result : results) {
+    String[] fragments = highlightingsRef.value.getFragments(result.getId());
+    builder.append("<li>")
+        .append(fragments[0])
+        .append("</li>");
+}
+
+builder.append("</ul>");
+String ul = builder.toString();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'ContentSearchIndex'
+where search(text, 'raven')
+include highlight(text, 128, 1)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="note" title="Note" id="note" href="#note">
+Default `<b></b>` tags are coloured and colours are returned in following order:
+
+- &lt;span style="border-left: 10px solid yellow"&gt;&nbsp;&lt;/span&gt;yellow,
+- &lt;span style="border-left: 10px solid lawngreen"&gt;&nbsp;&lt;/span&gt;lawngreen,
+- &lt;span style="border-left: 10px solid aquamarine"&gt;&nbsp;&lt;/span&gt;aquamarine,
+- &lt;span style="border-left: 10px solid magenta"&gt;&nbsp;&lt;/span&gt;magenta,
+- &lt;span style="border-left: 10px solid palegreen"&gt;&nbsp;&lt;/span&gt;palegreen,
+- &lt;span style="border-left: 10px solid coral"&gt;&nbsp;&lt;/span&gt;coral,
+- &lt;span style="border-left: 10px solid wheat"&gt;&nbsp;&lt;/span&gt;wheat,
+- &lt;span style="border-left: 10px solid khaki"&gt;&nbsp;&lt;/span&gt;khaki,
+- &lt;span style="border-left: 10px solid lime"&gt;&nbsp;&lt;/span&gt;lime,
+- &lt;span style="border-left: 10px solid deepskyblue"&gt;&nbsp;&lt;/span&gt;deepskyblue,
+- &lt;span style="border-left: 10px solid deeppink"&gt;&nbsp;&lt;/span&gt;deeppink,
+- &lt;span style="border-left: 10px solid salmon"&gt;&nbsp;&lt;/span&gt;salmon,
+- &lt;span style="border-left: 10px solid peachpuff"&gt;&nbsp;&lt;/span&gt;peachpuff,
+- &lt;span style="border-left: 10px solid violet"&gt;&nbsp;&lt;/span&gt;violet,
+- &lt;span style="border-left: 10px solid mediumpurple"&gt;&nbsp;&lt;/span&gt;mediumpurple,
+- &lt;span style="border-left: 10px solid palegoldenrod"&gt;&nbsp;&lt;/span&gt;palegoldenrod,
+- &lt;span style="border-left: 10px solid darkkhaki"&gt;&nbsp;&lt;/span&gt;darkkhaki,
+- &lt;span style="border-left: 10px solid springgreen"&gt;&nbsp;&lt;/span&gt;springgreen,
+- &lt;span style="border-left: 10px solid turquoise"&gt;&nbsp;&lt;/span&gt;turquoise,
+- &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
+</Admonition>
+
+

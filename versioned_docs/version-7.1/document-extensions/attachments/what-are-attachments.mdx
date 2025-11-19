@@ -1,0 +1,39 @@
+---
+title: "What are Attachments"
+hide_table_of_contents: true
+sidebar_label: What are Attachments
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatAreAttachmentsCsharp from './_what-are-attachments-csharp.mdx';
+import WhatAreAttachmentsJava from './_what-are-attachments-java.mdx';
+import WhatAreAttachmentsNodejs from './_what-are-attachments-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatAreAttachmentsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatAreAttachmentsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatAreAttachmentsNodejs />
+</LanguageContent>
+
+
+<!---
+### Attachments
+- [Storing](../../document-extensions/attachments/storing)
+- [Loading](../../document-extensions/attachments/loading)
+- [Deleting](../../document-extensions/attachments/deleting)
+
+
+-->

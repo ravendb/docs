@@ -1,0 +1,82 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) or RQL.
+
+* Use the `Fuzzy` method when querying with `WhereEquals`.
+
+* Note: this is a Lucene feature, available only for Lucene-based indexes.
+
+* In this page:
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#syntax)
+
+</Admonition>
+## Fuzzy search example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+     // Query with a term that is misspelled
+    .WhereEquals(x => x.Name, "Ernts Hnadel")
+    // Call 'Fuzzy' 
+    // Pass the required similarity, a decimal param between 0.0 and 1.0
+    .Fuzzy(0.5m)
+    .ToList();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+     // Query with a term that is misspelled
+    .WhereEquals(x => x.Name, "Ernts Hnadel")
+     // Call 'Fuzzy' 
+     // Pass the required similarity, a decimal param between 0.0 and 1.0
+    .Fuzzy(0.5m)
+    .ToListAsync();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Fuzzy(decimal fuzzy);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type      | Description                                                                                                       |
+|-------------|-----------|-------------------------------------------------------------------------------------------------------------------|
+| **fuzzy**   | `decimal` | A value between `0.0` and `1.0`.<br/>With a value closer to `1.0`, terms with a higher similarity will be matched. |
+
+
+
+

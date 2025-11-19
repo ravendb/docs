@@ -1,0 +1,47 @@
+---
+title: "Send Multiple Commands in a Batch"
+hide_table_of_contents: true
+sidebar_label: Send Multiple Commands
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToSendMultipleCommandsUsingABatchCsharp from './_how-to-send-multiple-commands-using-a-batch-csharp.mdx';
+import HowToSendMultipleCommandsUsingABatchJava from './_how-to-send-multiple-commands-using-a-batch-java.mdx';
+import HowToSendMultipleCommandsUsingABatchNodejs from './_how-to-send-multiple-commands-using-a-batch-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToSendMultipleCommandsUsingABatchCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToSendMultipleCommandsUsingABatchJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToSendMultipleCommandsUsingABatchNodejs />
+</LanguageContent>
+
+
+<!---
+### Transactions
+- [Transaction Support](../../../client-api/faq/transaction-support)
+
+### Commands
+- [Put document](../../../client-api/commands/documents/put)
+- [Delete document](../../../client-api/commands/documents/delete)
+
+### Patching
+- [How to Perform Single Document Patch Operations](../../../client-api/operations/patching/single-document)
+
+### Attachments
+- [What are Attachments](../../../document-extensions/attachments/what-are-attachments)
+
+
+-->

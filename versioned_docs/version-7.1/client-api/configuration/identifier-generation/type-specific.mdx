@@ -1,0 +1,37 @@
+---
+title: "Type-Specific Identifier Generation"
+hide_table_of_contents: true
+sidebar_label: Type-specific
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import TypeSpecificCsharp from './_type-specific-csharp.mdx';
+import TypeSpecificJava from './_type-specific-java.mdx';
+import TypeSpecificNodejs from './_type-specific-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <TypeSpecificCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <TypeSpecificJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <TypeSpecificNodejs />
+</LanguageContent>
+
+
+<!---
+- [Document identifier generation](../../../server/kb/document-identifier-generation)
+- [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global identifier generation conventions](../../../client-api/configuration/identifier-generation/global)
+
+-->

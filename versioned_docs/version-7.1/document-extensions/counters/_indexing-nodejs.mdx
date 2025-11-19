@@ -1,0 +1,124 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
+that inherits from `AbstractCountersIndexCreationTask ` or `AbstractRawJavaScriptCountersIndexCreationTask `.  
+
+* Auto-indexes for counters are not available at this time.  
+
+* In this page:  
+  * [Usage](../../document-extensions/counters/indexing.mdx#usage)  
+  * [AbstractCsharpCountersIndexCreationTask ](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1)  
+  * [Querying the Index](../../document-extensions/counters/indexing.mdx#querying-the-index)  
+
+</Admonition>
+## Usage
+
+In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
+Next, choose one of these two methods which take the index expression:  
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`this.map("map");
+`}
+</CodeBlock>
+</TabItem>
+
+`map ` only indexes the counters with 
+the specified name.  
+
+Examples of indexes using each method:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="map" label="map">
+<CodeBlock language="js">
+{`export class MyCounterIndex  extends AbstractCountersIndexCreationTask {
+    constructor() {
+        super();
+        this.map = \`from counter in docs.counters select new {
+                Likes = counter.Value,
+                Name = counter.Name,
+                User = counter.DocumentId
+                }\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>  
+
+
+### `AbstractRawJavaScriptCountersIndexCreationTask `
+
+Creating an index inheriting from `AbstractCsharpCountersIndexCreationTask ` allows 
+you to write your map and reduce functions in JavaScript.  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
+
+<TabItem value="index_3" label="index_3">
+<CodeBlock language="js">
+{`class MyCounterIndex extends AbstractRawJavaScriptCountersIndexCreationTask \{
+    public constructor() \{
+        super();
+
+        this.maps.add(
+            "counters.map('Companies', 'HeartRate', function (counter) \{\\n" +
+            "return \{\\n" +
+            "    heartBeat: counter.Value,\\n" +
+            "    name: counter.Name,\\n" +
+            "    user: counter.DocumentId\\n" +
+            "\};\\n" +
+            "\})"
+        );
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+### `CounterNamesFor`
+
+While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `counterNamesFor()` 
+method is available which returns the names of all counters for a specified document:  
+
+Example of index using `CounterNamesFor`:  
+
+<TabItem value="index_0" label="index_0">
+<CodeBlock language="js">
+{`class Companies_ByCounterNames extends AbstractCountersIndexCreationTask\{
+    constructor() \{
+        super();
+        this.map = "docs.Companies.Select(e => new \{\\n"+
+            "e = e,\\n"+
+        "    counterNames = this.CounterNamesFor(e)\\n"+
+        "\}).Select(this0 => new \{\\n"+
+        "    CounterNames = Enumerable.ToArray(this0.counterNames)\\n"+
+        "\})"
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Querying the Index  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const companies = session
+    .query({index: "Companies_ByCounterNames"})
+    .containsAny("counterNames", ["Likes"])
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>  
+
+
+
+

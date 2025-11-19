@@ -1,0 +1,27 @@
+---
+title: "Document Expiration"
+hide_table_of_contents: true
+sidebar_label: Document Expiration
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExpirationCsharp from './_expiration-csharp.mdx';
+
+export const supportedLanguages = ["csharp"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExpirationCsharp />
+</LanguageContent>
+
+
+<!---
+### Studio
+- [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration)
+
+
+-->

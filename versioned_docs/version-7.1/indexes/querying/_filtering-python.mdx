@@ -1,0 +1,361 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
+
+* Index queries can be executed using -  
+   * [query_index_type](../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
+   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
+
+* The examples in this page demonstrate how filtering is applied by each of these methods.  
+
+* In this page:
+   * [`where_equals` - Where equals](../../indexes/querying/filtering.mdx#where_equals---where-equals)
+   * [`where_greater_than` - Numeric property](../../indexes/querying/filtering.mdx#where_greater_than---numeric-property)
+   * [`where_greater_than` - Nested property](../../indexes/querying/filtering.mdx#where_greater_than---nested-property)
+   * [`where_in` - Single -vs- Multiple values](../../indexes/querying/filtering.mdx#where_in---single--vs--multiple-values)
+   * [`contains_any` - Any value from specified collection](../../indexes/querying/filtering.mdx#contains_any---any-value-from-specified-collection)
+   * [`contains_all` - All values from specified collection](../../indexes/querying/filtering.mdx#contains_all---all-values-from-specified-collection)
+   * [`where_starts_with` - All records with given prefix](../../indexes/querying/filtering.mdx#where_starts_with---all-records-with-given-prefix)
+   * [`where_ends_with` - All records with given suffix](../../indexes/querying/filtering.mdx#where_ends_with---all-records-with-given-suffix)
+   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [`where_exists` - Where exists or doesn't exist](../../indexes/querying/filtering.mdx#where_exists---where-exists-or-doesn)
+
+</Admonition>
+
+## `where_equals` - Where equals 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(
+        Employees_ByFirstAndLastName, Employee
+    )  # query 'Employees/ByFirstAndLastName' index
+    .where_equals("FirstName", "Robert")  # filtering predicates
+    .and_also()
+    .where_equals("LastName", "King")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from e in docs.Employees select new {FirstName = e.FirstName, LastName = e.LastName}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert' and LastName = 'King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_greater_than` - Numeric property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(
+        Products_ByUnitsInStock, Product  # query 'Products/ByUnitsInStock' index
+    ).where_greater_than(
+        "UnitsInStock", 50
+    )  # filtering predicates
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Products_ByUnitsInStock(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from p in docs.Products select new {p.UnitsInStock}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock'
+where UnitsInStock > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_greater_than` - Nested property
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# return all orders that were shipped to 'Albuquerque'
+results = list(session.query(object_type=Order).where_equals("ShipTo.City", "Albuquerque"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where ShipTo.City = 'Albuquerque'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(
+        Order_ByOrderLinesCount, Order  # query 'Orders/ByOrderLinesCount' index
+    ).where_greater_than(
+        "Lines.Count", 50
+    )  # filtering predicates
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Order_ByOrderLinesCount(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from o in docs.Orders select new {Lines_Count = order.Lines.Count}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Order/ByOrderLinesCount'
+where Lines.Count > 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_in` - Single -vs- Multiple values
+
+When you want to check a single value against multiple values, `where_in` can become handy.  
+To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(
+        Employees_ByFirstAndLastName, Employee  # query 'Employees/ByFirstAndLastName' index
+    ).where_in(
+        "FirstName", ["Robert", "Nancy"]
+    )  # filtering predicates
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from e in docs.Employees select new {FirstName = e.FirstName, LastName = e.LastName}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName IN ('Robert', 'Nancy')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `contains_any` - Any value from specified collection
+
+To check if enumeration contains **any** of the values from a specified collection, 
+use the `contains_any` method.
+
+For example, if you want to return all `BlogPosts` that contain any of the specified `Tags`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(BlogPosts_ByTags, BlogPost).contains_any(  # query 'BlogPosts/ByTags' index
+        "Tags", ["Development", "Research"]
+    )  # filtering predicates
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class BlogPosts_ByTags(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from post in posts select new {post.Tags}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `contains_all` - All values from specified collection
+
+To check if an enumeration contains **all** of the values from a specified collection, 
+use the `contains_all` method.
+
+For example, if you want to return all the `BlogPosts` that contain all of the specified `Tags`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(  # Materialize query by sending it to server for processing
+    session.query_index_type(BlogPosts_ByTags, BlogPost).contains_all(  # query 'BlogPosts/ByTags' index
+        "Tags", ["Development", "Research"]
+    )  # filtering predicates
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class BlogPosts_ByTags(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from post in posts select new {post.Tags}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'BlogPosts/ByTags'
+where Tags ALL IN ('Development', 'Research')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_starts_with` - All records with given prefix
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# return all products which name starts with 'ch'
+results = list(session.query(object_type=Product).where_starts_with("Name", "ch"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where startsWith(Name, 'ch')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_ends_with` - All records with given suffix
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(session.query(object_type=Product).where_ends_with("Name", "ra"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where endsWith(Name, 'ra')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Where - Identifier Property
+
+Once a property used in the `where_equals` clause is recognized as an identity property of a given entity type 
+(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
+and there aren't any other fields involved in the query, then it is called a "collection query". 
+Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
+and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
+It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
+loading documents using [`session.load`](../../client-api/session/loading-entities.mdx).  
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`order = session.query(object_type=Order).where_equals("Id", "orders/1-A").first()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where id() = 'orders/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`orders = list(session.query(object_type=Order).where_starts_with("Id", "orders/1"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+where startsWith(id(), 'orders/1')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `where_exists` - Where exists or doesn't exist
+
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+
+
+
+

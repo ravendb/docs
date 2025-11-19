@@ -1,0 +1,383 @@
+---
+title: "Create GenAI Task: Studio"
+hide_table_of_contents: true
+sidebar_label: Studio
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create GenAI Task: Studio
+<Admonition type="note" title="">
+
+* In this article:
+    * [The GenAI Task wizard](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#the-genai-task-wizard)  
+    * [Add a GenAI Task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#add-a-genai-task)
+    * [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings)
+    * [Generate context objects](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#generate-context-objects)
+    * [Define Prompt and JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#define-prompt-and-json-schema)
+    * [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#provide-update-script)
+    * [Review configuration and Save task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#review-configuration-and-save-task)
+
+</Admonition>
+
+<hr />
+
+## The GenAI Task wizard
+Studio's [AI Tasks](../../../ai-integration/ai-tasks-list-view) view includes a GenAI **wizard**.  
+Using this wizard, you can easily **create and configure** your task, as well as **test each step 
+of its creation** in a dedicated "playground".  
+We will go through the task creation and testing sequence below, using the wizard.  
+
+### Sample data:
+While demonstrating the creation and testing of a GenAI task, we will use the following 
+sample document, illustrating a blog post with an array of comments, of which one is spam.  
+We will use our GenAI task to go through the comments and identify spam entries so we can 
+remove them.  
+To use this sample through this guide, simply create a document named `posts/1` with the 
+following content.  
+
+<TabItem value="json" label="json">
+```json
+{
+    "Name": "first post",
+    "Body": "This is my first post",
+    "Comments": [
+      {
+       "Id": "comment/1",
+       "Text": "This article really helped me understand how indexes work in RavenDB. Great write-up!",
+       "Author": "John"
+      },
+      {
+       "Id": "comment/2",
+       "Text": "Learn how to make $5000/month from home! Visit click4cash.biz.example now!!!",
+       "Author": "shady_marketer"
+      },
+      {
+       "Id": "comment/3",
+       "Text": "I tried this approach with IO_Uring in the past, but I run into problems with security around the IO systems and the CISO didn't let us deploy that to production. It is more mature at this point?",
+       "Author": "dave"
+      }
+    ],
+    "@metadata": {
+        "@collection": "Posts"
+    }
+}
+```
+</TabItem>
+
+<hr />
+
+## Add a GenAI Task
+To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task** &gt; **GenAI**  
+
+![Add a GenAI Task](./assets/gen-ai_add-GenAI-task.png)
+
+1. **AI Hub**  
+   Click to open the [AI Hub view](../../../ai-integration/ai-tasks-list-view).  
+   Use this view to handle AI connection strings and tasks, and to view task statistics.  
+2. **AI Tasks**  
+   Click to open the AI Tasks view.  
+   Use this view to list, configure, or remove AI tasks.  
+3. **Add AI Task**  
+   Click to add an AI task.  
+   ![Add a GenAI Task](./assets/gen-ai_select-ai-task-type.png)
+   Click the GenAI option to open a wizard that will guide you through the creation and testing of your GenAI task.  
+   The steps of this wizard are explained below, starting with basic GenAI task settings.  
+
+<hr />
+
+## Configure basic settings
+
+![Configure basic settings](./assets/gen-ai_configure-basic-settings.png)
+
+1. **Task name**  
+   Give your task a meaningful name.  
+
+2. <a id="unique-identifier"/>**Unique user-defined task identifier**  
+   Give your task a unique identifier.  
+    * Use only lowercase letters, numbers, and hyphens.  
+    * You can provide the identifier yourself, or click **Regenerate** to create it automatically.  
+    * When you complete and save your task and it starts running, it will add a metadata property to documents it processes, named after the identifier you define here.  
+    The task will use this property to keep track of document parts it had already processed.  
+      See an example [here](../../../ai-integration/gen-ai-integration/gen-ai-overview#gen-ai-metadata).  
+
+3. **Task state**  
+   Use this switch to enable or disable the task.  
+
+4. **Set responsible node**  
+   Toggle ON to choose the cluster node that will be responsible for this task.  
+   Toggle OFF for the cluster to pick a responsible node for you.  
+
+5. <a id="studio_connection-string"/>**Connection string**  
+   The Gen AI task will use an AI model to process your data.  
+   It can be a local AI model like Ollama, or an external model like OpenAI.  
+   Use this bar to Select or Create the connection string that the GenAI task 
+   will use to connect with the AI model.  
+    * You can create the connection string either here or in the dedicated 
+      [AI Connection Strings](../../../ai-integration/connection-strings/connection-strings-overview) view.  
+    * Here is an example for a connection string to a local [Ollama](../../../ai-integration/connection-strings/ollama) 
+      AI model capable of filtering spam entries from a blog.  
+      
+         ![Ollama connection string](./assets/gen-ai_ollama-connection-string.png)
+   
+6. **Steps completed**  
+   You can use this interactive board as you advance through the wizard to see which steps you completed and what is still to define. Click a listed configuration option to modify its settings.  
+
+<hr />
+
+## Generate context objects
+
+![Generate context objects](./assets/gen-ai_generate-context-objects.png)
+
+1. **Source collection**  
+   Select the collection whose documents this GenAI task will monitor and process.  
+   E.g., `Posts`
+
+2. <a id="studio_context-generation-script"/>**Context generation script**  
+   Provide a JavaScript, that your GenAI task will run over each document it retrieves 
+   from the selected collection.  
+   The purpose of this script is to form a `Context object` that contains data extracted from the document, 
+   that the AI model will be able to process effectively.  
+   E.g., 
+   <TabItem value="javascript" label="javascript">
+   ```javascript
+   // Go through all the comments that were left for this blog
+   for(const comment of this.Comments)
+   {
+       // Use the `ai.genContext` method to generate a context object for each comment,
+       // that includes the comment text, author, and id.
+       ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+   } 
+   ```
+    </TabItem>
+
+3. <a id="generate-context-objects-playground"/>**Playground**  
+   Each of the steps from now on is equipped with its own playground, allowing you 
+   to test what actually happens when you apply your configuration.  
+   <Admonition type="note" title="">
+   The playground is a secluded environment, using it will **not** modify your documents.  
+   </Admonition>
+    * **Collapse/Expand**  
+      Toggle to hide or show the playground area.  
+    * **Edit mode**  
+       * Toggle OFF to use the selected document as the source for the generated context.  
+       * Toggle ON to edit the document freely before running the test.  
+    * **Select a document from the source collection**  
+      Select a document to test your context generation script on.  
+       * To use the same sample document we're using to demonstrate the process, 
+         add [posts/1](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#sample-data) and select it here.  
+       * Or if you prefer it, click `enter a document manually` and enter the sample document content yourself.  
+    * To run the test, click the **Test context** button.  
+      If all works well, you will see a list of context objects created by your script, one for each comment.  
+      
+         ![Playground: Generated context objects](./assets/gen-ai_playground-generated-context-objects.png)
+   
+4. **Controls**  
+    * **Cancel**  
+      Click to cancel any changes made in the task.  
+    * **Back**  
+      Click to return to the previous step, [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings).  
+    * **Test Context**  
+      Click to test your context generation script on the document selected/entered in the playground area.  
+       * You do not have to use the playground; you'll be able to define and save your task without testing 
+         it first.  
+       * However, running the test here will allow you to use the generated result set in the playground of 
+         the next wizard step.  
+    * **Next**  
+      Click to advance to the next step, [Define prompt & JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#define-prompt-and-json-schema).  
+
+<hr />
+
+## Define Prompt and JSON schema
+
+* The GenAI task will send the AI model each context object (configured in the previous step) 
+  on its own connection, along with the prompt and JSON schema you provide in this view.  
+* The context provides the data for the model to process.  
+  The prompt determines what the model should do with the data.  
+  The JSON schema formats the returned results, so the GenAI task can use them effectively.  
+
+![Define Prompt and JSON schema](./assets/gen-ai_define-prompt-and-json-schema.png)
+
+1. **Prompt**  
+   These are the instructions for the AI model.  
+   For our spam filtering GenAI task, we can specify, for example:  
+  
+      <TabItem value="plain" label="plain">
+      ```plain
+     Check if the following blog post comment is spam or not. 
+     A spam comment typically includes irrelevant or promotional content, 
+     excessive links, misleading information, or is written with the intent to 
+     manipulate search engines or advertise products/services. 
+     Consider the language, intent, and relevance of the comment for 
+     the blog post content.
+     ```
+      </TabItem>
+
+2. **JSON schema**  
+   The AI model will return a results JSON object for each context object sent to it.  
+   The JSON schema we set here sets the layout for this results object.  
+    * **Use sample object**  
+       * Select this option to provide an object that the AI model will use as an example.  
+         The results object will be formatted as the sample object you provide.  
+       * Textual fields in the sample object can be written in natural language, 
+         guiding the AI model what to write in the results.  
+      
+      E.g. if you select this option and provide this object:  
+      <TabItem value="json" label="json">
+      
+      ```json
+      { 
+        "Blocked": true, 
+        "Reason": "Concise reason for why this comment was marked as spam or ham" 
+      }
+      ```
+      </TabItem>
+          
+      Then result objects returned by the AI model may look like:  
+      <TabItem value="json" label="json">
+      
+      ```json
+      {
+          "Blocked": false,
+          "Reason": "Relevant and genuine"
+      }
+      ```
+      </TabItem>
+      <TabItem value="json" label="json">
+      
+      ```json
+      {
+          "Blocked": true,
+          "Reason": "Spam"
+      }
+      ```
+      </TabItem>
+
+    * **Provide JSON schema**  
+      Instead of a sample object, you can provide a formal JSON schema.  
+      Providing a sample object (rather than a formal schema) is normally more convenient.  
+      Behind the scenes, RavenDB will send a formal schema in any case, since this is the 
+      format that the LLM expects to receive. If you provide a schema RavenDB will send it 
+      as is, and if you provide a sample object RavenDB will translate it to a schema for you 
+      before sending it to the LLM.  
+
+3. **Playground**  
+   Use this playground to send the AI model context objects with their prompts and schemas, 
+   and see the results returned by the AI model.  
+    * **Collapse/Expand**  
+      Toggle to hide or show the playground area.  
+    * **Edit mode**  
+       * Toggle OFF to use the results generated using the playground of the previous step.  
+       * Toggle ON to edit the context objects freely before trying out your prompt and schema on them.  
+         This option gives you the freedom to test any context objects you like, regardless of the results 
+         generated by the playground of the previous step.  
+    * To run the test, click the **Test model** button.  
+      The GenAI task will send the model each context in its own transaction, accompanied 
+      by the prompt and JSON schema defined above. 
+      The AI model will process the results and return them in the format set by your schema.  
+      E.g. -  
+      
+         ![Playground: prompt & JSON schema](./assets/gen-ai_playground-prompt-and-json-schema.png)
+
+4. **Controls**  
+    * **Cancel**  
+      Click to cancel any changes made in the task.  
+    * **Back**  
+      Click to return to the previous step, [Generate context objects](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#generate-context-objects).  
+    * **Test Context**  
+      Click to test the prompt and JSON schema you define above, on the context objects generated from the 
+      document you provided.  
+    * **Next**  
+      Click to advance to the next step, [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#provide-update-script).  
+
+<hr />
+
+## Provide update script
+
+Now that the AI model returned its output, the Gen AI task needs to know what to do with it.  
+The update script set in this step, determines what actions should be taken on the arrival of the results.  
+
+![Provide update script](./assets/gen-ai_provide-update-script.png)
+
+1. **Update script**  
+   Provide a JavaScript that processes each results object returned from the AI model and takes needed actions.  
+   In our case, as the results determine whether each blog comment is spam or not, the script can react to results indicating that a comment is spam, by removing the comment.  
+   In the script, we can use the `$input` variable to access the context object that was sent to the AI model (the sample below uses it to update the document by its ID), the `$output` variable to access the results object returned from the AI model, and `this` to access and modify the currently processed document.
+  
+      <TabItem value="javascript" label="javascript">
+      ```javascript
+      // Find the comment
+      const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+      // Was detected as spam
+      if($output.Blocked)
+      {
+          // Remove this comment
+          this.Comments.splice(idx, 1); // remove
+      }  
+      ```
+      </TabItem>
+
+2. <a id="provide-update-script-playground"/>**Playground**  
+   Use this playground to verify that your update script does what you want it to do.  
+   In the case of our spam filtering task, we can check whether the comment that was 
+   detected as spam was removed from the blog post.  
+
+      ![Playground: Provide update script](./assets/gen-ai_playground-provide-update-script.png)
+
+      * **Edit mode**  
+         * Toggle OFF to use the results generated using the playground of the previous step.  
+         * Toggle ON to edit the model output freely before testing your update script on it.  
+           This option gives you the freedom to test any content you like, regardless of the results 
+           generated by the playground of the previous step.  
+
+3. **Controls**  
+    * **Cancel**  
+      Click to cancel any changes made in the task.  
+    * **Back**  
+      Click to return to the previous step, [Define Prompt and JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#define-prompt-and-json-schema).  
+    * **Test Context**  
+      Click to test the update script you define above.  
+      Note that even though in our case we remove comments from existing documents, 
+      the update script can leave the original document unchanged, create new documents, 
+      and so on - as you choose.  
+    * **Next**  
+      Click to advance to the next step, [Review configuration and Save task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#review-configuration-and-save-task).  
+
+<hr />
+
+## Review configuration and Save task
+
+Use this final step to review your GenAI task configuration before saving and executing it.  
+If your task is enabled, it will start running when you save it.  
+
+![Review configuration and Save task](./assets/gen-ai_review-task-configuration.png)
+
+1. **Review Configuration**  
+   Click a step's **Edit** button to view and modify its current configuration.  
+   Click a script/object **Show** button to view its current content.  
+   
+2. **Reprocess all documents**  
+    * Enable this option to have the task reprocess all documents in the source collection.  
+      <Admonition type="note" title="">
+      Note that documents that were already processed and the hash code in their metadata is identical to the hash code of the current task configuration (meaning the configuration hasn't changed since they were processed) will be skipped even if this option is enabled.  
+      </Admonition>
+    * Disable this option to have the task process only documents that it had not processed before.  
+   
+3. **Controls**  
+    * **Cancel**  
+      Click to cancel any changes made in the task.  
+    * **Back**  
+      Click to return to the previous step, [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#provide-update-script).  
+    * **Save**  
+      Click to save your task.  
+      If enabled, saving the task will start its execution.  
+      <Admonition type="warning" title="Precautions" id="precautions" href="#precautions">
+      * Test your task and make sure you understand how it might change your documents before saving.  
+      * Take every precaution to protect your data, including ensuring it is backed up.  
+      </Admonition>

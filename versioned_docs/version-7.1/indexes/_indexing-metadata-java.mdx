@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Each document in the database includes a metadata section, stored in a special JSON object under the `@metadata` property.
+
+* This metadata is not part of the document's content but holds internal system information (used by RavenDB),
+  such as the document ID, collection name, change vector, last modified timestamp, and more,  
+  as well as optional user-defined entries.
+
+* To learn how to access (get and modify) the metadata from your client code,  
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
+
+* Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
+  This allows you to query for documents based on values stored in the metadata.  
+  See the examples below.
+* In this article:  
+   * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+
+</Admonition>
+## Indexing metadata properties
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="java">
+{`public static class Products_WithMetadata extends AbstractIndexCreationTask \{
+    public static class Result \{
+        private Date lastModified;
+
+        public Date getLastModified() \{
+            return lastModified;
+        \}
+
+        public void setLastModified(Date lastModified) \{
+            this.lastModified = lastModified;
+        \}
+    \}
+
+    public Products_WithMetadata() \{
+        map = "docs.Products.Select(product => new \{ " +
+            "    Product = Product, " +
+            "    Metadata = this.MetadataFor(product) " +
+            "\}).Select(this0 => new \{ " +
+            "    LastModified = this0.metadata.Value<DateTime>(\\"@last-modified\\") " +
+            "\})";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="query_1" label="query_1">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Products_WithMetadata.Result.class, Products_WithMetadata.class)
+    .orderByDescending("LastModified")
+    .ofType(Product.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

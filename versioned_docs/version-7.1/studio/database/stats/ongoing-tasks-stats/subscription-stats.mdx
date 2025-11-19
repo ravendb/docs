@@ -1,0 +1,110 @@
+---
+title: "Ongoing Tasks Stats: Subscription Stats"
+hide_table_of_contents: true
+sidebar_label: Subscription Stats
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Ongoing Tasks Stats: Subscription Stats
+<Admonition type="note" title="">
+
+* A **Subscription Task** is an ongoing task in which the server sends documents that match a query defined on 
+  the task to a client.  
+* The server sends the documents in batches in an orderly manner, waiting for the client to acknowledge the 
+  consumption of each batch before sending the next.  
+* Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx).  
+
+* In this page:  
+   * [Subscription Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-closed-view)  
+   * [Subscription Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-expanded-view)  
+   * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#connection-event-indicators)  
+
+</Admonition>
+## Subscription Stats
+
+### Subscription Stats Closed View
+
+![Subscription Stats Closed View](./assets/stats-view-11-data-subscription-closed-view.png)
+
+1. **Task Type**  
+   Click the arrow or the task type to toggle Closed/Expanded View.  
+2. **Task Name**  
+3. **Query**  
+   Click to display the subscription query.  
+4. **Task Bar**  
+    * Hover over the bar to display a tooltip with the task's information.  
+    * Click the bar for the expanded view.  
+    * Click and Drag the bar to slide the graph.  
+    * Zoom in & out using the mouse wheel.  
+### Subscription Stats Expanded View
+
+![Subscription Stats Expanded View](./assets/stats-view-12-data-subscription-expanded-view.png)
+
+* **Client Connection**  
+   * **Duration**  
+     Overall connection time.  
+   * **Client URL**  
+   * **Strategy**  
+     The [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) used by the client.  
+   * **Number of batches acknowledged**  
+     The number of batches whose processing was completed & confirmed by the client.  
+   * **Size of all batches**  
+     The total size of all batches sent in this connection.  
+* **Documents Batch**  
+   * **Total duration**  
+     The amount of time it took to deliver this batch.  
+   * **Documents sent in batch**  
+     The number of documents delivered in this batch.  
+   * **Documents size**  
+     Overall size of Transferred documents.  
+   * **Included Documents**  
+     **Included Counters**  
+     **Included Time Series entries**  
+     Number of [included](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-include-statement) 
+     documents, counters, and time series  
+* **Sending Documents**  
+  The time it took the server to send the documents in this batch.  
+* **Waiting for ACK**  
+  The time it took the client to acknowledge this batch.  
+### Connection Event Indicators
+
+Connection Event Indicators signify events related to the initiation, state, 
+or termination of a client connection.  
+
+* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-closed-view) 
+  and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-expanded-view) 
+  task views.  
+* Hovering over a connection event indicator will popup information related to it, if available.  
+**Connection Initiated**  
+![Connnection Initiated](./assets/stats-view-connection-initiated.png)  
+**Connection Aborted**  
+![Forcibly-Aborted Connnection](./assets/stats-view-forcibly-aborted-connection.png)  
+The client has forcibly aborted the connection.  
+**Connection Rejected**  
+![Rejected Connnection](./assets/stats-view-rejected-connection.png)  
+A subscription task handles only a single client/connection at a time.  
+A client that uses the *OpenIfFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) 
+has attempted to open a connection to the subscription task but was rejected 
+because the task is already occupied by another client.  
+**Pending Connection**  
+![Pending Connnection](./assets/stats-view-pending-connection.png)  
+  
+1. Client **A** connects to the subscription task.  
+2. Client **B**, using the *WaitForFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay), 
+   attempts to connect the task.  
+   Discovering that the task is occupied, Client **B** is now pending, 
+   waiting for Client **A** to disconnect.  
+   The dotted yellow line shows the pending period for Client **B**.  
+3. Client **A** disconnects from the subscription task.  
+4. Client **B** starts a new connection to the subscription task.  
+
+
+
+

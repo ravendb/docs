@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `timeSeriesFor.delete` to delete time series entries.  
+* A time series is removed when all of its entries are deleted.  
+
+* In this page:  
+    * [usage](../../../../document-extensions/timeseries/client-api/session/delete.mdx#usage)
+    * [Example](../../../../document-extensions/timeseries/client-api/session/delete.mdx#example)
+  
+</Admonition>
+## usage
+
+**Flow**:
+
+* Open a session.  
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, or -   
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.delete` and provide the **timestamps range** of the entries you want to delete.  
+* Call `session.SaveChanges` for the action to take effect on the server.  
+
+**Note**:
+
+* If the specified document doesn't exist, a `DocumentDoesNotExistException` will be thrown.  
+* Attempting to delete nonexistent entries results in a no-op and generates no exception.  
+* To delete a whole time series simply delete all its entries.  
+  The series is removed when all its entries are deleted.  
+* Deleting a document deletes all its time series as well.  
+
+
+
+## Example
+
+In the following example we delete a time series entry appended by sample code in the 
+[append](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples) article.  
+<TabItem value="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point" label="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point">
+<CodeBlock language="php">
+{`// Delete a single entry
+$session = $store->openSession();
+try \{
+    $session->timeSeriesFor("users/john", "HeartRates")
+    ->delete((clone $baseTime)->add(new DateInterval("PT1M")));
+
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

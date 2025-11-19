@@ -1,0 +1,57 @@
+---
+title: "Counters and Other Features"
+hide_table_of_contents: true
+sidebar_label: Counters and Other Features
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CountersAndOtherFeaturesCsharp from './_counters-and-other-features-csharp.mdx';
+import CountersAndOtherFeaturesJava from './_counters-and-other-features-java.mdx';
+import CountersAndOtherFeaturesPython from './_counters-and-other-features-python.mdx';
+import CountersAndOtherFeaturesPhp from './_counters-and-other-features-php.mdx';
+import CountersAndOtherFeaturesNodejs from './_counters-and-other-features-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CountersAndOtherFeaturesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CountersAndOtherFeaturesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CountersAndOtherFeaturesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CountersAndOtherFeaturesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CountersAndOtherFeaturesNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio Articles
+- [Studio Counters Management](../../studio/database/document-extensions/counters#counters)
+
+### Client-API - Session Articles
+- [Counters Overview](../../document-extensions/counters/overview)
+- [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)
+- [Deleting a Counter](../../document-extensions/counters/delete)
+- [Retrieving Counter Values](../../document-extensions/counters/retrieve-counter-values)
+- [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)
+
+### Client-API - Operations Articles
+- [Counters Operations](../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+
+
+-->

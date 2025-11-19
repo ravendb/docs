@@ -1,0 +1,42 @@
+---
+title: "Time Series Querying"
+hide_table_of_contents: true
+sidebar_label: Querying
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import QueryingCsharp from './_querying-csharp.mdx';
+import QueryingNodejs from './_querying-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <QueryingCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <QueryingNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

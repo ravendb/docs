@@ -1,0 +1,56 @@
+---
+title: "Resume Index Operation"
+hide_table_of_contents: true
+sidebar_label: Resume Index
+sidebar_position: 10
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import StartIndexCsharp from './_start-index-csharp.mdx';
+import StartIndexJava from './_start-index-java.mdx';
+import StartIndexPython from './_start-index-python.mdx';
+import StartIndexPhp from './_start-index-php.mdx';
+import StartIndexNodejs from './_start-index-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <StartIndexCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <StartIndexJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <StartIndexPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <StartIndexPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <StartIndexNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+### Studio
+- [Resume index from Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)
+
+
+-->
