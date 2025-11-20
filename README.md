@@ -32,6 +32,16 @@ npm run start
 This command starts a local development server and opens up a browser window.  
 Most changes are reflected live without having to restart the server (hot reload).
 
+To run **only selected versions** (to shorten build time):  
+* Install `cross-env` if not already installed:
+  ```bash
+  npm install -g cross-env
+  ```
+* Run:
+  ```bash
+  cross-env DOCUSAURUS_VERSIONS="7.0,7.1,current" npm run start
+  ```
+
 ## Build
 
 ```bash
@@ -45,6 +55,16 @@ Note it may be necessary to increase Node.js max memory usage, e.g. to 8 GB
 ```bash
 $env:NODE_OPTIONS="--max-old-space-size=8192"
 ```
+
+To build **only selected versions** (to shorten build time and save memory):  
+* Install `cross-env` if not already installed:
+  ```bash
+  npm install -g cross-env
+  ```
+* Run:
+  ```bash
+  cross-env DOCUSAURUS_VERSIONS="7.0,7.1,current" npm run build
+  ```
 
 ## Serving static content
 
@@ -60,13 +80,41 @@ The documentation is organized into two main directories
 - `docs`: Contains the documentation files for latest RavenDB version.
 - `versioned_docs`: Contains the documentation files for all other RavenDB versions.
 
-## Adding new version
+## Adding a new version
 
-```bash
-npm run docusaurus docs:version version_label
-```
+To add a new documentation version:
 
-This command creates a new version of the documentation by adding `version-version_label` subdirectory to `versioned_docs` directory, which contains a snapshot of `docs` directory.
+1. Create a snapshot of the current version in the `versioned_docs` directory.  
+   Use:  
+   ```bash
+   npm run docusaurus docs:version version_label
+   ```
+2. To make the new version selectable in the sidebar, update the current version number in the `docs` property of the `docusaurus.config.js` file.  
+
+E.g., to add version `7.2`:  
+* Create a version for `7.1`
+   ```bash
+   npm run docusaurus docs:version 7.1
+   ```
+* Set `7.2` as the current docs version.  
+  `docusaurus.config.js` file:
+   ```json
+   docs: {
+          sidebarPath: "sidebars.ts",
+          routeBasePath: "/",
+          includeCurrentVersion: true,
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: "7.2",
+              path: "7.2"
+            }
+          },
+          onlyIncludeVersions: getOnlyIncludeVersions(),
+          //editUrl:
+          //    'https://github.com/ravendb/docs/tree/main/'
+        },
+   ```
 
 ## Modifying latest version
 
