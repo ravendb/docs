@@ -1,0 +1,41 @@
+---
+title: "Indexes: Stale Indexes"
+hide_table_of_contents: true
+sidebar_label: Stale Indexes
+sidebar_position: 9
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import StaleIndexesCsharp from './_stale-indexes-csharp.mdx';
+import StaleIndexesJava from './_stale-indexes-java.mdx';
+import StaleIndexesNodejs from './_stale-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <StaleIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <StaleIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <StaleIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../indexes/what-are-indexes)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Client API
+- [How to Customize Query](../client-api/session/querying/how-to-customize-query)
+
+
+-->

@@ -1,0 +1,210 @@
+---
+title: "Statistical Measures"
+hide_table_of_contents: true
+sidebar_label: Statistical Measures
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Statistical Measures
+<Admonition type="note" title="">
+
+* Queries can calculate the **percentile**, **slope**, and **standard deviation** 
+of a time series, or of a range of entries within a time series.  
+
+* For time series that have more than one value per entry, these methods return 
+one measure for the first values in each entry, another measure for the 
+second values in each entry, and so on.  
+
+* In this page:  
+  * [Syntax](../../../document-extensions/timeseries/querying/statistics.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/statistics.mdx#examples)  
+
+</Admonition>
+## Syntax
+
+### Percentile  
+
+<Admonition type="info" title="">
+A [percentile](https://en.wikipedia.org/wiki/Percentile) of a time series 
+is the value that divides the time series values by some ratio, when they 
+are arranged from smallest to largest.  
+
+For example, a 90th percentile is greater than 90% of the values in the 
+series, and less than the remaining 10%.  
+</Admonition>
+
+* RQL method: `percentile()`  
+* LINQ method: `Percentile()`  
+
+The percentile method can be used to calculate any percentile in a time 
+series or range of time series entries. It takes one `double` value that is greater than
+0 and less than or equal to 100. This represents the percent of the time series values that 
+should be smaller than the result.  
+
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
+### Slope  
+
+* RQL method: `slope()`  
+* LINQ method: `slope()`  
+
+The slope of a time series or range of time series entries is the difference 
+between the first and last values of the range (disregarding the values in 
+between) divided by the difference in time.  
+
+Queries that use this method must also [aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
+the time series, grouping the entries into whole numbers of time units.  
+
+The difference in time is measured in milliseconds. Use [scaling](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)
+to adjust the results to your preferred units.  
+
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
+### Standard Deviation
+
+* RQL method: `stddev()`  
+* LINQ method: `StandardDeviation()`  
+
+These methods return the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation) 
+of time series values.  
+
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
+### Result Format
+
+Queries with these methods return results with the following format:  
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "From": <first entry's timestamp>,
+    "To": <last entry's timestamp>,
+    "Count": [
+        <number of first values from each entry>,
+        <number of second values from each entry>,
+        ...
+    ],
+    <"Percentile"/"Slope"/"Standard Deviation">: [
+        <double - measure for first values from each entry>,
+        <double - measure for second values from each entry>,
+        ...
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+If the query uses `group by` aggregation, there will be one of 
+these results for each of the aggregates.  
+
+
+
+## Examples
+
+### Percentile
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`var query = session.Query<Employee>()
+    .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
+        .Select(x => new
+        {
+            P = x.Percentile(90)
+        }
+    )
+);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL" label="Raw-RQL">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+    from Employees as e
+    select timeseries(
+        from e.HeartRate 
+        select percentile(90)
+    )
+");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Slope
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`var query = session.Query<Employee>()
+    .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
+        .GroupBy(g => g.Hours(1))
+        .Select(x => new
+        {
+            Slope = x.Slope()
+        }
+    )
+);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL" label="Raw-RQL">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+    from Employees as e 
+    select timeseries(
+        from e.HeartRates
+        group by 1 hour
+        select slope()
+    )
+");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Standard Deviation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ" label="LINQ">
+<CodeBlock language="csharp">
+{`//Example query with defined range
+var date = DateTime.Today;
+
+var query = session.Query<Employee>()
+    .Select(p => RavenQuery.TimeSeries(p, "HeartRates", date, date.AddDays(1))
+        .Select(x => new
+        {
+            StdDev = x.StandardDeviation()
+        }
+    )
+);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Raw-RQL" label="Raw-RQL">
+<CodeBlock language="csharp">
+{`//Example query with defined range
+var date = DateTime.Today;
+
+var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+    from Employees as e
+    select timeseries(
+        from e.HeartRates 
+        between $start and $end
+        select stddev()
+    )
+")
+.AddParameter("start", date)
+.AddParameter("end", date.AddDays(1));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+

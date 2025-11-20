@@ -1,0 +1,34 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `clear` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="clear_1" label="clear_1">
+<CodeBlock language="php">
+{`public function clear(): void;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="clear_2" label="clear_2">
+<CodeBlock language="php">
+{`$employee = new Employee();
+$employee->setFirstName("John");
+$employee->setLastName("Doe");
+$session->store($employee);
+
+$session->advanced()->clear();
+
+$session->saveChanges(); // nothing will hapen
+`}
+</CodeBlock>
+</TabItem>
+
+

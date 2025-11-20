@@ -1,0 +1,43 @@
+---
+title: "Get Counters Operation"
+hide_table_of_contents: true
+sidebar_label: Get Counters
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetCountersCsharp from './_get-counters-csharp.mdx';
+import GetCountersJava from './_get-counters-java.mdx';
+import GetCountersPhp from './_get-counters-php.mdx';
+import GetCountersNodejs from './_get-counters-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetCountersCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetCountersJava />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetCountersPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetCountersNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Counter Batch Operation](../../../client-api/operations/counters/counter-batch)
+
+
+-->

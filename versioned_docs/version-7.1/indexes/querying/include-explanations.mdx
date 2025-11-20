@@ -1,0 +1,35 @@
+---
+title: "Include Explanations in Index Query"
+hide_table_of_contents: true
+sidebar_label: Include Explanations
+sidebar_position: 15
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IncludeExplanationsCsharp from './_include-explanations-csharp.mdx';
+import IncludeExplanationsNodejs from './_include-explanations-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IncludeExplanationsCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IncludeExplanationsNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Query Overview](../../client-api/session/querying/how-to-query)
+
+### Querying
+- [Indexing Basics](../../indexes/indexing-basics)
+
+
+-->

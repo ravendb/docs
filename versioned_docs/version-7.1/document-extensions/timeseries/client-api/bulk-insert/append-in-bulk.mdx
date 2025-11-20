@@ -1,0 +1,42 @@
+---
+title: "Append Time Series with Bulk Insert"
+hide_table_of_contents: true
+sidebar_label: Append In Bulk
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AppendInBulkCsharp from './_append-in-bulk-csharp.mdx';
+import AppendInBulkNodejs from './_append-in-bulk-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AppendInBulkCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AppendInBulkNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

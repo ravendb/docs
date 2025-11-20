@@ -1,0 +1,374 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+*CounterBatchOperation* allows you to operate on multiple counters (`Increment`, `Get`, `Delete`) of different documents in a **single request**.
+
+## Syntax
+
+<TabItem value="counter_batch_op" label="counter_batch_op">
+<CodeBlock language="php">
+{`class CounterBatchOperation
+\{
+    public function __construct(CounterBatch $counterBatch) \{ ... \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |                |                                                                                                                                                              |
+|------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **counterBatch** | `CounterBatch` | An object that holds a list of `DocumentCountersOperation`.<br/>Each element in the list describes the counter operations to perform for a specific document |
+
+<TabItem value="counter_batch" label="counter_batch">
+<CodeBlock language="php">
+{`class CounterBatch
+\{
+    private bool $replyWithAllNodesValues = false;  // A flag that indicates if the results should include a
+                                                    // dictionary of counter values per database node
+
+    private ?DocumentCountersOperationList $documents = null;
+
+    private bool $fromEtl = false;
+
+    // ... getter and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### DocumentCountersOperation 
+
+<TabItem value="document_counters_op" label="document_counters_op">
+<CodeBlock language="php">
+{`class DocumentCountersOperation
+\{
+    private ?CounterOperationList $operations = null;   // A list of counter operations to perform
+    private ?string $documentId = null;                 // Id of the document that holds the counters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### CounterOperation 
+
+<TabItem value="counter_operation" label="counter_operation">
+<CodeBlock language="php">
+{`/*
+class CounterOperation
+\{
+    private ?CounterOperationType $type = null;
+    private ?string $counterName = null;
+    private ?int $delta = null;     // the value to increment by
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### CounterOperationType
+
+<TabItem value="counter_operation_type" label="counter_operation_type">
+<CodeBlock language="php">
+{`class CounterOperationType
+\{
+    public function isIncrement(): bool;
+    public static function increment(): CounterOperationType;
+
+    public function isDelete(): bool;
+    public static function delete(): CounterOperationType;
+
+    public function isGet(): bool;
+    public static function get(): CounterOperationType;
+
+    public function isPut(): bool;
+    public static function put(): CounterOperationType;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Document updates as a result of a counter operation " id="document-updates-as-a-result-of-a-counter-operation" href="#document-updates-as-a-result-of-a-counter-operation">
+A document that has counters holds all its counter names in the `metadata`.  
+Therefore, when creating a new counter, the parent document is modified, as the counter's name needs to be added to the metadata.  
+Deleting a counter also modifies the parent document, as the counter's name needs to be removed from the metadata.  
+Incrementing an existing counter will not modify the parent document.
+
+Even if a `DocumentCountersOperation` contains several `CounterOperation` items that affect the document's metadata (create, delete),
+the parent document will be modified **only once**, after all the `CounterOperation` items in this `DocumentCountersOperation` have been processed.  
+If `DocumentCountersOperation` doesn't contain any `CounterOperation` that affects the metadata, the parent document won't be modified.
+
+</Admonition>
+
+
+
+## Return Value
+
+* *CounterBatchOperation* returns a `CountersDetail` object, which holds a list of `CounterDetail` objects.
+
+* If a `CounterOperationType` is `Increment` or `Get`, a `CounterDetail` object will be added to the result.  
+  `Delete` operations will not be included in the result.
+
+<TabItem value="counters_detail" label="counters_detail">
+<CodeBlock language="php">
+{`class CountersDetail
+\{
+    private ?CounterDetailList $counters = null;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="counter_detail" label="counter_detail">
+<CodeBlock language="php">
+{`class CounterDetail
+\{
+    private ?string $documentId = null;     // ID of the document that holds the counter
+    private ?string $counterName = null;    // The counter name
+    private ?int $totalValue = null;        // Total counter value
+    private ?int $etag = null;              // Counter Etag
+    private ?array $counterValues = [];     // A dictionary of counter values per database node
+
+    private ?string $changeVector = null;   // Change vector of the counter
+
+    // ... getters and setters
+\}
+
+class CounterDetailList extends TypedList
+\{
+    public function __construct()
+    \{
+        parent::__construct(CounterDetail::class);
+        $this->setNullAllowed(true);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+Assume we have two documents, `users/1` and `users/2`, that hold 3 counters each:  
+`likes`, `dislikes` and `downloads` -  with values 10, 20 and 30 (respectively)
+### Example #1 : Increment Multiple Counters in a Batch
+
+<TabItem value="counter_batch_exmpl1" label="counter_batch_exmpl1">
+<CodeBlock language="php">
+{`$operation1 = new DocumentCountersOperation();
+$operation1->setDocumentId("users/1");
+$operation1->setOperations([
+    CounterOperation::create("likes", CounterOperationType::increment(), 5),
+    CounterOperation::create("dislikes", CounterOperationType::increment()) // No delta specified, value will stay the same
+]);
+
+$operation2 = new DocumentCountersOperation();
+$operation2->setDocumentId("users/2");
+$operation2->setOperations([
+    CounterOperation::create("likes", CounterOperationType::increment(), 100),
+
+    // this will create a new counter "score", with initial value 50
+    // "score" will be added to counter-names in "users/2" metadata
+    CounterOperation::create("score", CounterOperationType::increment(), 50)
+]);
+
+$counterBatch = new CounterBatch();
+$counterBatch->setDocuments([$operation1, $operation2]);
+$store->operations()->send(new CounterBatchOperation($counterBatch));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 15,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/1",
+			"CounterName" : "dislikes",
+			"TotalValue" : 20,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/2",
+			"CounterName" : "likes",
+			"TotalValue" : 110,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/2",
+			"CounterName" : "score",
+			"TotalValue" : 50,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #2 : Get Multiple Counters in a Batch
+
+<TabItem value="counter_batch_exmpl2" label="counter_batch_exmpl2">
+<CodeBlock language="php">
+{`$operation1 = new DocumentCountersOperation();
+$operation1->setDocumentId("users/1");
+$operation1->setOperations([
+    CounterOperation::create("likes", CounterOperationType::get()),
+    CounterOperation::create("downloads", CounterOperationType::get())
+]);
+
+$operation2 = new DocumentCountersOperation();
+$operation2->setDocumentId("users/2");
+$operation2->setOperations([
+    CounterOperation::create("likes", CounterOperationType::get()),
+    CounterOperation::create("score", CounterOperationType::get())
+]);
+
+$counterBatch = new CounterBatch();
+$counterBatch->setDocuments([$operation1, $operation2]);
+
+$store->operations()->send(new CounterBatchOperation($counterBatch));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 15,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/1",
+			"CounterName" : "downloads",
+			"TotalValue" : 30,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/2",
+			"CounterName" : "likes",
+			"TotalValue" : 110,
+			"CounterValues" : null
+		\},
+        \{
+			"DocumentId" : "users/2",
+			"CounterName" : "score",
+			"TotalValue" : 50,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #3 : Delete Multiple Counters in a Batch
+
+<TabItem value="counter_batch_exmpl3" label="counter_batch_exmpl3">
+<CodeBlock language="php">
+{`$operation1 = new DocumentCountersOperation();
+$operation1->setDocumentId("users/1");
+$operation1->setOperations([
+    // "likes" and "dislikes" will be removed from counter-names in "users/1" metadata
+    CounterOperation::create("likes", CounterOperationType::delete()),
+    CounterOperation::create("dislikes", CounterOperationType::delete())
+]);
+
+$operation2 = new DocumentCountersOperation();
+$operation2->setDocumentId("users/2");
+$operation2->setOperations([
+    // "downloads" will be removed from counter-names in "users/2" metadata
+    CounterOperation::create("downloads", CounterOperationType::delete())
+]);
+
+$counterBatch = new CounterBatch();
+$counterBatch->setDocuments([$operation1, $operation2]);
+$store->operations()->send(new CounterBatchOperation($counterBatch));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": []
+\}
+`}
+</CodeBlock>
+</TabItem>
+### Example #4 : Mix Different Types of CounterOperations in a Batch
+
+<TabItem value="counter_batch_exmpl4" label="counter_batch_exmpl4">
+<CodeBlock language="php">
+{`$operation1 = new DocumentCountersOperation();
+$operation1->setDocumentId("users/1");
+$operation1->setOperations([
+    CounterOperation::create("likes", CounterOperationType::increment(), 30),
+    // The results will include null for this 'Get'
+    // since we deleted the "dislikes" counter in the previous example flow
+    CounterOperation::create("dislikes", CounterOperationType::get()),
+    CounterOperation::create("downloads", CounterOperationType::delete())
+]);
+
+$operation2 = new DocumentCountersOperation();
+$operation2->setDocumentId("users/2");
+$operation2->setOperations([
+    CounterOperation::create("likes", CounterOperationType::get()),
+    CounterOperation::create("dislikes", CounterOperationType::delete())
+]);
+
+$counterBatch = new CounterBatch();
+$counterBatch->setDocuments([$operation1, $operation2]);
+$store->operations()->send(new CounterBatchOperation($counterBatch));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Result:
+
+* Note: The `Delete` operations are Not included in the results.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+	"Counters": 
+    [
+		\{
+			"DocumentId" : "users/1",
+			"CounterName" : "likes",
+			"TotalValue" : 30,
+			"CounterValues" : null
+		\},
+        null,
+        \{
+			"DocumentId" : "users/2",
+			"CounterName" : "likes",
+			"TotalValue" : 110,
+			"CounterValues" : null
+		\}
+	]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

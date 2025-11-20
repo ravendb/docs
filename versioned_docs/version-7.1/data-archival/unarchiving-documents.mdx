@@ -1,0 +1,40 @@
+---
+title: "Unarchiving Documents"
+hide_table_of_contents: true
+sidebar_label: Unarchiving Documents
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UnarchivingDocumentsCsharp from './_unarchiving-documents-csharp.mdx';
+
+export const supportedLanguages = ["csharp"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <UnarchivingDocumentsCsharp />
+</LanguageContent>
+
+
+<!---
+### Document Archival
+- [Overview](../data-archival/overview)
+- [Enable data archiving](../data-archival/enable-data-archiving)
+- [Schedule document archiving](../data-archival/schedule-document-archiving)
+- [Archived documents and other features](../data-archival/archived-documents-and-other-features)
+
+### Configuration
+- [Overview](../server/configuration/configuration-options#settings.json)
+- [Database Settings](../studio/database/settings/database-settings#view-database-settings)
+
+### Extensions
+- [Document Expiration](../server/extensions/expiration)
+
+### Patching
+- [Patch By Query](../client-api/rest-api/queries/patch-by-query)
+
+
+-->

@@ -1,0 +1,21 @@
+---
+title: "Glossary: Raft Command"
+hide_table_of_contents: true
+sidebar_label: Raft Command
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Glossary: Raft Command
+
+In RavenDB 4.x, all cluster-level operations are essentially [Raft](./raft-algorithm) commands, which actually get executed only if they are applied to Raft log (which means that the commands reached the majority of cluster nodes).
+
+### What is a command?
+A Raft implementation is comprised of a state machine and a log. The idea is to ensure the same order of log entries in the state machine (eventually).
+A command is an entry in the Raft log.

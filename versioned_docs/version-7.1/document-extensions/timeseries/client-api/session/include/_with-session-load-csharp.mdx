@@ -1,0 +1,81 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When loading a document via `session.Load`,  
+  you can _include_ all entries of a time series or a specific range of entries.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:
+   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#include-time-series-when-loading-a-document)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#syntax)
+
+</Admonition>
+## Include time series when loading a document
+
+In this example, we load a document using `session.Load`,  
+and include a selected range of entries from time series "HeartRates".
+
+<TabItem value="timeseries_region_Load-Document-And-Include-TimeSeries" label="timeseries_region_Load-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    var baseline = DateTime.Today;
+
+    // Load a document
+    User user = session.Load<User>("users/john", includeBuilder =>
+        // Call 'IncludeTimeSeries' to include time series entries, pass:
+        // * The time series name
+        // * Start and end timestamps indicating the range of entries to include
+        includeBuilder.IncludeTimeSeries("HeartRates", baseline.AddMinutes(3), baseline.AddMinutes(8)));
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor("users/john", "HeartRates")
+        .Get(baseline.AddMinutes(3), baseline.AddMinutes(8));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+**`session.Load`**
+
+<TabItem value="Load-definition" label="Load-definition">
+<CodeBlock language="csharp">
+{`T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type                         | Description    |
+|--------------|------------------------------|----------------|
+| **id**       | `string`                     | Document ID    |
+| **includes** | `Action<IIncludeBuilder<T>>` | Include Object |
+
+**`Include`** builder methods:
+
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type        | Description                                                           |
+|-----------|-------------|-----------------------------------------------------------------------|
+| **name**  | `string`    | Time series name.                                                     |
+| **from**  | `DateTime?` | Time series range start (inclusive).<br/>Default: `DateTime.MinValue`. |
+| **to**    | `DateTime?` | Time series range end (inclusive).<br/>Default: `DateTime.MaxValue`.   |
+
+
+
+

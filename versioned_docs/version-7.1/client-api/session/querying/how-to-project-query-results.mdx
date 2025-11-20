@@ -1,0 +1,59 @@
+---
+title: "Project Query Results"
+hide_table_of_contents: true
+sidebar_label: Project Query Results
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToProjectQueryResultsCsharp from './_how-to-project-query-results-csharp.mdx';
+import HowToProjectQueryResultsJava from './_how-to-project-query-results-java.mdx';
+import HowToProjectQueryResultsPython from './_how-to-project-query-results-python.mdx';
+import HowToProjectQueryResultsPhp from './_how-to-project-query-results-php.mdx';
+import HowToProjectQueryResultsNodejs from './_how-to-project-query-results-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToProjectQueryResultsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToProjectQueryResultsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToProjectQueryResultsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToProjectQueryResultsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToProjectQueryResultsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Query Overview](../../../client-api/session/querying/how-to-query)
+- [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+
+### Indexes
+- [Querying an index](../../../indexes/querying/query-index)
+- [Project index query results](../../../indexes/querying/projections)
+
+### Server
+- [JavaScript Engine](../../../server/kb/javascript-engine)
+
+### Querying
+- [Basics](../../../indexes/querying/query-index)
+- [Projections](../../../indexes/querying/projections)
+
+
+-->

@@ -1,0 +1,349 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
+  to learn about the `search` method.  
+
+* **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
+
+* However, as opposed to making a dynamic search query where an auto-index is created for you,  
+  when using a **static-index**:  
+
+    * You must configure the index-field in which you want to search.  
+      See examples below.  
+      
+    * You can configure which analyzer will be used to tokenize this field.  
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+* In this article:
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+
+</Admonition>
+## Indexing single field for FTS
+
+#### The index:
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="php">
+{`// The IndexEntry class defines the index-fields
+class Employees_ByNotes_IndexEntry
+\{
+    private ?string $employeeNotes = null;
+
+    public function getEmployeeNotes(): ?string
+    \{
+        return $this->employeeNotes;
+    \}
+
+    public function setEmployeeNotes(?string $employeeNotes): void
+    \{
+        $this->employeeNotes = $employeeNotes;
+    \}
+\}
+class Employees_ByNotes extends AbstractIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        // The 'Map' function defines the content of the index-fields
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "\{ " .
+               " employee_notes = employee.Notes[0]" .
+            "\}";
+
+        # Configure the index-field for FTS:
+        # Set 'FieldIndexing.Search' on index-field 'employee_notes'
+        $this->index("employee_notes", FieldIndexing::search());
+
+        # Optionally: Set your choice of analyzer for the index-field:
+        # Here the text from index-field 'EmployeeNotes' will be tokenized by 'WhitespaceAnalyzer'.
+        $this->analyze("employee_notes", "WhitespaceAnalyzer");
+
+        # Note:
+        # If no analyzer is set then the default 'RavenStandardAnalyzer' is used.
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Query with Search:
+
+* Use `search` to make a full-text search when querying the index.  
+
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
+  such as using wildcards, searching for multiple terms, etc.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+     // Query the index
+    ->query(Employees_ByNotes_IndexEntry::class, Employees_ByNotes::class)
+     // Call 'Search':
+     // pass the index field that was configured for FTS and the term to search for.
+    ->search("EmployeeNotes", "French")
+    ->ofType(Employee::class)
+    ->toList();
+
+// * Results will contain all Employee documents that have 'French' in their 'Notes' field.
+//
+// * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
+//   which preserves casing.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+     // Query the index
+    ->documentQuery(Employees_ByNotes_IndexEntry::class, Employees_ByNotes::class)
+     // Call 'Search':
+     // pass the index field that was configured for FTS and the term to search for.
+    ->search("EmployeeNotes", "French")
+    ->ofType(Employee::class)
+    ->toList();
+
+// * Results will contain all Employee documents that have 'French' in their 'Notes' field.
+//
+// * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
+//   which preserves casing.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNotes"
+where search(EmployeeNotes, "French")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Indexing multiple fields for FTS
+
+#### The index:
+
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="php">
+{`class EmployeeData
+\{
+    private ?string $firstName = null;
+    private ?string $lastName = null;
+    private ?string $title = null;
+    private ?string $notes = null;
+
+    // ... getters and setters
+\}
+
+class EmployeeDataArray extends TypedArray
+\{
+    protected function __construct()
+    \{
+        parent::__construct(EmployeeData::class);
+    \}
+\}
+
+class Employees_ByEmployeeData_IndexEntry
+\{
+    public ?EmployeeDataArray  $employeeData = null;
+\}
+class Employees_ByEmployeeData extends AbstractIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new \{" .
+            "  EmployeeData = " .
+            "  \{" .
+            # Multiple document-fields can be indexed
+            # into the single index-field 'employee_data'
+            "    employee.FirstName," .
+            "    employee.LastName," .
+            "    employee.Title," .
+            "    employee.Notes" .
+            "  \}" .
+            "\}";
+
+        // Configure the index-field for FTS:
+        // Set 'FieldIndexing.Search' on index-field 'EmployeeData'
+        $this->index("EmployeeData", FieldIndexing::search());
+
+        // Note:
+        // Since no analyzer is set then the default 'RavenStandardAnalyzer' is used.
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Sample query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+     // Query the static-index
+    ->query(Employees_ByEmployeeData_IndexEntry::class, Employees_ByEmployeeData::class)
+     // A logical OR is applied between the following two Search calls:
+    ->search("EmployeeData", "Manager")
+     // A logical AND is applied between the following two terms:
+    ->search("EmployeeData", "French Spanish", SearchOperator::and())
+    ->ofType(Employee::class)
+    ->toList();
+
+// * Results will contain all Employee documents that have:
+//   ('Manager' in any of the 4 document-fields that were indexed)
+//   OR
+//   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
+//
+// * Search is case-insensitive since the default analyzer is used
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+     // Query the static-index
+    ->documentQuery(Employees_ByEmployeeData_IndexEntry::class, Employees_ByEmployeeData::class)
+    ->openSubclause()
+     // A logical OR is applied between the following two Search calls:
+    ->search("EmployeeData", "Manager")
+     // A logical AND is applied between the following two terms:
+    ->search("EmployeeData", "French Spanish", SearchOperator::and())
+    ->closeSubclause()
+    ->ofType(Employee::class)
+    ->toList();
+
+// * Results will contain all Employee documents that have:
+//   ('Manager' in any of the 4 document-fields that were indexed)
+//   OR
+//   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
+//
+// * Search is case-insensitive since the default analyzer is used
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByEmployeeData"
+where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Indexing all fields for FTS (using AsJson)
+
+* To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method,
+  which is available in the **C# LINQ string** that is assigned to the `map` property in the PHP index class,
+  as shown in the example below.
+
+* This approach makes the index robust to changes in the document schema.  
+  By calling `.Select(x => x.Value)` on the result of `AsJson(...)`,
+  the index automatically includes values from ALL existing and newly added properties
+  and there is no need to update the index when the document structure changes.
+
+* <Admonition type="info" title="">
+  This indexing method is supported only when using **Lucene** as the indexing engine.
+  </Admonition>
+#### The index:
+
+<TabItem value="index_3" label="index_3">
+<CodeBlock language="php">
+{`class Products_ByAllValues_IndexEntry
+\{
+    public ?string $allValues = null;
+    public function getAllValues(): ?string
+    \{
+        return $this->allValues;
+    \}
+    public function setAllValues(?string $allValues): void
+    \{
+        $this->allValues = $allValues
+    \}
+\}
+
+class Products_ByAllValues extends AbstractIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new \{ " .
+            # Use the 'AsJson' method to convert the document into a JSON-like structure
+            # and call 'Select' to extract only the values of each property
+            "    allValues = this.AsJson(product).Select(x => x.Value) " .
+            "\})";
+
+        # Configure the index-field for FTS:
+        # Set 'FieldIndexing::search' on index-field 'allValues'
+        $this->index("allValues", FieldIndexing::search());
+        
+        # Set the search engine type to Lucene:
+        $this->setSearchEngineType(SearchEngineType::lucene());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Sample query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->query(Products_ByAllValues_IndexEntry::class, Products_ByAllValues::class)
+        ->search("allValues", "tofu")
+        ->ofType(Product::class)
+        ->toList();
+        
+// * Results will contain all Product documents that have 'tofu'
+//   in ANY of their fields.
+//
+// * Search is case-insensitive since the default analyzer is used.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByAllValues"
+where search(allValues, "tofu")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Boosting search results
+
+* To prioritize results, you can provide a boost value to the searched terms.  
+  This can be applied by either of the following:
+
+  * Add a boost value to the relevant index-field **inside the index definition**.  
+    Refer to the indexes [Boosting](../../indexes/boosting.mdx) article.  
+
+  * Add a boost value to the queried terms **at query time**.  
+    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
+
+
+
+

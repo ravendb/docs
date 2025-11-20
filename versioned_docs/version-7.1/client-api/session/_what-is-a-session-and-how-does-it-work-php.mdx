@@ -1,0 +1,299 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">  
+
+* The **Session**, which is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx),  
+  is the primary interface your application will interact with.
+
+* In this page:
+  * [Session overview](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#session-overview)  
+  * [Unit of work pattern](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern)  
+      * [Tracking changes](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes)
+      * [Create document example](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#create-document-example)
+      * [Modify document example](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#modify-document-example)
+  * [Identity map pattern](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#identity-map-pattern)
+  * [Batching & Transactions](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#batching--transactions)
+  * [Concurrency control](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#concurrency-control)
+  * [Reducing server calls (best practices) for:](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#reducing-server-calls-(best-practices)-for:)  
+      * [The N+1 problem](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#the-select-n1-problem)    
+      * [Large query results](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#large-query-results)    
+      * [Retrieving results on demand (Lazy)](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#retrieving-results-on-demand-lazy)
+
+</Admonition>  
+## Session overview
+
+* **What is the session**:  
+    
+  * The session (`ISession`/`IAsyncDocumentSession`) serves as a [Unit of Work](https://en.wikipedia.org/wiki/Unit_of_work) representing a single  
+    **[Business Transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html)** on a specific database (not to be confused with an [ACID transaction](../../client-api/faq/transaction-support.mdx)).  
+   
+  * It is a container that allows you to query for documents and load, create, or update entities  
+    while keeping track of changes.
+   
+  * Basic document CRUD actions and document Queries are available through the `Session`.  
+    More advanced options are available using the `Advanced` Session operations.
+
+* **Batching modifications**:  
+  A business transaction usually involves multiple requests such as loading of documents or execution of queries.  
+  Calling [saveChanges()](../../client-api/session/saving-changes.mdx) indicates the completion of the client-side business logic.
+  At this point, all modifications made within the session are batched and sent together in a **single HTTP request** to the server to be persisted as a single ACID transaction.
+
+* **Tracking changes**:  
+  Based on the [Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html) and the [Identity Map](https://martinfowler.com/eaaCatalog/identityMap.html) patterns, 
+  the session tracks all changes made to all entities that it has either loaded, stored, deleted, or queried for.  
+  Only the modifications are sent to the server when `saveChanges` is called.
+
+* **Client side object**:  
+  The session is a pure client side object. Opening the session does Not establish any connection to a database,  
+  and the session's state isn't reflected on the server side during its duration.
+
+* **Configurability**:  
+  Various aspects of the session are configurable.  
+  For example, the number of server requests allowed per session is [configurable](../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx) (default is 30). 
+
+* **The session and ORM Comparison**:  
+  The RavenDB Client API is a native way to interact with a RavenDB database.  
+  It is _not_ an Object–relational mapping (ORM) tool. Although if you're familiar with NHibernate of Entity Framework ORMs you'll recognize that
+  the session is equivalent of NHibernate's session and Entity Framework's DataContext which implement UoW pattern as well.
+
+  
+
+## Unit of work pattern  
+
+#### Tracking changes
+
+* Using the Session, perform needed operations on your documents.  
+  e.g. create a new document, modify an existing document, query for documents, etc.  
+* Any such operation '*loads*' the document as an entity to the Session,  
+  and the entity is added to the **Session's entities map**.  
+* The Session **tracks all changes** made to all entities stored in its internal map.  
+  You don't need to manually track the changes and decide what needs to be saved and what doesn't, the Session will do it for you.  
+  Prior to saving, you can review the changes made if necessary. See: [Check for session changes](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx).
+* All the tracked changes are combined & persisted in the database only when calling `saveChanges()`.    
+* Entity tracking can be disabled if needed. See:
+    * [Disable entity tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx)
+    * [Clear session](../../client-api/session/how-to/clear-a-session.mdx)
+    * [Evict a single entity](../../client-api/session/how-to/evict-entity-from-a-session.mdx)
+
+#### Create document example  
+
+* The Client API, and the Session in particular, is designed to be as straightforward as possible.  
+  Open the session, do some operations, and apply the changes to the RavenDB server.  
+* The following example shows how to create a new document in the database using the Session.  
+
+<TabItem value="session_usage_1" label="session_usage_1">
+<CodeBlock language="php">
+{`// Obtain a Session from your Document Store
+$session = $store->openSession();
+try \{
+    // Create a new entity
+    $entity = new Company();
+    $entity->setName("Company");
+
+    // Store the entity in the Session's internal map
+    $session->store($entity);
+    // From now on, any changes that will be made to the entity will be tracked by the Session.
+    // However, the changes will be persisted to the server only when saveChanges() is called.
+
+    $session->saveChanges();
+    // At this point the entity is persisted to the database as a new document.
+    // Since no database was specified when opening the Session, the Default Database is used.
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Modify document example  
+* The following example modifies the content of an existing document.  
+
+<TabItem value="session_usage_2" label="session_usage_2">
+<CodeBlock language="php">
+{`// Open a session
+$session = $store->openSession();
+try \{
+    // Load an existing document to the Session using its ID
+    // The loaded entity will be added to the session's internal map
+    $entity = $session->load(Company::class, $companyId);
+
+    // Edit the entity, the Session will track this change
+    $entity->setName("NewCompanyName");
+
+    $session->saveChanges();
+    // At this point, the change made is persisted to the existing document in the database
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+  
+
+## Identity map pattern  
+
+* The session implements the [Identity Map Pattern](https://martinfowler.com/eaaCatalog/identityMap.html).
+* The first `Load()` call goes to the server and fetches the document from the database.  
+  The document is then stored as an entity in the Session's entities map.  
+* All subsequent `Load()` calls to the same document will simply retrieve the entity from the Session -  
+  no additional calls to the server are made.  
+
+<TabItem value="session_usage_3" label="session_usage_3">
+<CodeBlock language="php">
+{`// A document is fetched from the server
+$entity1 = $session->load(Company::class, $companyId);
+
+// Loading the same document will now retrieve its entity from the Session's map
+$entity2 = $session->load(Company::class, $companyId);
+
+// This command will Not throw an exception
+$this->assertSame($entity1, $entity2);
+`}
+</CodeBlock>
+</TabItem>
+
+* Note:  
+  To override this behavior and force `Load()` to fetch the latest changes from the server see: 
+  [Refresh an entity](../../client-api/session/how-to/refresh-entity.mdx).  
+
+
+
+## Batching & Transactions
+
+<Admonition type="note" title="">
+
+#### Batching
+
+* Remote calls to a server over the network are among the most expensive operations an application makes.  
+  The session optimizes this by batching all **write operations** it has tracked into the `saveChanges()` call.  
+* When calling `saveChanges`, the session evaluates its state to identify all pending changes requiring persistence in the database. 
+  These changes are then combined into a single batch that is sent to the server in a **single remote call** and executed as a single ACID transaction.  
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Transactions
+
+* The client API does not provide transactional semantics over the entire session.  
+  The session **does not** represent a [transaction](../../client-api/faq/transaction-support.mdx) (nor a transaction scope) in terms of ACID transactions.
+* RavenDB provides transactions over individual requests, so each call made within the session's usage will be processed in a separate transaction on the server side.
+  This applies to both reads and writes. 
+
+##### Read transactions
+
+* Each call retrieving data from the database will generate a separate request. Multiple requests mean separate transactions.
+* The following options allow you to read _multiple_ documents in a single request:
+    * Using overloads of the [Load()](../../client-api/session/loading-entities.mdx#load---multiple-entities) method that specify a collection of IDs or a prefix of ID.
+    * Using [Include](../../client-api/session/loading-entities.mdx#load-with-includes) to retrieve additional documents in a single request.
+    * A query that can return multiple documents is executed in a single request,  
+      hence it is processed in a single read transaction.
+
+##### Write transactions
+
+* The batched operations that are sent in the `saveChanges()` complete transactionally, as this call generates a single request to the database. 
+  In other words, either all changes are saved as a **Single Atomic Transaction** or none of them are.  
+  So once `saveChanges` returns successfully, it is guaranteed that all changes are persisted to the database.  
+* `saveChanges` is the only time when the RavenDB Client API sends updates to the server from the Session,  
+  resulting in a reduced number of network calls.
+* To execute an operation that both loads and updates a document within the same write transaction, use the patching feature. 
+  This can be done either with the usage of a [JavaScript patch](../../client-api/operations/patching/single-document.mdx) syntax or [JSON Patch](../../client-api/operations/patching/json-patch-syntax.mdx) syntax.
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### Transaction mode
+
+* The session's transaction mode can be set to either:  
+  * **Single-Node** - transaction is executed on a specific node and then replicated  
+  * **Cluster-Wide** - transaction is registered for execution on all nodes in an atomic fashion
+  * <Admonition type="warning" title="">
+      The phrase "session's transaction mode" refers to the type of transaction that will be executed on the server-side when `saveChanges()` is called.
+      As mentioned earlier, the session itself does not represent an ACID transaction.
+    </Admonition>
+  * Learn more about these modes in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) transactions. 
+
+</Admonition>
+
+<Admonition type="info" title="Transactions in RavenDB" id="transactions-in-ravendb" href="#transactions-in-ravendb">
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../client-api/faq/transaction-support.mdx) article. 
+</Admonition>
+
+
+
+## Concurrency control
+
+The typical usage model of the session is:
+
+  * Load documents
+  * Modify the documents
+  * Save changes
+
+For example, a real case scenario would be:  
+
+  * Load an entity from a database.
+  * Display an Edit form on the screen.
+  * Update the entity after the user completes editing.
+
+When using the session, the interaction with the database is divided into two parts - the load part and save changes part. 
+Each of these parts is executed separately, via its own HTTP request.  
+Consequently, data that was loaded and edited could potentially be changed by another user in the meantime.  
+To address this, the session API offers the concurrency control feature.
+
+#### Default strategy on single node
+
+* By default, concurrency checks are turned off. 
+  This means that with the default configuration of the session, concurrent changes to the same document will use the Last Write Wins strategy.   
+ 
+* The second write of an updated document will override the previous version, causing potential data loss. 
+  This behavior should be considered when using the session with single node transaction mode.
+
+#### Optimistic concurrency on single node
+
+* The modification or editing stage can extend over a considerable time period or may occur offline.  
+  To prevent conflicting writes, where a document is modified while it is being edited by another user or client,  
+  the session can be configured to employ [optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+
+* Once optimistic concurrency is enabled, the session performs version tracking to ensure that any document modified within the session has not been altered in the database since it was loaded into the session.  
+  The version is tracked using a [change vector](../../server/clustering/replication/change-vector.mdx).
+
+* When `saveChanges()` is called, the session additionally transmits the version of the modified documents to the database, allowing it to verify if any changes have occurred in the meantime.  
+  If modifications are detected, the transaction will be aborted with a `ConcurrencyException`,  
+  providing the caller with an opportunity to retry or handle the error as needed.
+
+#### Concurrency control in cluster-wide transactions
+
+* In a cluster-wide transaction scenario, RavenDB server tracks a cluster-wide version for each modified document, updating it through the Raft protocol. 
+  This means that when using a session with the cluster-wide transaction mode, a `ConcurrencyException` will be triggered upon calling `saveChanges()` 
+  if another user has modified a document and saved it in a separate cluster-wide transaction in the meantime.
+
+* More information about cluster transactions can be found in [Cluster Transaction - Overview](../../client-api/session/cluster-transaction/overview.mdx).
+
+
+
+## Reducing server calls (best practices) for:
+
+#### The select N+1 problem
+* The Select N+1 problem is common 
+  with all ORMs and ORM-like APIs.  
+  It results in an excessive number of remote calls to the server, which makes a query very expensive.  
+* Make use of RavenDB's `include()` method to include related documents and avoid this issue.  
+  See: [Document relationships](../../client-api/how-to/handle-document-relationships.mdx)  
+
+#### Large query results
+* When query results are large and you don't want the overhead of keeping all results in memory,  
+  then you can [Stream query results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  A single server call is executed and the client can handle the results one by one.  
+* [Paging](../../indexes/querying/paging.mdx) also avoids getting all query results at one time,  
+  however, multiple server calls are generated - one per page retrieved.  
+
+#### Retrieving results on demand (Lazy)
+* Query calls to the server can be delayed and executed on-demand as needed using `Lazily()`
+* See [Perform queries lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+
+
+
+

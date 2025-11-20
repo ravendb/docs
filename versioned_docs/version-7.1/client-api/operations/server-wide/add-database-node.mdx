@@ -1,0 +1,39 @@
+---
+title: "Adding a Database Node"
+hide_table_of_contents: true
+sidebar_label: Add Database Node
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AddDatabaseNodeCsharp from './_add-database-node-csharp.mdx';
+import AddDatabaseNodePython from './_add-database-node-python.mdx';
+import AddDatabaseNodePhp from './_add-database-node-php.mdx';
+import AddDatabaseNodeNodejs from './_add-database-node-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AddDatabaseNodeCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <AddDatabaseNodePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <AddDatabaseNodePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AddDatabaseNodeNodejs />
+</LanguageContent>
+
+
+<!---
+
+-->

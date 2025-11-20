@@ -1,0 +1,39 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To indicate that an entity should be ignored when tracking changes, 
+use the `advanced` session `ignoreChangesFor` method.  
+
+Using `Load` again to retrieve this entity will not initiate a server call.  
+
+The entity will still take part in the session, but be ignored when `save_changes` is called.  
+
+## Syntax
+
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
+<CodeBlock language="java">
+{`void ignoreChangesFor(Object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Instance of entity for which changes will be ignored. |
+
+
+## Example
+
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
+<CodeBlock language="java">
+{`Product product = session.load(Product.class, "products/1-A");
+session.advanced().ignoreChangesFor(product);
+product.unitsInStock++; //this will be ignored for SaveChanges
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+

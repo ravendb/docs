@@ -1,0 +1,148 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
+  using [session.advanced.defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), as described below.
+  * You can handle a single document at a time.
+  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
+  
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx),  
+  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch.mdx).
+
+* In this page:
+   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch.mdx#usage)  
+   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-examples)
+     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries) 
+     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries) 
+   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch.mdx#syntax)
+
+</Admonition>
+## Usage
+
+* Open a session
+* Construct a `PatchCommandData` instance and pass it the following:
+  * The document ID that contains the time series
+  * The document change vector (or `null`)
+  * A `PatchRequest` instance with a JavaScript that appends or removes time series entries
+* Call `session.advanced.defer` and pass it the `PatchCommandData` command.  
+  Note that you can call _defer_ multiple times prior to calling _saveChanges_.
+* Call `session.saveChanges()`.  
+  All patch requests added via _defer_ will be sent to the server for execution when _saveChanges_ is called.
+
+
+
+## Patching examples
+
+#### Append multiple entries:
+
+In this example, we append 100 time series entries with random heart rate values to a document.  
+
+<TabItem value="patch_1" label="patch_1">
+<CodeBlock language="js">
+{`const baseTime = new Date();
+
+// Prepare random values and timestamps to patch
+const values = [];
+const timeStamps = [];
+
+for (let i = 0; i < 100; i++) \{
+    const randomValue = 65 + Math.round(20 * Math.random());
+    values.push(randomValue);
+    
+    // NOTE: the timestamp passed in the patch request script should be in UTC
+    const timeStamp = new Date(baseTime.getTime() + 60_000 * i);
+    const utcDate = new Date(timeStamp.getTime() + timeStamp.getTimezoneOffset() * 60_000);
+    timeStamps.push(utcDate);
+\}
+
+// Define the patch request
+// ========================
+
+const patchRequest = new PatchRequest();
+
+// Provide a JavaScript script, use the 'append' method
+// Note: "args." can be replaced with "$". E.g.: "args.tag" => "$tag"
+patchRequest.script = \`
+    for(var i = 0; i < args.values.length; i++)
+    \{
+        timeseries(id(this), args.timeseries)
+        .append (
+            new Date(args.timeStamps[i]),
+            args.values[i],
+            args.tag);
+    \}\`;
+
+// Provide values for the params used within the script
+patchRequest.values = \{
+    timeseries: "HeartRates",
+    timeStamps: timeStamps,
+    values: values,
+    tag: "watches/fitbit"
+\}
+
+// Define the patch command
+const patchCommand = new PatchCommandData("users/john", null, patchRequest, null)
+
+// Pass the patch command to 'defer'
+session.advanced.defer(patchCommand);
+
+// Call saveChanges for the patch request to execute on the server
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+#### Delete multiple entries:
+
+In this example, we remove a range of 50 time series entries from a document.  
+
+<TabItem value="patch_2" label="patch_2">
+<CodeBlock language="js">
+{`// Define the patch request
+// ========================
+
+const patchRequest = new PatchRequest();
+
+// Provide a JavaScript script, use the 'delete' method
+// Note: "args." can be replaced with "$". E.g.: "args.to" => "$to"
+patchRequest.script = \`timeseries(this, args.timeseries)
+         .delete(
+             args.from,
+             args.to 
+         );\`;
+       
+// NOTE: the 'from' & 'to' params in the patch request script should be in UTC
+const utcDate = new Date(baseTime.getTime() + baseTime.getTimezoneOffset() * 60_000);
+
+// Provide values for the params used within the script
+patchRequest.values = \{
+    timeseries: "HeartRates",
+    from: utcDate,
+    to: new Date(utcDate.getTime() + 60_000 * 49)
+\}
+
+// Define the patch command
+const patchCommand = new PatchCommandData("users/john", null, patchRequest, null)
+
+// Pass the patch command to 'defer'
+session.advanced.defer(patchCommand);
+
+// Call saveChanges for the patch request to execute on the server
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+A detailed syntax description for `PatchCommandData` & `PatchRequest` can be found in the following section:  
+[Session API using defer syntax](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
+
+
+
+

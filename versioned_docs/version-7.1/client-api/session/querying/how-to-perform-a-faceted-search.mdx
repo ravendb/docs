@@ -1,0 +1,50 @@
+---
+title: "Perform a Faceted (Aggregated) Search"
+hide_table_of_contents: true
+sidebar_label: Perform Faceted Search
+sidebar_position: 8
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToPerformAFacetedSearchCsharp from './_how-to-perform-a-faceted-search-csharp.mdx';
+import HowToPerformAFacetedSearchJava from './_how-to-perform-a-faceted-search-java.mdx';
+import HowToPerformAFacetedSearchPython from './_how-to-perform-a-faceted-search-python.mdx';
+import HowToPerformAFacetedSearchPhp from './_how-to-perform-a-faceted-search-php.mdx';
+import HowToPerformAFacetedSearchNodejs from './_how-to-perform-a-faceted-search-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToPerformAFacetedSearchCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToPerformAFacetedSearchJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToPerformAFacetedSearchPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToPerformAFacetedSearchPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToPerformAFacetedSearchNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Faceted Search](../../../indexes/querying/faceted-search)
+
+
+-->

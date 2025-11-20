@@ -1,0 +1,75 @@
+---
+title: "Indexes: Map-Reduce Indexes"
+hide_table_of_contents: true
+sidebar_label: Map-Reduce Indexes
+sidebar_position: 7
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import MapReduceIndexesCsharp from './_map-reduce-indexes-csharp.mdx';
+import MapReduceIndexesJava from './_map-reduce-indexes-java.mdx';
+import MapReduceIndexesPython from './_map-reduce-indexes-python.mdx';
+import MapReduceIndexesPhp from './_map-reduce-indexes-php.mdx';
+import MapReduceIndexesNodejs from './_map-reduce-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <MapReduceIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <MapReduceIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <MapReduceIndexesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <MapReduceIndexesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <MapReduceIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Map Indexes](../indexes/map-indexes)
+- [Multi-Map Indexes](../indexes/multi-map-indexes)
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Basics](../indexes/querying/query-index)
+
+### Studio
+- [Indexes: Overview](../studio/database/indexes/indexes-overview)
+- [Index List View](../studio/database/indexes/indexes-list-view)
+- [Create Map Index](../studio/database/indexes/create-map-index)
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
+- [Map-Reduce Visualizer](../studio/database/indexes/map-reduce-visualizer)
+- [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)
+
+### Sharding
+- [Sharding Overview](../sharding/overview)
+- [Indexing](../sharding/indexing)
+- [Querying](../sharding/querying)
+
+### Code Walkthrough
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+- [Map Index](https://demo.ravendb.net/demos/python/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/python/static-indexes/map-reduce-index)
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/python/multi-map-indexes/multi-map-reduce-index#)
+
+
+-->

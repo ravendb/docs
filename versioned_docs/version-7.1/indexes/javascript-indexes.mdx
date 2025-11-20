@@ -1,0 +1,40 @@
+---
+title: "JavaScript Indexes"
+hide_table_of_contents: true
+sidebar_label: JavaScript Indexes
+sidebar_position: 8
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import JavascriptIndexesCsharp from './_javascript-indexes-csharp.mdx';
+import JavascriptIndexesJava from './_javascript-indexes-java.mdx';
+
+export const supportedLanguages = ["csharp", "java"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <JavascriptIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <JavascriptIndexesJava />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map Indexes](../indexes/map-indexes)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
+- [Basics](../indexes/querying/basics)
+
+
+-->

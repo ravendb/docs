@@ -1,0 +1,46 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+#Operations: Server: Toggle Dynamic Database Distribution
+<Admonition type="note" title="">
+
+* In [dynamic database distribution](../../../server/clustering/distribution/distributed-database.mdx#dynamic-database-distribution) mode, 
+if a database node is down, another cluster node is added to the database group to compensate.  
+
+* Use this operation to toggle dynamic distribution for a particular database group.  
+
+* This can also be done [in the studio](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions) under 
+database group settings.  
+
+</Admonition>
+
+
+
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public SetDatabaseDynamicDistributionOperation(string databaseName, bool allowDynamicDistribution)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | string | Name of database group |
+| **allowDynamicDistribution** | bool | Set to `true` to activate dynamic distribution mode. |
+### Example
+
+<TabItem value="operation" label="operation">
+<CodeBlock language="csharp">
+{`SetDatabaseDynamicDistributionOperation operation =
+    new SetDatabaseDynamicDistributionOperation("NorthWind", true);
+documentStore.Maintenance.Server.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

@@ -1,0 +1,208 @@
+---
+title: "Index Administration"
+hide_table_of_contents: true
+sidebar_label: Index Administration
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Index Administration
+<Admonition type="note" title="">
+
+* Indexes can be easily managed from the [Studio](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view)
+  or via [Maintenance operations](../client-api/operations/what-are-operations.mdx#maintenance-operations) in the Client API.
+
+* In this article:
+  * [Index management operations](../indexes/index-administration.mdx#index-management-operations)
+      * [Pause & resume index](../indexes/index-administration.mdx#pause--resume-index)
+      * [Pause & resume indexing](../indexes/index-administration.mdx#pause--resume-indexing)
+      * [Disable & enable index](../indexes/index-administration.mdx#disable--enable-index)
+      * [Disable & enable indexing](../indexes/index-administration.mdx#disable--enable-indexing)
+      * [Reset index](../indexes/index-administration.mdx#reset-index)
+      * [Delete index](../indexes/index-administration.mdx#delete-index)
+      * [Set index lock mode](../indexes/index-administration.mdx#set-index-lock-mode)
+      * [Set index priority](../indexes/index-administration.mdx#set-index-priority)
+  * [Index states](../indexes/index-administration.mdx#index-states)
+  * [Customize indexing configuration](../indexes/index-administration.mdx#customize-indexing-configuration)
+
+</Admonition>
+## Index management operations
+
+<Admonition type="note" title="">
+
+##### Pause & resume index
+* An index can be paused (and resumed).
+ 
+* See [pause index](../client-api/operations/maintenance/indexes/stop-index.mdx) & [resume index](../client-api/operations/maintenance/indexes/start-index.mdx) for detailed information.
+ 
+* Operation scope: Single node.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Pause & resume indexing
+* You can pause (and resume) indexing of ALL indexes.
+ 
+* See [pause indexing](../client-api/operations/maintenance/indexes/stop-indexing.mdx) & [resume indexing](../client-api/operations/maintenance/indexes/start-indexing.mdx) for detailed information.
+ 
+* Operation scope: Single node.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Disable & enable index
+* An index can be disabled (and enabled), this is a persistent operation.
+ 
+* See [disable index](../client-api/operations/maintenance/indexes/disable-index.mdx) & [enable index](../client-api/operations/maintenance/indexes/enable-index.mdx) for detailed information.
+ 
+* Operation scope: Single node, or all database-group nodes.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Disable & enable indexing
+* Indexing can be disabled (and enabled) for ALL indexes, this is a persistent operation.
+ 
+* This is done from the [database list view](../studio/database/databases-list-view.mdx#more-actions) in the Studio.
+ 
+* Operation scope: All database-group nodes.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Reset index
+* Resetting an index will force re-indexing of all documents that match the index definition.  
+  An index usually needs to be reset once it reached its error quota and is in an _Error_ state.
+  An index usually needs to be reset when it reaches its error quota and enters the _Error_ state.
+ 
+* See [reset index](../client-api/operations/maintenance/indexes/reset-index.mdx) for detailed information.
+ 
+* Operation scope: Single node.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Delete index
+* An index can be deleted from the database.
+ 
+* See [delete index](../client-api/operations/maintenance/indexes/delete-index.mdx) for detailed information.
+ 
+* Operation scope: All database-group nodes.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Set index lock mode
+* The lock mode controls whether modifications to the index definition are applied (static indexes only).
+ 
+* See [set index lock](../client-api/operations/maintenance/indexes/set-index-lock.mdx) for detailed information.
+ 
+* Operation scope: All database-group nodes.
+
+</Admonition>
+<Admonition type="note" title="">
+
+##### Set index priority
+* Each index has a dedicated thread that handles all the work for the index.  
+  Setting the index priority will affect the thread priority at the operating system level.
+ 
+* See [set index priority](../client-api/operations/maintenance/indexes/set-index-priority.mdx) for detailed information.
+ 
+* Operation scope: All database-group nodes.
+
+</Admonition>
+
+
+## Index states
+
+An index can be in one of the following states:
+
+* `Normal`
+    * The index is active, any new data is indexed.
+
+* `Paused`
+    * New data is not being indexed.
+    * Queries will be stale as new data is not indexed.
+    * The indexing process will resume upon any of the following actions:
+        * Setting _'Resume indexing'_ from the [Studio](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
+        * Resume indexing from the Client API. See [Resume index operation](../client-api/operations/maintenance/indexes/start-index.mdx).
+        * Restarting the server.
+        * Reloading the database. See [How to reload the database](../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
+
+* `Disabled`
+    * New data is not being indexed.
+    * Queries will be stale as new data is not indexed.
+    * The indexing process will resume upon either of the following:
+        * Setting _'Enable indexing'_ from the [Studio](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).  
+        * Resume indexing from the Client API. See [Enable index operation](../client-api/operations/maintenance/indexes/enable-index.mdx).
+    * The index will NOT automatically resume upon restarting the server or reloading the database.
+
+* `Idle` (auto-indexes only)  
+
+    * An auto-index is marked as _'Idle'_ when it has not been queried for a configurable period of time.  
+      This state indicates that the index may later be deleted, as detailed in the following points:
+
+    * Specifically, an **auto-index** is marked as _'Idle'_ when the time difference between its last-query-time
+      and the most recent time the database was queried (using any other index) exceeds a configurable threshold. This threshold is set by the
+      [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforemarkingautoindexasidleinmin) configuration key (30 minutes by default).
+
+    * This mechanism is designed to prevent auto-indexes from being marked as idle in databases that were offline for a long period,
+      had no new data to index, were not queried, or were recently restored from a snapshot or backup.
+
+    * While an auto-index is _'Idle'_, it is NOT considered _'Disabled'_.  
+      **It continues to index data** from any documents relevant to its definition as they are created or modified.
+
+    * An idle auto-index returns to the _'Normal'_ state in the following cases:
+        * When it is queried again.
+        * When the auto-index is reset.
+        * When [the database is reloaded](../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
+
+    * If the idle auto-index is Not returned to the _'Normal'_ state, the server will **delete** it after a configurable time period,  
+      set by the [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key (72 hours by default).
+
+    * Note:  
+      The server evaluates whether an auto-index should be marked as idle, or whether an idle auto-index should be deleted,  
+      at intervals defined by the [Indexing.CleanupIntervalInMin](../server/configuration/indexing-configuration.mdx#indexingcleanupintervalinmin) configuration key (10 minutes by default).  
+      If _TimeToWaitBeforeMarkingAutoIndexAsIdleInMin_ or _TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs_  
+      are set to values smaller than the cleanup interval, the index will be marked as idle or deleted only after the cleanup interval elapses.
+
+* `Error`
+    * An indexing error can occur when the indexing-function is malformed (e.g., incorrectly written)  
+      or when the document data is corrupted/missing.
+    * Once the index error rate exceeds a certain threshold (as described in [Marking index as errored](../indexes/troubleshooting/debugging-index-errors.mdx#marking-index-as-errored)),  
+      the index state is marked as _'Error'_. 
+    * An errored index cannot be queried - all queries against it will result in an exception.
+    * Learn more in [Debugging index errors](../indexes/troubleshooting/debugging-index-errors.mdx).
+
+* `Faulty`
+    * When an index is successfully defined but the server fails to open its index data file from disk, or if this file is corrupted,  
+      the server marks the index as _'Faulty'_, indicating that something is wrong with its index data files.
+    * Learn more in [Faulty index](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors).
+
+
+
+## Customize indexing configuration
+
+* There are many [indexing configuration](../server/configuration/indexing-configuration.mdx) options available.  
+
+* A configuration key with a **"per-index" scope** can be customized for a specific index,  
+  overriding the server-wide and the database configuration values.
+
+* The "per-index" configuration key can be set from:
+  * The [configuration tab](../studio/database/indexes/create-map-index.mdx#configuration) in the Edit Index view in the Studio.  
+  * The [index class constructor](../indexes/creating-and-deploying.mdx#creating-an-index-with-custom-configuration) when defining an index.  
+  * The [index definition](../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) when sending a [putIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes.mdx).
+
+**Expert configuration options**:
+
+* [Server.IndexingAffinityMask](../server/configuration/server-configuration.mdx#serverindexingaffinitymask) - Control the affinity mask of indexing threads
+* [Server.NumberOfUnusedCoresByIndexes](../server/configuration/server-configuration.mdx#servernumberofunusedcoresbyindexes) - Set the number of cores that _won't_ be used by indexes
+
+
+

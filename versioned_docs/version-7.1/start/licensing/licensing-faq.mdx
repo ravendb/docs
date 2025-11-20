@@ -1,0 +1,90 @@
+---
+title: "Licensing FAQ"
+hide_table_of_contents: true
+sidebar_label: Licensing FAQ
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Licensing FAQ
+<Admonition type="note" title="">
+
+* Below are answers to frequently asked questions about RavenDB licensing.
+
+* On this page:
+    * [My RavenDB 5.x license doesn't work with RavenDB 6.x](../../start/licensing/licensing-faq#my-ravendb-5x-license-doesnt-work-with-ravendb-6x)  
+    * [My license is about to expire, what will happen if it does?](../../start/licensing/licensing-faq#my-license-is-about-to-expire-what-will-happen-if-it-does)  
+    * [My Community license forces me to upgrade RavenDB when I open Studio](../../start/licensing/licensing-faq#my-community-license-forces-me-to-upgrade-ravendb-when-i-open-studio)  
+    * [When I try to activate my license I get LicenseExpiredException](../../start/licensing/licensing-faq#when-i-try-to-activate-my-license-i-get-licenseexpiredexception)
+    * [Validating my license on an RHEL 9 machine fails with InvalidDataException](../../start/licensing/licensing-faq#validating-my-license-on-an-rhel-9-machine-fails-with-invaliddataexception)
+    * [ISV License Cannot Be upgraded via Online Tool](../../start/licensing/licensing-faq#isv-license-cannot-be-upgraded-via-online-tool)
+    * [Developer license fails activation with a certificate for more than 4 months](../../start/licensing/licensing-faq#developer-license-fails-activation-with-a-certificate-for-more-than-4-months)
+
+</Admonition>
+
+### My RavenDB 5.x license doesn't work with RavenDB 6.x
+
+Licenses issued prior to RavenDB version `6.0` are not valid on RavenDB `6.x` servers.  
+To remedy this simply **upgrade your license** using our [license upgrade tool](https://customers.ravendb.net/upgrade-to-6-license) and apply your license.  
+The upgraded license will still work with RavenDB `4.x` and `5.x`, and will also work with RavenDB `6.x`.  
+
+<hr />
+
+### My license is about to expire, what will happen if it does?
+
+When your license expires, database operations will continue running normally and production workload will not be disrupted. Access to the management Studio, however, will be restricted after expiration.  
+
+To regain Studio access you will need to either renew your license or switch to the free [Community License](../../start/licensing/licensing-overview#community).
+
+<hr />
+
+### My Community license forces me to upgrade RavenDB when I open Studio
+
+While running RavenDB with a community license, users are required to use the latest RavenDB major version. If, for example, you are running RavenDB `6.2` with a community license while RavenDB `7.0` is already available, you will be required to upgrade to RavenDB `7.0`.  
+
+This is enforced when entering Studio. For a certain time period, a popup reminder that can be dismissed will appear when Studio is opened. After that period, dismissing the message will no longer be possible and Studio will be blocked until the server is upgraded.  
+
+To solve this issue either upgrade RavenDB or replace your license with a license that does not enforce this requirement (e.g. a developer license).
+
+<hr />
+
+### When I try to activate my license I get LicenseExpiredException
+
+The full message, **LicenseExpiredException: Cannot activate license because its max activation date has passed**, appears when attempting to activate a license more than 14 days after its creation.  
+If more than two weeks passed since you acquired a license and you haven't applied it yet, please contact RavenDB Support. We can extend the activation timeframe upon request.
+
+<hr />
+
+### Validating my license on an RHEL 9 machine fails with InvalidDataException
+
+The scenario for this issue includes a RavenDB `6.0.103` or older node failure to launch on `RHEL 9` (Red Hat Enterprise Linux 9) or other Linux distributions that use the same cryptographic policy, with Studio showing `InvalidDataException` license validation errors. It results from an OS restriction over using the `SHA-1` algorithm, that these versions of RavenDB relied upon for license validation.  
+
+The issue is resolved on RavenDB `6.0.104` or higher, which adjusts license validation to avoid the `SHA-1` policy issue.
+
+If upgrading RavenDB is not possible at the moment, a temporary workaround may be changing the OS cryptographic policy to allow `SHA-1`, as described below:
+```powershell
+// Allow SHA-1 in system crypto policies, then restart RavenDB:  
+sudo update-crypto-policies --set DEFAULT:SHA1 
+sudo systemctl restart ravendb
+```
+
+<hr />
+
+### ISV License Cannot Be upgraded via Online Tool
+
+Upgrading an ISV license through the portal tool will fail because ISV licenses are not eligible for these automatic upgrades.
+If you have an ISV license and you want to upgrade RavenDB, please contact RavenDB support and request for the upgrade.  
+
+<hr />
+
+### Developer license fails activation with a certificate for more than 4 months
+
+If you try to activate a developer license with a certificate that was prepared fpr a period longer than 4 months, the activation will fail with an error indicating that the certificate duration exceeds the allowed limit.  
+This is by design, as developer licenses support certificates with a validity period of up to 4 months.
+To resolve this issue, generate a new certificate whose validity period is up to 4 months.  

@@ -1,0 +1,54 @@
+---
+title: "Set Index Lock Mode Operation"
+hide_table_of_contents: true
+sidebar_label: Set Index Lock Mode
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SetIndexLockCsharp from './_set-index-lock-csharp.mdx';
+import SetIndexLockJava from './_set-index-lock-java.mdx';
+import SetIndexLockPython from './_set-index-lock-python.mdx';
+import SetIndexLockPhp from './_set-index-lock-php.mdx';
+import SetIndexLockNodejs from './_set-index-lock-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SetIndexLockCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SetIndexLockJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SetIndexLockPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <SetIndexLockPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SetIndexLockNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-index-priority)
+
+
+-->

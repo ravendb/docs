@@ -1,0 +1,51 @@
+---
+title: "Data Gap Filling"
+hide_table_of_contents: true
+sidebar_label: Data Gap Filling
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GapFillingCsharp from './_gap-filling-csharp.mdx';
+import GapFillingJava from './_gap-filling-java.mdx';
+import GapFillingNodejs from './_gap-filling-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GapFillingCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GapFillingJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GapFillingNodejs />
+</LanguageContent>
+
+
+<!---
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+
+### Time Series Indexing
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Time Series Queries
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

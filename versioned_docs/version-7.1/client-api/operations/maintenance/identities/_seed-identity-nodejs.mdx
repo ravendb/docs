@@ -1,0 +1,108 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `SeedIdentityForOperation` to set the latest identity value for the specified collection.
+  
+* The next document that will be created using an identity for the collection will receive the consecutive integer value.
+
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
+
+* In this page:
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#force-a-lower-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#syntax)
+
+</Admonition>
+## Set a higher identity value 
+
+You can replace the latest identity value on the server with a new, **higher** number. 
+
+<TabItem value="seed_identity_1" label="seed_identity_1">
+<CodeBlock language="js">
+{`// Seed a higher identity value on the server:
+// ===========================================
+
+// Define the seed identity operation. Pass:
+//   * The collection name (can be with or without a pipe)
+//   * The new value to set
+const seedIdentityOp = new SeedIdentityForOperation("companies|", 23);
+
+// Execute the operation by passing it to maintenance.send
+// The latest value on the server will be incremented to "23"
+// and the next document created with an identity will be assigned "24"
+const seededValue = await store.maintenance.send(seedIdentityOp);
+
+// Create a document with an identity ID:
+// ======================================
+
+const company = new Company();
+company.name = "RavenDB";
+
+await session.store(company, "companies|");
+await session.saveChanges();
+// => Document "companies/24" will be created
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Force a lower identity value 
+
+* You can set the latest identity value to a number that is **lower** than the current latest value.
+
+* Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
+
+<TabItem value="seed_identity_2" label="seed_identity_2">
+<CodeBlock language="js">
+{`// Force a smaller identity value on the server:
+// =============================================
+
+// Define the seed identity operation. Pass:
+//   * The collection name (can be with or without a pipe)
+//   * The new value to set
+//   * Pass 'true' to force the update
+const seedIdentityOp = new SeedIdentityForOperation("companies|", 5, true);
+
+// Execute the operation by passing it to maintenance.send
+// The latest value on the server will be decremented to "5"
+// and the next document created with an identity will be assigned "6"
+const seededValue = await store.maintenance.send(seedIdentityOp);
+
+// Create a document with an identity ID:
+// ======================================
+
+const company = new Company();
+company.name = "RavenDB";
+
+await session.store(company, "companies|");
+await session.saveChanges();
+// => Document "companies/6" will be created
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const seedIdentityOp = new SeedIdentityForOperation(name, value, forceUpdate);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type      | Description                                                                                                                    |
+|-----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------|
+| **name**        | `string`  | The collection name to seed the identity value for.<br/>Can be ended with or without a pipe (e.g. "companies" or "companies\|". |
+| **value**       | `number`  | The number to set as the latest identity value.                                                                                |
+| **forceUpdate** | `boolean` | `true` - force a new value that is lower than the latest.<br/>`false` - only a higher value can be set.                         |
+
+
+
+

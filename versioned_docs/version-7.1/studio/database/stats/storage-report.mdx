@@ -1,0 +1,62 @@
+---
+title: "Storage Report"
+hide_table_of_contents: true
+sidebar_label: Storage Report
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Storage Report
+<Admonition type="note" title="">
+
+* The database storage report displays detailed information about the database's physical storage.  
+
+* Go to __Stats &gt; Storage Report__ in the Studio.  
+  Refresh the page to see the effect of [Documents Compression](../../../server/storage/documents-compression.mdx) and [Database Compaction](../../../client-api/operations/server-wide/compact-database.mdx).
+
+* In this page:  
+  * [Database storage report](../../../studio/database/stats/storage-report.mdx#database-storage-report)  
+
+</Admonition>
+## Database storage report
+
+![Storage Report](./assets/storage-report.png)
+
+1. Go to __Stats &gt; Storage Report__.  
+
+2. This is the database location on disk.  
+
+3. __Database components__:  
+
+   * Each rectangle is a database component.  
+     The size of each rectangle is proportional to its storage size.  
+   
+   * To see storage details, hover over a section or see the detailed table below.
+
+   * Click any rectangle to view its subdirectories' details.
+
+4. __Set documents compression__:
+   
+   * Click to configure [documents compression](../../../studio/database/settings/documents-compression.mdx) from the Studio.  
+
+5. __Compact database__:  
+
+   * Click to compact the database on the local node the browser is opened on.  
+     This will remove empty gaps on disk that still occupy space after deletes.  
+     You can choose what should be compacted: documents and/or selected indexes.  
+
+   * The compaction operation triggers documents compression on all existing documents in collections  
+     that are configured for compression. See [compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression).  
+   
+   * Note: During this asynchronous operation __the database will be offline__.
+ 
+   * The database can also be compacted from the Client API, see [compact database operation](../../../client-api/operations/server-wide/compact-database.mdx). 
+
+
+

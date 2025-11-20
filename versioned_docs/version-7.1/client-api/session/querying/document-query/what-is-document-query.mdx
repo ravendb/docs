@@ -1,0 +1,53 @@
+---
+title: "What is a Document Query?"
+hide_table_of_contents: true
+sidebar_label: What is a Document Query
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatIsDocumentQueryCsharp from './_what-is-document-query-csharp.mdx';
+import WhatIsDocumentQueryJava from './_what-is-document-query-java.mdx';
+import WhatIsDocumentQueryPython from './_what-is-document-query-python.mdx';
+import WhatIsDocumentQueryPhp from './_what-is-document-query-php.mdx';
+import WhatIsDocumentQueryNodejs from './_what-is-document-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatIsDocumentQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatIsDocumentQueryJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <WhatIsDocumentQueryPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <WhatIsDocumentQueryPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatIsDocumentQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
+- [Querying: Basics](../../../../indexes/querying/query-index)
+
+### Querying
+- [Query vs DocumentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query)
+- [Projections](../../../../indexes/querying/projections)
+
+
+-->

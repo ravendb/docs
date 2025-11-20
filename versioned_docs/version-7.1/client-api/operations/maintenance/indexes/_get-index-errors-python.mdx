@@ -1,0 +1,115 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx). 
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors.mdx#syntax)
+
+</Admonition>
+## Get errors for all indexes
+
+<TabItem value="get_errors_all" label="get_errors_all">
+<CodeBlock language="python">
+{`# Define the get index errors operation
+get_index_errors_op = GetIndexErrorsOperation()
+
+# Execute the operation by passing it to maintenance.send
+index_errors = store.maintenance.send(get_index_errors_op)
+
+# index_errors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get errors for specific indexes
+
+<TabItem value="get_errors_specific" label="get_errors_specific">
+<CodeBlock language="python">
+{`# Define the get index errors operation for specific indexes
+get_index_errors_op = GetIndexErrorsOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if any of the specified indexes do not exist
+index_errors = store.maintenance.send(get_index_errors_op)
+
+# index_errors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`class GetIndexErrorsOperation(MaintenanceOperation[List[IndexErrors]]):
+    def __init__(self, *index_names: str):  # If no index_names provided, get errors for all indexes
+        ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **\*index_names** | `str` | List of index names to get errors for |
+
+| Return value of<br/>`store.maintenance.send(GetIndexErrorsOperation)` | Description |
+| - | - |
+| `List[IndexErrors]` | List of `IndexErrors` classes - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`class IndexErrors:
+    def __init__(self, name: Optional[str] = None, errors: Optional[List[IndexingError]] = None):
+        self.name = name  # Index name
+        self.errors = errors  # List of errors for this index
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`class IndexingError:
+    def __init__(
+        self,
+        error: Optional[str] = None,
+        timestamp: Optional[datetime.datetime] = None,
+        document: Optional[str] = None,
+        action: Optional[str] = None,
+    ):
+        # Error message
+        self.error = error
+
+        # Time of error
+        self.timestamp = timestamp
+
+        # If action is 'Map'    - field will contain the document ID
+        # If action is 'Reduce' - field will contain the Reduce key value
+        # For all other actions - field will be None
+        self.document = document
+
+        # Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+        self.action = action
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

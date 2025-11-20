@@ -1,0 +1,327 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+    
+* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all entities that it has either stored, loaded, or queried.  
+  Any changes made to these entities are automatically persisted when `SaveChanges` is called. 
+  
+* Use the `Evict` method to **remove a specific entity** from the session's tracking before calling _SaveChanges_.  
+  Eviction stops the session from tracking the entity, removes it from the identity map and internal cache,  
+  and cancels any pending operations for that entity (e.g., Store, Delete).
+ 
+* This article explains how to **evict a single entity** from the session.    
+  To evict _all_ tracked entities and clear _all_ pending operations, use the [Clear](../../../client-api/session/how-to/clear-a-session.mdx) method instead.  
+  To prevent an entity from being tracked, see [DisableTracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx).
+    
+* In this article:
+  * [Evict an entity before saving](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-before-saving)
+  * [Evict an entity to force reload from server](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-to-force-reload-from-server)    
+  * [Evict an entity from the session's delete queue](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-from-the-sessions-delete-queue)    
+  * [Limitations](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#limitations)
+  * [Syntax](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#syntax)
+    
+</Admonition>
+
+---
+
+## Evict an entity before saving
+
+* Calling `Evict` on an entity that is _stored_ removes it from the session’s tracking and cancels the pending store operation.  
+  As a result, the entity will not be saved to the database when _SaveChanges_ is called.  
+* This can be useful if you’ve staged an entity to be stored, but then decide to discard it before committing changes.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync_session" label="sync_session">
+```csharp
+using (var session = store.OpenSession())
+{
+    Employee employee1 = new Employee { FirstName = "John", LastName = "Doe" };
+    Employee employee2 = new Employee { FirstName = "Jane", LastName = "Doe" };
+    
+    // Store both employees in the session
+    // The session begins tracking both employee entities
+    session.Store(employee1, "employees/1");
+    session.Store(employee2, "employees/2");
+    
+    // Evict employee1
+    // This removes employee1 from the session's tracking 
+    // and cancels its pending store operation 
+    session.Advanced.Evict(employee1);
+    
+    // Only employee2 will be saved
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="async_session" label="async_session">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    Employee employee1 = new Employee { FirstName = "John", LastName = "Doe" };
+    Employee employee2 = new Employee { FirstName = "Jane", LastName = "Doe" };
+    
+    // Store both employees in the session
+    // The session begins tracking both employee entities
+    await asyncSession.StoreAsync(employee1, "employees/1");
+    await asyncSession.StoreAsync(employee2, "employees/2");
+    
+    // Evict employee1
+    // This removes employee1 from the session's tracking 
+    // and cancels its pending store operation 
+    asyncSession.Advanced.Evict(employee1);
+    
+    // Only employee2 will be saved
+    asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+
+## Evict an entity to force reload from server
+
+* Calling `Evict` on an entity that was previously loaded removes it from the session’s tracking.  
+  The next time you call _Load_ for that entity, RavenDB will fetch it from the server instead of returning the cached version.  
+* This can be useful if you want to ensure you're working with the latest version of a document,  
+  for example, if you expect the document was modified outside the session.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync_session" label="sync_session">
+```csharp
+using (var session = store.OpenSession())
+{
+    // Load an entity from the server
+    // The session begins tracking the loaded entity
+    Employee employee = session.Load<Employee>("employees/1");    
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 1
+    
+    // Loading the same entity again does NOT trigger a server call
+    employee = session.Load<Employee>("employees/1");
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 1
+    
+    // Evict the entity
+    // This removes it from the session's tracking
+    session.Advanced.Evict(employee); 
+    
+    // Loading the entity now DOES trigger a server call
+    employee = session.Load<Employee>("employees/1"); 
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 2
+}
+```
+</TabItem>
+<TabItem value="async_session" label="async_session">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load an entity from the server
+    // The session begins tracking the loaded entity
+    Employee employee = await asyncSession.LoadAsync<Employee>("employees/1");    
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 1
+    
+    // Loading the same entity again does NOT trigger a server call
+    employee = await asyncSession.LoadAsync<Employee>("employees/1");
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 1
+    
+    // Evict the entity
+    // This removes it from the session's tracking
+    asyncSession.Advanced.Evict(employee); 
+    
+    // Loading the entity now DOES trigger a server call
+    employee = await asyncSession.LoadAsync<Employee>("employees/1"); 
+    Console.WriteLine("number of requests = " + session.Advanced.NumberOfRequests); // 2
+}
+```
+</TabItem>
+</Tabs>
+
+## Evict an entity from the session's delete queue
+
+* Calling `Evict` on an entity that was previously marked for deletion removes it from the session's delete queue.  
+  As a result, the deletion will not be sent to the server when _SaveChanges_ is called.    
+* This can be useful if you need to revert a pending deletion before committing changes.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync_session" label="sync_session">
+```csharp
+using (var session = store.OpenSession())
+{    
+    var employee1 = session.Load<Employee>("employees/1");
+    var employee2 = session.Load<Employee>("employees/2");
+
+    // Mark both employees for deletion
+    session.Delete(employee1);
+    session.Delete(employee1);
+    
+    // Remove employee1 from tracking and from delete queue
+    session.Advanced.Evict(employee1);
+
+    // Only employee2 will be deleted
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="async_session" label="async_session">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{    
+    var employee1 = await asyncSession.LoadAsync<Employee>("employees/1");
+    var employee2 = await asyncSession.LoadAsync<Employee>("employees/2");
+
+    // Mark both employees for deletion
+    asyncSession.Delete(employee1);
+    asyncSession.Delete(employee2);
+    
+    // Remove employee1 from tracking and from delete queue
+    asyncSession.Advanced.Evict(employee1); 
+    
+    // Only employee2 will be deleted
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+
+## Limitations
+
+* `Evict` cannot be called from within an [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore) or
+  [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete) event handler.  
+  Attempting to do so will throw an exception.  
+* This is a design limitation intended to prevent changes to the session's internal state during event handlers that are triggered by _SaveChanges_.
+  For example:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync_session" label="sync_session">
+```csharp
+using (var session = store.OpenSession())
+{
+    session.Store(new Employee() { FirstName = "Foo1" }, "employees/1");
+    session.Store(new Employee() { FirstName = "Foo2" }, "employees/2");
+    session.SaveChanges();
+}
+
+using (var session = store.OpenSession())
+{
+    var employee2 = session.Load<Employee>("employees/2");
+    
+    // Register an event handler that will be called before any document is saved during SaveChanges
+    session.Advanced.OnBeforeStore += delegate (object sender, BeforeStoreEventArgs args)
+    {
+        try
+        {
+            args.Session.Evict(employee2);
+        }
+        catch (InvalidOperationException e) 
+        {
+            // An exception is thrown:
+            // "Cannot Evict entity during OnBeforeStore..."
+        }
+    };
+    
+    session.Store(new Employee { FirstName = "Foo3" }, "employees/3");
+    
+    // SaveChanges triggers the 'OnBeforeStore' event
+    session.SaveChanges();
+}
+ 
+using (var session = store.OpenSession())
+{
+    var employee2 = session.Load<Employee>("employees/2");
+    
+    // Register an event handler that will be called before any document is deleted during SaveChanges
+    session.Advanced.OnBeforeDelete += delegate (object sender, BeforeDeleteEventArgs args)
+    {
+        try
+        {
+            args.Session.Evict(employee2);
+        }
+        catch (InvalidOperationException e) 
+        {
+            // An exception is thrown:
+            // "Cannot Evict entity during OnBeforeDelete..."
+        }
+    };
+
+    // Load employees/1 and mark it for deletion
+    var employee1 = session.Load<Employee>("employees/1");
+    session.Delete(employee1);
+    
+    // SaveChanges triggers the OnBeforeDelete event
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="async_session" label="async_session">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    await asyncSession.StoreAsync(new Employee { FirstName = "Foo1" }, "employees/1");
+    await asyncSession.StoreAsync(new Employee { FirstName = "Foo2" }, "employees/2");
+    await asyncSession.SaveChangesAsync();
+}
+    
+using (var asyncSession = store.OpenAsyncSession())
+{
+    var employee2 = await asyncSession.LoadAsync<Employee>("employees/2");
+    
+    // Register an event handler that will be called before any document is saved during SaveChangesAsync
+    asyncSession.Advanced.OnBeforeStore += async (sender, args) =>
+    {
+        try
+        {
+            args.Session.Evict(employee2);
+        }
+        catch (InvalidOperationException e)
+        {
+            // An exception is thrown:
+            // "Cannot Evict entity during OnBeforeStore..."
+        }
+    };
+    
+    await asyncSession.StoreAsync(new Employee { FirstName = "Foo3" }, "employees/3");
+    // SaveChangesAsync triggers the OnBeforeStore event
+    await asyncSession.SaveChangesAsync();
+}
+    
+using (var asyncSession = store.OpenAsyncSession())
+{
+     var employee2 = await asyncSession.LoadAsync<Employee>("employees/2");
+     
+     // Register an event handler that will be called before any document is deleted during SaveChangesAsync
+     asyncSession.Advanced.OnBeforeDelete += async (sender, args) =>
+     {
+         try
+         {
+             args.Session.Evict(employee2);
+         }
+         catch (InvalidOperationException e)
+         {
+             // An exception is thrown:
+             // "Cannot Evict entity during OnBeforeDelete..."
+         }
+     };
+        
+     // Load employees/1 and mark it for deletion
+     var employee1 = await asyncSession.LoadAsync<Employee>("employees/1");
+     asyncSession.Delete(employee1);
+            
+     // SaveChangesAsync triggers the OnBeforeDelete event
+     await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+
+## Syntax
+
+<TabItem value="" label="">
+```csharp
+void Evict<T>(T entity);
+```
+</TabItem>
+
+| Parameter  | Type | Description                                   |
+| -----------| ---- | --------------------------------------------- |
+| **T**      | T    | Type of the entity to evict                   |
+| **entity** | T    | Instance of the entity to evict from tracking |

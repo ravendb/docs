@@ -1,0 +1,54 @@
+---
+title: "Get Statistics"
+hide_table_of_contents: true
+sidebar_label: Get Statistics
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetStatsCsharp from './_get-stats-csharp.mdx';
+import GetStatsJava from './_get-stats-java.mdx';
+import GetStatsPython from './_get-stats-python.mdx';
+import GetStatsPhp from './_get-stats-php.mdx';
+import GetStatsNodejs from './_get-stats-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetStatsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetStatsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetStatsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetStatsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetStatsNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Switch operation to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database)
+
+### FAQ
+- [What is a Collection](../../../client-api/faq/what-is-a-collection)
+
+### Client API
+- [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
+
+
+-->

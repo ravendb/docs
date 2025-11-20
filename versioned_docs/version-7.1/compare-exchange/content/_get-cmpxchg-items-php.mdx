@@ -1,0 +1,55 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can retrieve multiple existing compare-exchange items at once using the **Client API** by either:
+  * specifying a list of unique keys, or
+  * using a common key prefix
+
+  Retrieval can be done using either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get **multiple** compare-exchange items.  
+  To get a **single** item, see [Get compare-exchange item](../compare-exchange/get-cmpxchg-item).
+
+* In this article:  
+  * [Syntax](../compare-exchange/get-cmpxchg-items#syntax)
+
+</Admonition>
+    
+---
+
+## Syntax
+
+---
+
+### `getCompareExchangeValues`  
+
+<TabItem value="" label="">
+```php
+// Get compare-exchange item using a cluster wide session:
+$session->advanced()->clusterTransaction()->getCompareExchangeValues(null, $keys);
+```
+</TabItem>
+
+<TabItem value="" label="">
+```php
+// Get compare-exchange item using a cluster wide session - lazily:
+$session->advanced()->clusterTransaction()->lazily()->getCompareExchangeValues(null, $keys);
+```
+</TabItem>
+
+| Parameter     | Type       | Description                                           |
+|---------------|------------|-------------------------------------------------------|
+| **keys**      | `string[]` | Keys of the compare-exchange items to retrieve.       |
+
+| Returned object                                     |  Description                                                |
+|-----------------------------------------------------|-------------------------------------------------------------|
+| `Dictionary<string, CompareExchangeValue<T>>`       | If a key doesn't exists the associate value will be `null`. |
+| `Lazy<Dictionary<string, CompareExchangeValue<T>>>` | If a key doesn't exists the associate value will be `null`. |

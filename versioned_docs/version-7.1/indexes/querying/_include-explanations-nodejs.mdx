@@ -1,0 +1,195 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article provides examples of including explanations when querying a static-index.  
+
+* **Prior to this article**, please refer to [Include Query Explanations](../../client-api/session/querying/debugging/include-explanations.mdx) for dynamic-query examples  
+  and general knowledge about including explanations to retrieve the score of resulting documents.
+  
+    <Admonition type="info" title="">
+    * Including explanations is available only when using **Lucene** as the underlying search engine for static-indexes.
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
+    </Admonition>
+* In this page:
+  * [Include explanations when querying Map index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-index)  
+  * [Include explanations when querying Map-Reduce index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-reduce-index)  
+  * [Syntax](../../indexes/querying/include-explanations.mdx#syntax)
+
+</Admonition>
+## Include explanations when querying Map index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="js">
+{`class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", product => {
+            return {
+                name: product.Name
+            };
+        });
+
+        // Configure the index-field 'Name' for FTS
+        this.index("name", "Search");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define an object that will receive the explanations results
+let explanationsResults;
+
+const products = await session
+     // Query the index
+    .query({ indexName: "Products/BySearchName" })
+     // Call 'includeExplanations', provide an object for the explanations results
+    .includeExplanations(e => explanationsResults = e)
+    .search("name", "Syrup Lager")
+    .all();
+
+// When running the above query on the RavenDB sample data
+// the results contain 3 product documents.
+
+// Get the score details for a specific document from 'explanationsResults'
+const id = session.advanced.getDocumentId(products[0]);
+const scoreDetails = explanationsResults.explanations[products[0].id];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName"
+where search(name, "Syrup Lager")
+include explanations()
+// Or:
+from index "Products/BySearchName"
+where search(name, "Syrup") or search(name, "Lager")
+include explanations()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Include explanations when querying Map-Reduce index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce_index" label="Map_Reduce_index">
+<CodeBlock language="js">
+{`class NumberOfUnitsOrdered_PerCategory extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        const { load } = this.mapUtils();
+
+        this.map("Products", product => {
+            return {
+                category: load(product.Category, "Categories").Name,
+                numberOfUnitsOrdered: product.UnitsOnOrder
+            };
+        });
+
+        this.reduce(results => results.groupBy(x => x.category).aggregate(g => {
+            return {
+                category: g.key,
+                numberOfUnitsOrdered: g.values.reduce((a, b) => a + b.numberOfUnitsOrdered, 0)
+            }
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define an object that will receive the explanations results
+let explanationsResults;
+
+// Define the group key by which to get explanations results
+const explanationsOptions = { groupKey: "category" }
+
+const items = await session
+     // Query the Map-Reduce index
+    .query({ indexName: "NumberOfUnitsOrdered/PerCategory" })
+     // Call 'includeExplanations', provide:
+     // * Options with the defined group key
+     // * An object for the explanations results
+    .includeExplanations(explanationsOptions, e => explanationsResults = e)
+     // Query for categories that have a total of more than a 400 units ordered
+    .whereGreaterThan("numberOfUnitsOrdered", 400)
+    .all();
+
+// Get the score details for an item in the results
+// Pass the group key (category, in this case) to 'explanations'
+const scoreDetails = explanationsResults.explanations[items[0].category];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "NumberOfUnitsOrdered/PerCategory"
+where numberOfUnitsOrdered > 400
+include explanations($p0)
+{"p0" : { "GroupKey": "category" }}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Use this overload when querying a Map index
+query.includeExplanations(explanationsCallback)
+
+// Use this overload when querying a Map-Reduce index
+query.includeExplanations(options, explanationsCallback)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter                | Type                            | Description                                                                                                                                                                    |
+|--------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **explanationsCallback** | `(explanationsResults) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `Explanations` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
+| **options**              | `object`                        | An object that specifies the group key when querying a Map-Reduce index.                                                                                                       |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The Explanations object:
+// ========================
+
+class Explanations \{
+    get explanations(): \{
+        [key: string]: string[]; // An explanations list per key
+    \};
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`// The Explanation Options object:
+// ===============================
+\{
+    // The group key that was used to group by the items in the Map-Reduce index 
+    groupKey; // string;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

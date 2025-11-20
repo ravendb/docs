@@ -1,0 +1,55 @@
+---
+title: "Get Revisions Operation"
+hide_table_of_contents: true
+sidebar_label: Get Revisions
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetRevisionsCsharp from './_get-revisions-csharp.mdx';
+import GetRevisionsPython from './_get-revisions-python.mdx';
+import GetRevisionsPhp from './_get-revisions-php.mdx';
+import GetRevisionsNodejs from './_get-revisions-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetRevisionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetRevisionsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetRevisionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetRevisionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+- [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+- [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
+
+### Client API
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+- [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+- [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)
+
+### Studio
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+
+
+-->

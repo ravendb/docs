@@ -1,0 +1,57 @@
+---
+title: "Session: Storing Entities"
+hide_table_of_contents: true
+sidebar_label: Storing Entities
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import StoringEntitiesCsharp from './_storing-entities-csharp.mdx';
+import StoringEntitiesJava from './_storing-entities-java.mdx';
+import StoringEntitiesPython from './_storing-entities-python.mdx';
+import StoringEntitiesPhp from './_storing-entities-php.mdx';
+import StoringEntitiesNodejs from './_storing-entities-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <StoringEntitiesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <StoringEntitiesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <StoringEntitiesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <StoringEntitiesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <StoringEntitiesNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Basics](../../indexes/querying/query-index)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

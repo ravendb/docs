@@ -1,0 +1,267 @@
+﻿import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Custom compare-exchange items can be deleted**:  
+  You can delete your own custom compare-exchange items.
+  An item is deleted only if the index you provide in the request matches the current index stored on the server for the specified key.  
+  
+* **Delete items by expiration**:  
+  Compare-exchange items can also be deleted by adding an expiration date to them.  
+  Learn more in [Compare-exchange expiration](../compare-exchange/cmpxchg-expiration).
+  
+* **Compare-exchange tombstones**:  
+  Whenever a compare-exchange item is deleted, a compare-exchange tombstone is created for it.  
+  These tombstones are used to indicate to other RavenDB processes that the compare-exchange item was deleted,  
+  so they can react accordingly.  
+  For example, indexes referencing the deleted item will update themselves to remove those references.  
+  Compare-exchange tombstones that are eligible for deletion are removed periodically by an internal cleanup task.  
+  See: [Cluster.CompareExchangeTombstonesCleanupIntervalInMin](../compare-exchange/configuration#clustercompareexchangetombstonescleanupintervalinmin).
+
+* <Admonition type="warning" title="">
+  Do not attempt to delete [atomic guards](../compare-exchange/atomic-guards), which RavenDB uses internally to ensure ACID guarantees in cluster-wide transactions.
+  These items are created automatically and must not be modified or removed.  
+  
+  If your custom compare-exchange item was set up to protect the consistency of a transaction, deleting it will break the ACID guarantees.
+  Only delete or modify such items if you truly know what you're doing.    
+  </Admonition>  
+  
+---
+
+* In this article:  
+  * [Delete compare-exchange item using a **cluster-wide session**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-cluster-wide-session) 
+    * [Delete by item](../compare-exchange/delete-cmpxchg-items#delete-by-item)  
+    * [Delete by key and index](../compare-exchange/delete-cmpxchg-items#delete-by-key-and-index)  
+    * [Delete multiple items](../compare-exchange/delete-cmpxchg-items#delete-multiple-items)  
+  * [Delete compare-exchange item using a **store operation**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-store-operation)  
+  * [Delete compare-exchange items using the **Studio**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-items-using-the-studio)
+  * [Syntax](../compare-exchange/delete-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Delete compare-exchange item using a cluster-wide session
+
+* Delete compare-exchange items using a cluster-wide session when you want the deletion to be part of a transaction committed via `saveChanges()`.
+  This is suitable if you want to include compare-exchange deletions alongside other operations, such as putting or deleting documents and compare-exchange items, in a single transaction.  
+  Learn more about cluster-wide sessions in [Cluster transactions - overview](../client-api/session/cluster-transaction/overview).  
+
+* Use `deleteCompareExchangeValue()` to register the deletion of an existing compare-exchange item in the session.  
+  The item will be deleted as part of the cluster-wide transaction when _saveChanges()_ is called.
+  
+* If the item's index (its version) on the server is different from the index you provide, _saveChanges()_ will throw a `ClusterTransactionConcurrencyException`.
+  This means the item was modified by another operation after it was loaded into the session, and the entire transaction will be rejected.  
+  
+* Examples:
+
+    #### Delete by item
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+    
+    // Get the latest version of the existing compare-exchange item to be deleted.
+    const itemToDelete = await session.advanced.clusterTransaction
+        .getCompareExchangeValue("user1-name@example.com");
+    
+    if (itemToDelete) {
+        // Call 'deleteCompareExchangeValue' to register the deletion as part of the cluster-wide
+        // transaction. Pass the item to delete.
+        session.advanced.clusterTransaction.deleteCompareExchangeValue(itemToDelete);
+        
+        // Commit the cluster-wide transaction. This will delete the compare-exchange item,
+        // or throw a 'ClusterTransactionConcurrencyException' if the item's index (its version)
+        // on the server is different than the one provided in the delete request.
+        await session.saveChanges();
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+    #### Delete by key and index
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+    
+    // Get the latest version of the existing compare-exchange item to be deleted.
+    const itemToDelete = await session.advanced.clusterTransaction
+        .getCompareExchangeValue("user1-name@example.com");
+    
+    if (itemToDelete) {
+        // Call 'deleteCompareExchangeValue' to register the deletion as part of the cluster-wide
+        // transaction. Specify the item's KEY and current INDEX (its version).
+        session.advanced.clusterTransaction.deleteCompareExchangeValue(itemToDelete.key, itemToDelete.index);
+        
+        // Commit the cluster-wide transaction. This will delete the compare-exchange item,
+        // or throw a 'ClusterTransactionConcurrencyException' if the item's index (its version)
+        // on the server is different than the one provided in the delete request.
+        await session.saveChanges();
+    }
+    ```
+    </TabItem>
+    </Tabs>
+    
+    #### Delete multiple items
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    // The session must be opened in cluster-wide mode  
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+    
+    // Get the latest version of the items to be deleted.  
+    const itemToDelete1 = await session.advanced.clusterTransaction
+        .getCompareExchangeValue("user1-name@example.com");
+    const itemToDelete2 = await session.advanced.clusterTransaction
+        .getCompareExchangeValue("user2-name@example.com");
+    const itemToDelete3 = await session.advanced.clusterTransaction
+        .getCompareExchangeValue("user3-name@example.com");
+        
+    // You can delete multiple compare-exchange items before calling 'saveChanges'.
+    // Call 'deleteCompareExchangeValue' for each item you want to delete in the transaction.    
+    session.advanced.clusterTransaction.deleteCompareExchangeValue(itemToDelete1);
+    session.advanced.clusterTransaction.deleteCompareExchangeValue(itemToDelete2);
+    session.advanced.clusterTransaction.deleteCompareExchangeValue(itemToDelete3);
+    
+    // All items will be deleted atomically as part of the same transaction. 
+    // If any deletion fails, the entire transaction is rolled back
+    // and none of the items will be deleted.
+    await session.saveChanges();
+    ```
+    </TabItem>
+    </Tabs>
+
+---
+
+## Delete compare-exchange item using a store operation
+
+* Use the `DeleteCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations) to delete a compare-exchange item by its key and index, without opening a session.
+  This is ideal for stand-alone tasks that don't require batching multiple commands into a single transactional session. 
+  
+* The delete operation will only succeed if the item's current index on the server is the same as the one you provide.  
+  If the indexes do not match, the item is not deleted and no exception is thrown.
+
+* Examples:
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Delete_operation" label="Delete_operation">
+    ```js
+    // Get the latest version of the existing compare-exchange item to be deleted
+    const getCmpXchgOp = new GetCompareExchangeValueOperation("user1-name@example.com");
+    const itemToDelete = await documentStore.operations.send(getCmpXchgOp);
+    
+    if (itemToDelete)
+    {
+        // Define the delete compare-exchange operation 
+        // Pass the item's KEY and INDEX (its version)
+        const deleteCmpXchgOp = new DeleteCompareExchangeValueOperation(itemToDelete.key, itemToDelete.index);
+        
+        // Execute the delete operation by passing it to operations.send
+        const resultOfDelete = await documentStore.operations.send(deleteCmpXchgOp);
+        
+        // Check results
+        const successful = resultOfDelete.successful; // Has operation succeeded
+        const indexOfItem = resultOfDelete.index;     // The version of the deleted item
+        
+        // If 'successful' is true - the compare-exchange item was deleted.
+         
+        // If 'successful' is false -
+        // * The item was not deleted because the index didn't match (it was modified by someone else).
+        //   In this case, 'resultOfDelete.value' will contain the current value stored on the server.
+        // * Or the item no longer existed at the time of deletion (it was already deleted).
+        //   In this case, 'resultOfDelete.value' will be null.
+    }
+    ```
+    </TabItem>
+    </Tabs>  
+
+---
+
+## Delete compare-exchange items using the Studio
+
+You can delete one or multiple compare-exchange items from the Studio.
+
+![The compare-exchange view](../assets/delete-cmpxchg.png)
+
+1. Go to **Documents > Compare Exchange**.
+2. Select the compare-exchange items you want to delete.  
+3. Click **Delete**.
+
+---
+
+## Syntax
+
+---
+
+### `DeleteCompareExchangeValueOperation`  
+Delete compare-exchange item using a store operation: 
+
+<TabItem value="" label="">
+```js
+const deleteCmpXchgOp = new DeleteCompareExchangeValueOperation(key, index, clazz?);
+```
+</TabItem>
+
+| Parameter | Type     | Description |
+|-----------|----------|-------------|
+| **key**   | `string` | The unique key of the compare-exchange item to be deleted. |
+| **index** | `long`   | The current version of the item to be deleted.<br/>Deletion will only succeed if this matches the version stored on the server. |
+| **clazz** | `object` | When the item's value is a class, you can specify its type in this parameter. |
+
+**Returned object**:
+
+<TabItem value="" label="">
+```js
+// Return value of store.operations.send(deleteCmpXchgOp)
+// ======================================================
+
+class CompareExchangeResult
+{
+    Successful;
+    Value;
+    Index;
+}
+```
+</TabItem>
+
+| Return Value  | Type      | Description |
+|---------------|-----------|-------------|
+| **Successful**| `boolean` | <ul><li>`true` if the delete operation completed successfully.</li><li>`true` if _key_ doesn't exist</li><li>`false` if the delete operation has failed, e.g. when the index version doesn't match.</li></ul> |
+| **Value**     | `object`  | <ul><li>The value that was deleted upon a successful delete.</li><li>`null` if _key_ doesn't exist</li><li>The currently existing value on the server if the delete operation has failed.</li></ul> |
+| **Index**     | `number`  | <ul><li>The next available version number upon success.</li><li>The next available version number if _key_ doesn't exist.</li><li>The currently existing index on the server if the delete operation has failed.</li></ul> |
+
+---
+
+### `deleteCompareExchangeValue`  
+Delete compare-exchange item using cluster-wide session:
+
+<TabItem value="" label="">
+```js
+// Available overloads:
+deleteCompareExchangeValue(key, index);
+deleteCompareExchangeValue(item);
+```
+</TabItem>
+
+| Parameter | Type                    | Description |
+|-----------|-------------------------|-------------|
+| **item**  | `CompareExchangeValue`  | The compare-exchange item to delete.         |
+| **key**   | `string`                | The unique key of the compare-exchange item. |
+| **index** | `number`                | The current version of the item.<br/>Deletion will only succeed if this matches the version stored on the server. |

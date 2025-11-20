@@ -1,0 +1,30 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Entities are grouped into [collections](../../faq/what-is-a-collection.mdx) on the server side.  
+The name of the collection that an entity belongs to can be retrieved using the `find_collection_name` convention.  
+
+## Example
+
+By default, a collection name is the pluralized form of a name of an entity type.  
+E.g., objects of type `Category` will belong to the `Categories` collection.  
+If you mean to classify them as `ProductGroups`, however, use the following code:
+
+<TabItem value="custom_collection_name" label="custom_collection_name">
+<CodeBlock language="python">
+{`def __find_collection_name(object_type: type) -> str:
+    if issubclass(object_type, Category):
+        return "ProductGroups"
+
+    return DocumentConventions.default_get_collection_name(object_type)
+
+store.conventions.find_collection_name = __find_collection_name
+`}
+</CodeBlock>
+</TabItem>
+
+This can become very useful when there is a need to deal with [polymorphic data](../../../indexes/indexing-polymorphic-data.mdx).
+
+

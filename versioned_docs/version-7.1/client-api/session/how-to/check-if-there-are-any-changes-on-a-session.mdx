@@ -1,0 +1,50 @@
+---
+title: "How to Check for Session Changes"
+hide_table_of_contents: true
+sidebar_label: ...check for session changes
+sidebar_position: 13
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CheckIfThereAreAnyChangesOnASessionCsharp from './_check-if-there-are-any-changes-on-a-session-csharp.mdx';
+import CheckIfThereAreAnyChangesOnASessionJava from './_check-if-there-are-any-changes-on-a-session-java.mdx';
+import CheckIfThereAreAnyChangesOnASessionPython from './_check-if-there-are-any-changes-on-a-session-python.mdx';
+import CheckIfThereAreAnyChangesOnASessionPhp from './_check-if-there-are-any-changes-on-a-session-php.mdx';
+import CheckIfThereAreAnyChangesOnASessionNodejs from './_check-if-there-are-any-changes-on-a-session-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CheckIfThereAreAnyChangesOnASessionCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CheckIfThereAreAnyChangesOnASessionJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CheckIfThereAreAnyChangesOnASessionPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CheckIfThereAreAnyChangesOnASessionPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CheckIfThereAreAnyChangesOnASessionNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a session and how does it work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [Evict entity from session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

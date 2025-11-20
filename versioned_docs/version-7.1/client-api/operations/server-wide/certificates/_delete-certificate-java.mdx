@@ -1,0 +1,31 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+You can delete client certificate using **DeleteCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="delete_cert_1" label="delete_cert_1">
+<CodeBlock language="java">
+{`public DeleteCertificateOperation(String thumbprint);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | String | The certificate thumbprint |
+
+## Example I
+
+<TabItem value="delete_cert_2" label="delete_cert_2">
+<CodeBlock language="java">
+{`String thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+store.maintenance().server().send(new DeleteCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+
+

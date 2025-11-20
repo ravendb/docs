@@ -1,0 +1,204 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Batches of documents sent from a Subscription Task defined on the server are consumed and processed by a subscription worker client.
+
+* The `SubscriptionWorker` object, defined on the client, manages the communication between the server and the client and processes the document batches sent from the server.  
+
+* There are several ways to create and configure the SubscriptionWorker - see [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions).  
+
+* In this page:
+  * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
+  * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
+  * [Worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)   
+  * [Determining which workers a subscription will serve](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
+
+</Admonition>
+## SubscriptionWorker lifecycle
+
+Create a `SubscriptionWorker` object by calling `getSubscriptionWorker`:
+
+<TabItem value="consume_1" label="consume_1">
+<CodeBlock language="js">
+{`const worker = documentStore.subscriptions.getSubscriptionWorker(\{
+    subscriptionName: "your subscription name"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+At this stage, the worker is initialized, no connection to the server or document processing occurs yet.
+
+To start handling documents from the subscription, you need to define a listener for the `batch` event.  
+This event is triggered whenever a new batch of documents is received.
+
+Add an event handler using `on` method of the worker object to process incoming batches:
+
+<TabItem value="consume_2" label="consume_2">
+<CodeBlock language="js">
+{`worker.on("batch", (batch, callback) => \{
+    try \{
+        // Add your logic for processing the incoming batch items here...               
+
+        // Call 'callback' once you're done
+        // The worker will send an acknowledgement to the server,
+        // allowing the server to send the next batch
+        callback();
+
+    \} catch(err) \{
+        // If processing fails for a particular batch then pass the error to the callback
+        callback(err);
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Once the event handler is defined, the worker will begin processing batches of documents sent by the server.
+Each batch must be acknowledged by calling `callback()` once processing is complete. 
+
+
+
+## Error handling
+
+<Admonition type="info" title="Subscription worker connection failures" id="subscription-worker-connection-failures" href="#subscription-worker-connection-failures">
+
+Subscription worker connection failures may occur during the routine communication between the worker and the server.
+When an unexpected error arises, the worker will attempt to **reconnect to the server**.
+
+However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
+
+* The subscription no longer exists or has been deleted.
+* Another worker has taken control of the subscription (see [connection strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
+* The worker is unable to connect to any of the servers.
+* The worker could not receive the node responsible for the task  
+  (this can happen when there is no leader in the cluster).
+* An authorization exception occurred.
+* An exception occurred during the connection establishment phase.
+* The database doesn't exist.
+
+</Admonition>
+
+<Admonition type="info" title="Batch processing execution failures" id="batch-processing-execution-failures" href="#batch-processing-execution-failures">
+
+An exception may occur while processing a batch of documents in the worker.
+For example:
+
+<TabItem value="consume_3" label="consume_3">
+<CodeBlock language="js">
+{`worker.on("batch", (batch, callback) => \{
+    try \{
+        throw new Error("Exception occurred");
+    \} catch (err) \{
+        callback(err); // Pass the error to the callback to signal failure
+    \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
+depending on the `ignoreSubscriberErrors` property in the [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+
+* **Abort processing completely**  
+  When `ignoreSubscriberErrors` is `false` (default):  
+  The current batch processing will be aborted, and in this case, the worker will wrap the thrown exception in a `SubscriberErrorException` and will rethrow it.
+  Processing of the subscription will be terminated without acknowledging progress to the server or retrying to connect.  
+  As a result, the worker task will complete in an erroneous state, throwing a _SubscriberErrorException_.
+
+* **Continue processing subsequent batches**  
+  When `ignoreSubscriberErrors` is  `true`:    
+  The current batch processing will be aborted; however, the erroneous batch will be acknowledged without retrying,
+  and processing will continue with the next batches.
+
+</Admonition>
+
+<Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
+
+Two properties in the [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) 
+object control the behavior of a worker attempting to reconnect with the server:
+
+* `timeToWaitBeforeConnectionRetry`  
+  The time the worker will wait before attempting to reconnect.  
+  Default: 5 seconds.  
+* `maxErroneousPeriod`  
+  The maximum amount of time the subscription connection can remain in an erroneous state.   
+  Once this period is exceeded, the worker will stop trying to reconnect.  
+  Default: 5 minutes.  
+
+</Admonition>
+
+<Admonition type="info" title="unexpectedSubscriptionError" id="unexpectedsubscriptionerror" href="#unexpectedsubscriptionerror">
+
+`unexpectedSubscriptionError` is the event that is triggered when a connection failure occurs between the subscription worker and the server,
+resulting in an unexpected exception.  
+When this happens, the worker will automatically attempt to reconnect.  
+This event is useful for logging these unexpected exceptions.
+
+</Admonition>
+
+
+
+## Worker strategies
+ 
+Subscription workers are configured with a **strategy** that determines whether multiple workers 
+can connect to the subscription concurrently or if only one worker can connect at a time.
+
+The _one-worker-at-a-time_ strategy also determines how the workers interact with each other 
+to resolve which will establish the subscription connection.
+### One worker per subscription strategies
+
+The following three strategies allow only a **single worker to connect to the subscription at any given time**,  
+and determine what happens when one worker is connected and another tries to connect.  
+
+* `OpenIfFree`  
+  The server will allow a worker to connect only if no other worker is currently connected.  
+  If there is an existing connection, the incoming worker will throw a `SubscriptionInUseException`.  
+* `WaitForFree`  
+  If the worker cannot open the subscription because it is in use by another worker, it will wait for the currently connected worker to disconnect before establishing the connection.
+  This is useful in worker failover scenarios, where one worker is connected while another is awaiting its turn to take its place.
+* `TakeOver`  
+  The server will allow an incoming connection to take over an existing one,  
+  based on the connection strategy in use by the currently connected worker:
+  * If the existing connection **does not** have a `TakeOver` strategy:  
+    The incoming connection will take over, causing the existing connection to throw a `SubscriptionInUseException`.  
+  * If the existing connection **has** a `TakeOver` strategy:  
+    The incoming connection will throw a `SubscriptionInUseException` exception.  
+### Multiple workers per subscription strategy
+
+* `Concurrent`  
+  The server allows multiple workers to connect to the same subscription **concurrently**.  
+  Read more about concurrent subscriptions [here](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
+
+
+
+## Determining which workers a subscription will serve
+
+<Admonition type="note" title="">
+
+The **strategy used by the first worker connecting to a subscription** determines 
+which additional workers the subscription can serve until all worker connections are dropped.
+
+</Admonition>
+
+* A subscription that serves one or more [concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) workers, 
+  **can only serve other concurrent workers** until all connections are dropped. 
+  If a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
+  strategy attempts to connect -  
+   * The connection attempt will be rejected.  
+   * `SubscriptionInUseException` will be thrown.  
+
+* A subscription that serves a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) strategy, 
+  **cannot** serve [concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) 
+  workers until that worker's connection is dropped. 
+  If a concurrent worker attempts to connect -  
+   * The connection attempt will be rejected.  
+   * `SubscriptionInUseException` will be thrown.  
+
+
+
+

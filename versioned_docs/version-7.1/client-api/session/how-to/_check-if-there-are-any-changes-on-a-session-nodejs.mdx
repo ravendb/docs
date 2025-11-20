@@ -1,0 +1,176 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `saveChanges()` is called.
+
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx).
+
+* In this page:
+    * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+    * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+    * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
+
+</Admonition>
+## Check for session changes
+
+* The session's advanced property `hasChanges` indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The _hasChanges_ property is cleared after calling `saveChanges()`.
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="js">
+{`const session = store.openSession();
+
+// No changes made yet - 'hasChanges' will be FALSE
+assert.ok(!session.advanced.hasChanges());
+
+// Store a new entity within the session
+const employee = new Employee();
+employee.firstName = "John";
+employee.lastName = "Doe";
+
+await session.store(employee);
+
+// 'hasChanges' will now be TRUE
+assert.ok(session.advanced.hasChanges());
+
+// 'hasChanges' will reset to FALSE after saving changes 
+await session.saveChanges();
+assert.ok(!session.advanced.hasChanges());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes
+
+* Use the session's advanced method `whatChanged()` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:
+    * The name and path of the changed field
+    * Its old and new values
+    * The type of change
+
+* Note: `whatChanged()` reports changes made prior to calling `saveChanges()`.  
+  Calling it immediately after _saveChanges_ will return no results, as the changes are cleared.
+##### Example I
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="js">
+{`const session = store.openSession();
+
+// Store (add) new entities, they will be tracked by the session
+const employee1 = new Employee();
+employee1.firstName = "John";
+employee1.lastName = "Doe";
+
+const employee2 = new Employee();
+employee2.firstName = "Jane";
+employee2.lastName = "Doe";
+
+await session.store(employee1, "employees/1-A");
+await session.store(employee2, "employees/2-A");
+
+// Call 'WhatChanged' to get all changes in the session
+const changes = session.advanced.whatChanged();
+assert.equal(Object.keys(changes).length, 2);  // 2 entities were added
+
+// Get the change details for an entity, specify the entity ID
+const changesForEmployee = changes["employees/1-A"];
+assert.equal(Object.keys(changesForEmployee).length, 1); // a single change for this entity (adding)
+
+// Get the change type
+const changeType = changesForEmployee[0].change;
+assert.equal(changeType, "DocumentAdded");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="changes_3" label="changes_3">
+<CodeBlock language="js">
+{`const session = store.openSession();
+
+// Load the entities, they will be tracked by the session
+const employee1 = await session.load("employees/1-A");
+const employee2 = await session.load("employees/2-A");
+
+// Modify entities
+employee1.firstName = "Jim";
+employee1.lastName = "Brown";
+employee2.lastName = "Smith";
+
+// Delete an entity
+session.delete(employee2);
+
+// Call 'WhatChanged' to get all changes in the session
+const changes = session.advanced.whatChanged();
+
+// Get the change details for an entity, specify the entity ID
+let changesForEmployee = changes["employees/1-A"];
+
+assert.equal(changesForEmployee[0].fieldName, "firstName");  // Field name
+assert.equal(changesForEmployee[0].fieldNewValue, "Jim");    // New value
+assert.equal(changesForEmployee[0].change, "FieldChanged");  // Change type
+
+assert.equal(changesForEmployee[1].fieldName, "lastName");
+assert.equal(changesForEmployee[1].fieldNewValue, "Brown");
+assert.equal(changesForEmployee[1].change, "FieldChanged");
+
+// Note: for employee2 - even though the LastName was changed to 'Smith',
+// the only reported change is the latest modification, which is the delete action. 
+changesForEmployee = changes["employees/2-A"];
+assert.equal(changesForEmployee[0].change, "DocumentDeleted");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// HasChanges
+session.advanced.hasChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// WhatChanged
+session.advanced.whatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value                       |                                                       |
+|------------------------------------|-------------------------------------------------------|
+| `Record<string, DocumentsChanges>` | Dictionary containing list of changes per document ID |
+
+| `DocumentsChanges`  | Type    | Description                                                                                                                                                                                      |
+|---------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldOldValue**   | object  | Previous field value                                                                                                                                                                             |
+| **fieldNewValue**   | object  | Current field value                                                                                                                                                                              |
+| **change**          | string  | Type of change that occurred. Can be: <br/>`"DocumentDeleted"`, `"DocumentAdded"`,`"FieldChanged"`, `"NewField"`, `"RemovedField"`, `"ArrayValueChanged"`, `"ArrayValueAdded"`, `"ArrayValueRemoved"` |
+| **fieldName**       | string  | Name of field on which the change occurred                                                                                                                                                       |
+| **fieldPath**       | string  | Path of field on which the change occurred                                                                                                                                                       |
+| **fieldFullName**   | string  | Path + Name of field on which the change occurred                                                                                                                                                |
+
+
+
+

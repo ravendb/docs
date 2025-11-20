@@ -1,0 +1,55 @@
+---
+title: "Filter Query Results"
+hide_table_of_contents: true
+sidebar_label: Filtering
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import FilteringCsharp from './_filtering-csharp.mdx';
+import FilteringJava from './_filtering-java.mdx';
+import FilteringPython from './_filtering-python.mdx';
+import FilteringPhp from './_filtering-php.mdx';
+import FilteringNodejs from './_filtering-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <FilteringCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <FilteringJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <FilteringPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <FilteringPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <FilteringNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Query Overview](../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+- [Query an Index](../../indexes/querying/query-index)
+- [Paging](../../indexes/querying/paging)
+- [Sorting](../../indexes/querying/sorting)
+
+
+-->

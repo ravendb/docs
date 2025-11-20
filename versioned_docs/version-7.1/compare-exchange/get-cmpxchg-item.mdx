@@ -1,0 +1,46 @@
+﻿---
+title: "Get Compare-Exchange Item"
+hide_table_of_contents: true
+sidebar_label: "Get Compare-Exchange Item"
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetCmpXchgItemCsharp from './content/_get-cmpxchg-item-csharp.mdx';
+import GetCmpXchgItemJava from './content/_get-cmpxchg-item-java.mdx';
+import GetCmpXchgItemNodejs from './content/_get-cmpxchg-item-nodejs.mdx';
+import GetCmpXchgItemPython from './content/_get-cmpxchg-item-python.mdx';
+import GetCmpXchgItemPhp from './content/_get-cmpxchg-item-php.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetCmpXchgItemCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetCmpXchgItemJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetCmpXchgItemPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetCmpXchgItemPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetCmpXchgItemNodejs />
+</LanguageContent>
+
+<!---
+### Compare Exchange
+- [Overview](../todo)
+- [Update compare-exchange item](../todo)
+- [Delete compare-exchange item](../todo)
+-->
