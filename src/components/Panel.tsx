@@ -13,10 +13,11 @@ export type PanelProps = {
 export function Panel(props: PanelProps) {
   const { children, className, flush, heading, headingLevel = 2 } = props;
   const headingTag = (`h${headingLevel}` as any);
+  const id = heading.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-|-$/g, '');
 
   return (
     <section className={clsx("panel", flush ? "" : "my-4", className)}>
-      <Heading as={headingTag} className="panel__heading">{heading}</Heading>
+      <Heading as={headingTag} id={id} className="panel__heading">{heading}</Heading>
       <div className="panel__body">
         {children}
       </div>
