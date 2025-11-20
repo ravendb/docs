@@ -69,23 +69,12 @@ To add a new documentation version:
    ```bash
    npm run docusaurus docs:version version_label
    ```
-2. Add the versioned documentation's label to the list in the `versions.json` file.
-3. Make the new version selectable in the sidebar by updating the current version number in the `docs` property of the `docusaurus.config.js` file.  
+2. Make the new version selectable in the sidebar by updating the current version number in the `docs` property of the `docusaurus.config.js` file.  
 
 E.g., to add version `7.2`:  
 * Create a version for `7.1`
    ```bash
    npm run docusaurus docs:version 7.1
-   ```
-* Add `7.1` to the `versions.json` versions list.
-  `versions.json` file:
-  ```json
-  [
-    "7.1",
-    "7.0",
-    "6.2"
-    "6.0"
-  ]
    ```
 * Set `7.2` as the current docs version.  
   `docusaurus.config.js` file:
