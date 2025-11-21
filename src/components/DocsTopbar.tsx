@@ -48,7 +48,7 @@ export default function DocsTopbar({
                 "transition-all duration-50 ease-in-out",
                 {
                     "max-h-[60px] opacity-100": isVisible,
-                    "max-h-0 opacity-0": !isVisible,
+                    "max-h-0 opacity-0 hidden": !isVisible,
                 },
             )}
         >
