@@ -1,0 +1,104 @@
+---
+title: "Validate documents: Studio"
+hide_table_of_contents: true
+sidebar_label: Studio
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+
+# Validate documents: Studio
+<Admonition type="note" title="">
+
+You can use Studio to manage document validation schemas.
+
+* In this article:  
+   * [The Document Scheme view](../../../documents/schema-validation/validate-documents/validate-documents_studio#the-document-scheme-view)  
+   * [Creating a collection schema](../../../documents/schema-validation/validate-documents/validate-documents_studio#creating-a-collection-schema)  
+   * [Managing existing schemas](../../../documents/schema-validation/validate-documents/validate-documents_studio#managing-existing-schemas)  
+   
+</Admonition>
+
+## The Document Scheme view
+<Panel>
+To create a validation schema:
+![Document schema view](./assets/schema-validation_studio_document-schema-view.png)
+
+1. **Database settings**  
+   Click to open this view.
+2. **Document schema**  
+   Click to open this view.
+3. **Add new**  
+   Click to create a new validation schema.  
+   ![Add new schema](./assets/schema-validation_studio_add-new.png)
+</Panel>
+
+## Creating a collection schema
+<Panel>
+To define a schema and associate it with a collection:
+![Schema configuration](./assets/schema-validation_studio_schema.png)
+
+1. **Collection selection**  
+   Pick the collection whose documents you want to validate.  
+   You can create one validation schema per collection, so if a schema already exists for a collection it will not be listed here.
+2. **Define the schema using JSON syntax**  
+   The depicted schema, for example, sets constraints for documents in the "Orders" collection.  
+   A textual version is also provided below. Note that the comments included in it are meant to explain its structure and constraints, but comments are not supported in actual JSON syntax.  
+   ```json
+   {
+      // The document must be a JSON object
+      "type": "object",
+
+      // Define the most essential properties and their types
+      "properties": {
+         // Company ID (e.g., "companies/65-A")
+         "Company": { "type": "string" },
+
+         // Employee ID (e.g., "orders/1-A")
+         "Employee": { "type": "string" },
+
+         // Order time (e.g., "1998-05-06T00:00:00.0000000")
+         "OrderedAt": { "type": "string", "format": "date-time" }
+      },
+
+      // These properties must be present in every Order document
+      "required": ["Company", "Employee", "OrderedAt"],
+
+      // Allow additional properties (e.g., metadata, custom fields)
+      "additionalProperties": true
+   }
+   ```
+3. **Save**  
+   Click to save and activate the schema.  
+   When activated, any document saved to the "Orders" collection will be validated against it.  
+   E.g., attempting to save an "Order" document missing the "Company" field will result in a validation error:
+   ```plain
+   Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The required property 'Company' is missing.
+   ```
+   <Admonition type="note" title="">
+   Note that once a schema is activated, associated documents are validated not only when saved directly, but also when added or modified by operations such as ETL or replication tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered).)
+   </Admonition>
+</Panel>
+
+## Managing existing schemas
+<Panel>
+Created validation schemas are listed in the **Document schema** view, where you can edit,disable, enable, or delete them. 
+![Manage existing schemas](./assets/schema-validation_studio_manage-existing-schemas.png)
+
+1. **Disable/Enable validation per database**  
+   Toggle to enable or disable schema validation for all collections.  
+   This setting overrides per-collection schema settings.  
+2. **Disable/Enable validation per collection**  
+   Toggle to enable or disable schema validation for this collection.  
+   Note that if validation is disabled for the database, this setting will have no effect.
+3. **Edit**  
+   Click to edit an existing schema.  
+4. **Delete**  
+   Click to delete an existing schema.  
+</Panel>
