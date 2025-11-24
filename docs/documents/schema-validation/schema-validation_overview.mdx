@@ -1,0 +1,109 @@
+---
+title: "Schema validation overview"
+hide_table_of_contents: true
+sidebar_label: "Overview"
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Schema validation overview
+<Admonition type="note" title="">
+
+* A validation schema is a JSON object associated with a document collection that requires documents in the collection to be saved only if they comply with the schema constraints.  
+
+* Validation is enforced when documents are saved directly and when they are added or modified through operations such as patching, replication, or ETL tasks.
+
+* Validating document compliance during writing can help ensure data consistency (e.g., by preventing the saving of documents with missing required fields) and simplify read-time handling by preventing the need for additional checks and transformations.
+
+* Schemas can be configured per collection using [Studio](../../documents/schema-validation/validate-schema/validate-schema_studio) or the [client API](../../documents/schema-validation/validate-schema/validate-schema_api).
+
+* In this article:  
+   * [The validation process](../../documents/schema-validation/schema-validation_overview#the-validation-process)  
+   * [When is validation triggered](../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered)  
+   * [Available constraints](../../documents/schema-validation/schema-validation_overview#available-constraints)  
+   * [Considerations](../../documents/schema-validation/schema-validation_overview#considerations)
+   * [Use cases](../../documents/schema-validation/schema-validation_overview#use-cases)
+
+</Admonition>
+
+## The validation process
+RavenDB's schema validator is a server-side mechanism, that checks documents against predefined schema rules during write operations.  
+The validation process occurs in the following scenarios:
+
+* During **Store or Update** operation:  
+  When a document is saved or modified, the database checks if a schema is associated with the document's collection.  
+   - If a schema exists, the database validates the document against the schema rules.  
+   - If the document conforms with all the rules, it is saved.  
+   - If it violates any rule, the save operation is rejected with a detailed `SchemaValidationException`.  
+* During **batch operations** (like patching, ETL, or replication):  
+  For operations that affect multiple documents, each document is individually validated against the schema. Documents that pass validation are processed normally, while those that fail are rejected, and appropriate error messages are logged or returned.
+
+## When is validation triggered
+Validation is applied during these operations:
+* `session.SaveChanges()` / `session.SaveChangesAsync()`  
+  Commits all staged document changes (insert, update, delete, patch) in the session to the database.  
+  Schema validation is enforced at this point.
+* `PatchByQueryOperation` 
+  Executes a patch (update) on multiple documents via a query.  
+  Schema validation is enforced for each affected document.
+* `BulkInsert.StoreAsync()`  
+  When using BulkInsert, each call to `StoreAsync()` triggers schema validation for the document that is being inserted.
+* `RevertRevisionsByIdOperation`  
+  When reverting a document to a previous revision, the restored document is validated.
+* `ETL tasks`  
+  When an ETL process writes documents to a destination database, each document is validated.
+* `Replication`  
+  When a document is replicated to another database (external replication) or node (regular replication), it is validated upon arrival.
+* `Backup.RestoreDatabase()`  
+  When restoring a database from backup, each document is validated as it is written.
+* `Smuggler.ImportAsync()`  
+  When importing documents into a database, each document is validated as it is written.
+
+## Available constraints
+A validation schema can enforce these constraints on documents:  
+* [Type](../../documents/schema-validation/validate-documents/validate-documents_api#type)  
+* [Required Properties](../../documents/schema-validation/validate-documents/validate-documents_api#required)  
+* [Constant Value](../../documents/schema-validation/validate-documents/validate-documents_api#const)  
+* [Allowed Values](../../documents/schema-validation/validate-documents/validate-documents_api#enum)  
+* [String Minimum Length](../../documents/schema-validation/validate-documents/validate-documents_api#minlength)  
+* [String Maximum Length](../../documents/schema-validation/validate-documents/validate-documents_api#maxlength)  
+* [Pattern (Regex)](../../documents/schema-validation/validate-documents/validate-documents_api#pattern)  
+* [Number Minimum Value](../../documents/schema-validation/validate-documents/validate-documents_api#minimum)  
+* [Number Maximum Value](../../documents/schema-validation/validate-documents/validate-documents_api#maximum)  
+* [Array Minimum Items](../../documents/schema-validation/validate-documents/validate-documents_api#minitems)  
+* [Array Maximum Items](../../documents/schema-validation/validate-documents/validate-documents_api#maxitems)  
+* [Properties](../../documents/schema-validation/validate-documents/validate-documents_api#properties)  
+* [Additional Properties](../../documents/schema-validation/validate-documents/validate-documents_api#additionalproperties)  
+* [Items](../../documents/schema-validation/validate-documents/validate-documents_api#items)  
+* [Dependencies](../../documents/schema-validation/validate-documents/validate-documents_api#dependencies)  
+* [Null](../../documents/schema-validation/validate-documents/validate-documents_api#null)  
+
+## Considerations
+Take note of the following considerations when applying schema validation.
+* **Performance impact**:  
+  Schema validation introduces additional processing during write operations. While this overhead is generally minimal, it can become significant with very large bulk operations or complex schemas. It's important to monitor performance and optimize schemas as needed.
+* **Schema evolution**:  
+  As application requirements change, schemas may need to be updated. Care should be taken to manage schema changes, especially in production environments, to avoid unintended validation failures.
+* **Error handling**:  
+  Applications should implement robust error handling to manage validation failures gracefully. This includes providing meaningful feedback to users or logging errors for further analysis.
+* **Testing**:  
+  Thoroughly test schemas and validation logic in development environments before deploying to production to ensure that they behave as expected.  
+
+## Use cases
+A few scenarios where schema validation can help are:  
+* **Ensuring Required Fields**  
+  E.g., preventing the saving of a user profile without an email address.  
+* **Enforcing Data Types**  
+  E.g., making sure that fields like “age” are always numbers and not accidentally saved as strings or other types.  
+* **Restricting Allowed Values**  
+  E.g., limiting a field (like “status”) to specific values like “active”, “inactive”, or “pending”, and rejecting any other input.  
+* **Maintaining Consistent Structure in Arrays**  
+  E.g., ensuring that every item in an array (like a list of order items) follows the same structure and contains all required properties.  
+* **Preventing Invalid Data During Integrations**  
+  E.g., blocking documents with unexpected or malformed data from being saved during replication, ETL, or API imports, to protect downstream systems.  
