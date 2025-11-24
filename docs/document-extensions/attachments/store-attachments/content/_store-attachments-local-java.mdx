@@ -1,0 +1,208 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* To store an attachment:  
+    * First, create or load a document.  
+    * Then, attach any number of files using the Studio or the Client API.
+
+* The document’s metadata is updated to reference each attachment that is added.  
+  The document is then replicated to all other nodes in the database group.  
+  Any associated actions related to the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
+    
+* When stored **locally**, attachments are not embedded within the document.
+  Instead, they are saved in a dedicated attachment storage area on the RavenDB server, separate from the document store.  
+  This avoids bloating your JSON documents with large binary data and enables efficient storage and retrieval.     
+    
+* Storing attachments with the same name:  
+  If you add an attachment with a name that is already associated with the document,  
+  the new content will replace the existing attachment content.
+    
+* In this article
+    * [Store attachment via the session](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-the-session)  
+    * [Store attachment via an operation](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-an-operation) 
+ 
+</Admonition>
+
+<Panel heading="Store attachment via the session">
+    
+In order to store an attachment in RavenDB you need to create a document. Then you can attach an attachment to the document using the `session.advanced().attachments().store` method.
+
+Attachments, just like documents, are a part of the session and will only be saved on the Server when `DocumentSession.saveChanges` is executed (you can read more about saving changes in session [here](../../client-api/session/saving-changes.mdx)).
+
+---
+    
+### Syntax
+
+Attachments can be stored using one of the following `session.advanced().attachments().store` methods:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="java">
+{`void store(String documentId, String name, InputStream stream);
+
+void store(String documentId, String name, InputStream stream, String contentType);
+
+void store(Object entity, String name, InputStream stream);
+
+void store(Object entity, String name, InputStream stream, String contentType);
+`}
+</CodeBlock>
+</TabItem>
+
+---
+    
+### Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    try (
+        FileInputStream file1 = new FileInputStream("001.jpg");
+        FileInputStream file2 = new FileInputStream("002.jpg");
+        FileInputStream file3 = new FileInputStream("003.jpg");
+        FileInputStream file4 = new FileInputStream("004.mp4")
+    ) \{
+        Album album = new Album();
+        album.setName("Holidays");
+        album.setDescription("Holidays travel pictures of the all family");
+        album.setTags(new String[] \{ "Holidays Travel", "All Family" \});
+        session.store(album, "albums/1");
+
+        session.advanced().attachments()
+            .store("albums/1", "001.jpg", file1, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "002.jpg", file2, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "003.jpg", file3, "image/jpeg");
+        session.advanced().attachments()
+            .store("albums/1", "004.mp4", file4, "video/mp4");
+
+        session.saveChanges();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>   
+
+<Panel heading="Store attachment via an operation">
+
+This operation is used to put an attachment to a document. 
+    
+### Syntax
+
+<TabItem value="put_attachment_syntax" label="put_attachment_syntax">
+<CodeBlock language="java">
+{`PutAttachmentOperation(String documentId, String name, InputStream stream)
+
+PutAttachmentOperation(String documentId, String name, InputStream stream, String contentType)
+
+PutAttachmentOperation(String documentId, String name, InputStream stream, String contentType, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="put_attachment_return_value" label="put_attachment_return_value">
+<CodeBlock language="java">
+{`public class AttachmentDetails extends AttachmentName \{
+    private String changeVector;
+    private String documentId;
+
+    public String getChangeVector() \{
+        return changeVector;
+    \}
+
+    public void setChangeVector(String changeVector) \{
+        this.changeVector = changeVector;
+    \}
+
+    public String getDocumentId() \{
+        return documentId;
+    \}
+
+    public void setDocumentId(String documentId) \{
+        this.documentId = documentId;
+    \}
+\}
+
+public class AttachmentName \{
+    private String name;
+    private String hash;
+    private String contentType;
+    private long size;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public String getHash() \{
+        return hash;
+    \}
+
+    public void setHash(String hash) \{
+        this.hash = hash;
+    \}
+
+    public String getContentType() \{
+        return contentType;
+    \}
+
+    public void setContentType(String contentType) \{
+        this.contentType = contentType;
+    \}
+
+    public long getSize() \{
+        return size;
+    \}
+
+    public void setSize(long size) \{
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | | |
+|------------------| ------------- | ----- |
+| **documentId**   | String | ID of a document which will contain an attachment |
+| **name**         | String | Name of an attachment |
+| **stream**       | InputStream | Stream contains attachment raw bytes |
+| **contentType**  | String | MIME type of attachment |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value | |
+| ------------- | ----- |
+| **ChangeVector** | Change vector of created attachment |
+| **DocumentId** | ID of document |
+| **Name** | Name of created attachment |
+| **Hash** | Hash of created attachment |
+| **ContentType** | MIME content type of attachment |
+| **Size** | Size of attachment |
+
+---
+    
+### Example
+
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="java">
+{`AttachmentDetails attachmentDetails = store
+    .operations().send(new PutAttachmentOperation("orders/1-A",
+        "invoice.pdf",
+        stream,
+        "application/pdf"));
+`}
+</CodeBlock>
+</TabItem>    
+
+</Panel> 

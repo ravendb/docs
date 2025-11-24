@@ -144,7 +144,7 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
 #### The following common operations are available:
 
 * **Attachments**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachments-via-an-operation)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)  
 
@@ -356,6 +356,10 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteRevisionsOperation](../../document-extensions/revisions/client-api/operations/delete-revisions.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsBinCleanerOperation](../../document-extensions/revisions/revisions-bin-cleaner.mdx#setting-the-revisions-bin-cleaner---from-the-client-api)  
 
+* **Remote attachments**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRemoteAttachmentsOperation](../../document-extensions/attachments/configure-remote-attachments.mdx#configure-remote-attachments-settings)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRemoteAttachmentsConfigurationOperation](../../document-extensions/attachments/configure-remote-attachments.mdx#get-remote-attachments-settings)  
+    
 * **Sorters**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
