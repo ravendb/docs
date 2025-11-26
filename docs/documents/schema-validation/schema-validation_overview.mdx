@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * A validation schema is a JSON object associated with a document collection that requires documents in the collection to be saved only if they comply with the schema constraints.  
 
-* Validation is enforced when documents are saved directly and when they are added or modified through operations such as patching, replication, or ETL tasks.
+* Validation is enforced when documents are saved directly and when they are added or modified through operations such as patching or ETL tasks.
 
 * Validating document compliance during writing can help ensure data consistency (e.g., by preventing the saving of documents with missing required fields) and simplify read-time handling by preventing the need for additional checks and transformations.
 
@@ -25,7 +25,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:  
    * [The validation process](../../documents/schema-validation/schema-validation_overview#the-validation-process)  
-   * [When is validation triggered](../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered)  
+   * [A list of operations that trigger validation](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation)  
    * [Available constraints](../../documents/schema-validation/schema-validation_overview#available-constraints)  
    * [Considerations](../../documents/schema-validation/schema-validation_overview#considerations)
    * [Use cases](../../documents/schema-validation/schema-validation_overview#use-cases)
@@ -33,37 +33,44 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </Admonition>
 
 ## The validation process
-RavenDB's schema validator is a server-side mechanism, that checks documents against predefined schema rules during write operations.  
-The validation process occurs in the following scenarios:
+RavenDB's schema validator is a server-side mechanism that checks documents against predefined schema constraints during write operations.  
+The validation process takes place when a document is written, if a validation schema is associated with the document's collection.  
 
-* During **Store or Update** operation:  
-  When a document is saved or modified, the database checks if a schema is associated with the document's collection.  
-   - If a schema exists, the database validates the document against the schema rules.  
-   - If the document conforms with all the rules, it is saved.  
-   - If it violates any rule, the save operation is rejected with a detailed `SchemaValidationException`.  
-* During **batch operations** (like patching, ETL, or replication):  
-  For operations that affect multiple documents, each document is individually validated against the schema. Documents that pass validation are processed normally, while those that fail are rejected, and appropriate error messages are logged or returned.
+Validation is triggered both when a document is saved directly, and when it is added or modified during a [supported batch operation](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).  
 
-## When is validation triggered
-Validation is applied during these operations:
-* `session.SaveChanges()` / `session.SaveChangesAsync()`  
-  Commits all staged document changes (insert, update, delete, patch) in the session to the database.  
-  Schema validation is enforced at this point.
-* `PatchByQueryOperation` 
-  Executes a patch (update) on multiple documents via a query.  
-  Schema validation is enforced for each affected document.
-* `BulkInsert.StoreAsync()`  
-  When using BulkInsert, each call to `StoreAsync()` triggers schema validation for the document that is being inserted.
-* `RevertRevisionsByIdOperation`  
-  When reverting a document to a previous revision, the restored document is validated.
+#### When a document is saved directly (using `SaveChanges()`):  
+* The database checks if a schema is associated with the document's collection.  
+* If a schema exists, the document is validated against the schema.  
+* If the document conforms with all constraints, it is saved.  
+* If the document fails validation, the save operation is rejected with a detailed [SchemaValidationException](../../documents/schema-validation/validate-documents/validate-documents_api#schemavalidationexception-message).  
+
+#### When a document is added or modified during a [supported batch operation](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation):  
+* Validation is applied during writing; this means that in the case of an ETL task, for example, validation will take place if enabled on the destination database.  
+* The database checks if a schema is associated with the document's collection and, if so, validates the document against the schema.  
+* If the document conforms with all schema constraints, it is saved and the operation continues.  
+* If the document fails validation, a detailed [SchemaValidationException](../../documents/schema-validation/validate-documents/validate-documents_api#schemavalidationexception-message) is thrown, the document is not saved, and the entire batch operation is aborted.  
+
+## A list of operations that trigger validation
+Validation is triggered during writing by these operations:
+* `session.SaveChanges` / `session.SaveChangesAsync`  
+  Validates while directly committing staged document changes in the session to the database.  
 * `ETL tasks`  
-  When an ETL process writes documents to a destination database, each document is validated.
+  Validates documents while transferring them using an Extract/Transform/Load process.  
+* `PatchByQueryOperation`  
+  Validates documents updated by a patch query.  
+* `BulkInsert.StoreAsync`  
+  Validates each document when performing a bulk insert operation.  
+* `RevertRevisionsByIdOperation`  
+  Validates documents when reverting to a previous revision.
+* `Smuggler.ImportAsync` / `Smuggler.ImportDatabaseOperation`  
+  Validates documents when importing data using the Smuggler tool.
+
+
+Validation is **not** applied during these operations:  
+* `Backup.RestoreDatabase`  
+  Documents are restored from backup **without** validation.  
 * `Replication`  
-  When a document is replicated to another database (external replication) or node (regular replication), it is validated upon arrival.
-* `Backup.RestoreDatabase()`  
-  When restoring a database from backup, each document is validated as it is written.
-* `Smuggler.ImportAsync()`  
-  When importing documents into a database, each document is validated as it is written.
+  Validation is **not** applied when replicating documents to cluster nodes or via external replication.  
 
 ## Available constraints
 A validation schema can enforce these constraints on documents:  
@@ -79,6 +86,7 @@ A validation schema can enforce these constraints on documents:
 * [Array Minimum Items](../../documents/schema-validation/validate-documents/validate-documents_api#minitems)  
 * [Array Maximum Items](../../documents/schema-validation/validate-documents/validate-documents_api#maxitems)  
 * [Properties](../../documents/schema-validation/validate-documents/validate-documents_api#properties)  
+* [patternProperties](../../documents/schema-validation/validate-documents/validate-documents_api#patternproperties)  
 * [Additional Properties](../../documents/schema-validation/validate-documents/validate-documents_api#additionalproperties)  
 * [Items](../../documents/schema-validation/validate-documents/validate-documents_api#items)  
 * [Dependencies](../../documents/schema-validation/validate-documents/validate-documents_api#dependencies)  
@@ -106,4 +114,4 @@ A few scenarios where schema validation can help are:
 * **Maintaining Consistent Structure in Arrays**  
   E.g., ensuring that every item in an array (like a list of order items) follows the same structure and contains all required properties.  
 * **Preventing Invalid Data During Integrations**  
-  E.g., blocking documents with unexpected or malformed data from being saved during replication, ETL, or API imports, to protect downstream systems.  
+  E.g., blocking documents with unexpected or malformed data from being saved during ETL or API imports, to protect downstream systems.  
