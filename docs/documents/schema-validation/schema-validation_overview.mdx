@@ -44,8 +44,6 @@ Validation is triggered during writing by these operations:
   Validates documents while committing staged document changes in the session to the database.  
 * `BulkInsert.StoreAsync()`  
   Validates each document when performing a bulk insert operation.  
-* `RevertRevisionsByIdOperation`  
-  Validates documents when reverting to a previous revision.
 * `PatchByQueryOperation`  
   Validates documents updated by a patch query.  
 * `Smuggler.ImportAsync()` / `Smuggler.ImportDatabaseOperation()`  
@@ -53,11 +51,17 @@ Validation is triggered during writing by these operations:
 * `ETL tasks`  
   Validates documents as they are transferred via an Extract/Transform/Load process.  
 
-Validation is **not** applied during these operations:  
+#### Validation is **not** applied during these operations:  
 * `Replication`  
   When replicating documents to cluster nodes or via external replication.  
 * `Backup.RestoreDatabase()`  
   When documents are restored from backup.  
+
+#### Validation and reverting documents:
+<Admonition type="warning" title="Cannot revert with enabled schema validation">
+A document **cannot be reverted** to a [selected revision](../../document-extensions/revisions/client-api/operations/revert-document-to-revision) or to a [selected point in time](../../document-extensions/revisions/revert-revisions) if a validation schema is enabled for the document's collection.  
+If you want to revert a document and a validation schema is defined for its collection, **disable the schema before reverting**.
+</Admonition>
 
 ## Available constraints
 A validation schema can enforce these constraints on documents:  
