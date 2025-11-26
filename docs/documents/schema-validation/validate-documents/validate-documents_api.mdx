@@ -37,9 +37,15 @@ To validate documents with a JSON schema:
 1. **Define your [schema](https://json-schema.org/) as a string**:  
    Ensure that the schema sets all the constraints needed to validate your documents.  
   
-   E.g., to ensure that a `Name` property exists and has a maximum length of 7 characters:
+   Example:  
    ```csharp
-   // Define the schema as a string
+   // Ensure that a `Name` property exists.
+   string schemaJson = "{\"required\":[\"Name\"]}";
+   ```
+
+   Example:  
+   ```csharp
+   // Ensure that a `Name` property has a maximum length of 7 characters.
    string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
    ```
 
@@ -69,7 +75,7 @@ To validate documents with a JSON schema:
    Once registered, the schema is activated for the specified collection.
 
    <Admonition type="note" title="">
-   Note that once a schema is activated, associated documents are validated not only when saved directly, but also when added or modified by operations such as ETL or replication tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered).)
+   Note that once a schema is activated, associated documents are validated not only when saved directly, but also when added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered).)
    </Admonition>
 
 4. **Validate documents**:  
@@ -133,9 +139,6 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
 <TabItem value="JSON-schema" label="JSON-schema">
 ```json
 {
-   // The document must be a JSON object
-   "type": "object",
-
    // Define the allowed properties and their types
    "properties": {
       // 'Id' is the RavenDB document ID (e.g., "users/1-A")
@@ -154,7 +157,7 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
    // These properties must be present in every User document
    "required": ["Id", "Name", "Email"],
 
-   // Allow additional properties (e.g., metadata, custom fields)
+   // Allow additional properties beyond those defined here
    "additionalProperties": true
 }
 ```
@@ -174,8 +177,10 @@ Enforces the data type (e.g., "string", "number", "object", "array", "boolean", 
 Example:
 ```json
 {
-  // The value must be a string
-  "type": "string"
+  "properties": {
+    // 'Name' must be a string
+    "Name": { "type": "string" }
+  }
 }
 ```
 </ContentFrame>
@@ -187,7 +192,6 @@ Defines properties that must be present in the object.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     "name": { "type": "string" }, // Name must be a string
     "age": { "type": "integer" }  // Age must be an integer
@@ -205,7 +209,6 @@ Requires a property to have a specific value.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'role' must always be 'admin'
     "role": { "const": "admin" }
@@ -221,7 +224,6 @@ Restricts a property to a set of allowed values.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'status' must be one of the specified values
     "status": { "enum": ["active", "inactive", "pending"] }
@@ -237,7 +239,6 @@ Minimum number of characters for a string.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'username' must be at least 3 characters long
     "username": { "type": "string", "minLength": 3 }
@@ -253,7 +254,6 @@ Maximum number of characters for a string.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'code' must be no more than 7 characters long
     "code": { "type": "string", "maxLength": 7 }
@@ -269,7 +269,6 @@ String must match a regular expression.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'email' must match the given regular expression
     "email": { "type": "string", "pattern": "^[\\w.-]+@[\\w.-]+\\.\\w+$" }
@@ -285,7 +284,6 @@ Minimum value for a number.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'age' must be at least 18
     "age": { "type": "integer", "minimum": 18 }
@@ -301,7 +299,6 @@ Maximum value for a number.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'score' must be at most 100
     "score": { "type": "number", "maximum": 100 }
@@ -317,7 +314,6 @@ Minimum number of items in an array.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'tags' array must have at least 2 items
     "tags": { "type": "array", "minItems": 2 }
@@ -333,7 +329,6 @@ Maximum number of items in an array.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'tags' array must have at most 5 items
     "tags": { "type": "array", "maxItems": 5 }
@@ -349,7 +344,6 @@ Defines schemas for each property of an object.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'firstName' must be a string
     "firstName": { "type": "string" },
@@ -361,13 +355,29 @@ Example:
 </ContentFrame>
 
 <ContentFrame>
+### `patternProperties`  
+Defines validation rules for object properties whose names match a specified regular expression (regex) pattern.
+
+Example: all properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
+```json
+{
+  "type": "object",
+  "patternProperties": {
+    "^foo_": { "type": "string" },
+    "^bar_": { "type": "integer" }
+  },
+  "additionalProperties": false
+}
+```
+</ContentFrame>
+
+<ContentFrame>
 ### `additionalProperties`  
-Controls whether properties not defined in `properties` are allowed, or applies a schema to them.  
+Controls whether properties not defined in `properties` and `patternProperties` are allowed.  
 
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     "id": { "type": "string" } // Only 'id' is defined
   },
@@ -384,7 +394,6 @@ Defines the schema for items in an array.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'scores' must be an array of integers
     "scores": {
@@ -403,7 +412,6 @@ Specifies property dependencies.
 Example:
 ```json
 {
-  "type": "object",
   "properties": {
     "credit_card": { "type": "string" },      // Credit card number
     "billing_address": { "type": "string" }   // Billing address
@@ -433,7 +441,6 @@ Setting `null` for variable types:
 Setting `null` for **properties**:
 ```json
 {
-  "type": "object",
   "properties": {
     // 'middleName' can be a string or null
     "middleName": { "type": ["string", "null"] }
