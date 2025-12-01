@@ -20,12 +20,14 @@ import Panel from '@site/src/components/Panel';
     This avoids bloating your JSON document with large binary content.    
     See [Store attachments in local storage](../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).
   * **Remote storage**:  
-    Optionally, to reduce local storage usage, you can configure RavenDB to offload attachments to remote storage.
+    RavenDB does not enforce a hard limit on the size of locally stored attachments.  
+    However, to reduce local disk usage, you can optionally configure RavenDB to offload attachments to remote storage.
     See [Store attachments in remote storage](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 * In this article:
   * [Attachments in the documents list view](../../document-extensions/attachments/overview#attachments-in-the-documents-list-view)
   * [Attachments in the document view](../../document-extensions/attachments/overview#attachments-in-the-document-view)
+  * [Attachments stats](../../document-extensions/attachments/overview#attachments-stats)
     
 </Admonition>  
 
@@ -87,4 +89,27 @@ import Panel from '@site/src/components/Panel';
     Click to remove the attachment from the document and delete it from local RavenDB storage.  
     Learn more in [Delete attachments](../../todo).    
 
+</Panel>
+
+<Panel heading="Attachments stats">
+    
+The overall number of attachments in the database can be viewed in the **General Database Stats** view in the Studio.
+       
+![Attachments stats](../assets/attachments-stats-1.png)
+    
+1. Go to the **Stats** section in the Studio navigation bar.
+2. This it the total number of attachments in the database, from all collections.
+3. Click "Show detailed database & indexing stats" to expand the detailed section.
+    
+![Attachments stats](../assets/attachments-stats-2.png)
+    
+3. **Attachments details**:  
+   `total`:  
+    The total number of attachments in the database, from all collections.  
+   `unique`:  
+    The number of unique attachments stored **locally** in the database.   
+    Learn more in [Deduplicating local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments).  
+   `remote`:  
+    The total number of attachments stored in remote storage.   
+    
 </Panel>

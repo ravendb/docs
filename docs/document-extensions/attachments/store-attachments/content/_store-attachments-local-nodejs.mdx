@@ -12,16 +12,16 @@ import Panel from '@site/src/components/Panel'
     * Then, attach any number of files using the Studio or the Client API.
 
 * The document’s metadata is updated to reference each attachment that is added.  
-  The document is then replicated to all other nodes in the database group.  
-  Any associated actions related to the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
+  This metadata update is considered a document change, which causes the document to be replicated to all other nodes in the database group.  
+  Any actions associated with the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
     
 * When stored **locally**, attachments are not embedded within the document.
   Instead, they are saved in a dedicated attachment storage area on the RavenDB server, separate from the document store.  
   This avoids bloating your JSON documents with large binary data and enables efficient storage and retrieval.     
     
-* Storing attachments with the same name:  
+* **Storing attachments with the same name**:  
   If you add an attachment with a name that is already associated with the document,  
-  the new content will replace the existing attachment content.
+  the new content will replace the existing content in the local storage.
     
 * In this article
     * [Store attachment via the session](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-the-session)  

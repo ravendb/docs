@@ -1,0 +1,40 @@
+---
+title: "Attachments and Other Features"
+hide_table_of_contents: true
+sidebar_label: "Attachments and Other Features"
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+////////////////////////////////////
+
+## Revisions and Attachments
+
+If [document revisions](../../document-extensions/revisions/overview/) are enabled, any addition or removal of attachments will create a new revision of the document.
+This is because the attachment metadata is part of the document and is updated when attachments change.
+
+Any modification to the metadata of a document creates a revision when revisions are enabled.
+
+## Remote Attachments (Optional Feature)
+
+When Remote Attachments are enabled, RavenDB can upload attachments to external storage services such as:
+Amazon S3
+Azure Blob Storage
+
+Instead of storing the binary stream directly in the database, the server stores a reference to the external location and uploads the content asynchronously in the background.
+
+How it works:
+
+Attachments are marked for remote upload at the time they are added
+You configure remote destinations in the database settings
+Uploads are handled by a background task, without blocking client operations
+
+Remote Attachments are useful when:
+You need to store large binary content but reduce database size
+You want to take advantage of external storage redundancy and scaling
