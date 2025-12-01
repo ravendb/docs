@@ -29,13 +29,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * [A list of operations that trigger validation](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation)  
    * [Available constraints](../../documents/schema-validation/schema-validation_overview#available-constraints)  
    * [Considerations](../../documents/schema-validation/schema-validation_overview#considerations)
+   * [Verifying document validity](../../documents/schema-validation/schema-validation_overview#verifying-document-validity)  
    * [Use cases](../../documents/schema-validation/schema-validation_overview#use-cases)
 
 </Admonition>
 
 ## The validation process
 
-Schema validation is performed by the server, when a schema is defined for a collection and a document that belongs to this collection is written. The document is then validated against the schema before being saved to the database.  
+Schema validation is performed by the server when a schema is defined and enabled for a collection, and a document that belongs to this collection is written. The document is then validated against the schema before being saved to the database.  
 If the validation fails, the operation stops and a detailed [SchemaValidationException](../../documents/schema-validation/validate-documents/validate-documents_api#schemavalidationexception-message) is thrown.  
 
 ## A list of operations that trigger validation
@@ -93,6 +94,18 @@ Take note of the following considerations when applying schema validation.
   Applications should implement robust error handling to manage validation failures gracefully. This includes providing meaningful feedback to users or logging errors for further analysis.
 * **Testing**:  
   Thoroughly test schemas and validation logic in development environments before deploying to production to ensure that they behave as expected.  
+
+## Verifying document validity
+Up until now we have explained how to enforce document validation when documents are stored.  
+However, you can also verify the validity of stored documents to identify and address any schema violations.  
+
+#### Running an audit operation:
+Learn [here](../../documents/schema-validation/validate-documents/validate-documents_api#running-an-audit-operation) how to launch an audit operation that scans the documents of a collection, checks their validity against a schema, and reports validation errors and related statistics.  
+This process can help you assess data quality and ensure schema compliance across your collections.  
+  
+#### Validation during indexing:
+Learn [here](../../documents/schema-validation/validate-documents/validate-documents_api#validation-during-indexing) how to validate documents against a schema during indexing, and embed validation error messages in the indexes.  
+You can then use these indexes to monitor and manage documents based on their schema compliance.
 
 ## Use cases
 A few scenarios where schema validation can help are:  

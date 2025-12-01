@@ -72,14 +72,14 @@ To define a schema and associate it with a collection:
    }
    ```
 3. **Save**  
-   Click to save and activate the schema.  
-   When activated, any document saved to the "Orders" collection will be validated against it.  
+   Click to save and enable the schema.  
+   When enabled, any document saved to the "Orders" collection will be validated against it.  
    E.g., attempting to save an "Order" document missing the "Company" field will result in a validation error:
    ```plain
    Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The required property 'Company' is missing.
    ```
    <Admonition type="note" title="">
-   Note that once a schema is activated, associated documents are validated not only when saved directly, but also when added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered).)
+   Note that once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
    </Admonition>
 </Panel>
 
