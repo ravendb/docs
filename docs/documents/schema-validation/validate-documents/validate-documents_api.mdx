@@ -26,6 +26,8 @@ import Panel from "@site/src/components/Panel";
    * [Example](../../../documents/schema-validation/validate-documents/validate-documents_api#example)  
    * [Available constraints](../../../documents/schema-validation/validate-documents/validate-documents_api#available-constraints)  
    * [Syntax](../../../documents/schema-validation/validate-documents/validate-documents_api#syntax)
+   * [Running an audit operation](../../../documents/schema-validation/validate-documents/validate-documents_api#running-an-audit-operation)
+   * [Validation during indexing](../../../documents/schema-validation/validate-documents/validate-documents_api#validation-during-indexing)
 
 </Admonition>
 
@@ -37,13 +39,13 @@ To validate documents with a JSON schema:
 1. **Define your [schema](https://json-schema.org/) as a string**:  
    Ensure that the schema sets all the constraints needed to validate your documents.  
   
-   Example:  
+   **Example**:
    ```csharp
    // Ensure that a `Name` property exists.
    string schemaJson = "{\"required\":[\"Name\"]}";
    ```
 
-   Example:  
+   **Example**:
    ```csharp
    // Ensure that a `Name` property has a maximum length of 7 characters.
    string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
@@ -72,10 +74,9 @@ To validate documents with a JSON schema:
    // Register the schema configuration with the server
    await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
    ```
-   Once registered, the schema is activated for the specified collection.
 
    <Admonition type="note" title="">
-   Note that once a schema is activated, associated documents are validated not only when saved directly, but also when added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#when-is-validation-triggered).)
+   Note that once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
    </Admonition>
 
 4. **Validate documents**:  
@@ -174,7 +175,7 @@ Your validation schema can set the following constraints:
 ### `type`  
 Enforces the data type (e.g., "string", "number", "object", "array", "boolean", "integer").  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -189,7 +190,7 @@ Example:
 ### `required`  
 Defines properties that must be present in the object.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -206,7 +207,7 @@ Example:
 ### `const`  
 Requires a property to have a specific value.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -221,7 +222,7 @@ Example:
 ### `enum`  
 Restricts a property to a set of allowed values.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -236,7 +237,7 @@ Example:
 ### `minLength`  
 Minimum number of characters for a string.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -251,7 +252,7 @@ Example:
 ### `maxLength`  
 Maximum number of characters for a string.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -266,7 +267,7 @@ Example:
 ### `pattern`  
 String must match a regular expression.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -281,7 +282,7 @@ Example:
 ### `minimum`  
 Minimum value for a number.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -296,7 +297,7 @@ Example:
 ### `maximum`  
 Maximum value for a number.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -311,7 +312,7 @@ Example:
 ### `minItems`  
 Minimum number of items in an array.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -326,7 +327,7 @@ Example:
 ### `maxItems`  
 Maximum number of items in an array.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -341,7 +342,7 @@ Example:
 ### `properties`  
 Defines schemas for each property of an object.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -358,7 +359,8 @@ Example:
 ### `patternProperties`  
 Defines validation rules for object properties whose names match a specified regular expression (regex) pattern.
 
-Example: all properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
+**Example**:  
+all properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
 ```json
 {
   "type": "object",
@@ -375,7 +377,7 @@ Example: all properties starting with "foo_" must be strings, and those starting
 ### `additionalProperties`  
 Controls whether properties not defined in `properties` and `patternProperties` are allowed.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -391,7 +393,7 @@ Example:
 ### `items`  
 Defines the schema for items in an array.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -409,7 +411,7 @@ Example:
 ### `dependencies`  
 Specifies property dependencies.  
 
-Example:
+**Example**:
 ```json
 {
   "properties": {
@@ -454,7 +456,7 @@ Setting `null` for **properties**:
 <Panel>
 <ContentFrame>
 
-### ConfigureSchemaValidationOperation definition:
+### `ConfigureSchemaValidationOperation` definition:
 ```csharp
 // The schema validation configuration to apply.
 // If `configuration` is null, `ArgumentNullException` is generated.
@@ -464,7 +466,7 @@ public ConfigureSchemaValidationOperation(SchemaValidationConfiguration configur
 
 <ContentFrame>
 
-### SchemaValidationConfiguration class:
+### `SchemaValidationConfiguration` class:
 ```csharp
 public sealed class SchemaValidationConfiguration
 {
@@ -484,7 +486,7 @@ public sealed class SchemaValidationConfiguration
 
 <ContentFrame>
 
-### SchemaDefinition class:
+### `SchemaDefinition` class:
 ```csharp
 public class SchemaDefinition
 {
@@ -501,7 +503,7 @@ public class SchemaDefinition
 
 <ContentFrame>
 
-### SchemaValidationException message:
+### `SchemaValidationException` message:
 ```csharp
 // Initializes a new `SchemaValidationException` instance with an error message
 // that explains the reason for the schema validation failure. 
@@ -517,5 +519,114 @@ The required property 'Company' is missing.
 </ContentFrame>
 </Panel>
 
+## Running an audit operation
+To [validate all documents in a collection](../../../documents/schema-validation/schema-validation_overview#validation-of-existing-documents) against a JSON schema, use `StartSchemaValidationOperation`.  
+
+#### `StartSchemaValidationOperation` definition:  
+```csharp
+StartSchemaValidationOperation(Parameters parameters)
+```
+
+#### `StartSchemaValidationOperation` arguments:  
+Pass the operation a `Parameters` object that specifies -  
+```csharp
+class Parameters
+{
+  // JSON schema definition as a string
+  public string SchemaDefinition { get; set; } 
+  
+  // Target collection to validate
+  public string Collection { get; set; }
+  
+  // Optional: The maximum number of error messages to return (default: 1024)
+  public int MaxErrorMessages { get; set; }
+
+  // Optional: The maximum number of documents to validate (default: unlimited)
+  public int MaxDocumentsToValidate { get; set; }
+}
+```
+
+#### `StartSchemaValidationOperation` result:  
+The operation will run in the background and return a result object containing -  
+- `ValidatedCount`  
+  The number of documents checked  
+- `ErrorCount`  
+  The number of documents with at least one validation failure  
+- `Errors`  
+  A dictionary of errors, each pair with:  
+   - The document name as `Key`  
+   - An array of error messages produced for this document as `Value`  
+
+#### Example:
+In this example, we verify that every document in the Orders collection includes a `Customer` string and a `Total` property whose value is not negative.  
+```csharp
+// Define a JSON Schema for orders
+string schemaDefinition;
+using (var context = JsonOperationContext.ShortTermSingleUse())
+{
+    schemaDefinition = context.ReadObject(
+        new DynamicJsonValue
+        {
+            ["properties"] = new DynamicJsonValue
+            {
+                ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
+                ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
+            },
+            ["required"] = new[] { "Customer", "Total" }
+        },
+        "orders-schema"
+    ).ToString();
+}
+
+// Store valid and invalid orders
+var store = GetDocumentStore();
+
+using (var session = store.OpenSession())
+{
+    // A valid order
+    session.Store(new Order { Customer = "Alice", Total = 100 }, "orders/1-A");
+    // An invalid order with two errors (missing Customer, negative Total)
+    session.Store(new Order { Total = -50 }, "orders/2-A");
+    // An invalid order (negative Total)
+    session.Store(new Order { Customer = "Bob", Total = -10 }, "orders/3-A");
+    session.SaveChanges();
+}
+
+// Run the Schema Validation Operation
+var parameters = new StartSchemaValidationOperation.Parameters
+{
+    SchemaDefinition = schemaDefinition,
+    Collection = "Orders",
+    MaxErrorMessages = 10 // Optional: cap the number of error messages
+};
+var operation = await store.Maintenance.SendAsync(
+        new StartSchemaValidationOperation(parameters));
+
+// Wait for the operation to complete and get the validation report
+var result = await operation.WaitForCompletionAsync<ValidateSchemaResult>(TimeSpan.FromMinutes(1));
+
+// Handle the results, e.g., print a validation summary
+// The number of inspected documents, and the number of documents with errors
+Console.WriteLine($"Validated: {result.ValidatedCount}, Errors: {result.ErrorCount}");
+// For each document with errors, print its ID and the associated error messages
+foreach (var error in result.Errors)
+{
+    Console.WriteLine($"Document ID: {error.Key}");
+    foreach (var line in error.Value.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+    {
+        Console.WriteLine($"Error: {line}");
+    }
+}
+```
+```csharp
+// A simplified Order class
+public class Order
+{
+    public string Customer { get; set; }
+    public double Total { get; set; }
+}
+```
+
+## Validation during indexing
 
 
