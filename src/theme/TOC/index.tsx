@@ -19,6 +19,15 @@ export default function TOCWrapper(props: Props): ReactNode {
     return <TOC {...props} toc={toc} />;
 }
 
+// By default, Markdown headings within hideable areas are added to the TOC.
+// With our current language switching implementation, this leads to default TOC being filled with headings from
+// *all* languages, instead of only currently selected one. To tackle this, we filter out TOC ourselves.
+//
+// As per https://github.com/facebook/docusaurus/issues/3915#issuecomment-2052403930,
+// the TOC is computed statically at MDX compilation time, which means we can't do this via React.
+//
+// Docusaurus team has an open issue for this problem:
+// https://github.com/facebook/docusaurus/issues/6201
 function getFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const uniqueIds = new Set(originalToc.map((item) => item.id));
 
