@@ -1,0 +1,497 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+   
+* This article explains how to add attachments using RavenDB’s **Bulk Insert** mechanism,
+  storing attachments alongside documents in a high-throughput, streamed process that avoids sending a separate request for each attachment.
+    
+* In this article:  
+  * [What is Bulk Insert](../../../document-extensions/attachments/store-attachments/bulk-insert#what-is-bulk-insert)  
+  * [Inserting attachment with Bulk Insert](../../../document-extensions/attachments/store-attachments/bulk-insert#inserting-attachments-with-bulk-insert)   
+  * [Bulk Insert attachments - Local storage](../../../document-extensions/attachments/store-attachments/bulk-insert#bulk-insert-attachments-local-storage)  
+  * [Bulk Insert attachments - Remote storage](../../../document-extensions/attachments/store-attachments/bulk-insert#bulk-insert-attachments-remote-storage)  
+  * [Syntax](../../../document-extensions/attachments/store-attachments/bulk-insert#syntax)
+    
+</Admonition>
+
+<Panel heading="What is Bulk Insert">
+* Bulk Insert is RavenDB's high-performance API for efficiently inserting large volumes of documents and related data (such as attachments) in a streamed manner from the client to the server.
+
+* Instead of storing documents using the session (as explained in [Storing entities](../../../client-api/session/storing-entities)), 
+  which opens an HTTP request for each _SaveChanges_ call, 
+  Bulk Insert opens a **single long-lived request** and sends multiple documents in **batches**.       
+  This reduces the overhead of repeatedly opening and closing sessions or transactions for each individual request, and lowers network and processing costs.
+
+* The client organizes the data into **batches** before streaming it to the server.   
+  The server processes the stream as it arrives, each batch is processed and committed as a separate transaction.
+  
+* There is no global transaction across the entire Bulk Insert, which means the operation as a whole is not atomic.  
+  If a failure occurs, previously committed batches remain, and only the current batch is rolled back.
+
+* Learn more about Bulk Insert in [How to work with Bulk Insert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation).    
+    
+</Panel>
+
+<Panel heading="Inserting attachments with Bulk Insert">
+    
+* RavenDB’s Bulk Insert API lets you stream documents and add their attachments in a single bulk insert operation.
+    
+* Use the `AttachmentsFor(documentId).Store(...)` method on the bulk insert instance to add one or more attachments to each document. 
+  This avoids the overhead of sending a separate request for every attachment, just like Bulk Insert does for documents.
+
+* Using the bulk insert operation, you can store a **new** document and then add attachments to it,  
+  or load or query **existing** documents beforehand and then add attachments to them during the bulk insert.  
+  Attachments can be stored **locally** on the RavenDB server or in **remote storage**.  
+
+* A single TCP/HTTP streaming connection transports both documents and attachments.  
+  The client organizes the data into batches before streaming it to the server.  
+  The server processes the stream as it arrives; each batch is processed and committed as a separate transaction.
+
+* If storing a document or attachment fails, the server rolls back the current batch.  
+  Previously committed batches remain unaffected.
+
+* Note:
+  * If an attachment with the same name is already associated with the document, its content will be **overwritten**.
+  * The target document must already exist before its attachments are added.
+    If you try to store an attachment for a document that hasn’t been stored yet, the operation will fail with a `DocumentDoesNotExistException`.  
+
+* When to use Bulk Insert for attachments:
+  * You need to insert a large number of attachments.
+  * You don’t require full atomicity across the entire operation, partial success is acceptable.
+  * You prioritize performance and throughput over session-level convenience or per-document consistency.
+    
+</Panel>
+
+<Panel heading="Bulk Insert attachments - Local storage">
+
+### Bulk insert documents with multiple attachments   
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="BulkInsert_attachments_sync" label="BulkInsert_attachments_sync">
+```csharp
+var basePath = @"C:\temp"; // folder containing files to attach
+    
+// Create a BulkInsert instance
+using (var bulkInsertObj = store.BulkInsert())
+{
+    for (int i = 0; i < 10; i++)
+    {
+        var docId = $"users/{i}";
+        var metadata = new MetadataAsDictionary
+        {
+            // Specify the target collection for the new documents
+            // If not specified, documents will be created under the '@empty' collection
+            [Constants.Documents.Metadata.Collection] = "users"
+        };
+        // Store a new user document in the BulkInsert instance
+        bulkInsertObj.Store(new { Name = $"User {i}" }, docId, metadata);
+    
+        // Prepare attachment names
+        var attachmentName1 = $"user_{i}.png";  // name for first attachment 
+        var attachmentName2 = $"notes_{i}.txt"; // name for second attachment
+        
+        var filePath1 = Path.Combine(basePath, attachmentName1);
+        var filePath2 = Path.Combine(basePath, attachmentName2);
+        
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+        
+        // Attach the first file:
+        if (File.Exists(filePath1))
+        {
+            using (var fileStream1 = File.OpenRead(filePath1))
+            {
+                // Call 'Store' to add the file to the BulkInsert instance
+                // The data stored in BulkInsert will be streamed to the server in batches 
+                attachmentsBulkInsert.Store(attachmentName1, fileStream1, "image/png");
+            }
+        }
+        // Attach the second file:
+        if (File.Exists(filePath2))
+        {
+            using (var fileStream2 = File.OpenRead(filePath2))
+            {
+                attachmentsBulkInsert.Store(attachmentName2, fileStream2, "text/plain");
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="BulkInsert_attachments_async" label="BulkInsert_attachments_async">
+```csharp
+var basePath = @"C:\temp"; // folder containing files to attach     
+
+// Create a BulkInsert instance
+await using (var bulkInsertObj = store.BulkInsert())
+{
+    for (int i = 0; i < 10; i++)
+    {
+        var docId = $"users/{i}";
+        var metadata = new MetadataAsDictionary
+        {
+            // Specify the target collection for the new documents
+            // If not specified, documents will be created under the '@empty' collection
+            [Constants.Documents.Metadata.Collection] = "users"
+        };
+        // Store a new user document in the BulkInsert instance
+        await bulkInsertObj.StoreAsync(new { Name = $"User {i}" }, docId, metadata);
+    
+        // Prepare attachment names
+        var attachmentName1 = $"user_{i}.png";  // name for first attachment 
+        var attachmentName2 = $"notes_{i}.txt"; // name for second attachment
+    
+        var filePath1 = Path.Combine(basePath, attachmentName1);
+        var filePath2 = Path.Combine(basePath, attachmentName2);
+    
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+    
+        // Attach the first file:
+        if (File.Exists(filePath1))
+        {
+            await using (var fileStream1 = File.OpenRead(filePath1))
+            {
+                // Call 'StoreAsync' to add the file to the BulkInsert instance
+                // The data stored in BulkInsert will be streamed to the server in batches 
+                await attachmentsBulkInsert.StoreAsync(
+                    attachmentName1, fileStream1, "image/png");
+            }
+        }
+        // Attach the second file:
+        if (File.Exists(filePath2))
+        {
+            await using (var fileStream2 = File.OpenRead(filePath2))
+            {
+                await attachmentsBulkInsert.StoreAsync(
+                    attachmentName2, fileStream2, "text/plain");
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Add attachments to existing documents using Bulk Insert  
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="BulkInsert_attachments_sync" label="BulkInsert_attachments_sync">
+```csharp
+// Query for existing user documents:
+List<User> users;
+    
+using (var session = store.OpenSession())
+{
+    users = session.Query<User>()
+        .Where(u => u.Age < 30)
+        .ToList();
+}
+
+var basePath = @"C:\temp"; // folder containing files to attach
+
+// Create a BulkInsert instance
+using (var bulkInsertObj = store.BulkInsert())
+{
+    foreach (var user in users)
+    {
+        // Use the existing document id
+        var docId = user.Id;
+
+        // Prepare attachment name
+        var attachmentName = $"user_{user.Id}.png";
+
+        var filePath = Path.Combine(basePath, attachmentName);
+
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+
+        // Attach the file:
+        if (File.Exists(filePath))
+        {
+            using (var fileStream = File.OpenRead(filePath))
+            {
+                // Call 'Store' to add the file to the BulkInsert instance
+                // The data stored in BulkInsert will be streamed to the server in batches
+                attachmentsBulkInsert.Store(attachmentName, fileStream, "image/png");
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="BulkInsert_attachments_async" label="BulkInsert_attachments_async">
+```csharp
+// Query for existing user documents:
+List<User> users;
+    
+using (var asyncSession = store.OpenAsyncSession())
+{
+    users = await asyncSession.Query<User>()
+        .Where(u => u.Age < 30)
+        .ToListAsync();
+}
+
+var basePath = @"C:\temp"; // folder containing files to attach
+
+// Create a BulkInsert instance
+await using (var bulkInsertObj = store.BulkInsert())
+{
+    foreach (var user in users)
+    {
+        // Use the existing document id
+        var docId = user.Id;
+
+        // Prepare attachment name
+        var attachmentName = $"user_{user.Id}.png";
+
+        var filePath = Path.Combine(basePath, attachmentName);
+
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+
+        // Attach the file:
+        if (File.Exists(filePath))
+        {
+            await using (var fileStream = File.OpenRead(filePath))
+            {
+                // Call 'StoreAsync' to add the file to the BulkInsert instance
+                // The data stored in BulkInsert will be streamed to the server in batches
+                await attachmentsBulkInsert.StoreAsync(attachmentName, fileStream, "image/png");
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Bulk Insert attachments - Remote storage">
+
+* Using the Bulk Insert operation, you can add attachments and mark them to be stored in **remote storage**.
+    
+* Ensure that the remote attachment feature is enabled for the database and that remote destinations are configured.  
+  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).
+    
+* Inserting attachments via Bulk Insert for remote storage is similar to inserting attachments for local storage,  
+  except that you need to specify the remote **destination identifier** and the **time to upload**.
+
+* Once the attachment is added to the document on the server, its content is first stored locally.  
+  The background task will then upload it to the specified remote destination when the scheduled time arrives,  
+  as described in [Remote attachment storage flow](../../../document-extensions/attachments/store-attachments/store-attachments-remote#remote-attachment-storage-flow).
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="BulkInsert_remote_attachments_sync" label="BulkInsert_remote_attachments_sync">
+```csharp
+var basePath = @"C:\temp"; // folder containing files to attach
+    
+// Create a BulkInsert instance
+using (var bulkInsertObj = store.BulkInsert())
+{
+    for (int i = 0; i < 10; i++)
+    {
+        var docId = $"users/{i}";
+        var metadata = new MetadataAsDictionary
+        {
+            // Specify the target collection for the new documents
+            // If not specified, documents will be created under the '@empty' collection
+            [Constants.Documents.Metadata.Collection] = "users"
+        };
+    
+        // Store a new user document in the BulkInsert instance
+        bulkInsertObj.Store(new { Name = $"User {i}" }, docId, metadata);
+    
+        // Prepare attachment name and path
+        var attachmentName = $"user_{i}.png";
+        var filePath = Path.Combine(basePath, attachmentName);
+        
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+        
+        // Attach the file:
+        if (File.Exists(filePath))
+        {
+            using (var fileStream = File.OpenRead(filePath))
+            {
+                // Use the overload that accepts StoreAttachmentParameters
+                // so we can specify the remote parameters
+                var parameters = new StoreAttachmentParameters(attachmentName, fileStream)
+                {
+                    ContentType = "image/png",
+                    RemoteParameters = new RemoteAttachmentParameters(
+                        "my-amazon-storage",           // Remote destination ID
+                        DateTime.UtcNow.AddMinutes(5)) // When to upload to remote storage
+                };
+
+                // Call 'Store' to add the file to the BulkInsert instance
+                // Documents and attachments will be streamed to the server in batches
+                attachmentsBulkInsert.Store(parameters);
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="BulkInsert_remote_attachments_async" label="BulkInsert_remote_attachments_async">
+```csharp
+var basePath = @"C:\temp"; // folder containing files to attach
+
+// Create a BulkInsert instance
+await using (var bulkInsertObj = store.BulkInsert())
+{
+    for (int i = 0; i < 10; i++)
+    {
+        var docId = $"users/{i}";
+        var metadata = new MetadataAsDictionary
+        {
+            // Specify the target collection for the new documents
+            // If not specified, documents will be created under the '@empty' collection
+            [Constants.Documents.Metadata.Collection] = "users"
+        };
+
+        // Store a new user document in the BulkInsert instance
+        await bulkInsertObj.StoreAsync(new { Name = $"User {i}" }, docId, metadata);
+
+        // Prepare attachment name and path
+        var attachmentName = $"user_{i}.png";
+        var filePath = Path.Combine(basePath, attachmentName);
+
+        // Call 'AttachmentsFor' to get the BulkInsert attachment interface 
+        // Pass the document ID for which to attach the files
+        var attachmentsBulkInsert = bulkInsertObj.AttachmentsFor(docId);
+
+        // Attach the file:
+        if (File.Exists(filePath))
+        {
+            await using (var fileStream = File.OpenRead(filePath))
+            {
+                // Use the overload that accepts StoreAttachmentParameters
+                // so we can specify the remote parameters
+                var parameters = new StoreAttachmentParameters(attachmentName, fileStream)
+                {
+                    ContentType = "image/png",
+                    RemoteParameters = new RemoteAttachmentParameters(
+                        "my-amazon-storage",           // Remote destination ID
+                        DateTime.UtcNow.AddMinutes(1)) // When to upload to remote storage
+                };
+
+                // Call 'StoreAsync' to add the file to the BulkInsert instance
+                // Documents and attachments will be streamed to the server in batches
+                await attachmentsBulkInsert.StoreAsync(parameters);
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+```
+</TabItem>
+</Tabs>    
+    
+</Panel>
+
+<Panel heading="Syntax">
+    
+<TabItem>
+```csharp
+public AttachmentsBulkInsert AttachmentsFor(string id)
+```
+</TabItem>
+
+| Parameter | Type     | Description                                                   |
+|-----------|----------|---------------------------------------------------------------|
+| **id**    | `string` | The ID of the document to which the attachment will be added. |
+ 
+<TabItem>
+```csharp
+// Available overloads:    
+    
+public void Store(string name, Stream stream, string contentType = null)
+public Task StoreAsync(
+    string name, Stream stream, string contentType = null, CancellationToken token = default)
+    
+public void Store(StoreAttachmentParameters parameters)
+public Task StoreAsync(
+    StoreAttachmentParameters parameters, CancellationToken token = default)
+```
+</TabItem>
+
+| Parameter       | Type     | Description                                                 |
+|-----------------|----------|-------------------------------------------------------------|
+| **name**        | `string` | Name of attachment.                                         |
+| **stream**      | `Stream` | The stream containing the binary content of the attachment. |
+| **contentType** | `string` | The MIME type of the attachment (optional).                 |
+| **parameters**  | `StoreAttachmentParameters`  | An object that encapsulates all parameters required to store an attachment. |
+
+<TabItem>
+```csharp 
+public class StoreAttachmentParameters
+{
+    public string Name { get; set; }   // The name of the attachment to store.
+    public Stream Stream { get; set; } // The stream containing the attachment data.
+    public string ChangeVector { get; set; } 
+    public string ContentType { get; set; }
+    
+    // Set to null or omit to store the attachment locally
+    public RemoteAttachmentParameters RemoteParameters { get; set; }
+}
+```
+</TabItem>
+    
+<TabItem >
+```csharp 
+public class RemoteAttachmentParameters
+{
+    // The scheduled date and time when the attachment should be uploaded to the remote destination.
+    // Preferably in UTC.
+    public DateTime At { get; set; }
+    
+    // The identifier of the remote storage destination to which the attachment should be uploaded.
+    public string Identifier { get; set; }
+}
+```
+</TabItem>
+    
+</Panel>

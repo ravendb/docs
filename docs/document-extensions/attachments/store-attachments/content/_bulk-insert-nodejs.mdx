@@ -5,13 +5,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* [BulkInsert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's high-performance data insertion operation.  
+* [BulkInsert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's high-performance data insertion operation.  
   Use its `attachmentsFor` interface to add attachments to documents with great speed.  
 
 * In this page:  
-    * [Usage flow](../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
-    * [Usage example](../../document-extensions/attachments/bulk-insert.mdx#usage-example)
-    * [Syntax](../../document-extensions/attachments/bulk-insert.mdx#syntax)
+    * [Usage flow](../../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
+    * [Usage example](../../../document-extensions/attachments/bulk-insert.mdx#usage-example)
+    * [Syntax](../../../document-extensions/attachments/bulk-insert.mdx#syntax)
 
 </Admonition>
 
@@ -28,8 +28,6 @@ import CodeBlock from '@theme/CodeBlock';
 * Note:  
   If an attachment with the specified name already exists on the document,  
   the bulk insert operation will overwrite it.
-
-
 
 ## Usage example
 
@@ -90,8 +88,6 @@ try {
 </TabItem>
 </Tabs>
 
-
-
 ## Syntax
 
 <TabItem value="syntax_1" label="syntax_1">
@@ -118,7 +114,3 @@ store(name, bytes, contentType);
 | `name`        | `string` | Name of attachment                 |
 | `bytes`       | `Buffer` | The attachment's content           |
 | `contentType` | `string` | Type of attachment (default: null) |
-
-
-
-

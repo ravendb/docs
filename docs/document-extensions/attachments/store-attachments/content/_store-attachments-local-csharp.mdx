@@ -8,7 +8,7 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article focuses on **storing attachments locally**.  
-  To learn about remote storage, see [Store attachments in remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
+  To learn about remote storage, see [Store attachments in remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote).
     
 * In this article
   * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-local#overview)  
@@ -320,7 +320,7 @@ The size of the attachment in bytes.
 ### `PutAttachmentOperation`  
 Add an attachment to a document using a store operation. 
     
-<TabItem value="" label="">
+<TabItem>
 ```csharp
 // Avialable overlads:
 // ===================
@@ -341,7 +341,7 @@ public PutAttachmentOperation(string documentId, StoreAttachmentParameters param
 ### `Session.Advanced.Attachments.Store`  
 Add an attachment to a document using a session. 
 
-<TabItem value="" label="">
+<TabItem>
 ```csharp
 // Avialable overlads:
 // ===================
@@ -367,7 +367,7 @@ void Store(object entity, string name, Stream stream, string contentType = null)
 | **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote).<br/>Set to _null_ or omit to store the attachment **locally**. |
 | **changeVector**     | `string`                     | An optional change vector for concurrency control (`null` to skip check) |
 
-<TabItem value="" label="">
+<TabItem>
 ```csharp 
 public class StoreAttachmentParameters
 {
@@ -382,7 +382,7 @@ public class StoreAttachmentParameters
 ```
 </TabItem>
     
-<TabItem value="" label="">
+<TabItem >
 ```csharp 
 public class RemoteAttachmentParameters
 {
@@ -400,7 +400,7 @@ public class RemoteAttachmentParameters
     
 ### `AttachmentDetails`
     
-<TabItem value="" label="">
+<TabItem>
 ```csharp 
 public class AttachmentDetails : AttachmentName
 {

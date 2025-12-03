@@ -5,14 +5,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* [bulk_insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's 
+* [bulk_insert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's 
   high-performance data insertion operation.  
   Use its `attachments_for` interface to add attachments to multiple documents with great speed.  
-* Use `store` 
 
 * In this page:  
-    * [Usage flow](../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
-    * [Usage example](../../document-extensions/attachments/bulk-insert.mdx#usage-example)
+    * [Usage flow](../../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
+    * [Usage example](../../../document-extensions/attachments/bulk-insert.mdx#usage-example)
 
 </Admonition>
 
@@ -30,11 +29,10 @@ import CodeBlock from '@theme/CodeBlock';
   If an attachment with the specified name already exists on the document,  
   the bulk insert operation will overwrite it.
 
-
-
 ## Usage example
 
 In this example, we attach a file to all User documents that match a query.  
+
 <TabItem value="bulk_insert_attachment" label="bulk_insert_attachment">
 <CodeBlock language="python">
 {`# Choose user profiles for which to attach a file
@@ -59,7 +57,3 @@ with store.bulk_insert() as bulk_insert:
 `}
 </CodeBlock>
 </TabItem>
-
-
-
-
