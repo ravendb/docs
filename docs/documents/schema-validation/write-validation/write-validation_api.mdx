@@ -1,5 +1,5 @@
 ---
-title: "Validate documents: API"
+title: "Write validation: API"
 hide_table_of_contents: true
 sidebar_label: "Client API"
 sidebar_position: 1
@@ -14,20 +14,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ContentFrame from "@site/src/components/ContentFrame";
 import Panel from "@site/src/components/Panel";
 
-# Validate documents: API
+# Write validation: API
 <Admonition type="note" title="">
 
 * Validate documents by defining a JSON schema, associating it with a document collection, and registering it with the server. 
 
-* The schema sets constraints that ensure document compliance, such as required fields, data types, and value ranges.  
+* The schema sets constraints such as required fields, data types, and value ranges, that enforce document compliance during writing.
+
+* Validation is automatically triggered when documents in the associated collection are saved directly or via operations such as patching or ETL tasks.  
 
 * In this article:  
-   * [Creating a validation schema](../../../documents/schema-validation/validate-documents/validate-documents_api#creating-a-validation-schema)  
-   * [Example](../../../documents/schema-validation/validate-documents/validate-documents_api#example)  
-   * [Available constraints](../../../documents/schema-validation/validate-documents/validate-documents_api#available-constraints)  
-   * [Syntax](../../../documents/schema-validation/validate-documents/validate-documents_api#syntax)
-   * [Running an audit operation](../../../documents/schema-validation/validate-documents/validate-documents_api#running-an-audit-operation)
-   * [Validation during indexing](../../../documents/schema-validation/validate-documents/validate-documents_api#validation-during-indexing)
+   * [Creating a validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema)  
+   * [Example](../../../documents/schema-validation/write-validation/write-validation_api#example)  
+   * [Available constraints](../../../documents/schema-validation/write-validation/write-validation_api#available-constraints)  
+   * [Syntax](../../../documents/schema-validation/write-validation/write-validation_api#syntax)
 
 </Admonition>
 
@@ -52,7 +52,7 @@ To validate documents with a JSON schema:
    ```
 
 2. **Create the schema configuration**:  
-   Create a [SchemaValidationConfiguration](../../../documents/schema-validation/validate-documents/validate-documents_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
+   Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
    E.g., to associate your schema with the `Users` collection:  
    ```csharp
@@ -67,7 +67,7 @@ To validate documents with a JSON schema:
    };
    ```
 3. **Register the schema with the server**:  
-   Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/validate-documents/validate-documents_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
+   Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
 
    E.g.,  
    ```csharp
@@ -76,13 +76,13 @@ To validate documents with a JSON schema:
    ```
 
    <Admonition type="note" title="">
-   Note that once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
+   Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
    </Admonition>
 
 4. **Validate documents**:  
    After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
    
-   E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/validate-documents/validate-documents_api#schemavalidationexception-message) such as:
+   E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
    ```plain
    Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
    ``` 
@@ -188,7 +188,7 @@ Enforces the data type (e.g., "string", "number", "object", "array", "boolean", 
 
 <ContentFrame>
 ### `required`  
-Defines properties that must be present in the object.  
+Enforces properties that must be present in the object.  
 
 **Example**:
 ```json
@@ -360,7 +360,7 @@ Defines schemas for each property of an object.
 Defines validation rules for object properties whose names match a specified regular expression (regex) pattern.
 
 **Example**:  
-all properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
+All properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
 ```json
 {
   "type": "object",
@@ -470,7 +470,7 @@ public ConfigureSchemaValidationOperation(SchemaValidationConfiguration configur
 ```csharp
 public sealed class SchemaValidationConfiguration
 {
-   // Indicating whether schema validation is globally disabled for the database.
+   // Indicates whether schema validation is globally disabled for the database.
    // When true, validation is disabled for all collections regardless of 
    // individual collection settings.
    public bool Disabled { get; set; }
@@ -479,7 +479,7 @@ public sealed class SchemaValidationConfiguration
    // Each entry specifies the JSON schema to be used for validating documents 
    // in the given collection.
    // The collection name comparison is case-insensitive.
-   public Dictionary<string, SchemaDefinition> alidatorsPerCollection
+   public Dictionary<string, SchemaDefinition> ValidatorsPerCollection { get; set; }
 }
 ```
 </ContentFrame>
@@ -490,12 +490,12 @@ public sealed class SchemaValidationConfiguration
 ```csharp
 public class SchemaDefinition
 {
-   // Indicating whether schema validation is disabled for this collection.
+   // Indicates whether schema validation is disabled for this collection.
    // When true, documents will not be validated against the specified schema.
    public bool Disabled { get; set; }
 
    // The JSON schema definition as a string.
-   // Used to validate collection documents by the Schema specification.
+   // Validates collection documents according to the schema specification.
    public string Schema { get; set; }
 }
 ```
@@ -518,115 +518,3 @@ The required property 'Company' is missing.
 ```
 </ContentFrame>
 </Panel>
-
-## Running an audit operation
-To [validate all documents in a collection](../../../documents/schema-validation/schema-validation_overview#validation-of-existing-documents) against a JSON schema, use `StartSchemaValidationOperation`.  
-
-#### `StartSchemaValidationOperation` definition:  
-```csharp
-StartSchemaValidationOperation(Parameters parameters)
-```
-
-#### `StartSchemaValidationOperation` arguments:  
-Pass the operation a `Parameters` object that specifies -  
-```csharp
-class Parameters
-{
-  // JSON schema definition as a string
-  public string SchemaDefinition { get; set; } 
-  
-  // Target collection to validate
-  public string Collection { get; set; }
-  
-  // Optional: The maximum number of error messages to return (default: 1024)
-  public int MaxErrorMessages { get; set; }
-
-  // Optional: The maximum number of documents to validate (default: unlimited)
-  public int MaxDocumentsToValidate { get; set; }
-}
-```
-
-#### `StartSchemaValidationOperation` result:  
-The operation will run in the background and return a result object containing -  
-- `ValidatedCount`  
-  The number of documents checked  
-- `ErrorCount`  
-  The number of documents with at least one validation failure  
-- `Errors`  
-  A dictionary of errors, each pair with:  
-   - The document name as `Key`  
-   - An array of error messages produced for this document as `Value`  
-
-#### Example:
-In this example, we verify that every document in the Orders collection includes a `Customer` string and a `Total` property whose value is not negative.  
-```csharp
-// Define a JSON Schema for orders
-string schemaDefinition;
-using (var context = JsonOperationContext.ShortTermSingleUse())
-{
-    schemaDefinition = context.ReadObject(
-        new DynamicJsonValue
-        {
-            ["properties"] = new DynamicJsonValue
-            {
-                ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
-                ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
-            },
-            ["required"] = new[] { "Customer", "Total" }
-        },
-        "orders-schema"
-    ).ToString();
-}
-
-// Store valid and invalid orders
-var store = GetDocumentStore();
-
-using (var session = store.OpenSession())
-{
-    // A valid order
-    session.Store(new Order { Customer = "Alice", Total = 100 }, "orders/1-A");
-    // An invalid order with two errors (missing Customer, negative Total)
-    session.Store(new Order { Total = -50 }, "orders/2-A");
-    // An invalid order (negative Total)
-    session.Store(new Order { Customer = "Bob", Total = -10 }, "orders/3-A");
-    session.SaveChanges();
-}
-
-// Run the Schema Validation Operation
-var parameters = new StartSchemaValidationOperation.Parameters
-{
-    SchemaDefinition = schemaDefinition,
-    Collection = "Orders",
-    MaxErrorMessages = 10 // Optional: cap the number of error messages
-};
-var operation = await store.Maintenance.SendAsync(
-        new StartSchemaValidationOperation(parameters));
-
-// Wait for the operation to complete and get the validation report
-var result = await operation.WaitForCompletionAsync<ValidateSchemaResult>(TimeSpan.FromMinutes(1));
-
-// Handle the results, e.g., print a validation summary
-// The number of inspected documents, and the number of documents with errors
-Console.WriteLine($"Validated: {result.ValidatedCount}, Errors: {result.ErrorCount}");
-// For each document with errors, print its ID and the associated error messages
-foreach (var error in result.Errors)
-{
-    Console.WriteLine($"Document ID: {error.Key}");
-    foreach (var line in error.Value.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
-    {
-        Console.WriteLine($"Error: {line}");
-    }
-}
-```
-```csharp
-// A simplified Order class
-public class Order
-{
-    public string Customer { get; set; }
-    public double Total { get; set; }
-}
-```
-
-## Validation during indexing
-
-
