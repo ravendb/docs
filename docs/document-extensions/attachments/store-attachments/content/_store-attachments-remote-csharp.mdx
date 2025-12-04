@@ -19,7 +19,7 @@ import Panel from '@site/src/components/Panel';
   * [Store attachments remotely - using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-client-api)  
     * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-the-session)  
     * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-an-operation)  
-  * [Update existing attachments to become remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote#update-existing-attachments-to-become-remote-attachments)  
+  * [Schedule existing attachments for remote upload](../../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload)  
   * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata)  
   * [Deduplicating remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote#deduplicating-remote-attachments)  
   * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-remote#syntax)  
@@ -332,16 +332,17 @@ await using (var stream = new FileStream(attachmentPath,
     
 </Panel>
 
-<Panel heading="Update existing attachments to become remote attachments">
-
-* You can update existing **local** attachments and mark them to be uploaded to a remote storage destination using a **patch operation**.
+<Panel heading="Schedule existing attachments for remote upload">
+    
+* You can schedule existing **local** attachments for remote upload using a **patch operation**.  
+  Learn more about patching in general in [Single document patch operations](../../../client-api/operations/patching/single-document).  
     
 * In the patch script, specify:  
   * The name of the existing local attachment to mark
   * The remote destination identifier
   * The scheduled upload time
 
-* Once the patch is successful:
+* Once patching is successful:
   * The document's metadata is updated with the requested remote attachment parameters,  
     as described in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata).
     
