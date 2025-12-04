@@ -92,23 +92,17 @@ The operation will run in the background and return a result object containing -
 ### Example:
 This example audits the `Orders` collection, ensuring each order has a `Customer` string and a non-negative `Total` property. The validation results are then retrieved and summarized.
 ```csharp
-// Define a JSON Schema for orders
-string schemaDefinition;
-using (var context = JsonOperationContext.ShortTermSingleUse())
-{
-    schemaDefinition = context.ReadObject(
-        new DynamicJsonValue
-        {
-            ["properties"] = new DynamicJsonValue
-            {
-                ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
-                ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
-            },
-            ["required"] = new[] { "Customer", "Total" }
-        },
-        "orders-schema"
-    ).ToString();
-}
+// Define a validation Schema as a string
+// Customer must be a string
+// Total must be a number >= 0
+// These fields are required
+string schemaDefinition = @"{
+    ""properties"": {
+        ""Customer"": { ""type"": ""string"" },
+        ""Total"": { ""type"": ""number"", ""minimum"": 0 }
+    },
+    ""required"": [""Customer"", ""Total""]
+}";
 
 // Store valid and invalid orders
 var store = GetDocumentStore();
@@ -175,30 +169,16 @@ To validate documents by index:
 Define a [validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) and associate it with the collection whose documents you want to audit.  
 ```csharp
 // Define a validation Schema as a string
-string schemaDefinition;
-var context = JsonOperationContext.ShortTermSingleUse();
-try
-{
-    schemaDefinition = context.ReadObject(
-        new DynamicJsonValue
-        {
-            ["properties"] = new DynamicJsonValue
-            {
-                // Customer must be a string
-                ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
-                // Total must be a number >= 0
-                ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
-            },
-            // These fields are required
-            ["required"] = new[] { "Customer", "Total" }
-        },
-        "orders-schema"
-    ).ToString();
-}
-finally
-{
-    context.Dispose();
-}
+// Customer must be a string
+// Total must be a number >= 0
+// These fields are required
+string schemaDefinition = @"{
+    ""properties"": {
+        ""Customer"": { ""type"": ""string"" },
+        ""Total"": { ""type"": ""number"", ""minimum"": 0 }
+    },
+    ""required"": [""Customer"", ""Total""]
+}";
 
 // Associate the schema with the Orders collection 
 var schemaDefinitions = new IndexSchemaDefinitions
@@ -227,16 +207,13 @@ var schemaDefinitions = new IndexSchemaDefinitions
   };
   ```
 
-* Add an index map with a call to a validation method (`Schema.GetErrorsFor()` if this is a C# static index, or `schema.getErrorsFor()` if this is a JavaScript index).  
+* Add an index map with a call to a validation method (`Schema.GetErrorsFor()` for a C# static index, or `schema.getErrorsFor()` for a JavaScript index).  
   ```csharp
   // Create a map for the index, including a call to Schema.GetErrorsFor()
   const string OrdersValidationMap = @"
   from doc in docs.Orders
   select new
   {
-      Id = doc.Id,
-      Customer = doc.Customer,
-      Total = doc.Total,
       Errors = Schema.GetErrorsFor(doc)
   }
   ";
@@ -259,7 +236,7 @@ You can now query the index to find documents by their validation status and spe
 using (var session = store.OpenAsyncSession())
 {
   // Retrieve results, containing validation errors, from the index
-  var results = await session.Query<Result>("Orders_WithValidation_JS")
+  var results = await session.Query<IndexResult>("Orders_WithValidation")
       .Select(x => new
       {
           Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
@@ -292,30 +269,16 @@ using (var session = store.OpenAsyncSession())
 ```csharp
 {
     // Define a validation Schema as a string
-    string schemaDefinition;
-    var context = JsonOperationContext.ShortTermSingleUse();
-    try
-    {
-        schemaDefinition = context.ReadObject(
-            new DynamicJsonValue
-            {
-                ["properties"] = new DynamicJsonValue
-                {
-                    // Customer must be a string
-                    ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
-                    // Total must be a number >= 0
-                    ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
-                },
-                // These fields are required
-                ["required"] = new[] { "Customer", "Total" }
-            },
-            "orders-schema"
-        ).ToString();
-    }
-    finally
-    {
-        context.Dispose();
-    }
+    // Customer must be a string
+    // Total must be a number >= 0
+    // These fields are required
+    string schemaDefinition = @"{
+        ""properties"": {
+            ""Customer"": { ""type"": ""string"" },
+            ""Total"": { ""type"": ""number"", ""minimum"": 0 }
+        },
+        ""required"": [""Customer"", ""Total""]
+    }";
 
     // Associate the schema with the Orders collection 
     var schemaDefinitions = new IndexSchemaDefinitions
@@ -328,9 +291,6 @@ using (var session = store.OpenAsyncSession())
     from doc in docs.Orders
     select new
     {
-        Id = doc.Id,
-        Customer = doc.Customer,
-        Total = doc.Total,
         Errors = Schema.GetErrorsFor(doc)
     }
     ";
@@ -372,13 +332,13 @@ using (var session = store.OpenAsyncSession())
     using (var session = store.OpenAsyncSession())
     {
         // Retrieve results, containing validation errors, from the index
-        var results = await session.Query<Result>("Orders_WithValidation_JS")
-            .Select(x => new
-            {
-                Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
-                Errors = x.Errors
-            })
-            .ToListAsync();
+    var results = await session.Query<IndexResult>("Orders_WithValidation")
+        .Select(x => new
+        {
+            Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
+            Errors = x.Errors
+        })
+        .ToListAsync();
 
         foreach (var doc in results)
         {
@@ -406,7 +366,7 @@ public class Order
 ```
 
 ```csharp
-public class Result
+public class IndexResult
 {
     public string[] Errors { get; set; }
 }
@@ -419,30 +379,17 @@ public class Result
 ```csharp
 {
     // Define a validation Schema as a string
-    string schemaDefinition;
-    var context = JsonOperationContext.ShortTermSingleUse();
-    try
-    {
-        schemaDefinition = context.ReadObject(
-            new DynamicJsonValue
-            {
-                ["properties"] = new DynamicJsonValue
-                {
-                    // Customer must be a string
-                    ["Customer"] = new DynamicJsonValue { ["type"] = "string" },
-                    // Total must be a number >= 0
-                    ["Total"] = new DynamicJsonValue { ["type"] = "number", ["minimum"] = 0 }
-                },
-                // These fields are required
-                ["required"] = new[] { "Customer", "Total" }
-            },
-            "orders-schema"
-        ).ToString();
-    }
-    finally
-    {
-        context.Dispose();
-    }
+    // Customer must be a string
+    // Total must be a number >= 0
+    // These fields are required
+    string schemaDefinition = @"{
+        ""properties"": {
+            ""Customer"": { ""type"": ""string"" },
+            ""Total"": { ""type"": ""number"", ""minimum"": 0 }
+        },
+        ""required"": [""Customer"", ""Total""]
+    }";
+
 
     // Associate the schema with the Orders collection
     var schemaDefinitions = new IndexSchemaDefinitions
@@ -454,9 +401,6 @@ public class Result
     const string OrdersValidationMap = @"
     map('Orders', function (doc) {
         return {
-            Id: doc.Id,
-            Customer: doc.Customer,
-            Total: doc.Total,
             Errors: schema.getErrorsFor(doc)
         };
     })";
@@ -498,7 +442,7 @@ public class Result
     using (var session = store.OpenAsyncSession())
     {
         // Retrieve results, containing validation errors, from the index
-        var results = await session.Query<Result>("Orders_WithValidation_JS")
+        var results = await session.Query<IndexResult>("Orders_WithValidation_JS")
             .Select(x => new
             {
                 Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
@@ -532,7 +476,7 @@ public class Order
 ```
 
 ```csharp
-public class Result
+public class IndexResult
 {
     public string[] Errors { get; set; }
 }
