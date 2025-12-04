@@ -93,7 +93,9 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Attachments stats">
     
-The overall number of attachments in the database can be viewed in the **General Database Stats** view in the Studio.
+### View attachments stats in the Studio
+    
+* The overall number of attachments in the database can be viewed in the **General Database Stats** view in the Studio.
        
 ![Attachments stats](../assets/attachments-stats-1.png)
     
@@ -111,5 +113,44 @@ The overall number of attachments in the database can be viewed in the **General
     Learn more in [Deduplicating local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments).  
    `remote`:  
     The total number of attachments stored in remote storage.   
+
+---
+    
+### Get attachments stats via the Client API
+
+* Use the `GetDetailedStatisticsOperation` to retrieve statistics about attachments in the database.  
+  For a list of all available statistics properties, see [Get statistics](../../client-api/operations/maintenance/get-stats). 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Get_stats_operation" label="Get_stats_operation">
+```csharp
+var detailedStats = store.Maintenance.Send(new GetDetailedStatisticsOperation());
+
+// Total number of attachments in the database (Local & Remote)
+var totalAttachments = detailedStats.CountOfAttachments;
+
+// Total number of unique attachments in the database (Local only)
+var uniqueLocalAttachments = detailedStats.CountOfUniqueAttachments;
+
+// Total number of Remote attachments in the database
+var remoteAttachments = detailedStats.CountOfRemoteAttachments;  
+```
+</TabItem>
+<TabItem value="Get_stats_operation_async" label="Get_stats_operation_async">
+```csharp
+var detailedStats = await store.Maintenance.SendAsync(new GetDetailedStatisticsOperation());
+
+// Total number of attachments in the database (Local & Remote)
+var totalAttachments = detailedStats.CountOfAttachments;
+
+// Total number of unique attachments in the database (Local only)
+var uniqueLocalAttachments = detailedStats.CountOfUniqueAttachments;
+
+// Total number of Remote attachments in the database
+var remoteAttachments = detailedStats.CountOfRemoteAttachments;  
+
+```
+</TabItem>
+</Tabs>
     
 </Panel>
