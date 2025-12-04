@@ -19,6 +19,7 @@ import Panel from '@site/src/components/Panel';
   * [Store attachments remotely - using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-client-api)  
     * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-the-session)  
     * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-an-operation)  
+  * [Update existing attachments to become remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote#update-existing-attachments-to-become-remote-attachments)  
   * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata)  
   * [Deduplicating remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote#deduplicating-remote-attachments)  
   * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-remote#syntax)  
@@ -328,6 +329,100 @@ await using (var stream = new FileStream(attachmentPath,
 ```
 </TabItem>
 </Tabs>   
+    
+</Panel>
+
+<Panel heading="Update existing attachments to become remote attachments">
+
+* You can update existing **local** attachments and mark them to be uploaded to a remote storage destination using a **patch operation**.
+    
+* In the patch script, specify:  
+  * The name of the existing local attachment to mark
+  * The remote destination identifier
+  * The scheduled upload time
+
+* Once the patch is successful:
+  * The document's metadata is updated with the requested remote attachment parameters,  
+    as described in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata).
+    
+  * If the feature is enabled and destinations are defined (see [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments)),  
+    the background task will upload the attachment to the specified remote destination when the scheduled time arrives.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Mark_attachment_as_remote" label="Mark_attachment_as_remote">
+```csharp
+// Define the path request    
+var patch = new PatchRequest
+{
+    // The script to execute:
+    Script = "attachments(this, args.name).remote(args.identifier, args.at);",
+
+    // Provide values for the script arguments:
+    Values =
+    {
+        // The name of the existing attachment to mark for remote upload 
+        { "name", "image1.png" },
+
+        // The remote destination identifier
+        { "identifier", "my-amazon-storage" },
+
+        // The scheduled time for uploading to remote storage
+        { "at", DateTime.UtcNow.AddDays(1) },
+    }
+};
+
+// Define the patch operation
+// Specify the document that contains the attachment to mark for remote upload
+var patchOperation = new PatchOperation("employees/1", null, patch);
+    
+// Execute the operation by passing it to 'Operations.Send'
+PatchStatus patchResult = store.Operations.Send(patchOperation);
+
+// Possible outcomes:
+// ==================
+    
+// * PatchStatus.Patched: 
+//   The attachment was successfully marked as remote.
+//   The actual upload will be performed by the background task
+    
+// * PatchStatus.NotModified:
+//   The attachment does not exist; no exception is thrown.
+    
+// * PatchStatus.DocumentDoesNotExist: 
+//   The document does not exist; no exception is thrown.
+```
+</TabItem>
+<TabItem value="Mark_attachment_as_remote_async" label="Mark_attachment_as_remote_async">
+```csharp
+// Define the path request    
+var patch = new PatchRequest
+{
+    // The script to execute:
+    Script = "attachments(this, args.name).remote(args.identifier, args.at);",
+
+    // Provide values for the script arguments:
+    Values =
+    {
+        // The name of the existing attachment to mark for remote upload 
+        { "name", "image1.png" },
+
+        // The remote destination identifier
+        { "identifier", "my-amazon-storage" },
+
+        // The scheduled time for uploading to remote storage
+        { "at", DateTime.UtcNow.AddDays(1) },
+    }
+};
+
+// Define the patch operation
+// Specify the document that contains the attachment to mark for remote upload
+var patchOperation = new PatchOperation("employees/1", null, patch);
+    
+// Execute the operation by passing it to 'Operations.SendAsync'
+PatchStatus patchResult = await store.Operations.SendAsync(patchOperation);
+```
+</TabItem>
+</Tabs>      
     
 </Panel>
 

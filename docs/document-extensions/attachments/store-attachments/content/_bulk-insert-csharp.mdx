@@ -353,8 +353,8 @@ using (var bulkInsertObj = store.BulkInsert())
                 {
                     ContentType = "image/png",
                     RemoteParameters = new RemoteAttachmentParameters(
-                        "my-amazon-storage",           // Remote destination ID
-                        DateTime.UtcNow.AddMinutes(5)) // When to upload to remote storage
+                        "my-amazon-storage",        // Remote destination ID
+                        DateTime.UtcNow.AddDays(1)) // When to upload to remote storage
                 };
 
                 // Call 'Store' to add the file to the BulkInsert instance
@@ -405,8 +405,8 @@ await using (var bulkInsertObj = store.BulkInsert())
                 {
                     ContentType = "image/png",
                     RemoteParameters = new RemoteAttachmentParameters(
-                        "my-amazon-storage",           // Remote destination ID
-                        DateTime.UtcNow.AddMinutes(1)) // When to upload to remote storage
+                        "my-amazon-storage",         // Remote destination ID
+                        DateTime.UtcNow.AddDays(1)) // When to upload to remote storage
                 };
 
                 // Call 'StoreAsync' to add the file to the BulkInsert instance
