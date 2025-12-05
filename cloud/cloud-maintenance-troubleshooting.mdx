@@ -42,15 +42,16 @@ status.
 ## Cluster Health
 
 **Cluster Health** helps keep your cluster healthy by providing suggestions and incidents history.  
-This dashboard has three separated sections:
+This dashboard has four separated sections:
 
-- [Cluster Nodes Availability](cloud-maintenance-troubleshooting#cluster-nodes-availability)
+- [Nodes Availability](cloud-maintenance-troubleshooting#nodes-availability)
 - [Incidents History](cloud-maintenance-troubleshooting#incidents-history)
 - [Suggestions](cloud-maintenance-troubleshooting#suggestions)
+- [Product changes in time](cloud-maintenance-troubleshooting#product-changes-in-time)
 
-## Cluster Nodes Availability
+## Nodes Availability
 
-The **Cluster Nodes Availability** section shows the availability status of each node within your cluster.
+The **Nodes Availability** section shows the availability status of each node within your cluster.
 It provides a real-time, visual overview of how reliably each node has been operating in the current month.
 
 Each node is represented by a gauge showing its availability percentage, helping you quickly assess the overall health of your system.
@@ -65,6 +66,8 @@ Each node's status is color-coded based on its availability percentage:
 | > 99.9%      | Healthy  | 🟢 Green  |
 | 95% – 99.9%  | Degraded | 🟡 Yellow |
 | < 95%        | Critical | 🔴 Red    |
+
+!["Cluster Health: Nodes availability section"](./assets/cluster-health-nodes-availability.png)
 
 These thresholds help you identify which nodes might require attention:
 
@@ -91,6 +94,7 @@ Incidents are split into *six* categories. **Description** column contains addit
 | Disk          | Product's available disk space is low.                                                 |
 | IO            | Product is experiencing high input/output operations.                                  |
 | Availability  | Product is currently not responding to input or commands or has been restarted.        |
+
 ## Suggestions
 
 This section displays suggestions for a selected *cluster node* based on incident trends.
@@ -132,5 +136,10 @@ Below examples of the suggestions with the analyses:
 
 !["Cluster Health: An example of `Current period above threshold by percents` analyse"](./assets/cluster-health-suggestions-current-month-above-threshold-by-percents.png)
 
+## Product changes in time
 
+This view shows changes in product type over time. Changes can be presented as a graph or a table.
 
+!["Cluster Health: Product changes in time - graph"](./assets/cluster-health-product-changes-in-time-graph.png)  
+
+!["Cluster Health: Product changes in time - table"](./assets/cluster-health-product-changes-in-time-table.png)
