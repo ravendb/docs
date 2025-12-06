@@ -322,7 +322,7 @@ Add an attachment to a document using a store operation.
     
 <TabItem>
 ```csharp
-// Avialable overlads:
+// Avialable overloads:
 // ===================
     
 public PutAttachmentOperation(
@@ -331,7 +331,8 @@ public PutAttachmentOperation(
 
 public PutAttachmentOperation(string documentId, StoreAttachmentParameters parameters)
 ```
-
+</TabItem>
+    
 | Return value         | Description                                 |
 |----------------------|---------------------------------------------|
 | [AttachmentDetails](../../../document-extensions/attachments/store-attachments/store-attachments-local#attachmentdetails) | An object with the new attachment's details |
@@ -343,8 +344,8 @@ Add an attachment to a document using a session.
 
 <TabItem>
 ```csharp
-// Avialable overlads:
-// ===================
+// Avialable overloads:
+// ====================
 
 void Store(string documentId, StoreAttachmentParameters parameters);
 void Store(string documentId, string name, Stream stream, string contentType = null);
@@ -353,8 +354,6 @@ void Store(object entity, string name, Stream stream, string contentType = null)
 </TabItem>
 
 ---
-    
-</TabItem>
 
 | Parameter            | Type                         | Description |
 |----------------------|------------------------------|-------------|
@@ -408,7 +407,7 @@ public class AttachmentDetails : AttachmentName
     public string DocumentId;
 }
     
-public class AttachmentDetails : AttachmentName
+public class AttachmentName
 {
     public string Name;
     public string Hash;

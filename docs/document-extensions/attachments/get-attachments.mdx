@@ -1,0 +1,39 @@
+---
+title: "Get Attachments"
+hide_table_of_contents: true
+sidebar_label: "Get Attachments"
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetAttachmentsCsharp from './content/_get-attachments-csharp.mdx';
+import GetAttachmentsJava from './content/_get-attachments-java.mdx';
+import GetAttachmentsPython from './content/_get-attachments-python.mdx';
+import GetAttachmentsPhp from './content/_get-attachments-php.mdx';
+import GetAttachmentsNodejs from './content/_get-attachments-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetAttachmentsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetAttachmentsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetAttachmentsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetAttachmentsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetAttachmentsNodejs />
+</LanguageContent>
