@@ -89,7 +89,7 @@ To add a new documentation version:
    ```bash
    npm run docusaurus docs:version version_label
    ```
-2. To make the new version selectable in the sidebar, update the current version number in the `docs` property of the `docusaurus.config.js` file.  
+2. To make the new version selectable in the sidebar, update the current version number in the `docs` property of the `docusaurus.config.ts` file.  
 
 E.g., to add version `7.2`:  
 * Create a version for `7.1`
@@ -97,7 +97,7 @@ E.g., to add version `7.2`:
    npm run docusaurus docs:version 7.1
    ```
 * Set `7.2` as the current docs version.  
-  `docusaurus.config.js` file:
+  `docusaurus.config.ts` file:
    ```json
    docs: {
           sidebarPath: "sidebars.ts",
@@ -234,3 +234,19 @@ Key fields:
 
 * `label`: Sets the name of the folder as it will appear in the sidebar.
 * `position` – Controls the folder’s order relative to sibling items in the sidebar. Lower numbers appear higher.
+
+## Report broken links
+
+To create a broken links report during the build process, set the `docusaurus.config.ts` file `onBrokenLinks` and `onBrokenMarkdownLinks` options to `warn` before building the site using `npm run start` or `npm run build`.  
+```javascript
+onBrokenLinks: "warn",
+onBrokenMarkdownLinks: "warn",
+onBrokenAnchors: "ignore",
+```
+
+To disable broken links reporting, set both options to `ignore`.
+```javascript
+onBrokenLinks: "ignore",
+onBrokenMarkdownLinks: "ignore",
+onBrokenAnchors: "ignore",
+```
