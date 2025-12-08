@@ -10,9 +10,12 @@ import Panel from '@site/src/components/Panel';
 * Storing attachments in a remote storage destination is an optional feature that helps reduce the amount of data stored on the local disk
   by moving the attachments content to external storage of your choice.
     
-* To store an attachment in a remote storage destination, you must first:  
+* To store an attachment in a remote storage destination, you must:  
     * Enable the feature.
-    * Configure the remote destinations. (Currently, only Azure and Amazon S3 are supported).
+    * Configure the remote destinations.  
+      (Currently, Azure Blob Storage and Amazon S3 or any S3-compatible storage service are supported).
+    * Mark the attachment for remote storage, either when [storing](../../document-extensions/attachments/store-attachments/store-attachments-remote)
+      it or later using a [patch](../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload) operation.
 
 * When the Remote Attachments feature is enabled:  
   * RavenDB runs a **background task** that periodically scans the database for attachments marked for remote upload.  
@@ -49,7 +52,7 @@ import Panel from '@site/src/components/Panel';
    Default: `unlimited`. 
     
 5. **Set max number of concurrent uploads**  
-    Toggle ON to define the maximum number of attachments that can be uploaded to remote storage simultaneously.  
+    Toggle ON to define the maximum number of attachments that can be uploaded to remote storage concurrently.  
     Default: `8` attachments. 
     
 6. **Add new**  
@@ -69,7 +72,7 @@ import Panel from '@site/src/components/Panel';
 ![Remote attachments settings](../assets/configure-remote-attachments-2.png)  
  
 1. **Destination Identifier**  
-    The unique identifier string that you have assigned to this remote storage destination.  
+    The unique identifier string (_case-insensitive_) that you have assigned to this remote storage destination.  
 2. **Unsaved Changes (yellow star)**  
     A yellow star next to the destination's identifier indicates unsaved changes in its configuration.  
 3. **Remote Storage**  
@@ -98,12 +101,18 @@ import Panel from '@site/src/components/Panel';
    Toggle ON if your custom S3 host requires path-style access instead of virtual-hosted-style URLs.  
     For example: `https://{Server-URL}/{Bucket-Name}` instead of `https://{Bucket-Name}.{Server-URL}`.  
 4. **Custom server URL**    
-   Enter the URL of the custom S3-compatible server (only required if using a custom S3 host). 
+   Enter the URL of the custom S3-compatible server (only required if using a custom S3 host).  
+   The URL should include the protocol (`http://` or `https://`) and may include a port number.
 5. **Destination identifier**  
-   Enter a unique custom identifier for this Amazon S3 destination.  
+   Enter a unique custom identifier (_case-insensitive_) for this Amazon S3 destination.  
    The background task will use this identifier to reference this destination configuration. 
 6. **Bucket name**  
-   Specify the name of the S3 bucket where attachments will be stored.
+   Specify the name of the S3 bucket where attachments will be stored.  
+   Bucket names must follow AWS S3 naming rules:  
+     * Must be globally unique across all AWS accounts.
+     * Must be between 3 and 63 characters long.
+     * Must consist only of lowercase letters, numbers, dots, and hyphens.
+     * Must begin and end with a letter or number.
 7. **Remote folder name** (optional)  
    Define a folder within the bucket to organize uploaded attachments.  
    Leave blank to use the root of the bucket.
@@ -131,7 +140,7 @@ import Panel from '@site/src/components/Panel';
 1. **Provider**  
    Select **Azure** as the remote storage provider.  
 2. **Destination identifier**  
-   Enter a unique custom identifier for this Azure destination.  
+   Enter a unique custom identifier (_case-insensitive_) for this Azure destination.  
    The background task will use this identifier to reference this destination configuration. 
 3. **Storage container**  
    Specify the name of the Azure Storage container where attachments will be stored.
@@ -201,7 +210,7 @@ var configuration = new RemoteAttachmentsConfiguration
     Destinations = new Dictionary<string, RemoteAttachmentsDestinationConfiguration>
     {
         {
-             // Provide a custom identifier for this remote destination
+             // Provide a custom identifier for this remote destination (case-insensitive)
             "my-amazon-storage",
     
             new RemoteAttachmentsDestinationConfiguration
@@ -275,7 +284,7 @@ var configuration = new RemoteAttachmentsConfiguration
     Destinations = new Dictionary<string, RemoteAttachmentsDestinationConfiguration>
     {
         {
-             // Provide a custom identifier for this remote destination
+             // Provide a custom identifier for this remote destination (case-insensitive)
             "my-amazon-storage",
     
             new RemoteAttachmentsDestinationConfiguration

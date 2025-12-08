@@ -618,13 +618,9 @@ using (var asyncSession = store.OpenAsyncSession())
 ### Get attachment via operation
 
 <TabItem>
-```csharp
-// Avialable overloads:
-// ====================
-    
+```csharp    
 public GetAttachmentOperation(string documentId, 
-    string name, AttachmentType type, string changeVector, long? from, long? to)
-    
+    string name, AttachmentType type, string changeVector, long? from, long? to)    
 ```
 </TabItem>
     
@@ -681,7 +677,7 @@ Task<IEnumerator<AttachmentEnumeratorResult>> GetAsync(IEnumerable<AttachmentReq
 |----------------------|----------------------------------|-------------|
 | **documentId**       | `string`                         | The ID of the document from which to retrieve the attachment. |
 | **entity**           | `string`                         | The loaded document entity from which to retrieve the attachment. |
-| **name**             | `string`                         | The name of the attachment to retrieve. |
+| **name**             | `string`                         | The name of the attachment to retrieve (case-insensitive). |
 | **changeVector**     | `string`                         | The change vector of the revision to retrieve the attachment from. |
 | **from**             | `long`                           | (Optional) The starting byte position (inclusive) for partial content retrieval. |   
 | **to**               | `long`                           | (Optional) The ending byte position (inclusive) for partial content retrieval. |     
@@ -718,6 +714,5 @@ public class AttachmentName
 }  
 ```
 </TabItem> 
-    
     
 </Panel>

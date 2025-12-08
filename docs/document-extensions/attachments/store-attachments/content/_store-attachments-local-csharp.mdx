@@ -38,7 +38,7 @@ import Panel from '@site/src/components/Panel';
   This avoids bloating your JSON documents with large binary data and enables efficient storage and retrieval.     
     
 * **Storing attachments with the same name**:  
-  If you add an attachment with a name that is already associated with the document,  
+  If you add an attachment with a name that is already associated with the document (case-insensitive),  
   the new content will replace the existing content in the local storage.    
     
 </Panel>
@@ -361,10 +361,10 @@ void Store(object entity, string name, Stream stream, string contentType = null)
 | **entity**           | `object`                     | The tracked entity instance to which the attachment will be associated. |
 | **name**             | `string`                     | The name under which the attachment will be stored on the server. |
 | **stream**           | `Stream`                     | The stream containing the binary content of the attachment. |
-| **contentType**      | `string`                     | The MIME type of the attachment (optional). |
+| **contentType**      | `string`                     | The MIME type of the attachment (optional).<br/>Common examples include:<br/>`image/png`, `application/pdf`, `text/plain`, `video/mp4`. |
 | **parameters**       | `StoreAttachmentParameters`  | An object that encapsulates all parameters required to store an attachment. |
 | **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote).<br/>Set to _null_ or omit to store the attachment **locally**. |
-| **changeVector**     | `string`                     | An optional change vector for concurrency control (`null` to skip check) |
+| **changeVector**     | `string`                     | The document's change vector used for concurrency control.<br/>If set to `null`, no concurrency check will be performed and the attachment will be added regardless of the document's current state. |
 
 <TabItem>
 ```csharp 
