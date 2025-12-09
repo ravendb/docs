@@ -38,7 +38,7 @@ two RavenDB instances using:
 To scale a RavenDB Cloud instance, open your [portal](../cloud/portal/cloud-portal.mdx)'s [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) 
 and click the **Manage** button for the product you want to change.
 
-![Figure 1 - Manage product](./assets/portal-product-list-manage-button.png)
+![Manage product](./assets/portal-product-list-manage-button.png)
 
 In the main section, you can find controls to **Change Instance Type** or **Change Storage**.  
 
@@ -48,7 +48,7 @@ The scaling buttons are presented only for [Development](../cloud/cloud-instance
 The [Free](../cloud/cloud-instances.mdx#a-free-cloud-node) product doesn't show them because its Tier includes only one configuration.  
 </Admonition>
 
-![Figure 2 - Scaling buttons](./assets/portal-product-edit-storage-and-instance-type-area.png)
+![Scaling buttons](./assets/portal-product-edit-storage-and-instance-type-area.png)
 
 **1.** Click [Change Instance Type](../cloud/cloud-scaling.mdx#scaling---change-instance-type) to reconfigure your product.  
 **2.** Click [Change Storage](../cloud/cloud-scaling.mdx#scaling---change-storage) to modify your product's storage parameters.  
@@ -63,7 +63,7 @@ because it is a multi-node cluster and the nodes are updated in a **rolling upda
 <Admonition type="warning" title="">
 Instances have *IO limits* (**IOPS** and **Throughput**) and it may impact the Disk performance.
 
-![Figure 3 - Instance & Disk limitations](./assets/portal-product-details-instance-limitations-disk-limitations.png)
+![Instance & Disk limitations](./assets/portal-product-details-instance-limitations-disk-limitations.png)
 
 In the figure above, the **Disk Throughput** parameter is lower than the **Instance Throughput**.
 To avoid IO throttling by the instance type, make sure to use an instance type able to fully utilize your disk capabilities.
@@ -79,19 +79,22 @@ that would allow your product to properly handle its expected workload.
 Scaling product to P60 or P70 can be done only via support request.
 </Admonition>
 
-![Figure 4 - Scaling instance type](./assets/portal-product-details-edit-tier.png)
+![Scaling instance type](./assets/portal-product-details-edit-tier.png)
 
 You can upscale or downscale only within the current Product Tier. The *Development* Tier **Dev30** configuration,
 for example, can upscale to **Dev50**, but not to the Production Tier **PB10** configuration.  
 Your databases and data will be automatically migrated into your new configuration.
 
+![Scaling storage](./assets/scaleupdown-email-notification.png)
+
+Once you upscale or downscale, you will receive an email notification of this operation.
 
 ## Scaling - Change Storage 
 
 There are two types of storage: **Standard** and **Premium**. They differ significantly in capabilities and customization options 
 depending on the cloud provider in question. Pick either to change your current storage capacity.  
 
-![Figure 5 - Scaling storage](./assets/portal-product-details-edit-storage.png)
+![Scaling storage](./assets/portal-product-details-edit-storage.png)
 ### AWS Disks
 
 #### AWS Standard & Premium - Default Performance
@@ -104,7 +107,7 @@ For **Premium** Disks, the **IOPS** parameter is set to **500** by default. The 
 
 The **Premium** Disk type on **AWS** lets you choose the number of **IOPS** (Input/Output Operations Per Second) that the instance can handle.
 
-![Figure 6 - Customized IOPS on AWS Premium Disks](./assets/portal-product-details-edit-storage-with-iops.png)
+![Customized IOPS on AWS Premium Disks](./assets/portal-product-details-edit-storage-with-iops.png)
 
 <Admonition type="info" title="">
 The cost per IOPS is dependent on the selected region.
@@ -126,7 +129,7 @@ level of performance, the **Premium** Disk type on **Azure** lets you use a high
 long as you need it. This feature allows you to increase the disk performance without increasing the disk size. 
 You can then return to the original Tier when you no longer need the additional performance. 
 
-![Figure 7 - Azure Performance Tier on Azure Premium Disks](./assets/portal-product-details-edit-storage-with-azure-performance-tier.png)
+![Azure Performance Tier on Azure Premium Disks](./assets/portal-product-details-edit-storage-with-azure-performance-tier.png)
 
 <Admonition type="info" title="">
 The cost of running on a higher *Performance Tier* is the same as
@@ -152,7 +155,7 @@ The use of a data disk is mandatory for deployments requiring more than 1TB of s
 ## Additional product nodes - General
 The *Production Tier* products can be expanded by adding *additional nodes* to the cluster.
 
-![Figure 8 - Cluster view with additional product nodes](./assets/studio-cluster-view-with-additional-nodes.png)
+![Cluster view with additional product nodes](./assets/studio-cluster-view-with-additional-nodes.png)
 
 <Admonition type="info" title="">
 This option **is not available** for **PS** instance types.  
@@ -169,7 +172,7 @@ The process of adding a new node **does not guarantee** that the node will be di
 The new product node **does not belong to any database group**. The User should do this *manually* by adding the new node to the database group.  
 This operation is described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/settings/manage-database-group#database-group-topology---add-new-node).
 
-![Figure 9 - Add a new node to the database group](./assets/studio-add-new-node-to-database-group.png)
+![Add a new node to the database group](./assets/studio-add-new-node-to-database-group.png)
 
 
 
