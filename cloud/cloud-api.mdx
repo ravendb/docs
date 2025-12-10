@@ -22,7 +22,7 @@ The API is defined using the OpenAPI 3.0 standard.
     * [Swagger & available clients](#swagger-&-available-clients)
     * [API methods overview](#api-methods-overview)
     * [API Keys expiration](#api-keys-expiration)
-    * [Product quota](#product-quota)
+    * [API limitations](#api-limitations)
 
 </Admonition>
 ## Swagger & available clients
@@ -49,7 +49,7 @@ Client libraries are available in the following languages:
 | Metadata     | Return information about available instance types, regions and release channels.                                                                                                      |
 | Products     | Allows to manage products - restart a node, download a client certificate, change the instance and disk type, terminate a cluster, add or remove an additional node from the cluster. |
 
-More information about available methods, requests and responses can be found in the [Swagger & available clients](#swagger-&-available-clients) section.
+More information about available methods, requests and responses can be found in the [Swagger & available clients](#swagger--available-clients) section.
 
 
 
@@ -66,12 +66,14 @@ For more details, please check the [Edit API Key](../cloud/portal/cloud-portal-a
 
 
 
-## Product quota
+## API limitations
 
 You cannot create another product via the *RavenDB Cloud API* if you have **three or more** products.  
 
 <Admonition type="info" title="">
 Contact support to extend the quota.
 </Admonition>
+
+The API limits the number of requests per second. For each IP address and each endpoint, the API can accept **one request per second**.
 
 
