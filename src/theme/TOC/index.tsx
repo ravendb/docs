@@ -16,7 +16,12 @@ export default function TOCWrapper(props: Props): ReactNode {
         setToc(filteredToc);
     }, [language]);
 
-    return <TOC {...props} toc={toc} />;
+    return (
+        <div className="sticky top-[160px]">
+            <h5 className="!mb-1">In this article</h5>
+            <TOC {...props} toc={toc} />
+        </div>
+    );
 }
 
 // By default, Markdown headings within hideable areas are added to the TOC.
