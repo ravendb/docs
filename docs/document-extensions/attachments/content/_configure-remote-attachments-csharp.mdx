@@ -21,7 +21,10 @@ import Panel from '@site/src/components/Panel';
   * RavenDB runs a **background task** that periodically scans the database for attachments marked for remote upload.  
     If the upload time for an attachment has passed when the task runs,  
     the task sends the attachment to the configured remote storage destinations.  
-  * Uploading attachments to remote storage runs in the background and does not block other client operations. 
+  * Uploading attachments to remote storage runs in the background and does not block other client operations.
+
+* Remote attachments are currently supported only in **non-sharded databases**.  
+  Attempts to configure remote attachments on sharded databases will throw an exception.  
     
 * In this article:  
     * [Configuring remote attachments settings - from the Studio](../../document-extensions/attachments/configure-remote-attachments#configuring-remote-attachments-settings-from-the-studio)

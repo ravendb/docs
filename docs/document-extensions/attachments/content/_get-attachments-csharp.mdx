@@ -7,10 +7,18 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* This article explains how to retrieve attachments that are already stored in the database, both local and remote.  
-  You can:  
-  * Get a single attachment, multiple attachments, or just a part of an attachment.
-  * Retrieve attachment names only, or check if an attachment exists.
+* This article explains how to retrieve attachments that are already stored in your database,  
+  whether they are local or remote.
+  Retrieval is transparent, the same code works for both storage types.    
+
+* You can:  
+  * Get a single attachment or multiple attachments. 
+  * Get part of an attachment (local attachments only).    
+  * Retrieve only the attachment names, or check whether a specific attachment exists.
+
+* Note:  
+  **Remote attachments** are Not cached locally after they are downloaded.  
+  Each retrieval will fetch the data again from the remote storage.
     
 * In this article:
   * [Get attachments using the **Studio**](../../document-extensions/attachments/get-attachments#get-attachments-using-the-studio)  
@@ -111,7 +119,7 @@ using (var asyncSession = store.OpenAsyncSession())
 }
 ```
 </TabItem>
-</Tabs>    
+</Tabs>
     
 </Panel>
 
@@ -123,9 +131,6 @@ using (var asyncSession = store.OpenAsyncSession())
   You can pass either the document entity or the document ID.
 
 * The method seamlessly retrieves attachments from both **local** and **remote** storage.
-    
-* No exception is thrown if the document does not exist, or if the attachment is missing from the document.  
-  In such cases, the returned _AttachmentResult_ will be _null_.
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_attachment" label="Get_attachment">
@@ -232,10 +237,7 @@ using (var asyncSession = store.OpenAsyncSession())
 * Use `GetAttachmentOperation` to retrieve a single attachment outside of the session context.  
   The result includes both the content stream and related attachment details.
 
-* The operation retrieves attachments seamlessly from both **local** and **remote** storage.
-    
-* No exception is thrown if the document does not exist, or if the attachment is missing from the document.  
-  In such cases, the returned _AttachmentResult_ will be _null_.
+* The operation seamlessly retrieves attachments from both **local** and **remote** storage.
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_attachment" label="Get_attachment">
@@ -284,11 +286,10 @@ if (attachment != null)
     
 ### Get attachment from a revision - using the session
     
-* Use the session’s `GetRevision()` method to retrieve a single attachment from a specific document revision.  
-  The method seamlessly retrieves attachments from both **local** and **remote** storage.
-    
-* No exception is thrown if the revision does not exist, or if the attachment is missing from the revision.  
-  In such cases, the returned _AttachmentResult_ will be _null_.
+* Use the session’s `GetRevision()` method to retrieve a single attachment from a specific document revision.    
+  The result includes both the content stream and related attachment details.    
+
+* The method seamlessly retrieves attachments from both **local** and **remote** storage.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_attachment_of_revision" label="Get_attachment_of_revision">
@@ -340,10 +341,7 @@ using (var asyncSession = store.OpenAsyncSession())
 * Use `GetAttachmentOperation` to retrieve a single attachment from a document revision outside of the session context.
   The result includes both the content stream and related attachment details.
 
-* The operation retrieves attachments seamlessly from both **local** and **remote** storage.
-    
-* No exception is thrown if the document does not exist, or if the attachment is missing from the revision.  
-  In such cases, the returned _AttachmentResult_ will be _null_.
+* The operation seamlessly retrieves attachments from both **local** and **remote** storage.
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_attachment_of_revision" label="Get_attachment_of_revision">
@@ -584,15 +582,18 @@ if (attachment != null)
 
 <Panel heading="Check if an attachment exists">
 
-Use the session to check whether a specific attachment exists for a given document.  
-This works for both **local** and **remote** attachments.
+* Use the session’s `Exists()` method to check whether a specific attachment is listed in a document’s metadata.  
+  This works for both local and remote attachments.
+    
+* The method checks only the document’s metadata.  
+  It does Not verify whether the binary content actually exists in local or remote storage.  
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Check_if_attachment_exist" label="Check_if_attachment_exist">
 ```csharp 
 using (var session = store.OpenSession())
 {    
-    // Check if the document has an attachment named "notes.txt"
+    // Check if the document metadata references an attachment named "notes.txt"
     // Call method 'Exists', pass the document ID
     bool exists = session.Advanced.Attachments.Exists("employees/1", "notes.txt");
 }    
@@ -602,7 +603,7 @@ using (var session = store.OpenSession())
 ```csharp
 using (var asyncSession = store.OpenAsyncSession())
 {
-    // Check if the document has an attachment named "notes.txt"
+    // Check if the document metadata references an attachment named "notes.txt"
     // Call method 'Exists', pass the document ID
     bool exists = await asyncSession.Advanced.Attachments.ExistsAsync(
         "employees/1", "notes.txt");

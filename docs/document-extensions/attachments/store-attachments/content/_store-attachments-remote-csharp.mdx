@@ -514,7 +514,9 @@ RavenDB employs an efficient deduplication mechanism when storing attachments in
 This ensures that identical attachment content is not uploaded multiple times, optimizing storage and transfer costs.
     
 **Remote attachment naming**:  
-Attachments are stored in the remote destination using their SHA-256 hash as the file name.
+Attachments are stored in the remote destination using a **file name** based on a Base64-encoded SHA-256 hash  
+of their content, under the path defined by the destination’s container or bucket:  
+`{ContainerOrBucket}/{RemoteFolderName}/{Base64Hash}`.
 
 **Remote deduplication is based on hash & size**:  
 Unlike [local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments),
