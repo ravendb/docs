@@ -15,7 +15,13 @@ import Panel from '@site/src/components/Panel';
 
 * **Deleting a REMOTE attachment**:   
   * Only the reference to the remote attachment is removed from the document’s metadata.  
-  * The actual binary data remains in the remote storage - it is your responsibility to delete it from the cloud provider.
+  * RavenDB does not delete the binary data from the remote storage.  
+    It is your responsibility to remove the file from the cloud provider manually.  
+
+* **When deleting a DOCUMENT**:  
+  * All local attachments referenced by the document are also deleted,  
+    (as long as no other document references the same binary content).  
+  * Remote attachments are not deleted from the cloud provider - you must remove them manually.
     
 * In this article:
   * [Delete attachment using the **Studio**](../../document-extensions/attachments/delete-attachment#delete-attachment-using-the-studio)  

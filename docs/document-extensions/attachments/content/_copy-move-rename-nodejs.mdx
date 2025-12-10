@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -17,6 +19,7 @@ import CodeBlock from '@theme/CodeBlock';
   * [Syntax](../../document-extensions/attachments/copying-moving-renaming.mdx#syntax)
 
 </Admonition>
+
 ## Copy attachment
 
 Use `session.advanced.attachments.copy` to copy an attachment from one document to another.
@@ -49,8 +52,6 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-
 
 ## Move attachment
 
@@ -85,8 +86,6 @@ await session.saveChanges();
 </TabItem>
 </Tabs>
 
-
-
 ## Rename attachment
 
 Use `session.advanced.attachments.rename` to rename an attachment.
@@ -119,8 +118,6 @@ await session.saveChanges();
 </TabItem>
 </Tabs>
 
-
-
 ## Syntax
 
 <TabItem value="syntax_copy" label="syntax_copy">
@@ -135,8 +132,8 @@ copy(sourceDocumentId, sourceName, destinationDocumentId, destinationName);
 
 <TabItem value="syntax_move" label="syntax_move">
 <CodeBlock language="js">
-{`// Move - a vailable overloads:
-// ============================
+{`// Move - available overloads:
+// =============================
 move(sourceEntity, sourceName, destinationEntity, destinationName);
 move(sourceDocumentId, sourceName, destinationDocumentId, destinationName);
 `}
@@ -156,7 +153,7 @@ move(sourceDocumentId, sourceName, destinationDocumentId, destinationName);
 <TabItem value="syntax_rename" label="syntax_rename">
 <CodeBlock language="js">
 {`// Rename - available overloads:
-// =============================
+// ==============================
 rename(entity, name, newName);
 rename(documentId, name, newName);
 `}
