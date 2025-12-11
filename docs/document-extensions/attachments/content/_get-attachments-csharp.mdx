@@ -8,7 +8,7 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article explains how to retrieve attachments that are already stored in your database,  
-  whether they are local or remote.
+  whether they are **local** or **remote**.
   Retrieval is transparent, the same code works for both storage types.    
 
 * You can:  
@@ -16,6 +16,9 @@ import Panel from '@site/src/components/Panel';
   * Get part of an attachment (local attachments only).    
   * Retrieve only the attachment names, or check whether a specific attachment exists.
 
+* If a document's metadata references an attachment, either in local or remote storage, but the file no longer exists  
+  (e.g., was deleted manually), then attempting to retrieve the attachment will throw a _FileNotFoundException_.
+    
 * Note:  
   **Remote attachments** are Not cached locally after they are downloaded.  
   Each retrieval will fetch the data again from the remote storage.
@@ -585,7 +588,7 @@ if (attachment != null)
 * Use the session’s `Exists()` method to check whether a specific attachment is listed in a document’s metadata.  
   This works for both local and remote attachments.
     
-* The method checks only the document’s metadata.  
+* The method checks **only the document’s metadata**.  
   It does Not verify whether the binary content actually exists in local or remote storage.  
     
 <Tabs groupId='languageSyntax'>

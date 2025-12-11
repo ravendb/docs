@@ -6,14 +6,16 @@ import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
+
+* RavenDB allows you to store files, such as images, PDFs, videos, text files, or any other format, as **attachments** alongside your JSON documents. 
+
+* Each attachment is associated with a specific document and is identified by a unique name and an optional content type (e.g. _image/png_, _application/pdf_).
+  A single document can have any number of attachments, which are listed in the document’s metadata.  
     
-* RavenDB allows you to store binary data, such as images, PDFs, videos, or any other file, as attachments to your documents.
-  Each attachment is associated with a specific document and is identified by a unique name, along with an optional content type (e.g. _image/png_, _application/pdf_).
+* Attachments are stored as **binary data**, regardless of content type, and are handled as streams to enable efficient upload and retrieval.
 
-* A single document can have any number of attachments, the attachments are listed in the document’s metadata.
-
-* Attachments can be stored locally on your RavenDB server,  
-  or remotely in external storage such as Amazon S3 or any S3-compatible storage service, or Azure Blob Storage.
+* Attachments can be stored **locally** on your RavenDB server,
+  or **remotely** in external storage such as Amazon S3 or any S3-compatible storage service, or Azure Blob Storage.
 
   * **Local storage**:  
     By default, attachments are stored locally in RavenDB's internal storage.  
