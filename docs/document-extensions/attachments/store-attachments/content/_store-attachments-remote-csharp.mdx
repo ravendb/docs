@@ -11,10 +11,15 @@ import Panel from '@site/src/components/Panel';
   To learn about local storage, see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local).
     
 * A document can have any number of attachments, including both local attachments (stored in RavenDB)  
-  and remote attachments (stored in external storage such as Amazon S3 or Azure.
+  and remote attachments (stored in external storage such as Amazon S3 or Azure.  
+
+* **To store attachments in remote storage**, first enable the feature and configure one or more remote destinations.  
+  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).  
     
 * In this article
   * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-remote#overview)  
+    * [Remote attachment upload - flow](../../../document-extensions/attachments/store-attachments/store-attachments-remote#remote-attachment-upload---flow)  
+    * [Remote attachment upload – considerations](../../../document-extensions/attachments/store-attachments/store-attachments-remote#remote-attachment-upload--considerations)  
   * [Store attachments remotely - using the **Studio**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-studio)  
   * [Store attachments remotely - using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-client-api)  
     * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-the-session)  
@@ -28,7 +33,7 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Overview">
     
-### Remote attachment storage flow  
+### Remote attachment upload - flow
     
 * Ensure the Remote Attachments feature is enabled in the database and that remote destinations are configured.  
   See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).
@@ -48,16 +53,38 @@ import Panel from '@site/src/components/Panel';
 * RavenDB runs a **background task** that periodically scans the database for attachments marked for remote upload.  
   If the upload time of the attachment has passed when the task runs, the task uploads the attachment to the specified remote storage.
 
-* Once an upload to the remote destination begins, it cannot be canceled.  
-  You can only stop the upload by disabling or deleting the database while it is still running.  
-
 * **After a successful upload:**:
   * The document’s metadata is updated to indicate that the attachment was uploaded.
   * The attachment is **deleted from the local storage** of the server that performed the upload.
   * The document replicates again, and all other nodes delete their local copies of the attachment.
   * Any actions triggered by the document change, such as indexing or ongoing tasks configured for the document, will be executed. 
     Learn more in [Attachments and other features](../../../todo..).
+
+---
     
+### Remote attachment upload – considerations
+    
+* **Can the upload process be canceled?**   
+  Once an upload to the remote destination begins, it cannot be canceled.   
+  You can only stop the upload by disabling or deleting the database while it is still running.  
+    
+* **Can a remote attachment be pulled back into local storage?**    
+  There is no built-in mechanism to reverse the upload. To "un-remote" an attachment,  
+  you'll need to manually retrieve it from the remote storage and store it again in the database.
+    
+* **Why is my attachment not uploading?**  
+  Remote upload will not occur in the following cases:  
+  * Configuration issues:  
+    The Remote Attachments feature is disabled, or the specified destination is disabled,  
+    or the destination identifier is invalid or not configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments). 
+  * The upload time has not yet arrived.
+  * The server cannot connect to the remote storage destination.    
+  * Revisions are enabled for the document’s collection. See [Remote attchments and revisions](../../../todo...).    
+    
+* **What happens if the upload fails?**  
+  If the upload attempt fails (e.g., due to a network issue or misconfiguration),  
+  the background task will try again during the next scheduled scan.
+  
 </Panel>
 
 <Panel heading="Store attachments remotely - using the Studio">
