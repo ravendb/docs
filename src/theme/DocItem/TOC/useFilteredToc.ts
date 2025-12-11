@@ -1,28 +1,6 @@
-import React, { useEffect, type ReactNode } from "react";
-import TOC from "@theme-original/TOC";
-import type TOCType from "@theme/TOC";
-import type { WrapperProps } from "@docusaurus/types";
 import { TOCItem } from "@docusaurus/mdx-loader/lib/remark/toc/types";
 import { useLanguage } from "@site/src/components/LanguageStore";
-
-type Props = WrapperProps<typeof TOCType>;
-
-export default function TOCWrapper(props: Props): ReactNode {
-    const { language } = useLanguage();
-    const [toc, setToc] = React.useState<readonly TOCItem[]>([]);
-
-    useEffect(() => {
-        const filteredToc = getFilteredToc(props.toc);
-        setToc(filteredToc);
-    }, [language]);
-
-    return (
-        <div className="sticky top-[160px]">
-            <h5 className="!mb-1">In this article</h5>
-            <TOC {...props} toc={toc} />
-        </div>
-    );
-}
+import { useEffect, useState } from "react";
 
 // By default, Markdown headings within hideable areas are added to the TOC.
 // With our current language switching implementation, this leads to default TOC being filled with headings from
@@ -33,6 +11,20 @@ export default function TOCWrapper(props: Props): ReactNode {
 //
 // Docusaurus team has an open issue for this problem:
 // https://github.com/facebook/docusaurus/issues/6201
+
+export default function useFilteredToc(
+    originalToc: readonly TOCItem[],
+): readonly TOCItem[] {
+    const { language } = useLanguage();
+    const [filteredToc, setFilteredToc] = useState<readonly TOCItem[]>([]);
+
+    useEffect(() => {
+        setFilteredToc(getFilteredToc(originalToc));
+    }, [language, originalToc]);
+
+    return filteredToc;
+}
+
 function getFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const uniqueIds = new Set(originalToc.map((item) => item.id));
 
