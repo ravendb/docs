@@ -414,3 +414,21 @@ code {
 hr {
   @apply !bg-black/10 dark:!bg-white/10;
 }
+
+/* Custom styling for TOC */
+.table-of-contents {
+    padding: 0;
+}
+
+.table-of-contents__link {
+    @apply leading-[1.4];
+}
+
+.theme-doc-markdown h1,
+.theme-doc-markdown h2,
+.theme-doc-markdown h3,
+.theme-doc-markdown h4,
+.theme-doc-markdown h5,
+.theme-doc-markdown h6 {
+    @apply scroll-mt-[10rem];
+}
