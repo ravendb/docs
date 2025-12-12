@@ -9,11 +9,14 @@ export default function DocItemTOCDesktop(): ReactNode {
     const filteredToc = useFilteredToc(toc);
 
     return (
-        <TOC
-            toc={filteredToc}
-            minHeadingLevel={frontMatter.toc_min_heading_level}
-            maxHeadingLevel={frontMatter.toc_max_heading_level}
-            className={ThemeClassNames.docs.docTocDesktop}
-        />
+        <div className="sticky top-[160px]">
+            <h5 className="!mb-1">In this article</h5>
+            <TOC
+                toc={filteredToc}
+                minHeadingLevel={frontMatter.toc_min_heading_level}
+                maxHeadingLevel={frontMatter.toc_max_heading_level}
+                className={ThemeClassNames.docs.docTocDesktop}
+            />
+        </div>
     );
 }
