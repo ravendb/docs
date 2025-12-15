@@ -1,0 +1,39 @@
+---
+title: "Indexing Attachments"
+hide_table_of_contents: true
+sidebar_label: "Indexing Attachments"
+sidebar_position: 6
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingAttachmentsCsharp from './content/_indexing-attachments-csharp.mdx';
+import IndexingAttachmentsJava from './content/_indexing-attachments-java.mdx';
+import IndexingAttachmentsPython from './content/_indexing-attachments-python.mdx';
+import IndexingAttachmentsPhp from './content/_indexing-attachments-php.mdx';
+import IndexingAttachmentsNodejs from './content/_indexing-attachments-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingAttachmentsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingAttachmentsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IndexingAttachmentsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IndexingAttachmentsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingAttachmentsNodejs />
+</LanguageContent>

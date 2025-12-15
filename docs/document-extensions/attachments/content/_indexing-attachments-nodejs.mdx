@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -14,13 +16,14 @@ import CodeBlock from '@theme/CodeBlock';
   Auto-indexing attachments via dynamic queries is not available at this time.  
 
 * In this page:  
-  * [Index attachments details](../../document-extensions/attachments/indexing.mdx#index-attachments-details)
-  * [Index details & content - by attachment name](../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name)
-  * [Index details & content - all attachments](../../document-extensions/attachments/indexing.mdx#index-details--content---all-attachments)
-  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)
-  * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)
+  * [Index attachments details](../../document-extensions/attachments/indexing-attachments#index-attachments-details)
+  * [Index details & content - for specific attachment name](../../document-extensions/attachments/indexing-attachments#index-details--content---for-specific-attachment-name)
+  * [Index details & content - for all attachments](../../document-extensions/attachments/indexing-attachments#index-details--content---for-all-attachments)
+  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing-attachments#leveraging-indexed-attachments)
+  * [Syntax](../../document-extensions/attachments/indexing-attachments#syntax)
 
 </Admonition>
+
 ## Index attachments details
 
 <Admonition type="note" title="">
@@ -29,10 +32,10 @@ import CodeBlock from '@theme/CodeBlock';
 * To index **attachments' details**, call `attachmentsFor()` within the index definition.
 
 * `attachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
-  These details can then be used when defining the index-fields.
+  These details can be used to define the index-fields.
   Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
-* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name).
+* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing-attachments#index-details--content---by-attachment-name).
 
 <TabItem value="index_1" label="index_1">
 <CodeBlock language="js">
@@ -99,8 +102,7 @@ where attachmentNames == "photo.jpg" and attachmentSizes > 20000
 
 </Admonition>
 
-
-## Index details & content - by attachment name
+## Index details & content - for specific attachment name
 
 <Admonition type="note" title="">
 
@@ -135,7 +137,7 @@ await session.saveChanges();
 **The index**:
 * To index the **details & content** for a specific attachment, call `loadAttachment()` within the index definition.  
  
-* In addition to accessing the attachment details, `loadAttachment()` provides access to the attachment's content, 
+* In addition to accessing the attachment details, `loadAttachment()` provides access to the attachment's content,  
   which can be used when defining the index-fields.
 
 <TabItem value="index_2" label="index_2">
@@ -163,7 +165,7 @@ await session.saveChanges();
             \}
         \});
 
-        // It can be useful configure Full-Text search on the attachment content index-field
+        // It can be useful to configure Full-Text search on the attachment content index-field
         this.index("attachmentContent", "Search");
 
         // Documents with an attachment named 'notes.txt' will be indexed,
@@ -211,16 +213,14 @@ where search(attachmentContent, "Colorado Dallas")
 
 </Admonition>
 
-
-
-## Index details & content - all attachments
+## Index details & content - for all attachments
 
 <Admonition type="note" title="">
 
 **The index**:
 * Use `loadAttachments()` to be able to index the **details & content** of ALL attachments.
 
-* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document) pattern.
+* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document) pattern.
 
 <TabItem value="index_3" label="index_3">
 <CodeBlock language="js">
@@ -294,17 +294,14 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 </Admonition>
 
-
 ## Leveraging indexed attachments
 
 * Access to the indexed attachment content opens the door to many different applications,  
   including many that can be integrated directly into RavenDB.
 
 * This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates 
-  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature. 
+  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes) feature. 
   The resulting index allows filtering and querying based on image content.
-
-
 
 ## Syntax
 
@@ -382,4 +379,3 @@ loadAttachments(document);
 | Parameter       | Type      | Description                                      |
 |-----------------|-----------|--------------------------------------------------|
 | **document**    | `object`  | The document whose attachments you want to load. |
-

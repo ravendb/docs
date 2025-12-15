@@ -65,8 +65,8 @@ import Panel from '@site/src/components/Panel';
 ### Remote attachment upload – considerations
     
 * **Can the upload process be canceled?**   
-  Once an upload to the remote destination begins, it cannot be canceled.   
-  You can only stop the upload by disabling or deleting the database while it is still running.  
+  Once an upload to the remote destination begins, it cannot be canceled.  
+  As a workaround, you can temporarily disable the database. This will stop the upload if it is still in progress.
     
 * **Can a remote attachment be pulled back into local storage?**    
   There is no built-in mechanism to reverse the upload. To "un-remote" an attachment,  
@@ -79,7 +79,7 @@ import Panel from '@site/src/components/Panel';
     or the destination identifier is invalid or not configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments). 
   * The upload time has not yet arrived.
   * The server cannot connect to the remote storage destination.    
-  * Revisions are enabled for the document’s collection. See [Remote attchments and revisions](../../../todo...).    
+  * Revisions are enabled for the document’s collection. See [Remote attachments and revisions](../../../todo...).    
     
 * **What happens if the upload fails?**  
   If the upload attempt fails (e.g., due to a network issue or misconfiguration),  
