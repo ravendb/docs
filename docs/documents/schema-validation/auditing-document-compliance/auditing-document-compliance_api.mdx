@@ -39,9 +39,7 @@ This method is useful for one-time audits or periodic checks of data integrity.
 
 To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
 
-<Panel>
-
-### `StartSchemaValidationOperation`
+<Panel heading={"`StartSchemaValidationOperation`"} headingLevel={3}>
 
 <ContentFrame>
 
@@ -160,11 +158,10 @@ public class Order
 Use this audit approach to continuously validate document compliance during indexing and embed validation errors in the index. The index can then be queried to filter documents by their compliance status.  
 This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
 
-To validate documents by index:  
-<Panel>
+To validate documents by index:
+<Panel heading={"Define a validation schema"} headingLevel={3}>
 
 <ContentFrame>
-### Define a validation schema
 
 Define a [validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) and associate it with the collection whose documents you want to audit.  
 ```csharp
