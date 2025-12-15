@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build Docusaurus
-        run: npx cross-env DOCUSAURUS_VERSIONS='7.0, 7.1, current' npm run build
+        run: npx cross-env DOCUSAURUS_VERSIONS='6.2, 7.1, current' npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
