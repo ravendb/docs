@@ -1,0 +1,351 @@
+---
+title: "Sharding: API Administration"
+sidebar_label: API Administration
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Sharding: API Administration
+<Admonition type="note" title="">
+
+* This page explains how to manage a sharded database using RavenDB's API.  
+* Learn [here](../../sharding/administration/studio-admin.mdx) how to manage 
+  a sharded database using Studio.  
+
+* In this page:  
+  * [Creating a Sharded Database](../../sharding/administration/api-admin.mdx#creating-a-sharded-database)  
+  * [Orchestrator Administration](../../sharding/administration/api-admin.mdx#orchestrator-administration)  
+     * [Adding an Orchestrator](../../sharding/administration/api-admin.mdx#adding-an-orchestrator)  
+     * [Removing an Orchestrator](../../sharding/administration/api-admin.mdx#removing-an-orchestrator)  
+  * [Shard Administration](../../sharding/administration/api-admin.mdx#shard-administration)  
+     * [Adding a Shard](../../sharding/administration/api-admin.mdx#adding-a-shard)  
+     * [Adding a Shard Replica](../../sharding/administration/api-admin.mdx#adding-a-shard-replica)  
+     * [Promoting a Shard Replica](../../sharding/administration/api-admin.mdx#promoting-a-shard-replica)  
+     * [Removing a Shard](../../sharding/administration/api-admin.mdx#removing-a-shard)  
+
+</Admonition>
+## Creating a Sharded Database
+
+To create a sharded database:  
+
+* Use [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx) 
+  to create the database.  
+* Define `ShardingConfiguration` in the database record.  
+   * The initial configuration can define just the database topologies for as many shards 
+     as needed.  
+   * Orchestrators and shards can be added and removed later on, after the database is created.  
+
+### `ShardingConfiguration`
+<TabItem value="ShardingConfiguration_definition" label="ShardingConfiguration_definition">
+<CodeBlock language="csharp">
+{`public class ShardingConfiguration
+\{
+    // Orchestrator configuration
+    public OrchestratorConfiguration Orchestrator;
+
+    // A database topology per shard dictionary
+    public Dictionary<int, DatabaseTopology> Shards;
+
+    // Buckets distribution between the shards (filled by RavenDB)
+    public List<ShardBucketRange> BucketRanges = new List<ShardBucketRange>();
+
+    // Buckets that are currently being resharded (filled by RavenDB)
+    public Dictionary<int, ShardBucketMigration> BucketMigrations;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+<TabItem value="createShardedDatabase" label="createShardedDatabase">
+<CodeBlock language="csharp">
+{`DatabaseRecord dbRecord = new DatabaseRecord("sampleDB");
+
+dbRecord.Sharding = new ShardingConfiguration
+\{
+    Shards = new Dictionary<int, DatabaseTopology>()
+    \{
+        \{ 0, new DatabaseTopology() \}, // Shard #0 database topology
+        \{ 1, new DatabaseTopology() \}, // Shard #1 database topology
+        \{ 2, new DatabaseTopology() \}  // Shard #2 database topology
+    \}
+\};
+
+store.Maintenance.Server.Send(new CreateDatabaseOperation(dbRecord));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Orchestrator Administration
+
+Prior to granting a cluster node an orchestrator functionality, we should 
+make sure that the node is up for the task, with no other tasks contesting 
+the orchestrator for system resources. E.g., it may be better to use as 
+orchestrators nodes that host no shards.  
+
+## Adding an Orchestrator
+
+* To add an orchestrator pass the database name and the node to be added 
+  as orchestrator to the `AddNodeToOrchestratorTopologyOperation` operation.  
+<TabItem value="AddNodeToOrchestratorTopologyOperation_Definition" label="AddNodeToOrchestratorTopologyOperation_Definition">
+<CodeBlock language="csharp">
+{`public AddNodeToOrchestratorTopologyOperation(string databaseName, string node = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` | string | Database Name |
+    | `node ` | string | Node tag for the node to be made orchestrator |
+
+* Return value: `ModifyOrchestratorTopologyResult`  
+<TabItem value="ModifyOrchestratorTopologyResult" label="ModifyOrchestratorTopologyResult">
+<CodeBlock language="csharp">
+{`public class ModifyOrchestratorTopologyResult
+\{
+    public string Name; // Database Name
+    public OrchestratorTopology OrchestratorTopology; // Database Topology
+    public long RaftCommandIndex;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Removing an Orchestrator
+
+* To stop a node from functioning as an orchestrator pass the database name 
+  and the node tag to the `RemoveNodeFromOrchestratorTopologyOperation` 
+  operation.  
+<TabItem value="RemoveNodeFromOrchestratorTopologyOperation_Definition" label="RemoveNodeFromOrchestratorTopologyOperation_Definition">
+<CodeBlock language="csharp">
+{`public RemoveNodeFromOrchestratorTopologyOperation(string databaseName, string node)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` | string | Database Name |
+    | `node ` | string | The node to be removed as orchestrator |
+
+* Return value: `ModifyOrchestratorTopologyResult`  
+<TabItem value="ModifyOrchestratorTopologyResult" label="ModifyOrchestratorTopologyResult">
+<CodeBlock language="csharp">
+{`public class ModifyOrchestratorTopologyResult
+\{
+    public string Name; // Database Name
+    public OrchestratorTopology OrchestratorTopology; // Database Topology
+    public long RaftCommandIndex;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Shard Administration
+
+## Adding a Shard 
+
+* To add a new shard, use one of the `AddDatabaseShardOperation` operation overloads.  
+<TabItem value="AddDatabaseShardOperation_Overload-1" label="AddDatabaseShardOperation_Overload-1">
+<CodeBlock language="csharp">
+{`public AddDatabaseShardOperation(string databaseName, int? shardNumber = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AddDatabaseShardOperation_Overload-2" label="AddDatabaseShardOperation_Overload-2">
+<CodeBlock language="csharp">
+{`public AddDatabaseShardOperation(string databaseName, string[] nodes, int? shardNumber = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AddDatabaseShardOperation_Overload-3" label="AddDatabaseShardOperation_Overload-3">
+<CodeBlock language="csharp">
+{`public AddDatabaseShardOperation(string databaseName, int? replicationFactor, int? shardNumber = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` | string | Database Name |
+    | `shardNumber ` | int? | Shard number <br/> If a shard number is not explicitly provided, the shard number will be the biggest existing shard number + 1 |
+    | `replicationFactor` | int? | The new shard's replication factor (**see comment below**) |
+    | `nodes` | string[] | A list of nodes to replicate the shard to. <br/> If provided, the replication factor will be set by the number of nodes. |
+
+    <Admonition type="note" title="">
+    `replicationFactor`, the new shard's replication factor, is determined as follows:  
+    
+    * If `replicationFactor` is **not** provided explicitly, and a list of nodes is provided, 
+      the replication factor will be set by the number of nodes.  
+    * If **neither** `replicationFactor` and a nodes list are provided, the replication factor 
+      will be set as that of the first shard.  
+    * If **both** `replicationFactor` and a nodes list are provided:  
+       * If there are **less** nodes than set by `replicationFactor`, the new shard will be replicated 
+         on these nodes.  
+       * If there are **more** nodes than set by `replicationFactor`, only as many replications as 
+         set by `replicationFactor` will be carried out.
+
+    </Admonition>
+
+
+* Return value: `AddDatabaseShardResult`  
+<TabItem value="AddDatabaseShardResult" label="AddDatabaseShardResult">
+<CodeBlock language="csharp">
+{`public class AddDatabaseShardResult
+\{
+    public string Name \{ get; set; \}
+    public int ShardNumber \{ get; set; \}
+    public DatabaseTopology ShardTopology \{ get; set; \}
+    public long RaftCommandIndex \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Adding a Shard Replica
+
+* To add a replica to an existing shard pass the database name and a shard 
+  number to the `AddDatabaseNodeOperation` operation.  
+
+    <Admonition type="note" title="">
+    The replication factor is updated automatically as replicas are added, 
+    there is no need to update it explicitly.  
+    </Admonition>
+
+<TabItem value="AddDatabaseNodeOperation_Definition" label="AddDatabaseNodeOperation_Definition">
+<CodeBlock language="csharp">
+{`public AddDatabaseNodeOperation(string databaseName, int shardNumber, string node = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` | string | Database Name |
+    | `shardNumber` | string | Shard Number |
+    | `node ` | string | The node that the replica will be set on (optional). <br/> If not provided, RavenDB will select an available node. |
+
+* Return value: `DatabasePutResult`  
+<TabItem value="DatabasePutResult" label="DatabasePutResult">
+<CodeBlock language="csharp">
+{`public class DatabasePutResult
+\{
+    public long RaftCommandIndex \{ get; set; \}
+
+    public string Name \{ get; set; \}
+    public DatabaseTopology Topology \{ get; set; \}
+    public List<string> NodesAddedTo \{ get; set; \}
+
+    public bool ShardsDefined \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Promoting a Shard Replica
+
+* Shard replicas can be [promoted](../../client-api/operations/server-wide/promote-database-node.mdx) 
+  as non-sharded databases can.  
+
+    To promote a shard, pass the database name, shard number and 
+    node tag to the `PromoteDatabaseNodeOperation` operation.  
+    This will help locate the  exact shard instance we want to 
+    promote, leading to the database, then to the specific shard, 
+    and finally to the specific replica of that shard.  
+<TabItem value="PromoteDatabaseNodeOperation_Definition" label="PromoteDatabaseNodeOperation_Definition">
+<CodeBlock language="csharp">
+{`public PromoteDatabaseNodeOperation(string databaseName, int shardNumber, string node)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` | string | Database Name |
+    | `shardNumber` | int | Shard number |
+    | `node` | string | Node tag |
+
+* Return value: `DatabasePutResult`  
+<TabItem value="DatabasePutResult" label="DatabasePutResult">
+<CodeBlock language="csharp">
+{`public class DatabasePutResult
+\{
+    public long RaftCommandIndex \{ get; set; \}
+
+    public string Name \{ get; set; \}
+    public DatabaseTopology Topology \{ get; set; \}
+    public List<string> NodesAddedTo \{ get; set; \}
+
+    public bool ShardsDefined \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Removing a Shard
+
+* A shard is removed when all its replicas have been deleted.  
+* RavenDB will remove a shard only after verifying that its database 
+  is empty. If any buckets remain in the database the operation will 
+  be aborted.  
+* To remove a shard use the designated `DeleteDatabasesOperation` overload.  
+<TabItem value="DeleteDatabasesOperation_Definition" label="DeleteDatabasesOperation_Definition">
+<CodeBlock language="csharp">
+{`public DeleteDatabasesOperation(
+    string databaseName, 
+    int shardNumber, 
+    bool hardDelete, 
+    string fromNode, 
+    TimeSpan? timeToWaitForConfirmation = null)
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:  
+
+    | Parameter | Type | Description |
+    |:-------------:|:-------------:|-------------|
+    | `databaseName` |  string | Database Name |
+    | `shardNumber` | int | Shard number: number of the shard replica to be removed |
+    | `hardDelete` | bool | If `true`, Hard Delete: stop replication to this node and **delete the replica's database**. <br/> If `false`, Soft Delete: stop replication to this node but do not delete the replica's database. |
+    | `fromNode` | string | The node we want to remove the replica from |
+    | `timeToWaitForConfirmation` | TimeSpan? |  |
+
+* Return value: `DeleteDatabaseResult`  
+<TabItem value="DeleteDatabaseResult" label="DeleteDatabaseResult">
+<CodeBlock language="csharp">
+{`public class DeleteDatabaseResult
+\{
+    public long RaftCommandIndex \{ get; set; \}
+    public string[] PendingDeletes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

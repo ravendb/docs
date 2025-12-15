@@ -1,0 +1,187 @@
+---
+title: "Studio: Query View"
+sidebar_label: Query View
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Studio: Query View
+<Admonition type="note" title="">
+
+* Use the **Query View** to run [RQL](../../../client-api/session/querying/what-is-rql.mdx) queries and view their results.  
+* Queries can be executed either on a **Collection** or on an existing **Static-Index**.  
+* RavenDB always uses an index to fetch the query results.  
+  When a query is executed over a Collection (without any filtering condition),  
+  RavenDB uses an internal index that is kept in its internal storage.  
+* A query on a collection with some filtering condition will create an **Auto-Index** (Dynamic Query).  
+  See [Index Types](../../../studio/database/indexes/indexes-overview.mdx#index-types) for details.  
+* Query results can be saved/exported to a CSV file.  
+
+* In this page:  
+  * [Query View](../../../studio/database/queries/query-view.mdx#query-view)  
+  * [Query Results](../../../studio/database/queries/query-view.mdx#query-results)  
+      * [Select Visible Columns](../../../studio/database/queries/query-view.mdx#select-visible-columns)  
+      * [Result Columns](../../../studio/database/queries/query-view.mdx#result-columns)  
+  * [Additional Query Options](../../../studio/database/queries/query-view.mdx#additional-query-options)  
+
+</Admonition>
+## Query View
+
+![Query View](./assets/query-view.png)
+
+1. **Query View**  
+   Click to open the query view.  
+2. **Database**  
+   Click to select the database you want to query.  
+3. **Syntax Samples**  
+   Click to display [RQL](../../../client-api/session/querying/what-is-rql.mdx) syntax samples.  
+4. **Query Box**  
+   Enter your RQL query in the query box.  
+5. **Save Query**  
+   Click to save the currently displayed query in the local browser storage.  
+   ![Save Query](./assets/query-view-save-query.png)  
+   Enter a name, and click the **Save** button again to save the query.  
+6. **Load Query**  
+   Click to load a stored query.  
+   Recent (unsaved) queries will also be listed here.  
+   ![Load Query](./assets/query-view-load-query.png)  
+   Hover over a query name to display its preview.  
+   Click the query name or the preview **Load** button to load the query.  
+7. <a id="query-settings"/> **Query Settings**  
+   Click to set query settings.  
+   ![Query Settings](./assets/query-view-settings.png)  
+     * a. **Cache enabled**  
+          Toggle to enable or disable caching of query results.  
+     * b. **Disable creating new Auto-Indexes**  
+          Toggle to disable Auto-Index creation for this query.
+          If no index exists to satisfy this query, an exception will be thrown.
+          * Toggling this ON will not affect Auto-Index creation in future Studio queries.
+            To disable all future Auto-Index creation from Studio queries, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches)
+     * c. **Show stored index fields only**  
+          Toggle to show the query results or only the stored index fields.  
+          (Relevant only when querying an index)  
+     * d. **Show raw index entries instead of index results**  
+          Toggle to display **raw index entries** or **matching documents** in the query results.  
+          (Relevant only when querying an index)  
+8. **Run Query**  
+   Click to run the query.  
+9. **Query Results**  
+   The results area displays selected columns of results retrieved by your query (see [below](../../../studio/database/queries/query-view.mdx#query-results)).  
+
+
+## Query Results
+
+![Query Results](./assets/query-view-query-results.png)
+
+1. **Index or Collection Used**  
+   The index or the collection that was used by the query.  
+2. **Results Retrieval Time**  
+   The time it took to retrieve the results.  
+   <Admonition type="note" title="">
+   Add `include timings()` to your RQL to display additional timing details in the results.  
+   Learn more in [Include Query Timings](../../../client-api/session/querying/debugging/query-timings.mdx).  
+   </Admonition>
+3. **Delete Documents**  
+   Click to delete all documents that match the query.  
+4. **Statistics**  
+   Click to view query statistics, including -  
+    * Number of results  
+    * Results status  
+    * Query duration  
+    * The index used by this query.  
+      Either the index that was explicitly used by the query, or the internal RavenDB index that is 
+      used [for collection queries](../../../client-api/faq/what-is-a-collection.mdx#collection-usages).  
+    * An ETag representing the current state of the index used by the query.  
+      (The ETag value changes with every change made to the documents)  
+5. **Export Results as CSV File**  
+    * Click to store **all query results columns** in a CSV file.  
+      ![Export to CSV File](./assets/query-view-export-to-csv-file.png)
+    * Click the drop-down and select "Export visible columns only" 
+      to store **only the columns that are currently displayed**.  
+      ![Export Visible Columns Only](./assets/query-view-export-visible-columns-only.png)
+6. **Display**  
+   Click to open the Display drop-down dialog, where you can select which columns 
+   to display and add custom columns. (See **Select Visible Columns** below).
+7. **Toggle Expanded/Collapsed View**  
+   Click to expand or collapse the results view.  
+### Select Visible Columns
+
+To modify the displayed result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view.mdx#query-results) view.  
+Custom result columns can be added, edited and removed.  
+
+![Display Dialog](./assets/query-view-display-dialog.png)
+
+1. **A query results column**
+2. **A custom results column**
+![Display Dialog - Actions](./assets/query-view-display-dialog-actions.png)
+
+<Admonition type="info" title="">
+Changes made in the Display dialog will take effect only when the **Apply** button is clicked.  
+</Admonition>
+
+1. **Display/Hide all columns**  
+   Check or uncheck to display or hide all columns.  
+2. **Display/Hide column**  
+   Check or uncheck to display or hide this column.  
+3. **Relocate Column**  
+   Click and drag to relocate the column.  
+4. **Edit Custom Column**  
+   Click to edit the custom column's **field** and **alias** (see **Add Custom Column** below).  
+5. **Remove Custom Column**  
+   Click to remove the custom column.  
+6. **Add Custom Column**  
+   ![Add Custom Column](./assets/query-view-add-custom-column.png)  
+    * a. Identify a results field that will be displayed in the custom column.  
+      E.g. `this.Address.Country`  
+    * b. Give the custom column an alias that will be displayed as the column's title.  
+      E.g. `Country`  
+    * c. Click to add the new column and close the custom column dialog.  
+    * d. Click to close the custom column dialog without adding the new column.  
+7. **Reset to default**  
+   Reset result columns to their original state (determined by the query).  
+8. **Close**  
+   Close the Display dialog without applying your changes.  
+9. **Apply**  
+   Apply your changes and close the Display dialog.  
+### Result Columns
+
+![Result Columns](./assets/query-view-result-columns.png)
+
+1. **Preview**  
+   Click for a preview of the retrieved item.  
+2. **Document ID**  
+   Click the ID to open this document in the [Document View](../../../studio/database/documents/document-view.mdx),  
+   -or-  
+   Hover over the ID to display it in text format and optionally copy it to the clipboard.  
+    ![Hover ID](./assets/query-view-ID-column.png)  
+3. **Multiple Records Result**  
+   Hover over the brackets to display the retrieved records and optionally copy them to the clipboard.  
+    ![Multiple Records Result](./assets/query-view-multiple-records-result.png)  
+4. **Text Result**  
+   Hover over the text to display and optionally copy it to the clipboard.  
+    ![Text String Result](./assets/query-view-text-string-result.png)  
+
+
+
+## Additional Query Options
+
+Some RavenDB features enhance the queries options.  
+
+* [Time Series Query](../../../document-extensions/timeseries/overview.mdx) results provide insight 
+  into your time-series data, including a graph view over time.  
+  Learn more about it [here](../../../studio/database/document-extensions/time-series.mdx#querying-time-series).  
+* [Spatial Query](../../../studio/database/queries/spatial-queries-map-view.mdx) results include 
+  a Spatial Map Tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view.mdx#spatial-map-view) 
+  on the world map.  
+* [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) also present query results 
+  [graphically](../../../indexes/querying/graph/graph-queries-overview.mdx#creating-graph-queries) in an additional tab.  
+* [Counter Query](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) can be used to get counters data.  
+
+
+

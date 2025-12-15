@@ -1,0 +1,44 @@
+---
+title: "Archived Documents and Other Features"
+sidebar_label: Archived Documents and Other Features
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ArchivedDocumentsAndOtherFeaturesCsharp from './_archived-documents-and-other-features-csharp.mdx';
+
+export const supportedLanguages = ["csharp"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ArchivedDocumentsAndOtherFeaturesCsharp />
+</LanguageContent>
+
+
+<!---
+### Document Archival
+- [Overview](../data-archival/overview)
+- [Enable data archiving](../data-archival/enable-data-archiving)
+- [Schedule document archiving](../data-archival/schedule-document-archiving)
+- [Unarchiving documents](../data-archival/unarchiving-documents)
+
+### Configuration
+- [Overview](../server/configuration/configuration-options#settings.json)
+- [Database Settings](../studio/database/settings/database-settings#view-database-settings)
+
+### Tasks
+- [Smuggler (Import/Export)](../client-api/smuggler/what-is-smuggler)
+- [ETL Basics](../server/ongoing-tasks/etl/basics)
+- [Replication](../../server/clustering/replication/replication)
+
+### Extensions
+- [Document Expiration](../../server/extensions/expiration)
+
+### Patching
+- [Patch By Query](../client-api/rest-api/queries/patch-by-query)
+
+
+-->

@@ -1,0 +1,55 @@
+---
+title: "Query Overview"
+sidebar_label: Query Overview
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToQueryCsharp from './_how-to-query-csharp.mdx';
+import HowToQueryPython from './_how-to-query-python.mdx';
+import HowToQueryPhp from './_how-to-query-php.mdx';
+import HowToQueryNodejs from './_how-to-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToQueryPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToQueryPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Project Query Results](../../../client-api/session/querying/how-to-project-query-results)
+- [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+
+### Querying
+- [Querying an Index](../../../indexes/querying/query-index)
+- [Filtering](../../../indexes/querying/filtering)
+- [Paging](../../../indexes/querying/paging)
+- [Sorting](../../../indexes/querying/sorting)
+- [Projections](../../../indexes/querying/projections)
+
+### Indexes
+- [What are Indexes](../../../indexes/what-are-indexes)
+- [Indexing Basics](../../../indexes/indexing-basics)
+- [Map Indexes](../../../indexes/map-indexes)
+
+
+-->

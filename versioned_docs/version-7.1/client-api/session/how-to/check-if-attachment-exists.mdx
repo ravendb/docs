@@ -1,0 +1,51 @@
+---
+title: "How to Check if an Attachment Exists"
+sidebar_label: ...check if attachment exists
+sidebar_position: 16
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CheckIfAttachmentExistsCsharp from './_check-if-attachment-exists-csharp.mdx';
+import CheckIfAttachmentExistsJava from './_check-if-attachment-exists-java.mdx';
+import CheckIfAttachmentExistsPython from './_check-if-attachment-exists-python.mdx';
+import CheckIfAttachmentExistsPhp from './_check-if-attachment-exists-php.mdx';
+import CheckIfAttachmentExistsNodejs from './_check-if-attachment-exists-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CheckIfAttachmentExistsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CheckIfAttachmentExistsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CheckIfAttachmentExistsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CheckIfAttachmentExistsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CheckIfAttachmentExistsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Loading Entities](../../../client-api/session/loading-entities)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

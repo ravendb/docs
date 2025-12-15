@@ -1,0 +1,54 @@
+---
+title: "Enable Index Operation"
+sidebar_label: Enable Index
+sidebar_position: 7
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import EnableIndexCsharp from './_enable-index-csharp.mdx';
+import EnableIndexJava from './_enable-index-java.mdx';
+import EnableIndexPython from './_enable-index-python.mdx';
+import EnableIndexPhp from './_enable-index-php.mdx';
+import EnableIndexNodejs from './_enable-index-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <EnableIndexCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <EnableIndexJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <EnableIndexPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <EnableIndexPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <EnableIndexNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+- [Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+
+-->

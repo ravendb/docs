@@ -1,0 +1,49 @@
+---
+title: "Perform a Lazy Query"
+sidebar_label: Perform a Lazy Query
+sidebar_position: 15
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToPerformQueriesLazilyCsharp from './_how-to-perform-queries-lazily-csharp.mdx';
+import HowToPerformQueriesLazilyJava from './_how-to-perform-queries-lazily-java.mdx';
+import HowToPerformQueriesLazilyPython from './_how-to-perform-queries-lazily-python.mdx';
+import HowToPerformQueriesLazilyPhp from './_how-to-perform-queries-lazily-php.mdx';
+import HowToPerformQueriesLazilyNodejs from './_how-to-perform-queries-lazily-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToPerformQueriesLazilyCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToPerformQueriesLazilyJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToPerformQueriesLazilyPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToPerformQueriesLazilyPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToPerformQueriesLazilyNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Query overview](../../../client-api/session/querying/how-to-query)
+- [Perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)
+- [Querying: Basics](../../../indexes/querying/query-index)
+- [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions)
+
+
+-->

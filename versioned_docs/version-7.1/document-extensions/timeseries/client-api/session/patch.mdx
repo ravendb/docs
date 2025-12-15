@@ -1,0 +1,54 @@
+---
+title: "Patch Time Series Entries"
+sidebar_label: Patch
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PatchCsharp from './_patch-csharp.mdx';
+import PatchPython from './_patch-python.mdx';
+import PatchPhp from './_patch-php.mdx';
+import PatchNodejs from './_patch-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PatchCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PatchPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <PatchPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PatchNodejs />
+</LanguageContent>
+
+
+<!---
+### Time Series and JavaScript
+- [The Time Series JavaScript API](../../../../document-extensions/timeseries/client-api/javascript-support)
+
+### Client API
+- [Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

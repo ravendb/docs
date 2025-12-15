@@ -1,0 +1,37 @@
+---
+title: "Indexes: Sorting & Collation"
+sidebar_label: Sorting & Collation
+sidebar_position: 10
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SortingAndCollationCsharp from './_sorting-and-collation-csharp.mdx';
+import SortingAndCollationJava from './_sorting-and-collation-java.mdx';
+
+export const supportedLanguages = ["csharp", "java"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SortingAndCollationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SortingAndCollationJava />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Map Indexes](../indexes/map-indexes)
+- [What are Indexes](../indexes/what-are-indexes)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Sorting](../indexes/querying/sorting)
+- [Basics](../indexes/querying/query-index)
+
+
+-->

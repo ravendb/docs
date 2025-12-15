@@ -1,0 +1,53 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether the database contains a certain document,  
+  use the `session.advanced` operations `exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
+  the document entity to the session, and the session will not track it.
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
+</Admonition>
+## Check if document exists
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="php">
+{`$exists = $session->advanced()->exists("employees/1-A");
+
+if ($exists)
+\{
+    // document 'employees/1-A exists
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="php">
+{`public function exists(?string $id): bool;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **$id** | `?string` | The ID of the document to look for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - this document exists in the database.<br/>`false` - The document does Not exist in the database |
+
+
+
+

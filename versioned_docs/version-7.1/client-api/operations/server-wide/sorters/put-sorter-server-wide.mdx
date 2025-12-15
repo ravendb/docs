@@ -1,0 +1,38 @@
+---
+title: "Put Custom Sorter (Server-Wide) Operation"
+sidebar_label: Put Custom Sorter
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PutSorterServerWideCsharp from './_put-sorter-server-wide-csharp.mdx';
+import PutSorterServerWideNodejs from './_put-sorter-server-wide-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PutSorterServerWideCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PutSorterServerWideNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Sort query results](../../../../client-api/session/querying/sort-query-results)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [Put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter)
+
+### Studio
+- [Custom sorters view](../../../../studio/database/settings/custom-sorters)
+
+
+-->

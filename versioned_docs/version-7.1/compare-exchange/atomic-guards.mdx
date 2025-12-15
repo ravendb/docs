@@ -1,0 +1,46 @@
+---
+title: "Atomic Guards"
+sidebar_label: Atomic Guards
+sidebar_position: 11
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AtomicGuardsCsharp from './content/_atomic-guards-csharp.mdx';
+import AtomicGuardsPython from './content/_atomic-guards-python.mdx';
+import AtomicGuardsPhp from './content/_atomic-guards-php.mdx';
+import AtomicGuardsNodejs from './content/_atomic-guards-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AtomicGuardsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <AtomicGuardsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <AtomicGuardsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AtomicGuardsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Cluster-Wide Session](../client-api/session/cluster-transaction/overview)
+
+### Server
+- [Cluster-Wide Transactions](../server/clustering/cluster-transactions)
+
+### Compare Exchange
+- [Overview](../compare-exchange/overview)
+- [Create compare-exchange item](../compare-exchange/create-cmpxchg-items)
+-->

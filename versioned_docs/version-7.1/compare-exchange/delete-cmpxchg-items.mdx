@@ -1,0 +1,45 @@
+---
+title: "Delete Compare-Exchange Items"
+sidebar_label: "Delete Compare-Exchange Items"
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteCmpXchgItemsCsharp from './content/_delete-cmpxchg-items-csharp.mdx';
+import DeleteCmpXchgItemsJava from './content/_delete-cmpxchg-items-java.mdx';
+import DeleteCmpXchgItemsNodejs from './content/_delete-cmpxchg-items-nodejs.mdx';
+import DeleteCmpXchgItemsPython from './content/_delete-cmpxchg-items-python.mdx';
+import DeleteCmpXchgItemsPhp from './content/_delete-cmpxchg-items-php.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteCmpXchgItemsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <DeleteCmpXchgItemsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DeleteCmpXchgItemsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DeleteCmpXchgItemsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteCmpXchgItemsNodejs />
+</LanguageContent>
+
+<!---
+### Compare Exchange
+- [Overview](../todo)
+- [Create compare-exchange item](../todo)
+- [Update compare-exchange item](../todo)
+-->

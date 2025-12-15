@@ -1,0 +1,49 @@
+---
+title: "How to Check for Entity Changes"
+sidebar_label: ...check for entity changes
+sidebar_position: 14
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CheckIfEntityHasChangedCsharp from './_check-if-entity-has-changed-csharp.mdx';
+import CheckIfEntityHasChangedJava from './_check-if-entity-has-changed-java.mdx';
+import CheckIfEntityHasChangedPython from './_check-if-entity-has-changed-python.mdx';
+import CheckIfEntityHasChangedPhp from './_check-if-entity-has-changed-php.mdx';
+import CheckIfEntityHasChangedNodejs from './_check-if-entity-has-changed-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CheckIfEntityHasChangedCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CheckIfEntityHasChangedJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CheckIfEntityHasChangedPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CheckIfEntityHasChangedPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CheckIfEntityHasChangedNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a session and how does it work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict entity from session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

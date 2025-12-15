@@ -1,0 +1,37 @@
+---
+title: "Changes API: How to Subscribe to Index Changes"
+sidebar_label: How to Subscribe to Index Changes
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToSubscribeToIndexChangesCsharp from './_how-to-subscribe-to-index-changes-csharp.mdx';
+import HowToSubscribeToIndexChangesJava from './_how-to-subscribe-to-index-changes-java.mdx';
+import HowToSubscribeToIndexChangesNodejs from './_how-to-subscribe-to-index-changes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToSubscribeToIndexChangesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToSubscribeToIndexChangesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToSubscribeToIndexChangesNodejs />
+</LanguageContent>
+
+
+<!---
+### Changes API
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
+
+
+-->

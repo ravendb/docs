@@ -1,0 +1,44 @@
+---
+title: "What Is the Changes API"
+sidebar_label: What is Changes API
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatIsChangesApiCsharp from './_what-is-changes-api-csharp.mdx';
+import WhatIsChangesApiJava from './_what-is-changes-api-java.mdx';
+import WhatIsChangesApiNodejs from './_what-is-changes-api-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatIsChangesApiCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatIsChangesApiJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatIsChangesApiNodejs />
+</LanguageContent>
+
+
+<!---
+### Changes API
+- [How to Subscribe to Document Changes](../../client-api/changes/how-to-subscribe-to-document-changes)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
+- [How to Subscribe to Counter Changes](../../client-api/changes/how-to-subscribe-to-counter-changes)
+- [How to Subscribe to Time Series Changes](../../client-api/changes/how-to-subscribe-to-time-series-changes)
+- [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+
+### Data Subscriptions
+- [What Are Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
+
+
+-->

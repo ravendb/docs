@@ -1,0 +1,318 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [`addMap`](../indexes/multi-map-indexes.mdx#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
+
+</Admonition>
+
+## `addMap`
+
+The `addMap` method is used to map fields from a single collection, e.g. `Dogs`.  
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="php">
+{`_1
+                /** @var array<Smart_Search_Projection> $results */
+                $results = $session
+                    ->documentQuery(Smart_Search_Result::class, Smart_Search::class)
+                    ->search("Content", "Lau*")
+                    ->selectFields(Smart_Search_Projection::class)
+                    ->toList();
+
+                /** @var Smart_Search_Projection $result */
+                foreach ($results as $result)
+                {
+                    echo $result->getCollection() . ": " . $result->getDisplayName();
+                    // Companies: Laughing Bacchus Wine Cellars
+                    // Products: Laughing Lumberjack Lager
+                    // Employees: Laura Callahan
+                }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="php">
+{`class Cat extends Animal
+{
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="php">
+{`abstract class Animal implements AnimalInterface
+{
+    public ?string $name = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+We can define our index using `addMap` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="_add_map" label="_add_map">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractMultiMapIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addMap( "docs.Cats.Select(c => new { " .
+            "    Name = c.Name " .
+            "})");
+
+        $this->addMap( "docs.Dogs.Select(d => new { " .
+            "    Name = d.Name " .
+            "})");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<AnimalInterface> $results */
+$results = $session
+    ->query(AnimalInterface::class, Animals_ByName::class)
+    ->whereEquals("Name", "Mitzy")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
+<CodeBlock language="php">
+{`class Smart_Search_Result
+\{
+    private ?string $id = null;
+    private ?string $displayName = null;
+    private ?string $collection = null;
+    private ?string $content = null;
+
+    public function getId(): ?string
+    \{
+        return $this->id;
+    \}
+
+    public function setId(?string $id): void
+    \{
+        $this->id = $id;
+    \}
+
+    public function getDisplayName(): ?string
+    \{
+        return $this->displayName;
+    \}
+
+    public function setDisplayName(?string $displayName): void
+    \{
+        $this->displayName = $displayName;
+    \}
+
+    public function getCollection(): ?string
+    \{
+        return $this->collection;
+    \}
+
+    public function setCollection(?string $collection): void
+    \{
+        $this->collection = $collection;
+    \}
+
+    public function getContent(): ?string
+    \{
+        return $this->content;
+    \}
+
+    public function setContent(?string $content): void
+    \{
+        $this->content = $content;
+    \}
+\}
+
+class Smart_Search_Projection
+\{
+    private ?string $id = null;
+    private ?string $displayName = null;
+    private ?string $collection = null;
+
+    public function getId(): ?string
+    \{
+        return $this->id;
+    \}
+
+    public function setId(?string $id): void
+    \{
+        $this->id = $id;
+    \}
+
+    public function getDisplayName(): ?string
+    \{
+        return $this->displayName;
+    \}
+
+    public function setDisplayName(?string $displayName): void
+    \{
+        $this->displayName = $displayName;
+    \}
+
+    public function getCollection(): ?string
+    \{
+        return $this->collection;
+    \}
+
+    public function setCollection(?string $collection): void
+    \{
+        $this->collection = $collection;
+    \}
+\}
+
+class Smart_Search extends AbstractMultiMapIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->addMap("docs.Companies.Select(c => new \{ " .
+            "    Id = Id(c), " .
+            "    Content = new string[] \{ " .
+            "        c.Name " .
+            "    \}, " .
+            "    DisplayName = c.Name, " .
+            "    Collection = this.MetadataFor(c)[\\"@collection\\"] " .
+            "\})");
+
+        $this->addMap("docs.Products.Select(p => new \{ " .
+            "    Id = Id(p), " .
+            "    Content = new string[] \{ " .
+            "        p.Name " .
+            "    \}, " .
+            "    DisplayName = p.Name, " .
+            "    Collection = this.MetadataFor(p)[\\"@collection\\"] " .
+            "\})");
+
+        $this->addMap("docs.Employees.Select(e => new \{ " .
+            "    Id = Id(e), " .
+            "    Content = new string[] \{ " .
+            "        e.FirstName, " .
+            "        e.LastName " .
+            "    \}, " .
+            "    DisplayName = (e.FirstName + \\" \\") + e.LastName, " .
+            "    Collection = this.MetadataFor(e)[\\"@collection\\"] " .
+            "\})");
+
+        // mark 'content' field as analyzed which enables full text search operations
+        $this->index("Content", FieldIndexing::search());
+
+        // storing fields so when projection (e.g. ProjectInto)
+        // requests only those fields
+        // then data will come from index only, not from storage
+        $this->store("Id", FieldStorage::yes());
+        $this->store("DisplayName", FieldStorage::yes());
+        $this->store("Collection", FieldStorage::yes());
+
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
+<CodeBlock language="php">
+{`/** @var array<Smart_Search_Projection> $results */
+$results = $session
+    ->documentQuery(Smart_Search_Result::class, Smart_Search::class)
+    ->search("Content", "Lau*")
+    ->selectFields(Smart_Search_Projection::class)
+    ->toList();
+
+/** @var Smart_Search_Projection $result */
+foreach ($results as $result)
+\{
+    echo $result->getCollection() . ": " . $result->getDisplayName();
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products: Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+

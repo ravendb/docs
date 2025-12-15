@@ -1,0 +1,40 @@
+---
+title: "Single Document Patch Operations"
+sidebar_label: Single Document
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SingleDocumentCsharp from './_single-document-csharp.mdx';
+import SingleDocumentJava from './_single-document-java.mdx';
+import SingleDocumentNodejs from './_single-document-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SingleDocumentCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SingleDocumentJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SingleDocumentNodejs />
+</LanguageContent>
+
+
+<!---
+### Patching
+- [Set based patch operation](../../../client-api/operations/patching/set-based)
+
+### Knowledge Base
+- [JavaScript engine](../../../server/kb/javascript-engine)
+- [Numbers in JavaScript engine](../../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)
+
+
+-->

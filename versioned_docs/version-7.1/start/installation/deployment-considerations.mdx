@@ -1,0 +1,120 @@
+---
+title: "Installation: Deployment Considerations"
+sidebar_label: Deployment Considerations
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Installation: Deployment Considerations
+<Admonition type="note" title="">
+
+* In this page:
+   * [Deployment Considerations](../../start/installation/deployment-considerations.mdx#deployment-considerations)  
+      * [Performance Considerations](../../start/installation/deployment-considerations.mdx#performance-considerations)  
+      * [Storage Considerations](../../start/installation/deployment-considerations.mdx#storage-considerations)  
+      * [Network Considerations](../../start/installation/deployment-considerations.mdx#network-considerations)  
+      * [Running RavenDB](../../start/installation/deployment-considerations.mdx#running-ravendb)  
+   * [When the Database Grows Bigger](../../start/installation/deployment-considerations.mdx#when-the-database-grows-bigger)  
+
+</Admonition>
+
+## Deployment Considerations
+
+The deployment of a RavenDB cluster requires some thought regarding the best network, cluster, and databases setup.  
+In terms of hardware, while more (CPU speed, memory size, etc.) is generally better, RavenDB can do quite well on 
+small instances (such as a resource-limited Docker container) and scale up to machines with hundreds of GB of RAM 
+and a large number of cores.  
+
+## Performance Considerations
+
+For read-mostly scenarios, the more cores the machine have, the faster RavenDB will be since reads take no locks and require no 
+coordination from RavenDB. For write-heavy scenarios, faster cores are better than more cores generally, but the usual limit is 
+the speed of the storage. For both reads & writes, given the choice between more cores and more memory, the typical answer would
+be to get more memory. 
+
+RavenDB does just fine when the size of the databases exceed the size of the physical memory. It will
+make use of all the memory that it can to ensure speedy queries and fast responses. So the more memory it has available, the better
+things are.
+
+In a cluster environment, avoid using a SAN or NAS to store the data from multiple RavenDB nodes in the same physical location.
+It is much better to have each node use its local disks because this way there is no contention between the different nodes on the
+same storage resources. 
+
+Storage latency is also a very important factor in RavenDB's performance. If you are running on cloud infrastructure, you should 
+ensure that you are using high IOPS disks. Avoid options such as burstable performance, since under load RavenDB may consume all the
+burst capacity available and suffer because it is being throttled. If this happens, you'll usually get a warning about slow I/O in 
+the studio. If you are running on physical hardware, use an SSD or NVMe drives. Drives using HDD will work, but may result in high
+latencies under load because of the rotational disk seek times.
+
+Advanced scenarios may call to splitting I/O among multiple disks. Having separate drives for data, journals and indexes. You can
+read more about it in the document about the [customizing RavenDB Data files location](../../server/storage/customizing-raven-data-files-locations.mdx).
+
+## Storage Considerations
+
+The requirements of the storage can be found in the article describing [Voron](../../server/storage/storage-engine.mdx#requirements), the storage engine used by RavenDB.
+
+<Admonition type="note" title="SMB / CIFS is not supported for production scenarios" id="smb-cifs-is-not-supported-for-production-scenarios" href="#smb-cifs-is-not-supported-for-production-scenarios">
+
+[SMB / CIFS](https://en.wikipedia.org/wiki/Server_Message_Block) is a protocol that can be used to access remote files over then network, between machines running different operating systems.
+It is widely used in two scenarios:
+
+-  Azure File Storage service aka [CloudStor:Azure](https://azure.microsoft.com/en-us/services/storage/files/)   
+-  Linux Docker container running under Windows Docker host with [sharing volumes](https://docs.docker.com/storage/volumes/#share-data-among-machines)
+
+What is supported:
+
+- On Windows, Linux and any Docker instance: NTFS, ext4 and other non NFS volumes mounts
+- Azure: using dedicated storage such as NTFS and ext4   
+
+_Note_: RavenDB does operate with ext2 and other lack of journaling mechanism file systems, however ungraceful restart (or catastrophic failure) might enter database into corrupted state, and therefor not supported.
+
+</Admonition>
+
+## Network Considerations
+
+RavenDB can be deployed either internally in your organization (secured network, only known good actors), or on the public Internet.
+Any deployment, aside from maybe on a developer machine, should use the secured mode. See the 
+[Setup Wizard](../../start/installation/setup-wizard.mdx) for the details on how to do that. 
+
+RavenDB will typically use two ports. One for HTTPS traffic, for clients and browsers and one for TCP, used by the cluster nodes to
+communicate with each other. Both the HTTPS and TCP traffic are encrypted by default (unless you explicitly specify the unsecured setup)
+using TLS 1.2 (or 1.3). Be sure to open both ports in the firewall to allow the cluster node to talk to one another. 
+
+RavenDB should _not_ typically be deployed behind a reversed proxy. The typical advantages of reverse proxies are based on their ability
+to load balance, cache responses, etc. These features are great when proxying a web application, but actively harmful when you are talking
+to a stateful system like a database. Your application should be talking to RavenDB directly, given the URLs of the cluster nodes and let
+RavenDB itself handle issues such as high availability, load balancing and security. 
+
+## Running RavenDB
+
+On Windows, RavenDB usually runs as a service. Make sure that the user running the RavenDB service has sufficient access 
+permissions to the RavenDB directory and to the specified data directory. You can setup RavenDB as a service using the 
+`setup-as-service.ps1` script. You can uninstall it with the script `uninstall-service.ps1`.  
+
+On Linux, you'll typically run RavenDB as a daemon. The `install-daemon.sh` can handle the daemon registration for you (Ubuntu only).
+
+In either case, you can configure RavenDB using the [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) file. The most important configurations are the data directory and the 
+IPs and ports RavenDB will listen to. It is recommended that you'll pick the fastest drives for RavenDB's data directory, while the binaries
+for RavenDB can reside anywhere in the system.
+
+
+
+## When the Database Grows Bigger
+
+One way to keep a very large database as effective and available 
+as ever is to split its content between multiple, autonomous 
+[shards](../../sharding/overview.mdx#shards).  
+
+Read more about sharding here:  
+
+* [Sharding Overview](../../sharding/overview.mdx)  
+* [Migrating](../../sharding/migration.mdx) from a non-sharded to a sharded database  
+
+
+

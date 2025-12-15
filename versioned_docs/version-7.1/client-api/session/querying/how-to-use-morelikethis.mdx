@@ -1,0 +1,49 @@
+---
+title: "Using MoreLikeThis"
+sidebar_label: Using MoreLikeThis
+sidebar_position: 17
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToUseMorelikethisCsharp from './_how-to-use-morelikethis-csharp.mdx';
+import HowToUseMorelikethisJava from './_how-to-use-morelikethis-java.mdx';
+import HowToUseMorelikethisPython from './_how-to-use-morelikethis-python.mdx';
+import HowToUseMorelikethisPhp from './_how-to-use-morelikethis-php.mdx';
+import HowToUseMorelikethisNodejs from './_how-to-use-morelikethis-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToUseMorelikethisCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToUseMorelikethisJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToUseMorelikethisPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToUseMorelikethisPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToUseMorelikethisNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+- [MoreLikeThis](../../../indexes/querying/morelikethis)
+
+
+-->

@@ -1,0 +1,49 @@
+---
+title: "Exact Match Query"
+sidebar_label: Exact Match Query
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExactMatchQueryCsharp from './_exact-match-query-csharp.mdx';
+import ExactMatchQueryJava from './_exact-match-query-java.mdx';
+import ExactMatchQueryPython from './_exact-match-query-python.mdx';
+import ExactMatchQueryPhp from './_exact-match-query-php.mdx';
+import ExactMatchQueryNodejs from './_exact-match-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExactMatchQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ExactMatchQueryJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ExactMatchQueryPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ExactMatchQueryPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExactMatchQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)
+- [Querying: Basics](../../../../indexes/querying/query-index)
+
+
+-->

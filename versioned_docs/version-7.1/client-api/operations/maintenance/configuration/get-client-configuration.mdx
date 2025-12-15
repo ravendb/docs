@@ -1,0 +1,52 @@
+---
+title: "Get Client Configuration Operation  (for database)"
+sidebar_label: Get Client Configuration
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetClientConfigurationCsharp from './_get-client-configuration-csharp.mdx';
+import GetClientConfigurationJava from './_get-client-configuration-java.mdx';
+import GetClientConfigurationPython from './_get-client-configuration-python.mdx';
+import GetClientConfigurationPhp from './_get-client-configuration-php.mdx';
+import GetClientConfigurationNodejs from './_get-client-configuration-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetClientConfigurationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetClientConfigurationJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetClientConfigurationPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetClientConfigurationPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetClientConfigurationNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio
+- [Client Configuration](../../../../studio/server/client-configuration)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Put client-configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration)
+- [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+- [Get client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+
+
+-->

@@ -1,0 +1,72 @@
+---
+title: "Replace License"
+sidebar_label: Replace License
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Replace License
+<Admonition type="note" title="">
+
+* Upon [upgrading your license](https://ravendb.net/buy), RavenDB will send 
+  your new license key to the email provided when obtaining the license.  
+
+* Replace the existing license with the new one using Studio, as shown below.  
+
+* If you upgrade to RavenDB 6.0, you need to upgrade your current license key 
+  before applying it to the new version. Use our online license upgrade tool 
+  as explained [below](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x) 
+  to upgrade your key.  
+
+* In this page:
+    * [Replace license from Studio](../../start/licensing/replace-license.mdx#replace-license-from-studio)  
+    * [Maintain auto-renewal of Let's Encrypt certificates](../../start/licensing/replace-license.mdx#maintain-auto-renewal-of-let)  
+    * [Upgrade a License Key For RavenDB 6.x](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x)  
+
+</Admonition>
+## Replace license from Studio
+
+Replace the existing license with the new one from the Studio:
+
+![Replace License](./assets/replace-license_button.png)
+
+1. **About**  
+   Click to open the Studio _About_ view  
+
+2. **Replace**  
+   Click the _Replace License_ button
+
+![Paste and Submit](./assets/replace-license_paste-and-submit.png)
+
+
+
+## Maintain auto-renewal of Let's Encrypt certificates 
+
+* If you set RavenDB up using the [Setup Wizard](../../start/installation/setup-wizard.mdx) 
+  and used a Let's Encrypt certificate,  contact [customer support](https://ravendb.net/contact) 
+  when changing your license to maintain auto-renewals of certificates.  
+* Otherwise, changing your license ID will cause a mismatch between the new 
+  license ID and the ID that Let's Encrypt expects when renewing the certificate.  
+
+
+
+## Upgrade a License Key For RavenDB 6.x
+
+If you have a license for a RavenDB version older than `6.x`, upgrading to version `6.0` 
+will require you to upgrade your license key. Upgrading your key can be done in a few seconds 
+using our online [License upgrade tool](https://ravendb.net/l/8O2YU1).  
+
+![Replace License Tool](./assets/replace-license_replace-license-tool.png)
+
+A new key will be sent to the email address you registered your current license with.  
+[Replace](../../start/licensing/replace-license.mdx#replace-license-from-studio) your current key with the new one.  
+
+
+
+

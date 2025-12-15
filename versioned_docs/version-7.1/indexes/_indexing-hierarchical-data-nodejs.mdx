@@ -1,0 +1,180 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
+
+* In this Page:
+    * [Hierarchical data](../indexes/indexing-hierarchical-data.mdx#hierarchical-data)
+    * [Index hierarchical data](../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)
+    * [Query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index)
+
+</Admonition>
+## Hierarchical data
+
+One significant advantage of document databases is their tendency not to impose limits on data structuring.
+**Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
+
+<TabItem value="class_1" label="class_1">
+<CodeBlock language="js">
+{`class BlogPost \{
+    constructor(title, author, text, comments) \{
+        this.title = title;
+        this.author = author;
+        this.text = text;
+
+        // Blog post readers can leave comments
+        this.comments = comments;
+    \}
+\}
+
+class BlogPostComment \{
+    constructor(author, text, comments) \{
+        this.author = author;
+        this.text = text;
+
+        // Allow nested comments, enabling replies to existing comments
+        this.comments = comments;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Readers of a post created using the above `BlogPost` structure can add `BlogPostComment` entries to the post's _comments_ field,
+and readers of these comments can reply with comments of their own, creating a recursive hierarchical structure.
+
+For example, the following document, `BlogPosts/1-A`, represents a blog post by John that contains multiple layers of comments from various authors.
+
+`BlogPosts/1-A`:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "author": "John",
+    "title": "Post title..",
+    "text": "Post text..",
+    "comments": [
+        \{
+            "author": "Moon",
+            "text": "Comment text..",
+            "comments": [
+                \{
+                    "author": "Bob",
+                    "text": "Comment text.."
+                \},
+                \{
+                    "author": "Adel",
+                    "text": "Comment text..",
+                    "comments": \{
+                        "author": "Moon",
+                        "text": "Comment text.."
+                    \}
+                \}
+            ]
+        \}
+    ],
+    "@metadata": \{
+    "@collection": "BlogPosts"
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Index hierarchical data
+
+To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
+
+The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+We can then [query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class BlogPosts_ByCommentAuthor extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = \`
+            docs.BlogPosts.Select(post => new { 
+                authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author)
+            })\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Put_indexes_operation" label="Put_indexes_operation">
+<CodeBlock language="js">
+{`const indexDefinition = new IndexDefinition();
+
+indexDefinition.name = "BlogPosts/ByCommentAuthor";
+indexDefinition.maps = new Set([
+    \`from blogpost in docs.BlogPosts
+     let authors = Recurse(blogpost, (Func<dynamic, dynamic>)(x => x.comments))
+     let authorNames = authors.Select(x => x.author)
+     select new
+     {
+         Authors = authorNames
+     }\`
+]);
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Query the index
+
+The index can be queried for all blog posts that contain comments made by specific authors.
+
+**Query the index using code**:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const results = await session
+    .query({ indexName: "BlogPosts/ByCommentAuthor" })
+     // Query for all blog posts that contain comments by 'Moon':
+    .whereEquals("authors", "Moon")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "BlogPosts/ByCommentAuthor"
+where authors == "Moon"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Query the index using Studio**:  
+
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view) view:
+
+      !["List of Indexes view"](./assets/list-of-indexes-view.png)
+
+  * View the query results in the [Query](../studio/database/queries/query-view.mdx) view:
+
+      !["Query View"](./assets/query-view.png)
+
+  * View the list of terms indexed by the `Recurse` method:
+
+      !["Click to View Index Terms"](./assets/click-to-view-terms.png)
+
+      !["Index Terms"](./assets/index-terms.png)
+
+
+
+

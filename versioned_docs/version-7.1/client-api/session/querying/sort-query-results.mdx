@@ -1,0 +1,47 @@
+---
+title: "Sort Query Results"
+sidebar_label: Sort Query Results
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SortQueryResultsCsharp from './_sort-query-results-csharp.mdx';
+import SortQueryResultsPython from './_sort-query-results-python.mdx';
+import SortQueryResultsPhp from './_sort-query-results-php.mdx';
+import SortQueryResultsNodejs from './_sort-query-results-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SortQueryResultsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SortQueryResultsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <SortQueryResultsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SortQueryResultsNodejs />
+</LanguageContent>
+
+
+<!---
+### Querying
+- [Query Overview](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Customize query](../../../client-api/session/querying/how-to-customize-query)
+- [Group by query](../../../client-api/session/querying/how-to-perform-group-by-query)
+- [Spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query)
+- [Full-text search](../../../client-api/session/querying/text-search/full-text-search)
+
+
+-->

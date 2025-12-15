@@ -1,0 +1,38 @@
+---
+title: "Delete Attachment Operation"
+sidebar_label: Delete Attachment
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteAttachmentCsharp from './_delete-attachment-csharp.mdx';
+import DeleteAttachmentJava from './_delete-attachment-java.mdx';
+import DeleteAttachmentNodejs from './_delete-attachment-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteAttachmentCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <DeleteAttachmentJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteAttachmentNodejs />
+</LanguageContent>
+
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+- [Put attachment](../../../client-api/operations/attachments/put-attachment)
+- [Get attachment](../../../client-api/operations/attachments/get-attachment)
+
+
+-->

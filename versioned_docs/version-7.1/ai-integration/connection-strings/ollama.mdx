@@ -1,0 +1,32 @@
+---
+title: "Connection String to Ollama"
+sidebar_label: Ollama
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import OllamaCsharp from './content/_ollama-csharp.mdx';
+
+export const supportedLanguages = ["csharp"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <OllamaCsharp />
+</LanguageContent>
+
+<!---
+### Vector Search
+- [RavenDB as a vector database](../../ai-integration/vector-search/ravendb-as-vector-database)
+- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
+- [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
+
+### Embeddings Generation
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
+- [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
+-->

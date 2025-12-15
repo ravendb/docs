@@ -1,0 +1,53 @@
+---
+title: "Count Revisions"
+sidebar_label: Count Revisions
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CountingCsharp from './_counting-csharp.mdx';
+import CountingPython from './_counting-python.mdx';
+import CountingPhp from './_counting-php.mdx';
+import CountingNodejs from './_counting-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CountingCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CountingPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CountingPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CountingNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Extensions
+- [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+- [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+- [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
+
+### Client API
+- [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+- [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+- [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)
+- [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+
+### Studio
+- [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
+- [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)
+
+
+-->

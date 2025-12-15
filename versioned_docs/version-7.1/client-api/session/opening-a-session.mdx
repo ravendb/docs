@@ -1,0 +1,63 @@
+---
+title: "Open a Session"
+sidebar_label: Open a Session
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import OpeningASessionCsharp from './_opening-a-session-csharp.mdx';
+import OpeningASessionJava from './_opening-a-session-java.mdx';
+import OpeningASessionPython from './_opening-a-session-python.mdx';
+import OpeningASessionPhp from './_opening-a-session-php.mdx';
+import OpeningASessionNodejs from './_opening-a-session-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <OpeningASessionCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <OpeningASessionJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <OpeningASessionPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <OpeningASessionPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <OpeningASessionNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Storing Entities](../../client-api/session/storing-entities)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Basics](../../indexes/querying/query-index)
+
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Storing Entities](../../client-api/session/storing-entities)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

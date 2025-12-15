@@ -1,0 +1,47 @@
+---
+title: "How to Consume a Data Subscription"
+sidebar_label: How to Consume a Data Subscription
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToConsumeDataSubscriptionCsharp from './_how-to-consume-data-subscription-csharp.mdx';
+import HowToConsumeDataSubscriptionJava from './_how-to-consume-data-subscription-java.mdx';
+import HowToConsumeDataSubscriptionPython from './_how-to-consume-data-subscription-python.mdx';
+import HowToConsumeDataSubscriptionNodejs from './_how-to-consume-data-subscription-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToConsumeDataSubscriptionCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToConsumeDataSubscriptionJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToConsumeDataSubscriptionPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToConsumeDataSubscriptionNodejs />
+</LanguageContent>
+
+
+<!---
+### Data Subscriptions
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+
+-->

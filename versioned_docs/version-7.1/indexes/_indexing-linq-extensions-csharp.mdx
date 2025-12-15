@@ -1,0 +1,143 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of the indexing functions. The available extensions are:
+
+- [Boost](../indexes/indexing-linq-extensions.mdx#boost)
+- [Reverse](../indexes/indexing-linq-extensions.mdx#reverse)
+- [IfEntityIs](../indexes/indexing-linq-extensions.mdx#ifentityis)
+- [WhereEntityIs](../indexes/indexing-linq-extensions.mdx#whereentityis)
+- [ParseInt, ParseLong, ParseDecimal, ParseDouble](../indexes/indexing-linq-extensions.mdx#parsing-numbers)
+
+## **Boost**
+
+You can read more about boosting [here](../indexes/boosting.mdx).
+
+
+
+## **Reverse**
+
+**Strings** and **enumerables** can be reversed by using `Reverse` extension.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByReversedFirstName : AbstractIndexCreationTask<Employee>
+{
+	public Employees_ByReversedFirstName()
+	{
+		Map = employees => from employee in employees
+					select new
+					{
+						FirstName = employee.FirstName.Reverse()
+					};
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> results = session
+	.Query<Employee, Employees_ByReversedFirstName>()
+	.Where(x => x.FirstName == "treboR")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## **WhereEntityIs**
+
+`WhereEntityIs` can be used to check if given `Raven-Entity-Name` value in metadata for the given document matches any of the given values. This can be useful when indexing polymorphic data. Please visit our dedicated article to get more information (or click [here](../indexes/indexing-polymorphic-data.mdx#other-ways)).
+
+
+
+## **IfEntityIs**
+
+`IfEntityIs` is similar to `WhereEntityIs`, yet it checks only against one value.
+
+
+
+## **Parsing numbers**
+
+String values can be safely parsed to `int`, `long`, `decimal` and `double` using the appropriate methods:
+
+- ParseInt,
+- ParseLong,
+- ParseDecimal,
+- ParseDouble
+
+There are two overrides for each method: The first one returns the default value in case of parsing failure. The second one accepts the value that should be returned when failure occurs.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Item_Parse : AbstractIndexCreationTask<Item>
+{
+	public class Result
+	{
+		public int MajorWithDefault { get; set; }
+
+		public int MajorWithCustomDefault { get; set; }
+	}
+
+	public Item_Parse()
+	{
+		Map = items => from item in items
+					let parts = item.Version.Split('.', StringSplitOptions.None)
+					select new
+					{
+						MajorWithDefault = parts[0].ParseInt(),			// will return default(int) in case of parsing failure
+						MajorWithCustomDefault = parts[0].ParseInt(-1)	// will return -1 in case of parsing failure
+					};
+
+		StoreAllFields(FieldStorage.Yes);
+	}
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Item" label="Item">
+<CodeBlock language="csharp">
+{`public class Item
+{
+	public string Version { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Example" label="Example">
+<CodeBlock language="csharp">
+{`session.Store(new Item { Version = "3.0.1" });
+session.Store(new Item { Version = "Unknown" });
+
+session.SaveChanges();
+
+var results = session
+	.Query<Item_Parse.Result, Item_Parse>()
+	.ToList();
+
+Assert.Equal(2, results.Count);
+Assert.True(results.Any(x => x.MajorWithDefault == 3));
+Assert.True(results.Any(x => x.MajorWithCustomDefault == 3));
+Assert.True(results.Any(x => x.MajorWithDefault == 0));
+Assert.True(results.Any(x => x.MajorWithCustomDefault == -1));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="info" title="">
+Default `Storage` value for the `StoreAllFields()` method is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage.
+</Admonition>
+
+
+
+

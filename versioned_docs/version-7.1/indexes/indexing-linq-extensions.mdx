@@ -1,0 +1,37 @@
+---
+title: "Indexes: Indexing LINQ Extensions"
+sidebar_label: Indexing LINQ Extensions
+sidebar_position: 19
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingLinqExtensionsCsharp from './_indexing-linq-extensions-csharp.mdx';
+import IndexingLinqExtensionsJava from './_indexing-linq-extensions-java.mdx';
+import IndexingLinqExtensionsNodejs from './_indexing-linq-extensions-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingLinqExtensionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingLinqExtensionsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingLinqExtensionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Map Indexes](../indexes/map-indexes)
+- [Boosting](../indexes/boosting)
+
+
+-->

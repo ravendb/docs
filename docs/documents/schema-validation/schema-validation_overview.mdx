@@ -1,0 +1,126 @@
+---
+title: "Schema validation overview"
+hide_table_of_contents: true
+sidebar_label: "Overview"
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Schema validation overview
+<Admonition type="note" title="">
+
+* A validation schema is a JSON object associated with a document collection.  
+  If a schema is enabled for a collection, the collection's documents can be written only if the documents comply with the constraints defined by the schema.  
+
+* Validation is enforced both when documents are saved directly, and when they are added or modified via [supported batch operations](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation) such as patching or ETL tasks.
+
+* Validating document compliance during writing can help ensure data consistency (e.g., by preventing the saving of documents with missing required fields) and simplify read-time handling by preventing the need for additional checks and transformations.
+
+* Schemas can be configured per collection using [Studio](../../documents/schema-validation/write-validation/write-validation_studio) or the [client API](../../documents/schema-validation/write-validation/write-validation_api).
+
+* You can also audit documents compliance with a schema after they are stored, to identify and address any violations.  
+  Auditing can be performed:  
+   - By [running an audit operation](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) that scans a document collection and reports validation violations.  
+   - By [validating documents during indexing](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index) and embedding validation error messages in the indexes.  
+
+* In this article:  
+   * [The validation process](../../documents/schema-validation/schema-validation_overview#the-validation-process)  
+   * [A list of operations that trigger validation](../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation)  
+   * [Available constraints](../../documents/schema-validation/schema-validation_overview#available-constraints)  
+   * [Considerations](../../documents/schema-validation/schema-validation_overview#considerations)
+   * [Auditing schema validation](../../documents/schema-validation/schema-validation_overview#auditing-schema-validation)  
+   * [Use cases](../../documents/schema-validation/schema-validation_overview#use-cases)
+
+</Admonition>
+
+## The validation process
+
+Schema validation is performed by the server when a schema is defined and enabled for a collection, and a document that belongs to this collection is being written. The document is then validated against the schema before being saved.  
+If the validation fails, the operation stops and a detailed [SchemaValidationException](../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) is thrown.  
+
+## A list of operations that trigger validation
+Validation is triggered during writing by these operations:
+* `session.SaveChanges()` / `session.SaveChangesAsync()`  
+  Validates documents while committing staged document changes in the session to the database.  
+* `BulkInsert.StoreAsync()`  
+  Validates each document when performing a bulk insert operation.  
+* `PatchByQueryOperation`  
+  Validates documents updated by a patch query.  
+* `Smuggler.ImportAsync()` / `Smuggler.ImportDatabaseOperation()`  
+  Validates documents when importing data using the Smuggler tool.
+* `ETL tasks`  
+  Validates documents as they are transferred via an Extract/Transform/Load process.  
+
+#### Validation is **not** applied during these operations:  
+* `Replication`  
+  When replicating documents to cluster nodes or via external replication.  
+* `Backup.RestoreDatabase()`  
+  When documents are restored from backup.  
+
+#### Validation and reverting documents:
+<Admonition type="warning" title="Cannot revert with enabled schema validation">
+A document **cannot be reverted** to a [selected revision](../../document-extensions/revisions/client-api/operations/revert-document-to-revision) or to a [selected point in time](../../document-extensions/revisions/revert-revisions) if a validation schema is enabled for the document's collection.  
+If you want to revert a document and a validation schema is defined for its collection, **disable the schema before reverting**.
+</Admonition>
+
+## Available constraints
+A validation schema can enforce these constraints on documents:  
+* [Type](../../documents/schema-validation/write-validation/write-validation_api#type)  
+* [Required Properties](../../documents/schema-validation/write-validation/write-validation_api#required)  
+* [Constant Value](../../documents/schema-validation/write-validation/write-validation_api#const)  
+* [Allowed Values](../../documents/schema-validation/write-validation/write-validation_api#enum)  
+* [String Minimum Length](../../documents/schema-validation/write-validation/write-validation_api#minlength)  
+* [String Maximum Length](../../documents/schema-validation/write-validation/write-validation_api#maxlength)  
+* [Pattern (Regex)](../../documents/schema-validation/write-validation/write-validation_api#pattern)  
+* [Number Minimum Value](../../documents/schema-validation/write-validation/write-validation_api#minimum)  
+* [Number Maximum Value](../../documents/schema-validation/write-validation/write-validation_api#maximum)  
+* [Array Minimum Items](../../documents/schema-validation/write-validation/write-validation_api#minitems)  
+* [Array Maximum Items](../../documents/schema-validation/write-validation/write-validation_api#maxitems)  
+* [Properties](../../documents/schema-validation/write-validation/write-validation_api#properties)  
+* [patternProperties](../../documents/schema-validation/write-validation/write-validation_api#patternproperties)  
+* [Additional Properties](../../documents/schema-validation/write-validation/write-validation_api#additionalproperties)  
+* [Items](../../documents/schema-validation/write-validation/write-validation_api#items)  
+* [Dependencies](../../documents/schema-validation/write-validation/write-validation_api#dependencies)  
+* [Null](../../documents/schema-validation/write-validation/write-validation_api#null)  
+
+## Considerations
+Take note of the following considerations when applying schema validation.
+* **Performance impact**:  
+  Schema validation introduces additional processing during write operations. While this overhead is generally minimal, it can become significant with very large bulk operations or complex schemas. It's important to monitor performance and optimize schemas as needed.
+* **Schema evolution**:  
+  As application requirements change, schemas may need to be updated. Care should be taken to manage schema changes, especially in production environments, to avoid unintended validation failures.
+* **Error handling**:  
+  Applications should implement robust error handling to manage validation failures gracefully. This includes providing meaningful feedback to users or logging errors for further analysis.
+* **Testing**:  
+  Thoroughly test schemas and validation logic in development environments before deploying to production to ensure that they behave as expected.  
+
+## Auditing schema validation
+Up until now we have explained how to enforce document validation when documents are written.  
+However, it is also possible to verify whether stored documents comply with a schema, and address any violations.  
+
+#### Running an audit operation:
+Learn [here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) how to launch an audit operation that scans the documents of a collection, checks their validity against a schema, and reports validation errors and related statistics.  
+This process can help you assess data quality and ensure schema compliance across your collections.  
+  
+#### Audit document compliance by index:
+Learn [here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index) how to validate documents against a schema during indexing, and embed validation error messages in the indexes.  
+You can then use your indexes to query and manage documents based on their schema compliance.
+
+## Use cases
+A few scenarios where schema validation can help are:  
+* **Ensuring Required Fields**  
+  E.g., preventing the saving of a user profile without an email address.  
+* **Enforcing Data Types**  
+  E.g., making sure that fields like “age” are always numbers and not accidentally saved as strings or other types.  
+* **Restricting Allowed Values**  
+  E.g., limiting a field (like “status”) to specific values like “active”, “inactive”, or “pending”, and rejecting any other input.  
+* **Maintaining Consistent Structure in Arrays**  
+  E.g., ensuring that every item in an array (like a list of order items) follows the same structure and contains all required properties.  
+* **Preventing Invalid Data During Integrations**  
+  E.g., blocking documents with unexpected or malformed data from being saved during ETL or API imports, to protect downstream systems.  

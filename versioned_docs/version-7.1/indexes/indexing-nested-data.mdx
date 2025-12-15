@@ -1,0 +1,49 @@
+---
+title: "Indexing Nested data"
+sidebar_label: Indexing Nested Data
+sidebar_position: 12
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingNestedDataCsharp from './_indexing-nested-data-csharp.mdx';
+import IndexingNestedDataJava from './_indexing-nested-data-java.mdx';
+import IndexingNestedDataPython from './_indexing-nested-data-python.mdx';
+import IndexingNestedDataPhp from './_indexing-nested-data-php.mdx';
+import IndexingNestedDataNodejs from './_indexing-nested-data-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingNestedDataCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingNestedDataJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IndexingNestedDataPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IndexingNestedDataPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingNestedDataNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../indexes/what-are-indexes)
+
+### Querying
+- [Intersect queries](../indexes/querying/intersection)
+
+
+-->

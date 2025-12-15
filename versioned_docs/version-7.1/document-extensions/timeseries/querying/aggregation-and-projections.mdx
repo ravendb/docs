@@ -1,0 +1,53 @@
+---
+title: "Aggregating Time Series Values"
+sidebar_label: Aggregating Values
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AggregationAndProjectionsCsharp from './_aggregation-and-projections-csharp.mdx';
+import AggregationAndProjectionsPhp from './_aggregation-and-projections-php.mdx';
+import AggregationAndProjectionsNodejs from './_aggregation-and-projections-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <AggregationAndProjectionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <AggregationAndProjectionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <AggregationAndProjectionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+
+### Time Series Indexing
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Time Series Queries
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+### Querying
+- [Querying: Projections](../../../indexes/querying/projections)
+
+
+-->

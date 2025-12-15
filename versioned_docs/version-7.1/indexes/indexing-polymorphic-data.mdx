@@ -1,0 +1,53 @@
+---
+title: "Indexing Polymorphic Data"
+sidebar_label: Indexing Polymorphic Data
+sidebar_position: 14
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingPolymorphicDataCsharp from './_indexing-polymorphic-data-csharp.mdx';
+import IndexingPolymorphicDataJava from './_indexing-polymorphic-data-java.mdx';
+import IndexingPolymorphicDataPython from './_indexing-polymorphic-data-python.mdx';
+import IndexingPolymorphicDataPhp from './_indexing-polymorphic-data-php.mdx';
+import IndexingPolymorphicDataNodejs from './_indexing-polymorphic-data-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingPolymorphicDataCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingPolymorphicDataJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IndexingPolymorphicDataPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IndexingPolymorphicDataPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingPolymorphicDataNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Indexing basics](../indexes/indexing-basics)
+- [Indexing related documents](../indexes/indexing-related-documents)
+- [Indexing spatial data](../indexes/indexing-spatial-data)
+- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
+
+### Querying
+- [Query overview](../client-api/session/querying/how-to-query)
+- [Basics](../indexes/querying/query-index)
+
+
+-->

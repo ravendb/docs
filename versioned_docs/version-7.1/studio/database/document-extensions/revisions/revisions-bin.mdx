@@ -1,0 +1,120 @@
+---
+title: "The Revisions Bin View"
+sidebar_label: Revisions Bin
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# The Revisions Bin View
+<Admonition type="note" title="">
+
+* The **Revisions Bin** stores revisions of deleted documents, ensuring they remain accessible.  
+  From this view, you can access these revisions or permanently delete them if needed.
+
+* In this page:
+  * [Overview](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx#overview)
+  * [The Revisions Bin view](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx#the-revisions-bin-view)
+  * [Restoring revisions](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx#restoring-revisions)
+
+</Admonition>
+## Overview
+
+**What is the Revisions Bin**:
+
+* In RavenDB, revisions can be created automatically or manually, as explained in this [overview](../../../../document-extensions/revisions/overview.mdx).
+
+* **When deleting a document that has revisions**:  
+  Deleting a document that has revisions will always create a `"Delete Revision"`.  
+  This occurs regardless of whether the revisions were created automatically or manually,  
+  or if the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) is enabled.
+
+* **When deleting a document that does Not have revisions**:  
+  If you delete a document that does not have revisions, a "Delete Revision" will be created only if the revisions configuration is set and enabled.
+  In that case, another revision will be created to capture the document’s state at the time of deletion.
+
+* This "Delete Revision" marks the document's deletion and is stored in the **Revisions Bin**.  
+  In addition, all the revisions that were created over time for the deleted document are also moved to the Revisions Bin.
+  Moving the revisions to the Revisions Bin ensures that historical data remains accessible.  
+**Deleting revisions**:
+
+* To clear up space, you can **manually** delete revisions from the Revisions Bin.  
+  Removing a selected "Delete Revision" will also delete ALL its associated revisions.  
+  This action is irreversible - once a revision is removed from the bin, it cannot be recovered.  
+
+* To clean the Revisions Bin **automatically**, you can set up the [Revisions Bin Cleaner](../../../../document-extensions/revisions/revisions-bin-cleaner.mdx),  
+  which deletes revisions based on a defined frequency and a specified "age to keep".
+
+* While the Revisions Bin provides access only to a deleted document's revisions,  
+  the [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx) view provides access to ALL revisions in the database,
+  where they can also be deleted.
+
+* For a complete list of deletion options, see [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#all-ways-to-delete-revisions).
+**Restoring revisions**:
+
+* Revisions of a deleted document can be restored from the Revisions Bin and associated with a new document.
+  Learn more [below](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx#restoring-revisions).
+
+
+
+## The Revisions Bin view
+
+![Revisions bin items](./assets/revisions-bin-1.png)
+
+1. Go to **Documents &gt; Revisions Bin**
+2. Each item listed represents a "Delete Revision", marking the deletion of a document.
+3. The ID of the deleted document.  
+   Click the ID to view the associated revisions, which were created for the document before it was deleted.
+4. The change vector of the "Delete Revision".
+5. The date and time when the document was deleted.
+6. Click the _Delete_ button to remove the selected "Delete Revision" items.  
+   
+    <Admonition type="warning" title="">
+    When a "Delete Revision" is removed, ALL its associated revisions are permanently deleted and cannot be recovered.
+    This action is irrevocable.
+    </Admonition>
+Clicking the `orders/829-A` ID from the above list will open the following view:
+
+
+![Delete revision](./assets/revisions-bin-2.png 'A "Delete Revision"')
+
+1. This is the ID of the deleted document.
+2. The "DELETE REVISION" label indicates that you are viewing a "Delete Revision".
+3. This text appears for a "Delete Revision," displaying the time when the document was removed.
+   The flags include the `DeleteRevision` flag, confirming it is a "Delete Revision."
+4. The timestamp of the "Delete Revision", indicating when the document was deleted.
+5. These are the revisions that were created for the document before it was deleted.
+   You can click on each one to view and manage it like any other revision,  
+   e.g., clone it or compare it with other revisions. 
+
+
+
+## Restoring revisions
+
+* Revisions of a deleted document can be restored and associated with a new document.  
+  To restore them, create a new document with the **exact same ID** as the deleted document.  
+
+* When a new document is created with the same ID:  
+  * The revisions of the deleted document are retrieved from the Revisions Bin and associated with the new document.  
+    This occurs even if the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) is not defined or enabled for this document collection at the time.
+  * These revisions are removed from the Revisions Bin once restored.
+  * The "Delete Revision" that marked the original document's deletion will also be removed from the Revisions Bin  
+    and will now appear in the new document’s revision history.
+
+![Restoring revisions](./assets/revisions-bin-3.png)
+
+1. The ID of the deleted document that was recreated.
+2. The content of the newly created document.
+3. If the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration)
+   is defined and enabled for the document collection at the time of creating the new document, a new revision marking its creation will be generated.
+4. This is the "Delete Revision" that marked the deletion of the original document.   
+   This revision is now part of the new document's revision history.
+6. These are the revisions of the deleted document that are now restored.
+
+
+

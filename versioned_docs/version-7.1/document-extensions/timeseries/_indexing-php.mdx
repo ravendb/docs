@@ -1,0 +1,616 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [Static](../../studio/database/indexes/indexes-overview.mdx#index-types) time series indexes can be created from your client application or from the Studio.
+
+* Indexing allows for fast retrieval of the indexed time series data when querying a time series.
+
+* In this page:  
+  * [Time series indexes vs Document indexes](../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
+      * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
+  * [Syntax](../../document-extensions/timeseries/indexing.mdx#syntax)
+
+</Admonition>
+## Time series indexes vs Document indexes
+
+#### Auto-Indexes:
+
+* Time series index:  
+  Dynamic time series indexes are Not created in response to queries.
+
+* Document index:  
+  [Auto-indexes](../../studio/database/indexes/indexes-overview.mdx#indexes-types) are created in response to dynamic queries.
+#### Data source:
+
+* Time series index:
+
+    * Time series indexes process **segments** that contain time series entries.  
+      The entries are indexed through the segment they are stored in, for example, using a LINQ syntax that resembles this one:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from segment in timeseries
+from entry in segment
+...
+`}
+</CodeBlock>
+</TabItem>
+
+    * The following items can be indexed per index-entry in a time series index:
+        * Values & timestamp of a time series entry
+        * The entry tag
+        * Content from a document referenced by the tag
+        * Properties of the containing segment
+
+* Document index:
+
+    * The index processes fields from your JSON documents.  
+      Documents are indexed through the collection they belong to, for example, using this LINQ syntax:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from employee in employees
+...
+`}
+</CodeBlock>
+</TabItem>
+#### Query results:
+
+* Time series index:  
+  When [querying](../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+
+* Document index:  
+  The resulting objects are the document entities (unless results are projected).
+
+
+
+## Ways to create a time series index
+
+There are two main ways to create a time series index:
+
+1. Create a class that inherits from one of the following abstract index creation task classes:
+    * `AbstractTimeSeriesIndexCreationTask`  
+      for [map](../../indexes/map-indexes.mdx) and [map-reduce](../../indexes/map-reduce-indexes.mdx) time series indexes.  
+    * `AbstractMultiMapTimeSeriesIndexCreationTask`  
+      for [multi-map](../../indexes/multi-map-indexes.mdx) time series indexes.  
+    * `AbstractJavaScriptTimeSeriesIndexCreationTask`  
+      for static javascript indexes.  
+
+2. Deploy a time series index definition via [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx):
+   * Create a `TimeSeriesIndexDefinition` directly.  
+   * Create a strongly typed index definition using `TimeSeriesIndexDefinitionBuilder`.  
+
+
+
+## Examples of time series indexes
+
+#### Map index - index single time series from single collection:
+
+* In this index, we index data from the "StockPrices" time series entries in the "Companies" collection (`TradeVolume`, `Date`).   
+
+* In addition, we index the containing document id (`DocumentID`), which is obtained from the segment,  
+  and some content from the document referenced by the entry's Tag (`EmployeeName`).
+ 
+* Each tab below presents one of the different [ways](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index) the index can be defined.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="php">
+{`class StockPriceTimeSeriesFromCompanyCollection_IndexEntry
+{
+    // The index-fields:
+    // =================
+    public ?float $tradeVolume = null;
+    public ?DateTime $date = null;
+    public ?string $companyID = null;
+    public ?string $employeeName = null;
+
+    public function getTradeVolume(): ?float
+    {
+        return $this->tradeVolume;
+    }
+
+    public function setTradeVolume(?float $tradeVolume): void
+    {
+        $this->tradeVolume = $tradeVolume;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(?DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function getCompanyID(): ?string
+    {
+        return $this->companyID;
+    }
+
+    public function setCompanyID(?string $companyID): void
+    {
+        $this->companyID = $companyID;
+    }
+
+    public function getEmployeeName(): ?string
+    {
+        return $this->employeeName;
+    }
+
+    public function setEmployeeName(?string $employeeName): void
+    {
+        $this->employeeName = $employeeName;
+    }
+}
+class StockPriceTimeSeriesFromCompanyCollection extends AbstractTimeSeriesIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from segment in timeSeries.Companies.StockPrices" .
+            "from entry in segment.Entries" .
+
+            // Can load the document referenced in the TAG:
+            "let employee = LoadDocument(entry.Tag, \\"Employees\\")" .
+
+            // Define the content of the index-fields:
+            // =======================================
+            "select new" .
+            "{" .
+            // Retrieve content from the time series ENTRY:
+            "    TradeVolume = entry.Values[4]," .
+            "    Date = entry.Timestamp.Date," .
+            // Retrieve content from the SEGMENT:
+            "    CompanyId = segment.DocumentId," .
+            // Retrieve content from the loaded DOCUMENT:
+            "    EmployeeName = employee.FirstName + \\" \\" + employee.LastName" .
+            "}" ;
+        // Call 'AddMap', specify the time series name to be indexed
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+<CodeBlock language="php">
+{`class StockPriceTimeSeriesFromCompanyCollection_JS extends AbstractJavaScriptTimeSeriesIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps(["
+            timeSeries.map('Companies', 'StockPrices', function (segment) {
+
+                return segment.Entries.map(entry => {
+                    let employee = load(entry.Tag, 'Employees');
+
+                    return {
+                        TradeVolume: entry.Values[4],
+                        Date: new Date(entry.Timestamp.getFullYear(),
+                                       entry.Timestamp.getMonth(),
+                                       entry.Timestamp.getDate()),
+                        CompanyID: segment.DocumentId,
+                        EmployeeName: employee.FirstName + ' ' + employee.LastName
+                    };
+                });
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+<CodeBlock language="php">
+{`// Define the 'index definition'
+$indexDefinition = new TimeSeriesIndexDefinition();
+$indexDefinition->setName("StockPriceTimeSeriesFromCompanyCollection ");
+$indexDefinition->setMaps(["
+    from segment in timeSeries.Companies.StockPrices
+    from entry in segment.Entries
+
+    let employee = LoadDocument(entry.Tag, \\"Employees\\")
+
+    select new
+    {
+        TradeVolume = entry.Values[4],
+        Date = entry.Timestamp.Date,
+        CompanyId = segment.DocumentId,
+        EmployeeName = employee.FirstName + ' ' + employee.LastName
+    }"
+]);
+
+// Deploy the index to the server via 'PutIndexesOperation'
+$documentStore->maintenance()->send(new PutIndexesOperation($indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IndexDefinition_builder" label="IndexDefinition_builder">
+<CodeBlock language="php">
+{`// Create the index builder
+$TSIndexDefBuilder = new TimeSeriesIndexDefinitionBuilder("StockPriceTimeSeriesFromCompanyCollection ");
+
+// "StockPrices"
+$TSIndexDefBuilder->setMap("
+    from segment in timeSeries.Companies.StockPrices
+    from entry in segment.Entries
+    select new 
+    {
+        TradeVolume = entry.Values[4],
+        Date = entry.Timestamp.Date,
+        CompanyId = segment.DocumentId,
+    }
+");
+
+// Build the index definition
+$indexDefinitionFromBuilder = $TSIndexDefBuilder->toIndexDefinition($documentStore->getConventions());
+
+// Deploy the index to the server via 'PutIndexesOperation'
+$documentStore->maintenance()->send(new PutIndexesOperation($indexDefinitionFromBuilder));
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+* Querying this index, you can retrieve the indexed time series data while filtering by any of the index-fields.
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query_example_1" label="Query_example_1">
+<CodeBlock language="php">
+{`$session = $documentStore->openSession();
+try {
+    // Retrieve time series data for the specified company:
+    // ====================================================
+    /** @var array<StockPriceTimeSeriesFromCompanyCollection_IndexEntry> $results */
+    $results = $session
+       ->query(StockPriceTimeSeriesFromCompanyCollection_IndexEntry::class,
+           StockPriceTimeSeriesFromCompanyCollection::class)
+       ->whereEquals("CompanyId", "Companies/91-A")
+       ->toList();
+} finally {
+    $session->close();
+}
+
+// Results will include data from all 'StockPrices' entries in document 'Companies/91-A'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "CompanyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_1" label="RQL_1">
+<CodeBlock language="php">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "CompanyID" == "Comapnies/91-A"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_2" label="RQL_2">
+<CodeBlock language="sql">
+{`from index "StockPriceTimeSeriesFromCompanyCollection"
+where "TradeVolume" > 150_000_000
+select distinct CompanyID
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+#### Multi-Map index - index time series from several collections:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Multi_Map_index" label="Multi_Map_index">
+<CodeBlock language="php">
+{`class Vehicles_ByLocation_IndexEntry
+{
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+    private ?DateTime $date = null;
+    private ?string $documentId = null;
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(?DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function getDocumentId(): ?string
+    {
+        return $this->documentId;
+    }
+
+    public function setDocumentId(?string $documentId): void
+    {
+        $this->documentId = $documentId;
+    }
+}
+class Vehicles_ByLocation extends AbstractMultiMapTimeSeriesIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Call 'AddMap' for each collection you wish to index
+        // ===================================================
+        // "GPS_Coordinates"
+        $this->addMap("
+            from segment in timeSeries.Planes.GPS_Coordinates
+            from entry in segment.Entries
+            select new
+            {
+                Latitude = entry.Values[0],
+                Longitude = entry.Values[1],
+                Date = entry.Timestamp.Date,
+                DocumentId = segment.DocumentId
+            }
+        ");
+
+        $this->addMap("
+            from segment in timeSeries.Ships.GPS_Coordinates
+            from entry in segment.Entries
+            select new
+            {
+                Latitude = entry.Values[0],
+                Longitude = entry.Values[1],
+                Date = entry.Timestamp.Date,
+                DocumentId = segment.DocumentId
+            }
+        ");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Map-Reduce index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_Reduce_index" label="Map_Reduce_index">
+<CodeBlock language="php">
+{`class TradeVolume_PerDay_ByCountry_Result
+{
+    private ?float $totalTradeVolume = null;
+    private ?DateTime $date = null;
+    private ?string $country = null;
+
+    public function getTotalTradeVolume(): ?float
+    {
+        return $this->totalTradeVolume;
+    }
+
+    public function setTotalTradeVolume(?float $totalTradeVolume): void
+    {
+        $this->totalTradeVolume = $totalTradeVolume;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(?DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+}
+class TradeVolume_PerDay_ByCountry extends AbstractTimeSeriesIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Define the Map part:
+        // "StockPrices"
+        $this->map = "
+            from segment in timeSeries.Companies.StockPrices
+            from entry in segment.Entries
+            
+            let company = LoadDocument(segment.DocumentId, 'Companies')
+            
+            select new
+            {
+                Date = entry.Timestamp.Date,
+                Country = company.Address.Country,
+                TotalTradeVolume = entry.Values[4],
+            }
+        ";
+
+        // Define the Reduce part:
+        $this->reduce = "
+            from r in results
+            group r by new {r.date, r.country}
+            into g
+            select new 
+            {
+                Date = g.Key.date,
+                Country = g.Key.country,
+                TotalTradeVolume = g.Sum(x => x.total_trade_volume)
+            }
+        ";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+### `AbstractJavaScriptTimeSeriesIndexCreationTask`
+ 
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`class AbstractJavaScriptTimeSeriesIndexCreationTask(AbstractIndexCreationTaskBase[TimeSeriesIndexDefinition]):
+    def __init__(
+        self,
+        conventions: DocumentConventions = None,
+        priority: IndexPriority = None,
+        lock_mode: IndexLockMode = None,
+        deployment_mode: IndexDeploymentMode = None,
+        state: IndexState = None,
+    ):
+        super().__init__(conventions, priority, lock_mode, deployment_mode, state)
+        self._definition = TimeSeriesIndexDefinition()
+
+    @property
+    def maps(self) -> Set[str]:
+        return self._definition.maps
+
+    @maps.setter
+    def maps(self, maps: Set[str]):
+        self._definition.maps = maps
+
+    @property
+    def reduce(self) -> str:
+        return self._definition.reduce
+
+    @reduce.setter
+    def reduce(self, reduce: str):
+        self._definition.reduce = reduce
+`}
+</CodeBlock>
+</TabItem>
+### `TimeSeriesIndexDefinition`
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`class TimeSeriesIndexDefinition(IndexDefinition):
+    @property
+    def source_type(self) -> IndexSourceType:
+        return IndexSourceType.TIME_SERIES
+`}
+</CodeBlock>
+</TabItem>
+
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular 
+[`IndexDefinition`](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) 
+class from which it inherits, it is recommended to use `TimeSeriesIndexDefinition` when 
+creating a time series index definition in case additional functionality is added in 
+future versions of RavenDB.
+### `TimeSeriesIndexDefinitionBuilder`
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`class TimeSeriesIndexDefinitionBuilder(AbstractIndexDefinitionBuilder[TimeSeriesIndexDefinition]):
+    def __init__(self, index_name: Optional[str] = None):
+        super().__init__(index_name)
+        self.map: Optional[str] = None
+`}
+</CodeBlock>
+</TabItem>
+### `TimeSeriesSegment`
+
+* Segment properties include the entries data and aggregated values that RavenDB automatically updates in the segment's header.
+
+* The following segment properties can be indexed:
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`public sealed class TimeSeriesSegment
+\{
+    // The ID of the document this time series belongs to
+    public string DocumentId \{ get; set; \}
+ 
+    // The name of the time series this segment belongs to
+    public string Name \{ get; set; \}
+  
+    // The smallest values from all entries in the segment
+    // The first array item is the Min of all first values, etc.
+    public double[] Min \{ get; set; \}
+
+    // The largest values from all entries in the segment
+    // The first array item is the Max of all first values, etc.
+    public double[] Max \{ get; set; \}
+  
+    // The sum of all values from all entries in the segment 
+    // The first array item is the Sum of all first values, etc.
+    public double[] Sum \{ get; set; \}
+  
+    // The number of entries in the segment
+    public int Count \{ get; set; \}
+  
+    // The timestamp of the first entry in the segment
+    public DateTime Start \{ get; set; \}
+  
+    // The timestamp of the last entry in the segment
+    public DateTime End \{ get; set; \}
+  
+    // The segment's entries themselves
+    public TimeSeriesEntry[] Entries \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* These are the properties of a `TimeSeriesEntry` which can be indexed:
+
+<TabItem value="php" label="php">
+<CodeBlock language="php">
+{`public class TimeSeriesEntry
+\{
+    public DateTime Timestamp;
+    public string Tag;
+    public double[] Values;
+
+    // This is exactly equivalent to Values[0]
+    public double Value;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

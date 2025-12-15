@@ -1,0 +1,46 @@
+---
+title: "Querying: Intersection"
+sidebar_label: Intersection
+sidebar_position: 9
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IntersectionCsharp from './_intersection-csharp.mdx';
+import IntersectionJava from './_intersection-java.mdx';
+import IntersectionPython from './_intersection-python.mdx';
+import IntersectionPhp from './_intersection-php.mdx';
+import IntersectionNodejs from './_intersection-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IntersectionCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IntersectionJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IntersectionPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IntersectionPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IntersectionNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [How to Use Intersect](../../client-api/session/querying/how-to-use-intersect)
+
+
+-->

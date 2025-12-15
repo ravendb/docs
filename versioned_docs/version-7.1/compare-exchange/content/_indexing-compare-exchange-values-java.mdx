@@ -1,0 +1,66 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can index compare-exchange values in a static-index.  
+  This lets you query documents based on values stored in compare-exchange items.
+
+* Modifications to the indexed compare-exchange values will trigger index updates.  
+  The index will be updated whenever an indexed compare-exchange value changes,  
+  or when documents in the indexed collection(s) are modified.  
+
+* In this page:  
+  * [How to use](../indexes/indexing-compare-exchange-values.mdx#how-to-use)  
+  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
+  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
+
+</Admonition>
+
+## How to use 
+
+When creating an index using `AbstractIndexCreationTask`, use javaScript 
+to load a compare exchange value by its key.  
+
+### Examples
+
+These indexes map the rooms in a hotel, as well as compare exchange values 
+representing the guests in those rooms.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`private class Compare_Exchange_JS_Index extends AbstractJavaScriptIndexCreationTask{
+    public Compare_Exchange_JS_Index()
+    {
+        setMaps(Collections.singleton(
+                "map('HotelRooms', function (room) {\\n"+
+                "   var guests = cmpxchg(room.RoomID);\\n"+
+                "   return {\\n"+
+                "       RoomID: room.RoomID,\\n"+
+                "       Guests: guests\\n"+
+                "   }\\n"+
+                "});"
+                )
+        );
+    };
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Querying the Index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="java">
+{`IRawDocumentQuery<Hotelroom> VIPRooms = session.advanced().rawQuery(Hotelroom.class,
+    "from Hotelrooms as room\\n" +
+        "where room.Guests == cmpxchg('VIP')");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>

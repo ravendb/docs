@@ -1,0 +1,323 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can index compare-exchange values in a static-index.  
+  This lets you query documents based on values stored in compare-exchange items.
+
+* Modifications to the indexed compare-exchange values will trigger index updates.  
+  The index will be updated whenever an indexed compare-exchange value changes,  
+  or when documents in the indexed collection(s) are modified.
+
+* In this article:  
+  * [Create sample compare-exchange items](../compare-exchange/indexing-cmpxchg-values#create-sample-compare-exchange-items)
+  * [Index compare-exchange values](../compare-exchange/indexing-cmpxchg-values#index-compare-exchange-values)
+  * [Query the index](../compare-exchange/indexing-cmpxchg-values#query-the-index)
+  * [Query the index and project compare-exchange values](../compare-exchange/indexing-cmpxchg-values#query-the-index-and-project-compare-exchange-values)
+  * [Syntax](../compare-exchange/indexing-cmpxchg-values#syntax)  
+
+</Admonition>
+
+---
+
+## Create sample compare-exchange items
+
+Let’s create some sample documents and compare-exchange items to use in the examples below.  
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample_documents" label="Sample_documents">
+```js
+// Create some hotel room DOCUMENTS with general info:
+// =================================================== 
+
+const session = documentStore.openSession();
+
+for (let i = 215; i <= 217; i++) {
+    const room = new HotelRoom(`R${i}`, `Description of room number R${i}`);
+    await session.store(room, `hotelRooms/R${i}`);
+}
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Sample_compare_exchange_items" label="Sample_compare_exchange_items">
+```js
+// Create some COMPARE-EXCHANGE ITEMS to track current details of each room:
+// ==========================================================================
+
+// Value for room R215
+let hotelRoomDetails = new HotelRoomCurrentDetails({
+    CurrentNumberOfGuests: 2,
+    ReservedBy: "customers/2",
+    ReservedUntil: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+    FullyPaid: true,
+    CustomerEmail: "customer2@gmail.com",
+    CustomerPhone: "123-123-1234"
+});
+
+let putResult = await documentStore.operations.send(
+    new PutCompareExchangeValueOperation("R215", hotelRoomDetails, 0)
+);
+
+// Value for room R216
+hotelRoomDetails = new HotelRoomCurrentDetails({
+    CurrentNumberOfGuests: 3,
+    ReservedBy: "customers/3",
+    ReservedUntil: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    FullyPaid: false,
+    CustomerEmail: "customer3@gmail.com",
+    CustomerPhone: "456-456-6789"
+});
+
+putResult = await documentStore.operations.send(
+    new PutCompareExchangeValueOperation("R216", hotelRoomDetails, 0)
+);
+
+// Value for room R217
+// This room is currently not occupied...
+hotelRoomDetails = new HotelRoomCurrentDetails({
+    CurrentNumberOfGuests: 0
+});
+
+putResult = await documentStore.operations.send(
+    new PutCompareExchangeValueOperation("R217", hotelRoomDetails, 0)
+);
+```
+</TabItem>
+<TabItem value="Sample_classes" label="Sample_classes">
+```js
+// Sample classes used:
+// ====================
+
+// The document
+class HotelRoom {
+    constructor(roomNumber = '', description = '') {
+        Object.assign(this, {
+            RoomNumber: roomNumber,
+            Description: description
+        });
+    }
+}
+
+// The compare-exchange value
+class HotelRoomCurrentDetails {
+    constructor({
+        CurrentNumberOfGuests = 0,
+        ReservedBy = null,
+        ReservedUntil = null,
+        FullyPaid = false,
+        CustomerEmail = null,
+        CustomerPhone = null
+    } = {}) {
+        Object.assign(this, {
+            CurrentNumberOfGuests,
+            ReservedBy,
+            ReservedUntil,
+            FullyPaid,
+            CustomerEmail,
+            CustomerPhone
+        });
+    }
+}
+
+// Projected content 
+class ProjectedCustomerDetails {
+    constructor({
+        CustomerEmail = null,
+        CustomerPhone = null,
+        RoomNumber = null
+    } = {}) {
+        Object.assign(this, {
+            CustomerEmail,
+            CustomerPhone,
+            RoomNumber
+        });
+    }
+}
+
+// Projected content 
+class ProjectedNumberOfGuests { 
+    constructor({
+        CurrentNumberOfGuests = 0,
+        RoomNumber = null
+    } = {}) {
+        Object.assign(this, {
+            CurrentNumberOfGuests,
+            RoomNumber
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Index compare-exchange values
+
+* This index maps the rooms in a hotel, as well as compare-exchange values representing the guests in those rooms.
+
+* Use method `cmpxchg` to load the current details of each room from the associated compare-exchange value.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```js
+class Rooms_ByGuestsAndPaymentStatus extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("HotelRooms", room => {
+            // Call method 'cmpxchg'
+            // to load the compare-exchange value by its key (room number)
+            const cmpXchgValue = cmpxchg(room.RoomNumber);
+
+            return {
+                // Index content from the document:
+                RoomNumber: room.RoomNumber,
+                
+                // Index content from the compare-exchange value:
+                NumberOfGuests: cmpXchgValue ? cmpXchgValue.CurrentNumberOfGuests : null,
+                FullyPaid: cmpXchgValue ? cmpXchgValue.FullyPaid : null
+            };
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Query the index
+
+* Using the index above, you can query for all rooms (room documents) that are occupied by a specific number of guests.  
+  The _NumberOfGuests_ index-field, which is used in the query, contains the number of guests taken from the related compare-exchange value.
+
+* For example, you can find all vacant rooms (0 guests) or rooms occupied by any specific number of guests.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// When querying the index,
+// the session does not need to be opened in cluster-wide mode.
+const session = documentStore.openSession();
+
+// Query for all vacant rooms (0 guests)
+const vacantRooms = await session
+    .query({ 
+        indexName: "Rooms/ByGuestsAndPaymentStatus" 
+    })
+    // Index-field 'NumberOfGuests' contains guest count from the compare-exchange item
+    .whereEquals("NumberOfGuests", 0)
+    .all();
+
+// Using the sample data created above, Room R217 will be returned, since it has no guests.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const session = documentStore.openSession();
+
+const vacantRooms = await session.advanced
+    .rawQuery("from index 'Rooms/ByGuestsAndPaymentStatus' where NumberOfGuests == 0")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Rooms/ByGuestsAndPaymentStatus"
+where NumberOfGuests == 0
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Query the index and project compare-exchange values
+
+* In addition to querying index-fields that already contain information from the related compare-exchange value,  
+  you can also project fields from the compare-exchange value into the query results.
+
+* In the following query example, we retrieve all customers who haven't fully paid yet,  
+  and project their phone number from the compare-exchange value using `cmpxchg()`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// The session does not need to be opened in cluster-wide mode
+const session = documentStore.openSession();
+
+// Define the projection 
+const queryData = QueryData.customFunction("room", `{
+    // Use method 'cmpxchg' to retrieve data from the compare-exchange value
+    customerPhone: cmpxchg(room.RoomNumber).CustomerPhone,
+    roomNumber: room.RoomNumber 
+}`);
+
+const phonesOfCustomersThatNeedToPay = await session
+    .query({ indexName: "Rooms/ByGuestsAndPaymentStatus" })
+     // Index-fields 'FullyPaid' & 'NumberOfGuests' contain info from the compare-exchange item
+    .whereGreaterThanOrEqual("NumberOfGuests", 1)
+    .andAlso()
+    .whereEquals("FullyPaid", false)
+     // Project query results
+    .selectFields(queryData)
+    .all();
+    
+// Using the sample data created above, 
+// customer from room R216 will be returned in the projected data, since they haven't fully paid yet.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const session = documentStore.openSession();
+
+const phonesOfCustomersThatNeedToPay = await session.advanced
+    .rawQuery(`
+        from index "Rooms/ByGuestsAndPaymentStatus" as x 
+        where x.FullyPaid = false 
+          and (x.NumberOfGuests > 0 and x.NumberOfGuests != null)
+        select { 
+            CustomerPhone : cmpxchg(x.RoomNumber).CustomerPhone,
+            RoomNumber : x.RoomNumber
+        }
+    `)
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Rooms/ByGuestsAndPaymentStatus" as x 
+where x.FullyPaid = false and (x.NumberOfGuests > 0 and x.NumberOfGuests != null)
+select { 
+    CustomerPhone : cmpxchg(x.RoomNumber).CustomerPhone,
+    RoomNumber : x.RoomNumber
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Syntax
+
+---
+
+### `cmpxchg()`  
+Load a compare exchange value in the index-definition by its key.
+
+<TabItem value="" label="">
+```js
+// Load one compare exchange value
+cmpxchg(key);
+
+```
+</TabItem>
+
+| Parameter | Type                 | Description                                       |
+|-----------|----------------------|---------------------------------------------------|
+| **key**   | `string`             | The key of a particular compare exchange value.   |

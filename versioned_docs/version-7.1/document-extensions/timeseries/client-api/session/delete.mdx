@@ -1,0 +1,51 @@
+---
+title: "Delete Time Series"
+sidebar_label: Delete
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteCsharp from './_delete-csharp.mdx';
+import DeletePython from './_delete-python.mdx';
+import DeletePhp from './_delete-php.mdx';
+import DeleteNodejs from './_delete-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DeletePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DeletePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

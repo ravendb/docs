@@ -1,0 +1,48 @@
+---
+title: "How to Handle Document Relationships"
+sidebar_label: ...handle document relationships
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HandleDocumentRelationshipsCsharp from './_handle-document-relationships-csharp.mdx';
+import HandleDocumentRelationshipsJava from './_handle-document-relationships-java.mdx';
+import HandleDocumentRelationshipsNodejs from './_handle-document-relationships-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HandleDocumentRelationshipsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HandleDocumentRelationshipsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HandleDocumentRelationshipsNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Include Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)
+
+### Indexes
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Indexing Related Documents](../../indexes/indexing-related-documents)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
+
+### Document Extensions
+- [Include Time Series](../../document-extensions/timeseries/client-api/session/include/overview)
+- [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)
+
+
+-->

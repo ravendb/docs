@@ -1,0 +1,227 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* RavenDB's Client API is structured in layers.  
+  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store.mdx) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
+  which handle most common database tasks like loading, saving, and querying documents.
+
+* Beneath this high-level interface are Operations and Commands:
+
+    * **Operations**:
+
+        * Operations provide management functionality outside the session's context,  
+          like creating a database, performing bulk actions, or managing server-wide configurations.
+
+        * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations.mdx).
+
+    * **Commands**:
+
+        * All high-level methods and Operations are built on top of Commands.  
+          Commands form the lowest-level operations that directly communicate with the server.
+
+        * For example, a session’s _Load_ method translates internally to a _LoadOperation_,  
+          which ultimately relies on a _GetDocumentsCommand_ to fetch data from the server.
+
+        * Commands are responsible for sending the appropriate request to the server using a `Request Executor`,  
+          and parsing the server's response.
+
+        * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-store)
+          or the [Session's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-session),  
+          regardless of whether the command is session-related or not.
+
+* This layered structure lets you work at any level, depending on your needs.
+
+* In this page:
+    * [Execute command - using the Store Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-store-request-executor)
+    * [Execute command - using the Session Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-session-request-executor)
+    * [Available commands](../../client-api/commands/overview.mdx#available-commands)
+    * [Syntax](../../client-api/commands/overview.mdx#syntax)
+
+</Admonition>
+## Execute command - using the Store Request Executor
+
+This example shows how to execute the low-level `CreateSubscriptionCommand` via the **Store**.  
+(For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples.mdx)).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Execute_command" label="Execute_command">
+<CodeBlock language="csharp">
+{`// Using the store object
+using (var store = new DocumentStore())
+// Allocate a context from the store's context pool for executing the command
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    // Define a command
+    var cmd = new CreateSubscriptionCommand(store.Conventions,
+        new SubscriptionCreationOptions()
+    {
+        Name = "Orders subscription",
+        Query = "from Orders" 
+    });
+    
+    // Call 'Execute' on the store's Request Executor to send the command to the server,
+    // pass the command and the store context.
+    store.GetRequestExecutor().Execute(cmd, context);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Execute_command_async" label="Execute_command_async">
+<CodeBlock language="csharp">
+{`// Using the store object
+using (var store = new DocumentStore())
+// Allocate a context from the store's context pool for executing the command
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    // Define a command
+    var cmd = new CreateSubscriptionCommand(store.Conventions,
+        new SubscriptionCreationOptions()
+    {
+        Name = "Orders subscription",
+        Query = "from Orders" 
+    });
+    
+    // Call 'ExecuteAsync' on the store's Request Executor to send the command to the server,
+    // pass the command and the store context.
+    await store.GetRequestExecutor().ExecuteAsync(cmd, context);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Execute command - using the Session Request Executor
+
+This example shows how to execute the low-level `GetDocumentsCommand` via the **Session**.  
+(For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities.mdx)).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Execute_command" label="Execute_command">
+<CodeBlock language="csharp">
+{`// Using the session
+using (var session = store.OpenSession())
+{
+    // Define a command
+    var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
+
+    // Call 'Execute' on the session's Request Executor to send the command to the server
+    // Pass the command and the 'Session.Advanced.Context'
+    session.Advanced.RequestExecutor.Execute(cmd, session.Advanced.Context);
+    
+    // Access the results
+    var blittable = (BlittableJsonReaderObject)cmd.Result.Results[0];
+
+    // Deserialize the blittable JSON into your typed object
+    var order = session.Advanced.JsonConverter.FromBlittable<Order>(ref blittable,
+        "orders/1-A", false);
+
+    // Now you have a strongly-typed Order object that can be accessed
+    var orderedAt = order.OrderedAt;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Execute_command_async" label="Execute_command_async">
+<CodeBlock language="csharp">
+{`// Using the session
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Define a command
+    var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
+    
+    // Call 'ExecuteAsync' on the session's Request Executor to send the command to the server
+    // Pass the command and the 'Session.Advanced.Context'
+    await asyncSession.Advanced.RequestExecutor.ExecuteAsync(cmd, 
+        asyncSession.Advanced.Context);
+    
+    // Access the results
+    var blittable = (BlittableJsonReaderObject)cmd.Result.Results[0];
+
+    // Deserialize the blittable JSON into your typed object
+    var order = asyncSession.Advanced.JsonConverter.FromBlittable<Order>(ref blittable,
+        "orders/1-A", true);
+
+    // Now you have a strongly-typed Order object that can be accessed
+    var orderedAt = order.OrderedAt;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Note that the transaction created for the HTTP request when executing the command  
+  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes.mdx) method,  
+  even if both are called within the same code block.
+
+* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support.mdx).
+
+
+
+## Available commands
+
+* **The following low-level commands, which inherit from `RavenCommand`, are available**:
+
+    * ConditionalGetDocumentsCommand  
+    * CreateSubscriptionCommand  
+    * [DeleteDocumentCommand](../../client-api/commands/documents/delete.mdx)  
+    * DeleteSubscriptionCommand  
+    * DropSubscriptionConnectionCommand  
+    * ExplainQueryCommand  
+    * GetClusterTopologyCommand  
+    * GetConflictsCommand  
+    * GetDatabaseTopologyCommand  
+    * [GetDocumentsCommand](../../client-api/commands/documents/get.mdx)  
+    * GetIdentitiesCommand  
+    * GetNextOperationIdCommand  
+    * GetNodeInfoCommand  
+    * GetOperationStateCommand  
+    * GetRawStreamResultCommand  
+    * GetRevisionsBinEntryCommand  
+    * GetRevisionsCommand  
+    * GetSubscriptionsCommand  
+    * GetSubscriptionStateCommand  
+    * GetTcpInfoCommand  
+    * GetTrafficWatchConfigurationCommand  
+    * HeadAttachmentCommand  
+    * HeadDocumentCommand  
+    * HiLoReturnCommand  
+    * IsDatabaseLoadedCommand  
+    * KillOperationCommand  
+    * MultiGetCommand  
+    * NextHiLoCommand  
+    * NextIdentityForCommand  
+    * [PutDocumentCommand](../../client-api/commands/documents/put.mdx)  
+    * PutSecretKeyCommand  
+    * QueryCommand  
+    * QueryStreamCommand  
+    * SeedIdentityForCommand
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)  
+    * WaitForRaftIndexCommand  
+
+
+
+## Syntax
+
+<TabItem value="execute_syntax" label="execute_syntax">
+<CodeBlock language="csharp">
+{`void Execute<TResult>(RavenCommand<TResult> command,
+        JsonOperationContext context,
+        SessionInfo sessionInfo = null);
+
+Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
+        JsonOperationContext context,
+        SessionInfo sessionInfo = null,
+        CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

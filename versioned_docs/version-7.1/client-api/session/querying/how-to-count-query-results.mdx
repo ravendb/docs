@@ -1,0 +1,48 @@
+---
+title: "Count Query Results"
+sidebar_label: Count Query Results
+sidebar_position: 11
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToCountQueryResultsCsharp from './_how-to-count-query-results-csharp.mdx';
+import HowToCountQueryResultsPython from './_how-to-count-query-results-python.mdx';
+import HowToCountQueryResultsPhp from './_how-to-count-query-results-php.mdx';
+import HowToCountQueryResultsNodejs from './_how-to-count-query-results-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToCountQueryResultsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToCountQueryResultsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToCountQueryResultsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToCountQueryResultsNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Query overview](../../../client-api/session/querying/how-to-query)
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+- [Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field)
+- [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
+
+### Querying
+- [Filtering](../../../indexes/querying/filtering)
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)
+
+
+-->

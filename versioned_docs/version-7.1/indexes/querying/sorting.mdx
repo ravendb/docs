@@ -1,0 +1,57 @@
+---
+title: "Sort Index Query Results"
+sidebar_label: Sorting
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SortingCsharp from './_sorting-csharp.mdx';
+import SortingJava from './_sorting-java.mdx';
+import SortingPython from './_sorting-python.mdx';
+import SortingPhp from './_sorting-php.mdx';
+import SortingNodejs from './_sorting-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SortingCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SortingJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SortingPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <SortingPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SortingNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Sort dynamic queries results](../../client-api/session/querying/sort-query-results)
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Sorting &amp; Collation](../../indexes/sorting-and-collation)
+
+### Querying
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Sorting &amp; Collation](../../indexes/sorting-and-collation)
+- [Basics](../../indexes/querying/query-index)
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+- [Spatial](../../indexes/querying/spatial)
+
+
+-->

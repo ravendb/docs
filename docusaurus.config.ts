@@ -51,8 +51,8 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: "7.1",
-              path: "7.1"
+              label: "7.2",
+              path: "7.2"
             }
           },
           onlyIncludeVersions: getOnlyIncludeVersions(),

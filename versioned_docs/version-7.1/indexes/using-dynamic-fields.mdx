@@ -1,0 +1,49 @@
+---
+title: "Indexes: Dynamic Index Fields"
+sidebar_label: Dynamic Fields
+sidebar_position: 27
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UsingDynamicFieldsCsharp from './_using-dynamic-fields-csharp.mdx';
+import UsingDynamicFieldsJava from './_using-dynamic-fields-java.mdx';
+import UsingDynamicFieldsPython from './_using-dynamic-fields-python.mdx';
+import UsingDynamicFieldsPhp from './_using-dynamic-fields-php.mdx';
+import UsingDynamicFieldsNodejs from './_using-dynamic-fields-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <UsingDynamicFieldsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <UsingDynamicFieldsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <UsingDynamicFieldsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <UsingDynamicFieldsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <UsingDynamicFieldsNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Boosting](../indexes/boosting)
+- [Analyzers](../indexes/using-analyzers)
+- [Storing Data in Index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
+
+
+-->

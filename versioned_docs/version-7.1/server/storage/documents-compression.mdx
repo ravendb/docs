@@ -1,0 +1,40 @@
+---
+title: "Documents Compression"
+sidebar_label: Documents Compression
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DocumentsCompressionCsharp from './_documents-compression-csharp.mdx';
+import DocumentsCompressionNodejs from './_documents-compression-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DocumentsCompressionCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DocumentsCompressionNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [What are Operations](../../client-api/operations/what-are-operations)
+- [To Compact a Database](../../client-api/operations/server-wide/compact-database)
+
+### Server
+- [Database Configuration - Compress Collections Default](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault)
+- [Database Configuration - Compress Revisions Default](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault)
+
+### Studio
+- [Documents Compression](../../studio/database/settings/documents-compression)
+- [Database Record](../../studio/database/settings/database-record)
+
+
+-->

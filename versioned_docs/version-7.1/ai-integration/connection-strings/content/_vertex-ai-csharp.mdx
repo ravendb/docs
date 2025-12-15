@@ -1,0 +1,152 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article explains how to define a connection string to [Vertex AI](https://cloud.google.com/vertex-ai/docs/generative-ai/embeddings/get-text-embeddings),  
+  enabling RavenDB to seamlessly integrate its [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) with Google Cloud’s Vertex AI services.
+
+* This configuration supports **Vertex AI embeddings** only.  
+  It is not compatible with Google AI (Gemini API) endpoints or API key authentication.
+
+* RavenDB currently supports only text embeddings with Vertex AI.  
+  Chat models are not supported through this integration.  
+
+* In this article:
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Syntax](../../../ai-integration/connection-strings/vertex-ai.mdx#syntax) 
+    
+</Admonition>
+
+## Define the connection string - from the Studio
+
+![connection string to vetex ai](../assets/vertex-ai.png)
+
+1. **Name**  
+   Enter a name for this connection string.
+
+2. **Identifier** (optional)  
+   Enter an identifier for this connection string.  
+   Learn more about the identifier in the [connection string identifier](../../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
+
+3. **Model Type**  
+   Select "Text Embeddings".
+
+4. **Connector**  
+   Select **Vertex AI** from the dropdown menu.
+
+5. **AI Version** (optional)  
+   * Select the Vertex AI version to use.
+   * If not specified, `V1_Beta` is used.  
+     Learn more in the [Vertex AI REST API reference](https://cloud.google.com/vertex-ai/docs/reference/rest).
+
+6. **Google Credentials Json**  
+   Click "Show credentials" to enter your Google Cloud credentials in JSON format.  
+   These credentials are used to authenticate requests to Vertex AI services.  
+   To generate this JSON, follow the steps in [Google's guide to creating service account credentials](https://developers.google.com/workspace/guides/create-credentials#service-account).
+
+   Example:  
+   
+        <TabItem value="" label="">
+        ```json
+        {
+            "type": "service_account",
+            "project_id": "test-raven-237012",
+            "private_key_id": "12345678123412341234123456789101",
+            "private_key": "-----BEGIN PRIVATE KEY-----\\abCse=-----END PRIVATE KEY-----",
+            "client_email": "raven@test-raven-237012-237012.iam.gserviceaccount.com",
+            "client_id": "111390682349634407434",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/viewonly%40test-raven-237012.iam.gserviceaccount.com"
+        }
+        ```
+        </TabItem>   
+
+7. **Model**  
+   Select or enter the Vertex AI text embedding model to use.
+
+8. **Location**  
+  The Google Cloud region where the Vertex AI model is hosted (e.g., _us-central1_).
+
+9. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.  
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches) configuration key.
+
+10. Click **Test Connection** to confirm the connection string is set up correctly.
+
+11. Click **Save** to store the connection string or **Cancel** to discard changes.
+
+## Define the connection string - from the Client API
+
+<TabItem value="create_connection_string_vertex_ai" label="create_connection_string_vertex_ai">
+```csharp
+using (var store = new DocumentStore())
+{
+    // Define the connection string to Vertex AI
+    var connectionString = new AiConnectionString
+    {
+        // Connection string name & identifier
+        Name = "ConnectionStringToVertexAI", 
+        Identifier = "identifier-to-the-connection-string", // optional
+        
+        // Model type
+        ModelType = AiModelType.TextEmbeddings,
+    
+        // Vertex AI connection settings
+        VertexSettings = new VertexSettings(
+            model: "text‑embedding‑005",     // Name of the Vertex AI model to use
+            googleCredentialsJson: "{...}",  // Contents of your service account JSON file
+            location: "us-central1",         // Region where the model is hosted
+            aiVersion: VertexAIVersion.V1)   // Optional: specify V1 or V1_Beta
+    };
+    
+    // Optionally, override the default maximum number of query embedding batches
+    // that can be processed concurrently 
+    connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
+    
+    // Deploy the connection string to the server
+    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringResult = store.Maintenance.Send(operation);
+}
+```
+</TabItem>
+
+## Syntax
+
+<TabItem value="vertex_ai_settings" label="vertex_ai_settings">
+```csharp
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public AiModelType ModelType { get; set; }
+    public VertexSettings VertexSettings { get; set; }
+}
+
+public class VertexSettings : AbstractAiSettings
+{
+    public string Model { get; set; }
+    public string GoogleCredentialsJson { get; set; }
+    public string Location { get; set; }
+    public VertexAIVersion? AiVersion { get; set; }
+}
+
+public enum VertexAIVersion
+{
+    V1, // Represents the "V1" version of the Vertex AI API.
+    V1_Beta // Represents the "V1 beta" version of the Vertex AI API.
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+}
+```
+</TabItem>

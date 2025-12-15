@@ -1,0 +1,48 @@
+---
+title: "Delete Document Command"
+sidebar_label: Delete Document
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteCsharp from './_delete-csharp.mdx';
+import DeleteJava from './_delete-java.mdx';
+import DeletePython from './_delete-python.mdx';
+import DeletePhp from './_delete-php.mdx';
+import DeleteNodejs from './_delete-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeleteCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <DeleteJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DeletePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <DeletePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <DeleteNodejs />
+</LanguageContent>
+
+
+<!---
+### Commands
+- [Get document](../../../client-api/commands/documents/get)
+- [Put document](../../../client-api/commands/documents/put)
+- [Send multiple commands using a batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+
+-->

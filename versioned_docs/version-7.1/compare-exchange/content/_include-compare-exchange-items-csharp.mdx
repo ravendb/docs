@@ -1,0 +1,681 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Compare-exchange items can be included when [loading entities](../client-api/session/loading-entities) 
+  or when making [queries](../client-api/session/querying/how-to-query).
+
+* The Session [tracks](../client-api/session/what-is-a-session-and-how-does-it-work) the included compare-exchange items,
+  which means their values can be accessed later in the same session without making additional requests to the server.
+
+* In this page:
+    * [Sample data](../compare-exchange/include-cmpxchg-items#sample-data)
+    * [Include compare-exchange items when loading](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-loading)
+    * [Include compare-exchange items when querying](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-querying)
+    * [Syntax](../compare-exchange/include-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Sample data
+
+The examples in this article are based on the following **sample data**:  
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample_documents" label="Sample_documents">
+```csharp
+using (var session = store.OpenSession())
+{
+    // Create some company documents:
+    // ==============================
+
+    var company1 = new Company
+    {
+        Id = "companies/1",
+        Name = "Apple",
+        Supplier = "suppliers/1",
+        Workers = new[] { "employees/1", "employees/2" }
+    };
+
+    var company2 = new Company
+    {
+        Id = "companies/2",
+        Name = "Google",
+        Supplier = "suppliers/2",
+        Workers = new[] { "employees/3", "employees/4" }
+    };
+
+    var company3 = new Company
+    {
+        Id = "companies/3",
+        Name = "Microsoft",
+        Supplier = "suppliers/3",
+        Workers = new[] { "employees/6", "employees/5" }
+    };
+
+    session.Store(company1);
+    session.Store(company2);
+    session.Store(company3);
+
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="Sample_compare_exchange_items" label="Sample_compare_exchange_items">
+```csharp
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Create some compare-exchange items:
+    // ===================================
+
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "employees/1", "content for employee 1 ..");
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "employees/2", "content for employee 2 ..");
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "employees/3", "content for employee 3 ..");
+
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "suppliers/1", "content for supplier 1 ..");
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "suppliers/2", "content for supplier 2 ..");
+    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+        "suppliers/3", "content for supplier 3 ..");
+
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="Company_class" label="Company_class">
+```csharp
+public class Company
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Supplier { get; set; }
+    public string[] Workers { get; set; }
+
+    public Company() { }
+
+    public Company(string id, string name, string supplier, string[] workers)
+    {
+        Id = id;
+        Name = name;
+        Supplier = supplier;
+        Workers = workers;
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Include compare-exchange items when loading
+
+<Admonition type="note" title="">
+
+**Include single item**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'IncludeCompareExchangeValue'
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Load a company document + include a CmpXchg item:
+    // =================================================
+
+    var company1 = session.Load<Company>("companies/1", includes =>
+        // Call 'IncludeCompareExchangeValue'
+        // "Supplier" is the document property that holds the CmpXchg key to include
+        includes.IncludeCompareExchangeValue(c => c.Supplier));
+
+    // Calling 'Load' has triggered a server call
+    var numberOfRequests = session.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg item:
+    // =================================
+
+    // Call 'GetCompareExchangeValue' to access the content of the included CmpXchg item.
+    // Pass the CmpXchg item KEY. This will NOT trigger another server call.
+    var item = session.Advanced.ClusterTransaction
+        .GetCompareExchangeValue<string>(company1.Supplier);
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+
+    // The CmpXchg item value is available
+    var value = item.Value;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'IncludeCompareExchangeValue'
+using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Load a company document + include a CmpXchg item:
+    // =================================================
+
+    var company1 = await asyncSession.LoadAsync<Company>("companies/1", includes =>
+        // Call 'IncludeCompareExchangeValue'
+        // "Supplier" is the document property that holds the CmpXchg key to include
+        includes.IncludeCompareExchangeValue(c => c.Supplier));
+
+    // Calling 'LoadAsync' has triggered a server call
+    var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg item:
+    // =================================
+
+    // Call 'GetCompareExchangeValue' to access the content of the included CmpXchg item,
+    // pass the CmpXchg item KEY. This will NOT trigger another server call.
+    var item = await asyncSession.Advanced.ClusterTransaction
+        .GetCompareExchangeValueAsync<string>(company1.Supplier);
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+
+    // The CmpXchg item value is available
+    var value = item.Value;
+}
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Include multiple items**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Open a session with cluster-wide mode
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Load a company document + include multiple CmpXchg items:
+    // =========================================================
+        
+    var company1 = session.Load<Company>("companies/1", includes =>
+        // Call 'IncludeCompareExchangeValue'
+        // "Workers" is the document property that holds the list of keys to include
+        includes.IncludeCompareExchangeValue<Company>(c => c.Workers));
+
+    var numberOfRequests = session.Advanced.NumberOfRequests; 
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+
+    // Call 'GetCompareExchangeValues' to access the content of the included CmpXchg items.
+    // Pass the list of KEYS. This will NOT trigger another server call.
+    var items = session.Advanced.ClusterTransaction
+        .GetCompareExchangeValues<string>(company1.Workers);
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+
+    // The value of each item is available
+    var value1 = items["employees/1"].Value;
+    var value2 = items["employees/2"].Value;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Open a session with cluster-wide mode
+using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Load a company document + include multiple CmpXchg items:
+    // =========================================================
+    
+    var company1 = session.Load<Company>("companies/1", includes =>
+        // Call 'IncludeCompareExchangeValue'
+        // "Workers" is the document property that holds the list of keys to include
+        includes.IncludeCompareExchangeValue(c => c.Workers));
+
+    var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+
+    // Call 'GetCompareExchangeValues' to access the content of the included CmpXchg items.
+    // Pass the list of KEYS. This will NOT trigger another server call.
+    var items = await asyncSession.Advanced.ClusterTransaction
+        .GetCompareExchangeValuesAsync<string>(company1.Workers);
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+
+    // The value of each item is available
+    var value1 = items["employees/1"].Value;
+    var value2 = items["employees/2"].Value;
+}
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+---
+
+## Include compare-exchange items when querying
+
+<Admonition type="note" title="">
+
+**Dynamic query**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'IncludeCompareExchangeValue'
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make a dynamic query + include CmpXchg items:
+    // =============================================
+
+    var companies = session.Query<Company>()
+         // Call 'Include' with 'IncludeCompareExchangeValue'
+         // pass the PATH of the document property that contains the key of the CmpXchg item to include 
+        .Include(x => x.IncludeCompareExchangeValue(c => c.Supplier))
+        .ToList();
+
+    // Making the query has triggered a server call
+    var numberOfRequests = session.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+    
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        // Call 'GetCompareExchangeValue' to access the included CmpXchg item.
+        // Pass the KEY. This will NOT trigger another server call.
+        var item = session.Advanced.ClusterTransaction
+            .GetCompareExchangeValue<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'IncludeCompareExchangeValue'
+using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make a dynamic query + include CmpXchg items:
+    // =============================================
+
+    var companies = await asyncSession.Query<Company>()
+         // Call 'Include' with 'IncludeCompareExchangeValue'
+         // pass the PATH of the document property that contains the key of the CmpXchg item to include 
+        .Include(x => x.IncludeCompareExchangeValue(c => c.Supplier))
+        .ToListAsync();
+
+    // Making the query has triggered a server call
+    var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        // Call 'GetCompareExchangeValue' to access the included CmpXchg item.
+        // Pass the KEY. This will NOT trigger another server call.
+        var item = await asyncSession.Advanced.ClusterTransaction
+            .GetCompareExchangeValueAsync<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    // You can check that no further server calls were made
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="RawQuery_using_RQL" label="RawQuery_using_RQL">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'include cmpxchg'
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make a raw query + include CmpXchg items:
+    // =========================================
+
+    // In the provided RQL:
+    // * Call 'include' with 'cmpxchg'
+    // * Pass the PATH of the document property that contains the key of the CmpXchg item to include
+    var companies = session.Advanced
+        .RawQuery<Company>(@"
+            from 'Companies'
+            include cmpxchg('Supplier')")
+        .ToList();
+
+    var numberOfRequests = session.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+    
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+        // pass the KEY, this will NOT trigger another server call.
+        var item = session.Advanced.ClusterTransaction
+            .GetCompareExchangeValue<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="RawQuery_using_JS_function" label="RawQuery_using_JS_function">
+```csharp
+// Open a session with cluster-wide mode to enable calling 'includes.cmpxchg'
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make a raw query + include CmpXchg items using JavaScript method:
+    // =================================================================
+
+    // In the provided RQL:
+    // * Call 'includes.cmpxchg'
+    // * Pass the PATH of the document property that contains the key of the CmpXchg item to include  
+    var companies = session.Advanced
+        .RawQuery<Company>(@"
+            declare function includeCmpXchg(company) {
+                includes.cmpxchg(company.Supplier);
+                return company;
+            }
+            
+            from companies as c
+            select includeCmpXchg(c)")
+        .ToList();
+
+    var numberOfRequests = session.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+    
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        // Call 'getCompareExchangeValues' to access the content of the included CmpXchg items,
+        // pass the KEY. This will NOT trigger another server call.
+        var item = session.Advanced.ClusterTransaction
+            .GetCompareExchangeValue<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// RQL that can be used with a Raw Query:
+// ======================================
+
+from "Companies"
+include cmpxchg("Supplier")
+
+// or:
+
+from companies as c
+select c
+include cmpxchg(c.Supplier)
+
+// Using JS method:
+// ================
+
+declare function includeCmpXchg(company) {
+    includes.cmpxchg(company.Supplier);
+    return company;
+}
+
+from companies as c
+select includeCmpXchg(c)
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Index query**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// Open a session with cluster-wide mode
+using (var session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make an index query + include CmpXchg items:
+    // ============================================
+
+    var companies = session.Query<Companies_ByNameAndSupplier.IndexEntry, Companies_ByNameAndSupplier>()
+         // Call 'Include' with 'IncludeCompareExchangeValue'
+         // pass the PATH of the property that contains the key of the CmpXchg item to include
+        .Include(x => x.IncludeCompareExchangeValue(c => c.Supplier))
+        .OfType<Company>()
+        .ToList();
+
+    var numberOfRequests = session.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+    
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        var item = session.Advanced.ClusterTransaction
+            .GetCompareExchangeValue<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Open a session with cluster-wide mode
+using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+    // Make an index query + include CmpXchg items:
+    // ============================================
+    
+    var companies = await asyncSession.Query<Companies_ByNameAndSupplier.IndexEntry, Companies_ByNameAndSupplier>()
+         // Call 'Include' with 'IncludeCompareExchangeValue'
+         // pass the PATH of the property that contains the key of the CmpXchg item to include
+        .Include(x => x.IncludeCompareExchangeValue(c => c.Supplier))
+        .OfType<Company>()
+        .ToListAsync();
+
+    var numberOfRequests = asyncSession.Advanced.NumberOfRequests;
+    Console.WriteLine($"Number of requests made: {numberOfRequests}"); // Should be 1
+
+    // Access the included CmpXchg items:
+    // ==================================
+    
+    var cmpXchgItems = new List<CompareExchangeValue<string>>();
+
+    foreach (var company in companies)
+    {
+        var item = await asyncSession.Advanced.ClusterTransaction
+            .GetCompareExchangeValueAsync<string>(company.Supplier);
+
+        cmpXchgItems.Add(item);
+    }
+
+    Console.WriteLine(session.Advanced.NumberOfRequests == numberOfRequests); // Should be true
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// RQL that can be used with a Raw Query:
+// ======================================
+
+from index "Companies/ByNameAndSupplier"
+include cmpxchg("Supplier")
+
+// Using JS method:
+// ================
+
+declare function includeCmpXchg(company) {
+    includes.cmpxchg(company.Supplier);
+    return company;
+}
+
+from index "Companies/ByNameAndSupplier" as c
+select includeCmpXchg(c)
+```
+</TabItem>
+<TabItem value="Index" label="Index">
+```csharp
+public class Companies_ByNameAndSupplier : AbstractIndexCreationTask<Company>
+{
+    public class IndexEntry
+    {
+       public string Name { get; set;} 
+       public string Supplier { get; set; }
+    } 
+    
+    public Companies_ByNameAndSupplier()
+    {
+        Map = companies => from company in companies
+                           select new IndexEntry()
+                           {
+                               Name = company.Name,
+                               Supplier = company.Supplier
+                           };
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+* Note:  
+  Similar to the above dynamic query example, you can query the index with a [raw query](../indexes/querying/query-index#query-an-index-by-rawquery) using the provided RQL.
+
+</Admonition>
+
+---
+
+## Syntax
+
+<Admonition type="note" title="">
+
+**When loading entities or making queries**:  
+
+* Use method `IncludeCompareExchangeValue()` to include compare-exchange items with `session.Load()` or with queries.  
+
+<TabItem value="" label="">
+```csharp
+// Available overloads:
+IncludeCompareExchangeValue(string path);
+IncludeCompareExchangeValue(Expression<Func<T, string>> path);
+IncludeCompareExchangeValue(Expression<Func<T, IEnumerable<string>>> path);
+
+```
+</TabItem>
+
+| Parameter | Type                           | Description                                                                                                  |
+|-----------|--------------------------------|--------------------------------------------------------------------------------------------------------------|
+| **path**  | `string`                       | The key of the compare-exchange item to include.                                                             |
+| **path**  | `Expression<Func<T, string>>`  | An expression indicating the property path that resolves to the key of the compare-exchange item to include. |
+| **path**  | `Expression<Func<T, IEnumerable<string>>>`  | An expression indicating the property path that resolves to an array of keys of the items to include.  |
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**When querying with RQL**:  
+
+* Use the [include](../client-api/session/querying/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
+
+<TabItem value="" label="">
+```sql
+include cmpxchg(key)
+```
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**When using JavaScript functions within RQL**:
+
+* Use `includes.cmpxchg()` In [JavaScript functions](../client-api/session/querying/what-is-rql.mdx#declare) within RQL queries. 
+
+<TabItem value="" label="">
+```csharp
+includes.cmpxchg(key);
+```
+</TabItem>
+
+| Parameter | Type      | Description                                                                      |
+|-----------|-----------|----------------------------------------------------------------------------------|
+| **key**   | `string`  | The key of the compare exchange value you want to include, or a path to the key. |
+
+</Admonition>

@@ -1,0 +1,56 @@
+---
+title: "Session: Loading Entities"
+sidebar_label: Loading Entities
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import LoadingEntitiesCsharp from './_loading-entities-csharp.mdx';
+import LoadingEntitiesJava from './_loading-entities-java.mdx';
+import LoadingEntitiesPython from './_loading-entities-python.mdx';
+import LoadingEntitiesPhp from './_loading-entities-php.mdx';
+import LoadingEntitiesNodejs from './_loading-entities-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <LoadingEntitiesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <LoadingEntitiesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <LoadingEntitiesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <LoadingEntitiesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <LoadingEntitiesNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Deleting Entities](../../client-api/session/deleting-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

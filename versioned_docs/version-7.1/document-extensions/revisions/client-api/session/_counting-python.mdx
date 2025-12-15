@@ -1,0 +1,46 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can get the number of revisions a document has by using the session `advanced` method `get_count_for`.
+
+* In this page:  
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
+
+</Admonition>
+## Get revisions count
+
+<TabItem value="getCount" label="getCount">
+<CodeBlock language="python">
+{`# Get the number of revisions for document 'companies/1-A'
+revisions_count = session.advanced.revisions.get_count_for("companies/1-A")
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`def get_count_for(self, id_: str) -> int: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id_** | `str` | The ID of the document that revisions are counted for |
+
+| Return value | |
+| - | - |
+| `int` | The number of revisions for the specified document |
+
+
+
+

@@ -1,0 +1,182 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) made to all entities that it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `SaveChanges()` is called.
+
+* This article describes how to check for changes made to a specific **entity** within a session.  
+  To check for changes to **all** tracked entities, see [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx).
+
+* In this page:
+    * [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#check-for-entity-changes)
+    * [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes)
+    * [Syntax](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#syntax)
+
+</Admonition>
+## Check for entity changes 
+
+* The session's advanced property `HasChanged` indicates whether the specified entity was added, modified, or deleted within the session.
+
+* Note: The _HasChanged_ property is cleared after calling `SaveChanges()`.
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Store a new entity within the session
+    // =====================================
+    
+    Employee employee = new Employee \{FirstName = "John", LastName = "Doe"\};
+    session.Store(employee, "employees/1-A");
+    
+    // 'HasChanged' will be TRUE 
+    Assert.True(session.Advanced.HasChanged(employee));
+    
+    // 'HasChanged' will reset to FALSE after saving changes 
+    session.SaveChanges();
+    Assert.False(session.Advanced.HasChanged(employee));
+    
+    // Load & modify entity within the session
+    // =======================================
+    
+    employee = session.Load<Employee>("employees/1-A");
+    Assert.False(session.Advanced.HasChanged(employee)); // FALSE
+    
+    employee.LastName = "Brown";
+    Assert.True(session.Advanced.HasChanged(employee)); // TRUE
+    
+    session.SaveChanges();
+    Assert.False(session.Advanced.HasChanged(employee)); // FALSE
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get entity changes 
+
+* Use the session's advanced method `WhatChangedFor()` to get all changes made to the specified entity  
+  within the session.
+
+* Details will include:
+    * The name and path of the changed field
+    * Its old and new values
+    * The type of change
+
+* Note: `WhatChangedFor()` reports changes made prior to calling `SaveChanges()`.  
+  Calling it immediately after _SaveChanges_ will return no results, since all changes are cleared at that point.
+##### Example I
+
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Store (add) a new entity, it will be tracked by the session
+    Employee employee = new Employee \{FirstName = "John", LastName = "Doe"\};
+    session.Store(employee, "employees/1-A");
+
+    // Get the changes for the entity in the session
+    // Call 'WhatChangedFor', pass the entity object in the param
+    DocumentsChanges[] changesForEmployee = session.Advanced.WhatChangedFor(employee);
+    Assert.Equal(changesForEmployee.Length, 1); // a single change for this entity (adding)
+    
+    // Get the change type
+    DocumentsChanges.ChangeType changeType = changesForEmployee[0].Change;
+    Assert.Equal(changeType, DocumentsChanges.ChangeType.DocumentAdded);
+    
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="changes_3" label="changes_3">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Load the entity, it will be tracked by the session
+    Employee employee = session.Load<Employee>("employees/1-A");
+    
+    // Modify the entity
+    employee.FirstName = "Jim";
+    employee.LastName = "Brown";
+    
+    // Get the changes for the entity in the session
+    // Call 'WhatChangedFor', pass the entity object in the param
+    DocumentsChanges[] changesForEmployee = session.Advanced.WhatChangedFor(employee);
+   
+    Assert.Equal(changesForEmployee[0].FieldName, "FirstName");                           // Field name
+    Assert.Equal(changesForEmployee[0].FieldNewValue, "Jim");                             // New value
+    Assert.Equal(changesForEmployee[0].Change, DocumentsChanges.ChangeType.FieldChanged); // Change type
+    
+    Assert.Equal(changesForEmployee[1].FieldName, "LastName");
+    Assert.Equal(changesForEmployee[1].FieldNewValue, "Brown");
+    Assert.Equal(changesForEmployee[1].Change, DocumentsChanges.ChangeType.FieldChanged);
+    
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`// HasChanged
+bool HasChanged(object entity);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`// WhatChangedFor
+DocumentsChanges[] WhatChangedFor(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value         |                                    |
+|----------------------|------------------------------------|
+| `DocumentsChanges[]` | List of changes made to the entity |
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class DocumentsChanges
+\{
+    public object FieldOldValue \{ get; set; \}  // Previous field value
+    public object FieldNewValue \{ get; set; \}  // Current field value
+    public ChangeType Change \{ get; set; \}     // Type of change that occurred
+    public string FieldName \{ get; set; \}      // Name of field on which the change occurred
+    public string FieldPath \{ get; set; \}      // Path of field on which the change occurred
+    public string FieldFullName \{ get; \}       // Path + Name of field on which the change occurred
+\}
+
+public enum ChangeType
+\{
+    DocumentDeleted,
+    DocumentAdded,
+    FieldChanged,
+    NewField,
+    RemovedField,
+    ArrayValueChanged,
+    ArrayValueAdded,
+    ArrayValueRemoved
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

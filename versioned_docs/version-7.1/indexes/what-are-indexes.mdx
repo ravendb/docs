@@ -1,0 +1,59 @@
+---
+title: "What are Indexes"
+sidebar_label: What are Indexes
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatAreIndexesCsharp from './_what-are-indexes-csharp.mdx';
+import WhatAreIndexesJava from './_what-are-indexes-java.mdx';
+import WhatAreIndexesPython from './_what-are-indexes-python.mdx';
+import WhatAreIndexesPhp from './_what-are-indexes-php.mdx';
+import WhatAreIndexesNodejs from './_what-are-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatAreIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatAreIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <WhatAreIndexesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <WhatAreIndexesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatAreIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Query Overview](../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Query an Index](../indexes/querying/query-index)
+- [Stale Indexes](../indexes/stale-indexes)
+
+### Studio
+- [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Index List View](../studio/database/indexes/indexes-list-view)
+
+### Sharding
+- [Indexing in a Sharded DB](../sharding/indexing)
+- [Querying in a Sharded DB](../sharding/querying)
+
+
+-->

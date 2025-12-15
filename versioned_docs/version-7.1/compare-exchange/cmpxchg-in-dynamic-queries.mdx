@@ -1,0 +1,36 @@
+---
+title: "Compare-Exchange in Dynamic Queries"
+sidebar_label: "Compare-Exchange in Dynamic Queries"
+sidebar_position: 9
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CmpXchgInDynamicQueriesCsharp from './content/_cmpxchg-in-dynamic-queries-csharp.mdx';
+import CmpXchgInDynamicQueriesNodejs from './content/_cmpxchg-in-dynamic-queries-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CmpXchgInDynamicQueriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CmpXchgInDynamicQueriesNodejs />
+</LanguageContent>
+
+<!---
+### Indexes
+- [What Are Indexes](../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Client API
+- [Session Change Tracking](../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes)
+- [How to: Handle Document Relationships](../client-api/how-to/handle-document-relationships)
+
+### Compare Exchange
+- [Compare Exchange Overview](../compare-exchange/overview)
+-->

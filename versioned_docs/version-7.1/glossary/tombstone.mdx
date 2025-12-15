@@ -1,0 +1,40 @@
+---
+title: "Glossary: Tombstones"
+sidebar_label: Tombstone
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: Tombstones
+
+When a document is deleted, RavenDB will leave behind a "delete marker" which is called a Tombstone. 
+  
+### Where are They Used?
+
+* Replication and ETL - this is needed so delete operations can be replicated to other nodes
+* Indexes use tombstones in order to delete no longer relevant entries that refer to deleted documents
+* Periodic Backup uses tombstones in order to backup "deletions" of documents
+
+### Tombstone Cleaning
+
+The tombstones are periodically cleaned.  
+
+Cleaning will occur only for tombstones that were already processed by the modules where they are used:
+
+* Replication
+* Indexes
+* ETL 
+* Periodic Backup
+
+<Admonition type="note" title="">
+
+* The tombstone retaining period is configurable with config entry name = 
+  [Tombstones.CleanupIntervalInMin](../server/configuration/tombstone-configuration.mdx)  
+* By default, the configuration value it is 5 minutes.  
+</Admonition>

@@ -1,0 +1,51 @@
+---
+title: "Get Time Series Names"
+sidebar_label: Get Names
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetNamesCsharp from './_get-names-csharp.mdx';
+import GetNamesPython from './_get-names-python.mdx';
+import GetNamesPhp from './_get-names-php.mdx';
+import GetNamesNodejs from './_get-names-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetNamesCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetNamesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetNamesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetNamesNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

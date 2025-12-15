@@ -1,0 +1,36 @@
+---
+title: "What is Smuggler"
+sidebar_label: What is Smuggler
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatIsSmugglerCsharp from './_what-is-smuggler-csharp.mdx';
+import WhatIsSmugglerJava from './_what-is-smuggler-java.mdx';
+import WhatIsSmugglerNodejs from './_what-is-smuggler-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatIsSmugglerCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatIsSmugglerJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatIsSmugglerNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio
+- [Backup Task](../../studio/database/tasks/backup-task)
+
+
+-->

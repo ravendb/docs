@@ -1,0 +1,40 @@
+---
+title: "Stream Query Results"
+sidebar_label: Stream Query Results
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToStreamQueryResultsCsharp from './_how-to-stream-query-results-csharp.mdx';
+import HowToStreamQueryResultsJava from './_how-to-stream-query-results-java.mdx';
+import HowToStreamQueryResultsNodejs from './_how-to-stream-query-results-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToStreamQueryResultsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToStreamQueryResultsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToStreamQueryResultsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+
+### Inside RavenDB
+- [Streaming data](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/4-deep-dive-into-the-ravendb-client-api#streaming-data)
+
+
+-->

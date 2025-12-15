@@ -1,0 +1,36 @@
+---
+title: "Session: Querying: How to use Lucene"
+sidebar_label: How to Use Lucene
+sidebar_position: 3
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToUseLuceneCsharp from './_how-to-use-lucene-csharp.mdx';
+import HowToUseLuceneJava from './_how-to-use-lucene-java.mdx';
+import HowToUseLuceneNodejs from './_how-to-use-lucene-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToUseLuceneCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToUseLuceneJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToUseLuceneNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
+
+
+-->

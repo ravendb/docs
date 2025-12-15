@@ -1,0 +1,81 @@
+---
+title: "Document Extensions Overview"
+sidebar_label: Overview
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Document Extensions Overview
+<Admonition type="note" title="">
+
+* Document extensions are data entities associated with documents.  
+
+* Document extensions are stored separately so that **modifying** an extension value (e.g. a counter 
+  or a time series entry) will not modify its parent document.
+
+* **Creating or deleting** an extension changes the parent document's meta-data. 
+  This document change may trigger indexing, ETL tasks, and various other operations.  
+
+* On a [sharded database](../sharding/overview.mdx), document extensions 
+  are stored in the same bucket as the document that owns them.  
+  Read about document extensions on a sharded database in the section 
+  [dedicated to this subject](../sharding/document-extensions.mdx).  
+
+* In this page:  
+   * [Document Extensions](../document-extensions/overview-extensions.mdx#document-extensions)  
+   * [Studio Document Extension Views](../document-extensions/overview-extensions.mdx#studio-document-extension-views)  
+
+</Admonition>
+## Document Extensions
+
+* [Counters](../document-extensions/counters/overview.mdx)  
+  RavenDB's distributed counters are numeric data variables that can be added to documents and used
+  for various counting tasks.
+
+* [Attachments](../document-extensions/attachments/what-are-attachments.mdx)  
+  Attachments are binary streams (videos, images, PDF, etc.) that can be bound to an existing document.
+
+* [Time Series](../document-extensions/timeseries/overview.mdx)  
+  Time series are vectors of data that collect values over time, store the values consecutively across the cluster,
+  and manage the collected data with high efficiency and performance.
+
+* [Revisions](../document-extensions/revisions/overview.mdx)  
+  Document Revisions are snapshots of documents and their extensions that can be created to give access to a document's history.
+
+
+
+
+## Studio Document Extension Views
+
+#### Document Extensions Flags
+
+![Document Extensions in Collections View](./assets/extensions-collections-view.png)
+
+1. **Documents Tab**  
+   Select to view document options.
+2. **Collection**  
+   Select a documents collection. 
+3. **Extensions**  
+   View which types of extensions are added to the documents.  
+   ![Document Extensions Icons](./assets/extensions-logos.png)
+#### Document Extensions View
+
+Select a specific document to manage the extensions.  
+
+In Studio &gt; click Documents Tab &gt; select specific Collection &gt; select specific DocumentID to navigate to the following view:  
+
+![Managing Document Extensions in Studio](./assets/extensions-managing-single-doc.png)
+
+1. Attachments Settings
+2. Counters Settings
+3. Time-Series Settings
+4. Revisions Settings
+
+
+

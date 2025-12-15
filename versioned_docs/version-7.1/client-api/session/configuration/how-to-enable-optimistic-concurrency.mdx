@@ -1,0 +1,49 @@
+---
+title: "How to Enable Optimistic Concurrency"
+sidebar_label: How to Enable Optimistic Concurrency
+sidebar_position: 4
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToEnableOptimisticConcurrencyCsharp from './_how-to-enable-optimistic-concurrency-csharp.mdx';
+import HowToEnableOptimisticConcurrencyJava from './_how-to-enable-optimistic-concurrency-java.mdx';
+import HowToEnableOptimisticConcurrencyPython from './_how-to-enable-optimistic-concurrency-python.mdx';
+import HowToEnableOptimisticConcurrencyPhp from './_how-to-enable-optimistic-concurrency-php.mdx';
+import HowToEnableOptimisticConcurrencyNodejs from './_how-to-enable-optimistic-concurrency-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToEnableOptimisticConcurrencyCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToEnableOptimisticConcurrencyJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToEnableOptimisticConcurrencyPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToEnableOptimisticConcurrencyPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToEnableOptimisticConcurrencyNodejs />
+</LanguageContent>
+
+
+<!---
+### Configuration
+- [Conventions](../../../client-api/configuration/conventions)
+
+### FAQ
+- [Transaction Support in RavenDB](../../../client-api/faq/transaction-support)
+
+
+-->

@@ -1,0 +1,69 @@
+---
+title: "Migration: Server Breaking Changes"
+sidebar_label: Server Breaking Changes
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Server Breaking Changes
+<Admonition type="note" title="">
+The features listed on this page were available in former RavenDB versions.  
+In RavenDB `7.0.x`, they are either unavailable or their behavior is inconsistent 
+with their behavior in previous versions.  
+
+* In this page:  
+   * [RavenDB now incorporates NLog as its logging system](../../migration/server/server-breaking-changes.mdx#ravendb-incorporates-nlog-as-its-logging-system)  
+   * [Removed obsolete properties](../../migration/server/server-breaking-changes.mdx#removed-obsolete-properties)  
+
+</Admonition>
+## RavenDB incorporates NLog as its logging system
+RavenDB's logging system has changed; the server now incorporates the 
+NLog logging framework and writes all log data through it.  
+One of the changes that NLog brings to RavenDB is the richer set 
+of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).  
+Read more about Nlog [in the dedicated article](../../server/troubleshooting/logging.mdx).
+If you migrate to RavenDB `7.x` from an earlier version, please 
+read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx).  
+
+
+
+## Removed obsolete properties
+The following properties are no longer in use, and have been removed from RavenDB `7.0`.  
+
+* `ServerOptions`'s `AcceptEula` property is no longer used,  
+  Please use `Licensing.EulaAccepted` instead.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Removed 
+c bool AcceptEula
+`}
+</CodeBlock>
+</TabItem>
+
+* The `MemoryInfoResult` struct no longer includes these classes:  
+   - `MemoryUsageIntervals`  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Removed 
+c sealed class MemoryUsageIntervals  
+`}
+</CodeBlock>
+</TabItem>
+   - `MemoryUsageLowHigh`  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Removed 
+c sealed class MemoryUsageLowHigh  
+`}
+</CodeBlock>
+</TabItem>
+
+
+

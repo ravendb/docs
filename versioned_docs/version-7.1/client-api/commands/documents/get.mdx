@@ -1,0 +1,48 @@
+---
+title: "Get Documents Command"
+sidebar_label: Get Documents
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetCsharp from './_get-csharp.mdx';
+import GetJava from './_get-java.mdx';
+import GetPython from './_get-python.mdx';
+import GetPhp from './_get-php.mdx';
+import GetNodejs from './_get-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetNodejs />
+</LanguageContent>
+
+
+<!---
+### Commands
+- [Put document](../../../client-api/commands/documents/put)
+- [Delete document](../../../client-api/commands/documents/delete)
+- [Send multiple commands using a batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+
+-->

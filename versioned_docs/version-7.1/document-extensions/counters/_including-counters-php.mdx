@@ -1,0 +1,78 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Counters can be included when [loading entities](../../client-api/session/loading-entities) 
+  or when making [queries](../../client-api/session/querying/how-to-query).
+ 
+* The _Session_ stores the included counters in its in-memory cache,  
+  so their values can be accessed later in the same session without making additional requests to the server.
+    
+* To see how to include counters when creating a subscription, see
+  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+
+</Admonition>
+
+* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
+    * Include a single Counter using `include_counter`  
+    * Include multiple Counters using `include_counters`  
+
+    `include_counter` and `include_counters` usage samples:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="php">
+{`//include single Counters
+$productPage = $session->load(Product::class, "products/1-C", function($includeBuilder) {
+    return $includeBuilder
+            ->includeCounter("ProductLikes")
+            ->includeCounter("ProductDislikes")
+            ->includeCounter("ProductDownloads");
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="php">
+{`//include multiple Counters
+//note that you can combine the inclusion of Counters and documents.
+$productPage = $session->load(Product::class, "products/1-C", function($includeBuilder) {
+    return $includeBuilder
+        ->includeDocuments("products/1-C")
+        ->includeCounters(["ProductLikes", "ProductDislikes"]);
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
+    * Include a single Counter using `include_counter`.  
+    * Include multiple Counters using `include_counters`.  
+
+    `include_counter` and `include_counters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="php">
+{`//include a single Counter
+$query = $session->query(Product::class)
+        ->include(function($includeBuilder) {
+            return $includeBuilder->includeCounter("ProductLikes");
+        });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="php">
+{`//include multiple Counters
+$query = $session->query(Product::class)
+        ->include(function($includeBuilder){
+            return $includeBuilder->includeCounters(["ProductLikes", "ProductDownloads"]);
+        });
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>

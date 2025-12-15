@@ -1,0 +1,55 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* To check whether a document contains a certain attachment,  
+  use the `session.advanced` operations `attachments.exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
+  the document or the attachment to the session, and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python exists@clientapi\session\howto\attachmentexists.py /}">
+{`exists = session.advanced.attachments.exists("categories/1-A", "image.jpg")
+if exists:
+    ...  # attachment 'image.jpg' exists on document 'categories/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python syntax@clientapi\session\howto\attachmentexists.py /}">
+{`def exists(self, document_id: str, name: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **document_id** | `str` | The ID of the document you want to check |
+| **name** | `str` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `True` - The specified attachment exists for this document<br/>`False` - The attachment doesn't exist for the document |
+
+
+
+

@@ -1,0 +1,145 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Each document in the database includes a metadata section, stored in a special JSON object under the `@metadata` property.
+
+* This metadata is not part of the document's content but holds internal system information (used by RavenDB),
+  such as the document ID, collection name, change vector, last modified timestamp, and more,  
+  as well as optional user-defined entries.
+
+* To learn how to access (get and modify) the metadata from your client code,  
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
+
+* Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
+  This allows you to query for documents based on values stored in the metadata.  
+  See the examples below.
+* In this article:
+    * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)
+
+</Admonition>
+## Indexing metadata properties
+
+* To access a document's metadata, use the `MetadataFor` method, which is available in the **C# LINQ string**
+  that is assigned to the `map` property in the PHP index class, as shown in the example below.
+
+* You can retrieve metadata values using one of two C# syntaxes:
+
+  * **Generic method syntax**  
+    Use `Value<T>()` to retrieve and cast the metadata value to the expected type.  
+    This is type-safe and preferred when the type is known (e.g., _DateTime_).  
+  * **Indexer syntax**  
+    Use `metadata["key"]` to retrieve the raw object.  
+    You can cast it manually if needed.  
+* The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index_accessMetadataViaValue" label="Index_accessMetadataViaValue">
+<CodeBlock language="python">
+{`class Products_ByMetadata_AccessViaValue(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, last_modified: datetime.datetime = None, has_counters: bool = None):
+            self.last_modified = last_modified
+            self.has_counters = has_counters
+
+    def __init__(self):
+        super().__init__()
+        self.map = """
+                   from product in docs.Products
+                   let metadata = MetadataFor(product)
+                   
+                   select new {
+                       last_modified = metadata.Value<DateTime>("@last-modified"),
+                       has_counters = metadata.Value<object>("@counters") != null
+                   }
+                   """
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index_accessMetadataViaIndexer" label="Index_accessMetadataViaIndexer">
+<CodeBlock language="python">
+{`class Products_ByMetadata_AccessViaIndexer(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, last_modified: datetime.datetime = None, has_counters: bool = None):
+            self.last_modified = last_modified
+            self.has_counters = has_counters
+
+    def __init__(self):
+        super().__init__()
+        self.map = """
+                   from product in docs.Products
+                   let metadata = MetadataFor(product)
+                    
+                   select new 
+                   {
+                       last_modified = (DateTime)metadata["@last-modified"],
+                       has_counters = metadata["@counters"] != null 
+                   } 
+                   """
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Query for documents based on metadata values:  
+  Retrieve documents that have counters and order them by their last modified timestamp.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`productsWithCounters = list(
+    session.query_index_type(Products_ByMetadata_AccessViaValue,
+         Products_ByMetadata_AccessViaValue.IndexEntry)
+    .where_equals("has_counters", True)
+    .order_by_descending("last_modified")
+    .of_type(Product)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByMetadata/AccessViaValue"
+where has_counters == true
+order by last_modified desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Metadata properties that can be indexed
+
+* The following are the **predefined metadata properties that can be indexed**:  
+   * `@archive-at`  
+   * `@attachments`  
+   * `@change-vector`  
+   * `@collection`  
+   * `@counters`  
+   * `@etag`  
+   * `@expires`  
+   * `@id`  
+   * `@last-modified`  
+   * `@refresh`  
+   * `@timeseries`  
+   * `Raven-Clr-Type`  
+
+* You can add custom metadata properties to any document as needed.  
+  These custom properties can be indexed just like the predefined ones.
+<Admonition type="warning" title="">
+
+Note:
+
+* The `@attachments` metadata property can only be indexed using a **Lucene** index.
+* The **Corax** search engine does not support indexing complex JSON properties.  
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
+
+</Admonition>
+
+
+

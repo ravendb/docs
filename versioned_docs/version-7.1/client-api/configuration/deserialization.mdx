@@ -1,0 +1,43 @@
+---
+title: "Conventions: Deserialization"
+sidebar_label: DeSerialization
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeserializationCsharp from './_deserialization-csharp.mdx';
+import DeserializationJava from './_deserialization-java.mdx';
+
+export const supportedLanguages = ["csharp", "java"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <DeserializationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <DeserializationJava />
+</LanguageContent>
+
+
+<!---
+### Conventions
+- [Conventions](../../client-api/configuration/conventions)
+- [Querying](../../client-api/configuration/querying)
+- [Load Balance &amp; Failover](../../client-api/configuration/load-balance/overview)
+- [Serialization](../../client-api/configuration/serialization)
+- [Deserialization Security](../../client-api/security/deserialization-security)
+
+### Document Identifiers
+- [Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID](../../client-api/configuration/identifier-generation/type-specific)
+
+### Document Store
+- [Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

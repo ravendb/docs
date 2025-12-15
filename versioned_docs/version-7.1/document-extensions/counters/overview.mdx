@@ -1,0 +1,56 @@
+---
+title: "Counters Overview"
+sidebar_label: Overview
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import OverviewCsharp from './_overview-csharp.mdx';
+import OverviewJava from './_overview-java.mdx';
+import OverviewPython from './_overview-python.mdx';
+import OverviewPhp from './_overview-php.mdx';
+import OverviewNodejs from './_overview-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <OverviewCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <OverviewJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <OverviewPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <OverviewPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <OverviewNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio Articles
+- [Studio Counters Management](../../studio/database/document-extensions/counters#counters)
+
+### Client-API - Session Articles
+- [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)
+- [Deleting a Counter](../../document-extensions/counters/delete)
+- [Retrieving Counter Values](../../document-extensions/counters/retrieve-counter-values)
+- [Counters and other features](../../document-extensions/counters/counters-and-other-features)
+- [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)
+
+### Client-API - Operations Articles
+- [Counters Operations](../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+
+
+-->

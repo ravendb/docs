@@ -1,0 +1,284 @@
+---
+title: "Client API: How to Use TimeOnly and DateOnly Types"
+sidebar_label: ...use TimeOnly and DateOnly
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Client API: How to Use TimeOnly and DateOnly Types
+<Admonition type="note" title="">
+
+* To save storage space and streamline your process when you only need to know the date or the time, you can store and query 
+  [DateOnly](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type) 
+  and [TimeOnly](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-timeonly-type) types 
+  instead of `DateTime`. (As of .NET version 6.0+ and RavenDB 5.3+)
+
+* You can now convert `DateTime` or strings written in date/time formats to .NET's 
+  `DateOnly` or `TimeOnly` types without slowing down queries and while leaving your existing data as is.  
+   * Use `AsDateOnly` or `AsTimeOnly` in a static index ([see examples below](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime))
+   * `AsDateOnly` and `AsTimeOnly` automatically convert strings to ticks for faster querying.  
+
+* We convert the types in [static indexes](../../indexes/map-indexes.mdx) so that the conversions and calculations are done behind the scenes
+  and the data is ready for fast queries. ([See sample index below.](../../client-api/how-to/using-timeonly-and-dateonly.mdx#convert-and-use-date/timeonly-without-affecting-your-existing-data))  
+
+* In this page: 
+   * [About DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#about-dateonly-and-timeonly) 
+   * [Convert and Use Date/TimeOnly Without Affecting Your Existing Data](../../client-api/how-to/using-timeonly-and-dateonly.mdx#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
+   * [Using already existing DateOnly or TimeOnly fields](../../client-api/how-to/using-timeonly-and-dateonly.mdx#using-already-existing-dateonly-or-timeonly-fields) 
+
+</Admonition>
+
+## About DateOnly and TimeOnly
+
+These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).  
+
+* **DateOnly**  
+  According to [Microsoft .NET Blog](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type)
+  DateOnly is ideal for scenarios such as birth dates, anniversaries, hire dates, 
+  and other business dates that are not typically associated with any particular time. 
+  * See [their usage examples here.](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type)
+
+* **TimeOnly**  
+  According to [Microsoft .NET Blog](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-timeonly-type)
+  TimeOnly is ideal for scenarios such as recurring meeting times, daily alarm clock times, 
+  or the times that a business opens and closes each day of the week.
+  * See [their usage examples here.](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-timeonly-type)
+
+
+
+## Convert and Use Date/TimeOnly Without Affecting Your Existing Data
+
+RavenDB offers conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime).
+
+* [Static indexes](../../indexes/indexing-basics.mdx) process new data in the background, 
+  including calculations and conversions to DateOnly/TimeOnly values, which can be used as ticks, 
+  so that the data is ready at query time when you [query the index](../../indexes/querying/query-index.mdx).  
+    * These indexes do all of the calculations on the entire dataset that you define the first time they run, and then they only need to 
+      process changes in data. 
+
+<Admonition type="info" title="Ticks" id="ticks" href="#ticks">
+Ticks are faster to compute than other date/time formats because they are [simple numbers](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0) 
+that represent time since 1-1-0001 at midnight.
+
+If your data is in strings, to use ticks you must create a **static index** 
+that computes the conversion from strings to `DateOnly` or `TimeOnly`.  
+
+RavenDB automatically converts strings into ticks via `AsDateOnly` or `AsTimeOnly`.  
+
+An auto-index will not convert strings into ticks, but will index data as strings.  
+By defining a query that creates an auto-index which [orders](../../indexes/querying/sorting.mdx) the strings you can also compare strings, 
+though comparing ticks is faster.  
+</Admonition>
+
+### Use `AsDateOnly` or `AsTimeOnly` in a static index to convert strings or DateTime
+
+* [Converting Strings to DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#converting-strings-with-minimal-cost)
+* [Converting DateTime to DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#converting--with-minimal-cost)
+
+#### Converting Strings with minimal cost
+
+The following generic sample is a map index where `AsDateOnly` converts the string `item.StringDateOnlyField` into `DateOnly`.  
+
+When the converted data is available in the index, you can inexpensively [query the index](../../indexes/querying/query-index.mdx).
+
+Strings are automatically converted to ticks for faster querying.  
+
+<TabItem value="IndexConvertsStringsWithAsDateOnlySample" label="IndexConvertsStringsWithAsDateOnlySample">
+<CodeBlock language="csharp">
+{`// Create a Static Index.
+public class StringAsDateOnlyConversion : AbstractIndexCreationTask<StringItem, DateOnlyItem>
+\{
+    public StringAsDateOnlyConversion()
+    \{
+        // This map index converts strings that are in date format to DateOnly with AsDateOnly().
+        Map = items => from item in items
+                       // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+                       // so the variables must by wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+                       where AsDateOnly(item.DateTimeValue) < AsDateOnly(item.DateOnlyValue).AddDays(-50)
+                           select new DateOnlyItem \{ DateOnlyField = AsDateOnly(item.StringDateOnlyField) \};
+    \}
+\}
+
+public class StringItem
+\{
+    public string StringDateOnlyField \{ get; set; \}
+    public object DateTimeValue \{ get; set; \}
+    public object DateOnlyValue \{ get; set; \}
+\}
+
+public class DateOnlyItem
+\{
+    public DateOnly? DateOnlyField \{ get; set; \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+RavenDB doesn't look for DateOnly or TimeOnly types as default during indexing
+so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+</Admonition>
+
+Using the static index above, here a string in date format "2022-05-12" is saved, the index above converts it to `DateOnly`, then 
+the index is queried.  
+
+<TabItem value="AsDateOnlyStringToDateOnlyQuerySample" label="AsDateOnlyStringToDateOnlyQuerySample">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // A string in date format is saved.
+    session.Store(new StringItem()
+    \{
+        StringDateOnlyField = "2022-05-12"
+    \});
+    session.SaveChanges();
+\}
+// This is the index used earlier.
+new StringAsDateOnlyConversion().Execute(store);
+WaitForIndexing(store);
+
+using (var session = store.OpenSession())
+\{
+    var today = new DateOnly(2022, 5, 12);
+    // Query the index created earlier for items which were marked with today's date
+    var element = session.Query<DateOnlyItem, StringAsDateOnlyConversion>()
+        .Where(item => item.DateOnlyField == today)
+        // This is an optional type relaxation for projections 
+        .As<StringItem>().Single();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Converting `DateTime` with minimal cost
+
+The following generic sample is a map index that converts `DateTime` into `DateOnly` and saves the values in the index.
+
+Once the converted data is available in the static index, you can inexpensively [query the index](../../indexes/querying/query-index.mdx).
+
+<TabItem value="IndexConvertsDateTimeWithAsDateOnlySample" label="IndexConvertsDateTimeWithAsDateOnlySample">
+<CodeBlock language="csharp">
+{`// Create a Static Index.
+public class DateTimeAsDateOnlyConversion : AbstractIndexCreationTask<DateTimeItem, DateOnlyItem>
+\{
+    public DateTimeAsDateOnlyConversion()
+    \{
+        // This map index converts DateTime to DateOnly with AsDateOnly().
+        Map = items => from item in items
+                           // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+                           // so the variables must by wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+                           where AsDateOnly(item.DateTimeValue) < AsDateOnly(item.DateOnlyValue).AddDays(-50)
+                           select new DateOnlyItem \{ DateOnlyField = AsDateOnly(item.DateTimeField) \};
+    \}
+\}
+
+public class DateTimeItem
+\{
+    public DateTime? DateTimeField \{ get; set; \}
+    public object DateTimeValue \{ get; set; \}
+    public object DateOnlyValue \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+</Admonition>
+
+Using the index above, the following example saves `DateTime.Now`, the type is converted in the index, then 
+the index is queried. 
+
+<TabItem value="AsDateOnlyDateTimeToDateOnlyQuerySample" label="AsDateOnlyDateTimeToDateOnlyQuerySample">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession()) 
+\{
+// A DateTime value is saved
+session.Store(new DateTimeItem()
+\{
+    DateTimeField = DateTime.Now
+\});
+session.SaveChanges();
+\}
+// The index above is called and we wait for the index to finish converting
+new DateTimeAsDateOnlyConversion().Execute(store);
+WaitForIndexing(store);
+
+using (var session = store.OpenSession())
+\{
+    // Query the index
+    var today = DateOnly.FromDateTime(DateTime.Now);
+    var element = session.Query<DateOnlyItem, DateTimeAsDateOnlyConversion>()
+        .Where(item => item.DateOnlyField == today)
+        // This is an optional type relaxation for projections 
+        .As<DateTimeItem>().Single();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Using already existing DateOnly or TimeOnly fields 
+
+RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing 
+so the index must have a field that declares the type as DateOnly or TimeOnly. 
+
+<TabItem value="DateAndTimeOnlyIndexSample" label="DateAndTimeOnlyIndexSample">
+<CodeBlock language="csharp">
+{`public class DateAndTimeOnlyIndex : AbstractIndexCreationTask<DateAndTimeOnly, DateAndTimeOnlyIndex.IndexEntry>
+\{
+    public class IndexEntry
+    \{
+
+        public DateOnly DateOnly \{ get; set; \}
+        public int Year \{ get; set; \}
+        public DateOnly DateOnlyString \{ get; set; \}
+        public TimeOnly TimeOnlyString \{ get; set; \}
+        public TimeOnly TimeOnly \{ get; set; \}
+    \}
+
+    public DateAndTimeOnlyIndex()
+    \{
+        Map = dates => from date in dates
+                       select new IndexEntry() \{ DateOnly = date.DateOnly, TimeOnly = date.TimeOnly \};
+    \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+For example, the following query will find all of the entries that occured between 15:00 and 17:00 
+without considering the date.
+
+<TabItem value="TimeOnly_between15-17" label="TimeOnly_between15-17">
+<CodeBlock language="csharp">
+{`var after = new TimeOnly(15, 00);
+var before = new TimeOnly(17, 00);
+var result = session
+.Query<DateAndTimeOnly>()
+.Where(i => i.TimeOnly > after && i.TimeOnly < before)
+.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+**Querying on Ticks**  
+Strings are automatically converted to ticks with [`AsDateOnly` and `AsTimeOnly`](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime).  
+
+
+
+
+
+
+
+
+

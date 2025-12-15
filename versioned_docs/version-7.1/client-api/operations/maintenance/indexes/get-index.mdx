@@ -1,0 +1,53 @@
+---
+title: "Get Index Operation"
+sidebar_label: Get Index
+sidebar_position: 12
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetIndexCsharp from './_get-index-csharp.mdx';
+import GetIndexJava from './_get-index-java.mdx';
+import GetIndexPython from './_get-index-python.mdx';
+import GetIndexPhp from './_get-index-php.mdx';
+import GetIndexNodejs from './_get-index-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetIndexCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetIndexJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetIndexPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetIndexPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetIndexNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+
+
+-->

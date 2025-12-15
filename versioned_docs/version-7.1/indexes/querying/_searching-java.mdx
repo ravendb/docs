@@ -1,0 +1,391 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+When you need to do a more complex text searching, use the `search` method. This method allows you to pass a few search terms that will be used in the searching process for a particular field. Here is a sample code
+that uses the `search` method to get users with the name *John* or *Adam*:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "John Adam")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'John Adam')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Each of the search terms (separated by space character) will be checked independently. The result documents must match exactly one of the passed terms.
+
+In the same way, you can also look for users that have some hobby:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Hobbies", "looking for someone who likes sport books computers")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'looking for someone who likes sport books computers')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The results will return users that are interested in *sport*, *books* or *computers*.
+
+## Multiple Fields
+
+By using the `search` method, you are also able to look for multiple indexed fields. In order to search using both `name` and `hobbies` properties, you need to issue the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "Adam")
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'Adam') or search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Boosting
+
+Indexing in RavenDB is built upon the Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+RavenDB also supports that, in order to improve your searching mechanism and provide the users with much more accurate results you can specify the boost argument. 
+
+For example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Hobbies", "I love sport")
+    .boost(10)
+    .search("Hobbies", "but also like reading books")
+    .boost(5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This search will promote users who do sports before book readers and they will be placed at the top of the results list.
+
+## Search Options
+
+You can specify the logic of a search expression. It can be either:
+
+* or,
+* andAlso,
+* not.
+
+The following query:
+
+<TabItem value="search_7_0" label="search_7_0">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Hobbies", "computers")
+    .search("Name", "James")
+    .whereEquals("Age", 20)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+will be translated into
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Hobbies, 'computers') or search(Name, 'James') and Age = 20
+`}
+</CodeBlock>
+</TabItem>
+
+You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follows:
+
+<TabItem value="search_8_0" label="search_8_0">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "Adam")
+    .andAlso()
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+will result in the following RQL query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Name, 'Adam') and search(Hobbies, 'sport')
+`}
+</CodeBlock>
+</TabItem>
+
+If you want to negate the term use `not`:
+
+<TabItem value="search_9_0" label="search_9_0">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .not()
+    .search("Name", "James")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+According to RQL syntax it will be transformed into the query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where exists(Name) and not search(James, 'Adam')
+`}
+</CodeBlock>
+</TabItem>
+
+You can also combine search options:
+
+<TabItem value="search_10_1" label="search_10_1">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "Adam")
+    .andAlso()
+    .not()
+    .search("Hobbies", "sport")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+It will produce the following RQL query:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from Users
+where search(Name, 'Adam') and (exists(Hobbies) and not search(Hobbies, 'sport'))
+`}
+</CodeBlock>
+</TabItem>
+
+## Using Wildcards
+
+When the beginning or ending of a search term is unknown, wildcards can be used to add additional power to the searching feature. RavenDB supports both suffix and postfix wildcards.
+
+### Example I - Using Postfix Wildcards
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "Jo* Ad*")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, 'Jo* Ad*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Using Suffix and Postfix Wildcards
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class)
+    .search("Name", "*oh* *da*")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Users
+where search(Name, '*oh* *da*')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+RavenDB allows you to search by using such queries, but you have to be aware that **leading wildcards drastically slow down searches**.
+
+Consider if you really need to find substrings. In most cases, looking for whole words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+</Admonition>
+
+## Static Indexes
+
+All of the previous examples demonstrated searching capabilities by executing dynamic queries and were using auto indexes underneath. The same set of queries can be done when static indexes are used, and also those capabilities can be customized by changing the [analyzer](../using-analyzers.mdx) or setting up full text search on multiple fields.
+
+### Example I - Basics
+
+To be able to search you need to set `Indexing` to `Search` on a desired field.
+
+<TabItem value="search_20_2" label="search_20_2">
+<CodeBlock language="java">
+{`public static class Users_ByName extends AbstractIndexCreationTask \{
+    public Users_ByName() \{
+        map = "docs.Users.Select(user => new \{" +
+            "    Name = user.Name" +
+            "\})";
+
+        index("Name", FieldIndexing.SEARCH);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class, Users_ByName.class)
+    .search("Name", "John")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/ByName'
+where search(Name, 'John')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - FullTextSearch
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<User> users = session
+    .query(User.class, Users_Search.class)
+    .search("Query", "John")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Users/Search'
+where search(Query, 'John')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Indexing all fields for FTS
+
+This indexing method is supported only when using **Lucene** as the indexing engine.
+
+<TabItem value="index_all_fields" label="index_all_fields">
+<CodeBlock language="java">
+{`public static class Products_ByAllValues extends AbstractIndexCreationTask \{
+    public static class IndexEntry \{
+        private String allValues;
+
+        public String getAllValues() \{
+            return allValues;
+        \}
+
+        public void setAllValues(String allValues) \{
+            this.allValues = allValues;
+        \}
+    \}
+
+    public Products_ByAllValues() \{
+        map = "docs.Products.Select(product => new \{ " +
+              // Use the 'AsJson' method to convert the document into a JSON-like structure
+              // and call 'Select' to extract only the values of each property
+              "    allValues = this.AsJson(product).Select(x => x.Value) " +
+              "\})";
+
+        // Configure the index-field for FTS:
+        // Set 'FieldIndexing.SEARCH' on index-field 'allValues'
+        index("allValues", FieldIndexing.SEARCH);
+        
+        // Set the search engine type to Lucene:
+        searchEngineType = SearchEngineType.LUCENE;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Products_ByAllValues.IndexEntry.class, Products_ByAllValues.class)
+    .search("allValues", "tofu")
+    .ofType(Product.class)
+    .toList();
+    
+// * Results will contain all Product documents that have 'tofu'
+//   in ANY of their fields.
+//
+// * Search is case-insensitive since the default analyzer is used.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByAllValues"
+where search(allValues, "tofu")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+

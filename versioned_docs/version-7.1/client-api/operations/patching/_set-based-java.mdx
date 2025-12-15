@@ -1,0 +1,257 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+Sometimes we need to update a large number of documents matching certain criteria. A simple SQL query doing that will look like this:
+
+`UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`   
+
+This is usually not the case for NoSQL databases where set based operations are not supported. RavenDB does support them by passing it a query and an operation definition. It will run the query and perform that operation on its results.
+
+The same queries and indexes that are used for data retrieval are used for the set based operations. The syntax defining which documents to work on is exactly the same as you'd specified for those documents to be pulled from the store.
+
+In this page:  
+[Syntax overview](../../../client-api/operations/patching/set-based.mdx#syntax-overview)  
+[Examples](../../../client-api/operations/patching/set-based.mdx#examples)  
+[Additional notes](../../../client-api/operations/patching/set-based.mdx#additional-notes)  
+</Admonition>
+
+
+## Syntax overview
+
+### Sending a Patch Request
+
+<TabItem value="sendingSetBasedPatchRequest" label="sendingSetBasedPatchRequest">
+<CodeBlock language="java">
+{`Operation sendAsync(PatchByQueryOperation operation);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | | |
+| ------------- | ------------- | ----- |
+| **operation** | `PatchByQueryOperation` | PatchByQueryOperation object, describing the query and the patch that will be performed |
+
+| Return Value | |
+| ------------- | ----- |
+| `Operation` | Object that allows waiting for operation to complete. It also may return information about a performed patch: see examples below. |
+
+### PatchByQueryOperation
+
+<TabItem value="patchBeQueryOperationCtor1" label="patchBeQueryOperationCtor1">
+<CodeBlock language="java">
+{`public PatchByQueryOperation(String queryToUpdate)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="patchBeQueryOperationCtor2" label="patchBeQueryOperationCtor2">
+<CodeBlock language="java">
+{`public PatchByQueryOperation(IndexQuery queryToUpdate);
+
+public PatchByQueryOperation(IndexQuery queryToUpdate, QueryOperationOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                     | Description                                                                                                                                                                                                               |
+|-------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **queryToUpdate** | `String` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the Javascript patch code.    |
+| **options**       | `QueryOperationOptions`  | Options defining how the operation will be performed and various constraints on how it is performed.                                                                                                                      |
+
+## Examples
+
+### Update whole collection
+<TabItem value="update_value_in_whole_collection" label="update_value_in_whole_collection">
+<CodeBlock language="java">
+{`// increase by 10 Freight field in all orders
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation("from Orders as o update  \{" +
+        "   o.Freight += 10;" +
+        "\}"));
+
+// Wait for the operation to be complete on the server side.
+// Not waiting for completion will not harm the patch process and it will continue running to completion.
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Update by dynamic query
+<TabItem value="update-value-by-dynamic-query" label="update-value-by-dynamic-query">
+<CodeBlock language="java">
+{`Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation("from Orders as o" +
+        " where o.Employee = 'employees/1-A'" +
+        " update " +
+        "\{ " +
+        "  o.Lines.forEach(line => line.Discount = 0.3);" +
+        "\}"));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Update by static index query result
+<TabItem value="update-value-by-index-query" label="update-value-by-index-query">
+<CodeBlock language="java">
+{`// switch all products with supplier 'suppliers/12-A' with 'suppliers/13-A'
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(new IndexQuery("" +
+        "from index 'Product/Search' as p " +
+        " where p.Supplier = 'suppliers/12-A'" +
+        " update \{" +
+        "  p.Supplier = 'suppliers/13-A'" +
+        "\}")));
+
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Updating a collection name
+<TabItem value="change-collection-name" label="change-collection-name">
+<CodeBlock language="java">
+{`// delete the document before recreating it with a different collection name
+
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(new IndexQuery(
+        "from Orders as c " +
+            "update \{" +
+            " del(id(c));" +
+            " this['@metadata']['collection'] = 'New_Orders'; " +
+            " put(id(c), this); " +
+            "\}"
+    )));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Updating by document ID
+<TabItem value="patch-by-id" label="patch-by-id">
+<CodeBlock language="java">
+{`// perform a patch by document ID
+
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(new IndexQuery(
+        "from @all_docs as d " +
+            " where id() in ('orders/1-A', 'companies/1-A')" +
+            " update " +
+            "\{" +
+            "  d.Updated = true; " +
+            "\} "
+    )));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Updating by document ID using parameters
+<TabItem value="patch-by-id-using-parameters" label="patch-by-id-using-parameters">
+<CodeBlock language="java">
+{`// perform a patch by document ID
+IndexQuery indexQuery = new IndexQuery(
+    "from @all_docs as d " +
+        " where id() in ($ids)" +
+        " update " +
+        " \{" +
+        "    d.Updated = true; " +
+        "\} "
+);
+Parameters parameters = new Parameters();
+parameters.put("ids", new String[]\{"orders/1-A", "companies/1-A"\});
+indexQuery.setQueryParameters(parameters);
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(indexQuery));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Updating all documents
+<TabItem value="change-all-documents" label="change-all-documents">
+<CodeBlock language="java">
+{`// perform a patch on all documents using @all_docs keyword
+
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(new IndexQuery(
+        "from @all_docs " +
+            " update " +
+            "\{ " +
+            "  this.Updated = true;" +
+            "\}"
+    )));
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+### Patch on stale results
+<TabItem value="update-on-stale-results" label="update-on-stale-results">
+<CodeBlock language="java">
+{`// patch on stale results
+
+QueryOperationOptions options = new QueryOperationOptions();
+options.setAllowStale(true);
+
+Operation operation = store
+    .operations()
+    .sendAsync(new PatchByQueryOperation(new IndexQuery(
+        "from Orders as o " +
+            "where o.Company = 'companies/12-A' " +
+            "update " +
+            "\{ " +
+            "    o.Company = 'companies/13-A';" +
+            "\} "
+    ), options));
+
+
+operation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Additional notes
+
+<Admonition type="note" title="Safe By Default" id="safe-by-default" href="#safe-by-default">
+
+By default, set based operations will **not work** on indexes that are stale. The operations will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete. 
+
+For indexes that are updated all the time, you can set the AllowStale field of QueryOperationOptions to true if you want to patch on stale results. 
+
+</Admonition>
+
+<Admonition type="warning" title="Patching and Concurrency" id="patching-and-concurrency" href="#patching-and-concurrency"> 
+
+The patching of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation so it can happen than a document has been updated or deleted meanwhile.
+
+</Admonition>
+
+<Admonition type="warning" title="Patching and Transaction" id="patching-and-transaction" href="#patching-and-transaction">
+
+The patching of documents matching a specified query is run in batches of size 1024.  
+Each batch is handled in a separate write transaction.
+
+</Admonition>
+
+
+
+

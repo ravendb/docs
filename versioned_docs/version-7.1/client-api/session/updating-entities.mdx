@@ -1,0 +1,51 @@
+---
+title: "Update Entities"
+sidebar_label: Update Entities
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UpdatingEntitiesCsharp from './_updating-entities-csharp.mdx';
+import UpdatingEntitiesPython from './_updating-entities-python.mdx';
+import UpdatingEntitiesPhp from './_updating-entities-php.mdx';
+import UpdatingEntitiesNodejs from './_updating-entities-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <UpdatingEntitiesCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <UpdatingEntitiesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <UpdatingEntitiesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <UpdatingEntitiesNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Deleting Entities](../../client-api/session/deleting-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
+
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+
+-->

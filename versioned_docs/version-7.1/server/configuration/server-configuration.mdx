@@ -1,0 +1,97 @@
+---
+title: "Configuration: Server Options"
+sidebar_label: Server Configuration
+sidebar_position: 21
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Server Options
+<Admonition type="note" title="">
+
+* Various configuration options for the server's behavior.  
+
+* In this page:  
+    * [Server.MaxTimeForTaskToWaitForDatabaseToLoadInSec](../../server/configuration/server-configuration.mdx#servermaxtimefortasktowaitfordatabasetoloadinsec)  
+    * [Server.ProcessAffinityMask](../../server/configuration/server-configuration.mdx#serverprocessaffinitymask)  
+    * [Server.IndexingAffinityMask](../../server/configuration/server-configuration.mdx#serverindexingaffinitymask)  
+    * [Server.NumberOfUnusedCoresByIndexes](../../server/configuration/server-configuration.mdx#servernumberofunusedcoresbyindexes)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../../server/configuration/server-configuration.mdx#servercpucreditsexhaustionbackupdelayinmin)  
+    * [Server.Tcp.Compression.Disable](../../server/configuration/server-configuration.mdx#servertcpcompressiondisable)  
+
+</Admonition>
+## Server.MaxTimeForTaskToWaitForDatabaseToLoadInSec
+
+This setting is indicating how many seconds a task (e.g. request) will wait for the database to load (when it is unloaded - e.g. after server restart).
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide only
+
+
+
+## Server.ProcessAffinityMask
+
+EXPERT: The process affinity mask.
+
+- **Type**: `long`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## Server.IndexingAffinityMask
+
+EXPERT: The affinity mask to be used for indexing.  
+Overrides the `Server.NumberOfUnusedCoresByIndexes` value.  
+Should only be used if you also set `Server.ProcessAffinityMask`.
+
+- **Type**: `long`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## Server.NumberOfUnusedCoresByIndexes
+
+EXPERT: The numbers of cores that will NOT be running indexing.  
+Defaults to 1 core that is kept for all other tasks and will not be used for indexing.
+
+- **Type**: `int`
+- **Default**: `1`
+- **Scope**: Server-wide only
+
+
+
+## Server.CpuCredits.ExhaustionBackupDelayInMin
+
+EXPERT: When CPU credits are exhausted, backup tasks are canceled.  
+This value determines how many minutes the server will wait before retrying the backup task.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `10`  
+- **Scope**: Server-wide only  
+
+<Admonition type="info" title="">
+If you have an enterprise license, you can access information about CPU credits 
+using [SNMP](../../server/administration/snmp/snmp-overview.mdx).  
+</Admonition>
+
+
+
+
+## Server.Tcp.Compression.Disable
+
+Disable TCP Compression
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+

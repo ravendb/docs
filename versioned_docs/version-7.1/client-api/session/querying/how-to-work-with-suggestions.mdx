@@ -1,0 +1,50 @@
+---
+title: "Query for Suggestions"
+sidebar_label: Query for Suggestions
+sidebar_position: 16
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToWorkWithSuggestionsJava from './_how-to-work-with-suggestions-java.mdx';
+import HowToWorkWithSuggestionsCsharp from './_how-to-work-with-suggestions-csharp.mdx';
+import HowToWorkWithSuggestionsPython from './_how-to-work-with-suggestions-python.mdx';
+import HowToWorkWithSuggestionsPhp from './_how-to-work-with-suggestions-php.mdx';
+import HowToWorkWithSuggestionsNodejs from './_how-to-work-with-suggestions-nodejs.mdx';
+
+export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="java">
+   <HowToWorkWithSuggestionsJava />
+</LanguageContent>
+
+<LanguageContent language="csharp">
+   <HowToWorkWithSuggestionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToWorkWithSuggestionsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToWorkWithSuggestionsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToWorkWithSuggestionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [Querying: Basics](../../../indexes/querying/query-index)
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Query for suggestions with index](../../../indexes/querying/suggestions)
+
+
+-->

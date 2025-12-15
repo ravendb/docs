@@ -1,0 +1,41 @@
+---
+title: "Indexing Compare-Exchange Values"
+sidebar_label: "Indexing Compare-Exchange Values"
+sidebar_position: 8
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IndexingCmpXchgValuesCsharp from './content/_indexing-compare-exchange-values-csharp.mdx';
+import IndexingCmpXchgValuesJava from './content/_indexing-compare-exchange-values-java.mdx';
+import IndexingCmpXchgValuesNodejs from './content/_indexing-compare-exchange-values-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IndexingCmpXchgValuesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <IndexingCmpXchgValuesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IndexingCmpXchgValuesNodejs />
+</LanguageContent>
+
+<!---
+### Indexes
+- [What Are Indexes](../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Client API
+- [Session Change Tracking](../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes)
+- [How to: Handle Document Relationships](../client-api/how-to/handle-document-relationships)
+
+### Compare Exchange
+- [Compare Exchange Overview](../compare-exchange/overview)
+-->

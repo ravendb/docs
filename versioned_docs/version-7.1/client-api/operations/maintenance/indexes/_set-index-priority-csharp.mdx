@@ -1,0 +1,156 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* In RavenDB, each index has its own dedicated thread for all indexing work.  
+  By default, RavenDB prioritizes processing requests over indexing,  
+  so indexing threads start with a lower priority than request-processing threads.  
+
+* Use `SetIndexesPriorityOperation` to raise or lower the index thread priority.  
+
+* **Indexes scope**:  
+  Index priority can be set for both static and auto indexes.  
+
+* **Nodes scope**:  
+  The priority will be updated on all nodes in the database group.
+
+* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) in the Studio.  
+
+* In this page:
+    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#index-priority)
+    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
+
+</Admonition>
+
+## Index priority
+
+Setting the priority will affect the indexing thread priority at the operating system level:  
+
+| Priority value        | Indexing thread priority<br/>at OS level | Description |
+|-----------------------|------------------------------------------|-------------|
+| **Low**               | Lowest                                   | <ul><li>Having the `Lowest` priority at the OS level, indexes will run only when there's capacity, when the system is not occupied with higher-priority tasks.</li><li>Requests to the database will complete faster.<br/>Use when querying the server is more important to you than indexing.</li></ul> |
+| **Normal** (default)  | Below normal                             | <ul><li>Requests to the database are still preferred over the indexing process.</li><li>The indexing thread priority at the OS level is `Below normal`,<br/>while request-processing threads have `Normal` priority.</li></ul> |
+| **High**              | Normal                                   | <ul><li>Requests and indexing will have the same priority at the OS level.</li></ul> |
+
+## Set priority - single index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the set priority operation
+// Pass index name & priority
+var setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if index does not exist
+store.Maintenance.Send(setPriorityOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the set priority operation
+// Pass index name & priority
+var setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High);
+                
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if index does not exist
+await store.Maintenance.SendAsync(setPriorityOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Set priority - multiple indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the index list and the new priority:
+var parameters = new SetIndexesPriorityOperation.Parameters
+{
+    IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"},
+    Priority = IndexPriority.Low
+};
+
+// Define the set priority operation, pass the parameters
+var setPriorityOp = new SetIndexesPriorityOperation(parameters);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+store.Maintenance.Send(setPriorityOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the index list and the new priority:
+var parameters = new SetIndexesPriorityOperation.Parameters 
+{
+    IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
+    Priority = IndexPriority.Low
+};
+                
+// Define the set priority operation, pass the parameters
+var setPriorityOp = new SetIndexesPriorityOperation(parameters);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if any of the specified indexes do not exist
+await store.Maintenance.SendAsync(setPriorityOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public SetIndexesPriorityOperation(string indexName, IndexPriority priority);
+public SetIndexesPriorityOperation(Parameters parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| - | - | - |
+| **indexName** | `string` | Index name for which to change priority |
+| **priority** | `IndexingPriority` | Priority to set |
+| **parameters** | `SetIndexesPriorityOperation.Parameters` | List of indexes + Priority to set.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="csharp">
+{`public enum IndexPriority
+\{
+    Low,
+    Normal,
+    High
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    public string[] IndexNames \{ get; set; \}
+    public IndexPriority Priority \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

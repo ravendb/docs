@@ -1,0 +1,53 @@
+---
+title: "Filter by Non-Existing Field"
+sidebar_label: Filter by Non-Existing Field
+sidebar_position: 13
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToFilterByNonExistingFieldCsharp from './_how-to-filter-by-non-existing-field-csharp.mdx';
+import HowToFilterByNonExistingFieldPython from './_how-to-filter-by-non-existing-field-python.mdx';
+import HowToFilterByNonExistingFieldPhp from './_how-to-filter-by-non-existing-field-php.mdx';
+import HowToFilterByNonExistingFieldNodejs from './_how-to-filter-by-non-existing-field-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToFilterByNonExistingFieldCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToFilterByNonExistingFieldPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToFilterByNonExistingFieldPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToFilterByNonExistingFieldNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+- [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field)
+
+### Querying
+- [Querying: Filtering](../../../indexes/querying/filtering)
+- [Query vs DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query)
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)
+
+### Code Walkthrough
+- [Queries - Filtering Results - Basics](https://demo.ravendb.net/demos/csharp/queries/filtering-results-basics)
+- [Queries - Filtering with Multiple Conditions](https://demo.ravendb.net/demos/csharp/queries/filtering-results-multiple-conditions)
+- [Queries - Filtering Results - Basics](https://demo.ravendb.net/demos/python/queries/filtering-results-basics)
+- [Queries - Filtering with Multiple Conditions](https://demo.ravendb.net/demos/python/queries/filtering-results-multiple-conditions)
+
+
+-->

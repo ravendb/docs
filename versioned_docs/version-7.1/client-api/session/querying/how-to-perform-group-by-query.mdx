@@ -1,0 +1,49 @@
+---
+title: "Perform Dynamic Group By Query"
+sidebar_label: Perform Group By Query
+sidebar_position: 7
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToPerformGroupByQueryCsharp from './_how-to-perform-group-by-query-csharp.mdx';
+import HowToPerformGroupByQueryJava from './_how-to-perform-group-by-query-java.mdx';
+import HowToPerformGroupByQueryPython from './_how-to-perform-group-by-query-python.mdx';
+import HowToPerformGroupByQueryPhp from './_how-to-perform-group-by-query-php.mdx';
+import HowToPerformGroupByQueryNodejs from './_how-to-perform-group-by-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToPerformGroupByQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToPerformGroupByQueryJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HowToPerformGroupByQueryPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <HowToPerformGroupByQueryPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToPerformGroupByQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
+
+
+-->

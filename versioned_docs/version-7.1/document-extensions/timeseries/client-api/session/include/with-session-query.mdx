@@ -1,0 +1,41 @@
+---
+title: "Include Time Series with Query"
+sidebar_label: With Query
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WithSessionQueryCsharp from './_with-session-query-csharp.mdx';
+import WithSessionQueryNodejs from './_with-session-query-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WithSessionQueryCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WithSessionQueryNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

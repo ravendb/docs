@@ -1,0 +1,48 @@
+---
+title: "Indexes: Boosting"
+sidebar_label: Boosting
+sidebar_position: 23
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import BoostingCsharp from './_boosting-csharp.mdx';
+import BoostingJava from './_boosting-java.mdx';
+import BoostingPhp from './_boosting-php.mdx';
+import BoostingNodejs from './_boosting-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <BoostingCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <BoostingJava />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <BoostingPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <BoostingNodejs />
+</LanguageContent>
+
+
+<!---
+### Querying
+- [Full-text search](../client-api/session/querying/text-search/full-text-search)
+- [Boost search results](../client-api/session/querying/text-search/boost-search-results)
+
+### Indexes
+- [Analyzers](../indexes/using-analyzers)
+- [Storing Data in Index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)
+
+
+-->

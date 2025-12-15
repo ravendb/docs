@@ -1,0 +1,42 @@
+---
+title: "Data Subscriptions"
+sidebar_label: What are Data Subscriptions
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import WhatAreDataSubscriptionsCsharp from './_what-are-data-subscriptions-csharp.mdx';
+import WhatAreDataSubscriptionsJava from './_what-are-data-subscriptions-java.mdx';
+import WhatAreDataSubscriptionsNodejs from './_what-are-data-subscriptions-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <WhatAreDataSubscriptionsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <WhatAreDataSubscriptionsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <WhatAreDataSubscriptionsNodejs />
+</LanguageContent>
+
+
+<!---
+### Data Subscriptions
+- [How to Create a Data Subscription](../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+- [Maintenance Operations](../../client-api/data-subscriptions/advanced-topics/maintenance-operations)
+
+### Sharding
+- [Sharding Overview](../../sharding/overview)
+- [Sharding: ETL](../../sharding/etl)
+
+
+-->

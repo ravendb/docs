@@ -1,0 +1,24 @@
+---
+title: "Configuration: Query Options"
+sidebar_label: Query Configuration
+sidebar_position: 17
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Query Options
+
+## Query.MaxClauseCount
+
+Maximum number of clauses that a Lucene query can process.
+
+- **Type**: `int`
+- **Default**: `null` (use Lucene default - 1024)
+- **Scope**: Server-wide only
+
+

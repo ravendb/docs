@@ -1,0 +1,71 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `NextIdentityForOperation` to increment the latest identity value set on the server for the specified collection in the database.
+
+* The next document that will be created using an identity for the collection will receive the consecutive integer value.
+
+* In this page:
+
+  * [Increment the next identity value](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#increment-the-next-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/increment-next-identity.mdx#syntax)
+
+</Admonition>
+## Increment the next identity value 
+
+<TabItem value="increment_identity" label="increment_identity">
+<CodeBlock language="python">
+{`# Create a document with an identity ID:
+# ======================================
+
+with store.open_session() as session:
+    # Pass a collection name that ends with a pipe '|' to create an identity ID
+    session.store(Company(name="RavenDB"), "companies|")
+    session.save_changes()
+    # => Document "companies/1" will be created
+
+# Increment the identity value on the server:
+# ===========================================
+
+# Define the next identity operation
+# Pass the collection name (can be with or without a pipe)
+next_identity_op = NextIdentityForOperation("companies|")
+
+#  Execute the operation by passing it to Maintenance.Send
+#  The latest value will be incremented to "2"
+#  and the next document created with an identity will be assigned "3"
+incremented_value = store.maintenance.send(next_identity_op)
+
+# Create another document with an identity ID:
+# ============================================
+
+with store.open_session() as session:
+    session.store(Company(name="RavenDB"), "companies|")
+    session.save_changes()
+    # => Document "companies/3" will be created
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="python">
+{`class NextIdentityForOperation(MaintenanceOperation[int]): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type   | Description                                                         |
+|-----------|--------|---------------------------------------------------------------------|
+| **MaintenanceOperation[int]**  | Operation | An operation to increment the next identity |
+
+
+
+

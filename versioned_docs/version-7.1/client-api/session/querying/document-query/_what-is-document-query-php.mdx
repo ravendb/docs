@@ -1,0 +1,201 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* RavenDB queries can be executed via `query`, `documentQuery` or directly using `RQL`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+
+* See [Query -vs- documentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx) 
+  for additional details.
+
+* In this page:
+  * [documentQuery examples](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#documentquery-examples)
+  * [Custom methods](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods)
+  * [Syntax](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#syntax)
+
+</Admonition>
+## documentQuery examples
+
+#### Query collection - no filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// load all entities from 'Employees' collection
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query collection - with filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Robert"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query an index
+
+* Using a Path string
+<TabItem value="documentQuery_4" label="documentQuery_4">
+<CodeBlock language="php">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+// using 'My/Custom/Index'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class, "My/Custom/Index", null, false)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+* Using an index Class
+<TabItem value="documentQuery_5" label="documentQuery_5">
+<CodeBlock language="php">
+{`// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+// using 'MyCustomIndex::class'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class, MyCustomIndex::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+Please refer to [Querying an index](../../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using a documentQuery.
+</Admonition>
+
+
+
+## Custom Methods
+
+<Admonition type="note" title="">
+
+Several methods share the same functionality as their `query` counterparts.  
+Refer to the corresponding documentation articles, marked with links starting with "[Query]" in the list below.
+
+</Admonition>
+
+Available custom methods:   
+
+- AddOrder
+- [query] [afterQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [query] [afterStreamExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [query] [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [query] [aggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- andAlso
+- [query] [beforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [boost](../../../../client-api/session/querying/text-search/boost-search-results.mdx)
+- closeSubclause
+- cmpXchg
+- containsAll
+- containsAny
+- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [countLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- distinct
+- explainScores
+- first
+- firstOrDefault
+- fuzzy
+- getIndexQuery
+- getQueryResult
+- [groupBy](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
+- [groupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
+- [groupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [query] [Highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- include
+- includeExplanations
+- intersect
+- invokeAfterQueryExecuted
+- invokeAfterStreamExecuted
+- [query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [longCount](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- moreLikeThis
+- negateNext
+- [not](../../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
+- [query] [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [query] [noTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- ofType
+- openSubclause
+- [orderBy](../../../../client-api/session/querying/sort-query-results.mdx)
+- [orderByDescending](../../../../client-api/session/querying/sort-query-results.mdx)
+- [query] [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
+- [query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [orderByScore](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [orderByScoreDescending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- orElse
+- [query] [projection](../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- proximity
+- [query] [randomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [query] [relatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
+- [search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- selectFields
+- selectTimeSeries
+- single
+- singleOrDefault
+- skip
+- [query] [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- statistics
+- [suggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- take
+- [query] [timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- usingDefaultOperator
+- [query] [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- where
+- whereBetween
+- [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx)
+- whereEquals
+- [whereExists](../../../../client-api/session/querying/how-to-filter-by-field.mdx)
+- whereGreaterThan
+- whereGreaterThanOrEqual
+- whereIn
+- whereLessThan
+- whereLessThanOrEqual
+- [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- whereNotEquals
+- [whereRegex](../../../../client-api/session/querying/text-search/using-regex.mdx)
+- [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx)
+- withinRadiusOf
+
+
+
+## Syntax
+
+The definition for `documentQuery` is listed in the [Syntax section](../../../../client-api/session/querying/how-to-query.mdx#syntax) 
+of the [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+
+
+
+

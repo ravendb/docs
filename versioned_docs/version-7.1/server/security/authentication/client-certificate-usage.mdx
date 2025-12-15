@@ -1,0 +1,140 @@
+---
+title: "Authentication: Client Certificate Usage"
+sidebar_label: Client Certificate Usage
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Authentication: Client Certificate Usage
+
+* If you have already securely set up a server certificate, you'll need to use client certificates to connect to a RavenDB server.  
+
+* You can read about the logic and rationale behind RavenDB's client certificates in [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach) to ensure that you configure them appropriately.  
+
+## Obtaining Your First Admin Client Certificate
+
+When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is generate/register an admin client certificate.
+
+<Admonition type="note" title="">
+This operation is only required when doing a **manual** secured setup. If you are using the automated [Setup Wizard](../../../start/installation/setup-wizard.mdx), an admin client certificate will be generated for you as part of the wizard.
+</Admonition>
+
+### Example I - Using the RavenDB CLI
+
+If you have access to the server, the simplest way is to use the RavenDB CLI:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`ravendb> generateClientCert <name> <path-to-output-folder> [password]
+`}
+</CodeBlock>
+</TabItem>
+
+This will generate a new certificate, with a `Cluster Admin` Security Clearance.
+
+If you wish to use your own client certificate you can have RavenDB trust it:
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`ravendb> trustClientCert <name> <path-to-pfx> [password]
+`}
+</CodeBlock>
+</TabItem>
+
+The certificate will be registered as a trusted certificate with a `Cluster Admin` Security Clearance.
+
+### Example II - Using Powershell and Wget in Windows 
+
+You can use a client to make an HTTP request to the server. At this point you only have a **server certificate** and you will use it (acting as the client certificate).
+
+Assume we started the server with the following [settings.json](../../configuration/configuration-options.mdx#json):
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "ServerUrl": "https://rvn-srv-1:8080",
+    "Setup.Mode": "None",
+    "DataDir": "c:/RavenData",
+    "Security.Certificate.Path": "c:/secrets/server.pfx",
+    "Security.Certificate.Password": "s3cr7t p@$$w0rd"
+\} 
+`}
+</CodeBlock>
+</TabItem>
+
+We can use wget to request a `Cluster Admin` certificate. This will be the payload of the POST request:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Name": "cluster.admin.client.certificate",
+    "SecurityClearance": "ClusterAdmin",
+    "Password": "p@$$w0rd"
+\} 
+`}
+</CodeBlock>
+</TabItem>
+
+First, load the server certificate:
+
+<TabItem value="powershell" label="powershell">
+<CodeBlock language="powershell">
+{`$cert = Get-PfxCertificate -FilePath c:/secrets/server.pfx
+`}
+</CodeBlock>
+</TabItem>
+
+Then make the request:
+
+<TabItem value="powershell" label="powershell">
+<CodeBlock language="powershell">
+{`wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.zip" -Body '\{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"\}' -ContentType application/json "https://rvn-srv-1:8080/admin/certificates"
+`}
+</CodeBlock>
+</TabItem>
+
+### Example III : Using cURL in Linux
+
+At this point you only have a **server certificate** and you will use it (acting as the client certificate).  
+First, we will convert the .pfx certificate to .pem:
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`openssl pkcs12 -in cluster.server.certificate.example.pfx -out server.pem -clcerts
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="">
+You must provide a password when creating the .pem file, cURL will only accept a password protected certificate.
+</Admonition>
+
+Then make the request:
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`curl -X POST -H "Content-Type: application/json" -d '\{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"\}' -o cluster.admin.cert.zip https://rvn-srv-1:8080/admin/certificates --cert /home/secrets/server.pem:pem_password
+`}
+</CodeBlock>
+</TabItem>
+
+## Using Client Certificates
+
+Once you have the admin client certificate you can access the server/cluster by using the Studio, 
+the Client API or any other client. 
+
+<Admonition type="note" title="">
+[Read Here](../../../studio/overview.mdx#accessing-studio-after-setup) 
+about gaining management access to RavenDB after setup.  
+</Admonition>
+
+It is recommended to generate additional certificates with reduced access rights for applications 
+and users.  
+Wiring a certificate in the RavenDB Client is described in the 
+[setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization.mdx) 
+section of the Client API.
+

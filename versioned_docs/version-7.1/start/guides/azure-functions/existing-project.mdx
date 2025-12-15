@@ -1,0 +1,40 @@
+---
+title: "Guides: Add RavenDB to an Existing Azure Functions Project (.NET C#)"
+sidebar_label: Add to Existing Project
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExistingProjectCsharp from './_existing-project-csharp.mdx';
+import ExistingProjectNodejs from './_existing-project-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <ExistingProjectCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExistingProjectNodejs />
+</LanguageContent>
+
+
+<!---
+### Azure
+- [Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
+- [Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+- [Deploy](https://learn.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies)
+
+### RavenDB
+- [Get Started](../../../start/getting-started)
+- [Client Certificates](../../../client-api/setting-up-authentication-and-authorization)
+- [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Cloud Signup](https://cloud.ravendb.net?utm_source=ravendb_docs&amp;utm_medium=web&amp;utm_campaign=howto_template_azurefns_dotnet&amp;utm_content=cloud_signup)
+- [Azure Functions: Overview](../../../start/guides/azure-functions/overview)
+
+
+-->

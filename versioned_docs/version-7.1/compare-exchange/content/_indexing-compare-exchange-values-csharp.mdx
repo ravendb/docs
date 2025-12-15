@@ -1,0 +1,556 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can index compare-exchange values in a static-index.  
+  This lets you query documents based on values stored in compare-exchange items.
+
+* Modifications to the indexed compare-exchange values will trigger index updates.  
+  The index will be updated whenever an indexed compare-exchange value changes,  
+  or when documents in the indexed collection(s) are modified.
+
+* In this article:  
+  * [Create sample compare-exchange items](../compare-exchange/indexing-cmpxchg-values#create-sample-compare-exchange-items)
+  * [Index compare-exchange values](../compare-exchange/indexing-cmpxchg-values#index-compare-exchange-values)
+  * [Query the index](../compare-exchange/indexing-cmpxchg-values#query-the-index)
+  * [Query the index and project compare-exchange values](../compare-exchange/indexing-cmpxchg-values#query-the-index-and-project-compare-exchange-values)
+  * [Syntax](../compare-exchange/indexing-cmpxchg-values#syntax)  
+
+</Admonition>
+
+---
+
+## Create sample compare-exchange items
+
+Let’s create some sample documents and compare-exchange items to use in the examples below.  
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample_documents" label="Sample_documents">
+```csharp
+// Create some hotel room DOCUMENTS with general info:
+// =================================================== 
+
+using (var session = store.OpenSession())
+{
+    for (int i = 215; i <= 217; i++)
+    {
+        var room = new HotelRoom
+        {
+            RoomNumber = $"R{i}",
+            Description = $"Description of room number R{i}"
+        };
+        
+        session.Store(room, $"hotelRooms/R{i}");
+    }
+    
+    session.SaveChanges();
+}
+```
+</TabItem>
+<TabItem value="Sample_compare_exchange_items" label="Sample_compare_exchange_items">
+```csharp
+// Create some COMPARE-EXCHANGE ITEMS to track current details of each room:
+// =========================================================================
+
+// Value for room R215
+var hotelRoomDetails = new HotelRoomCurrentDetails() 
+{
+    CurrentNumberOfGuests = 2,
+    ReservedBy = "customers/2",
+    ReservedUntil = DateTime.Now.AddDays(2),
+    FullyPaid = true,
+    CustomerEmail = "customer2@gmail.com",
+    CustomerPhone = "123-123-1234" 
+};
+
+CompareExchangeResult<HotelRoomCurrentDetails> putResult = store.Operations.Send(
+    new PutCompareExchangeValueOperation<HotelRoomCurrentDetails>(
+        "R215", hotelRoomDetails, 0));
+
+// Value for room R216
+hotelRoomDetails = new HotelRoomCurrentDetails() 
+{
+    CurrentNumberOfGuests = 3,
+    ReservedBy = "customers/3",
+    ReservedUntil = DateTime.Now.AddDays(5),
+    FullyPaid = false,
+    CustomerEmail = "customer3@gmail.com",
+    CustomerPhone = "456-456-6789" 
+};
+
+putResult = store.Operations.Send(
+    new PutCompareExchangeValueOperation<HotelRoomCurrentDetails>(
+        "R216", hotelRoomDetails, 0));
+
+// Value for room R217
+// This room is currently not occupied...
+hotelRoomDetails = new HotelRoomCurrentDetails() 
+{
+    CurrentNumberOfGuests = 0
+};
+
+putResult = store.Operations.Send(
+    new PutCompareExchangeValueOperation<HotelRoomCurrentDetails>(
+        "R217", hotelRoomDetails, 0));
+```
+</TabItem>
+<TabItem value="Sample_classes" label="Sample_classes">
+```csharp
+// Sample classes used:
+// ====================
+
+// The document
+public class HotelRoom
+{
+    public string RoomNumber { get; set; }
+    public string Description { get; set; }
+}
+
+// The compare-exchange value
+public class HotelRoomCurrentDetails 
+{
+    public int CurrentNumberOfGuests { get; set; }
+    public string ReservedBy { get; set; }
+    public DateTime ReservedUntil { get; set; }
+    public bool FullyPaid { get; set; }
+    public string CustomerEmail { get; set; }
+    public string CustomerPhone { get; set; }
+}
+
+// Projected content 
+public class ProjectedCustomerDetails
+{
+    public string CustomerEmail { get; set; }
+    public string CustomerPhone { get; set; }
+    public string RoomNumber { get; set; }
+}
+
+// Projected content 
+public class ProjectedNumberOfGuests
+{
+    public int CurrentNumberOfGuests { get; set; }
+    public string RoomNumber { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Index compare-exchange values
+
+
+* This index maps the rooms in a hotel, as well as compare-exchange values representing the guests in those rooms.
+
+* Use method `LoadCompareExchangeValue` to load the current details of each room from the associated compare-exchange value.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index_LINQ" label="Index_LINQ">
+```csharp
+public class Rooms_ByGuestsAndPaymentStatus : AbstractIndexCreationTask<HotelRoom>
+{
+  // The index-fields
+  public class IndexEntry
+  {
+      public string RoomNumber;
+      public int? NumberOfGuests;
+      public boo? FullyPaid { get; set; }
+  }
+
+  public Rooms_ByGuestsAndPaymentStatus()
+  {
+      Map = HotelRooms => from room in HotelRooms
+          // Call method 'LoadCompareExchangeValue'
+          // to load the compare-exchange value by its key (room number)          
+          let cmpXchgValue = LoadCompareExchangeValue<HotelRoomCurrentDetails>(room.RoomNumber)
+          
+          // Define the index-fields
+          select new IndexEntry()
+          {
+              // Index content from the document:
+              RoomNumber = room.RoomNumber,
+              
+              // Index content from the compare-exchange value:
+              NumberOfGuests = cmpXchgValue != null ? cmpXchgValue.CurrentNumberOfGuests : (int?)null,
+              FullyPaid = cmpXchgValue != null ? cmpXchgValue.FullyPaid : (bool?)null
+          };
+  }
+}
+```
+</TabItem>
+<TabItem value="Index_JS" label="Index_JS">
+```csharp
+public class Rooms_ByGuestsAndPaymentStatus_JS : AbstractJavaScriptIndexCreationTask
+{
+    public Compare_Exchange_JS_Index()
+    {
+        Maps = new HashSet<string>
+        {
+            @"
+            map('HotelRooms', function(room) {
+                // Call method 'cmpxchg'
+                // to load the compare-exchange value by its key (room number)
+                var cmpXchgValue = cmpxchg(room.RoomNumber);
+            
+                // Define the index-fields
+                return {
+                    // Index content from the document:
+                    RoomNumber: room.RoomNumber,
+            
+                    // Index content from the compare-exchange value:
+                    NumberOfGuests: cmpXchgValue ? cmpXchgValue.CurrentNumberOfGuests : null,
+                    FullyPaid: cmpXchgValue ? cmpXchgValue.FullyPaid : null
+                };
+            });
+            "
+        };
+    }
+}
+```
+</TabItem>
+<TabItem value="Index_definition" label="Index_definition">
+```csharp
+var indexDefinition = new IndexDefinition
+{
+    Name = "Rooms/ByGuestsAndPaymentStatus",
+    
+    Maps = new HashSet<string>
+    {
+        @"from room in docs.HotelRooms
+
+          // Call method 'LoadCompareExchangeValue'
+          // to load the compare-exchange value by its key (room number)  
+          let cmpXchgValue = LoadCompareExchangeValue(room.RoomNumber)
+          where cmpXchgValue != null
+
+          select new 
+          {
+              // Index content from the document:
+              RoomNumber = room.RoomNumber,
+              
+              // Index content from the compare-exchange value:
+              NumberOfGuests = cmpXchgValue.CurrentNumberOfGuests,
+              FullyPaid = cmpXchgValue.FullyPaid
+          }"
+    }
+};
+
+store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Query the index
+
+* Using the index above, you can query for all rooms (room documents) that are occupied by a specific number of guests.  
+  The _NumberOfGuests_ index-field, which is used in the query, contains the number of guests taken from the related compare-exchange value.
+
+* For example, you can find all vacant rooms (0 guests) or rooms occupied by any specific number of guests.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// When querying the index, 
+// the session does not need to be opened in cluster-wide mode.
+using (var session = store.OpenSession()) 
+{
+    // Query for all vacant rooms (0 guests)
+    List<HotelRoom> vacantRooms = session
+        .Query<Rooms_ByGuestsAndPaymentStatus.IndexEntry, Rooms_ByGuestsAndPaymentStatus>()
+         // Index-field 'NumberOfGuests' contains the guest count for each room, 
+         // taken from the compare-exchange item.
+        .Where(x => x.NumberOfGuests == 0)
+        .OfType<HotelRoom>()
+        .ToList();
+        
+    // Using the sample data created above, Room R217 will be returned, since it has no guests.
+}
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// When querying the index, 
+// the session does not need to be opened in cluster-wide mode.
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    // Query for all vacant rooms (0 guests)
+    List<HotelRoom> vacantRooms = await asyncSession
+        .Query<Rooms_ByGuestsAndPaymentStatus.IndexEntry, Rooms_ByGuestsAndPaymentStatus>()
+         // Index-field 'NumberOfGuests' contains the guest count for each room, 
+         // taken from the compare-exchange item.
+        .Where(x => x.NumberOfGuests == 0)
+        .OfType<HotelRoom>()
+        .ToListAsync();
+        
+    // Using the sample data created above, Room R217 will be returned, since it has no guests.
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+using (var session = store.OpenSession()) 
+{
+    List<HotelRoom> vacantRooms = session.Advanced
+        .DocumentQuery<Rooms_ByGuestsAndPaymentStatus.IndexEntry, 
+            Rooms_ByGuestsAndPaymentStatus>()
+        .WhereEquals(x => x.NumberOfGuests, 0)
+        .OfType<HotelRoom>()
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    List<HotelRoom> vacantRooms = await asyncSession.Advanced
+        .AsyncDocumentQuery<Rooms_ByGuestsAndPaymentStatus.IndexEntry, 
+            Rooms_ByGuestsAndPaymentStatus>()
+        .WhereEquals(x => x.NumberOfGuests, 0)
+        .OfType<HotelRoom>()
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+using (var session = store.OpenSession()) 
+{
+    var vacantRooms = session.Advanced
+        .RawQuery<HotelRoom>(@"
+            from index 'Rooms/ByGuestsAndPaymentStatus'
+            where NumberOfGuests == 0")
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var vacantRooms = await asyncSession.Advanced
+        .AsyncRawQuery<HotelRoom>(@"
+            from index 'Rooms/ByGuestsAndPaymentStatus'
+            where NumberOfGuests = 0")
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Rooms/ByGuestsAndPaymentStatus"
+where NumberOfGuests == 0
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Query the index and project compare-exchange values
+
+* In addition to querying index-fields that already contain information from the related compare-exchange value,  
+  you can also project fields from the compare-exchange value into the query results.
+
+* In the following query example, we retrieve all customers who haven't fully paid yet,  
+  and project their phone number from the compare-exchange value using `RavenQuery.CmpXchg`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var session = store.OpenSession())
+{
+    List<ProjectedCustomerDetails> phonesOfCustomersThatNeedToPay = session
+        .Query<Rooms_ByGuestsAndPaymentStatus.IndexEntry, Rooms_ByGuestsAndPaymentStatus>()
+         // Index-field 'FullyPaid' contains info from the compare-exchange item
+        .Where(x => x.FullyPaid == false && x.NumberOfGuests > 0)
+         // Project query results:
+        .Select(x => new ProjectedCustomerDetails
+        {
+            // Project content from the compare-exchange item:
+            // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key.
+            CustomerPhone = RavenQuery.CmpXchg<HotelRoomCurrentDetails>(x.RoomNumber).CustomerPhone,
+            // Project content from the index-field:
+            RoomNumber = x.RoomNumber
+        })
+        .ToList();
+        
+        // Using the sample data created above, customer from room R216 will be returned
+        // in the projected data, since they haven't fully paid yet.
+}
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var asyncSession = store.OpenAsyncSession())
+{
+    List<ProjectedCustomerDetails> phonesOfCustomersThatNeedToPay = await asyncSession
+        .Query<Rooms_ByGuestsAndPaymentStatus.IndexEntry, Rooms_ByGuestsAndPaymentStatus>()
+         // Index-field 'FullyPaid' contains info from the compare-exchange item
+        .Where(x => x.FullyPaid == false && x.NumberOfGuests > 0)
+         // Project query results:
+        .Select(x => new ProjectedCustomerDetails
+        {
+            // Project content from the compare-exchange item:
+            // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key.
+            CustomerPhone = RavenQuery.CmpXchg<HotelRoomCurrentDetails>(x.RoomNumber).CustomerPhone,
+            // Project content from the index-field:
+            RoomNumber = x.RoomNumber
+        })
+        .ToListAsync();
+        
+        // Using the sample data created above, customer from room R216 will be returned
+        // in the projected data, since they haven't fully paid yet.
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+using (var session = store.OpenSession())
+{
+    List<ProjectedCustomerDetails> phonesOfCustomersThatNeedToPay = session.Advanced
+        .DocumentQuery<Rooms_ByGuestsAndPaymentStatus.IndexEntry, Rooms_ByGuestsAndPaymentStatus>()
+        .WhereEquals(x => x.FullyPaid, false)
+        .AndAlso()
+        .WhereGreaterThan(x=> x.NumberOfGuests, 0)
+         // Define the projection using a custom function:
+        .SelectFields<ProjectedCustomerDetails>(QueryData.CustomFunction(
+                alias: "room", 
+                 func: @"{
+                     // Project content from the compare-exchange item:
+                     // Call 'cmpxchg' to load the compare-exchange value by its key.
+                     CustomerPhone : cmpxchg(room.RoomNumber).CustomerPhone,
+                     
+                     // Project content from the index-field:
+                     RoomNumber    : room.RoomNumber
+                 }")
+            )   
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    List<ProjectedCustomerDetails> phonesOfCustomersThatNeedToPay = await asyncSession.Advanced
+        .AsyncDocumentQuery<Rooms_ByGuestsAndPaymentStatus.IndexEntry,
+             Rooms_ByGuestsAndPaymentStatus>()
+        .WhereEquals(x => x.FullyPaid, false)
+        .AndAlso()
+        .WhereGreaterThan(x=> x.NumberOfGuests, 0)
+         // Define the projection using a custom function:
+        .SelectFields<ProjectedCustomerDetails>(QueryData.CustomFunction(
+                alias: "room", 
+                 func: @"{
+                     // Project content from the compare-exchange item:
+                     // Call 'cmpxchg' to load the compare-exchange value by its key.
+                     CustomerPhone : cmpxchg(room.RoomNumber).CustomerPhone,
+                     
+                     // Project content from the index-field:
+                     RoomNumber    : room.RoomNumber
+                 }")
+            )   
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+using (var session = store.OpenSession()) 
+{
+    var phonesOfCustomersThatNeedToPay = session.Advanced
+        .RawQuery<ProjectedCustomerDetails>(@"
+            from index "Rooms/ByGuestsAndPaymentStatus" as x 
+            where x.FullyPaid = false and (x.NumberOfGuests > 0 and x.NumberOfGuests != null)
+            select { 
+                CustomerPhone : cmpxchg(x.RoomNumber).CustomerPhone,
+                RoomNumber : x.RoomNumber
+            }
+         ")
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var phonesOfCustomersThatNeedToPay = await asyncSession.Advanced
+        .AsyncRawQuery<ProjectedCustomerDetails>(@"
+            from index "Rooms/ByGuestsAndPaymentStatus" as x 
+            where x.FullyPaid = false and (x.NumberOfGuests > 0 and x.NumberOfGuests != null)
+            select { 
+                CustomerPhone : cmpxchg(x.RoomNumber).CustomerPhone,
+                RoomNumber : x.RoomNumber
+            }
+         ")
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Rooms/ByGuestsAndPaymentStatus" as x 
+where x.FullyPaid = false and (x.NumberOfGuests > 0 and x.NumberOfGuests != null)
+select { 
+    CustomerPhone : cmpxchg(x.RoomNumber).CustomerPhone,
+    RoomNumber : x.RoomNumber
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Syntax
+
+---
+
+### `LoadCompareExchangeValue()`  
+Load a compare exchange value in the LINQ index-definition by its key.  
+
+<TabItem value="" label="">
+```csharp
+//Load one compare exchange value
+T LoadCompareExchangeValue<T>(string key);
+
+//Load multiple compare exchange values
+T[] LoadCompareExchangeValue<T>(IEnumerable<string> keys);
+```
+</TabItem>
+
+### `cmpxchg()`  
+Load a compare exchange value in the JavaScript index-definition by its key.
+
+<TabItem value="" label="">
+```js
+//Load one compare exchange value
+cmpxchg(key);
+
+```
+</TabItem>
+
+| Parameter | Type                 | Description                                       |
+|-----------|----------------------|---------------------------------------------------|
+| **T**     | `object`             | The type of the compare-exchange item's value     |
+| **key**   | `string`             | The key of a particular compare exchange value.   |
+| **keys**  | `IEnumerable<string>`| The keys of multiple compare exchange values.     |
+
+### `RavenQuery.CmpXchg()`  
+This method is used when **querying the index** with a LINQ query  
+and projecting fields from the compare-exchange value into the query results.
+
+<TabItem value="" label="">
+```csharp
+// Get a compare-exchange value by key.
+public static T CmpXchg<T>(string key)
+```
+</TabItem>

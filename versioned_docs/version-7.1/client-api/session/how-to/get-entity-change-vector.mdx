@@ -1,0 +1,48 @@
+---
+title: "Session: How to Get Entity Change-Vector"
+sidebar_label: ...get entity change vector
+sidebar_position: 8
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetEntityChangeVectorCsharp from './_get-entity-change-vector-csharp.mdx';
+import GetEntityChangeVectorJava from './_get-entity-change-vector-java.mdx';
+import GetEntityChangeVectorPython from './_get-entity-change-vector-python.mdx';
+import GetEntityChangeVectorPhp from './_get-entity-change-vector-php.mdx';
+import GetEntityChangeVectorNodejs from './_get-entity-change-vector-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <GetEntityChangeVectorCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetEntityChangeVectorJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetEntityChangeVectorPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetEntityChangeVectorPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetEntityChangeVectorNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+- [How to Get Entity Last Modified](../../../client-api/session/how-to/get-entity-last-modified)
+
+
+-->

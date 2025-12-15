@@ -1,0 +1,91 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.  
+  
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __statistics_callback(statistics: QueryStatistics) -> None:
+    # Read and interact with QueryStatistics here
+    total_results = statistics.total_results
+    duration_milliseconds = statistics.duration_in_ms
+    ...
+
+employees = list(
+    session.query(object_type=Employee)
+    .where_equals("first_name", "Robert")
+    .statistics(__statistics_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Anne"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="python">
+{`def statistics(self, stats_callback: Callable[[QueryStatistics], None]) -> DocumentQuery[_T]: ...
+
+test_get_query_statistics(self):
+with self.embedded_server.get_document_store("QueryStatistics") as store:
+    with store.open_session() as session:
+        # region stats_2
+        def __statistics_callback(statistics: QueryStatistics) -> None:
+            # Read and interact with QueryStatistics here
+            total_results = statistics.total_results
+            duration_milliseconds = statistics.duration_in_ms
+            ...
+
+        employees = list(
+            session.query(object_type=Employee)
+            .where_equals("first_name", "Robert")
+            .statistics(__statistics_callback)
+        )
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter          | Type                                | Description                                                  |
+|--------------------|-------------------------------------|--------------------------------------------------------------|
+| **stats_callback** | `Callable[[QueryStatistics], None]` | An _action_ that will be called with query statistics object |
+
+| Property            | Type             | Description                                                                                                                                                                           |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **is_stale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                               |
+| **duration_in_ms**  | `int`            | Query duration on the server side in Milliseconds                                                                                                                                     |
+| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                    |
+| **timestamp**       | `datetime`       | The time when the query results were unstale                                                                                                                                          |
+| **index_name**      | `str`            | The name of the queried index                                                                                                                                                         |
+| **index_timestamp** | `IndexTimestamp` | The timestamp of the queried index                                                                                                                                                    |
+| **last_query_time** | `datetime`       | The timestamp of the last time the index was queried                                                                                                                                  |
+| **result_etag**     | `int`            | Results Etag                                                                                                                                                                          |
+| **node_tag**        | `str`            | Tag of the cluster node that responded to the query                                                                                                                                   |
+
+
+
+

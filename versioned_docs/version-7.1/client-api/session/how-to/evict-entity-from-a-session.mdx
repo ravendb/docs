@@ -1,0 +1,47 @@
+---
+title: "Evict a Single Entity from a Session"
+sidebar_label: ...evict a single entity from a session
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import EvictEntityFromASessionCsharp from './_evict-entity-from-a-session-csharp.mdx';
+import EvictEntityFromASessionJava from './_evict-entity-from-a-session-java.mdx';
+import EvictEntityFromASessionPython from './_evict-entity-from-a-session-python.mdx';
+import EvictEntityFromASessionPhp from './_evict-entity-from-a-session-php.mdx';
+import EvictEntityFromASessionNodejs from './_evict-entity-from-a-session-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <EvictEntityFromASessionCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <EvictEntityFromASessionJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <EvictEntityFromASessionPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <EvictEntityFromASessionPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <EvictEntityFromASessionNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Clear a Session](../../../client-api/session/how-to/clear-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+-->

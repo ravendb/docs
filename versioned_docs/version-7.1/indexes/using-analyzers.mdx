@@ -1,0 +1,42 @@
+---
+title: "Indexes: Analyzers"
+sidebar_label: Analyzers
+sidebar_position: 24
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import UsingAnalyzersJava from './_using-analyzers-java.mdx';
+import UsingAnalyzersCsharp from './_using-analyzers-csharp.mdx';
+import UsingAnalyzersNodejs from './_using-analyzers-nodejs.mdx';
+
+export const supportedLanguages = ["java", "csharp", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="java">
+   <UsingAnalyzersJava />
+</LanguageContent>
+
+<LanguageContent language="csharp">
+   <UsingAnalyzersCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <UsingAnalyzersNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [Boosting](../indexes/boosting)
+- [Storing Data in Index](../indexes/storing-data-in-index)
+- [Dynamic Fields](../indexes/using-dynamic-fields)
+
+### Studio
+- [Custom Analyzers](../studio/database/settings/custom-analyzers)
+- [Create Map Index](../studio/database/indexes/create-map-index)
+
+
+-->

@@ -1,0 +1,49 @@
+---
+title: "Session: How to Refresh an Entity"
+sidebar_label: ...refresh entity
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import RefreshEntityCsharp from './_refresh-entity-csharp.mdx';
+import RefreshEntityJava from './_refresh-entity-java.mdx';
+import RefreshEntityPython from './_refresh-entity-python.mdx';
+import RefreshEntityPhp from './_refresh-entity-php.mdx';
+import RefreshEntityNodejs from './_refresh-entity-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <RefreshEntityCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <RefreshEntityJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <RefreshEntityPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <RefreshEntityPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <RefreshEntityNodejs />
+</LanguageContent>
+
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Clear a Session](../../../client-api/session/how-to/clear-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+
+
+-->

@@ -1,0 +1,78 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Counters can be included when [loading entities](../../client-api/session/loading-entities) 
+  or when making [queries](../../client-api/session/querying/how-to-query).
+ 
+* The _Session_ stores the included counters in its in-memory cache,  
+  so their values can be accessed later in the same session without making additional requests to the server.
+    
+* To see how to include counters when creating a subscription, see
+  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+
+</Admonition>
+
+* **Including Counters when using `Session.load`**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
+
+    `includeCounter` and `includeCounters` usage samples:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="java">
+{`//include single Counters
+Product productPage = session
+    .load(Product.class, "products/1-C", includeBuilder -> {
+        includeBuilder.includeCounter("productLikes")
+            .includeCounter("productDislikes")
+            .includeCounter("productDownloads");
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="java">
+{`//include multiple Counters
+//note that you can combine the inclusion of Counters and documents.
+
+Product productPage = session.load(Product.class, "orders/1-A", includeBuilder -> {
+    includeBuilder.includeDocuments("products/1-C")
+        .includeCounters(new String[]{"productLikes", "productDislikes"});
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **Including Counters when using `Session.query`**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
+
+    `includeCounter` and `includeCounters` usage samples:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="IncludeCounter" label="IncludeCounter">
+<CodeBlock language="java">
+{`//include a single Counter
+IDocumentQuery<Product> query = session.query(Product.class)
+    .include(includeBuilder -> {
+        includeBuilder.includeCounter("productLikes");
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IncludeCounters" label="IncludeCounters">
+<CodeBlock language="java">
+{`//include multiple Counters
+IDocumentQuery<Product> query = session.query(Product.class)
+    .include(includeBuilder -> {
+        includeBuilder.includeCounters(new String[]{"productLikes", "productDownloads"});
+    });
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>

@@ -1,0 +1,62 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To get the server build number use **GetBuildNumberOperation** from `Maintenance.Server`
+
+## Syntax
+
+<TabItem value="buildNumber_1" label="buildNumber_1">
+<CodeBlock language="csharp">
+{`public GetBuildNumberOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The result of executing GetBuildNumberOperation is a **BuildNumber** object: 
+
+<TabItem value="buildNumber_2" label="buildNumber_2">
+<CodeBlock language="csharp">
+{`public class BuildNumber
+\{
+    public string ProductVersion \{ get; set; \}
+
+    public int BuildVersion \{ get; set; \}
+
+    public string CommitHash \{ get; set; \}
+
+    public string FullVersion \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property           | Description                           |
+|--------------------|---------------------------------------|
+| **ProductVersion** | current product version e.g. "4.0"    |
+| **BuildVersion**   | current build version e.g. 40         |
+| **CommitHash**     | git commit SHA e.g. "a377982"         |
+| **FullVersion**    | semantic versioning e.g. "4.0.0"      |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var getBuildNumberResult = documentStore.Maintenance.Server.Send(new GetBuildNumberOperation());
+Console.WriteLine(getBuildNumberResult.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var buildNumber = await documentStore.Maintenance.Server.SendAsync(new GetBuildNumberOperation());
+Console.WriteLine(buildNumber.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+

@@ -1,0 +1,54 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Use `GetIndexNamesOperation` to retrieve multiple **index names** from the database.
+
+* In this page:
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
+
+</Admonition>
+## Get index names example
+
+<TabItem value="get_index_names" label="get_index_names">
+<CodeBlock language="python">
+{`# Define the get index names operation
+# Pass number of indexes to skip & number of indexes to retrieve
+get_index_names_op = GetIndexNamesOperation(0, 10)
+
+# Execute the operation by passing it to maintenance.send
+index_names = store.maintenance.send(get_index_names_op)
+
+# index_names will contain the first 10 indexes, alphabetically ordered
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
+<CodeBlock language="python">
+{`class GetIndexNamesOperation(MaintenanceOperation):
+    def __init__(self, start: int, page_size: int): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |- | - |
+| **start** | `int` | Number of index names to skip |
+| **page_size** | `int`   | Number of index names to retrieve |
+
+| Return Value of<br/>`store.maintenance.send(GetIndexNamesOperation)` | Description |
+| - | - |
+| `str[]` | A list of index names.<br/> Alphabetically ordered. |
+
+
+
+

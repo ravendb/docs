@@ -1,0 +1,54 @@
+---
+title: "Put Indexes Operation"
+sidebar_label: Put Indexes
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PutIndexesCsharp from './_put-indexes-csharp.mdx';
+import PutIndexesJava from './_put-indexes-java.mdx';
+import PutIndexesPython from './_put-indexes-python.mdx';
+import PutIndexesPhp from './_put-indexes-php.mdx';
+import PutIndexesNodejs from './_put-indexes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PutIndexesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PutIndexesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PutIndexesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <PutIndexesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PutIndexesNodejs />
+</LanguageContent>
+
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+
+
+-->

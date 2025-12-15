@@ -1,0 +1,43 @@
+---
+title: "Bulk Insert: How to Work With Bulk Insert Operation"
+sidebar_label: How to Work With Bulk Insert Operation
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToWorkWithBulkInsertOperationCsharp from './_how-to-work-with-bulk-insert-operation-csharp.mdx';
+import HowToWorkWithBulkInsertOperationJava from './_how-to-work-with-bulk-insert-operation-java.mdx';
+import HowToWorkWithBulkInsertOperationNodejs from './_how-to-work-with-bulk-insert-operation-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToWorkWithBulkInsertOperationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToWorkWithBulkInsertOperationJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToWorkWithBulkInsertOperationNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+
+### Document Extensions
+- [Bulk Insert: How to Add Attachments](../../document-extensions/attachments/bulk-insert)
+- [Bulk Insert: How to Append Time Series](../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk)
+
+
+-->

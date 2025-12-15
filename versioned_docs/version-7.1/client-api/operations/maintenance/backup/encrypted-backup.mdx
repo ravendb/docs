@@ -1,0 +1,335 @@
+---
+title: "Backup Encryption"
+sidebar_label: Encryption
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Backup Encryption  
+<Admonition type="note" title="">
+
+* When a database is **encrypted**, you can generate the following backup types for it:  
+   * An *encrypted Snapshot* (using the database encryption key)  
+   * An *encrypted Logical-Backup* (using the database encryption key, or any key of your choice)  
+   * An *un-encrypted Logical-Backup*  
+
+* When a database is **not encrypted**, you can generate the following backup types for it:  
+   * An *un-encrypted Snapshot*  
+   * An *encrypted Logical-Backup* (providing an encryption key of your choice)  
+   * An *un-encrypted* Logical-Backup  
+
+* **Incremental backups** of encrypted logical-backups and snapshots are encrypted as well,
+  using the same encryption key provided for the full backup.  
+
+* In this page:  
+  * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#ravendb)  
+     * [Secure Client-Server Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#secure-client-server-communication)  
+     * [Database Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#database-encryption)  
+  * [Backup-Encryption Overview](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#backup-encryption-overview)  
+     * [Prerequisites to Encrypting Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#prerequisites-to-encrypting-backups)  
+     * [Choosing Encryption Mode & Key](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key)  
+  * [Creating an Encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#creating-an-encrypted-logical-backup)  
+     * [For a Non-Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#for-a-non-encrypted-database)  
+     * [For an Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#for-an-encrypted-database)  
+  * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#creating-an-encrypted-snapshot)  
+  * [Restoring an Encrypted Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup)  
+     * [Restoring an encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-logical-backup)  
+     * [Restoring a Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-a-snapshot)  
+</Admonition>
+## RavenDB's Security Approach
+
+RavenDB's comprehensive security approach includes -  
+
+* **Authentication** and **Certification**  
+  to secure your data while it is **transferred between client and server**.  
+* **Database Encryption**  
+  to secure your data while **stored in the database**.  
+* **Backup-Files Encryption**  
+  to secure your data while **stored for safe-keeping**.  
+#### Secure Client-Server Communication
+
+To prevent unauthorized access to your data during transfer, apply the following:  
+
+* **Enable secure communication** in advance, during the server setup.  
+  Secure communication can be enabled either [manually](../../../../server/security/authentication/certificate-configuration.mdx) 
+  or [using the setup-wizard](../../../../start/installation/setup-wizard.mdx).  
+* **Authenticate with the server**.  
+  Secure communication requires clients to **certify themselves** in order to access RavenDB.  
+  Client authentication code sample:
+<TabItem value="encrypted_database" label="encrypted_database">
+<CodeBlock language="csharp">
+{`
+// path to the certificate you received during the server setup
+var cert = new X509Certificate2(@"C:\\Users\\RavenDB\\authentication_key\\admin.client.certificate.RavenDBdom.pfx");
+
+using (var docStore = new DocumentStore
+\{
+    Urls = new[] \{ "https://a.RavenDBdom.development.run" \},
+    Database = "encryptedDatabase",
+    Certificate = cert
+\}.Initialize())
+\{
+    // Backup & Restore procedures here
+\}
+`}
+</CodeBlock>
+</TabItem>  
+#### Database Encryption
+
+Secure the data stored on the server by 
+[encrypting your database](../../../../server/security/encryption/database-encryption.mdx).  
+
+* **Secure communication to enable database encryption.**  
+  An encrypted database can only be created when the 
+  [client-server communication is secure](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#secure-client-server-communication).  
+
+
+
+## Backup-Encryption Overview
+
+#### Prerequisites to Encrypting Backups
+
+* **Logical-Backup**  
+  There are no prerequisites to encrypting a Logical-Backup.  
+  An encrypted logical-backup can be generated for an **encrypted database** and 
+  for a **non-encrypted database**.  
+  The encryption key used to generate an encrypted logical-backup of an encrypted database 
+  can be different than the original database encryption key.
+
+* **Snapshot**  
+  A [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is an exact image of your database.  
+  If the database is **not encrypted**, its snapshot wouldn't be either.  
+  If the database is **encrypted**, its snapshot would also be encrypted using the database encryption key.  
+  If you want your snapshot to be encrypted, simply take the snapshot of an 
+  [encrypted database](../../../../server/security/encryption/database-encryption.mdx#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
+
+#### Choosing Encryption Mode & Key
+
+Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
+Specify whether encryption is used, and with which encryption key, 
+in the **BackupEncryptionSettings** structure defined within the 
+[PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations) object.  
+
+`BackupEncryptionSettings` definition:
+  
+<TabItem value="BackupEncryptionSettings_definition" label="BackupEncryptionSettings_definition">
+<CodeBlock language="csharp">
+{`public class BackupEncryptionSettings
+\{
+    public EncryptionMode EncryptionMode \{ get; set; \}
+    public string Key \{ get; set; \}
+
+    public BackupEncryptionSettings()
+    \{
+        Key = null;
+        EncryptionMode = EncryptionMode.None;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+`BackupEncryptionSettings` properties:  
+
+| Property           | Type   | Functionality                                                                                                                                                                                                                                      |
+|--------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **EncryptionMode** | enum   | Set the encryption mode. <br/> `None` - Use **no encryption** (default mode). <br/> `UseDatabaseKey` - Use **the same key the DB is encrypted with** (Logical-Backups & Snapshots). <br/> `UseProvidedKey` - Provide **your own encryption key** (Logical-Backups only). |
+| **Key**            | string | Pass **your own encryption key** using this parameter (Logical-Backup only). <br/> <pre><code>// Use an encryption key of your choice<br/>EncryptionMode = EncryptionMode.UseProvidedKey,<br/>Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="<br/></code></pre> <br/> **Note**: When Key is provided and `EncryptionMode` is set to `useDatabaseKey`, the **database key** is used (and not the provided key). |
+
+`EncryptionMode` definition:
+  
+<TabItem value="EncryptionMode_definition" label="EncryptionMode_definition">
+<CodeBlock language="csharp">
+{`public enum EncryptionMode
+\{
+    None,
+    UseDatabaseKey,
+    UseProvidedKey
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+## Creating an Encrypted Logical-Backup
+
+An encrypted logical-backup can be created for both **encrypted** and **non-encrypted** databases.  
+#### For a Non-Encrypted Database
+
+1. To create a **non-encrypted logical-backup** -  
+   **Set** `EncryptionMode = EncryptionMode.None`  
+   Or  
+   **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.None`  
+
+2. To create an **encrypted logical-backup**, set:
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`EncryptionMode = EncryptionMode.UseProvidedKey,
+Key = "a_key_of_your_choice"
+`}
+</CodeBlock>
+</TabItem>
+#### For an Encrypted Database
+
+1. To create a non-encrypted logical-backup -  
+   Set `EncryptionMode = EncryptionMode.None`  
+
+2. To create an encrypted logical-backup using the database key:  
+   **Set** `EncryptionMode = EncryptionMode.UseDatabaseKey`  
+   Or  
+   **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.UseDatabaseKey`  
+<TabItem value="use_database_encryption_key_full_sample" label="use_database_encryption_key_full_sample">
+<CodeBlock language="csharp">
+{`//Encrypting a logical-backup using the database encryption key
+var config = new PeriodicBackupConfiguration
+\{
+    //Additional settings here..
+    //..
+
+    //Set backup type to logical-backup
+    BackupType = BackupType.Backup,
+
+    BackupEncryptionSettings = new BackupEncryptionSettings
+    \{
+        //Use the same encryption key as the database
+        EncryptionMode = EncryptionMode.UseDatabaseKey
+    \}
+\};
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await docStore.Maintenance.SendAsync(operation);
+`}
+</CodeBlock>
+</TabItem>  
+
+3. To create an encrypted logical-backup using your own key, set:
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`EncryptionMode = EncryptionMode.UseProvidedKey,
+Key = "a_key_of_your_choice"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Creating an Encrypted Snapshot
+
+An encrypted Snapshot can only be created for an encrypted database.  
+
+* To create a **Non-Encrypted Snapshot** (for a non-encrypted database) -  
+  **Set** `EncryptionMode = EncryptionMode.None`  
+  Or  
+  **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.None`  
+
+* To create an **Encrypted Snapshot** (For an encrypted database) -  
+  **Set** `EncryptionMode = EncryptionMode.UseDatabaseKey`  
+  Or  
+  **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.UseDatabaseKey`  
+<TabItem value="encrypted_snapshot" label="encrypted_snapshot">
+<CodeBlock language="csharp">
+{`var config = new PeriodicBackupConfiguration
+\{
+    //Additional settings here..
+    //..
+
+    //Set backup type to snapshot.
+    //If the database is encrypted, its snapshot will be encrypted as well.
+    BackupType = BackupType.Snapshot,
+
+    BackupEncryptionSettings = new BackupEncryptionSettings
+    \{
+        //To encrypt a snapshot, EncryptionMode must be set to EncryptionMode.UseDatabaseKey.  
+        //Setting it to other values will generate an InvalidOperationException.  
+        EncryptionMode = EncryptionMode.UseDatabaseKey
+    \}
+\};
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await docStore.Maintenance.SendAsync(operation);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Restoring an Encrypted Backup
+
+To [restore](../../../../client-api/operations/maintenance/backup/restore.mdx#configuration-and-execution) 
+an encrypted backup you must provide the **key** that was used to encrypt it.  
+Pass the key to `RestoreBackupOperation` via `restoreConfiguration.BackupEncryptionSettings`.  
+<TabItem value="restore_encrypted_backup" label="restore_encrypted_backup">
+<CodeBlock language="csharp">
+{`// restore encrypted database
+
+var restoreConfiguration = new RestoreBackupConfiguration();
+
+//New database name
+restoreConfiguration.DatabaseName = "newEncryptedDatabase";
+
+//Backup-file location
+var backupPath = @"C:\\Users\\RavenDB\\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+restoreConfiguration.BackupLocation = backupPath;
+
+restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+\{
+    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+\};
+
+var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+docStore.Maintenance.Server.Send(restoreBackupTask);
+`}
+</CodeBlock>
+</TabItem>
+#### Restoring an encrypted Logical-Backup
+
+A database is [restored](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup) from a logical-backup 
+to its **unencrypted** form.  
+To restore a database and encrypt its contents, you have to address it explicitly.  
+
+* **To encrypt the restored database**:  
+  To encrypt the database, pass `RestoreBackupOperation` an encryption key via `restoreConfiguration.EncryptionKey`.  
+  Note: This key can be different than the key that was used to encrypt the logical-backup.  
+<TabItem value="restore_encrypted_database" label="restore_encrypted_database">
+<CodeBlock language="csharp">
+{`//Restore the database using the key you encrypted it with
+restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+\{
+    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+\};
+
+//Encrypt the restored database using this key
+restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+
+var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+docStore.Maintenance.Server.Send(restoreBackupTask);
+`}
+</CodeBlock>
+</TabItem>  
+
+* To restore an **unencrypted** logical-backup:  
+  Either provide **no encryption key** to activate the default value (`EncryptionMode.None`), or -  
+  Set `EncryptionMode.None` Explicitly.  
+<TabItem value="restore_unencrypted_database" label="restore_unencrypted_database">
+<CodeBlock language="csharp">
+{`restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+\{
+    //No encryption
+    EncryptionMode = EncryptionMode.None
+\};
+`}
+</CodeBlock>
+</TabItem>  
+#### Restoring a Snapshot
+
+Restore a snapshot as specified in [Restoring an Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup).  
+
+* The database of an un-encrypted snapshot is restored to its un-encrypted form.  
+* The database of an encrypted snapshot is restored to its encrypted form.  
+  You must provide the database key that was used to encrypt the snapshot.  
+
+
+

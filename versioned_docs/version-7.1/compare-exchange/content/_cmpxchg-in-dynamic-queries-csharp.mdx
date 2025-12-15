@@ -1,0 +1,494 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can use compare-exchange values in **dynamic queries** in two ways:  
+  * **Project** compare-exchange values into the query results.    
+  * **Filter** documents based on compare-exchange values.  
+  
+* Dynamic queries are queries that do not rely on a predefined static index.  
+  When you run a dynamic query with a filtering condition, RavenDB automatically creates an auto-index to serve it.  
+  Learn more about dynamic queries in the [Query overview](../client-api/session/querying/how-to-query).
+
+* In this article: 
+  * [Projecting compare-exchange values in query results](../compare-exchange/cmpxchg-in-dynamic-queries#projecting-compare-exchange-values-in-query-results)  
+  * [Filtering by compare-exchange value](../compare-exchange/cmpxchg-in-dynamic-queries#filtering-by-compare-exchange-value)  
+    * [Example 1 - Filtering when the compare-exchange value is a string](../compare-exchange/cmpxchg-in-dynamic-queries#example-1---filtering-when-the-compare-exchange-value-is-a-string)  
+    * [Example 2 - Filtering when the compare-exchange value is an object](../compare-exchange/cmpxchg-in-dynamic-queries#example-2---filtering-when-the-compare-exchange-value-is-an-object)  
+  * [Syntax](../compare-exchange/cmpxchg-in-dynamic-queries#syntax)  
+
+</Admonition>
+
+---
+
+## Projecting compare-exchange values in query results
+
+* You can project values from compare-exchange items alongside fields from the queried documents.
+
+* The following example is based on the sample data described in: [Create sample compare-exchange items](../compare-exchange/indexing-cmpxchg-values#create-sample-compare-exchange-items).   
+  In this example, we want to retrieve the current number of guests in each room.  
+  We query all _HotelRoom_ documents and project:
+  * the number of guests (from the compare-exchange item's value), and  
+  * the room number (from the document field).  
+  
+* No auto-index is created in this case, since the query doesn’t apply any filters.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var session = store.OpenSession()) 
+{
+    List<ProjectedNumberOfGuests> numberOfGuestsPerRoom = session
+        .Query<HotelRoom>()
+        .Select(x => new ProjectedNumberOfGuests
+        {
+            // Project content from the compare-exchange item:
+            // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key.
+            CurrentNumberOfGuests = 
+                RavenQuery.CmpXchg<HotelRoomCurrentDetails>(x.RoomNumber).CurrentNumberOfGuests,
+            
+            // Project content from the document:
+            RoomNumber = x.RoomNumber
+        })
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    List<ProjectedNumberOfGuests> numberOfGuestsPerRoom = await asyncSession
+        .Query<HotelRoom>()
+        .Select(x => new ProjectedNumberOfGuests
+        {
+            // Project content from the compare-exchange item:
+            // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key.
+            CurrentNumberOfGuests = 
+                RavenQuery.CmpXchg<HotelRoomCurrentDetails>(x.RoomNumber).CurrentNumberOfGuests,
+            
+            // Project content from the document:
+            RoomNumber = x.RoomNumber
+        })
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var session = store.OpenSession()) 
+{
+    List<ProjectedNumberOfGuests> numberOfGuestsPerRoom = session.Advanced
+        .DocumentQuery<HotelRoom>()
+        .SelectFields<ProjectedNumberOfGuests>(QueryData.CustomFunction(
+            alias: "room", 
+            func: @"
+            {
+                // Project content from the compare-exchange item:
+                // Call 'cmpxchg' to load the compare-exchange value by its key.
+                CurrentNumberOfGuests : cmpxchg(room.RoomNumber).CurrentNumberOfGuests,
+                
+                // Project content from the document:
+                RoomNumber : room.RoomNumber
+            }"))   
+        .ToList();
+}
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// The session does not need to be opened in cluster-wide mode
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var numberOfGuestsPerRoom = await asyncSession.Advanced
+        .AsyncDocumentQuery<HotelRoom>()
+        .SelectFields<ProjectedNumberOfGuests>(QueryData.CustomFunction(
+            alias: "room", 
+            func: @"
+            {
+                // Project content from the compare-exchange item:
+                // Call 'cmpxchg' to load the compare-exchange value by its key.
+                CurrentNumberOfGuests : cmpxchg(room.RoomNumber).CurrentNumberOfGuests,
+                
+                // Project content from the document:
+                RoomNumber : room.RoomNumber
+            }")) 
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+using (var session = store.OpenSession()) 
+{
+    var numberOfGuestsPerRoom = session.Advanced
+        .RawQuery<ProjectedNumberOfGuests>(@"
+            from 'HotelRooms' as x 
+            select {
+                CurrentNumberOfGuests : cmpxchg(x.RoomNumber).CurrentNumberOfGuests,
+                RoomNumber : x.RoomNumber
+            }")
+        .ToList();
+}
+```
+</TabItem>   
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var numberOfGuestsPerRoom = await asyncSession.Advanced
+        .AsyncRawQuery<ProjectedNumberOfGuests>(@"
+            from 'HotelRooms' as x 
+            select {
+                CurrentNumberOfGuests : cmpxchg(x.RoomNumber).CurrentNumberOfGuests,
+                RoomNumber : x.RoomNumber
+            }")
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "HotelRooms" as x 
+select { 
+    CurrentNumberOfGuests : cmpxchg(x.RoomNumber).CurrentNumberOfGuests,
+    RoomNumber : x.RoomNumber 
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Filtering by compare-exchange value
+
+#### Example 1 - Filtering when the compare-exchange value is a string
+
+* You can filter documents based on a compare-exchange value.  
+  For example, to find a user with a blocked email address,  
+  you can filter by the compare-exchange value that stores the blocked email.
+
+* **Limitation**:  
+  When filtering with `RavenQuery.CmpXchg` inside the `Where` predicate (as shown in this example),  
+  the compare-exchange value must be a _string_.  
+  If your compare-exchange value is of another type, you can still filter the results - 
+  see the [next example](../compare-exchange/cmpxchg-in-dynamic-queries#example-2---filtering-when-the-compare-exchange-value-is-an-object).
+  
+* Since this query uses filtering, RavenDB will automatically create an auto-index to serve it.  
+  In this case, the auto-index `Auto/Users/ByEmail` will be created.  
+  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// First, let's create a compare-exchange item with a blocked email address for this example:
+var putResult = store.Operations.Send(new PutCompareExchangeValueOperation<string>(
+    "blocked-address", "someUser@Company.com", 0));
+
+// Query the 'Users' collection
+// Find a user with an email address that matches the blocked address:
+// (The session does not need to be opened in cluster-wide mode)
+using (var session = store.OpenSession())
+{
+    var blockedUser = session.Query<User>()
+         // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key
+         // Filter the users collection by the value:
+        .Where(x => x.Email == RavenQuery.CmpXchg<string>("blocked-address"))
+        .FirstOrDefault();
+}
+
+// The results will include the user document whose email address is "someUser@company.com"
+// (assuming such a user exists in your data).
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// First, let's create a compare-exchange item with a blocked email address for this example:
+var putResult = await store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>(
+    "blocked-address", "someUser@Company.com", 0));
+
+// Query the 'Users' collection
+// Find a user with an email address that matches the blocked address:
+// (The session does not need to be opened in cluster-wide mode)
+using (var asyncSession = store.OpenAsyncSession())
+{
+    var blockedUser = await asyncSession.Query<User>()
+         // Call 'RavenQuery.CmpXchg' to load the compare-exchange value by its key
+         // Filter the users collection by the value:
+        .Where(x => x.Email == RavenQuery.CmpXchg<string>("blocked-address"))
+        .FirstOrDefaultAsync();
+}
+
+// The results will include the user document whose email address is "someUser@company.com"
+// (assuming such a user exists in your data).
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+var putResult = store.Operations.Send(new PutCompareExchangeValueOperation<string>(
+    "blocked-address", "someUser@Company.com", 0));
+    
+using (var session = store.OpenSession()) 
+{
+    var blockedUser = session.Advanced
+        .RawQuery<User>(@"
+            from 'Users' 
+            where Email == cmpxchg('blocked-address')
+         ")
+        .FirstOrDefault();
+}
+```
+</TabItem>   
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+var putResult = await store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>(
+    "blocked-address", "someUser@Company.com", 0));
+    
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var blockedUser = await asyncSession.Advanced
+        .AsyncRawQuery<User>(@"
+            from 'Users' 
+            where Email == cmpxchg('blocked-address')
+         ")
+        .FirstOrDefaultAsync();
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql    
+from "Users" 
+where Email == cmpxchg("blocked-address")
+limit 0, 1
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+#### Example 2 - Filtering when the compare-exchange value is an object
+
+* The following example shows how to filter documents based on a compare-exchange value that is an _object_.  
+  We query for users whose email ends with one of the domains stored in the object held by the compare-exchange item.
+
+* Retrieve the compare-exchange value outside the query, then use its content to build the filter logic.  
+
+* Since this query uses filtering, RavenDB will automatically create an auto-index to serve it.  
+  In this case, the auto-index `Auto/Users/ByEmail` will be created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// First, let's create a compare-exchange item with a value that is an object.
+// The object contains multiple blocked email domains for this example.
+var putResult = store.Operations.Send(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+    
+// Retrieve the compare-exchange value before running the query
+BlockedDomains blockedDomains = store.Operations.Send(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;
+            
+// Query the 'Users' collection
+// Find users whose email address ends with one of the blocked domains.
+// (The session does not need to be opened in cluster-wide mode)
+using (var session = store.OpenSession())
+{
+    var blockedUsers = session.Query<User>()
+        .Where(user =>
+            user.Email.EndsWith(blockedDomains.Domains[0]) ||
+            user.Email.EndsWith(blockedDomains.Domains[1]))
+        .ToList();
+}
+
+// The results will include users whose email address domain ends with
+// one of the values stored in the compare-exchange item,
+// assuming such users exist in your data.
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// First, let's create a compare-exchange item with a value that is an object.
+// The object contains multiple blocked email domains for this example.
+var putResult = await store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+
+// Retrieve the compare-exchange value before running the query
+BlockedDomains blockedDomains = await store.Operations.SendAsync(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;
+
+// Query the 'Users' collection
+// Find users whose email address ends with one of the blocked domains.
+// (The session does not need to be opened in cluster-wide mode)
+using (var asyncSession = store.OpenAsyncSession())
+{
+    var blockedUsers = await asyncSession.Query<User>()
+        .Where(user =>
+            user.Email.EndsWith(blockedDomains.Domains[0]) ||
+            user.Email.EndsWith(blockedDomains.Domains[1]))
+        .ToListAsync();
+}
+
+// The results will include users whose email address domain ends with
+// one of the values stored in the compare-exchange item,
+// assuming such users exist in your data.
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// First, let's create a compare-exchange item with a value that is an object.
+// The object contains multiple blocked email domains for this example.
+var putResult = store.Operations.Send(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+    
+// Retrieve the compare-exchange value before running the query
+BlockedDomains blockedDomains = store.Operations.Send(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;
+            
+// Query the 'Users' collection
+// Find users whose email address ends with one of the blocked domains.
+// (The session does not need to be opened in cluster-wide mode)
+using (var session = store.OpenSession())
+{
+    var blockedUsers = session.Advanced
+        .DocumentQuery<User>()
+        .WhereEndsWith(x => x.Email, blockedDomains.Domains[0])
+        .OrElse()
+        .WhereEndsWith(x=> x.Email, blockedDomains.Domains[1])
+        .ToList();
+}
+
+// The results will include users whose email address domain ends with
+// one of the values stored in the compare-exchange item,
+// assuming such users exist in your data.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// First, let's create a compare-exchange item with a value that is an object.
+// The object contains multiple blocked email domains for this example.
+var putResult = await store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+
+// Retrieve the compare-exchange value before running the query
+BlockedDomains blockedDomains = await store.Operations.SendAsync(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;
+
+// Query the 'Users' collection
+// Find users whose email address ends with one of the blocked domains.
+// (The session does not need to be opened in cluster-wide mode)
+using (var asyncSession = store.OpenAsyncSession())
+{
+    var blockedUsers = await asyncSession.Advanced
+        .AsyncDocumentQuery<User>()
+        .WhereEndsWith(x => x.Email, blockedDomains.Domains[0])
+        .OrElse()
+        .WhereEndsWith(x=> x.Email, blockedDomains.Domains[1])
+        .ToListAsync();
+}
+
+// The results will include users whose email address domain ends with
+// one of the values stored in the compare-exchange item,
+// assuming such users exist in your data.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+var putResult = store.Operations.Send(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+    
+BlockedDomains blockedDomains = store.Operations.Send(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;    
+    
+using (var session = store.OpenSession()) 
+{
+    var blockedUsers = session.Advanced
+        .RawQuery<User>(@"
+            from 'Users' 
+            where endsWith(Email, 'suspicious-company-1.com') 
+            or 
+            endsWith(Email, 'suspicious-company-2.org')
+         ")
+        .ToList();
+}
+```
+</TabItem>   
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+var putResult = await store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>(
+    "blocked-domains", 
+    new BlockedDomains() { Domains = ["suspicious-company-1.com", "suspicious-company-2.org"]},
+    0));
+    
+BlockedDomains blockedDomains = await store.Operations.SendAsync(
+    new GetCompareExchangeValueOperation<BlockedDomains>("blocked-domains")).Value;    
+    
+using (var asyncSession = store.OpenAsyncSession()) 
+{
+    var blockedUsers = await asyncSession.Advanced
+        .AsyncRawQuery<User>(@"
+            from 'Users' 
+            where endsWith(Email, 'suspicious-company-1.com') 
+            or 
+            endsWith(Email, 'suspicious-company-2.org')
+         ")
+        .ToListAsync();
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql    
+from "Users" 
+where endsWith(Email, "suspicious-company-1.com") 
+or 
+endsWith(Email, "suspicious-company-2.org")
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+## Syntax
+
+### `RavenQuery.CmpXchg()`  
+This method can be used to filter a LINQ query  
+or to project fields from a compare-exchange value into the query results.
+
+<TabItem value="" label="">
+```csharp
+// Get a compare-exchange value by key.
+public static T CmpXchg<T>(string key)
+```
+</TabItem>

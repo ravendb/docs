@@ -1,0 +1,64 @@
+---
+title: "Cluster Dashboard: Overview"
+sidebar_label: Overview
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Cluster Dashboard: Overview
+<Admonition type="note" title="">
+
+* The **Cluster Dashboard** provides an overview of the whole cluster.  
+* Dedicated **Widgets** display live diagnostics related to all cluster nodes.  
+* The cluster dashboard can be freely rearranged by adding, removing, relocating, and resizing widgets.  
+
+* In this page:  
+  * [Initial Display](../../../studio/cluster/cluster-dashboard/cluster-dashboard-overview.mdx#cluster-dashboard-initial-display)  
+  * [Widgets Display](../../../studio/cluster/cluster-dashboard/cluster-dashboard-overview.mdx#cluster-dashboard-widgets-display)  
+  * [Setup changes](../../../studio/cluster/cluster-dashboard/cluster-dashboard-overview.mdx#setup-changes)  
+</Admonition>
+## Cluster Dashboard Initial Display
+
+As long as a cluster hasn't been set yet, the cluster dashboard displays 
+an expanded view of the [Let's Get Started](../../../studio/cluster/cluster-dashboard/cluster-dashboard-widgets.mdx#lets-get-started-widget) widget.  
+
+![Let's Get Started Widget](./assets/cluster-dashboard-01-welcome.png)
+
+1. **Cluster Dashboard**  
+   Open the cluster dashboard view from the main menu.  
+2. **Let's Get Started Widget**  
+
+
+
+## Cluster Dashboard Widgets Display
+
+Once a cluster has been set, the dashboard displays [widgets](../../../studio/cluster/cluster-dashboard/cluster-dashboard-widgets.mdx) 
+with live cluster diagnostics, information, and configuration options.  
+
+![Cluster Dashboard Widgets](./assets/cluster-dashboard-02-cluster-diagnostics.png)
+
+1. **Widget**  
+2. **Diagnostics**  
+   Widgets display information related to **all cluster nodes**.  
+
+
+
+## Setup changes
+
+The dashboard displays information for all cluster nodes.  
+
+After making a change to the cluster setup, i.e. adding or removing a node,
+please **refresh** the cluster dashboard page to view the relevant cluster nodes.  
+
+Here, for example, is the Memory widget after removing node C from the cluster.  
+
+![Widget after node C removal](./assets/cluster-dashboard-03-2nodes.png)
+
+
+

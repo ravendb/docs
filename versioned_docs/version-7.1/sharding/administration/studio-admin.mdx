@@ -1,0 +1,178 @@
+---
+title: "Sharding: Studio Administration"
+sidebar_label: Studio Administration
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Sharding: Studio Administration
+<Admonition type="note" title="">
+
+* This page explains how to create and manage a sharded database using Studio.  
+* Learn [here](../../sharding/administration/api-admin.mdx) how to manage 
+  a sharded database using API commands.  
+
+* In this page:  
+  * [Creating a sharded database](../../sharding/administration/studio-admin.mdx#creating-a-sharded-database)  
+  * [Database View](../../sharding/administration/studio-admin.mdx#database-view)  
+  * [Database Group](../../sharding/administration/studio-admin.mdx#database-group)  
+
+</Admonition>
+## Creating a sharded database
+
+![Create New Database](./assets/studio-admin_create-new-database.png)
+
+1. **Database View**  
+   Click to create, view or edit database properties.  
+2. **Create new database**  
+   This button is available when no database has been created yet.  
+   Click it to create a new database.  
+2. **New database**  
+   Click to create a new database.  
+Initiating the creation of a new database as shown above will open 
+the following view:  
+
+![New Database Settings](./assets/studio-admin_new-database.png)
+
+1. **Name**  
+   Enter the database name.  
+2. **Replication factor**  
+   Decide the number of replicas the database will have.  
+   If set to 1, there will be no replication.  
+3. **Enable sharding**  
+   Click to enable or disable sharding on this database.  
+4. **Number of shards**  
+   Set the number of shards the database will be comprised of.  
+5. **Set nodes layout manually**  
+   The layout determines which nodes host each shard, and whether 
+   nodes can function as [orchestrators](../../sharding/overview.mdx#client-server-communication).  
+   Enable this option to set the layout manually.  
+   Disable to let RavenDB set it for you.  
+6. **Orchestrator nodes**  
+   Select which nodes can function as orchestrators.  
+7. **Shards replication**  
+   Select the nodes that host shard replicas.  
+   The number of nodes available for each shard is determined 
+   using the "Replication factor" box at the top.  
+8. **Create**  
+   Click to create the database.  
+   
+
+
+## Database View
+
+After creating a database as explained above, the database will 
+be available here:  
+
+![Database View](./assets/studio-admin_database-view_01.png)
+
+1. **Expand/Collapse distribution details**  
+   Click to display or hide per-shard database details.  
+
+     ![Expanded Details](./assets/studio-admin_database-view_expanded-details.png)
+
+2. **Encryption status**  
+   Informative icon: notify whether the database is encrypted or not.  
+   
+3. **Shard storage report**  
+   Click to watch the shard's storage usage.  
+     
+      ![Select Shard](./assets/studio-admin_database-view_02_select-shard.png)
+
+      Select the shard number and its replica node.    
+      The storage report view will open.  
+
+      ![Storage Report](./assets/studio-admin_database-view_03_storage-report.png)
+
+4. **Documents view**  
+   Click to view and edit documents.  
+      
+     ![Documents View](./assets/studio-admin_database-view_04_docs-view.png)
+
+5. **Indexes view**  
+   Click to open the [List of Indexes](../../studio/database/indexes/indexes-list-view.mdx) view.  
+6. **Backups view**  
+   Click to manage [backup tasks](../../studio/database/tasks/backup-task.mdx) and restore existing backups.  
+7. **Manage group**  
+   Click to manage the database group ([see below](../../sharding/administration/studio-admin.mdx#database-group)).  
+
+
+
+## Database Group
+
+The Database Group view allows you to appoint and dismiss 
+[orchestrators](../../sharding/overview.mdx#client-server-communication) 
+and add or remove [shards](../../sharding/overview.mdx#shards) and 
+shard [replicas](../../sharding/overview.mdx#shard-replication).  
+
+![Database Group](./assets/studio-admin_database-group.png)
+
+1. **Add Shard**  
+   Click to add a shard.  
+
+      ![Add Shard](./assets/database-group_add-shard.png)
+   
+      Set the shard's replication factor and click **Add shard** (or **Cancel**).  
+      The new shard will be added to the database group view.  
+
+2. **Manage Orchestrators**  
+   Add or remove orchestrator functionality to cluster nodes.  
+
+    * **Add Orchestrator**  
+      This option will be available only if there are still nodes that 
+      an orchestrator hasn't been assigned for.  
+
+        ![Add Orchestrator 1](./assets/database-group_add-orchestrator-01.png)
+
+        Click **Add node** to add an orchestrator.  
+
+        ![Add Orchestrator 2](./assets/database-group_add-orchestrator-02.png)
+
+        Select an available node for the orchestrator and click **Add orchestrator** (or **Cancel**).  
+
+    * **Remove Orchestrator**  
+
+        ![Remove Orchestrator](./assets/database-group_remove-orchestrator.png)
+      
+        Click **Remove** to remove the orchestrator functionality from this node.  
+
+3. **Manage Shards**  
+
+    * **Add shard replica**  
+      This option will be available only if there are still available 
+      nodes for replicas of the selected shard.  
+      
+        ![Add Shard Replica 1](./assets/database-group_add-shard-replica-01.png)
+      
+        Click **Add node** to add a shard replica.  
+      
+        ![Add Shard Replica 2](./assets/database-group_add-shard-replica-02.png)
+
+        Select a node for the replica.  
+        If you want, you can also set a mentor node that will replicate 
+        the data to the new replica.  
+        Click "Add node" to create the new replica (or **Cancel**).  
+
+    * **Remove shard replica**  
+      
+        ![Remove Shard Replica 1](./assets/database-group_remove-shard-replica-01.png)
+      
+        Click **Delete from group** to remove the shard replica from the database group.  
+      
+        ![Remove Shard Replica 2](./assets/database-group_remove-shard-replica-02.png)
+      
+        Click **Soft Delete** to stop replication to this node but keep the database files on it.  
+        Click **Hard Delete** to stop replication to this node and **delete database files** from it.  
+        <Admonition type="warning" title="">
+        Removing a shard is done by removing all its replicas.  
+        Please be careful not to remove files that have no backup and may still be needed.  
+        </Admonition>
+
+
+

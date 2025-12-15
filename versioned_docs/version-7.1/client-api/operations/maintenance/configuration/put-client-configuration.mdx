@@ -1,0 +1,56 @@
+---
+title: "Put Client Configuration Operation  (for database)"
+sidebar_label: Put Client Configuration
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PutClientConfigurationCsharp from './_put-client-configuration-csharp.mdx';
+import PutClientConfigurationJava from './_put-client-configuration-java.mdx';
+import PutClientConfigurationPython from './_put-client-configuration-python.mdx';
+import PutClientConfigurationPhp from './_put-client-configuration-php.mdx';
+import PutClientConfigurationNodejs from './_put-client-configuration-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <PutClientConfigurationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PutClientConfigurationJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PutClientConfigurationPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <PutClientConfigurationPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PutClientConfigurationNodejs />
+</LanguageContent>
+
+
+<!---
+### Studio
+- [Client Configuration View](../../../../studio/database/settings/client-configuration-per-database)
+- [Client Configuration](../../../../studio/server/client-configuration)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Get client configuration (for database)](../../../../client-api/operations/maintenance/configuration/get-client-configuration)
+- [Get client configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+- [Put client configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+
+### Load balancing
+- [Load balancing client requests](../../../../client-api/configuration/load-balance/overview)
+
+
+-->

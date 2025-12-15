@@ -1,0 +1,38 @@
+---
+title: "Changes API: How to Subscribe to Document Changes"
+sidebar_label: How to Subscribe to Document Changes
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import HowToSubscribeToDocumentChangesCsharp from './_how-to-subscribe-to-document-changes-csharp.mdx';
+import HowToSubscribeToDocumentChangesJava from './_how-to-subscribe-to-document-changes-java.mdx';
+import HowToSubscribeToDocumentChangesNodejs from './_how-to-subscribe-to-document-changes-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <HowToSubscribeToDocumentChangesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <HowToSubscribeToDocumentChangesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <HowToSubscribeToDocumentChangesNodejs />
+</LanguageContent>
+
+
+<!---
+### Changes API
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
+
+
+-->

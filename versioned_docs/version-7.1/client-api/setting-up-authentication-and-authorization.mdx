@@ -1,0 +1,56 @@
+---
+title: "Client API: Setting up Authentication and Authorization"
+sidebar_label: Setting up Authentication and Authorization
+sidebar_position: 2
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SettingUpAuthenticationAndAuthorizationCsharp from './_setting-up-authentication-and-authorization-csharp.mdx';
+import SettingUpAuthenticationAndAuthorizationJava from './_setting-up-authentication-and-authorization-java.mdx';
+import SettingUpAuthenticationAndAuthorizationNodejs from './_setting-up-authentication-and-authorization-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <SettingUpAuthenticationAndAuthorizationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SettingUpAuthenticationAndAuthorizationJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <SettingUpAuthenticationAndAuthorizationNodejs />
+</LanguageContent>
+
+
+<!---
+### Getting Started
+- [Installation : Setup Wizard Walkthrough](../start/installation/setup-wizard)
+
+### Client API
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Creating a Document Store](../client-api/creating-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+
+### Server
+- [Security Overview](../server/security/overview)
+- [Security Clearance &amp; Permissions](../server/security/authorization/security-clearance-and-permissions)
+- [Client Certificiate Usage](../server/security/authentication/client-certificate-usage)
+- [Certificate Management](../server/security/authentication/certificate-management)
+
+### Security
+- [How to Create Secured Server](../server/security/overview)
+- [Security Clearance &amp; Permissions](../server/security/authorization/security-clearance-and-permissions)
+
+### Document Store
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Creating a Document Store](../client-api/creating-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+
+
+-->

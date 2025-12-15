@@ -1,0 +1,346 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+ 
+* To retrieve an existing compare-exchange item using the **Client API**,  
+  use either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get a **single** compare-exchange item by its unique _key_.  
+  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items).
+
+* In this article:  
+  * [Get item using a **cluster-wide session**](../compare-exchange/get-cmpxchg-item#get-item-using-a-cluster-wide-session)
+    * [Get compare-exchange item](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item)  
+    * [Get compare-exchange item lazily](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-lazily)  
+    * [Retrieved compare-exchange items are tracked by the session](../compare-exchange/get-cmpxchg-item#retrieved-compare-exchange-items-are-tracked-by-the-session) 
+  * [Get item using a **store operation**](../compare-exchange/get-cmpxchg-item#get-item-using-a-store-operation)
+    * [Get compare-exchange item that has a number value and metadata](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-number-value-and-metadata)  
+    * [Get compare-exchange item that has a custom object value](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-custom-object-value)  
+  * [Syntax](../compare-exchange/get-cmpxchg-item#syntax)
+
+</Admonition>
+
+---
+
+## Get item using a cluster-wide session
+
+* You can retrieve compare-exchange items using a [cluster-wide session](../client-api/session/cluster-transaction/overview#open-a-cluster-transaction).  
+  The session must be opened in cluster-wide mode.
+  
+* Use the `getCompareExchangeValue` advanced session method to get a compare-exchange item by its _key_.  
+  If the specified key does not exist, the method returns `null`. No exception is thrown.
+  
+* Once a compare-exchange item is retrieved using a cluster-wide session, the item is **tracked** by the session.  
+  Repeating the same `getCompareExchangeValue` call with the same key does not send another request to the server,  
+  the value is returned from the session's internal state.  
+  To force a re-fetch from the server, call `session.advanced.clear()` first.  
+
+* Examples:
+
+    #### Get compare-exchange item
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    // First, let's create a compare-exchange item for the example,
+    // e.g. store a user's email as the key and the user document id as the value.
+    
+    // The session must be opened in cluster-wide mode.
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+    
+    const itemToCreate = session.advanced.clusterTransaction.createCompareExchangeValue(
+        "user1-name@example.com", "users/1" // key, value  
+    );
+    
+    // Optionally, add some metadata:
+    itemToCreate.metadata["email-type"] = "work email"; 
+    
+    await session.saveChanges();
+    
+    // Get the compare-exchange item:
+    // ==============================
+    
+    const item = await session.advanced.clusterTransaction.getCompareExchangeValue("user1-name@example.com");
+    
+    if (item) {
+        // Access the VALUE of the retrieved item
+        const userDocumentId = item.value; // "users/1"
+    
+        // Access the METADATA of the retrieved item
+        const emailType = item.metadata["email-type"]; // "work email"
+        
+        // Access the VERSION number of the retrieved item
+        const version = item.index;
+    } else {
+        console.log("Compare-exchange item not found");
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+    #### Get compare-exchange item lazily
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    // Create a compare-exchange item for the example:
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });
+    session.advanced.clusterTransaction.createCompareExchangeValue(
+        "user1-name@example.com",  { userDocumentId: "users/1" } 
+    );
+    await session.saveChanges();
+    
+    // Get the compare-exchange item lazily:
+    // =====================================
+    
+    const lazyItem = session.advanced.clusterTransaction.lazily
+        .getCompareExchangeValue("user1-name@example.com");
+    
+    // Access the item:    
+    const item = await lazyItem.getValue();
+    
+    if (item) {
+        // Access the VALUE of the retrieved item
+        const userDocumentId = item.value; // { "userDocumentId": "users/1" }
+    
+        // Access the VERSION number of the retrieved item
+        const version = item.index;
+    } else {
+        console.log("Compare-exchange item not found");
+    }
+    ```
+    </TabItem>
+    </Tabs>
+    
+    #### Retrieved compare-exchange items are tracked by the session   
+        
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```js
+    const session = documentStore.openSession({
+        transactionMode: "ClusterWide"
+    });    
+
+    // First retrieval — server call will happen
+    const item1 = await session.advanced.clusterTransaction.getCompareExchangeValue(
+        "user1-name@example.com");
+    
+    // No server call — the item is returned from session tracking
+    const item2 = await session.advanced.clusterTransaction.getCompareExchangeValue(
+        "user1-name@example.com");
+    
+    // Clear tracked entities and compare-exchange items
+    session.advanced.clear();
+    
+    // Server call will happen again
+    const item3 = await session.advanced.clusterTransaction.getCompareExchangeValue(
+        "user1-name@example.com");
+    ```
+    </TabItem> 
+    </Tabs>
+
+---
+
+## Get item uaing a store operation
+
+* You can retrieve compare-exchange items using a [store operation](../client-api/operations/what-are-operations).  
+  Use the `GetCompareExchangeValueOperation` operation to get a compare-exchange item by its _key_.  
+
+* If the specified key does not exist, the operation returns `null`. No exception is thrown.
+
+* Examples:
+
+    #### Get compare-exchange item that has a number value and metadata
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Get_operation" label="Get_operation">
+    ```js
+    // First, let's create a new compare-exchange item for the example,
+    // e.g. store the number of sales made by an employee as the value + some metadata info:        
+    const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", 12345, 0, {
+        "Department": "Sales",
+        "Role": "Salesperson",
+    });
+    const putResult = await documentStore.operations.send(putCmpXchgOp);
+    
+    // Get the compare-exchange item:
+    // ==============================
+    
+    // Define the get compare-exchange operation, pass the unique item key
+    const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A");
+    
+    // Execute the operation by passing it to operations.send
+    const item = await documentStore.operations.send(getCmpXchgOp);
+    
+    if (item) {
+        // Access the VALUE of the retrieved item
+        const numberOfSales = item.value;            // 12345
+        
+        // Access the METADATA of the retrieved item
+        const employeeRole = item.metadata["Role"];  // "Salesperson" 
+    
+        // Access the VERSION number of the retrieved item
+        const version = item.index;
+    } else {
+        console.log("Compare-exchange item not found");
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+    #### Get compare-exchange item that has a custom object value
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Get_operation" label="Get_operation">
+    ```js
+    // Put a new compare-exchange item with an object as the value
+    const employee = new EmployeeRole();
+    employee.role = "Salesperson"
+    employee.department = "Sales";
+    employee.numberOfSales = 12345;
+    
+    const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", employee, 0);
+    const putResult = await documentStore.operations.send(putCmpXchgOp);
+    
+    // Get the compare-exchange item:
+    // ==============================
+    
+    // Define the get compare-exchange operation, pass the unique item key & the class type
+    const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A", EmployeeRole);
+    
+    // Execute the operation by passing it to operations.send
+    const item = await documentStore.operations.send(getCmpXchgOp);
+    
+    if (item) {
+        // Access the VALUE of the retrieved item
+        const employeeResult = item.value;
+        const employeeClass = employeeResult.constructor;   // EmployeeRole
+    
+        const employeeRole = employeeResult.role;           // Salesperson
+        const employeeDep = employeeResult.department;      // Sales
+        const employeeSales = employeeResult.numberOfSales; // 12345
+    
+        // Access the VERSION number of the retrieved item
+        const version = item.index;
+    } else {
+        console.log("Compare-exchange item not found");
+    }
+    ```
+    </TabItem>
+    <TabItem value="EmployeeRole_class" label="EmployeeRole_class">
+    ```js
+    class EmployeeRole {
+        constructor(
+            id = null,
+            department = "",
+            role = "",
+            numberOfSales = 0
+    
+        ) {
+            Object.assign(this, {
+                id,
+                department,
+                role,
+                numberOfSales
+            });
+        }
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+---
+
+## Syntax
+
+---
+
+### `GetCompareExchangeValueOperation`  
+Get compare-exchange item using a store operation: 
+
+<TabItem value="" label="">
+```js
+const getCmpXchgOp = new GetCompareExchangeValueOperation(key, clazz, materializeMetadata);
+```
+</TabItem>
+
+| Parameter               | Type      | Description                                                                                                     |
+|-------------------------|-----------|-----------------------------------------------------------------------------------------------------------------|
+| **key**                 | `string`  | The unique identifier of the compare-exchange item to retrieve.                                                 |
+| **clazz**               | `object`  | The class type of the item's value.                                                                             |
+| **materializeMetadata** | `boolean` | The metadata will be retrieved and available regardless of the value of this param. Used for internal purposes. |
+
+| Returned object        | Description                                                            |
+|------------------------|---------------------------------------------------------------------------------|
+| `CompareExchangeValue` | The compare-exchange item is returned.<br/>Returns `null` if key doesn't exist. |
+
+---
+
+### `getCompareExchangeValue`  
+Get compare-exchange item using cluster-wide session:
+
+<TabItem value="" label="">
+```js
+await session.advanced.clusterTransaction.getCompareExchangeValue(key);
+```
+</TabItem>
+
+| Parameter  | Type     | Description                                      |
+|------------|----------|--------------------------------------------------|
+| **key**    | `string` | The key of the compare-exchange item to retrieve |
+
+| `getCompareExchangeValue` returns: | Description                                                            |
+|---------------------------|---------------------------------------------------------------------------------|
+| `CompareExchangeValue`    | The compare-exchange item is returned.<br/>Returns `null` if key doesn't exist. |
+
+---
+
+### `lazily.getCompareExchangeValue`  
+Get compare-exchange item using cluster-wide session lazily:
+
+<TabItem value="" label="">
+```js
+await session.advanced.clusterTransaction.lazily.getCompareExchangeValue(key);
+```
+</TabItem>
+
+| Parameter  | Type     | Description                                      |
+|------------|----------|--------------------------------------------------|
+| **key**    | `string` | The key of the compare-exchange item to retrieve |
+
+| Return value - after calling `getValue()` | Description                                                     |
+|---------------------------|---------------------------------------------------------------------------------|
+| `CompareExchangeValue`    | The compare-exchange item is returned.<br/>Returns `null` if key doesn't exist. |
+
+---
+
+<TabItem value="" label="">
+```js
+// The CompareExchangeValue object:
+// ================================
+
+class CompareExchangeValue {
+    // The unique identifier of the compare-exchange item.
+    key; // string
+    
+    // The existing `value` of the returned compare-exchange item.
+    value; // object
+    
+    // The existing `metadata` of the returned compare-exchange item.
+    metadata; // object
+    
+    // The compare-exchange item's version.  
+    index; // number
+}
+```
+</TabItem>

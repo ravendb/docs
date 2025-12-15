@@ -1,0 +1,193 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* Providing a boost value to some fields allows you to prioritize the resulting documents.  
+  The boost value is integrated with the basic score, making the document rank higher.  
+
+* Boosting can be achieved in the following ways:  
+
+    * **At query time**:  
+      Apply a boost factor to searched terms at query time - as described in this article.
+
+    * **Via index definition**:  
+      Apply a boost factor in your index definition - see this [boosting](../../../../indexes/boosting.mdx) indexing article.
+
+* The automatic ordering of the results by the score is configurable.  
+  Learn more here: [automatic score-based ordering](../../../../indexes/boosting.mdx#automatic-score-based-ordering)  
+
+* The calculated score details of the results can be retrieved if needed.  
+  Learn more here: [get resulting score](../../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)  
+
+* In this page:
+
+  * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-querying-with-where-clause)  
+
+</Admonition>
+## Boost results - when making a full-text search
+
+When making a full-text search with the `Search()` method then boosting can be applied  
+to both `Query` and `DocumentQuery`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Make a dynamic full-text search Query on 'Employees' collection
+    .Query<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // * Pass the boost value using the 'boost' parameter
+     // * This search predicate will use a boost value of 10
+    .Search(x => x.Notes, "Italian", boost: 10)
+    .ToList();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
+//
+// * Matching documents that contain 'Italian' will get a HIGHER score
+//   than those that contain 'English'.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Make a dynamic full-text search Query on 'Employees' collection
+    .Query<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // * Pass the boost value using the 'boost' parameter
+     // * This search predicate will use a boost value of 10
+    .Search(x => x.Notes, "Italian", boost: 10)
+    .ToListAsync();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
+//
+// * Matching documents that contain 'Italian' will get a HIGHER score
+//   than those that contain 'English'.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Make a dynamic full-text search DocumentQuery on 'Employees' collection
+    .DocumentQuery<Employee>()
+     // This search predicate will use the default boost value of 1
+    .Search(x => x.Notes, "English")
+     // This search predicate will use a boost value of 10 
+    .Search(x => x.Notes, "Italian")
+     // Call 'Boost' to set the boost value of the previous 'Search' call
+    .Boost(10)
+    .ToList();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
+//
+// * Matching documents that contain 'Italian' will get a HIGHER score
+//   than those that contain 'English'.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Boost results - when querying with where clause
+
+When querying with `Where` clauses (using an OR condition in between) then boosting can be applied  
+only with `DocuemtQuery`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+     // Make a dynamic DocumentQuery on 'Companies' collection
+    .DocumentQuery<Company>()
+     // Define a 'Where' condition
+    .WhereStartsWith(x => x.Name, "O")
+     // Call 'Boost' to set the boost value of the previous 'Where' predicate
+    .Boost(10)
+     // Call 'OrElse' so that OR operator will be used between statements
+    .OrElse()
+    .WhereStartsWith(x => x.Name, "P")
+    .Boost(50)
+    .OrElse()
+    .WhereEndsWith(x => x.Name, "OP")
+    .Boost(90)
+    .ToList();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field (case-insensitive).
+//
+// * Matching documents that end-with 'OP' will get the HIGHEST scores.
+//   Matching documents that start-with 'O' will get the LOWEST scores. 
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession.Advanced
+     // Make a dynamic DocumentQuery on 'Companies' collection
+    .AsyncDocumentQuery<Company>()
+     // Define a 'Where' condition
+    .WhereStartsWith(x => x.Name, "O")
+     // Call 'Boost' to set the boost value of the previous 'Where' predicate
+    .Boost(10)
+     // Call 'OrElse' so that OR operator will be used between statements
+    .OrElse()
+    .WhereStartsWith(x => x.Name, "P")
+    .Boost(50)
+    .OrElse()
+    .WhereEndsWith(x => x.Name, "OP")
+    .Boost(90)
+    .ToListAsync();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field (case-insensitive).
+//
+// * Matching documents that end-with 'OP' will get the HIGHEST scores.
+//   Matching documents that start-with 'O' will get the LOWEST scores. 
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" where
+boost(startsWith(Name, "O"), 10) or
+boost(startsWith(Name, "P"), 50) or
+boost(endsWith(Name, "OP"), 90)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

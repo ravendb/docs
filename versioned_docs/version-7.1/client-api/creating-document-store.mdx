@@ -1,0 +1,48 @@
+---
+title: "Client API: Creating a Document Store"
+sidebar_label: Creating Document Store
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CreatingDocumentStoreCsharp from './_creating-document-store-csharp.mdx';
+import CreatingDocumentStoreJava from './_creating-document-store-java.mdx';
+import CreatingDocumentStoreNodejs from './_creating-document-store-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CreatingDocumentStoreCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CreatingDocumentStoreJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CreatingDocumentStoreNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+- [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
+- [Conventions Overview](../client-api/configuration/conventions)
+- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
+
+### Session
+- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
+
+### Document Store
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+- [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
+
+
+-->

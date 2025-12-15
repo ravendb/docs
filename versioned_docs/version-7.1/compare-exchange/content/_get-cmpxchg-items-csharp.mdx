@@ -1,0 +1,456 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* You can retrieve multiple existing compare-exchange items at once using the **Client API** by either:
+  * specifying a list of unique keys, or
+  * using a common key prefix
+
+  Retrieval can be done using either a store operation or a cluster-wide session - as described below.  
+  A cluster-wide session also supports lazy retrieval.
+
+* To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+
+* This article shows how to get **multiple** compare-exchange items.  
+  To get a **single** item, see [Get compare-exchange item](../compare-exchange/get-cmpxchg-item).
+
+* In this article:  
+  * [Create sample compare-exchange items](../compare-exchange/get-cmpxchg-items#create-sample-compare-exchange-items)
+  * [Get compare-exchange items by list of keys](../compare-exchange/get-cmpxchg-items#get-compare-exchange-items-by-list-of-keys)
+  * [Get compare-exchange items by prefix](../compare-exchange/get-cmpxchg-items#get-compare-exchange-items-by-prefix)
+  * [Get compare-exchange items count](../compare-exchange/get-cmpxchg-items#get-compare-exchange-items-count)
+  * [Syntax](../compare-exchange/get-cmpxchg-items#syntax)
+
+</Admonition>
+
+---
+
+## Create sample compare-exchange items
+
+Let’s create some sample compare-exchange items to use in the examples below.  
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+
+<TabItem value="" label="">
+```csharp
+store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>("employees/1", "someValue1", 0));
+store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>("employees/2", "someValue2", 0));    
+store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>("employees/3", "someValue3", 0));
+store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>("customers/1", "someValue4", 0));
+store.Operations.Send(
+    new PutCompareExchangeValueOperation<string>("customers/2", "someValue5", 0));
+```
+</TabItem>
+
+---
+
+## Get compare-exchange items by list of keys
+
+* To retrieve multiple compare-exchange items by specifying a list of unique keys, use either:  
+     
+  * **Cluster-wide session**:  
+    Use the `GetCompareExchangeValues` session method – which also supports lazy retrieval.  
+    If one of the specified keys does not exist, its corresponding entry in the returned dictionary will be `null`.  
+    No exception is thrown.
+    
+  * **Store operation**:  
+    Use the `GetCompareExchangeValuesOperation` store operation.  
+    If one of the specified keys does not exist, the `.Value` property of the corresponding entry in the returned dictionary is `null`.  
+    No exception is thrown.     
+  
+* Examples:
+
+    #### Get compare-exchange items by list of keys 
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```csharp    
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using (var session = store.OpenSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {
+        // Define the list of keys of the compare-exchange items to retrieve
+        var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+            
+        // Call 'GetCompareExchangeValues', pass the list of keys 
+        Dictionary<string, CompareExchangeValue<string>> items =
+            session.Advanced.ClusterTransaction.GetCompareExchangeValues<string>(keys);
+        
+        // Check results
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+        
+        // Access a retrieved item - an existing key
+        if (items.TryGetValue("employees/1", out var item))
+        {
+            string value = item.Value; // "someValue1"
+            long version = item.Index;
+        }
+        
+        // The entry of a non-existing key will be null
+        if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+        {
+           Console.WriteLine(nonExistingItem == null); // true
+        }
+    }
+    ```
+    </TabItem>
+        <TabItem value="Cluster_wide_session_async" label="Cluster_wide_session_async">
+    ```csharp    
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using (var asyncSession = store.OpenAsyncSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {
+        // Define the list of keys of the compare-exchange items to retrieve
+        var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+            
+        // Call 'GetCompareExchangeValues', pass the list of keys 
+        Dictionary<string, CompareExchangeValue<string>> items =
+            await asyncSession.Advanced.ClusterTransaction.GetCompareExchangeValuesAsync<string>(keys);
+        
+        // Check results    
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+        
+        // Access a retrieved item - an existing key
+        if (items.TryGetValue("employees/1", out var item))
+        {
+            string value = item.Value; // "someValue1"
+            long version = item.Index;
+        }
+        
+        // The entry of a non-existing key will be null
+        if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+        {
+           Console.WriteLine(nonExistingItem == null); // true
+        }
+    }
+    ```
+    </TabItem>
+    <TabItem value="Get_operation" label="Get_operation">
+    ```csharp
+    // Define the list of keys of the compare-exchange items to retrieve
+    var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+        
+    // Define the get compare-exchange items operation, pass the unique item key
+    var getCmpXchgItemsOp = new GetCompareExchangeValuesOperation<string>(keys);
+
+    // Execute the operation by passing it to Operations.Send
+    Dictionary<string, CompareExchangeValue<string>> items = store.Operations.Send(getCmpXchgItemsOp);
+    
+    // Check results    
+    Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+    
+    // Access a retrieved item - an existing key
+    if (items.TryGetValue("employees/1", out var item))
+    {
+        string value = item.Value; // "someValue1"
+        long version = item.Index; //  e.g. 321
+    }
+    
+    // The 'Value' of the non-existing key will be null
+    if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+    {
+        string value = nonExistingItem.Value; // null
+        long version = nonExistingItem.Index; // -1
+    }
+    ```
+    </TabItem>
+        <TabItem value="Get_operation_async" label="Get_operation_async">
+    ```csharp
+    // Define the list of keys of the compare-exchange items to retrieve
+    var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+        
+    // Define the get compare-exchange items operation, pass the unique item key
+    var getCmpXchgItemsOp = new GetCompareExchangeValuesOperation<string>(keys);
+
+    // Execute the operation by passing it to Operations.SendAsync
+    Dictionary<string, CompareExchangeValue<string>> items = await 
+        store.Operations.SendAsync(getCmpXchgItemsOp);
+    
+    // Check results    
+    Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+    
+    // Access a retrieved item - an existing key
+    if (items.TryGetValue("employees/1", out var item))
+    {
+        string value = item.Value; // "someValue1"
+        long version = item.Index; //  e.g. 321
+    }
+    
+    // The 'Value' of the non-existing key will be null
+    if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+    {
+        string value = nonExistingItem.Value; // null
+        long version = nonExistingItem.Index; // -1
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+    #### Get compare-exchange items by list of keys - lazily
+    
+    A list of compare-exchange items can be retrieved lazily when working within a cluster-wide session.
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```csharp    
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using (var session = store.OpenSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {
+        // Define the list of keys of the compare-exchange items to retrieve
+        var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+            
+        // Call 'Lazily.GetCompareExchangeValues', pass the list of keys 
+        var lazyItems =
+            session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValues<string>(keys);
+        
+        Dictionary<string, CompareExchangeValue<string>> items = lazyItems.Value;
+        
+        // Check results    
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+        
+        // Access a retrieved item - an existing key
+        if (items.TryGetValue("employees/1", out var item))
+        {
+            string value = item.Value; // "someValue1"
+            long version = item.Index; //  e.g. 321
+        }
+        
+        // The entry of a non-existing key will be null
+        if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+        {
+           Console.WriteLine(nonExistingItem == null); // true
+        }
+    }
+    ```
+    </TabItem>
+    <TabItem value="Cluster_wide_session_async" label="Cluster_wide_session_async">
+    ```csharp   
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using var asyncSession = store.OpenAsyncSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {
+        // Define the list of keys of the compare-exchange items to retrieve
+        var keys = new[] { "employees/1", "employees/2", "customers/2", "non-existing-key" };
+            
+        // Call 'Lazily.GetCompareExchangeValues', pass the list of keys 
+        var lazyItems = asyncSession.Advanced.ClusterTransaction
+            .Lazily.GetCompareExchangeValuesAsync<string>(keys);
+                    
+        Dictionary<string, CompareExchangeValue<string>> items = await lazyItems.Value;
+        
+        // Check results    
+        Console.WriteLine($"Number of compare-exchange items retrieved: {items.Count}"); // Expecting 4
+        
+        // Access a retrieved item - an existing key
+        if (items.TryGetValue("employees/1", out var item))
+        {
+            string value = item.Value; // "someValue1"
+            long version = item.Index;
+        }
+        
+        // The entry of a non-existing key will be null
+        if (items.TryGetValue("non-existing-key", out var nonExistingItem))
+        {
+           Console.WriteLine(nonExistingItem == null); // true
+        }
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+---
+
+## Get compare-exchange items by prefix
+
+* You can retrieve compare-exchange items whose keys start with a specific **prefix**.   
+  You can also control the **maximum number of items** to return and the **starting position** for paging.
+
+* Examples:
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Cluster_wide_session" label="Cluster_wide_session">
+    ```csharp    
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using var session = store.OpenSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {    
+        // Call 'GetCompareExchangeValues', pass:
+        // * startWith: The common key prefix
+        // * start:  The start position (optional, default is 0)
+        // * pageSize: Max items to get (optional, default is 25)
+        Dictionary<string, CompareExchangeValue<string>> items =
+            session.Advanced.ClusterTransaction.GetCompareExchangeValues<string>(
+                startsWith: "employees", start: 0, pageSize: 10);
+    
+        // Results will include only compare-exchange items with keys that start with "employees"
+        Console.WriteLine($"Number of compare-exchange items with prefix 'employees': {items.Count}");
+        // Should be 3
+    } 
+    ```
+    </TabItem>
+        <TabItem value="Cluster_wide_session_async" label="Cluster_wide_session_async">
+    ```csharp
+    // The session must be opened in cluster-wide mode.
+    // An `InvalidOperationException` is thrown if the session is not opened in cluster-wide mode.  
+    using var asyncSession = store.OpenAsyncSession(
+        new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
+    {    
+        // Call 'GetCompareExchangeValues', pass:
+        // * startWith: The common key prefix
+        // * start:  The start position (optional, default is 0)
+        // * pageSize: Max items to get (optional, default is 25)
+        Dictionary<string, CompareExchangeValue<string>> items = await
+            asyncSession.Advanced.ClusterTransaction.GetCompareExchangeValuesAsync<string>(
+                startsWith: "employees", start: 0, pageSize: 10);
+        
+        // Results will include only compare-exchange items with keys that start with "employees"
+        Console.WriteLine($"Number of compare-exchange items with prefix 'employees': {items.Count}");
+        // Should be 3
+    }
+    ```
+    </TabItem>
+    <TabItem value="Get_operation" label="Get_operation">
+    ```csharp    
+    // Define the get compare-exchange items operation, pass:
+    // * startWith: The common key prefix
+    // * start:  The start position (optional, default is 0)
+    // * pageSize: Max items to get (optional, default is int.MaxValue)
+    var getCmpXchgItemsOp = new GetCompareExchangeValuesOperation<string>(
+        startWith: "employees", start: 0, pageSize: 10);
+
+    // Execute the operation by passing it to Operations.Send
+    Dictionary<string, CompareExchangeValue<string>> items = store.Operations.Send(getCmpXchgItemsOp);
+
+    // Results will include only compare-exchange items with keys that start with "employees"
+    Debug.Assert(items.Count == 3); // There are 3 keys with the "employees" prefix 
+    ```
+    </TabItem>
+        <TabItem value="Get_operation_async" label="Get_operation_async">
+    ```csharp
+    // Define the get compare-exchange items operation, pass:
+    // * startWith: The common key prefix
+    // * start:  The start position (optional, default is 0)
+    // * pageSize: Max items to get (optional, default is int.MaxValue)
+    var getCmpXchgItemsOp = new GetCompareExchangeValuesOperation<string>(
+        startWith: "employees", start: 0, pageSize: 10);
+    
+    // Execute the operation by passing it to Operations.SendAsync
+    Dictionary<string, CompareExchangeValue<string>> items = await
+        store.Operations.SendAsync(getCmpXchgItemsOp);
+    
+    // Results will include only compare-exchange items with keys that start with "employees"
+    Debug.Assert(items.Count == 3); // There are 3 keys with the "employees" prefix 
+    ```
+    </TabItem>
+    </Tabs>
+
+---
+
+## Get compare-exchange items count
+
+Use `GetDetailedStatisticsOperation` to get the total number of existing compare-exchange items.  
+This operation does not retrieve any actual items, only the total count.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Get_stats_operation" label="Get_stats_operation">
+```csharp    
+var stats = store.Maintenance.Send(new GetDetailedStatisticsOperation());
+var itemsCount = stats.CountOfCompareExchange;
+```
+</TabItem>
+    <TabItem value="Get_stats_operation_async" label="Get_stats_operation_async">
+```csharp
+var stats = await store.Maintenance.SendAsync(new GetDetailedStatisticsOperation());
+var itemsCount = stats.CountOfCompareExchange;
+```
+</TabItem>
+</Tabs>  
+
+---
+
+## Syntax
+
+---
+
+### `GetCompareExchangeValuesOperation`  
+Get multiple compare-exchange items using a store operation: 
+
+<TabItem value="" label="">
+```csharp
+// Available overloads:
+GetCompareExchangeValuesOperation(string[] keys);
+GetCompareExchangeValuesOperation(string startWith, int? start = null, int? pageSize = null)
+```
+</TabItem>
+
+| Parameter     | Type       | Description                                           |
+|---------------|------------|-------------------------------------------------------|
+| **keys**      | `string[]` | Keys of the compare-exchange items to retrieve.       |
+| **startWith** | `string`   | The common key prefix of the items to retrieve.       |
+| **start**     | `int?`     | The number of items that should be skipped. Default is `0`                      |
+| **pageSize**  | `int?`     | The maximum number of values that will be retrieved. Default is `int.MaxValue`  |
+
+| Returned object                               |  Description                                      |
+|-----------------------------------------------|---------------------------------------------------|
+| `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary with a compare-exchange item per key |
+
+---
+
+### `GetCompareExchangeValues`  
+Get multiple compare-exchange items using cluster-wide session
+
+<TabItem value="" label="">
+```csharp
+GetCompareExchangeValues<T>(string[] keys);
+GetCompareExchangeValues<T>(string startsWith, int start = 0, int pageSize = 25);
+```
+</TabItem>
+
+| Parameter     | Type       | Description                                           |
+|---------------|------------|-------------------------------------------------------|
+| **keys**      | `string[]` | Keys of the compare-exchange items to retrieve.       |
+| **startWith** | `string`   | The common key prefix of the items to retrieve.       |
+| **start**     | `int?`     | The number of items that should be skipped. Default is `0`            |
+| **pageSize**  | `int?`     | The maximum number of values that will be retrieved. Default is `25`  |
+
+
+| Returned object                               | Description                                       |
+|-----------------------------------------------|---------------------------------------------------|
+| `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary with a compare-exchange item per key |
+
+---
+
+<TabItem value="" label="">
+```csharp
+// The CompareExchangeValue object:
+// ================================
+
+public class CompareExchangeValue<T>
+{
+  // The unique identifier of the compare-exchange item.    
+  public string Key { get; }
+  
+  // The existing `value` of the returned compare-exchange item. 
+  public T Value { get; set; }
+  
+  // The compare-exchange item's version.
+  public long Index { get; internal set; }
+  
+  // The existing `metadata` of the returned compare-exchange item.
+  public IMetadataDictionary Metadata;
+}
+```
+</TabItem>

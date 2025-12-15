@@ -1,0 +1,41 @@
+---
+title: "Operations: Server: How to Generate a Client Certificate"
+sidebar_label: Create Client Certificate
+sidebar_position: 0
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CreateClientCertificateCsharp from './_create-client-certificate-csharp.mdx';
+import CreateClientCertificateJava from './_create-client-certificate-java.mdx';
+import CreateClientCertificateNodejs from './_create-client-certificate-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CreateClientCertificateCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CreateClientCertificateJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CreateClientCertificateNodejs />
+</LanguageContent>
+
+
+<!---
+### Client API Articles
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)
+
+### Server Articles
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
+- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)
+
+
+-->

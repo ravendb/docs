@@ -1,0 +1,241 @@
+---
+title: "Setup Examples: AWS Linux VM"
+sidebar_label: AWS Linux VM
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Setup Examples: AWS Linux VM
+
+In this walkthrough, we will setup RavenDB on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
+
+We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
+with the correct IP addresses and ports.
+
+It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard.mdx) section where you can find a detailed 
+explanation about the RavenDB setup process.
+
+## Create the VM
+
+Access the EC2 Dashboard and click on Launch Instance.
+
+![1](./assets/1.png)
+
+Select your operating system. In our example we chose "Ubuntu Server 16.04 LTS (HVM), SSD Volume Type".
+
+![2](./assets/2.png)
+
+Select the machine type. We chose the t2.micro with 1 core and 1 GB of memory.
+
+![3](./assets/3.png)
+
+We will stick with the basic default settings of the machine and configure just the minimal requirements for RavenDB. 
+You would probably want to go over the entire set of options and customize your VM. 
+
+<Admonition type="warning" title="Security Concerns" id="security-concerns" href="#security-concerns">
+The following settings are fine if you just want to experiment with RavenDB. However, when security is needed you should set 
+proper firewall rules and restrict access by IP. Please visit the [AWS security documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html)
+for more information about securing your VM.
+</Admonition>
+
+<Admonition type="note" title="Elastic IP address" id="elastic-ip-address" href="#elastic-ip-address">
+By default, in AWS, an instance is assigned an IP addresses through DHCP. When the DHCP lease expires, or you restart the instance, this IP is released back to the pool and you will have to re-configure the RavenDB IP address.
+To solve this problem, use an [Elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) which doesn't change, and can even be dynamically re-assigned to other instances as you wish.
+</Admonition>
+
+Let's open ports 443 and 38888 for use by RavenDB. You may choose other port numbers off course and restrict access by IP.
+RavenDB will use port 443 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
+
+By default there are no restrictions for outgoing traffic. If you choose to edit the outbound firewall rules, please make sure you keep port 80 open. It is required for downloading the .Net Core dependencies.
+
+![4](./assets/4.png)
+
+Review your settings and launch the VM.
+
+![5](./assets/5.png)
+
+You will have to download a key pair which will be used later to connect to the machine using ssh.
+
+![6](./assets/6.png)
+
+Wait a couple minutes for the machine to initialize and click connect.
+
+![7](./assets/7.png)
+
+Follow the instructions and connect to the new machine using ssh.
+
+![8](./assets/8.png)
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`ssh -i "RavenDBUbuntuVMKeyPair.pem" ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com
+`}
+</CodeBlock>
+</TabItem>
+
+## Configure the VM
+
+RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
+
+<Admonition type="note" title="Linux" id="linux" href="#linux">
+
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+
+</Admonition>
+
+Download RavenDB's latest stable using the following command:
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`wget -O ravendb.tar.bz2 https://hibernatingrhinos.com/downloads/RavenDB%20for%20Linux%20x64/latest
+`}
+</CodeBlock>
+</TabItem>
+
+If you wish to use another RavenDB version, download it to your local machine and transfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`scp -i "RavenDBUbuntuVMKeyPair.pem" /local/download/location/RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2 ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com:/home/ubuntu
+`}
+</CodeBlock>
+</TabItem>
+
+Extract the archive.
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`tar xvjf RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2
+`}
+</CodeBlock>
+</TabItem>
+
+Allow RavenDB to use port 443 (non-root process):
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`sudo setcap CAP_NET_BIND_SERVICE=+eip ./RavenDB/Server/Raven.Server
+`}
+</CodeBlock>
+</TabItem>
+
+Locate the VM's private and public IP addresses in the AWS EC2 Management Console.
+
+![9](./assets/9.png)
+
+You have a few choices on how to run the RavenDB server. 
+We will use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
+
+Let's edit the [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson) file so that we can perform the setup remotely using the browser.
+Notice that when we run the server for the first time, `settings.json` is created from `settings.default.json`. So if `settings.json` doesn't exist, edit `settings.default.json` instead.
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`vi RavenDB/Server/settings.default.json
+`}
+</CodeBlock>
+</TabItem>
+
+Edit the `ServerUrl` field to contain the **Private IP** and the `PublicServerUrl` to contain the **Public DNS**. Also make sure to set the `Security.UnsecuredAccessAllowed` field to **PublicNetwork** which will allow you to connect remotely.
+
+![10](./assets/10.png)
+
+<Admonition type="note" title="Write Permissions" id="write-permissions" href="#write-permissions">
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running
+- The data folder
+- The logs folder
+
+</Admonition>
+
+Now we will setup and start the RavenDB service. 
+
+Open a terminal and create the file /etc/systemd/system/ravendb.service, using super user permissions containing:
+
+    [Unit]
+    Description=RavenDB v4.0
+    After=network.target
+
+    [Service]
+    LimitCORE=infinity
+    LimitNOFILE=65536
+    LimitRSS=infinity
+    LimitAS=infinity
+    User=&lt;desired user&gt;
+    Restart=on-failure
+    Type=simple
+    ExecStart=/path/to/RavenDB/run.sh
+
+    [Install]
+    WantedBy=multi-user.target
+
+![11](./assets/11.png)
+
+Then run the following commands:
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`sudo systemctl daemon-reload
+sudo systemctl enable ravendb.service
+sudo systemctl start ravendb.service
+`}
+</CodeBlock>
+</TabItem>
+
+## Run the RavenDB Setup Wizard
+
+RavenDB is running and you can access it from your (local) browser using the VM's Public DNS (e.g. http://ec2-35-160-249-162.us-west-2.compute.amazonaws.com:443).
+
+![12](./assets/12.png)
+
+Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
+You will need to claim your domain, read more [here](../../../start/installation/setup-wizard.mdx#secure-setup-with-a-let).
+
+When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
+
+Choose the **private IP address** here.
+
+![13](./assets/13.png)
+
+Check the External IP box and enter the **public IP address**. Then start the installation.
+
+If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq.mdx).
+
+![14](./assets/14.png)
+
+When the setup is finished, you will receive a configuration ZIP file which contains an admin client certificate which will allow you to connect using the browser. Keep the file safe.
+
+Restart the server. 
+
+![15](./assets/15.png)
+
+## Access the Studio
+
+If everything went well you should be redirected to the studio and Chrome should let you choose the client certificate to use (the one which was just created).
+
+Some environments don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio and you get an authentication error, please **close all instances of the browser** and install the admin client certificate manually. 
+
+Now you can access the Studio. Open the browser and enter your new domain (e.g. https://a.aws.development.run).
+
+Chrome will let you select the certificate. 
+
+![16](./assets/16.png)
+![17](./assets/17.png)
+
+Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview.mdx) for better understanding of certificates and security issues.
+
+![18](./assets/18.png)
+
+Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
+
+Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson). It's not necessary anymore because access to the server now requires using a registered client certificate. 
+
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard.mdx) to construct a cluster during setup.
+

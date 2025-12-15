@@ -1,0 +1,60 @@
+---
+title: "Recovering from Voron Errors"
+sidebar_label: Recovering from Voron errors
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Recovering from Voron Errors 
+Voron errors described in this article are indicators that something had horribly gone wrong.  
+If such errors happen, they need to be reported as soon as possible to [RavenDB Support](https://ravendb.net/support/supportrequest).  
+
+## Symptoms  
+
+* RavenDB info level logs will contain the following exceptions:
+  * **VoronUnrecoverableErrorException**: `Index points to a non leaf page`  
+  * **VoronUnrecoverableErrorException**: `Was unable to retrieve the correct node. Data corruption possible`  
+  * **VoronUnrecoverableErrorException**: `Error syncing the data file. The last sync tx is...`  
+
+ 
+
+## Possible Causes  
+
+* Such exceptions are caused by the corruption of a Voron _data file_, which could occur due to a few reasons:  
+  * Hardware failure of hard-drive or memory  
+  * In compliance‏ with RavenDB [hardware and OS requirements](../users-issues/recovering-from-voron-errors.mdx#ravendb-hardware-and-os-requirements)  
+  * Critical bug in `Voron`
+
+
+
+## RavenDB Hardware And OS Requirements
+
+* A _filesystem_ and _hard-drive_ backing up a RavenDB server should have the following properties:
+  * support for `fsync`  
+  * support for `write-through` on windows and `O_DIRECT` on Linux based OS.  
+  
+ Read more about `fsync` across platforms [here](https://web.archive.org/web/20160319103232/https://www.humboldt.co.uk/fsync-across-platforms/)
+
+
+
+## Resolution
+
+For the best results, simply restore a new database from a backup.  
+For more information, read this article about [backup configuration](../server/configuration/backup-configuration.mdx).  
+
+If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../server/troubleshooting/voron-recovery-tool.mdx).  
+This tool can be used to recover intact data from the corrupted file and import it to a newly created database.  
+  
+If the corruption has affected an index, it should simply be reset in order to restore normal functionality.  
+
+<Admonition type="note" title="">
+If the corruption is caused by a hardware failure, identify and replace the faulty disk.
+</Admonition>
+
+

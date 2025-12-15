@@ -1,0 +1,51 @@
+---
+title: "Increment Next Identity Operation"
+sidebar_label: Increment Next Identity
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import IncrementNextIdentityCsharp from './_increment-next-identity-csharp.mdx';
+import IncrementNextIdentityPython from './_increment-next-identity-python.mdx';
+import IncrementNextIdentityPhp from './_increment-next-identity-php.mdx';
+import IncrementNextIdentityNodejs from './_increment-next-identity-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <IncrementNextIdentityCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <IncrementNextIdentityPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <IncrementNextIdentityPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <IncrementNextIdentityNodejs />
+</LanguageContent>
+
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [Get identities](../../../../client-api/operations/maintenance/identities/get-identities)
+- [Seed identity](../../../../client-api/operations/maintenance/identities/seed-identity)
+
+
+-->
