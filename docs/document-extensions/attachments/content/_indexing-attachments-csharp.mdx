@@ -166,7 +166,7 @@ where AttachmentNames == "photo.jpg" and AttachmentSizes > 20000
 <Admonition type="info" title="">
     
 Indexing attachment content is supported only for [Local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local).   
-Indexing attachment content is Not supported for  [Remote attachments](../../document-extensions/attachments/store-attachments/store-attachments-remote).
+Indexing attachment content is Not supported for [Remote attachments](../../document-extensions/attachments/store-attachments/store-attachments-remote).
     
 </Admonition>
     
@@ -208,9 +208,15 @@ for (var i = 1; i <= 3; i++)
 
 **The index**:
     
-* Call `LoadAttachment()` within the index definition to access both the details and content of a specific attachment.    
+* Call `LoadAttachment()` within the index definition to access both the **details** and **content** of a specific attachment.    
     
-* Access to the content is available only for LOCAL attachments, and it can be indexed just like the details.  
+* Access to the **content** is available only for LOCAL attachments via methods `GetContentAsString()` or `GetContentAsStream()`,
+  as shown in the example below.  
+  The content can be indexed just like the attachment details.    
+    
+* Calling these "get content" methods on a REMOTE attachment is not supported.
+  In such cases, the index will enter an error state, and a `RemoteAttachmentIndexingException` will appear in the index errors.
+  To avoid this, always check whether the attachment is local before accessing its content, as demonstrated below.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
@@ -238,8 +244,7 @@ public class Employees_ByAttachment:
     
             // Check whether the attachment is stored locally
             // 'RemoteAttachmentFlags.None' indicates a LOCAL attachment
-            let isLocal = attachment.RemoteFlags.ToString() == 
-                RemoteAttachmentFlags.None.ToString()
+            let isLocal = attachment.RemoteFlags == RemoteAttachmentFlags.None
             
             select new IndexEntry()
             {
@@ -256,10 +261,10 @@ public class Employees_ByAttachment:
         // It can be useful to configure Full-Text search on the AttachmentContent index-field
         Index(x => x.AttachmentContent, FieldIndexing.Search);
     
-        // This index processes Employee documents that have an attachment named "notes.txt".
-        // It allows querying these documents based on:
-        // - Attachment details (available for both local and remote attachments)
-        // - Attachment content (available for local attachments only)    
+        // This index processes Employee documents.
+        // It allows querying these documents based the "notes.txt" attachment details & content:
+        // * Attachment details (available for both local and remote attachments)
+        // * Attachment content (available for local attachments only)    
     }
 }
 ```
@@ -275,7 +280,7 @@ public class Employees_ByAttachment_JS : AbstractJavaScriptIndexCreationTask
             @"map('Employees', function (employee) {
                   var attachment = loadAttachment(employee, 'notes.txt');
     
-                  var isLocal = attachment.RemoteFlags.toString() === 'None';
+                  var isLocal = attachment.RemoteFlags === 'None';
                 
                   return {
                       AttachmentName: attachment.Name,
@@ -394,8 +399,7 @@ public class Employees_ByAllAttachments :
     
             // Check whether the attachment is stored locally
             // 'RemoteAttachmentFlags.None' indicates a LOCAL attachment
-            let isLocal = attachment.RemoteFlags.ToString() == 
-                RemoteAttachmentFlags.None.ToString()
+            let isLocal = attachment.RemoteFlags == RemoteAttachmentFlags.None
             
             select new IndexEntry
             {
@@ -427,7 +431,7 @@ public class Employees_ByAllAttachments_JS : AbstractJavaScriptIndexCreationTask
                   const allAttachments = loadAttachments(employee);
              
                   return allAttachments.map(function (attachment) {
-                      var isLocal = attachment.RemoteFlags.toString() === 'None';
+                      var isLocal = attachment.RemoteFlags === 'None';
     
                       return {
                           attachmentName: attachment.Name,
@@ -591,6 +595,7 @@ public interface IAttachmentObject
     // The flags indicating whether the attachment is stored locally or remotely.
     public RemoteAttachmentFlags RemoteFlags { get; }
     
+    // Methods to access the content of LOCAL attachments only
     public string GetContentAsString();
     public string GetContentAsString(Encoding encoding);
     public Stream GetContentAsStream();
