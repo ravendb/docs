@@ -31,8 +31,7 @@ import Panel from "@site/src/components/Panel";
 
 </Admonition>
 
-## Creating a validation schema
-<Panel>
+<Panel heading="Creating a validation schema">
 
 To validate documents with a JSON schema:  
 
@@ -103,10 +102,10 @@ To validate documents with a JSON schema:
      }
    }
    ```
+
 </Panel>
 
-## Example
-<Panel>
+<Panel heading="Example">
 
 In this example we validate documents saved in the `Users` collection by constraints set by a JSON schema.
 
@@ -164,10 +163,10 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
 ```
 </TabItem>
 </Tabs>
+
 </Panel>
 
-## Available constraints
-<Panel>
+<Panel heading="Available constraints">
 
 Your validation schema can set the following constraints:  
 
@@ -420,6 +419,7 @@ Allows a type or a property to be set to null (if supported by the implementatio
   "type": ["string", "null"]
 }
 ```
+
 <br />
 
 **Example**: Setting `null` for **properties**. The `middleName` property can be either a string or null.
@@ -431,10 +431,11 @@ Allows a type or a property to be set to null (if supported by the implementatio
 }
 ```
 </ContentFrame>
+
 </Panel>
 
-## Syntax
-<Panel>
+<Panel heading="Syntax">
+
 <ContentFrame>
 
 ### `ConfigureSchemaValidationOperation` definition:
@@ -499,4 +500,5 @@ Raven.Client.Exceptions.SchemaValidation.SchemaValidationException:
 The required property 'Company' is missing.
 ```
 </ContentFrame>
+
 </Panel>

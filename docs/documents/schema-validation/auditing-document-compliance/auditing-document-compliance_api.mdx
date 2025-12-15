@@ -33,13 +33,12 @@ import Panel from "@site/src/components/Panel";
 
 </Admonition>
 
-## Running an audit operation
+<Panel heading="Running an audit operation">
+
 Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/schema-validation_overview#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
 This method is useful for one-time audits or periodic checks of data integrity.  
 
 To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
-
-<Panel>
 
 ### `StartSchemaValidationOperation`
 
@@ -153,15 +152,15 @@ public class Order
 }
 ```
 </ContentFrame>
+
 </Panel>
 
-## Audit document compliance by index
+<Panel heading="Audit document compliance by index">
 
 Use this audit approach to continuously validate document compliance during indexing and embed validation errors in the index. The index can then be queried to filter documents by their compliance status.  
 This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
 
 To validate documents by index:  
-<Panel>
 
 <ContentFrame>
 ### Define a validation schema
