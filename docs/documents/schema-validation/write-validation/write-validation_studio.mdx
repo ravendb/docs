@@ -20,14 +20,14 @@ import Panel from "@site/src/components/Panel";
 Manage [schema validation](../../../documents/schema-validation/schema-validation_overview) using the Studio **Document Schema** view, to condition documents storage on their compliance with a defined JSON schema.  
 
 * In this article:  
-   * [The Document Scheme view](../../../documents/schema-validation/write-validation/write-validation_studio#the-document-scheme-view)  
+   * [The Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio#the-document-schema-view)  
    * [Creating a collection schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema)  
    * [Managing and Testing existing schemas](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas)  
    * [The schema playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground)  
    
 </Admonition>
 
-<Panel heading="The Document Scheme view">
+<Panel heading="The Document Schema view">
 
 Use this view to create, test, and manage document schemas for your database collections.
 
@@ -111,7 +111,7 @@ Existing schemas are listed in the Document Schema view, where you can disable, 
    <ContentFrame>
    ![Manage existing schemas](./assets/schema-validation_studio_test-button.png)
     * **A. Test settings**  
-      Validating a large number of documents against a schema may be tolling on server resources.  
+      Validating a large number of documents against a schema can strain server resources.  
       Set **Max documents to scan** to the number of documents that you want to validate. E.g., set it to 100 to validate the first 100 documents in the collection.  
       Set **Max error messages to return** to the maximum number of validation errors to return.  
     * **B. Run test**  
@@ -135,7 +135,7 @@ To create and test schemas in a secluded environment, without affecting your pro
 1. **Add new**  
    Click to add a schema to the playground.  
    You can add multiple schemas to the playground, and test them all in a single run.  
-   This can be helpful when, for example, you want to validate documents of multiple collections by the existence of a specific field in all of them.  
+   This can be helpful when, for example, you want to validate documents of multiple collections by checking for a specific field.  
 
 2. **Define a schema**  
    <ContentFrame>
@@ -144,7 +144,7 @@ To create and test schemas in a secluded environment, without affecting your pro
     * **Document schema**  
       Define the schema using JSON syntax.  
       In the depicted example we define two schemas:  
-      The first, for the Orders collection, validates documents by fields existence, type, and minimum value.  
+      The first, for the Orders collection, validates documents by field existence, type, and minimum value.  
       ```json
       {
          "properties": {
@@ -173,9 +173,9 @@ To create and test schemas in a secluded environment, without affecting your pro
     * **A. Test results**  
       Scroll to view all error messages generated for each collection.  
     * **B. Test settings**  
-      Validating a large number of documents against a schema may be tolling on server resources.  
-      Set **Max documents to scan** to the number of documents that you want to validate. E.g., set it to 100 to validate the first 100 documents of each collection participating the test.  
-      Set **Max error messages to return** to the maximum number of validation errors to return for each collection participating the test.  
+      Validating a large number of documents against a schema can strain server resources.  
+      Set **Max documents to scan** to the number of documents that you want to validate. E.g., set it to 100 to validate the first 100 documents of each collection participating in the test.  
+      Set **Max error messages to return** to the maximum number of validation errors to return for each collection participating in the test.  
     * **C. Run test**  
       Click to re-run the test, e.g., after changing test settings.  
    </ContentFrame>

@@ -33,9 +33,10 @@ import Panel from "@site/src/components/Panel";
 
 <Panel heading="Creating a validation schema">
 
-To validate documents with a JSON schema:  
+To validate documents against a JSON schema:  
 
-1. **Define your [schema](https://json-schema.org/) as a string**:  
+<ContentFrame>
+1. **Define your [schema](https://json-schema.org/) as a string**.  
    Ensure that the schema sets all the constraints needed to validate your documents.  
   
    **Example**:
@@ -49,8 +50,10 @@ To validate documents with a JSON schema:
    // Ensure that a `Name` property has a maximum length of 7 characters.
    string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
    ```
+</ContentFrame>
 
-2. **Create the schema configuration**:  
+<ContentFrame>
+2. **Create the schema configuration**.  
    Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
    E.g., to associate your schema with the `Users` collection:  
@@ -65,7 +68,10 @@ To validate documents with a JSON schema:
       }
    };
    ```
-3. **Register the schema with the server**:  
+</ContentFrame>
+
+<ContentFrame>
+3. **Register the schema with the server**.  
    Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
 
    E.g.,  
@@ -77,8 +83,10 @@ To validate documents with a JSON schema:
    <Admonition type="note" title="">
    Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
    </Admonition>
+</ContentFrame>
 
-4. **Validate documents**:  
+<ContentFrame>
+4. **Validate documents**.  
    After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
    
    E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
@@ -102,6 +110,7 @@ To validate documents with a JSON schema:
      }
    }
    ```
+</ContentFrame>
 
 </Panel>
 
@@ -438,7 +447,7 @@ Allows a type or a property to be set to null (if supported by the implementatio
 
 <ContentFrame>
 
-### `ConfigureSchemaValidationOperation` definition:
+#### `ConfigureSchemaValidationOperation` definition:
 ```csharp
 // The schema validation configuration to apply.
 // If `configuration` is null, `ArgumentNullException` is generated.
@@ -448,7 +457,7 @@ public ConfigureSchemaValidationOperation(SchemaValidationConfiguration configur
 
 <ContentFrame>
 
-### `SchemaValidationConfiguration` class:
+#### `SchemaValidationConfiguration` class:
 ```csharp
 public sealed class SchemaValidationConfiguration
 {
@@ -469,7 +478,7 @@ public sealed class SchemaValidationConfiguration
 
 <ContentFrame>
 
-### `SchemaDefinition` class:
+#### `SchemaDefinition` class:
 ```csharp
 public class SchemaDefinition
 {
@@ -486,7 +495,7 @@ public class SchemaDefinition
 
 <ContentFrame>
 
-### `SchemaValidationException` message:
+#### `SchemaValidationException` message:
 ```csharp
 // Initializes a new `SchemaValidationException` instance with an error message
 // that explains the reason for the schema validation failure. 

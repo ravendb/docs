@@ -17,471 +17,137 @@ import Panel from "@site/src/components/Panel";
 # Auditing document compliance: Studio
 <Admonition type="note" title="">
 
-* Audit stored documents' compliance with a schema to identify and address any validation violations.  
-   * You can run an [audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) that scans a document collection and generates validation violation reports.  
-   * You can also audit document compliance [by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index), validating documents during indexing and embedding any validation error messages into the indexes. The documents can then be queried and managed based on their schema compliance.
+To check document compliance with a validation schema via Studio, you can:  
+ - Run a manual [validation test](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test) operation, that goes through a collection or a part of it and reports invalid documents and their validation errors.  
+ - Create an [audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index), that validates documents during indexing and embeds any validation error messages into the index, so the documents can be queried by compliance status and specific validation errors.  
 
 * In this article:  
-  * [Running an audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation)
-    * [`StartSchemaValidationOperation`](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#startschemavalidationoperation)  
-    * [Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#example)  
-  * [Audit document compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index)
-    * [Define a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-a-validation-schema)
-    * [Define and execute an index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-and-execute-an-index)
-    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#query-the-index)
-    * [Full Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#full-example)
+  * [Running a validation test](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test)
+    * [Test a schema using the Document schema view](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#test-a-schema-using-the-document-schema-view)  
+    * [Test a schema using the Schema Playground](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#test-a-schema-using-the-schema-playground)  
+  * [Audit documents compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index)
+    * [Create a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#1-create-a-validation-schema)
+    * [Create the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#2-create-the-index)
+    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#3-query-the-index)
 
 </Admonition>
 
-<Panel heading="Running an audit operation">
+<Panel heading="Running a validation test">
 
-Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/schema-validation_overview#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
-This method is useful for one-time audits or periodic checks of data integrity.  
-
-To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
-
-### `StartSchemaValidationOperation`
+You can initiate a compliance test operation that validates documents against a schema, using either a defined schema listed in the [Document Schema](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) view or the [Schema playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground) views.  
 
 <ContentFrame>
 
-#### <u>`StartSchemaValidationOperation` constructor</u>  
-```csharp
-public StartSchemaValidationOperation(Parameters parameters)
-```
+### Test a schema using the Document schema view
+
+The validation schemas that you already defined are displayed in the [Document schema view](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema), where you can test each schema against documents in the associated collection.  
+
+![Document schema view](./assets/schema-validation_studio_audit-test.png)
+
+* Use this method to verify schemas' effectiveness and documents compliance with schema constraints.  
+* Test results include the number and names of invalid documents, and the validation errors generated for each document.  
+* You can validate an entire collection or a specified number of documents. This is helpful when working with large collections.  
+* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) a detailed explanation of this view. 
+
 </ContentFrame>
 
 <ContentFrame>
 
-#### <u>`StartSchemaValidationOperation` arguments</u>
-Pass the operation a `Parameters` object that specifies -  
-```csharp
-public class Parameters
-{
-  // JSON schema definition as a string
-  public string SchemaDefinition { get; set; } 
-  
-  // Target collection to validate
-  public string Collection { get; set; }
-  
-  // Optional: limit the number of error messages returned (default: 1024)
-  public int MaxErrorMessages { get; set; }
+### Test a schema using the Schema Playground
 
-  // Optional: limit the number of documents to validate (default: unlimited)
-  public int MaxDocumentsToValidate { get; set; }
-}
-```
-</ContentFrame>
+The [Document schema view](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema) view also provides an isolated playground environment for experimentation, allowing you to define schemas and try them out on your data without affecting your existing collections or schemas.
 
-<ContentFrame>
+![Document schema view](./assets/schema-validation_studio_audit-playground.png)
 
-#### <u>`StartSchemaValidationOperation` results</u>
-The operation will run in the background and return a result object containing -  
-- `ValidatedCount`  
-  The number of documents checked  
-- `ErrorCount`  
-  The number of documents with at least one validation failure  
-- `Errors`  
-  A dictionary where each entry contains:
-   - `Key` - The name of the document
-   - `Value` - A newline-delimited string of error messages for the document
-</ContentFrame>
+* Use the playground to experiment with schema definitions and test them against documents in your collections.  
+* You can validate an entire collection or a specified number of documents.  
+* You can test multiple schemas in a single run, including multiple schemas for the same collection. This is helpful when you want to compare the effectiveness of different schema definitions, validate a specific field across collections, or test a large dataset.
+* Test results are presented per schema, detailing the number and names of invalid documents and the validation errors generated for each document.  
+* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground) a detailed explanation of the playground.
 
-<ContentFrame>
-
-### Example:
-This example audits the `Orders` collection, ensuring each order has a `Customer` string and a non-negative `Total` property. The validation results are then retrieved and summarized.
-```csharp
-// Define a validation Schema as a string
-// Customer must be a string
-// Total must be a number >= 0
-// These fields are required
-string schemaDefinition = @"{
-    ""properties"": {
-        ""Customer"": { ""type"": ""string"" },
-        ""Total"": { ""type"": ""number"", ""minimum"": 0 }
-    },
-    ""required"": [""Customer"", ""Total""]
-}";
-
-// Store valid and invalid orders
-var store = GetDocumentStore();
-
-using (var session = store.OpenSession())
-{
-    // A valid order
-    session.Store(new Order { Customer = "Alice", Total = 100 }, "orders/1-A");
-    // An invalid order with two errors (missing Customer, negative Total)
-    session.Store(new Order { Total = -50 }, "orders/2-A");
-    // An invalid order (negative Total)
-    session.Store(new Order { Customer = "Bob", Total = -10 }, "orders/3-A");
-    session.SaveChanges();
-}
-
-// Run the Schema Validation Operation
-var parameters = new StartSchemaValidationOperation.Parameters
-{
-    SchemaDefinition = schemaDefinition,
-    Collection = "Orders",
-    MaxErrorMessages = 10 // Optional: limit the number of error messages returned
-};
-var operation = await store.Maintenance.SendAsync(
-        new StartSchemaValidationOperation(parameters));
-
-// Wait for the operation to complete and get the validation report
-var result = await operation.WaitForCompletionAsync<ValidateSchemaResult>(TimeSpan.FromMinutes(1));
-
-// Handle the results, e.g., print a validation summary
-// The number of inspected documents, and the number of documents with errors
-Console.WriteLine($"Validated: {result.ValidatedCount}, Errors: {result.ErrorCount}");
-// For each document with errors, print its ID and the associated error messages
-foreach (var error in result.Errors)
-{
-    Console.WriteLine($"Document ID: {error.Key}");
-    foreach (var line in error.Value.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
-    {
-        Console.WriteLine($"Error: {line}");
-    }
-}
-```
-```csharp
-// A simplified Order class
-public class Order
-{
-    public string Customer { get; set; }
-    public double Total { get; set; }
-}
-```
 </ContentFrame>
 
 </Panel>
 
-<Panel heading="Audit document compliance by index">
+<Panel heading="Audit documents compliance by index">
 
-Use this audit approach to continuously validate document compliance during indexing and embed validation errors in the index. The index can then be queried to filter documents by their compliance status.  
-This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
-
-To validate documents by index:  
+You can define an audit index that validates documents against a schema during indexing and embeds validation error messages in the index.  
+* Query an audit index to find documents by compliance status and specific validation errors.  
+* Use this method to prepare indexes over time for quick validation queries, keeping querying cheap even with large datasets, complex schemas, and frequently changing collections.  
 
 <ContentFrame>
-### Define a validation schema
 
-Define a [validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) and associate it with the collection whose documents you want to audit.  
-```csharp
-// Define a validation Schema as a string
-// Customer must be a string
-// Total must be a number >= 0
-// These fields are required
-string schemaDefinition = @"{
-    ""properties"": {
-        ""Customer"": { ""type"": ""string"" },
-        ""Total"": { ""type"": ""number"", ""minimum"": 0 }
-    },
-    ""required"": [""Customer"", ""Total""]
-}";
+#### 1. Create a validation schema
 
-// Associate the schema with the Orders collection 
-var schemaDefinitions = new IndexSchemaDefinitions
-{
-    { "Orders", schemaDefinition }
-};
-```
+* You can associate a validation schema with a collection using the 
+[Document schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema) view.  
+  E.g. -  
+  ```json
+  {
+  "properties": {
+      "Customer": { "type": "string" },
+      "Total": { "type": "number", "minimum": 0 }
+  },
+  "required": ["Customer", "Total"]
+  }
+  ```
+  ![Document schema view](./assets/schema-validation_studio_audit_index_create-schema.png)
+
+* You can also define the schema as part of the index definition.  
+  In this case, the index schema will take precedence over any schema defined for the collection.  
+  If no schema is defined for the index, it will inherit the schema defined for the collection.  
+
 </ContentFrame>
 
 <ContentFrame>
-### Define and execute an index
 
-* Add the index an **Errors** field to hold validation error messages.  
-  ```csharp
-  // Create the index definition
-  var indexDefinition = new IndexDefinition
-  {
-      Name = "Orders_WithValidation",
-      Maps = { OrdersValidationMap },
-      SchemaDefinitions = schemaDefinitions,
-      Fields = new Dictionary<string, IndexFieldOptions>
-      {
-          { "Errors", new IndexFieldOptions { Storage = FieldStorage.Yes } }
-      },
-      Type = IndexType.Map
-  };
-  ```
+#### 2. Create the index
 
-* Add an index map with a call to a validation method (`Schema.GetErrorsFor()` for a C# static index, or `schema.getErrorsFor()` for a JavaScript index).  
+* [Create an index](../../../studio/database/indexes/create-map-index) whose map includes a call to a validation method: `Schema.GetErrorsFor()` for a static index, or `schema.getErrorsFor()` for a JavaScript map.  
+  Assign the value returned by the validation method to a dedicated index field, e.g., `Errors`.  
+  <Tabs>
+  <TabItem value="Static" label="Static">
   ```csharp
-  // Create a map for the index, including a call to Schema.GetErrorsFor()
-  const string OrdersValidationMap = @"
   from doc in docs.Orders
   select new
   {
-      Errors = Schema.GetErrorsFor(doc)
+    Errors = Schema.GetErrorsFor(doc)
   }
-  ";
-  ```
+  ```  
+  </TabItem>
 
-* Execute the index to start validating each indexed document against the validation schema and storing any violation messages in the **Errors** field.  
-  ```csharp
-  // Create the index
-  await store.Maintenance.SendAsync(new PutIndexesOperation(indexDefinition));
+  <TabItem value="JavaScript" label="JavaScript">
+  ```javascript
+  map('Orders', function (doc) {
+    return {
+      Errors: schema.getErrorsFor(doc)
+    };
+  })
   ```
+  </TabItem>
+  </Tabs>
 
+ * Add to the index the field defined in the map for validation errors, e.g., `Errors`.  
+   Set the "Store" option for this field to **Yes**, indicating that querying the index will retrieve errors from the index rather than from indexed documents.  
+
+   ![Document schema view](./assets/schema-validation_studio_audit_index_create-index.png)
+   
 </ContentFrame>
 
 <ContentFrame>
 
-### Query the index:
-You can now query the index to find documents by their validation status and specific errors.  
-```csharp
-// Query the index and print validation errors
-using (var session = store.OpenAsyncSession())
-{
-  // Retrieve results, containing validation errors, from the index
-  var results = await session.Query<IndexResult>("Orders_WithValidation")
-      .Select(x => new
-      {
-          Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
-          Errors = x.Errors
-      })
-      .ToListAsync();
+#### 3. Query the index
 
-  foreach (var doc in results)
-  {
-      if (doc != null && doc.Errors is { Length: > 0 })
-      {
-          foreach (var error in doc.Errors)
-              Console.WriteLine($"{doc.Id}  {error}");
-      }
-      else
-      {
-          Console.WriteLine("No errors or no document.");
-      }
-  }
-}
-```
-</ContentFrame>
+Query the index to find documents by their compliance status and specific errors.
 
-<ContentFrame>
+* While building or editing the index, you can use the **Test Index** bar to query the index and verify its functionality.  
+  ![Document schema view](./assets/schema-validation_studio_audit_index_test-index.png)
 
-### Full example:
-<Tabs>
-<TabItem value="Static" label="Static">
+* Run queries that filter documents based on the `Errors` field.  
+  ![Document schema view](./assets/schema-validation_studio_audit_index_test-index_results.png)
 
-```csharp
-{
-    // Define a validation Schema as a string
-    // Customer must be a string
-    // Total must be a number >= 0
-    // These fields are required
-    string schemaDefinition = @"{
-        ""properties"": {
-            ""Customer"": { ""type"": ""string"" },
-            ""Total"": { ""type"": ""number"", ""minimum"": 0 }
-        },
-        ""required"": [""Customer"", ""Total""]
-    }";
-
-    // Associate the schema with the Orders collection 
-    var schemaDefinitions = new IndexSchemaDefinitions
-    {
-        { "Orders", schemaDefinition }
-    };
-
-    // Create a map for the index, including a call to Schema.GetErrorsFor()
-    const string OrdersValidationMap = @"
-    from doc in docs.Orders
-    select new
-    {
-        Errors = Schema.GetErrorsFor(doc)
-    }
-    ";
-
-    // Create the index definition
-    var indexDefinition = new IndexDefinition
-    {
-        Name = "Orders_WithValidation",
-        Maps = { OrdersValidationMap },
-        SchemaDefinitions = schemaDefinitions,
-        Fields = new Dictionary<string, IndexFieldOptions>
-        {
-            { "Errors", new IndexFieldOptions { Storage = FieldStorage.Yes } }
-        },
-        Type = IndexType.Map
-    };
-
-    var store = GetDocumentStore();
-
-    // Create valid and invalid orders
-    using (var session = store.OpenAsyncSession())
-    {
-        // Valid order
-        await session.StoreAsync(new Order { Customer = "Alice", Total = 100 }, "orders/1-A");
-        // Invalid order (2 errors: missing Customer, negative Total)
-        await session.StoreAsync(new Order { Total = -50 }, "orders/2-A");
-        // Invalid order (negative Total)
-        await session.StoreAsync(new Order { Customer = "Bob", Total = -10 }, "orders/3-A");
-        await session.SaveChangesAsync();
-    }
-
-    // Create the index
-    await store.Maintenance.SendAsync(new PutIndexesOperation(indexDefinition));
-
-    // Wait for the index to process all documents
-    await Indexes.WaitForIndexingAsync(store);
-
-    // Query the index and print validation errors
-    using (var session = store.OpenAsyncSession())
-    {
-        // Retrieve results, containing validation errors, from the index
-    var results = await session.Query<IndexResult>("Orders_WithValidation")
-        .Select(x => new
-        {
-            Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
-            Errors = x.Errors
-        })
-        .ToListAsync();
-
-        foreach (var doc in results)
-        {
-            if (doc != null && doc.Errors is { Length: > 0 })
-            {
-                foreach (var error in doc.Errors)
-                    Console.WriteLine($"{doc.Id}  {error}");
-            }
-            else
-            {
-                Console.WriteLine("No errors or no document.");
-            }
-        }
-    }
-}
-```
-
-```csharp
-// A simplified Order class
-public class Order
-{
-    public string Customer { get; set; }
-    public double Total { get; set; }
-}
-```
-
-```csharp
-public class IndexResult
-{
-    public string[] Errors { get; set; }
-}
-```
-</TabItem>
-
-
-<TabItem value="JavaScript" label="JavaScript">
-
-```csharp
-{
-    // Define a validation Schema as a string
-    // Customer must be a string
-    // Total must be a number >= 0
-    // These fields are required
-    string schemaDefinition = @"{
-        ""properties"": {
-            ""Customer"": { ""type"": ""string"" },
-            ""Total"": { ""type"": ""number"", ""minimum"": 0 }
-        },
-        ""required"": [""Customer"", ""Total""]
-    }";
-
-
-    // Associate the schema with the Orders collection
-    var schemaDefinitions = new IndexSchemaDefinitions
-    {
-        { "Orders", schemaDefinition }
-    };
-
-    // Create a map for the index, including a call to schema.getErrorsFor()
-    const string OrdersValidationMap = @"
-    map('Orders', function (doc) {
-        return {
-            Errors: schema.getErrorsFor(doc)
-        };
-    })";
-
-    // Create the index definition
-    var indexDefinition = new IndexDefinition
-    {
-        Name = "Orders_WithValidation_JS",
-        Maps = { OrdersValidationMap },
-        SchemaDefinitions = schemaDefinitions,
-        Fields = new Dictionary<string, IndexFieldOptions>
-        {
-            { "Errors", new IndexFieldOptions { Storage = FieldStorage.Yes } }
-        },
-        Type = IndexType.JavaScriptMap
-    };
-
-    var store = GetDocumentStore();
-
-    // Create valid and invalid orders
-    using (var session = store.OpenAsyncSession())
-    {
-        // Valid order
-        await session.StoreAsync(new Order { Customer = "Alice", Total = 100 }, "orders/1-A");
-        // Invalid order (2 errors: missing Customer, negative Total)
-        await session.StoreAsync(new Order { Total = -50 }, "orders/2-A");
-        // Invalid order (negative Total)
-        await session.StoreAsync(new Order { Customer = "Bob", Total = -10 }, "orders/3-A");
-        await session.SaveChangesAsync();
-    }
-
-    // Create the index
-    await store.Maintenance.SendAsync(new PutIndexesOperation(indexDefinition));
-
-    // Wait for the index to process all documents
-    await Indexes.WaitForIndexingAsync(store);
-
-    // Query the index and print validation errors
-    using (var session = store.OpenAsyncSession())
-    {
-        // Retrieve results, containing validation errors, from the index
-        var results = await session.Query<IndexResult>("Orders_WithValidation_JS")
-            .Select(x => new
-            {
-                Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
-                Errors = x.Errors
-            })
-            .ToListAsync();
-
-        foreach (var doc in results)
-        {
-            if (doc != null && doc.Errors is { Length: > 0 })
-            {
-                foreach (var error in doc.Errors)
-                    Console.WriteLine($"{doc.Id} {error}");
-            }
-            else
-            {
-                Console.WriteLine("No errors or no document.");
-            }
-        }
-    }
-}
-```
-
-```csharp
-// A simplified Order class
-public class Order
-{
-    public string Customer { get; set; }
-    public double Total { get; set; }
-}
-```
-
-```csharp
-public class IndexResult
-{
-    public string[] Errors { get; set; }
-}
-```
-</TabItem>
-</Tabs>
+  Click an item's preview icon to view the document details, including the validation errors embedded in the index.  
+  ![Document schema view](./assets/schema-validation_studio_audit_index_test-index_results_preview.png)
 
 </ContentFrame>
 
