@@ -12,7 +12,7 @@ import Panel from '@site/src/components/Panel';
 * **Static indexes**:  
   * **Local attachments** - Both attachment details and content can be indexed.
   * **Remote attachments** - Only attachment details can be indexed.  
-    
+    Remote attachment content is not indexed by design, to avoid downloading files from cloud storage during indexing, for performance reasons.
 
 * **Auto-indexes**:  
   Auto-indexing attachments via dynamic queries is not available at this time.
@@ -581,6 +581,7 @@ public IAttachmentObject LoadAttachment(object document, string attachmentName);
 
 <TabItem>
 ```csharp
+// LoadAttachment returns the following object:
 public interface IAttachmentObject
 {
     public string Name { get; }
