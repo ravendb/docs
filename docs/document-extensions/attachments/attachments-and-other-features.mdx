@@ -17,24 +17,25 @@ import Panel from '@site/src/components/Panel';
 
 * Once an attachment is added to a document, the `@attachments` property is added to the document’s metadata with details about the attachment.
     
-* This metadata update triggers any features that respond to document changes - 
-  such as [Indexing](../../studio/database/indexes/indexes-overviewstudio/database/indexes/indexes-overview),
+* This metadata update triggers any features that respond to document changes -  
+  such as [Indexing](../../studio/database/indexes/indexes-overview),
   any defined [ongoing tasks](../../studio/database/tasks/ongoing-tasks/general-info),
   [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions), etc.
  
 * In this article:
-  * [Attachments & replication](../../document-extensions/attachments/attachments-and-other-features#attachments--replication)  
-  * [Attachments & RavenDB ETL](../../document-extensions/attachments/attachments-and-other-features#attachments--ravendb-etl)
-  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features#attachments--exportimportbackuprestore)
-  * [Attachments & Revisions](../../document-extensions/attachments/attachments-and-other-features#attachments--revisions)
+  * [Attachments & Replication](../../document-extensions/attachments/attachments-and-other-features#attachments-replication)  
+  * [Attachments & RavenDB ETL](../../document-extensions/attachments/attachments-and-other-features#attachments-ravendb-etl)
+  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features#attachments-exportimportbackuprestore)
+  * [Attachments & Revisions](../../document-extensions/attachments/attachments-and-other-features#attachments-revisions)
     
 </Admonition>
 
 <Panel heading="Attachments & Replication">
     
 Replication is triggered by document changes, including when attachments are added or modified.  
-**Internal replication** occurs automatically between noded in the database group.    
-**External replication** is defined as an ongoing task between two RavenDB databases (typically across clusters).  
+* **Internal replication** occurs automatically between nodes in the database group.    
+* **External replication** is a defined ongoing task between two RavenDB databases (typically across clusters).
+    
 Learn more about replication in [Replication overview](../../server/clustering/replication/replication-overview).    
     
 ---
@@ -48,21 +49,23 @@ The document is replicated along with the attachment's binary content, which wil
 The document is replicated without the binary content, only the metadata is transferred.  
 The attachment's content resides in shared remote storage (e.g., S3, Azure Blob) and does not need to be copied between nodes.
 
-**Target server compatibility**:  
-If the target node is running a RavenDB server version earlier than `7.2`, which does not support remote attachments,  
-replicating a document that references a remote attachment will throw a `LegacyReplicationViolationException`.
+  * **Target server compatibility**:  
+    If the target node is running a RavenDB server version earlier than `7.2`, which does not support remote attachments,  
+    replicating a document that references a remote attachment will throw a `LegacyReplicationViolationException`.
 
-**Remote destination configuration for external replication**:  
-When using external replication, the remote storage destinations must also be configured on the target database.
-This is your responsibility, RavenDB does not automatically replicate the remote attachment configurations.
-If the destination is not defined on the target, the remote attachment will be inaccessible after replication.
+  *  **Remote destination configuration for external replication**:  
+    When using external replication, the remote storage destinations must also be configured on the target database.  
+    This is your responsibility, RavenDB does not automatically replicate the remote attachment configurations.  
+    If the destination is not defined on the target, the remote attachment will be inaccessible after replication.
  
 </Panel>
 
 <Panel heading="Attachments & RavenDB ETL">  
 
-[RavenDB ETL task](../../server/ongoing-tasks/etl/raven) (which sends documents to another RavenDB database while you can transfrom documets via scritp...) 
-is triggered by document changes, including when attachments are added or modified.
+A [RavenDB ETL task](../../server/ongoing-tasks/etl/raven) sends documents to another RavenDB database and allows you to transform documents using a script.
+The ETL task is triggered by document changes in the source database, including when attachments are added or modified.
+    
+---
     
 **Local attachments**:  
 The document is sent to the target database along with the binary attachment stream.
@@ -70,64 +73,60 @@ The document is sent to the target database along with the binary attachment str
 **Remote attachments**:  
 The document is sent without the binary stream, only the metadata is transferred, since the attachment content resides in remote storage.
 
-**Remote destination configuration**:  
-When documents that reference remote attachments are sent via RavenDB ETL, you must ensure that the same remote attachment configuration is defined on the target database.
-This is your responsibility, as the ETL process does not automatically configure remote destinations on the target side.
+  * **Remote destination configuration**:  
+    When documents that reference remote attachments are sent via RavenDB ETL, you must ensure that the same remote attachment configuration is defined on the target database.
+    This is your responsibility, as the ETL process does not automatically configure remote destinations on the target side.
   
-**Target server compatibility**:    
-If the target node is running a RavenDB server version earlier than `7.2`, which does not support remote attachments, 
-attempting to send a document that references a remote attachment will result in an excetion.
+  * **Target server compatibility**:    
+    If the target node is running a RavenDB server version earlier than `7.2`, which does not support remote attachments, 
+    attempting to send a document that references a remote attachment will result in an excetion.
     
 </Panel>
 
-<Panel heading="Attachments & export/import/backup/restore">
+<Panel heading="Attachments & Export/import/backup/restore">
     
-The following behavior applies to Export, Import, Backup, and Restore operations:
+The following behavior applies to [Export](../../studio/database/tasks/export-database),
+[Import](../../studio/database/tasks/import-data/import-data-file), 
+[Backup](../../studio/database/tasks/backup-task),
+and [Restore from backup](../../studio/database/create-new-database/from-backup) operations:
     
 **Local attachments**:  
 The binary content is included in the operation:  
-During export/backup, the binary stream is written to the dump file.  
-During import/restore, the binary stream is loaded from the dump into the database.  
+  * During export/backup, the binary stream is written to the dump file.  
+  * During import/restore, the binary stream is loaded from the dump into the database.  
 
-**Remote attachments**:
-Only metadata is included in the operation:  
-During export/backup, only the metadata is written to the dump, the binary content remains in remote storage.
-During import/restore, the metadata is loaded into the database, the content is expected to remain accessible in its original remote location.
-
-**Remote destination configuration**:  
-For import & restore:  
-If remote attachments are included, the same remote storage destinations must be configured in the target database.  
-This is your responsibility, RavenDB does not automatically transfer remote destination configurations as part of these operations.  
+**Remote attachments**:  
+Only the metadata is included in the operation:  
+  * During export/backup, only the metadata is written to the dump, the binary content remains in remote storage.
+  * During import/restore, the metadata is loaded from the dump into the database, the content is expected to remain accessible in its original remote location.    
+  * **Remote destination configuration** for import & restore:  
+    If remote attachments are included, the same remote storage destinations must be configured in the target database.  
+    This is your responsibility, RavenDB does not automatically transfer remote destination configurations as part of these operations.  
 
 </Panel>
 
 <Panel heading="Attachments & Revisions">
 
-local: supported
-remote: not supported   
+Revisions are immutable snapshots of a document's state at a given point in time.
+If [Document revisions](../../document-extensions/revisions/overview) are enabled, any addition or removal of attachments will create a new revision of the document.
+
+---
+        
+When a revision is created, it records the attachment's state exactly as it was at that moment.  
+The storage location of the attachment is bound to the revision’s creation context, not to the current state of the document:  
+* If the attachment was **local**, the revision stores it as local.
+* If the attachment was **remote**, the revision stores only the remote parameters (e.g., destination identifier, upload time).
     
-
-If [document revisions](../../document-extensions/revisions/overview) are enabled, any addition or removal of attachments will create a new revision of the document.
-This is because the attachment metadata is part of the document and is updated when attachments change.
-
-Any modification to the metadata of a document creates a revision when revisions are enabled.
-
-## Remote Attachments (Optional Feature)
-
-When Remote Attachments are enabled, RavenDB can upload attachments to external storage services such as:
-Amazon S3
-Azure Blob Storage
-
-Instead of storing the binary stream directly in the database, the server stores a reference to the external location and uploads the content asynchronously in the background.
-
-How it works:
-
-Attachments are marked for remote upload at the time they are added
-You configure remote destinations in the database settings
-Uploads are handled by a background task, without blocking client operations
-
-Remote Attachments are useful when:
-You need to store large binary content but reduce database size
-You want to take advantage of external storage redundancy and scaling    
-
+The background process that uploads attachments to remote storage only processes current documents.  
+It does not process or modify revisions.    
+  * Revisions that reference an attachment as local will remain local forever, even if the attachment in the current (parent) document is
+    [scheduled for remote uploading](../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload) and later uploaded to remote storage.
+  * The binary content will be retained on disk until all references to the attachments are removed -  
+    both from the parent document and from any revision that still reference it.
+    
+**Restoring from a Revision**:  
+Reverting a document to a previous revision also restores the attachment state stored in that revision:  
+  * Reverting to a revision that references a local attachmet restores the attachment as local.
+  * Reverting to a revision that references a remote attachment results in a document with a remote attachment.
+    
 </Panel>
