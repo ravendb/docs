@@ -19,7 +19,7 @@ import Panel from "@site/src/components/Panel";
 
 To check document compliance with a validation schema via Studio, you can:  
  - Run a manual [validation test operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test), that goes through a collection or a part of it and reports invalid documents and their validation errors.  
- - Create an [audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index), that validates documents during indexing and embeds any validation error messages into the index, so the documents can be queried by compliance status and specific validation errors.  
+ - Create an [audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index), that validates documents during indexing and stores any validation error messages in the index, so the documents can be queried by compliance status and specific validation error messages.  
 
 * In this article:  
   * [Running a validation test](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test)
@@ -45,7 +45,7 @@ The validation schemas that you already defined are displayed in the [Document S
 ![Test collection schema](./assets/schema-validation_studio_audit-test.png)
 
 * Use this method to verify schema effectiveness and documents compliance with schema constraints.  
-* Test results include the number and names of invalid documents, and the validation errors generated for each document.  
+* Test results include the number and names of invalid documents, and the validation error messages generated for each document.  
 * You can validate an entire collection or a specified number of documents. This is helpful when working with large collections.  
 * Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) a detailed explanation of this view. 
 
@@ -62,7 +62,7 @@ The [Document Schema](../../../documents/schema-validation/write-validation/writ
 * Use the playground to experiment with schema definitions and test them against documents in your collections.  
 * You can validate an entire collection or a specified number of documents.  
 * You can test multiple schemas in a single run, including multiple schemas for the same collection. This is helpful when you want to compare the effectiveness of different schema definitions, validate a specific field across collections, or test a large dataset.
-* Test results are presented per schema, detailing the number and names of invalid documents and the validation errors generated for each document.  
+* Test results are presented per schema, detailing the number and names of invalid documents and the validation error messages generated for each document.  
 * Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground) a detailed explanation of the playground.
 
 </ContentFrame>
@@ -72,7 +72,7 @@ The [Document Schema](../../../documents/schema-validation/write-validation/writ
 <Panel heading="Audit documents compliance by index">
 
 You can define an **audit index** that validates documents against a schema during indexing and stores any validation error messages in the index.  
-* The audit index can then be queried to find documents by compliance status and specific validation errors.  
+* The audit index can then be queried to find documents by compliance status and specific validation error messages.  
 * Indexing is performed continuously in the background, preparing for validation queries that remain quick and efficient even with large datasets.  
 
 <Admonition type="note" title="">
@@ -126,8 +126,8 @@ To [create the index](../../../studio/database/indexes/create-map-index), open *
 
   </Tabs>
 
-* Add the validation errors field (defined in the map) to the index.  
-  Set the [Store](../../../indexes/storing-data-in-index/) option for this field to **Yes**, indicating that querying the index will retrieve errors from the index rather than from indexed documents.  
+* Add the validation error messages field (defined in the map) to the index.  
+  Set the [Store](../../../indexes/storing-data-in-index/) option for this field to **Yes**, indicating that querying the index will retrieve error messages from the index rather than from indexed documents.  
 
   ![Create audit index](./assets/schema-validation_studio_audit_index_create-index.png)
 
@@ -148,7 +148,7 @@ To [create the index](../../../studio/database/indexes/create-map-index), open *
 
 #### Query the index
 
-Query the index to find documents by compliance status and specific errors.
+Query the index to find documents by compliance status and specific error messages.
 
 * While building or editing the index, you can use the **Test Index** bar to query the index and verify its functionality.  
   ![Run index test](./assets/schema-validation_studio_audit_index_test-index.png)
@@ -156,7 +156,7 @@ Query the index to find documents by compliance status and specific errors.
 * Run queries that filter documents based on the `Errors` field.  
   ![Query audit index](./assets/schema-validation_studio_audit_index_test-index_results.png)
 
-  Click an item's preview (eye) icon to view the document details, including the validation errors embedded in the index.  
+  Click an item's preview (eye) icon to view the document details, including the validation error messages stored in the index.  
   ![See index entry](./assets/schema-validation_studio_audit_index_test-index_results_preview.png)
 
 </ContentFrame>

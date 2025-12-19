@@ -37,8 +37,8 @@ Writing validation can be enabled or disabled [for the database and per collecti
 When validation is **enabled for the database**, documents are validated when they are written if a schema is defined and enabled for their collection.  
 When validation is **disabled for the database**, documents are written without validation regardless of individual collection settings.  
 
-* [See here](../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) how to enable and disable validation for the database using Studio.  
-* [See here](../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) how to enable and disable validation for the database via the client API.  
+* [Learn here](../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) how to enable and disable validation for the database using Studio.  
+* [Learn here](../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) how to enable and disable validation for the database via the client API.  
 </ContentFrame>
 
 <ContentFrame>
@@ -49,8 +49,8 @@ Schemas can be defined **for collections** to ensure that documents are written 
 
 Define and enable a schema for a collection to validate the collection documents as they are written. Validation will take place only if it is also enabled for the database.  
 
-* [See here](../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) how to enable and disable validation for the database using Studio.  
-* [See here](../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) how to enable and disable validation for the database via the client API.  
+* [Learn here](../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) how to enable and disable validation for the database using Studio.  
+* [Learn here](../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) how to enable and disable validation for the database via the client API.  
 
 </ContentFrame>
 
@@ -58,13 +58,12 @@ Define and enable a schema for a collection to validate the collection documents
 
 ### Index configuration
 
-Schemas can be defined for [audit indexes](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index). These indexes validate documents during indexing, store validation errors in an index field, and can be queried to find documents by their compliance status.
+Schemas can be defined for [audit indexes](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index) to validate documents during indexing, store validation error messages in an index field, and can be queried to find documents by their compliance status.
 
-If a schema is **explicitly defined** for an audit index, the index will use this schema to validate documents during indexing.  
-If a schema is **not** explicitly defined for an audit index, the index will use the schema **defined for the collection** to validate documents during indexing.  
+If a schema is **not** explicitly defined for an audit index, the index will use the schema defined **for the collection**.  
 
-* [See here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#create-the-audit-index) how to define an index schema using Studio.  
-* [See here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-a-validation-schema-optional) how to define an index schema via the client API.  
+* [Learn here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#create-the-audit-index) how to define a schema for an audit index using Studio.  
+* [Learn here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-a-validation-schema-optional) how to define a schema for an audit index via the client API.  
 
 </ContentFrame>
 </Panel>
