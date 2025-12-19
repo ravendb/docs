@@ -254,15 +254,15 @@ def main() -> None:
         target_file = output_path_for(branch, is_primary)
         write_whats_new_file(target_file, changelog_entries)
 
-        print(f"✅  Wrote {target_file.relative_to(PROJECT_ROOT)}")
+        print(f"Wrote {target_file.relative_to(PROJECT_ROOT)}")
 
         if _ESCAPED_TAG_EVENTS:
             counts = Counter(_ESCAPED_TAG_EVENTS)
             # print a concise per-branch summary for safe escapes
             summary = ", ".join(f"{tag}×{n}" for tag, n in counts.most_common())
-            print(f"   • Escaped non-whitelisted tag-like snippets: {summary}")
+            print(f"Escaped non-whitelisted tag-like snippets: {summary}")
 
-    print("🏁  Finished.")
+    print("Finished.")
 
 if __name__ == "__main__":
     main()
