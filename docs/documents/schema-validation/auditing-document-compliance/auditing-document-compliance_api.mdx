@@ -160,17 +160,33 @@ public class Order
 Use this audit approach to continuously validate document compliance during indexing and embed validation errors in the index. The index can then be queried to filter documents by their compliance status.  
 This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
 
+<Admonition type="note" title="">
+**Note** that disabling validation for the database or for the collection does **not** disable auditing by an index.  
+</Admonition>
+
 To validate documents by index:  
 
 <ContentFrame>
 #### Define a validation schema
 
-Define a [validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) and associate it with the collection whose documents you want to audit.  
+Define a validation schema that the index will use to validate documents during indexing.  
+You can define either or both of the following:  
+* A schema associated with the collection whose documents you want to audit.  
+  Learn [here](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) how to define a collection schema.  
+* A schema associated with the index itself.  
+     Learn how to define a schema for the index below.
+
+<Admonition type="note" title="">
+* If you define only a collection schema or only an index schema, the index will use the one you did define to validate documents.  
+* If you define both a collection schema and an index schema, the index schema takes precedence over the collection schema.  
+</Admonition>
+
+Creating a schema as part of the index definition:  
 ```csharp
 // Define a validation Schema as a string
-// Customer must be a string
-// Total must be a number >= 0
-// These fields are required
+// `Customer` must be a string
+// `Total` must be a number >= 0
+// Both fields are required
 string schemaDefinition = @"{
     ""properties"": {
         ""Customer"": { ""type"": ""string"" },

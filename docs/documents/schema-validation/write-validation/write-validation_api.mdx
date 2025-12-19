@@ -25,6 +25,10 @@ import Panel from "@site/src/components/Panel";
 
 * In this article:  
    * [Creating a validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema)  
+      * [Define your schema as a string](../../../documents/schema-validation/write-validation/write-validation_api#1-define-your-schema-as-a-string)  
+      * [Create the schema configuration](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration)  
+      * [Register the schema with the server](../../../documents/schema-validation/write-validation/write-validation_api#3-register-the-schema-with-the-server)  
+      * [Validate documents](../../../documents/schema-validation/write-validation/write-validation_api#4-validate-documents)  
    * [Example](../../../documents/schema-validation/write-validation/write-validation_api#example)  
    * [Available constraints](../../../documents/schema-validation/write-validation/write-validation_api#available-constraints)  
    * [Syntax](../../../documents/schema-validation/write-validation/write-validation_api#syntax)
@@ -36,80 +40,91 @@ import Panel from "@site/src/components/Panel";
 To validate documents against a JSON schema:  
 
 <ContentFrame>
-1. **Define your [schema](https://json-schema.org/) as a string**.  
-   Ensure that the schema sets all the constraints needed to validate your documents.  
+
+### 1. **Define your [schema](https://json-schema.org/) as a string**.  
+Ensure that the schema sets all the constraints needed to validate your documents.  
   
-   **Example**:
-   ```csharp
-   // Ensure that a `Name` property exists.
-   string schemaJson = "{\"required\":[\"Name\"]}";
-   ```
+**Example**:
+```csharp
+// Ensure that a `Name` property exists.
+string schemaJson = "{\"required\":[\"Name\"]}";
+```
 
-   **Example**:
-   ```csharp
-   // Ensure that a `Name` property has a maximum length of 7 characters.
-   string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
-   ```
+**Example**:
+```csharp
+// Ensure that a `Name` property has a maximum length of 7 characters.
+string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
+```
 </ContentFrame>
 
 <ContentFrame>
-2. **Create the schema configuration**.  
-   Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
+
+### 2. **Create the schema configuration**.  
+Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
-   E.g., to associate your schema with the `Users` collection:  
-   ```csharp
-   // Create the configuration
-   var configuration = new SchemaValidationConfiguration
+E.g., to associate your schema with the `Users` collection:  
+```csharp
+// Create the configuration
+var configuration = new SchemaValidationConfiguration
+{
+   Disabled = false, // Enable validation for all collections
+   ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
    {
-      Disabled = false, // Enable validation for all collections
-      ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
-      {
-          { "Users", new SchemaDefinition { Schema = schemaJson } }
-      }
-   };
-   ```
-</ContentFrame>
-
-<ContentFrame>
-3. **Register the schema with the server**.  
-   Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
-
-   E.g.,  
-   ```csharp
-   // Register the schema configuration with the server
-   await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
-   ```
-
-   <Admonition type="note" title="">
-   Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
-   </Admonition>
-</ContentFrame>
-
-<ContentFrame>
-4. **Validate documents**.  
-   After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
-   
-   E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
-   ```plain
-   Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
-   ``` 
-
-   To handle such exceptions, you can use a try-catch block when saving documents:
-   ```csharp
-   using (var session = store.OpenSession())
-   {
-     var user = new User { Name = "TooLongValue" }; // Violates maxLength constraint
-     session.Store(user);
-     try
-     {
-       session.SaveChanges(); // This will throw SchemaValidationException
-     }
-     catch (SchemaValidationException ex)
-     {
-       // Catch and handle the exception if the validation fails.
+     { "Users", new SchemaDefinition 
+       { 
+          Disabled = false, // Enable validation for the Users collection
+          Schema = schemaJson 
+       } 
      }
    }
-   ```
+};
+```
+</ContentFrame>
+
+<ContentFrame>
+
+### 3. **Register the schema with the server**.  
+
+Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
+
+E.g.,  
+```csharp
+// Register the schema configuration with the server
+await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
+```
+
+<Admonition type="note" title="">
+Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### 4. **Validate documents**.  
+After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
+   
+E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
+```plain
+Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
+``` 
+
+To handle such exceptions, you can use a try-catch block when saving documents:
+```csharp
+using (var session = store.OpenSession())
+{
+  var user = new User { Name = "TooLongValue" }; // Violates maxLength constraint
+  session.Store(user);
+  try
+  {
+    session.SaveChanges(); // This will throw SchemaValidationException
+  }
+  catch (SchemaValidationException ex)
+  {
+    // Catch and handle the exception if the validation fails.
+  }
+}
+```
 </ContentFrame>
 
 </Panel>
@@ -138,7 +153,12 @@ var configuration = new SchemaValidationConfiguration
    Disabled = false,
    ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
    {
-      { "Users", new SchemaDefinition { Schema = schemaJson } }
+     { "Users", new SchemaDefinition 
+       { 
+          Disabled = false,
+          Schema = schemaJson 
+       } 
+     }
    }
 };
 
