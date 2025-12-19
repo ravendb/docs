@@ -160,28 +160,22 @@ public class Order
 Use this audit approach to continuously validate document compliance during indexing and store validation error messages in the index. The index can then be queried to filter documents by their compliance status.  
 This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
 
-<Admonition type="note" title="">
-**Note** that disabling validation for the database or for the collection does **not** disable auditing by an index.  
-</Admonition>
-
 To validate documents by index:  
 
 <ContentFrame>
 #### Define a validation schema
 
 Define a validation schema that the index will use to validate documents during indexing.  
-You can define either or both of the following:  
-* A schema associated with the collection whose documents you want to audit.  
-  Learn [here](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) how to define a collection schema.  
-* A schema associated with the index itself.  
-     Learn how to define a schema for the index below.
+The index will use the schema defined in its index configuration (see [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#defining-an-index-level-validation-schema) how to define it).  
+* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema).  
+* If no schema is defined either in the index configuration or at the database level, the index will not perform any validation.
 
 <Admonition type="note" title="">
-* If you define only a collection schema or only an index schema, the index will use the one you did define to validate documents.  
-* If you define both a collection schema and an index schema, the index schema takes precedence over the collection schema.  
+**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) will also disable auditing by the index.  
+However, when the index uses an index-level schema, disabling database-level validation will **not** disable auditing by the index.
 </Admonition>
 
-Creating a schema as part of the index definition:  
+#### Defining an index-level validation schema:  
 ```csharp
 // Define a validation Schema as a string
 // `Customer` must be a string
@@ -226,10 +220,13 @@ var schemaDefinitions = new IndexSchemaDefinitions
   ```csharp
   // Create a map for the index, including a call to Schema.GetErrorsFor()
   const string OrdersValidationMap = @"
-  from doc in docs.Orders
-  select new
+  from doc in docs
+  let errors = Schema.GetErrorsFor(doc)
+  where errors != null && errors.Length > 0
+  select new 
   {
-      Errors = Schema.GetErrorsFor(doc)
+      Id = doc.Id,
+      Errors = errors
   }
   ";
   ```
@@ -304,10 +301,13 @@ using (var session = store.OpenAsyncSession())
 
     // Create a map for the index, including a call to Schema.GetErrorsFor()
     const string OrdersValidationMap = @"
-    from doc in docs.Orders
-    select new
+    from doc in docs
+    let errors = Schema.GetErrorsFor(doc)
+    where errors != null && errors.Length > 0
+    select new 
     {
-        Errors = Schema.GetErrorsFor(doc)
+        Id = doc.Id,
+        Errors = errors
     }
     ";
 
@@ -414,9 +414,12 @@ public class IndexResult
 
     // Create a map for the index, including a call to schema.getErrorsFor()
     const string OrdersValidationMap = @"
-    map('Orders', function (doc) {
+    map("@all_docs", (doc) => { 
+    let errors = schema.getErrorsFor(doc);
+    if( errors != null && errors.length > 0)
         return {
-            Errors: schema.getErrorsFor(doc)
+            Id: id(doc),
+            Errors: errors
         };
     })";
 
