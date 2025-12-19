@@ -18,8 +18,8 @@ import Panel from "@site/src/components/Panel";
 <Admonition type="note" title="">
 
 * Audit stored documents' compliance with a schema to identify and address any validation violations.  
-   * You can run an [audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) that scans a document collection and generates validation violation reports.  
-   * You can also audit document compliance [by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index), validating documents during indexing and embedding any validation error messages into the indexes. The documents can then be queried and managed based on their schema compliance.
+   * You can run an [audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) that scans a document collection or a part of it and generates a validation violations report.  
+   * You can also audit document compliance [by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index), validating documents during indexing and embedding any validation error messages into the indexes. The indexed documents can then be queried and managed based on their schema compliance.
 
 * In this article:  
   * [Running an audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation)
@@ -33,17 +33,18 @@ import Panel from "@site/src/components/Panel";
 
 </Admonition>
 
-## Running an audit operation
+<Panel heading="Running an audit operation">
+
 Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/schema-validation_overview#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
 This method is useful for one-time audits or periodic checks of data integrity.  
 
 To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
 
-<Panel heading={"`StartSchemaValidationOperation`"} headingLevel={3}>
+### `StartSchemaValidationOperation`
 
 <ContentFrame>
 
-#### <u>`StartSchemaValidationOperation` constructor</u>  
+#### `StartSchemaValidationOperation` constructor:  
 ```csharp
 public StartSchemaValidationOperation(Parameters parameters)
 ```
@@ -51,7 +52,7 @@ public StartSchemaValidationOperation(Parameters parameters)
 
 <ContentFrame>
 
-#### <u>`StartSchemaValidationOperation` arguments</u>
+#### `StartSchemaValidationOperation` arguments:
 Pass the operation a `Parameters` object that specifies -  
 ```csharp
 public class Parameters
@@ -73,7 +74,7 @@ public class Parameters
 
 <ContentFrame>
 
-#### <u>`StartSchemaValidationOperation` results</u>
+#### `StartSchemaValidationOperation` results:
 The operation will run in the background and return a result object containing -  
 - `ValidatedCount`  
   The number of documents checked  
@@ -87,13 +88,13 @@ The operation will run in the background and return a result object containing -
 
 <ContentFrame>
 
-### Example:
-This example audits the `Orders` collection, ensuring each order has a `Customer` string and a non-negative `Total` property. The validation results are then retrieved and summarized.
+### Example
+In this example we audit the `Orders` collection, ensuring each order has a `Customer` string and a non-negative `Total` property. The validation results are then retrieved and summarized.
 ```csharp
 // Define a validation Schema as a string
-// Customer must be a string
-// Total must be a number >= 0
-// These fields are required
+// `Customer` must be a string
+// `Total` must be a number >= 0
+// Both fields must exist
 string schemaDefinition = @"{
     ""properties"": {
         ""Customer"": { ""type"": ""string"" },
@@ -132,10 +133,10 @@ var result = await operation.WaitForCompletionAsync<ValidateSchemaResult>(TimeSp
 // Handle the results, e.g., print a validation summary
 // The number of inspected documents, and the number of documents with errors
 Console.WriteLine($"Validated: {result.ValidatedCount}, Errors: {result.ErrorCount}");
-// For each document with errors, print its ID and the associated error messages
+// For each document with errors, print its Id and the associated error messages
 foreach (var error in result.Errors)
 {
-    Console.WriteLine($"Document ID: {error.Key}");
+    Console.WriteLine($"Document Id: {error.Key}");
     foreach (var line in error.Value.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
     {
         Console.WriteLine($"Error: {line}");
@@ -151,24 +152,35 @@ public class Order
 }
 ```
 </ContentFrame>
+
 </Panel>
 
-## Audit document compliance by index
+<Panel heading="Audit document compliance by index">
 
-Use this audit approach to continuously validate document compliance during indexing and embed validation errors in the index. The index can then be queried to filter documents by their compliance status.  
+Use this audit approach to continuously validate document compliance during indexing and store validation error messages in the index. The index can then be queried to filter documents by their compliance status.  
 This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
 
-To validate documents by index:
-<Panel heading={"Define a validation schema"} headingLevel={3}>
+To validate documents by index:  
 
 <ContentFrame>
+#### Define a validation schema
 
-Define a [validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema) and associate it with the collection whose documents you want to audit.  
+Define a validation schema that the index will use to validate documents during indexing.  
+The index will use the schema defined in its index configuration (see [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#defining-an-index-level-validation-schema) how to define it).  
+* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema).  
+* If no schema is defined either in the index configuration or at the database level, the index will not perform any validation.
+
+<Admonition type="note" title="">
+**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) will also disable auditing by the index.  
+However, when the index uses an index-level schema, disabling database-level validation will **not** disable auditing by the index.
+</Admonition>
+
+#### Defining an index-level validation schema:  
 ```csharp
 // Define a validation Schema as a string
-// Customer must be a string
-// Total must be a number >= 0
-// These fields are required
+// `Customer` must be a string
+// `Total` must be a number >= 0
+// Both fields are required
 string schemaDefinition = @"{
     ""properties"": {
         ""Customer"": { ""type"": ""string"" },
@@ -186,9 +198,9 @@ var schemaDefinitions = new IndexSchemaDefinitions
 </ContentFrame>
 
 <ContentFrame>
-### Define and execute an index
+#### Define and execute an index
 
-* Add the index an **Errors** field to hold validation error messages.  
+* Add to the index an **Errors** field to hold validation error messages.  
   ```csharp
   // Create the index definition
   var indexDefinition = new IndexDefinition
@@ -208,10 +220,13 @@ var schemaDefinitions = new IndexSchemaDefinitions
   ```csharp
   // Create a map for the index, including a call to Schema.GetErrorsFor()
   const string OrdersValidationMap = @"
-  from doc in docs.Orders
-  select new
+  from doc in docs
+  let errors = Schema.GetErrorsFor(doc)
+  where errors != null && errors.Length > 0
+  select new 
   {
-      Errors = Schema.GetErrorsFor(doc)
+      Id = doc.Id,
+      Errors = errors
   }
   ";
   ```
@@ -226,13 +241,13 @@ var schemaDefinitions = new IndexSchemaDefinitions
 
 <ContentFrame>
 
-### Query the index:
+#### Query the index
 You can now query the index to find documents by their validation status and specific errors.  
 ```csharp
 // Query the index and print validation errors
 using (var session = store.OpenAsyncSession())
 {
-  // Retrieve results, containing validation errors, from the index
+  // Retrieve results that contain validation errors from the index
   var results = await session.Query<IndexResult>("Orders_WithValidation")
       .Select(x => new
       {
@@ -259,7 +274,8 @@ using (var session = store.OpenAsyncSession())
 
 <ContentFrame>
 
-### Full example:
+### Full example
+
 <Tabs>
 <TabItem value="Static" label="Static">
 
@@ -285,10 +301,13 @@ using (var session = store.OpenAsyncSession())
 
     // Create a map for the index, including a call to Schema.GetErrorsFor()
     const string OrdersValidationMap = @"
-    from doc in docs.Orders
-    select new
+    from doc in docs
+    let errors = Schema.GetErrorsFor(doc)
+    where errors != null && errors.Length > 0
+    select new 
     {
-        Errors = Schema.GetErrorsFor(doc)
+        Id = doc.Id,
+        Errors = errors
     }
     ";
 
@@ -328,8 +347,8 @@ using (var session = store.OpenAsyncSession())
     // Query the index and print validation errors
     using (var session = store.OpenAsyncSession())
     {
-        // Retrieve results, containing validation errors, from the index
-    var results = await session.Query<IndexResult>("Orders_WithValidation")
+        // Retrieve results that contain validation errors from the index
+        var results = await session.Query<IndexResult>("Orders_WithValidation")
         .Select(x => new
         {
             Id = RavenQuery.Metadata(x)["Id"] as string, // Also project the document Id
@@ -387,7 +406,6 @@ public class IndexResult
         ""required"": [""Customer"", ""Total""]
     }";
 
-
     // Associate the schema with the Orders collection
     var schemaDefinitions = new IndexSchemaDefinitions
     {
@@ -396,9 +414,12 @@ public class IndexResult
 
     // Create a map for the index, including a call to schema.getErrorsFor()
     const string OrdersValidationMap = @"
-    map('Orders', function (doc) {
+    map("@all_docs", (doc) => { 
+    let errors = schema.getErrorsFor(doc);
+    if( errors != null && errors.length > 0)
         return {
-            Errors: schema.getErrorsFor(doc)
+            Id: id(doc),
+            Errors: errors
         };
     })";
 
@@ -438,7 +459,7 @@ public class IndexResult
     // Query the index and print validation errors
     using (var session = store.OpenAsyncSession())
     {
-        // Retrieve results, containing validation errors, from the index
+        // Retrieve results that contain validation errors from the index
         var results = await session.Query<IndexResult>("Orders_WithValidation_JS")
             .Select(x => new
             {

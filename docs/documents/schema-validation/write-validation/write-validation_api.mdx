@@ -25,86 +25,111 @@ import Panel from "@site/src/components/Panel";
 
 * In this article:  
    * [Creating a validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema)  
+      * [Define your schema as a string](../../../documents/schema-validation/write-validation/write-validation_api#1-define-your-schema-as-a-string)  
+      * [Create the schema configuration](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration)  
+      * [Register the schema with the server](../../../documents/schema-validation/write-validation/write-validation_api#3-register-the-schema-with-the-server)  
+      * [Validate documents](../../../documents/schema-validation/write-validation/write-validation_api#4-validate-documents)  
    * [Example](../../../documents/schema-validation/write-validation/write-validation_api#example)  
    * [Available constraints](../../../documents/schema-validation/write-validation/write-validation_api#available-constraints)  
    * [Syntax](../../../documents/schema-validation/write-validation/write-validation_api#syntax)
 
 </Admonition>
 
-<Panel heading={"Creating a validation schema"}>
+<Panel heading="Creating a validation schema">
 
-To validate documents with a JSON schema:  
+To validate documents against a JSON schema:  
 
-1. **Define your [schema](https://json-schema.org/) as a string**:  
-   Ensure that the schema sets all the constraints needed to validate your documents.  
+<ContentFrame>
+
+### 1. **Define your [schema](https://json-schema.org/) as a string**.  
+Ensure that the schema sets all the constraints needed to validate your documents.  
   
-   **Example**:
-   ```csharp
-   // Ensure that a `Name` property exists.
-   string schemaJson = "{\"required\":[\"Name\"]}";
-   ```
+**Example**:
+```csharp
+// Ensure that a `Name` property exists.
+string schemaJson = "{\"required\":[\"Name\"]}";
+```
 
-   **Example**:
-   ```csharp
-   // Ensure that a `Name` property has a maximum length of 7 characters.
-   string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
-   ```
+**Example**:
+```csharp
+// Ensure that a `Name` property has a maximum length of 7 characters.
+string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
+```
+</ContentFrame>
 
-2. **Create the schema configuration**:  
-   Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
+<ContentFrame>
+
+### 2. **Create the schema configuration**.  
+Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
-   E.g., to associate your schema with the `Users` collection:  
-   ```csharp
-   // Create the configuration
-   var configuration = new SchemaValidationConfiguration
+E.g., to associate your schema with the `Users` collection:  
+```csharp
+// Create the configuration
+var configuration = new SchemaValidationConfiguration
+{
+   Disabled = false, // Enable validation for all collections
+   ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
    {
-      Disabled = false, // Enable validation
-      ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
-      {
-          { "Users", new SchemaDefinition { Schema = schemaJson } }
-      }
-   };
-   ```
-3. **Register the schema with the server**:  
-   Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
-
-   E.g.,  
-   ```csharp
-   // Register the schema configuration with the server
-   await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
-   ```
-
-   <Admonition type="note" title="">
-   Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
-   </Admonition>
-
-4. **Validate documents**:  
-   After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
-   
-   E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
-   ```plain
-   Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
-   ``` 
-
-   To handle such exceptions, you can use a try-catch block when saving documents:
-   ```csharp
-   using (var session = store.OpenSession())
-   {
-     var user = new User { Name = "TooLongValue" }; // Violates maxLength constraint
-     session.Store(user);
-     try
-     {
-       session.SaveChanges(); // This will throw SchemaValidationException
-     }
-     catch (SchemaValidationException ex)
-     {
-       // Catch and handle the exception if the validation fails.
+     { "Users", new SchemaDefinition 
+       { 
+          Disabled = false, // Enable validation for the Users collection
+          Schema = schemaJson 
+       } 
      }
    }
-   ```
+};
+```
+</ContentFrame>
+
+<ContentFrame>
+
+### 3. **Register the schema with the server**.  
+
+Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
+
+E.g.,  
+```csharp
+// Register the schema configuration with the server
+await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
+```
+
+<Admonition type="note" title="">
+Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/schema-validation_overview#a-list-of-operations-that-trigger-validation).)
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### 4. **Validate documents**.  
+After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
+   
+E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
+```plain
+Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
+``` 
+
+To handle such exceptions, you can use a try-catch block when saving documents:
+```csharp
+using (var session = store.OpenSession())
+{
+  var user = new User { Name = "TooLongValue" }; // Violates maxLength constraint
+  session.Store(user);
+  try
+  {
+    session.SaveChanges(); // This will throw SchemaValidationException
+  }
+  catch (SchemaValidationException ex)
+  {
+    // Catch and handle the exception if the validation fails.
+  }
+}
+```
+</ContentFrame>
+
 </Panel>
 
-<Panel heading={"Example"}>
+<Panel heading="Example">
 
 In this example we validate documents saved in the `Users` collection by constraints set by a JSON schema.
 
@@ -128,7 +153,12 @@ var configuration = new SchemaValidationConfiguration
    Disabled = false,
    ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
    {
-      { "Users", new SchemaDefinition { Schema = schemaJson } }
+     { "Users", new SchemaDefinition 
+       { 
+          Disabled = false,
+          Schema = schemaJson 
+       } 
+     }
    }
 };
 
@@ -162,9 +192,10 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
 ```
 </TabItem>
 </Tabs>
+
 </Panel>
 
-<Panel heading={"Available constraints"}>
+<Panel heading="Available constraints">
 
 Your validation schema can set the following constraints:  
 
@@ -172,11 +203,10 @@ Your validation schema can set the following constraints:
 ### `type`  
 Enforces the data type (e.g., "string", "number", "object", "array", "boolean", "integer").  
 
-**Example**:
+**Example**: `Name` must be a string
 ```json
 {
   "properties": {
-    // 'Name' must be a string
     "Name": { "type": "string" }
   }
 }
@@ -187,14 +217,13 @@ Enforces the data type (e.g., "string", "number", "object", "array", "boolean", 
 ### `required`  
 Enforces properties that must be present in the object.  
 
-**Example**:
+**Example**: `name` must be a string, `age` must be an integer, and both are required.
 ```json
 {
   "properties": {
-    "name": { "type": "string" }, // Name must be a string
-    "age": { "type": "integer" }  // Age must be an integer
+    "name": { "type": "string" }, 
+    "age": { "type": "integer" }
   },
-  // Both 'name' and 'age' are required
   "required": ["name", "age"]
 }
 ```
@@ -204,11 +233,10 @@ Enforces properties that must be present in the object.
 ### `const`  
 Requires a property to have a specific value.  
 
-**Example**:
+**Example**: `role` must always be `admin`.
 ```json
 {
   "properties": {
-    // 'role' must always be 'admin'
     "role": { "const": "admin" }
   }
 }
@@ -219,11 +247,10 @@ Requires a property to have a specific value.
 ### `enum`  
 Restricts a property to a set of allowed values.  
 
-**Example**:
+**Example**: `status` must be `active`, `inactive`, or `pending`.
 ```json
 {
   "properties": {
-    // 'status' must be one of the specified values
     "status": { "enum": ["active", "inactive", "pending"] }
   }
 }
@@ -234,11 +261,10 @@ Restricts a property to a set of allowed values.
 ### `minLength`  
 Minimum number of characters for a string.  
 
-**Example**:
+**Example**: `username` must be at least 3 characters long.
 ```json
 {
   "properties": {
-    // 'username' must be at least 3 characters long
     "username": { "type": "string", "minLength": 3 }
   }
 }
@@ -249,11 +275,10 @@ Minimum number of characters for a string.
 ### `maxLength`  
 Maximum number of characters for a string.  
 
-**Example**:
+**Example**: `code` must be no more than 7 characters long.
 ```json
 {
   "properties": {
-    // 'code' must be no more than 7 characters long
     "code": { "type": "string", "maxLength": 7 }
   }
 }
@@ -264,11 +289,10 @@ Maximum number of characters for a string.
 ### `pattern`  
 String must match a regular expression.  
 
-**Example**:
+**Example**: `email` must match a basic email pattern.
 ```json
 {
   "properties": {
-    // 'email' must match the given regular expression
     "email": { "type": "string", "pattern": "^[\\w.-]+@[\\w.-]+\\.\\w+$" }
   }
 }
@@ -279,11 +303,10 @@ String must match a regular expression.
 ### `minimum`  
 Minimum value for a number.  
 
-**Example**:
+**Example**: `age` must be at least 18.
 ```json
 {
   "properties": {
-    // 'age' must be at least 18
     "age": { "type": "integer", "minimum": 18 }
   }
 }
@@ -294,11 +317,10 @@ Minimum value for a number.
 ### `maximum`  
 Maximum value for a number.  
 
-**Example**:
+**Example**: `score` must be no more than `100`.
 ```json
 {
   "properties": {
-    // 'score' must be at most 100
     "score": { "type": "number", "maximum": 100 }
   }
 }
@@ -309,11 +331,10 @@ Maximum value for a number.
 ### `minItems`  
 Minimum number of items in an array.  
 
-**Example**:
+**Example**: The `tags` array must have at least 2 items.
 ```json
 {
   "properties": {
-    // 'tags' array must have at least 2 items
     "tags": { "type": "array", "minItems": 2 }
   }
 }
@@ -324,11 +345,10 @@ Minimum number of items in an array.
 ### `maxItems`  
 Maximum number of items in an array.  
 
-**Example**:
+**Example**: The `tags` array must have no more than 5 items.
 ```json
 {
   "properties": {
-    // 'tags' array must have at most 5 items
     "tags": { "type": "array", "maxItems": 5 }
   }
 }
@@ -339,13 +359,11 @@ Maximum number of items in an array.
 ### `properties`  
 Defines schemas for each property of an object.  
 
-**Example**:
+**Example**: `firstName` and `lastName` must be strings.
 ```json
 {
   "properties": {
-    // 'firstName' must be a string
     "firstName": { "type": "string" },
-    // 'lastName' must be a string
     "lastName": { "type": "string" }
   }
 }
@@ -356,8 +374,7 @@ Defines schemas for each property of an object.
 ### `patternProperties`  
 Defines validation rules for object properties whose names match a specified regular expression (regex) pattern.
 
-**Example**:  
-All properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
+**Example**: All properties starting with "foo_" must be strings, and those starting with "bar_" must be integers.
 ```json
 {
   "type": "object",
@@ -374,13 +391,12 @@ All properties starting with "foo_" must be strings, and those starting with "ba
 ### `additionalProperties`  
 Controls whether properties not defined in `properties` and `patternProperties` are allowed.  
 
-**Example**:
+**Example**: Only `id` is allowed.
 ```json
 {
   "properties": {
-    "id": { "type": "string" } // Only 'id' is defined
+    "id": { "type": "string" }
   },
-  // No properties other than 'id' are allowed
   "additionalProperties": false
 }
 ```
@@ -390,11 +406,10 @@ Controls whether properties not defined in `properties` and `patternProperties` 
 ### `items`  
 Defines the schema for items in an array.  
 
-**Example**:
+**Example**: `scores` must be an array of integers.
 ```json
 {
   "properties": {
-    // 'scores' must be an array of integers
     "scores": {
       "type": "array",
       "items": { "type": "integer" }
@@ -408,14 +423,13 @@ Defines the schema for items in an array.
 ### `dependencies`  
 Specifies property dependencies.  
 
-**Example**:
+**Example**: If `credit_card` is present, `billing_address` must also be present.
 ```json
 {
   "properties": {
-    "credit_card": { "type": "string" },      // Credit card number
-    "billing_address": { "type": "string" }   // Billing address
+    "credit_card": { "type": "string" },
+    "billing_address": { "type": "string" }
   },
-  // If 'credit_card' is present, 'billing_address' must also be present
   "dependencies": {
     "credit_card": ["billing_address"]
   }
@@ -428,31 +442,32 @@ Specifies property dependencies.
 ### `null`  
 Allows a type or a property to be set to null (if supported by the implementation).  
 
-Setting `null` for variable types: 
+**Example**: Setting `null` for **variable types**. The value can be either a string or null.
 ```json
 {
-  // The value can be a string or null
   "type": ["string", "null"]
 }
 ```
+
 <br />
 
-Setting `null` for **properties**:
+**Example**: Setting `null` for **properties**. The `middleName` property can be either a string or null.
 ```json
 {
   "properties": {
-    // 'middleName' can be a string or null
     "middleName": { "type": ["string", "null"] }
   }
 }
 ```
 </ContentFrame>
+
 </Panel>
 
-<Panel heading={"Syntax"}>
+<Panel heading="Syntax">
+
 <ContentFrame>
 
-### `ConfigureSchemaValidationOperation` definition:
+#### `ConfigureSchemaValidationOperation` definition:
 ```csharp
 // The schema validation configuration to apply.
 // If `configuration` is null, `ArgumentNullException` is generated.
@@ -462,13 +477,14 @@ public ConfigureSchemaValidationOperation(SchemaValidationConfiguration configur
 
 <ContentFrame>
 
-### `SchemaValidationConfiguration` class:
+#### `SchemaValidationConfiguration` class:
 ```csharp
 public sealed class SchemaValidationConfiguration
 {
    // Indicates whether schema validation is globally disabled for the database.
    // When true, validation is disabled for all collections regardless of 
    // individual collection settings.
+   // When false, validation is enabled based on the per-collection settings.
    public bool Disabled { get; set; }
 
    // Mapping of collection names to their corresponding schema definitions.
@@ -482,7 +498,7 @@ public sealed class SchemaValidationConfiguration
 
 <ContentFrame>
 
-### `SchemaDefinition` class:
+#### `SchemaDefinition` class:
 ```csharp
 public class SchemaDefinition
 {
@@ -499,7 +515,7 @@ public class SchemaDefinition
 
 <ContentFrame>
 
-### `SchemaValidationException` message:
+#### `SchemaValidationException` message:
 ```csharp
 // Initializes a new `SchemaValidationException` instance with an error message
 // that explains the reason for the schema validation failure. 
@@ -513,4 +529,5 @@ Raven.Client.Exceptions.SchemaValidation.SchemaValidationException:
 The required property 'Company' is missing.
 ```
 </ContentFrame>
+
 </Panel>
