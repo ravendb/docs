@@ -340,72 +340,76 @@ Use the `GetRemoteAttachmentsConfigurationOperation` to retrieve the current rem
 <TabItem value="Sync" label="Sync">
 ```csharp
 // Get the current remote attachments settings
-var configuration = store.Maintenance.Send(
+RemoteAttachmentsConfiguration configuration = store.Maintenance.Send(
     new GetRemoteAttachmentsConfigurationOperation());
 
 // Display current settings
 if (configuration != null)
 {
-    Console.WriteLine(
-        $"Time interval between task runs: {configuration.CheckFrequencyInSec} seconds");
-    Console.WriteLine(
-        $"Concurrent Uploads: {configuration.ConcurrentUploads}");
+    // Time interval between task runs (seconds)
+    var checkFreqInSec = configuration000.CheckFrequencyInSec;
+    
+    // Number of concurrent uploads
+    var concurrentUploads = configuration000.ConcurrentUploads;
     
     foreach (var destination in configuration.Destinations)
     {
-        Console.WriteLine($"Destination ID: {destination.Key}");
+        // Destination identifier
+        var destinationId000 = destination.Key;
     
         if (destination.Value.S3Settings != null)
         {
-            Console.WriteLine(
-                $"S3 Bucket: {destination.Value.S3Settings.BucketName}");
+             // S3 bucket name
+             var s3BucketName = destination.Value.S3Settings.BucketName;
         }
         if (destination.Value.AzureSettings != null)
         {
-            Console.WriteLine(
-                $"Azure Container: {destination.Value.AzureSettings.StorageContainer}");
+            // Azure container name
+            var azureContainer = destination.Value.AzureSettings.StorageContainer;
         }
     }
 }
 else
 {
-    Console.WriteLine("No remote attachments configuration found.");
+     // No remote attachments configuration found
 }
 ```
 </TabItem>
 <TabItem value="Async" label="Async">
 ```csharp
 // Get the current remote attachments settings asynchronously
-var configuration = await store.Maintenance.SendAsync(
+RemoteAttachmentsConfiguration configuration = await store.Maintenance.SendAsync(
     new GetRemoteAttachmentsConfigurationOperation());
 
 // Display current settings
 if (configuration != null)
 {
-    Console.WriteLine(
-        $"Time interval between task runs: {configuration.CheckFrequencyInSec} seconds");
-    Console.WriteLine(
-        $"Concurrent Uploads: {configuration.ConcurrentUploads}");
+    // Time interval between task runs (seconds)
+    var checkFreqInSec = configuration000.CheckFrequencyInSec;
+    
+    // Number of concurrent uploads
+    var concurrentUploads = configuration000.ConcurrentUploads;
     
     foreach (var destination in configuration.Destinations)
     {
-        Console.WriteLine($"Destination ID: {destination.Key}");
+        // Destination identifier
+        var destinationId000 = destination.Key;
     
         if (destination.Value.S3Settings != null)
         {
-            Console.WriteLine(
-                $"S3 Bucket: {destination.Value.S3Settings.BucketName}");
+             // S3 bucket name
+             var s3BucketName = destination.Value.S3Settings.BucketName;
         }
         if (destination.Value.AzureSettings != null)
         {
-            Console.WriteLine(
-                $"Azure Container: {destination.Value.AzureSettings.StorageContainer}");
+            // Azure container name
+            var azureContainer = destination.Value.AzureSettings.StorageContainer;
         }
     }
 }
 else
 {
-    Console.WriteLine("No remote attachments configuration found.");
+    // No remote attachments configuration found
 }
 ```
 </TabItem>

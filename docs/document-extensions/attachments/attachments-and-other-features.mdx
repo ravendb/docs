@@ -25,7 +25,7 @@ import Panel from '@site/src/components/Panel';
 * In this article:
   * [Attachments & Replication](../../document-extensions/attachments/attachments-and-other-features#attachments-replication)  
   * [Attachments & RavenDB ETL](../../document-extensions/attachments/attachments-and-other-features#attachments-ravendb-etl)
-  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features#attachments-exportimportbackuprestore)
+  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features#attachments-export-import-backup-restore)
   * [Attachments & Revisions](../../document-extensions/attachments/attachments-and-other-features#attachments-revisions)
     
 </Admonition>
@@ -88,20 +88,33 @@ The document is sent without the binary stream, only the metadata is transferred
 The following behavior applies to [Export](../../studio/database/tasks/export-database),
 [Import](../../studio/database/tasks/import-data/import-data-file), 
 [Backup](../../studio/database/tasks/backup-task),
-and [Restore from backup](../../studio/database/create-new-database/from-backup) operations:
+and [Restore from backup](../../studio/database/create-new-database/from-backup) operations.
+    
+---    
     
 **Local attachments**:  
-The binary content is included in the operation:  
+The attachment metadata and the binary content are included in the operation:  
   * During export/backup, the binary stream is written to the dump file.  
   * During import/restore, the binary stream is loaded from the dump into the database.  
 
 **Remote attachments**:  
-Only the metadata is included in the operation:  
-  * During export/backup, only the metadata is written to the dump, the binary content remains in remote storage.
-  * During import/restore, the metadata is loaded from the dump into the database, the content is expected to remain accessible in its original remote location.    
-  * **Remote destination configuration** for import & restore:  
-    If remote attachments are included, the same remote storage destinations must be configured in the target database.  
-    This is your responsibility, RavenDB does not automatically transfer remote destination configurations as part of these operations.  
+    
+  * **Attachments metadata**:  
+    * During **export/backup**:  
+      only the metadata is written to the dump,  
+      the binary content remains in remote storage.
+    * During **import/restore**:  
+      the metadata is loaded from the dump into the database,  
+      the content is expected to remain accessible in its original remote location.    
+
+  * **Remote attachments configuration**:  
+    By default, RavenDB includes the remote attachments configuration, including the list of defined remote destinations, in both export/backup and import/restore operations.  
+    
+    However, during **import or restore**, RavenDB does not verify the actual remote storage itself.  
+    You must ensure that:  
+    * The destination identifiers still point to valid and accessible remote storage.
+    * The external storage contains all the remote attachment files referenced in the imported documents.  
+      If the files are missing, the attachments will not be accessible.
 
 </Panel>
 

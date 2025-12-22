@@ -65,12 +65,14 @@ import Panel from '@site/src/components/Panel';
 ### Remote attachment upload – considerations
     
 * **Can the upload process be canceled?**   
-  Once an upload to the remote destination begins, it cannot be canceled.  
-  As a workaround, you can temporarily disable the database. This will stop the upload if it is still in progress.
+  You can stop the upload process by disabling the remote destination in the remote attachments settings,  
+  or by temporarily disabling the remote attachments feature entirely. (See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments)).  
+  Alternatively, you can remove the remote destination configuration if it is no longer needed.
     
-* **Can a remote attachment be pulled back into local storage?**    
-  There is no built-in mechanism to reverse the upload. To "un-remote" an attachment,  
-  you'll need to manually retrieve it from the remote storage and store it again in the database.
+* **Can a remote attachment be pulled back into local storage?**  
+  There is no built-in mechanism to reverse the upload.  
+  To "un-remote" an attachment, you'll need to retrieve it from the remote storage (see [Get attachments](../../../document-extensions/attachments/get-attachments)),  
+  and then store it again in the database as a local attachment (see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local)).   
     
 * **Why is my attachment not uploading?**  
   Remote upload will not occur in the following cases:  
@@ -83,7 +85,8 @@ import Panel from '@site/src/components/Panel';
     
 * **What happens if the upload fails?**  
   If the upload attempt fails (e.g., due to a network issue or misconfiguration),  
-  the background task will try again during the next scheduled scan.
+  the background task will try again during the next scheduled scan.  
+  However, if the attachment fails to upload more than 3 times, RavenDB will raise an alert and remove it from the upload queue.
   
 </Panel>
 
