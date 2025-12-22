@@ -2,10 +2,12 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
+* When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
 
     * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting.mdx) is involved in the query.  
@@ -17,40 +19,32 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Multiple sorting actions can be chained.
 
-* This article provides examples of sorting query results when making a __dynamic-query__.  
-  For sorting results when querying a __static-index__ see [sort index query results](../../../indexes/querying/sorting.mdx).
+* This article provides examples of sorting query results when making a **dynamic-query**.  
+  For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting.mdx).
 
 * In this page:
-    * [Order by field value](../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value)
- 
+    * [Order by field value](../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value) 
     * [Order by score](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-        * [Get resulting score](../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)
-  
-    * [Order by random](../../../client-api/session/querying/sort-query-results.mdx#order-by-random)
-   
-    * [Order by spatial](../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
-     
-    * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-count-(aggregation-query))
-  
-    * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-(aggregation-query))
-
+        * [Get resulting score](../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)  
+    * [Order by random](../../../client-api/session/querying/sort-query-results.mdx#order-by-random)   
+    * [Order by spatial](../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)     
+    * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-sum-aggregation-query)
     * [Force ordering type](../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)
-
     * [Chain ordering](../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
-
-    * [Custom sorters](../../../client-api/session/querying/sort-query-results.mdx#custom-sorters) 
-
+    * [Custom sorters](../../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
     * [Syntax](../../../client-api/session/querying/sort-query-results.mdx#syntax)
 
 </Admonition>
-## Order by field value
+
+<Panel heading="Order by field value">
 
 * Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
      // Make a dynamic query on the Products collection    
     .Query<Product>()
      // Apply filtering (optional)
@@ -61,12 +55,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will be sorted by the 'UnitsInStock' value in ascending order,
 // with smaller values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
      // Make a dynamic query on the Products collection    
     .Query<Product>()
      // Apply filtering (optional)
@@ -77,12 +70,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will be sorted by the 'UnitsInStock' value in ascending order,
 // with smaller values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
      // Make a DocumentQuery on the Products collection    
     .DocumentQuery<Product>()
      // Apply filtering (optional)
@@ -93,22 +85,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will be sorted by the 'UnitsInStock' value in ascending order,
 // with smaller values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by UnitsInStock as long
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 <Admonition type="info" title="">
 
-__Ordering Type__:
+**Ordering Type**:
 
 * By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.  
@@ -120,9 +110,9 @@ __Ordering Type__:
 
 </Admonition>
 
+</Panel>
 
-
-## Order by score
+<Panel heading="Order by score">
 
 * When querying with some filtering conditions, a basic score is calculated for each item in the results  
   by the underlying indexing engine.
@@ -133,8 +123,8 @@ __Ordering Type__:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Product>()
      // Apply filtering
     .Where(x => x.UnitsInStock < 5 || x.Discontinued)
@@ -144,12 +134,11 @@ __Ordering Type__:
 
 // Results will be sorted by the score value
 // with best matching documents (higher score values) listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Product>()
      // Apply filtering
     .Where(x => x.UnitsInStock < 5 || x.Discontinued)
@@ -159,12 +148,11 @@ __Ordering Type__:
 
 // Results will be sorted by the score value
 // with best matching documents (higher score values) listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
     .DocumentQuery<Product>()
      // Apply filtering
     .WhereLessThan(x => x.UnitsInStock, 5)
@@ -176,39 +164,38 @@ __Ordering Type__:
 
 // Results will be sorted by the score value
 // with best matching documents (higher score values) listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock < 5 or Discontinued == true
 order by score()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 <Admonition type="info" title="">
 
 #### Get resulting score:
+    
 The score details can be retrieved by either:
 
-* __Request to include explanations__:  
+* **Request to include explanations**:  
   You can get the score details and see how it was calculated by requesting to include explanations in the query.
   Currently, this is only available when using Lucene as the underlying indexing engine.  
   Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations.mdx).
 
-* __Get score from metadata__:    
+* **Get score from metadata**:    
 
     * The score is available in the `@index-score` metadata property within each result.  
       Note the following difference between the underlying indexing engines:
 
-      * When using __Lucene__:  
+      * When using **Lucene**:  
           This metadata property is always available in the results.  
           Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
 
-      * When using __Corax__:  
+      * When using **Corax**:  
           In order to enhance performance, this metadata property is Not included in the results by default.  
           To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore) configuration value to _true_.  
           Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration.mdx) article.
@@ -216,8 +203,8 @@ The score details can be retrieved by either:
     * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:  
 
 <TabItem value="get_score_from_metadata" label="get_score_from_metadata">
-<CodeBlock language="csharp">
-{`// Make a query:
+```csharp
+// Make a query:
 // =============
 
 List<Employee> employees = session
@@ -234,15 +221,14 @@ var metadata = session.Advanced.GetMetadataFor(employees[0]);
 
 // Score is available in the '@index-score' metadata property
 var score = metadata[Constants.Documents.Metadata.IndexScore];
-`}
-</CodeBlock>
+```
 </TabItem>
  
 </Admonition>
 
+</Panel>
 
-
-## Order by random
+<Panel heading="Order by random">
 
 * Use `RandomOrdering` to randomize the order of the query results.
 
@@ -250,8 +236,8 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Call 'Customize' with 'RandomOrdering'
@@ -261,12 +247,11 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
     .ToList();
 
 // Results will be randomly ordered.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Call 'Customize' with 'RandomOrdering'
@@ -276,12 +261,11 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
     .ToListAsync();
 
 // Results will be randomly ordered.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced  
+```csharp
+List<Product> products = session.Advanced  
     .DocumentQuery<Product>()
     .WhereGreaterThan(x => x.UnitsInStock, 10)
      // Call 'RandomOrdering'
@@ -291,39 +275,37 @@ var score = metadata[Constants.Documents.Metadata.IndexScore];
     .ToList();
 
 // Results will be randomly ordered.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by random()
 // order by random(someSeed)
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Order by spatial
+<Panel heading="Order by spatial">
 
 * If your data contains geographical locations,  
   spatial query results can be sorted based on their distance from a specific point.
 
 * See detailed explanation in [Spatial Sorting](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
 
+</Panel>
 
-
-## Order by count (aggregation query)
+<Panel heading="Order by count (aggregation query)">
 
 * The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Count` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var numberOfProductsPerCategory = session
+```csharp
+var numberOfProductsPerCategory = session
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
@@ -340,12 +322,11 @@ order by random()
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`var numberOfProductsPerCategory = await asyncSession
+```csharp
+var numberOfProductsPerCategory = await asyncSession
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
@@ -362,12 +343,11 @@ order by random()
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`var numberOfProductsPerCategory = session.Advanced
+```csharp
+var numberOfProductsPerCategory = session.Advanced
     .DocumentQuery<Product>()
      // Group by Category
     .GroupBy("Category")
@@ -381,30 +361,28 @@ order by random()
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 group by Category
 order by count() as long
 select key() as "Category", count()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Order by sum (aggregation query)
+<Panel heading="Order by sum (aggregation query)">
 
 * The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Sum` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var numberOfUnitsInStockPerCategory = session
+```csharp
+var numberOfUnitsInStockPerCategory = session
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
@@ -421,12 +399,11 @@ select key() as "Category", count()
 
 // Results will contain the total number of units in stock per category
 // ordered by that number in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`var numberOfUnitsInStockPerCategory = await asyncSession
+```csharp
+var numberOfUnitsInStockPerCategory = await asyncSession
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
@@ -443,8 +420,7 @@ select key() as "Category", count()
 
 // Results will contain the total number of units in stock per category
 // ordered by that number in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
 <CodeBlock language="csharp">
@@ -470,19 +446,18 @@ select key() as "Category", count()
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 group by Category
 order by Sum as long
 select key() as 'Category', sum(UnitsInStock) as Sum
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Force ordering type
+<Panel heading="Force ordering type">
 
 * By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
@@ -500,7 +475,7 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 <Admonition type="note" title="">
 
-__Using alphanumeric ordering example__:
+**Using alphanumeric ordering example**:
 
 * When ordering mixed-character strings by the default lexicographical ordering  
   then comparison is done character by character based on the Unicode values.  
@@ -511,50 +486,46 @@ __Using alphanumeric ordering example__:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Product>()
      // Call 'OrderBy', order by field 'QuantityPerUnit'
      // Pass a second param, requesting to order the text alphanumerically
     .OrderBy(x => x.QuantityPerUnit, OrderingType.AlphaNumeric)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Product>()
      // Call 'OrderBy', order by field 'QuantityPerUnit'
      // Pass a second param, requesting to order the text alphanumerically
     .OrderBy(x => x.QuantityPerUnit, OrderingType.AlphaNumeric)
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
     .DocumentQuery<Product>()
      // Call 'OrderBy', order by field 'QuantityPerUnit'
      // Pass a second param, requesting to order the text alphanumerically
     .OrderBy(x => x.QuantityPerUnit, OrderingType.AlphaNumeric)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 order by QuantityPerUnit as alphanumeric
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 <TabItem value="sort_16_results" label="sort_16_results">
-<CodeBlock language="csharp">
-{`// Running the above query on the NorthWind sample data,
+```csharp
+// Running the above query on the NorthWind sample data,
 // would produce the following order for the QuantityPerUnit field:
 // ================================================================
 
@@ -574,27 +545,31 @@ order by QuantityPerUnit as alphanumeric
 // "10 - 500 g pkgs."
 // "10 - 500 g pkgs."
 // ...
-`}
-</CodeBlock>
+```
 </TabItem>
 
 </Admonition>
 
+</Panel>
 
-
-## Chain ordering
+<Panel heading="Chain ordering">
 
 * It is possible to chain multiple orderings in the query.  
   Any combination of secondary sorting is possible as the fields are indexed independently of one another.
-
-* There is no limit on the number of sorting actions that can be chained.
   
 * This is achieved by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+    
+* **When using the Lucene search engine** -  
+  there is no limit on the number of sorting actions that can be chained in a query.  
+  
+  **When using the Corax search engine** -  
+  a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
+  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax#selecting-the-search-engine).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Apply the primary sort by 'UnitsInStock'
@@ -608,12 +583,11 @@ order by QuantityPerUnit as alphanumeric
 // Results will be sorted by the 'UnitsInStock' value (descending),
 // then by score,
 // and then by 'Name' (ascending).
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Apply the primary sort by 'UnitsInStock'
@@ -627,12 +601,11 @@ order by QuantityPerUnit as alphanumeric
 // Results will be sorted by the 'UnitsInStock' value (descending),
 // then by score,
 // and then by 'Name' (ascending).
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
     .DocumentQuery<Product>()
     .WhereGreaterThan(x => x.UnitsInStock, 10)
      // Apply the primary sort by 'UnitsInStock'
@@ -646,22 +619,20 @@ order by QuantityPerUnit as alphanumeric
 // Results will be sorted by the 'UnitsInStock' value (descending),
 // then by score,
 // and then by 'Name' (ascending).
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by UnitsInStock as long desc, score(), Name
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Custom sorters 
+<Panel heading="Custom sorters">
 
 * The Lucene indexing engine allows you to create your own custom sorters.  
   Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax.mdx).  
@@ -676,8 +647,8 @@ order by UnitsInStock as long desc, score(), Name
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
@@ -686,12 +657,11 @@ order by UnitsInStock as long desc, score(), Name
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MySorter' class
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
@@ -700,12 +670,11 @@ order by UnitsInStock as long desc, score(), Name
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MySorter' class
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
     .DocumentQuery<Product>()
     .WhereGreaterThan(x => x.UnitsInStock, 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
@@ -714,26 +683,24 @@ order by UnitsInStock as long desc, score(), Name
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MySorter' class
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by custom(UnitsInStock, "MySorter")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Syntax
+<Panel heading="Syntax">
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// OrderBy overloads:
+```csharp
+// OrderBy overloads:
 IOrderedQueryable<T> OrderBy<T>(string path, OrderingType ordering);
 IOrderedQueryable<T> OrderBy<T>(Expression<Func<T, object>> path, OrderingType ordering);
 IOrderedQueryable<T> OrderBy<T>(string path, string sorterName);
@@ -744,17 +711,14 @@ IOrderedQueryable<T> OrderByDescending<T>(string path, OrderingType ordering);
 IOrderedQueryable<T> OrderByDescending<T>(Expression<Func<T, object>> path, OrderingType ordering);
 IOrderedQueryable<T> OrderByDescending<T>(string path, string sorterName);
 IOrderedQueryable<T> OrderByDescending<T>(Expression<Func<T, object>> path, string sorterName);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameter      | Type                          | Description                                                                                                                                                                |
 |----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __path__       | `string`                      | The name of the field to sort by                                                                                                                                           |
-| __path__       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
-| __ordering__   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br/>`OrderingType.Long`<br/>`OrderingType.Double`<br/>`OrderingType.AlphaNumeric`<br/>`OrderingType.String` (default) |
-| __sorterName__ | `string`                      | The name of your custom sorter class                                                                                                                                       |
+| **path**       | `string`                      | The name of the field to sort by                                                                                                                                           |
+| **path**       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
+| **ordering**   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br/>`OrderingType.Long`<br/>`OrderingType.Double`<br/>`OrderingType.AlphaNumeric`<br/>`OrderingType.String` (default) |
+| **sorterName** | `string`                      | The name of your custom sorter class                                                                                                                                       |
 
-
-
-
+</Panel>

@@ -21,28 +21,20 @@ import CodeBlock from '@theme/CodeBlock';
   For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting.mdx).
 
 * In this page:
-    * [Order by field value](../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value) 
-  
+    * [Order by field value](../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value)  
     * [Order by score](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)  
-        * [Get resulting score](../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)
-     
-    * [Order by random](../../../client-api/session/querying/sort-query-results.mdx#order-by-random)   
-     
-    * [Order by spatial](../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
-     
-    * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-count-(aggregation-query))
-     
-    * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-(aggregation-query))
-     
-    * [Force ordering type](../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)
-     
-    * [Chain ordering](../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
-     
-    * [Custom sorters](../../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
-     
+        * [Get resulting score](../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)     
+    * [Order by random](../../../client-api/session/querying/sort-query-results.mdx#order-by-random)        
+    * [Order by spatial](../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)          
+    * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-sum-aggregation-query)   
+    * [Force ordering type](../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)     
+    * [Chain ordering](../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)     
+    * [Custom sorters](../../../client-api/session/querying/sort-query-results.mdx#custom-sorters)     
     * [Syntax](../../../client-api/session/querying/sort-query-results.mdx#syntax)
 
 </Admonition>
+
 ## Order by field value
 
 * Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.
@@ -446,8 +438,13 @@ order by QuantityPerUnit as alphanumeric
 
 * It is possible to chain multiple orderings in the query.  
   Any combination of secondary sorting is possible as the fields are indexed independently of one another.
-
-* There is no limit on the number of sorting actions that can be chained.
+    
+* **When using the Lucene search engine** -  
+  there is no limit on the number of sorting actions that can be chained in a query.  
+  
+  **When using the Corax search engine** -  
+  a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
+  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax#selecting-the-search-engine).  
   
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
