@@ -1,0 +1,59 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [bulk_insert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's 
+  high-performance data insertion operation.  
+  Use its `attachments_for` interface to add attachments to multiple documents with great speed.  
+
+* In this page:  
+    * [Usage flow](../../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
+    * [Usage example](../../../document-extensions/attachments/bulk-insert.mdx#usage-example)
+
+</Admonition>
+
+## Usage flow
+
+* Create a `bulk_insert` instance.  
+
+* Pass the Document ID to the instance's `attachments_for` method.
+
+* To add an attachment, call the `store` method.  
+  Pass it the attachment's name, stream, and type (optional).  
+  `store` can be called repeatedly, as many times as needed.  
+
+* Note:  
+  If an attachment with the specified name already exists on the document,  
+  the bulk insert operation will overwrite it.
+
+## Usage example
+
+In this example, we attach a file to all User documents that match a query.  
+
+<TabItem value="bulk_insert_attachment" label="bulk_insert_attachment">
+<CodeBlock language="python">
+{`# Choose user profiles for which to attach a file
+with store.open_session() as session:
+    user_ids = [
+        session.advanced.get_document_id(user)
+        for user in list(session.query(object_type=User).where_less_than("Age", 30))
+    ]
+
+# Prepare content to attach
+bytes_to_attach = b"some contents here"
+
+# Create a BulkInsert instance
+with store.bulk_insert() as bulk_insert:
+    for user_id in user_ids:
+        # Call 'attachments_for', pass the document ID for which to attach the file
+        attachments_bulk_insert = bulk_insert.attachments_for(user_id)
+
+        # Call 'store' to add the file to the BulkInsert instance
+        # The data stored in bulk_insert will be streamed to the server in batches
+        attachments_bulk_insert.store("AttachmentName", bytes_to_attach)
+`}
+</CodeBlock>
+</TabItem>

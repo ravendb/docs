@@ -1,0 +1,264 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* You can copy, move, or rename attachments using the _Session_'s methods.  
+  These actions are executed on the server when calling `SaveChanges()`.
+ 
+* In this article:
+  * [Copy attachment to another document](../../document-extensions/attachments/copy-move-rename#copy-attachment-to-another-document)  
+  * [Move attachment to another document](../../document-extensions/attachments/copy-move-rename#move-attachment-to-another-document)
+  * [Rename attachment](../../document-extensions/attachments/copy-move-rename#rename-attachment)
+  * [Syntax](../../document-extensions/attachments/copy-move-rename#syntax)  
+ 
+</Admonition>
+
+<Panel heading="Copy attachment to another document">
+    
+* Use the session's `Advanced.Attachments.Copy` method to copy an attachment from one document to another.
+  You can assign any name to the copied attachment in the target document, it doesn't have to match the source name.
+    
+* **Copying LOCAL attachments**:  
+  The target document's metadata is updated to reference the same attachment.  
+  The binary content is Not duplicated, it remains stored once in the database,  
+  even if the copied attachment has a different name in the target document.
+    
+* **Copying REMOTE attachments**:  
+  The target document's metadata is updated to reference the existing attachment in remote storage.  
+  The attachment is Not re-uploaded or duplicated in the remote destination,  
+  even if the copied attachment has a different name in the target document.
+    
+* An exception is thrown in any of the following cases:  
+  * The source document does not exist.  
+  * The destination document does not exist.  
+  * The specified attachment is not found in the source document.  
+  * An attachment with the same name already exists in the target document.  
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Copy_attachment" label="Copy_attachment">
+```csharp
+using (var session = store.OpenSession())
+{  
+    // Load source document    
+    var employee1 = session.Load<Employee>("employees/1");
+    // Load target document    
+    var employee2 = session.Load<Employee>("employees/2");
+    
+    // Copy the attachment from employee1 to employee2
+    session.Advanced.Attachments.Copy(employee1, "notes.txt", employee2, "notes-copy.txt");
+            
+    // Alternatively, use document IDs:  
+    // session.Advanced.Attachments.Copy(
+    //     "employees/1", "notes.txt", "employees/2", "notes-copy.txt");
+    
+    // The attachment will be copied only when 'SaveChanges' is called
+    session.SaveChanges();
+}        
+```
+</TabItem>
+<TabItem value="Copy_attachment_async" label="Copy_attachment_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load source document
+    var employee1 = await asyncSession.LoadAsync<Employee>("employees/1");
+    // Load target document
+    var employee2 = await asyncSession.LoadAsync<Employee>("employees/2");
+
+    // Copy the attachment from employee1 to employee2
+    asyncSession.Advanced.Attachments.Copy(employee1, "notes.txt", employee2, "notes-copy.txt");
+
+    // Alternatively, use document IDs:
+    // asyncSession.Advanced.Attachments.Copy(
+    //     "employees/1", "notes.txt", "employees/2", "notes-copy.txt");
+
+    // The attachment will be copied only when 'SaveChangesAsync' is called
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Move attachment to another document">
+    
+* Use the session's `Advanced.Attachments.Move` method to move an attachment from one document to another.
+  You can assign a new name to the moved attachment in the target document, it doesn't have to match the source name.
+ 
+* Whether the attachment is stored locally or remotely, the reference is removed from the source document,  
+  and the target document’s metadata is updated to reference it.    
+ 
+* An exception is thrown in any of the following cases:  
+  * The source document does not exist.  
+  * The destination document does not exist.  
+  * The specified attachment is not found in the source document.  
+  * An attachment with the same name already exists in the target document.      
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Move_attachment" label="Move_attachment">
+```csharp
+using (var session = store.OpenSession())
+{  
+    // Load source document    
+    var employee1 = session.Load<Employee>("employees/1");
+    // Load target document    
+    var employee2 = session.Load<Employee>("employees/2");
+    
+    // Move the attachment from employee1 to employee2
+    session.Advanced.Attachments.Move(employee1, "notes.txt", employee2, "notes.txt");
+            
+    // Alternatively, use document IDs:
+    // session.Advanced.Attachments.Move(
+    //     "employees/1", "notes.txt", "employees/2", "notes.txt");
+    
+    // The attachment will be moved only when 'SaveChanges' is called
+    session.SaveChanges();
+} 
+```
+</TabItem>
+<TabItem value="Move_attachment_async" label="Move_attachment_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load source document
+    var employee1 = await asyncSession.LoadAsync<Employee>("employees/1");
+    // Load target document
+    var employee2 = await asyncSession.LoadAsync<Employee>("employees/2");
+
+    // Move the attachment from employee1 to employee2
+    asyncSession.Advanced.Attachments.Move(employee1, "notes.txt", employee2, "notes.txt");
+
+    // Alternatively, use document IDs:
+    // asyncSession.Advanced.Attachments.Move(
+    //     "employees/1", "notes.txt", "employees/2", "notes.txt");
+
+    // The attachment will be moved only when 'SaveChangesAsync' is called        
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>    
+    
+</Panel>
+
+<Panel heading="Rename attachment">
+    
+* Use the session's `Advanced.Attachments.Rename` method to rename an existing attachment in a document.  
+  You can assign any new name - the attachment content remains unchanged.
+
+* Renaming an attachment only affects the document’s metadata.  
+  The actual content is stored once using the hash of its binary data,  
+  so neither local nor remote storage is affected by the name change.
+    
+* An exception is thrown in any of the following cases:  
+  * The document does not exist.  
+  * The specified attachment is not found in the document.  
+  * An attachment with the new name already exists in the document.      
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Rename_attachment" label="Rename_attachment">
+```csharp
+using (var session = store.OpenSession())
+{  
+    // Load a document    
+    var employee1 = session.Load<Employee>("employees/1");
+    
+    // Rename the attachment 
+    session.Advanced.Attachments.Rename(
+        employee1, name: "notes.txt", newName: "notes-new-name.txt");
+            
+    // Alternatively, use document ID:  
+    // session.Advanced.Attachments.Rename(
+    //     "employees/1", name: "notes.txt", newName: "notes-new-name.txt");
+    
+    // The attachment will be renamed only when 'SaveChanges' is called
+    session.SaveChanges();
+} 
+```
+</TabItem>
+<TabItem value="Rename_attachment_async" label="Rename_attachment_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load a document
+    var employee1 = await asyncSession.LoadAsync<Employee>("employees/1");
+
+    // Rename the attachment
+    asyncSession.Advanced.Attachments.Rename(
+        employee1, name: "notes.txt", newName: "notes-new-name.txt");
+
+    // Alternatively, use document ID:
+    // asyncSession.Advanced.Attachments.Rename(
+    //     "employees/1", name: "notes.txt", newName: "notes-new-name.txt");
+
+    // The attachment will be renamed only when 'SaveChangesAsync' is called
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Syntax">
+    
+#### Copy attachment
+    
+<TabItem>
+```csharp
+// Available overloads:
+// ====================
+void Copy(
+    object sourceEntity, string sourceName, object destinationEntity, string destinationName);
+void Copy(
+    string sourceDocumentId, string sourceName, string destinationDocumentId, string destinationName);
+```
+</TabItem>
+
+#### Move attachment
+    
+<TabItem>
+```csharp
+// Available overloads:
+// ====================
+void Move(
+    object sourceEntity, string sourceName, object destinationEntity, string destinationName);
+void Move(
+    string sourceDocumentId, string sourceName, string destinationDocumentId, string destinationName);
+```
+</TabItem>
+    
+| Parameter                 | Type     | Description |
+|---------------------------|----------|-------------|
+| **sourceEntity**          | `object` | The source document entity that holds the attachment. |
+| **sourceDocumentId**      | `string` | The source document ID that holds the attachment. |
+| **sourceName**            | `string` | The attachment name in the source document. |
+| **destinationEntity**     | `object` | The target document entity. |
+| **destinationDocumentId** | `string` | The target document ID. |
+| **destinationName**       | `string` | The name to assign to the attachment in the target document. |
+
+---
+    
+#### Rename attachment
+
+<TabItem value="rename_0" label="rename_0">
+```csharp
+void Rename(object entity, string name, string newName);
+void Rename(string documentId, string name, string newName);
+```
+</TabItem>
+    
+| Parameter      | Type     | Description |
+|----------------|----------|-------------|
+| **entity**     | `object` | The document entity that holds the attachment. |
+| **documentId** | `string` | The document ID that holds the attachment. |
+| **name**       | `string` | The current name of the attachment. |
+| **newName**    | `string` | The new name to assign to the attachment. |
+    
+</Panel>

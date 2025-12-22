@@ -1,0 +1,298 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Indexing attachments allows you to query for documents based on their attachments' details and content.
+
+* **Static indexes**:   
+  Both attachments' details and content can be indexed within a static-index definition.
+
+* **Auto-indexes**:  
+  Auto-indexing attachments via dynamic queries is not available at this time.
+
+
+* In this page:  
+  * [Syntax](../../document-extensions/attachments/indexing-attachments#syntax)  
+  * [Examples](../../document-extensions/attachments/indexing-attachments#examples)  
+  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing-attachments#leveraging-indexed-attachments)  
+
+</Admonition>
+## Syntax
+
+### Using `AttachmentsFor`
+
+The `AttachmentsFor` method returns information about each attachment that extends 
+a specified document, including their names, sizes, and content type.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Method" label="Method">
+<CodeBlock language="php">
+{`IEnumerable<AttachmentName> AttachmentsFor(object doc);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Result" label="Result">
+<CodeBlock language="php">
+{`public string Name;
+public string Hash;
+public string ContentType;
+public long Size;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
+### Using `LoadAttachment`/`LoadAttachments`
+
+`LoadAttachment` loads an attachment to the index by document and attachment name.  
+`LoadAttachments` loads all the attachments of a given document.  
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="php">
+{`public IAttachmentObject LoadAttachment(object doc, string name);
+public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **doc** | A server-side document, an entity | The document whose attachments you want to load |
+| **name** | `string` | The name of the attachment you want to load |
+
+#### `GetContentAs` Methods:
+
+To access the attachment content itself, use `GetContentAsStream`. To 
+convert the content into a `string`, use `GetContentAsString` with 
+the desired character encoding.  
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public Stream GetContentAsStream();
+public string GetContentAsString(Encoding encoding);
+public string GetContentAsString(); // Default: UTF-8
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+#### Indexes with `AttachmentsFor`"
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="php">
+{`class Employees_ByAttachmentNames_Result
+{
+    public ?StringArray $attachmentNames = null;
+
+    public function getAttachmentNames(): ?StringArray
+    {
+        return $this->attachmentNames;
+    }
+
+    public function setAttachmentNames(?StringArray $attachmentNames): void
+    {
+        $this->attachmentNames = $attachmentNames;
+    }
+}
+class Employees_ByAttachmentNames extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "map('Employees', function (e) {" .
+            "    var attachments = attachmentsFor(e);" .
+            "    return {" .
+            "        AttachmentNames: attachments.map(" .
+            "            function(attachment) {" .
+            "                return attachment.Name;" .
+            "            }" .
+            "    };" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Employees_ByAttachmentNames_JS_Result
+{
+    public ?StringArray $attachmentNames = null;
+
+    public function getAttachmentNames(): ?StringArray
+    {
+        return $this->attachmentNames;
+    }
+
+    public function setAttachmentNames(?StringArray $attachmentNames): void
+    {
+        $this->attachmentNames = $attachmentNames;
+    }
+}
+class Employees_ByAttachmentNames_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Employees', function (e) {
+                var attachments = attachmentsFor(e);
+                return {
+                    AttachmentNames: attachments.map(
+                        function(attachment) {
+                            return attachment.Name;
+                        }
+                };
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Indexes with `LoadAttachment`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="php">
+{`class Companies_With_Attachments extends AbstractIndexCreationTask
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from company in companies" .
+            "let attachments = LoadAttachment(company, company.ExternalId)" .
+            "select new" .
+            "{" .
+            "    CompanyName = company.Name," .
+            "    AttachmentName = attachment.Name," .
+            "    AttachmentContentType = attachment.ContentType," .
+            "    AttachmentHash = attachment.Hash," .
+            "    AttachmentContent = attachment.GetContentAsString(Encoding.UTF8)," .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Companies_With_Attachments_JavaScript extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Companies', function (company) {\\n" .
+            "   var attachment = LoadAttachment(company, company.ExternalId);\\n" .
+            "   return {\\n" .
+            "       CompanyName: company.Name,\\n" .
+            "       AttachmentName: attachment.Name,\\n" .
+            "       AttachmentContentType: attachment.ContentType,\\n" .
+            "       AttachmentHash: attachment.Hash,\\n" .
+            "       AttachmentSize: attachment.Size,\\n" .
+            "       AttachmentContent: attachment.getContentAsString('utf8')\\n" .
+            "   }\\n".
+            "});"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Indexes with `LoadAttachments`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="php">
+{`class Companies_With_All_Attachments extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from company in companies " .
+            "let attachments = LoadAttachments(company)" .
+            "from attachment in attachments" .
+            "select new" .
+            "{" .
+            "    attachment_name = attachment.Name," .
+            "    attachment_content = attachment.GetContentAsString(Encoding.UTF8)" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="php">
+{`class Companies_With_All_Attachments_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Companies', function (company) {\\n" .
+            "    var attachments = LoadAttachments(company);\\n" .
+            "    return attachments.map(attachment => ({\\n" .
+            "        AttachmentName: attachment.Name,\\n" .
+            "        AttachmentContent: attachment.getContentAsString('utf8')\\n" .
+            "     }));\\n" .
+            "})"
+        ];
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Querying the Index:
+
+<TabItem value="query1" label="query1">
+<CodeBlock language="php">
+{`//return all employees that have an attachment called "cv.pdf"
+/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employees_ByAttachmentNames_Result::class, Employees_ByAttachmentNames::class)
+    ->whereContainsAny("AttachmentNames", ["cv.pdf"])
+    ->ofType(Employee::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Leveraging indexed attachments
+
+* Access to the indexed attachment content opens a door to many different applications,  
+  including ones that can be integrated directly into RavenDB.
+
+* In this [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb),
+  Oren Eini demonstrates how image recognition can be applied to indexed attachments using the 
+  `additional sources` feature.  
+  The resulting index allows filtering and querying based on image content.  
+
+
+
+

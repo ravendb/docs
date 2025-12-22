@@ -1,0 +1,83 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This article explains how to delete attachments from a document.
+    
+* In this article
+  * [Delete attachment via the session](../../document-extensions/attachments/delete-attachment#get-attachment-via-the-session)  
+  * [Delete attachment via an operation](../../document-extensions/attachments/delete-attachment#get-attachment-via-an-operation) 
+ 
+</Admonition>
+
+<Panel heading="Get attachment via the session">
+
+**Delete** from `session.advanced().attachments()` is used to remove an attachment from a document.
+
+### Syntax
+
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
+<CodeBlock language="java">
+{`void delete(String documentId, String name);
+
+void delete(Object entity, String name);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Album album = session.load(Album.class, "albums/1");
+    session.advanced().attachments().delete(album, "001.jpg");
+    session.advanced().attachments().delete("albums/1", "002.jpg");
+
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>
+
+<Panel heading="Get attachment via an operation">
+    
+This operation is used to delete an attachment from a document. 
+
+### Syntax
+
+<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
+<CodeBlock language="java">
+{`DeleteAttachmentOperation(String documentId, String name)
+
+DeleteAttachmentOperation(String documentId, String name, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |        |                                                                         |
+|------------------|--------|-------------------------------------------------------------------------|
+| **documentId**   | String | ID of a document containing an attachment                               |
+| **name**         | String | Name of an attachment                                                   |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+### Example
+
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="java">
+{`store.operations().send(
+    new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
+`}
+</CodeBlock>
+</TabItem>    
+    
+</Panel>
+
+

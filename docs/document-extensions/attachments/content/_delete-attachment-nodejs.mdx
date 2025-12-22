@@ -1,0 +1,84 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This article explains how to delete attachments from a document.
+    
+* In this article
+  * [Delete attachment via the session](../../document-extensions/attachments/delete-attachment#get-attachment-via-the-session)  
+  * [Delete attachment via an operation](../../document-extensions/attachments/delete-attachment#get-attachment-via-an-operation) 
+ 
+</Admonition>
+
+<Panel heading="Get attachment via the session">
+
+The method `session.advanced.attachments.delete()` is used to remove an attachment from a document.
+
+### Syntax
+
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
+<CodeBlock language="js">
+{`session.advanced.attachments.delete(documentId, name);
+
+session.advanced.attachments.delete(entity, name);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
+<CodeBlock language="js">
+{`const session = store.openSession();
+const album = await session.load("albums/1");
+session.advanced.attachments.delete(album, "001.jpg");
+
+session.advanced.attachments.delete("albums/1", "002.jpg");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>
+
+<Panel heading="Get attachment via an operation">
+    
+### Delete attachment example
+
+<TabItem value="delete_attachment" label="delete_attachment">
+<CodeBlock language="js">
+{`// Define the delete attachment operation
+const deleteAttachmentOp = new DeleteAttachmentOperation("employees/1-A", "photo.jpg");
+
+// Execute the operation by passing it to operations.send
+await documentStore.operations.send(deleteAttachmentOp);
+`}
+</CodeBlock>
+</TabItem>
+
+### Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`// Available overloads:
+const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name);
+const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                        |
+|------------------|----------|------------------------------------------------------------------------------------|
+| **documentId**   | `string` | ID of document from which attachment will be removed                               |
+| **name**         | `string` | Name of attachment to delete                                                       |
+| **changeVector** | `string` | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |  
+    
+</Panel>
+
+

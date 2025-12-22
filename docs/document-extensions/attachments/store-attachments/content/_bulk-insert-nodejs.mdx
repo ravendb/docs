@@ -1,0 +1,116 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* [BulkInsert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) is RavenDB's high-performance data insertion operation.  
+  Use its `attachmentsFor` interface to add attachments to documents with great speed.  
+
+* In this page:  
+    * [Usage flow](../../../document-extensions/attachments/bulk-insert.mdx#usage-flow)  
+    * [Usage example](../../../document-extensions/attachments/bulk-insert.mdx#usage-example)
+    * [Syntax](../../../document-extensions/attachments/bulk-insert.mdx#syntax)
+
+</Admonition>
+
+## Usage flow
+
+* Create a `bulkInsert` instance.  
+
+* Pass the Document ID to the instance's `attachmentsFor` method.
+
+* To add an attachment, call `store`.  
+  Pass it the attachment's name, content, and type (optional).  
+  The `store` function can be called repeatedly as necessary.
+
+* Note:  
+  If an attachment with the specified name already exists on the document,  
+  the bulk insert operation will overwrite it.
+
+## Usage example
+
+In this example, we attach a file to all User documents that match a query.  
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="BulkInsert_Attachments" label="BulkInsert_Attachments">
+<CodeBlock language="js">
+{`// Open a session
+const session = documentStore.openSession();
+
+// Choose user profiles for which to attach a file
+const users = await session.query({ collection: "users" })
+    .whereLessThan("age", 30)
+    .all();
+
+// Prepare content that will be attached
+const text = "Some contents here";
+const byteArray = Buffer.from(text);
+
+// Create a bulkInsert instance
+const bulkInsert = documentStore.bulkInsert();
+
+try {
+    for (let i = 0; i < users.length; i++) {
+
+        // Call \`attachmentsFor\`, pass the document ID for which to attach the file
+        const attachmentsBulkInsert = bulkInsert.attachmentsFor(users[i].id);
+        
+        // Call 'store' to attach the byte array to the bulkInsert instance
+        // The data stored in bulkInsert will be streamed to the server in batches 
+        await attachmentsBulkInsert.store("attachmentName", byteArray);
+    }
+} finally {
+    // Call finish to send all remaining data to the server
+    await bulkInsert.finish();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="User_Class" label="User_Class">
+<CodeBlock language="js">
+{`class User {
+    constructor(
+        id = null,
+        age = 0,
+        name = ''
+    ) {
+        Object.assign(this, {
+            id,
+            age,
+            name
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`attachmentsFor(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type     | Description                                              |
+|------------|----------|----------------------------------------------------------|
+| `id`       | `string` | The document ID to which the attachment should be added. |
+ 
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`store(name, bytes);
+store(name, bytes, contentType);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type     | Description                        |
+|---------------|----------|------------------------------------|
+| `name`        | `string` | Name of attachment                 |
+| `bytes`       | `Buffer` | The attachment's content           |
+| `contentType` | `string` | Type of attachment (default: null) |
