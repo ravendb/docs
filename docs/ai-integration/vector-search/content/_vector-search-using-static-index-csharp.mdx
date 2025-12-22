@@ -26,7 +26,7 @@ import CodeBlock from '@theme/CodeBlock';
     * [Indexing vector data - NUMERICAL](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---numerical)
       * [Indexing numerical data and querying using numeric input](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-numerical-data-and-querying-using-numeric-input)
       * [Indexing numerical data and querying using text input](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-numerical-data-and-querying-using-text-input)
-    * [Indexing vector fields and regular data](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-fields-and-regular-data)
+    * [Indexing multiple field types](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types)
     * [Querying the static index for similar documents](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#querying-the-static-index-for-similar-documents)
     * [Configure the vector field in the Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-the-studio)
 
@@ -1455,7 +1455,7 @@ where vector.search(VectorFromPhoto, embedding.text($searchTerm, ai.task($embedd
 
 ---
 
-## Indexing vector fields and regular data
+## Indexing multiple field types
 
 An index can define multiple types of index-fields. In this example, the index includes:  
 A _'regular'_ field, a _'vector'_ field, and a field configured for [full-text search](../../../indexes/querying/searching.mdx).  
@@ -1627,7 +1627,7 @@ Execute a query that combines predicates across all index-field types:
         or vector.search(VectorFromText, $searchTerm2, 0.8)")
     .AddParameter("minPrice", 200)
     .AddParameter("searchTerm1", "Alice")
-    .AddParameter("searchTerm2", "italian")
+    .AddParameter("searchTerm2", "italian food")
     .WaitForNonStaleResults()
     .ToList();
 `}
@@ -1643,7 +1643,7 @@ Execute a query that combines predicates across all index-field types:
         or vector.search(VectorFromText, $searchTerm2, 0.8)")
     .AddParameter("minPrice", 200)
     .AddParameter("searchTerm1", "Alice")
-    .AddParameter("searchTerm2", "italian")
+    .AddParameter("searchTerm2", "italian food")
     .WaitForNonStaleResults()
     .ToListAsync();
 `}
@@ -1655,7 +1655,7 @@ Execute a query that combines predicates across all index-field types:
 where PricePerUnit > $minPrice
 or search(Name, $searchTerm1)
 or vector.search(VectorFromText, $searchTerm2, 0.8)
-{ "minPrice" : 200, "searchTerm1" : "Alice", "searchTerm2": "italian" }
+{ "minPrice" : 200, "searchTerm1" : "Alice", "searchTerm2": "italian food" }
 `}
 </CodeBlock>
 </TabItem>
