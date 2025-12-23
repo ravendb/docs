@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -14,8 +16,8 @@ import CodeBlock from '@theme/CodeBlock';
   to understand the embeddings generation process flow.
 
 * In this article:
-    * [Configuring an embeddings generation task - from the Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-studio)
-    * [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-client-api)
+    * [Configuring an embeddings generation task - from the Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task-from-the-studio)
+    * [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task-from-the-client-api)
       * [Define source using PATHS](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths)
       * [Define source using SCRIPT](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
     * [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens)
@@ -23,7 +25,7 @@ import CodeBlock from '@theme/CodeBlock';
     
 </Admonition>
 
-## Configuring an embeddings generation task - from the Studio
+<Panel heading="Configuring an embeddings generation task - from the Studio">
 
 * **Define the general task settings**:
 
@@ -156,7 +158,9 @@ import CodeBlock from '@theme/CodeBlock';
      These documents contain embeddings generated from the search terms, serving as a cache for these embeddings.  
      The default period is `14` days. Learn more in [The embeddings cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).
 
-## Configuring an embeddings generation task - from the Client API
+</Panel>
+
+<Panel heading="Configuring an embeddings generation task - from the Client API">
 
 <Admonition type="note" title="">
 
@@ -318,7 +322,9 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
 
 </Admonition>
 
-## Chunking methods and tokens
+</Panel>
+
+<Panel heading="Chunking methods and tokens">
 
 **Tokens and processing limits**:  
 
@@ -436,7 +442,9 @@ html.strip(htmlText | [htmlText], maxTokensPerChunk);
 | **maxTokensPerChunk / maxTokensPerLine** | `number`  | The maximum number of tokens allowed per chunk.<br/>Default is `512`. |
 | **overlapTokens**                        | `number` (optional) | The number of tokens to overlap between consecutive chunks. Helps preserve context continuity across chunks (e.g., between paragraphs).<br/>Default is `0`. |
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax">
 
 #### The embeddings generation task configuration:
 
@@ -522,3 +530,5 @@ public enum VectorEmbeddingType
 public AddEmbeddingsGenerationOperation(EmbeddingsGenerationConfiguration configuration);
 ```
 </TabItem>
+    
+</Panel>
