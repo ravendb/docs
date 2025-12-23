@@ -36,7 +36,7 @@ function getFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const filteredToc: TOCItem[] = [];
 
     uniqueIds.forEach((id) => {
-        const headingEl = markdownEl.querySelector(`#${id}`);
+        const headingEl = markdownEl.querySelector(`#${CSS.escape(id)}`);
 
         if (headingEl) {
             filteredToc.push(originalToc.find((item) => item.id === id));

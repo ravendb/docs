@@ -92,6 +92,10 @@ const config: Config = {
         autoCollapseCategories: true,
       },
     },
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 4,
+    },
     image: "img/social-card.jpg",
     headTags: [
       {
