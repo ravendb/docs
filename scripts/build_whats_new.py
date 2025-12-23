@@ -70,6 +70,10 @@ FRONT_MATTER = (
     "---\n\n"
 )
 
+DEFAULT_WHATS_NEW_CONTENT = """
+                            This version is under development and hasn't been released yet.
+                            """
+
 # Date format used by the API – helper for ``datetime.strptime``
 API_DATE_FMT = "%m/%d/%Y"
 
@@ -225,6 +229,11 @@ def write_whats_new_file(destination: Path, entries: List[Dict[str, Any]]) -> No
     body = "".join(mdx_block(e) for e in entries)
     destination.write_text(FRONT_MATTER + body, encoding="utf-8")
 
+def write_default_whats_new_file(destination: Path)-> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    destination.write_text(FRONT_MATTER + DEFAULT_WHATS_NEW_CONTENT, encoding="utf-8")
+
 # ============================================================================
 # Command-line interface
 # ============================================================================
@@ -249,7 +258,11 @@ def main() -> None:
         is_primary = branch == primary_branch
         changelog_entries = fetch_branch_entries(branch)
         target_file = output_path_for(branch, is_primary)
-        write_whats_new_file(target_file, changelog_entries)
+
+        if len(changelog_entries) == 0 or changelog_entries[0].get("version").startswith(branch) == False:
+            write_default_whats_new_file(target_file)
+        else:
+            write_whats_new_file(target_file, changelog_entries)
 
         print(f"Wrote {target_file.relative_to(PROJECT_ROOT)}")
 
