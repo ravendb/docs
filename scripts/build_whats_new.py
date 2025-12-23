@@ -67,7 +67,6 @@ FRONT_MATTER = (
     "breadcrumbs: false\n"
     "pagination_next: null\n"
     "pagination_prev: null\n"
-    "hide_table_of_contents: true\n"
     "---\n\n"
 )
 
@@ -92,13 +91,6 @@ def get_api_page(branch: str, page: int = 1) -> Dict[str, Any]:
 
     response.raise_for_status()
     return response.json()
-
-
-def api_latest_branch() -> str:
-    """The newest branch announced by the API (e.g. "6.2")."""
-    probe = get_api_page("6.0", 1)  # 6.0 endpoint is guaranteed to exist
-    return sorted(probe["availableVersionsAndKeys"])[-1]
-
 
 def fetch_branch_entries(branch: str) -> List[Dict[str, Any]]:
     """Download *all* changelog entries for a given branch.
@@ -242,8 +234,13 @@ def main() -> None:
         script_name = Path(sys.argv[0]).name
         sys.exit(f"Usage: python {script_name} <BRANCH> [<BRANCH> ...]")
 
-    primary_branch = api_latest_branch()
     requested_branches = sys.argv[1:]
+
+    if len(requested_branches) < 1:
+        sys.exit("What's new has to be generated for at least one documentation version.")
+
+    # Based on assumption that most recent version given in script parameters matches current version in Docusaurus config
+    primary_branch = sorted(requested_branches)[-1]
 
     for branch in requested_branches:
         # reset log for this branch
