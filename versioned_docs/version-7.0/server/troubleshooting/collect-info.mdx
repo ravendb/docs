@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 # Collecting Information on Incidents for Support
 
@@ -31,29 +33,29 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Provide incident description
+<Panel heading="Provide incident description">
 
-* __Description__:  
+* **Description**:  
   * Provide a detailed description of the incident you are experiencing.  
   * Include any error messages, warnings, or unexpected behavior you have encountered.
 
-* __Exceptions__:  
-  * If applicable, attach the __full exception stack trace__ including the error message as plain text.
+* **Exceptions**:  
+  * If applicable, attach the **full exception stack trace** including the error message as plain text.
   * Specify the origin of the exception  
     (e.g. from RavenDB Studio, from the client, from server logs, etc.).
 
-* __Versions__:  
-  * Specify the RavenDB Server, Studio, and the client __versions__ that you are using.  
+* **Versions**:  
+  * Specify the RavenDB Server, Studio, and the client **versions** that you are using.  
 
+</Panel>
 
-
-## Create debug package
+<Panel heading="Create debug package">
 
 ![Create Debug Package](./assets/create-debug-package.png)
 
 <Admonition type="note" title="">
 
-1. Navigate to __Manage Server &gt; Gather Debug Info__
+1. Navigate to **Manage Server &gt; Gather Debug Info**
 
 2. Select the data source(s) to retrieve. It is recommended to check all options.
 
@@ -68,7 +70,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="info" title="">
 
-__If the Studio is unavailable__:
+**If the Studio is unavailable**:
 
 * Try to download the debug package by issuing an HTTP GET request to the following endpoint:  
   `{SERVER_URL}/admin/debug/info-package`.
@@ -79,7 +81,7 @@ __If the Studio is unavailable__:
 
 <Admonition type="note" title="">
 
-__Before sending the debug package zip file__, perform the following checks:  
+**Before sending the debug package zip file**, perform the following checks:  
 
   * Verify that the zip file can be successfully extracted.
   * Verify that the content is similar to the following sample images.
@@ -91,10 +93,9 @@ __Before sending the debug package zip file__, perform the following checks:
 
 </Admonition>
 
+</Panel>
 
-
-
-## Enable logs for ongoing issues
+<Panel heading="Enable logs for ongoing issues">
 
 If the issue you encounter is still **ongoing**, enable the following logs on disk (if they are not already enabled)  
 before downloading the existing log files, as described below.
@@ -129,8 +130,9 @@ To preserve your settings after a restart, you can either:
 
 </Admonition>
 
+</Panel>
 
-## Download logs
+<Panel heading="Download logs">
 
 Perform the following for each node in your cluster:
 
@@ -139,7 +141,7 @@ Perform the following for each node in your cluster:
 
 <Admonition type="note" title="">
 
-1. Navigate to __Manage Server &gt; Admin Logs__ and click 'Download Logs' in the "Logs on disk" section.
+1. Navigate to **Manage Server &gt; Admin Logs** and click 'Download Logs' in the "Logs on disk" section.
 
 2. Either check 'Use minimum' to retrieve logs information from the time the server was started,  
    or enter a specific (local) time.
@@ -154,7 +156,7 @@ Perform the following for each node in your cluster:
 
 <Admonition type="info" title="">
 
-__If the Studio is unavailable__, or if the logs downloaded via the Studio appear problematic,  
+**If the Studio is unavailable**, or if the logs downloaded via the Studio appear problematic,  
 then copy the log files directly from the disk to another location to ensure that you keep them,  
 avoiding potential loss due to the retention configuration.
 
@@ -168,7 +170,7 @@ avoiding potential loss due to the retention configuration.
 
 <Admonition type="note" title="">
 
-__Before sending the log files__, perform the following checks:
+**Before sending the log files**, perform the following checks:
 
 * Verify that the zip files can be successfully extracted.  
 * Confirm that the logs correspond to the time of the incident.  
@@ -179,21 +181,20 @@ __Before sending the log files__, perform the following checks:
 
 </Admonition>
 
+</Panel>
 
+<Panel heading="Reproduce scenario">
 
-## Reproduce scenario
-
-* If the incident is over and you can reproduce it, then first verify logging level is set to 'Information'.  
+* If the incident is over and you can reproduce it, then first verify logging level is set to '**Debug**'.  
 
 * See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
 
+</Panel>
 
-
-## Create failing test
+<Panel heading="Create failing test">
 
 * If possible, it is advised to create a unit test that showcases the failure in your client code.
 
-* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use __RavenDB's TestDriver__.
+* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use **RavenDB's TestDriver**.
 
-
-
+</Panel>
