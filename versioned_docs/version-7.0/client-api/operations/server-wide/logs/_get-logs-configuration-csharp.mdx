@@ -2,65 +2,206 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-To get the server logs configuration, use **GetLogsConfigurationOperation** from `Maintenance.Server`
+<Admonition type="note" title="">
 
-## Syntax
+* Use `GetLogsConfigurationOperation` to get the logs configuration.
+    
+* Learn more about RavenDB's logging system in the [Logging](../../../../server/troubleshooting/logging.mdx) article. 
 
-<TabItem value="get_logs_1" label="get_logs_1">
-<CodeBlock language="csharp">
-{`public GetLogsConfigurationOperation()
-`}
-</CodeBlock>
-</TabItem>
+* In this article:
+    * [Get logs configuration](../../../../client-api/operations/server-wide/logs/get-logs-configuration#get-logs-configuration)
+    * [Syntax](../../../../client-api/operations/server-wide/logs/get-logs-configuration#syntax)
 
-### Return Value
+</Admonition>
 
-The result of executing GetLogsConfigurationOperation is a **GetLogsConfigurationResult** object: 
-
-<TabItem value="get_logs_2" label="get_logs_2">
-<CodeBlock language="csharp">
-{`public class GetLogsConfigurationResult
-\{
-    public LogMode CurrentMode \{ get; set; \}
-
-    public LogMode Mode \{ get; set; \}
-
-    public string Path \{ get; set; \}
-
-    public bool UseUtcTime \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-| Property        | Description                                                                                  |
-|-----------------|----------------------------------------------------------------------------------------------|
-| **CurrentMode** | Current mode that is active                                                                  |
-| **Mode**        | Mode that is written in the configuration file and which will be used after a server restart |
-| **Path**        | Path to which logs will be written                                                           |
-| **UseUtcTime**  | Indicates if logs will be written in UTC or in server local time                             |
-
-## Example
+<Panel heading="Get logs configuration">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`GetLogsConfigurationResult logsConfiguration = store
-    .Maintenance
-    .Server
-    .Send(new GetLogsConfigurationOperation());
-`}
-</CodeBlock>
+```csharp
+GetLogsConfigurationResult logsConfiguration = store
+    .Maintenance.Server.Send(new GetLogsConfigurationOperation());
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`GetLogsConfigurationResult logsConfiguration = await store
-    .Maintenance
-    .Server
-    .SendAsync(new GetLogsConfigurationOperation());
-`}
-</CodeBlock>
+```csharp
+GetLogsConfigurationResult logsConfiguration = await store
+    .Maintenance.Server.SendAsync(new GetLogsConfigurationOperation());
+```
 </TabItem>
 </Tabs>
+    
+</Panel>
 
+<Panel heading="Syntax">
+
+<TabItem>
+```csharp
+public GetLogsConfigurationOperation()
+```
+</TabItem>
+    
+### Return Value
+
+The result of executing _GetLogsConfigurationOperation_ is a `GetLogsConfigurationResult` object:
+
+<TabItem>
+```csharp
+public class GetLogsConfigurationResult
+{
+    public LogsConfiguration Logs { get; set; }
+    public AuditLogsConfiguration AuditLogs { get; set; }
+    public MicrosoftLogsConfiguration MicrosoftLogs { get; set; }
+    public AdminLogsConfiguration AdminLogs { get; set; }
+}
+```
+</TabItem> 
+    
+###  `LogsConfiguration`
+
+    
+<TabItem>
+```csharp
+public class LogsConfiguration
+{
+    // Path to the directory where log files are written.
+    public string Path { get; set; }
+        
+    // The default minimum log level, as defined in the `Logs.MinLevel` setting in settings.json.
+    // This value is loaded once into memory when the server starts and remains unchanged at runtime.    
+    public LogLevel MinLevel { get; set; }
+    
+    // The currently active minimum log level, which determines the lowest level of log entries
+    // that will be written to the log files on disk.
+    //
+    // This value can be changed at runtime from the Studio or via the Client API
+    // using the `SetLogsConfigurationOperation` method.
+    // If not explicitly set, it falls back to the `MinLevel` value from settings.json.    
+    public LogLevel CurrentMinLevel { get; set; }
+    
+    // A list of active log filters that determine whether specific log entries 
+    // should be included or excluded.
+    // Filters can be set from the Studio or via the Client API.
+    public List<LogFilter> CurrentFilters { get; set; } = new();
+    
+    // This action does Not apply when no filters are defined.
+    // This action applies in the following cases:
+    // * When a log entry does Not match any defined filter.
+    // * When a log entry matches a filter with a 'Neutral' action, 
+    //   provided that no subsequent filters apply.
+    public LogFilterAction CurrentLogFilterDefaultAction { get; set; }
+    
+    // Maximum size (in MB) a log file can reach before it is archived.
+    public long ArchiveAboveSizeInMb { get; set; }
+    
+    // Maximum number of days to retain archived log files. 
+    // Older files will be deleted.
+    public int? MaxArchiveDays { get; set; }
+    
+    // Maximum number of archived log files to keep. 
+    // Older archives beyond this limit will be deleted.
+    public int? MaxArchiveFiles { get; set; }
+    
+    // When true, archived log files will be compressed to reduce disk space.
+    public bool EnableArchiveFileCompression { get; set; }
+}
+```
+</TabItem>
+    
+<TabItem>
+```csharp
+public class LogFilter
+{
+    public LogLevel MinLevel { get; internal set; }
+    public LogLevel MaxLevel { get; internal set; }
+    public string Condition { get; internal set; }
+    public LogFilterAction Action { get; internal set; }
+}
+```
+</TabItem>
+    
+ <TabItem>
+```csharp
+public enum LogLevel
+{
+    Trace = 0,
+    Debug = 1,
+    Info = 2,
+    Warn = 3,
+    Error = 4,
+    Fatal = 5,
+    Off = 6
+}
+     
+public enum LogFilterAction
+{
+    // The action to take is deferred to the next filter that matches the log entry. 
+    // If no other filter matches, the "Default Filter Action" will be applied.
+    Neutral,
+     
+    // The log entry will be logged.
+    Log,
+     
+    // The log entry will Not be logged.
+    Ignore,
+     
+    // The log entry will be logged.
+    // Any subsequent filters with the same logging-rules as this filter will be ignored. 
+    LogFinal,
+     
+    // The log entry will Not be logged.
+    // Any subsequent filters with the same logging-rules as this filter will be ignored.
+    IgnoreFinal
+```
+</TabItem>
+    
+###  `AuditLogsConfiguration`
+    
+Learn more about RavenDB's audit log in the [Audit Log](../../../../server/security/audit-log/audit-log-overview.mdx) article.    
+    
+<TabItem>
+```csharp
+public class AuditLogsConfiguration
+{
+    public string Path { get; set; }
+    public LogLevel Level { get; set; }
+    public long ArchiveAboveSizeInMb { get; set; }
+    public int? MaxArchiveDays { get; set; }
+    public int? MaxArchiveFiles { get; set; }
+    public bool EnableArchiveFileCompression { get; set; }
+}
+```
+</TabItem>
+   
+###  `MicrosoftLogsConfiguration`
+    
+<TabItem>
+```csharp
+public class MicrosoftLogsConfiguration
+{
+    public LogLevel CurrentMinLevel { get; set; }
+    public LogLevel MinLevel { get; set; }
+}
+```
+</TabItem>
+    
+###  `AdminLogsConfiguration` 
+    
+The Admin Logs configuration controls which logs are shown in the Studio's **Admin Logs view**.  
+See section [Logs on this view](../../../../studio/server/debug/admin-logs#logs-on-this-view) for details.    
+    
+<TabItem>
+```csharp
+public class AdminLogsConfiguration
+{
+    public LogLevel CurrentMinLevel { get; set; }
+    public List<LogFilter> CurrentFilters { get; set; } = new();
+    public LogFilterAction CurrentLogFilterDefaultAction { get; set; }
+}
+```
+</TabItem>    
+    
+</Panel>
