@@ -347,15 +347,15 @@ RemoteAttachmentsConfiguration configuration = store.Maintenance.Send(
 if (configuration != null)
 {
     // Time interval between task runs (seconds)
-    var checkFreqInSec = configuration000.CheckFrequencyInSec;
+    var checkFreqInSec = configuration.CheckFrequencyInSec;
     
     // Number of concurrent uploads
-    var concurrentUploads = configuration000.ConcurrentUploads;
+    var concurrentUploads = configuration.ConcurrentUploads;
     
     foreach (var destination in configuration.Destinations)
     {
         // Destination identifier
-        var destinationId000 = destination.Key;
+        var destinationId = destination.Key;
     
         if (destination.Value.S3Settings != null)
         {
@@ -385,15 +385,15 @@ RemoteAttachmentsConfiguration configuration = await store.Maintenance.SendAsync
 if (configuration != null)
 {
     // Time interval between task runs (seconds)
-    var checkFreqInSec = configuration000.CheckFrequencyInSec;
+    var checkFreqInSec = configuration.CheckFrequencyInSec;
     
     // Number of concurrent uploads
-    var concurrentUploads = configuration000.ConcurrentUploads;
+    var concurrentUploads = configuration.ConcurrentUploads;
     
     foreach (var destination in configuration.Destinations)
     {
         // Destination identifier
-        var destinationId000 = destination.Key;
+        var destinationId = destination.Key;
     
         if (destination.Value.S3Settings != null)
         {
