@@ -16,10 +16,13 @@ import CodeBlock from '@theme/CodeBlock';
     * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
     * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
     * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
+
 </Admonition>
+
 ## Get collection statistics
 
 To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
+
 <TabItem value="stats_1" label="stats_1">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
@@ -28,6 +31,7 @@ CollectionStatistics stats =
 `}
 </CodeBlock>
 </TabItem>
+
 Statistics are returned in the `CollectionStatistics` object.
 <TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="csharp">
@@ -45,8 +49,6 @@ public class CollectionStatistics
 </CodeBlock>
 </TabItem>
 
-
-
 ## Get detailed collection statistics
 
 To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
@@ -58,7 +60,9 @@ DetailedCollectionStatistics stats =
 `}
 </CodeBlock>
 </TabItem>
+
 Statistics are returned in the `DetailedCollectionStatistics` object.
+
 <TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="csharp">
 {`// Detailed collection stats results:
@@ -86,11 +90,10 @@ public class CollectionDetails
 </CodeBlock>
 </TabItem>
 
-
-
 ## Get database statistics
 
 To get **database statistics**, use `GetStatisticsOperation`:  
+
 <TabItem value="stats_3" label="stats_3">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetStatisticsOperation\` to the store 
@@ -99,7 +102,9 @@ DatabaseStatistics stats =
 `}
 </CodeBlock>
 </TabItem>
+
 Statistics are returned in the `DatabaseStatistics` object.
+
 <TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="csharp">
 {`// Database stats results:
@@ -114,10 +119,13 @@ public class DatabaseStatistics
     public long CountOfDocumentsConflicts \{ get; set; \} // Total # of documents conflicts in database
     public long CountOfTombstones \{ get; set; \}         // Total # of tombstones in database
     public long CountOfConflicts \{ get; set; \}          // Total # of conflicts in database
-    public long CountOfAttachments \{ get; set; \}        // Total # of attachments in database
-    public long CountOfUniqueAttachments \{ get; set; \}  // Total # of unique attachments in database
     public long CountOfCounterEntries \{ get; set; \}     // Total # of counter-group entries in database
     public long CountOfTimeSeriesSegments \{ get; set; \} // Total # of time-series segments in database
+    
+    // Total # of attachments in database (local & remote)
+    public long CountOfAttachments \{ get; set; \}
+    // Total # of unique attachments in database (local only)
+    public long CountOfUniqueAttachments \{ get; set; \}  
     
     // List of stale index names in database
     public string[] StaleIndexes => Indexes?.Where(x => x.IsStale).Select(x => x.Name).ToArray();
@@ -137,8 +145,6 @@ public class DatabaseStatistics
 </CodeBlock>
 </TabItem>
 
-
-
 ## Get detailed database statistics
 
 To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
@@ -150,26 +156,28 @@ DetailedDatabaseStatistics stats =
 `}
 </CodeBlock>
 </TabItem>
+
 Statistics are returned in the `DetailedDatabaseStatistics` object.
+
 <TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="csharp">
 {`// Detailed database stats results:
 public class DetailedDatabaseStatistics : DatabaseStatistics
 \{
-    // Total # of identities in database
+    // Total # of identities in the database
     public long CountOfIdentities \{ get; set; \}
-    // Total # of compare-exchange items in database
+    // Total # of compare-exchange items in the database
     public long CountOfCompareExchange \{ get; set; \}
-    // Total # of cmpXchg tombstones in database
+    // Total # of cmpXchg tombstones in the database
     public long CountOfCompareExchangeTombstones \{ get; set; \}
-    // Total # of TS deleted ranges values in database
+    // Total # of TS deleted ranges values in the database
     public long CountOfTimeSeriesDeletedRanges \{ get; set; \}
+    // Total # of remote attachments in the database
+    public long CountOfRemoteAttachments \{ get; set; \}
 \}
 `}
 </CodeBlock>
 </TabItem>
-
-
 
 ## Get statistics for another database
 
@@ -187,7 +195,3 @@ DatabaseStatistics stats =
 </TabItem>
 
 * Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
-
-
-
-

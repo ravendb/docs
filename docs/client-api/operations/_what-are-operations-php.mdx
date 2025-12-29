@@ -114,8 +114,8 @@ public function send(...$parameters);
 #### The following common operations are available:
 
 * **Attachments**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutAttachmentOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetAttachmentOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)  
 
 * **Counters**:  
@@ -287,6 +287,10 @@ $status = $indexStats->getStatus(); // will be "Paused"
 
 * **Revisions**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
+    
+* **Remote attachments**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRemoteAttachmentsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetRemoteAttachmentsConfigurationOperation  
 
 * **Sorters**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter.mdx)  

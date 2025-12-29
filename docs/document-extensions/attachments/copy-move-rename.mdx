@@ -1,0 +1,38 @@
+---
+title: "Copy / Move / Rename Attachments"
+sidebar_label: "Copy / Move / Rename Attachments"
+sidebar_position: 5
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CopyMoveRenameCsharp from './content/_copy-move-rename-csharp.mdx';
+import CopyMoveRenameJava from './content/_copy-move-rename-java.mdx';
+import CopyMoveRenamePython from './content/_copy-move-rename-python.mdx';
+import CopyMoveRenamePhp from './content/_copy-move-rename-php.mdx';
+import CopyMoveRenameNodejs from './content/_copy-move-rename-nodejs.mdx';
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CopyMoveRenameCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <CopyMoveRenameJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CopyMoveRenamePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <CopyMoveRenamePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CopyMoveRenameNodejs />
+</LanguageContent>

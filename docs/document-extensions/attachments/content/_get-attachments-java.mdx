@@ -1,0 +1,203 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This article explains how to retrieve attachments that are already stored in the database.  
+    
+* In this article
+  * [Get attachment via the session](../../document-extensions/attachments/get-attachments#get-attachment-via-the-session)  
+  * [Get attachment via an operation](../../document-extensions/attachments/get-attachments#get-attachment-via-an-operation) 
+ 
+</Admonition>
+
+<Panel heading="Get attachment via the session">
+    
+There are a few methods that allow you to download attachments from a database:   
+
+**session.advanced().attachments().get** can be used to download an attachment.   
+**session.advanced().attachments().getNames** can be used to download all attachment names that are attached to a document.   
+**session.advanced().attachments().getRevision** can be used to download an attachment of a revision document.   
+**session.advanced().attachments().exists** can be used to determine if an attachment exists on a document.   
+
+### Syntax
+
+<TabItem value="GetSyntax" label="GetSyntax">
+<CodeBlock language="java">
+{`AttachmentName[] getNames(Object entity);
+
+boolean exists(String documentId, String name);
+
+CloseableAttachmentResult get(String documentId, String name);
+
+CloseableAttachmentResult get(Object entity, String name);
+
+CloseableAttachmentResult getRevision(String documentId, String name, String changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="GetAttachment" label="GetAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Album album = session.load(Album.class, "albums/1");
+
+    try (CloseableAttachmentResult file1 = session
+            .advanced().attachments().get(album, "001.jpg");
+        CloseableAttachmentResult file2 = session
+            .advanced().attachments().get("albums/1", "002.jpg")) \{
+
+        InputStream inputStream = file1
+            .getData();
+
+        AttachmentDetails attachmentDetails = file1.getDetails();
+        String name = attachmentDetails.getName();
+        String contentType = attachmentDetails.getContentType();
+        String hash = attachmentDetails.getHash();
+        long size = attachmentDetails.getSize();
+        String documentId = attachmentDetails.getDocumentId();
+        String changeVector = attachmentDetails.getChangeVector();
+    \}
+
+    AttachmentName[] attachmentNames = session.advanced().attachments().getNames(album);
+    for (AttachmentName attachmentName : attachmentNames) \{
+
+        String name = attachmentName.getName();
+        String contentType = attachmentName.getContentType();
+        String hash = attachmentName.getHash();
+        long size = attachmentName.getSize();
+    \}
+
+    boolean exists = session.advanced().attachments().exists("albums/1", "003.jpg");
+\}
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>
+
+<Panel heading="Get attachment via an operation"> 
+    
+This operation is used to get an attachment from a document. 
+
+### Syntax
+
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
+<CodeBlock language="java">
+{`GetAttachmentOperation(String documentId, String name, AttachmentType type, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
+<CodeBlock language="java">
+{`public class CloseableAttachmentResult implements AutoCloseable \{
+    private AttachmentDetails details;
+    private CloseableHttpResponse response;
+
+    public InputStream getData() throws IOException \{
+        return response.getEntity().getContent();
+    \}
+
+    public AttachmentDetails getDetails() \{
+        return details;
+    \}
+\}
+
+public class AttachmentDetails extends Foo.AttachmentName \{
+    private String changeVector;
+    private String documentId;
+
+    public String getChangeVector() \{
+        return changeVector;
+    \}
+
+    public void setChangeVector(String changeVector) \{
+        this.changeVector = changeVector;
+    \}
+
+    public String getDocumentId() \{
+        return documentId;
+    \}
+
+    public void setDocumentId(String documentId) \{
+        this.documentId = documentId;
+    \}
+\}
+
+public class AttachmentName \{
+    private String name;
+    private String hash;
+    private String contentType;
+    private long size;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public String getHash() \{
+        return hash;
+    \}
+
+    public void setHash(String hash) \{
+        this.hash = hash;
+    \}
+
+    public String getContentType() \{
+        return contentType;
+    \}
+
+    public void setContentType(String contentType) \{
+        this.contentType = contentType;
+    \}
+
+    public long getSize() \{
+        return size;
+    \}
+
+    public void setSize(long size) \{
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | String | ID of a document which will contain an attachment |
+| **name** | String | Name of an attachment |
+| **type** | AttachmentType | Specify whether getting an attachment from a document or from a revision.<br/>(`DOCUMENT` or `REVISION`). |
+| **changeVector** | String | The ChangeVector of the document or the revision to which the attachment belongs.<br/>Mandatory when getting an attachment from a revision.<br/>Used for concurrency checks (use `null` to skip the check). |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | InputStream containing an attachment |
+| **ChangeVector** | Change vector of document |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="java">
+{`store.operations().send(
+    new GetAttachmentOperation("orders/1-A", "invoice.pdf", AttachmentType.DOCUMENT, null));
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>

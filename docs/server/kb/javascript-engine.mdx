@@ -104,6 +104,12 @@ RavenDB provides the following set of predefined functions:
 | **timeseries.increment(timestamp, value)**     | `void`       | Increments a single value of an incremental time series entry at the specified timestamp.                                        |
 | **timeseries.increment(value)**                | `void`       | Increments a single value of an incremental time series entry at the current time.                                               |
 
+#### **Attachment operations**:
+
+| Method Signature                                                      | Return type  | Description                                                                                                     |
+|-----------------------------------------------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------| 
+| **attachments(attachmentName).remote(destinationID,<br/>uploadTime)** | `object`     | Updates the document's metadata with remote parameters to schedule the attachment for upload to remote storage. |
+
 #### **Compare-exchange**:
 
 | Method Signature                | Return type  | Description                                                                                                                         |

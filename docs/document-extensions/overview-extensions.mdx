@@ -10,72 +10,73 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Document Extensions Overview
 <Admonition type="note" title="">
 
 * Document extensions are data entities associated with documents.  
 
-* Document extensions are stored separately so that **modifying** an extension value (e.g. a counter 
-  or a time series entry) will not modify its parent document.
+* Document extensions are stored separately, so **modifying** an extension (e.g., a counter or time series entry)  
+  does not modify the parent document.
 
-* **Creating or deleting** an extension changes the parent document's meta-data. 
-  This document change may trigger indexing, ETL tasks, and various other operations.  
+* **Creating or deleting** an extension modifies the parent document's metadata.  
+  This change may trigger indexing, ETL tasks, or other operations.
 
-* On a [sharded database](../sharding/overview.mdx), document extensions 
-  are stored in the same bucket as the document that owns them.  
-  Read about document extensions on a sharded database in the section 
-  [dedicated to this subject](../sharding/document-extensions.mdx).  
+* On a [sharded database](../sharding/overview.mdx), document extensions are stored in the same bucket as their parent document.  
+  Learn more in [Sharding: Document Extensions](../sharding/document-extensions.mdx).  
 
-* In this page:  
-   * [Document Extensions](../document-extensions/overview-extensions.mdx#document-extensions)  
-   * [Studio Document Extension Views](../document-extensions/overview-extensions.mdx#studio-document-extension-views)  
+* In this article:  
+   * [Document extensions](../document-extensions/overview-extensions.mdx#document-extensions)  
+   * [Document extensions in the Studio](../document-extensions/overview-extensions.mdx#document-extensions-in-the-studio)  
 
 </Admonition>
-## Document Extensions
+
+<Panel heading="Document extensions">
 
 * [Counters](../document-extensions/counters/overview.mdx)  
-  RavenDB's distributed counters are numeric data variables that can be added to documents and used
-  for various counting tasks.
+  RavenDB’s distributed counters are numeric values attached to documents,  
+  used to maintain and increment counts in the database, across all nodes in the cluster.  
+  They are suitable for counting tasks in a distributed environment, such as tracking views, votes, or usage metrics.
 
-* [Attachments](../document-extensions/attachments/what-are-attachments.mdx)  
-  Attachments are binary streams (videos, images, PDF, etc.) that can be bound to an existing document.
+* [Attachments](../document-extensions/attachments/overview.mdx)  
+  Attachments are binary streams (e.g., videos, images, PDFs) that can be associated with an existing document.
 
 * [Time Series](../document-extensions/timeseries/overview.mdx)  
-  Time series are vectors of data that collect values over time, store the values consecutively across the cluster,
-  and manage the collected data with high efficiency and performance.
+  Time series are sequences of timestamped values collected over time, stored consecutively,  
+  and optimized for efficient, high-performance data handling across the cluster.
 
 * [Revisions](../document-extensions/revisions/overview.mdx)  
-  Document Revisions are snapshots of documents and their extensions that can be created to give access to a document's history.
+  Revisions are snapshots of documents and their associated data,  
+  allowing access to the document’s full history over time.
 
+</Panel>
 
+<Panel heading="Document extensions in the Studio">
 
-
-## Studio Document Extension Views
-
-#### Document Extensions Flags
+### Extensions flags
 
 ![Document Extensions in Collections View](./assets/extensions-collections-view.png)
 
 1. **Documents Tab**  
-   Select to view document options.
+   Open the _Documents_ tab.  
 2. **Collection**  
-   Select a documents collection. 
-3. **Extensions**  
-   View which types of extensions are added to the documents.  
+   Select a collection. 
+3. **Extensions flags**  
+   View which types of extensions are associated with the documents.
    ![Document Extensions Icons](./assets/extensions-logos.png)
-#### Document Extensions View
 
-Select a specific document to manage the extensions.  
+---
 
-In Studio &gt; click Documents Tab &gt; select specific Collection &gt; select specific DocumentID to navigate to the following view:  
+### Extensions in the document view
+
+Open a specific document to view and manage its extensions.  
 
 ![Managing Document Extensions in Studio](./assets/extensions-managing-single-doc.png)
 
-1. Attachments Settings
-2. Counters Settings
-3. Time-Series Settings
-4. Revisions Settings
-
-
-
+1. Attachments
+2. Counters
+3. Time Series
+4. Revisions
+    
+</Panel>

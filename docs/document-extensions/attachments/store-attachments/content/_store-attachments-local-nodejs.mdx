@@ -1,0 +1,171 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel'
+
+<Admonition type="note" title="">
+
+* To store an attachment:  
+    * First, create or load a document.  
+    * Then, attach any number of files using the Studio or the Client API.
+
+* The document’s metadata is updated to reference each attachment that is added.  
+  This metadata update is considered a document change, which causes the document to be replicated to all other nodes in the database group.  
+  Any actions associated with the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
+    
+* When stored **locally**, attachments are not embedded within the document.
+  Instead, they are saved in a dedicated attachment storage area on the RavenDB server, separate from the document store.  
+  This avoids bloating your JSON documents with large binary data and enables efficient storage and retrieval.     
+    
+* **Storing attachments with the same name**:  
+  If you add an attachment with a name that is already associated with the document,  
+  the new content will replace the existing content in the local storage.
+    
+* In this article
+    * [Store attachment via the session](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-the-session)  
+    * [Store attachment via an operation](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-an-operation) 
+ 
+</Admonition>
+
+<Panel heading="Store attachment via the session">
+    
+* In order to store an attachment you need to create or load a document.   
+  Then you can attach an attachment to the document using the `session.advanced.attachments.store()` method.
+* Attachments, just like documents, are a part of the session and will only be saved on the server when `saveChanges()` is executed.  
+
+---
+    
+### Syntax
+
+Attachments can be stored using one of the following `session.advanced.attachments.store()` methods:
+
+<TabItem value="StoreSyntax" label="StoreSyntax">
+<CodeBlock language="js">
+{`session.advanced.attachments.store(documentId, name, stream, [contentType]);
+session.advanced.attachments.store(entity, name, stream, [contentType]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **entity** or **documentId** | object or string | instance of the entity or the entity ID |
+| **name** | string | attachment name |
+| **stream** | `Readable` or `Buffer` | attachment content |
+| **contentType** | string | attachment content type |
+
+---
+    
+### Example
+
+<TabItem value="StoreAttachment" label="StoreAttachment">
+<CodeBlock language="js">
+{`const session = store.openSession();
+
+const file1 = fs.createReadStream("001.jpg");
+const file2 = fs.createReadStream("002.jpg");
+const file3 = fs.createReadStream("003.jpg");
+const file4 = fs.createReadStream("004.mp4");
+
+const album = new Album();
+album.name = "Holidays";
+album.description = "Holidays travel pictures of the all family";
+album.tags = [ "Holidays Travel", "All Family" ];
+await session.store(album, "albums/1");
+
+session.advanced.attachments
+    .store("albums/1", "001.jpg", file1, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "002.jpg", file2, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "003.jpg", file3, "image/jpeg");
+session.advanced.attachments
+    .store("albums/1", "004.mp4", file4, "video/mp4");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+    
+</Panel>
+
+<Panel heading="Store attachment via an operation">
+    
+Use the `PutAttachmentOperation` to add an attachment to a document.    
+
+---
+    
+### Put attachment example
+
+<TabItem value="put_attachment" label="put_attachment">
+<CodeBlock language="js">
+{`// Prepare content to attach
+const text = "Some content...";
+const byteArray = Buffer.from(text);
+
+// Define the put attachment operation
+const putAttachmentOp = new PutAttachmentOperation(
+    "employees/1-A", "attachmentName.txt", byteArray, "text/plain");
+
+// Execute the operation by passing it to operations.send
+const attachmentDetails = await documentStore.operations.send(putAttachmentOp);
+`}
+</CodeBlock>
+</TabItem>
+
+---
+    
+### Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`// Available overloads:
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type                         | Description                                                                       |
+|------------------|------------------------------|-----------------------------------------------------------------------------------|
+| __documentId__   | `string`                     | Document ID to which the attachment will be added                                 |
+| __name__         | `string`                     | Name of attachment to put                                                         |
+| __stream__       | `stream.Readable` / `Buffer` | A stream that contains the raw bytes of the attachment                            |
+| __contentType__  | `string`                     | Content type of attachment                                                        |
+| __changeVector__ | `string`                     | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |
+
+| Return Value of `store.operations.send(putAttachmentOp)` |                                             |
+|----------------------------------------------------------|---------------------------------------------|
+| `object`                                                 | An object with the new attachment's details |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The AttachmentDetails object:
+// =============================
+\{
+    // Change vector of attachment
+    changeVector; // string
+
+    // ID of the document that contains the attachment
+    documentId?; // string
+
+    // Name of attachment
+    name; // string;
+
+    // Hash of attachment
+    hash; // string;
+
+    // Content type of attachment
+    contentType; // string
+
+    // Size of attachment
+    size; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Panel>

@@ -1,0 +1,381 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Indexing attachments allows you to query for documents based on their attachments' details and content.
+
+* **Static indexes**:  
+  Both attachments' details and content can be indexed within a static-index definition.
+
+* **Auto-indexes**:  
+  Auto-indexing attachments via dynamic queries is not available at this time.  
+
+* In this page:  
+  * [Index attachments details](../../document-extensions/attachments/indexing-attachments#index-attachments-details)
+  * [Index details & content - for specific attachment name](../../document-extensions/attachments/indexing-attachments#index-details--content---for-specific-attachment-name)
+  * [Index details & content - for all attachments](../../document-extensions/attachments/indexing-attachments#index-details--content---for-all-attachments)
+  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing-attachments#leveraging-indexed-attachments)
+  * [Syntax](../../document-extensions/attachments/indexing-attachments#syntax)
+
+</Admonition>
+
+## Index attachments details
+
+<Admonition type="note" title="">
+
+**The index**:
+* To index **attachments' details**, call `attachmentsFor()` within the index definition.
+
+* `attachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
+  These details can be used to define the index-fields.
+  Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
+
+* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing-attachments#index-details--content---by-attachment-name).
+
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
+{`class Employees_ByAttachmentDetails extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        const \{ attachmentsFor \} = this.mapUtils();
+
+        this.map("employees", employee => \{
+            // Call 'attachmentsFor' to get attachments details
+            const attachments = attachmentsFor(employee);
+
+            return \{
+                // Can index info from document properties:
+                employeeName: employee.FirstName + " " + employee.LastName,
+
+                // Index DETAILS of attachments:
+                attachmentNames: attachments.map(x => x.Name),
+                attachmentContentTypes: attachments.map(x => x.ContentType),
+                attachmentSizes: attachments.map(x => x.Size)
+            \}
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Query the Index**:
+You can now query for Employee documents based on their attachments details.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+     // Query the index for matching employees
+    .query({ indexName: "Employees/ByAttachmentDetails" })
+     // Filter employee results by their attachments details
+    .whereEquals("attachmentNames", "photo.jpg")
+    .whereGreaterThan("attachmentSizes", 20_000)
+    .all();
+
+// Results:
+// ========
+// Running this query on the Northwind sample data,
+// results will include 'employees/4-A' and 'employees/5-A'.
+// These 2 documents contain an attachment by name 'photo.jpg' with a matching size.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAttachmentDetails"
+where attachmentNames == "photo.jpg" and attachmentSizes > 20000
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Index details & content - for specific attachment name
+
+<Admonition type="note" title="">
+
+**Sample data**:
+* Each Employee document in RavenDB's sample data already includes a _photo.jpg_ attachment.
+
+* For all following examples, let's store a textual attachment (file _notes.txt_) on 3 documents  
+  in the 'Employees' collection.
+
+<TabItem value="store_attachments" label="store_attachments">
+<CodeBlock language="js">
+{`const session = documentStore.openSession();
+
+for (let i = 1; i <= 3; i++) \{
+    // Load an employee document:
+    const employee = await session.load(\`employees/$\{i\}-A\`);
+    
+    // Store the employee's notes as an attachment on the document:
+    const stream = Buffer.from(employee.Notes[0]);
+    session.advanced.attachments.store(\`employees/$\{i\}-A\`, "notes.txt", stream, "text/plain");
+\}
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**The index**:
+* To index the **details & content** for a specific attachment, call `loadAttachment()` within the index definition.  
+ 
+* In addition to accessing the attachment details, `loadAttachment()` provides access to the attachment's content,  
+  which can be used when defining the index-fields.
+
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="js">
+{`class Employees_ByAttachment extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        const \{ loadAttachment \} = this.mapUtils();
+
+        this.map("employees", employee => \{
+            // Call 'loadAttachment' to get attachment's details and content
+            // pass the attachment name, e.g. "notes.txt"
+            const attachment = loadAttachment(employee, "notes.txt");
+
+            return \{
+                // Index DETAILS of attachment:
+                attachmentName: attachment.Name,
+                attachmentContentType: attachment.ContentType,
+                attachmentSize: attachment.Size,
+
+                // Index CONTENT of attachment:
+                // Call 'getContentAsString' to access content
+                attachmentContent: attachment.getContentAsString()
+            \}
+        \});
+
+        // It can be useful to configure Full-Text search on the attachment content index-field
+        this.index("attachmentContent", "Search");
+
+        // Documents with an attachment named 'notes.txt' will be indexed,
+        // allowing you to query them by either the attachment's details or its content.
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Query the Index**:
+You can now query for Employee documents based on their attachment details and/or its content.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    // Query the index for matching employees
+    .query({indexName: "Employees/ByAttachment"})
+    // Can make a full-text search
+    // Looking for employees with an attachment content that contains 'Colorado' OR 'Dallas'
+    .search("attachmentContent", "Colorado Dallas")
+    .all();
+
+// Results:
+// ========
+// Results will include 'employees/1-A' and 'employees/2-A'.
+// Only these 2 documents have an attachment by name 'notes.txt'
+// that contains either 'Colorado' or 'Dallas'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAttachment"
+where search(attachmentContent, "Colorado Dallas")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Index details & content - for all attachments
+
+<Admonition type="note" title="">
+
+**The index**:
+* Use `loadAttachments()` to be able to index the **details & content** of ALL attachments.
+
+* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document) pattern.
+
+<TabItem value="index_3" label="index_3">
+<CodeBlock language="js">
+{`class Employees_ByAllAttachments extends AbstractJavaScriptIndexCreationTask \{
+    constructor () \{
+        super();
+
+        const \{ loadAttachments \} = this.mapUtils();
+
+        this.map("employees", employee => \{
+            // Call 'loadAttachments' to get details and content for ALL attachments
+            const allAttachments = loadAttachments(employee);
+
+            // This will be a Fanout index -
+            // the index will generate an index-entry for each attachment per document
+
+            return allAttachments.map(attachment => (\{
+
+                // Index DETAILS of attachment:
+                attachmentName: attachment.Name,
+                attachmentContentType: attachment.ContentType,
+                attachmentSize: attachment.Size,
+
+                // Index CONTENT of attachment:
+                // Call 'getContentAsString' to access content
+                attachmentContent: attachment.getContentAsString()
+            \}));
+        \});
+
+        // It can be useful configure Full-Text search on the attachment content index-field
+        this.index("attachmentContent", "Search");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Query the Index**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    // Query the index for matching employees
+    .query({indexName: "Employees/ByAllAttachments"})
+    // Filter employee results by their attachments details and content
+    .whereGreaterThan("attachmentSize", 20_000)
+    .orElse()
+    .search("attachmentContent", "Colorado Dallas")
+    .all();
+
+// Results:
+// ========
+// Results will include:
+// 'employees/1-A' and 'employees/2-A' that match the content criteria 
+// 'employees/4-A' and 'employees/5-A' that match the size criteria
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByAllAttachments"
+where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Leveraging indexed attachments
+
+* Access to the indexed attachment content opens the door to many different applications,  
+  including many that can be integrated directly into RavenDB.
+
+* This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates 
+  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes) feature. 
+  The resulting index allows filtering and querying based on image content.
+
+## Syntax
+
+#### `attachmentsFor`
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
+{`attachmentsFor(document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                             |
+|--------------|----------|---------------------------------------------------------|
+| **document** | `object` | The document whose attachments details you want to load |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// Returns a list containing the following attachment details object:
+\{    
+    name;         // string
+    hash;         // string
+    contentType;  // string
+    size;         // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+    
+#### `loadAttachment`    
+    
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
+{`loadAttachment(document, attachmentName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter           | Type      | Description                                     |
+|---------------------|-----------|-------------------------------------------------|
+| **document**        | `object`  | The document whose attachment you want to load. |
+| **attachmentName**  | `string`  | The name of the attachment to load.             |
+
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
+{`// Returns the following attachment object:
+\{
+    // Properties accessing DETAILS:
+    // =============================
+    name;         // string
+    hash;         // string
+    contentType;  // string
+    size;         // number
+    
+    // Methods accessing CONTENT:
+    // ==========================
+    getContentAsStream();
+    getContentAsString(encoding);
+    getContentAsString(); // Default encoding is "utf8"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### `loadAttachments`
+    
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
+{`// Returns a list containing the above attachment object per attachment.
+loadAttachments(document);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type      | Description                                      |
+|-----------------|-----------|--------------------------------------------------|
+| **document**    | `object`  | The document whose attachments you want to load. |
