@@ -10,63 +10,51 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Logging
 <Admonition type="note" title="">
 
 * **Multiple logging levels**  
-  RavenDB's flexible logging system allows you to pick the minimal logging 
-  level most suitable for your needs from a 
-  [scale of 6 logging levels](../../server/troubleshooting/logging.mdx#available-logging-levels).  
+  RavenDB provides a flexible logging system that lets you control the volume and detail of logged information 
+  by selecting the most suitable logging level from a [scale of six](../../server/troubleshooting/logging.mdx#available-logging-levels).    
   
-     The _Trace_ logging level, for example, will output all events, transactions, 
-     and database changes, producing logs that can be processed for auditing 
-     and accounting, while _Warning-level_ log entries will include only warnings 
-     and errors to keep the log's clarity and remain easy to evaluate and possibly 
-     escalate even when the database grows bigger and more complex.  
+  For example, the _Trace_ level captures all events, transactions, and database changes, producing logs that can be processed for auditing or detailed analysis, 
+  while _Warning_ level limits output to warnings and errors, helping keep logs focused and readable even in large or complex systems.
 
 * **Numerous logging destinations**  
-  Starting with RavenDB version `7.0` RavenDB outputs all log data through 
-  [NLog](https://nlog-project.org), a widely used `.NET` logging framework 
-  capable of streaming logged data to various destinations using a large 
-  number of available [NLog plugins](https://nlog-project.org/config/).  
+  Starting with RavenDB version `7.0` RavenDB outputs all log data through [NLog](https://nlog-project.org), a widely used `.NET` logging framework 
+  capable of streaming logged data to various destinations using a large number of available [NLog plugins](https://nlog-project.org/config/).  
 
 * **High performance**  
-  Logging is asynchronous and is handled by a thread dedicated to the 
-  execution of I/O operations, minimizing its effect on server performance.  
+  Logging is asynchronous and is handled by a thread dedicated to the execution of I/O operations, minimizing its effect on server performance.  
 
 * In this page:  
   * [Available logging destinations](../../server/troubleshooting/logging.mdx#available-logging-destinations)  
   * [Logging configuration](../../server/troubleshooting/logging.mdx#logging-configuration)  
   * [Available logging levels](../../server/troubleshooting/logging.mdx#available-logging-levels)  
-      * [Customizing logging level after Migration](../../server/troubleshooting/logging.mdx#customize-after-migration)  
+      * [Customizing logging level after Migration](../../server/troubleshooting/logging#customizing-logging-level-after-migration)  
   * [Default values](../../server/troubleshooting/logging.mdx#default-values)  
-  * [CLI customization: immediate temporary changes](../../server/troubleshooting/logging.mdx#cli-customization:-immediate-temporary-changes)  
+  * [CLI customization: immediate temporary changes](../../server/troubleshooting/logging#cli-customization-immediate-temporary-changes)  
   * [Configuring and using NLog](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog)  
-     * [Configure RavenDB to use an external NLog configuration file](../../server/troubleshooting/logging.mdx#use-external-config-file)  
-     * [Install NLog plugins that RavenDB would log data through](../../server/troubleshooting/logging.mdx#install-nlog-plugins)  
-     * [Set your NLog configuration file](../../server/troubleshooting/logging.mdx#set-nlog-config-file)  
+     * [Configure RavenDB to use an external NLog configuration file](../../server/troubleshooting/logging#1-configure-ravendb-to-use-an-external-nlog-configuration-file)  
+     * [Configure RavenDB to use NLog plugins for streaming log data](../../server/troubleshooting/logging#2-configure-ravendb-to-use-nlog-plugins-for-streaming-log-data)
+     * [Set your NLog configuration file](../../server/troubleshooting/logging#3-set-your-nlog-configuration-file)  
          * [An available template](../../server/troubleshooting/logging.mdx#an-available-template)  
-         * [Mandatory `logger` definitions](../../server/troubleshooting/logging.mdx#mandatory--definitions)  
+         * [Mandatory `logger` definitions](../../server/troubleshooting/logging#mandatory-logger-definitions)  
          * [Your own loggers](../../server/troubleshooting/logging.mdx#your-own-loggers)  
-  * [Studio: Admin Logs](../../server/troubleshooting/logging.mdx#studio:-admin-logs)  
+  * [Studio: the Admin Logs view](../../server/troubleshooting/logging#studio-the-admin-logs-view)
 
 </Admonition>
+
 ## Available logging destinations
 
-RavenDB versions up to `6.2` output log data to files on the server machine, and can 
-optionally stream it to the server console.  
+RavenDB versions up to `6.2` write log data to files on the server machine and can optionally stream it to the server console.
 
-From version `7.0` on, RavenDB incorporates the [NLog](https://nlog-project.org) 
-logging framework. The logging process has hardly changed, but the integration with 
-NLog now allows RavenDB to log more versatile data to many additional destinations 
-via [NLog plugins](https://nlog-project.org/config/).  
-Available logging destinations include, among others, log aggregators like 
-[Grafana Loki](https://grafana.com/oss/loki/) and [Splunk](https://en.wikipedia.org/wiki/Splunk), 
-filtering and error handling tools, and a long list of applications that NLog 
-is integrated with.  
-
-
+Starting with version 7.0, RavenDB integrates the [NLog](https://nlog-project.org) logging framework.  
+The logging process has hardly changed, but the integration with NLog now allows RavenDB to log more versatile data to many additional destinations via [NLog plugins](https://nlog-project.org/config/).
+Available logging destinations include, among others, log aggregators like [Grafana Loki](https://grafana.com/oss/loki/) and [Splunk](https://en.wikipedia.org/wiki/Splunk), 
+filtering and error handling tools, and a long list of applications that NLog is integrated with.  
 
 ## Logging configuration
 
@@ -76,264 +64,264 @@ is integrated with.
    * [List of logging configuration keys](../../server/configuration/logs-configuration.mdx)  
    * [How to modify configuration keys](../../server/configuration/configuration-options.mdx)  
 
-* If you want to utilize **NLog plugins** so you can output log data to additional 
-  destinations, you must use an **external NLog configuration** file.  
-   * Changing logging settings using an external configuration file is possible 
-     from version `7.0` on, as part of NLog's integration with RavenDB. 
-   * Once an external configuration file is applied, its settings override all 
-     the values set by internal configuration keys.  
-   * [Using an external configuration file](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog)  
+* If you want to utilize **NLog plugins** so you can output log data to additional destinations,  
+  you must use an **external NLog configuration** file.  
+   * Changing logging settings using an external configuration file is possible from version `7.0` on,  
+     as part of NLog's integration with RavenDB. 
+   * Once an external configuration file is applied, its settings override all the values set by internal configuration keys.  
+   * To set an external configuration file, see [Configuring and using NLog](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).  
 
 * To **determine whether to use an NLog configuration file or internal configuration keys**,  
-  set the [Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) 
-  configuration key with -  
-   - a [path](../../server/troubleshooting/logging.mdx#use-external-config-file) 
-     to the configuration file you want to apply  
+  set the [Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) configuration key with -  
+   - a [path](../../server/troubleshooting/logging.mdx#use-external-config-file) to the configuration file you want to apply  
    - or `null` to continue using internal configuration keys.  
+
 <Admonition type="info" title="Applying changes" id="applying-changes" href="#applying-changes">
 
-* Permanent changes in the logging configuration, through either configuration keys 
-  or an external configuration file, are _applied by restarting the server_.  
-
-* It is also possible to apply _temporary changes_ without restarting the server, 
-  using [the CLI](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes).  
-  
+* **Permanent changes** to the logging configuration, whether defined via configuration keys or an external configuration file, take effect only after restarting the server. 
+    
+* **Temporary changes** can be applied at runtime using [the CLI](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes), without requiring a server restart.
+    
 * The _scope_ of all logging settings is _server-wide_, applying to all databases.  
 
 </Admonition>
 
-
-
 ## Available logging levels
 
-The logging levels offered by RavenDB have changed from versions prior to `7.0` 
-to newer versions.  
-#### Logging Modes
+Starting with version `7.0`, RavenDB uses a new set of logging levels that differ from those in previous versions.
 
-RavenDB versions up to `6.2` support proprietary **logging modes**.  
+<ContentFrame>
 
-| Available logging Mode | Description |
+### Logging modes (used in versions prior to 7.0)
+
+RavenDB versions up to `6.2` use a proprietary set of **logging modes**.
+
+| Logging Mode  | Description |
 | ------------- | ----------- |
-| `Operations` | High-level info for operational use |
+| `Operations`  | High-level info for operational use |
 | `Information` | Low-level debug info |
-| `None` | Logging is disabled |
-#### Logging Levels
+| `None`        | Logging is disabled  |
 
-From version `7.0` on, RavenDB's **logging levels** are NLog-compliant.  
+</ContentFrame>
 
-| Available logging Level | Description |
+<ContentFrame>
+
+### NLog-compliant logging levels (version 7.0 and Above)
+
+Starting with version `7.0`, RavenDB uses NLog-compliant **logging levels**.
+
+| Logging Level | Description |
 | ------------- | ----------- |
 | `Trace` | A highly informative level that's mostly used only during development |
 | `Debug` | Debug information reported by internal application processes |
-| `Info` | Information related to application progress, events lifespan, etc. |
-| `Warn` | Warnings returned by failed validations, mild, recoverable failures, etc. |
+| `Info`  | Information related to application progress, events lifespan, etc. |
+| `Warn`  | Warnings returned by failed validations, mild, recoverable failures, etc. |
 | `Error` | Error reports of functionality failures, caught exceptions, etc. |
 | `Fatal` | Fatal failures |
-| `Off` | Logging is disabled |
+| `Off`   | Logging is disabled |
+    
+</ContentFrame>
 
-<a id="customize-after-migration"/>
-<Admonition type="note" title="Customizing logging level after Migration:" id="customizing-logging-level-after-migration" href="#customizing-logging-level-after-migration">
+<Admonition type="note" title="">
 
-When migrating from an older version to `7.0` or higher, RavenDB **is** capable 
-of understanding the old version's _logging mode_ configuration and translate 
-it to the equivalent NLog level.  
+### Customizing logging level after Migration
+
+When migrating from an older version to `7.0` or higher, RavenDB can interpret the old _logging mode_ configuration and translate it to the equivalent _NLog level_.   
 
 | **Logging mode (RavenDB ≤ `6.2`)** | **Equivalent NLog level (RavenDB ≥ `7.0`)** | 
-| :----------: | :----: |
-| Operations | Info |
+| ----------- | ----- |
+| Operations  | Info  |
 | Information | Debug |
 
-<br/>
+Logging will therefore continue uninterrupted, there's no rush to modify the logging level right after migration.  
 
-Logging will therefore continue uninterrupted, there's no rush to modify the 
-logging level right after migration.  
+You **will** need to update the logging settings if you want to take advantage of NLog features.
 
-You **will** need to modify these settings, however, if you want to use NLog features.  
+  * For example, to use an NLog logging level such as `Warn`, you will need to update the `settings.json` file:
+    
+      <Tabs groupId='languageSyntax'>
+      <TabItem value="settings.json" label="settings.json">
+      ```json
+      ...
+      "Logs.MinLevel": "Warn",
+      ...
+      ```
+      </TabItem>
+      </Tabs>
 
-* To use an NLog logging level like `Warn`, for example, you will need to modify 
-  `settings.json` accordingly.  
-<Tabs groupId='languageSyntax'>
-<TabItem value="settings.json" label="settings.json">
-<CodeBlock language="plain">
-{`...
-"Logs.MinLevel": "Warn",
-...
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-* And to output log data to a destination like a log aggragation tool through an 
-  NLog plugin, you will need to start using an 
-  [NLog configuration file](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog), 
-  and subsequently modify any NLog settings you want to change, including the logging 
-  level, in this file.  
-<Tabs groupId='languageSyntax'>
-<TabItem value="nlog.config" label="nlog.config">
-<CodeBlock language="plain">
-{`<rules>
-...
-<logger ruleName="log_aggregator_1" 
-        name="*" minlevel="Warn" writeTo="agg" />
-...
-</rules>
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+  * To output log data to a destination such as a log aggragation tool using an NLog plugin, you will need to start using an [NLog configuration file](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog), 
+    and then configure any NLog-specific settings, including the logging level, in that file:
+    
+      <Tabs groupId='languageSyntax'>
+      <TabItem value="nlog.config" label="nlog.config">
+      ```xml
+      <rules>
+      ...
+      <logger ruleName="log_aggregator_1" 
+              name="*" minlevel="Warn" writeTo="agg" />
+      ...
+      </rules>
+      ```
+      </TabItem>
+      </Tabs>
 
 </Admonition>
-
-
 
 ## Default values
 
 * **Default logging level**  
   The default minimal logging level is `LogLevel.Info`.  
-   - To use a different level, set the 
-     [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
+  To use a different level, set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
 * **Default destination**  
   Log entries are written by default to log files in the **Logs** folder on the server machine.  
-   - To store log files in a different path, set the 
-     [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration key.  
-   - [Learn how to log to additional destinations](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog)  
+  To store log files in a different path, set the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration key.  
+  Learn how to log to additional destinations in [Configuring and using NLog](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).  
 * **Default time standard**  
   The default time standard used for log entries is `UTC`.  
-  Changing this configuration is now available only using the NLog configuration file.  
-<Tabs groupId='languageSyntax'>
-<TabItem value="nlog.config" label="nlog.config">
-<CodeBlock language="plain">
-{`layout="$\{longdate:universalTime=true\}..."
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+  Changing this configuration is now available only using the NLog configuration file.
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="nlog.config" label="nlog.config">
+    ```plain
+    layout="${longdate:universalTime=true}..."
+    ```
+    </TabItem>
+    </Tabs>
+
 * **NLog configuration file defaults**  
-  The **default values** given to settings in the 
-  [NLog configuration file template](../../server/troubleshooting/logging.mdx#an-available-template) 
-  are **identical** to those given to internal configuration keys.  
-   - [The list of logging configuration keys and their default values](../../server/configuration/logs-configuration.mdx)  
-
-
+  The default values provided for settings in the [NLog configuration file template](../../server/troubleshooting/logging.mdx#an-available-template) 
+  are **identical** to those used by RavenDB's internal configuration keys.
+  See the full list in: [Logging configuration keys and their default values](../../server/configuration/logs-configuration.mdx).  
 
 ## CLI customization: immediate temporary changes
 
-Logging settings can also be customized via [CLI](../../server/administration/cli.mdx), 
-using the [log](../../server/administration/cli.mdx#log) command.  
-Unlike the permanent customization methods described above (via internal configuration 
-keys or an external NLog file), that require a server restart to take effect, changes 
-made using CLI commands will take **immediate effect**. However, they will also be 
-overridden when the server is restarted and the permanent configuration is reloaded from 
-[settings.json](../../server/configuration/configuration-options.mdx#settingsjson) 
-or the NLog configuration file.  
+Logging settings can also be customized via the [CLI](../../server/administration/cli.mdx), using the [log](../../server/administration/cli.mdx#log) command.  
+Unlike the permanent customization methods described above (via internal configuration keys or an external NLog file),    
+which require a server restart to take effect, changes made using the CLI will take effect **immediately**. 
 
-Use this syntax to customize logging via CLI:  
+However, these changes are temporary: they will be overridden when the server restarts and reloads the persistent configuration
+from [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) or the NLog configuration file.
+
+Use the following syntax to customize logging via the CLI:  
+
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`log [on|off] [http-]<on|off> [info|debug] [no-console]
-`}
-</CodeBlock>
+```plain
+log [on|off] [http-]<on|off> [info|debug] [no-console]
+```
 </TabItem>
 
 #### Example:
-To temporarily change the logging level to `debug`, issue this command in the server console:  
+
+To temporarily change the logging level to `debug`, issue the following command in the server console:
+
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`ravendb> log debug
-`}
-</CodeBlock>
+```plain
+ravendb> log debug
+```
 </TabItem>
-
-
 
 ## Configuring and using NLog
 
 To use NLog you need to:  
 
 1. [Configure RavenDB to use an external NLog configuration file](../../server/troubleshooting/logging.mdx#use-external-config-file)  
-2. [Install NLog plugins that RavenDB would log data through](../../server/troubleshooting/logging.mdx#install-nlog-plugins)  
+2. [Configure RavenDB to use NLog plugins for streaming log data](../../server/troubleshooting/logging#2-configure-ravendb-to-use-nlog-plugins-for-streaming-log-data) 
 3. [Set your NLog configuration file](../../server/troubleshooting/logging.mdx#set-nlog-config-file)  
 
-<a id="use-external-config-file"/>
-<Admonition type="note" title="1. Configure RavenDB to use an external NLog configuration file" id="1-configure-ravendb-to-use-an-external-nlog-configuration-file" href="#1-configure-ravendb-to-use-an-external-nlog-configuration-file">  
+<Admonition type="note" title="">  
 
-NLog options are customized using an NLog configuration file.  
-Direct RavenDB to the location of your configuration file using the 
-[Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) 
-configuration key with the file's path as a value.  
+### 1. Configure RavenDB to use an external NLog configuration file
+    
+NLog options are customized using an NLog configuration file.
+To use a custom file, set the [Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) configuration key to the full path of your NLog configuration file.
+    
 #### Example:
-To use a configuration file named `NLog.config` that resides in the RavenDB server 
-folder, add `settings.json` this line:  
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`...
+    
+To use a configuration file named `NLog.config` located in the RavenDB server directory, add the following line to the `settings.json` file:  
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="settings.json" label="settings.json">
+```json
+...
 "Logs.ConfigPath": "NLog.config",
 ...
-`}
-</CodeBlock>
+```
 </TabItem>
+</Tabs>
 
 <Admonition type="info" title="">
 
-* Learn to set configuration keys [here](../../server/configuration/configuration-options.mdx).  
-* Learn how to create and modify a configuration file [below](../../server/troubleshooting/logging.mdx#set-nlog-config-file).  
-* Be aware that once a configuration file is used, the logging settings included in it 
-  will  _override_ all [internal configuration keys](../../server/configuration/logs-configuration.mdx) 
-  settings.  
+* Learn how to set configuration keys [here](../../server/configuration/configuration-options.mdx).  
+* Learn how to create and modify an Nlog configuration file [below](../../server/troubleshooting/logging.mdx#set-nlog-config-file).  
+* Note: once a configuration file is used, the logging settings defined in it will _override_ all [internal configuration keys](../../server/configuration/logs-configuration.mdx) values.  
+    
+</Admonition>    
 </Admonition>
-</Admonition>
-<a id="install-nlog-plugins"/>
-<Admonition type="note" title="2. Load and run NLog plugins Nuget packages" id="2-load-and-run-nlog-plugins-nuget-packages" href="#2-load-and-run-nlog-plugins-nuget-packages">
 
-NLog's biggest advantage lies in its [plugins library](https://nlog-project.org/config/), 
-through which applications like RavenDB can stream log data to a variety of destinations.  
-NLog plugins are available as Nuget packages, that we can easily instruct RavenDB to load 
-and run during startup.  
-We do this by defining the plugin Nuget package URL as a property of the 
-[Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages) 
-configuration key, with the plugin version we want to use as a value.  
+<Admonition type="note" title="">
+
+### 2. Configure RavenDB to use NLog plugins for streaming log data
+    
+NLog's biggest advantage lies in its [plugins library](https://nlog-project.org/config/), which allows applications like RavenDB to stream log data to a wide range of destinations.
+    
+NLog plugins are distributed as Nuget packages, and you can instruct RavenDB to download and load them during startup.
+To do this, define the plugin’s NuGet package URL as a property of the [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages) 
+configuration key, with the plugin version as its value.  
+    
 #### Example
-To load a [Grafana Loki](https://grafana.com/oss/loki/) plugin, for example, 
-add RavenDB's `Logs.NuGet.AdditionalPackages` configuration key an `NLog.Targets.Loki` 
-property, with the plugin's version you want to use as a value.  
+    
+To load a [Grafana Loki](https://grafana.com/oss/loki/) plugin,
+add an `NLog.Targets.Loki` property to RavenDB’s `Logs.NuGet.AdditionalPackages` configuration key, with the desired plugin version as its value.
 
-`settings.json`:
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`...
-"Logs.NuGet.AdditionalPackages": \{ "NLog.Targets.Loki": "3.3.0" \},
+<Tabs groupId='languageSyntax'>
+<TabItem value="settings.json" label="settings.json">    
+```json
 ...
-`}
-</CodeBlock>
+"Logs.NuGet.AdditionalPackages": { "NLog.Targets.Loki": "3.3.0" },
+...
+```
 </TabItem>
+</Tabs>
 
-<Admonition type="info" title="Other Nuget-related configuration keys" id="other-nuget-related-configuration-keys" href="#other-nuget-related-configuration-keys">
+<Admonition type="info" title="">
 
+#### Other Nuget-related configuration keys:
+    
 * [Logs.NuGet.PackagesPath](../../server/configuration/logs-configuration.mdx#logsnugetpackagespath)  
-  Use this key to select the path to which NuGet packages are downloaded.  
+  Use this key to specify the path where NuGet packages required by RavenDB are downloaded.
 * [Logs.NuGet.PackageSourceUrl](../../server/configuration/logs-configuration.mdx#logsnugetpackagesourceurl)  
-  Use this key to set the default location from which NuGet packages are downloaded.  
+  Use this key to set the default URL for the NuGet package source.  
 * [Logs.NuGet.AllowPreReleasePackages](../../server/configuration/logs-configuration.mdx#logsnugetallowprereleasepackages)  
-  Use this key to determine whether RavenDB is allowed to use pre-release versions of NuGet packages.  
+  Use this key to determine whether RavenDB is allowed to install pre-release versions of NuGet packages.
+* [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration#logsnugetadditionalpackages)  
+  Use this key to specify a dictionary of additional NuGet packages to load during server startup for logging.  
+  Each key is a package name, and the corresponding value is the desired version.
+    
+</Admonition>    
 </Admonition>
-</Admonition>
-<a id="set-nlog-config-file"/>
-<Admonition type="note" title="3. Set your NLog configuration file" id="3-set-your-nlog-configuration-file" href="#3-set-your-nlog-configuration-file">
 
+<Admonition type="note" title="">
+
+### 3. Set your NLog configuration file
+    
 Follow the procedure below to create and modify an NLog configuration file.  
-When you're done, restart the server to apply the new settings.  
+When you're done, restart the server to apply the new settings.
+    
 #### An available template:
-We've created an NLog configuration file **template** for your convenience, it is 
-available in the RavenDB **server** folder under the name `NLog.template.config`.  
-You can copy the template and modify it by your needs, or use your own configuration 
-file, as you prefer.  
+    
+We've created an NLog configuration file **template** for your convenience,   
+it is available in the RavenDB **server** folder under the name `NLog.template.config`.  
+You can copy the template and modify it to suit your needs, or use your own configuration file if you prefer.  
+    
 #### Mandatory `logger` definitions:
-Whether you base your configuration file on our template or use your own file, please 
-be sure it includes the four _loggers_ defined in the template file's **rules** section.  
-These definitions are mandatory, and failing to include them will generate an exception.  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`<rules>
+    
+Whether you base your configuration file on our template or use your own file,  
+make sure it includes the four _logger_ entries defined in the template's **rules** section.  
+These definitions are mandatory, failing to include them will generate an exception at startup.  
+    
+<TabItem value="xml" label="xml">
+```xml
+<rules>
     <!--These loggers are mandatory-->
     <logger ruleName="Raven_System" 
         name="System.*" finalMinLevel="Warn" />
@@ -344,67 +332,66 @@ These definitions are mandatory, and failing to include them will generate an ex
     <logger ruleName="Raven_Default" 
         name="*" levels="Info,Warn,Error,Fatal" writeTo="Raven_Default_Target" />
 </rules>
-`}
-</CodeBlock>
+```
 </TabItem>
+    
 #### Your own loggers:
-The **Raven_Default** logger, for example, directs log records to **Raven_Default_Target**.  
-Looking at the **Raven_Default_Target** definition (also included in the template file) we 
-can see that this target outputs log data to log files in the server's **Logs** folder.  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`<target xsi:type="AsyncWrapper" name="Raven_Default_Target">
+    
+The `Raven_Default` logger, for example, directs log entries to `Raven_Default_Target`.  
+Looking at the **Raven_Default_Target** definition (also included in the template file)  
+you'll see that it outputs log data to files in the server’s **Logs** folder. 
+    
+<TabItem value="xml" label="xml">
+```xml
+<target xsi:type="AsyncWrapper" name="Raven_Default_Target">
   <target
     name="FileTarget"
     xsi:type="File"
     createDirs="true"
-    fileName="$\{basedir\}/Logs/$\{shortdate\}.log"
+    fileName="${basedir}/Logs/${shortdate}.log"
     archiveNumbering="DateAndSequence"
     header="Date|Level|ThreadID|Resource|Component|Logger|Message|Data"
-    layout="$\{longdate:universalTime=true\}|$\{level:uppercase=true\}|$\{threadid\}|
-            $\{event-properties:item=Resource\}|$\{event-properties:item=Component\}|
-            $\{logger\}|$\{message:withexception=true\}|$\{event-properties:item=Data\}"
+    layout="${longdate:universalTime=true}|${level:uppercase=true}|${threadid}|
+            ${event-properties:item=Resource}|${event-properties:item=Component}|
+            ${logger}|${message:withexception=true}|${event-properties:item=Data}"
     footer="Date|Level|Resource|Component|Logger|Message|Data"
     concurrentWrites="false"
     writeFooterOnArchivingOnly="true"
     archiveAboveSize="134217728"
     enableArchiveFileCompression="true" />
 </target>
-`}
-</CodeBlock>
+```
 </TabItem>
 
-To output log data through an NLog plugin (rather than into log files) you can either 
-leave the default logger as is and modify its target, or add your own logger and target.  
+To output log data through an NLog plugin (instead of writing to log files), you can either keep the default logger and modify its target, or define your own logger and target for the plugin.
 
-To utilize a pre-installed `Loki` plugin, for example, you can -  
+For example, to utilize a pre-installed `Loki` plugin, you can -  
 
 Add a new logger:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`<logger ruleName="Grafana_Loki" 
+    
+<TabItem value="xml" label="xml">
+```xml
+<logger ruleName="Grafana_Loki" 
         name="*" levels="Info,Warn,Error,Fatal" writeTo="loki" />
-`}
-</CodeBlock>
+```
 </TabItem>
 
-And add a new "loki" target for this logger, that specifies the logging properties 
-for this destination.  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`<target 
+And add a new "loki" target for this logger, specifying the properties required to connect and the log data layout for this destination.
+    
+<TabItem value="xml" label="xml">
+```xml
+<target 
     name="loki" 
     xsi:type="loki" 
     endpoint="https://your_end_point.net" 
-    username="\{your_user_name\}"
-    password="\{your_token\}"
-    layout="$\{longdate:universalTime=true\}|$\{level:uppercase=true\}|$\{threadid\}|
-            $\{event-properties:item=Resource\}|$\{event-properties:item=Component\}|
-            $\{logger\}|$\{message:withexception=true\}|$\{event-properties:item=Data\}">  
-...
+    username="${your_user_name}"
+    password="${your_token}"
+    layout="${longdate:universalTime=true}|${level:uppercase=true}|${threadid}|
+            ${event-properties:item=Resource}|${event-properties:item=Component}|
+            ${logger}|${message:withexception=true}|${event-properties:item=Data}">
 <label name="app" layout="layout" />
-`}
-</CodeBlock>
+</target>    
+```
 </TabItem>
 
 <Admonition type="info" title="">
@@ -413,15 +400,11 @@ For a complete guide to integrating RavenDB 7.0 logs with **Grafana Cloud** usin
 see [this article](https://ravendb.net/articles/sending-your-ravendb-7-0-logs-to-grafana-cloud).
 
 </Admonition>
-
 </Admonition>
 
+## Studio: the Admin Logs view
 
-
-## Studio: Admin Logs
-
-Another way to view debug (or any other level) logs without having to restart 
-the server, is Studio's [Admin Logs view](../../studio/server/debug/admin-logs.mdx).  
-
-
-
+The log messages generated by the server can be viewed in real time from within the Studio's [Admin Logs view](../../studio/server/debug/admin-logs.mdx).  
+This view provides the following capabilities:
+* Displays a continuous stream of RavenDB log entries in real time.
+* Allows you to define settings that determine which log entries are written to disk.
