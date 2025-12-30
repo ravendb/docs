@@ -424,11 +424,12 @@ hr {
     @apply leading-[1.4];
 }
 
-.theme-doc-markdown h1,
-.theme-doc-markdown h2,
-.theme-doc-markdown h3,
-.theme-doc-markdown h4,
-.theme-doc-markdown h5,
-.theme-doc-markdown h6 {
-    @apply scroll-mt-[10rem];
+/* Custom scroll margin and word break for headers */
+.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) {
+    @apply scroll-mt-[10rem] break-all;
+}
+
+/* Override custom word break for headers inside <header> tag */
+.theme-doc-markdown header :is(h1, h2, h3, h4, h5, h6) {
+    @apply break-normal;
 }
