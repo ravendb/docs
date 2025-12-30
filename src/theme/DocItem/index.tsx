@@ -38,7 +38,6 @@ export default function DocItemWrapper(props: Props): ReactNode {
                 <div className="col flex-1 min-w-0">
                     <DocItem {...props} />
                 </div>
-                {!isHomepage && <div className="col col--3 lg:block"></div>}
             </div>
         </>
     );
