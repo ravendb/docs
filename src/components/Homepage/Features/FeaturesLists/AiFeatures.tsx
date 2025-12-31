@@ -37,7 +37,7 @@ export default function AiFeaturesGrid() {
     {
       title: "Embeddings generation",
       icon: "ai-etl",
-      url: `/${activeVersion.label}/ai-integration/generating-embeddings/embeddings-generation_start`,
+      url: `/${activeVersion.label}/ai-integration/generating-embeddings/start`,
       description: "Automatically turn your data into AI-ready vectors",
       minimumSupportedVersion: "7.0"
     },

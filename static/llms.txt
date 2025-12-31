@@ -80,7 +80,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [GenAI tasks](https://docs.ravendb.net/ai-integration/gen-ai-integration/gen-ai_start): Empower applications using intelligent tasks.
 
-- [Embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/embeddings-generation_start): Automatically convert data into AI-ready vectors.
+- [Embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/start): Automatically convert data into AI-ready vectors.
 
 - [Static indexes](https://docs.ravendb.net/indexes/creating-and-deploying): Control over precomputing and performance of indexes.
 
