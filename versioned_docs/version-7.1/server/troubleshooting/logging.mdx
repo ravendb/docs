@@ -79,9 +79,12 @@ filtering and error handling tools, and a long list of applications that NLog is
 <Admonition type="info" title="Applying changes" id="applying-changes" href="#applying-changes">
 
 * **Permanent changes** to the logging configuration, whether defined via configuration keys or an external configuration file, take effect only after restarting the server. 
-    
-* **Temporary changes** can be applied at runtime using [the CLI](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes), without requiring a server restart.
-    
+
+* **Temporary changes** can be applied at runtime, without requiring a server restart, using:
+  * the [CLI](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes)  
+  * the [Admin Logs view](../../studio/server/debug/admin-logs) in the Studio  
+  * the [`SetLogsConfigurationOperation`](../../client-api/operations/server-wide/logs/set-logs-configuration) in the Client API 
+
 * The _scope_ of all logging settings is _server-wide_, applying to all databases.  
 
 </Admonition>
