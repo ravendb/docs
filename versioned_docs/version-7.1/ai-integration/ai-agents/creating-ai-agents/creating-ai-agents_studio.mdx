@@ -107,7 +107,7 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 Define **agent parameters**.  
 After defining an agent parameter, it can be included in query tools RQL queries.  
 Values for agent parameters are provided by the client when a conversation is started.  
-[Read more about parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters).
+[Read more about parameters](../../../ai-integration/ai-agents/overview#query-parameters).
 
 ![Set agent parameters](./assets/ai-agents_set-agent-params.png)
 
@@ -136,7 +136,7 @@ Define **Query** and **Action** agent tools.
      a comments section or adding a comment to an article.  
 * The LLM has no direct access to the database or any other server property, all queries and 
   actions are performed through the agent.  
-* [Find an AI agent usage flow chart here](../../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flow-chart)
+* [Find an AI agent usage flow chart here](../../../ai-integration/ai-agents/overview#ai-agent-usage-flow-chart)
 
 ![Define agent tools](./assets/ai-agents_define-agent-tools.png)
 
@@ -170,11 +170,11 @@ Define **Query** and **Action** agent tools.
    Enable to allow the LLM to trigger the execution of this query tool.  
    Disable to prevent the LLM from using this tool.  
    <Admonition type="note" title="">
-   When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial-context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) the agent will still be able to execute it when it is started.  
+   When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries) the agent will still be able to execute it when it is started.  
    </Admonition>
 
 7. **Add to initial context**  
-   Enable to set the query tool as an [initial-context query](../../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries).  
+   Enable to set the query tool as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries).  
    When enabled, the agent will execute the query immediately when it starts a conversation with the LLM without waiting for the LLM to invoke the tool, to include data that is relevant for the conversation in the initial context sent to the LLM.  
    Disable to prevent the agent from executing the query on startup.  
    <Admonition type="note" title="">
@@ -187,7 +187,7 @@ Define **Query** and **Action** agent tools.
 
 9. **Sample parameters object** and **Parameters JSON schema**  
    Set a schema (as a sample object or a formal JSON schema) that allows the LLM to fill query parameters with values.  
-   [Read more about query parameters](../../../ai-integration/ai-agents/ai-agents_overview#query-parameters)  
+   [Read more about query parameters](../../../ai-integration/ai-agents/overview#query-parameters)  
 
 ### Add action tools:
 
