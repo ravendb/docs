@@ -115,9 +115,22 @@ public class LogsConfiguration
 ```csharp
 public class LogFilter
 {
+    // A log entry matches the filter if:
+    // - its log level is between MinLevel and MaxLevel (inclusive),
+    // - it passes the global minimum level ('CurrentMinLevel'), and
+    // - it satisfies the condition.
+    
+    // The minimum log level this filter applies to. 
     public LogLevel MinLevel { get; internal set; }
+    
+    // The maximum log level this filter applies to.
     public LogLevel MaxLevel { get; internal set; }
+
+    // An NLog expression evaluated against the log entry; must return true for the filter to match.    
     public string Condition { get; internal set; }
+    
+    // The action to take when a log entry matches this filter.
+    // Determines whether the entry is logged, ignored, or passed to the next filter.
     public LogFilterAction Action { get; internal set; }
 }
 ```
