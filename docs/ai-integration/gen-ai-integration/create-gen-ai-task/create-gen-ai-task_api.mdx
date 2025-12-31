@@ -28,10 +28,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * The main steps in defining a GenAI task are:  
    * Defining a [Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-a-connection-string) 
      to the AI model  
-   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_context-objects)  
-   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_prompt)  
-   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema)  
-   * Defining an [Update script](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_update-script)  
+   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/overview#the-elements_context-objects)  
+   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/overview#the-elements_prompt)  
+   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/overview#the-elements_json-schema)  
+   * Defining an [Update script](../../../ai-integration/gen-ai-integration/overview#the-elements_update-script)  
 
 * In this article:
     * [Defining a Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-a-connection-string)
@@ -335,8 +335,8 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
 | **Collection** | `string` | Name of the document collection associated with the task |
 | **GenAiTransformation** | `GenAiTransformation` | Context generation script - format for objects to be sent to the AI model |
 | **Prompt** | `string` | AI model Prompt - the instructions sent to the AI model |
-| **SampleObject** | `string` | A [sample response object](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
-| **JsonSchema** | `string` | A [JSON schema](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
+| **SampleObject** | `string` | A [sample response object](../../../ai-integration/gen-ai-integration/overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
+| **JsonSchema** | `string` | A [JSON schema](../../../ai-integration/gen-ai-integration/overview#the-elements_json-schema) to format the AI model's replies by <br/> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
 | **UpdateScript** | `string` | Update script - specifies what to do with AI model replies |
 | **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object) |
 
