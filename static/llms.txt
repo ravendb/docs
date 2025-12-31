@@ -76,7 +76,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [AI agents](https://docs.ravendb.net/ai-integration/ai-agents/ai-agents_start): Database-native agents that query and act safely.
 
-- [Vector search](https://docs.ravendb.net/ai-integration/vector-search/vector-search_start): Find contextually relevant data using vector search capabilities.
+- [Vector search](https://docs.ravendb.net/ai-integration/vector-search/start): Find contextually relevant data using vector search capabilities.
 
 - [GenAI tasks](https://docs.ravendb.net/ai-integration/gen-ai-integration/gen-ai_start): Empower applications using intelligent tasks.
 

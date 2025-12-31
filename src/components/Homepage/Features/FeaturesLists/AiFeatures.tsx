@@ -23,7 +23,7 @@ export default function AiFeaturesGrid() {
     {
       title: "Vector search",
       icon: "vector-search",
-      url: `/${activeVersion.label}/ai-integration/vector-search/vector-search_start`,
+      url: `/${activeVersion.label}/ai-integration/vector-search/start`,
       description: "Find contextually relevant data",
       minimumSupportedVersion: "7.0"
     },
