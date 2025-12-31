@@ -70,7 +70,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Integrations](https://docs.ravendb.net/integrations/postgresql-protocol/overview): Information on integrating RavenDB with other systems.
 
-- [AI Integration](https://docs.ravendb.net/ai-integration/ai-integration_start): Details on integrating AI capabilities with RavenDB.
+- [AI Integration](https://docs.ravendb.net/ai-integration/start): Details on integrating AI capabilities with RavenDB.
 
 ## Advanced Features
 
