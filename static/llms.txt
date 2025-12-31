@@ -78,7 +78,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Vector search](https://docs.ravendb.net/ai-integration/vector-search/start): Find contextually relevant data using vector search capabilities.
 
-- [GenAI tasks](https://docs.ravendb.net/ai-integration/gen-ai-integration/gen-ai_start): Empower applications using intelligent tasks.
+- [GenAI tasks](https://docs.ravendb.net/ai-integration/gen-ai-integration/start): Empower applications using intelligent tasks.
 
 - [Embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/start): Automatically convert data into AI-ready vectors.
 

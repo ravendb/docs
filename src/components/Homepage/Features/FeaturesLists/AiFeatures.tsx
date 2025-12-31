@@ -30,7 +30,7 @@ export default function AiFeaturesGrid() {
     {
       title: "GenAI tasks",
       icon: "genai",
-      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai_start`,
+      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/start`,
       description: "Empower your application using intelligent task",
       minimumSupportedVersion: "7.1"
     },
