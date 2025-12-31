@@ -74,7 +74,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 ## Advanced Features
 
-- [AI agents](https://docs.ravendb.net/ai-integration/ai-agents/ai-agents_start): Database-native agents that query and act safely.
+- [AI agents](https://docs.ravendb.net/ai-integration/ai-agents/start): Database-native agents that query and act safely.
 
 - [Vector search](https://docs.ravendb.net/ai-integration/vector-search/start): Find contextually relevant data using vector search capabilities.
 

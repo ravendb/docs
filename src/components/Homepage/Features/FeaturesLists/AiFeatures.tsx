@@ -16,7 +16,7 @@ export default function AiFeaturesGrid() {
     {
       title: "AI agents",
       icon: "ai-agents",
-      url: `/${activeVersion.label}/ai-integration/ai-agents/ai-agents_start`,
+      url: `/${activeVersion.label}/ai-integration/ai-agents/start`,
       description: "Database-native agents that query & act safely",
       minimumSupportedVersion: "7.1"
     },
