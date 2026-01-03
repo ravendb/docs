@@ -123,7 +123,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Each document in the `@embeddings-cache` collection references a **single attachment** that contains a single embedding vector.
   **The document ID includes**:  
-  * The [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string),
+  * The [connection string identifier](../../ai-integration/connection-strings/overview.mdx#creating-an-ai-connection-string),
     which specifies the provider and model that generated the embedding.
   * A Base64 hash generated from a text chunk value - either from a source document property or from a search term.
   * If the embedding was quantized by the task, the document ID also includes the quantization type.

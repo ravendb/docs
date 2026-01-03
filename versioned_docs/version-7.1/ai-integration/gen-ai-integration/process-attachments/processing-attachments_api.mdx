@@ -43,7 +43,7 @@ To send documents to the LLM along with their attachments using the API, define 
 * When [defining the connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#defining-a-connection-string) to the LLM, make sure the AI model you're utilizing is capable of processing the files attached to your documents.  
   E.g., use OpenAI `gpt-4.1-mini` to process attached image files.  
 
-* When [creating the context object](../../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements) that will be sent to the LLM, include document attachments by specifying them in the context generation script. The LLM will receive and process the attachments along with the main document content.  
+* When [creating the context object](../../../ai-integration/gen-ai-integration/overview#the-elements) that will be sent to the LLM, include document attachments by specifying them in the context generation script. The LLM will receive and process the attachments along with the main document content.  
 
       * Use the `with<FileType>` method of the `ai.genContext` object to include document attachments.  
       

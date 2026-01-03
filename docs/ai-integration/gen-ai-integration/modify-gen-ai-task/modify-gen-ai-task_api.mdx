@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * To modify an existing GenAI task, register a modified task configuration object with the server using the existing `TaskID`, via the `UpdateGenAiOperation` store operation.  
 * Note that this `TaskID` is **not** the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings) that we define as part of the task configuration, but an identifier that RavenDB uses internally to manage the task (same as it does with other ongoing tasks like ETL tasks, backup tasks, and others).  
-   * The **user-defined task identifier** is a `string` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../ai-integration/gen-ai-integration/gen-ai-overview#tracking-of-processed-document-parts) in the document metadata.  
+   * The **user-defined task identifier** is a `string` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../ai-integration/gen-ai-integration/overview#tracking-of-processed-document-parts) in the document metadata.  
    * The `TaskID` is a `long` variable that is used by RavenDB to identify and manage the task.  
      See the examples below to learn how to extract the `TaskID` and use it to register the modified task configuration.  
 

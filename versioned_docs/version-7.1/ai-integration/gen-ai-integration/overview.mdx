@@ -21,20 +21,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
     While creating a GenAI task via Studio, a smart interactive **test environment** is provided, allowing each phase of the task to be tested in a secluded playground, freely and without changing your data, while at the same time producing a result set that can be tried out by the next phase.  
 
 * A task can be built in minutes, e.g. to generate automated responses to frequently asked questions, escalate support tickets, summarize lengthy documents, enhance data security by detecting anomalies, or numerous other applications.  
-  See a few additional examples in the [common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases) section below.
+  See a few additional examples in the [common use cases](../../ai-integration/gen-ai-integration/overview#common-use-cases) section below.
 
 * You can use local and remote AI models, e.g. a local `Ollama llama3.2` service during a development phase that requires speed and no additional costs, and a remote `OpenAI gpt-4o-mini` when you need a live service with advanced capabilities.  
 
 * In this article:
-   * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/gen-ai-overview#ravendb-genai-tasks)
-     * [The flow](../../ai-integration/gen-ai-integration/gen-ai-overview#the-flow)
-     * [The elements](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements)
-     * [How to create and run a GenAI task](../../ai-integration/gen-ai-integration/gen-ai-overview#how-to-create-and-run-a-genai-task)
-   * [Runtime](../../ai-integration/gen-ai-integration/gen-ai-overview#runtime)
-     * [Tracking of processed document parts](../../ai-integration/gen-ai-integration/gen-ai-overview#tracking-of-processed-document-parts)
-   * [Licensing](../../ai-integration/gen-ai-integration/gen-ai-overview#licensing)
-   * [Supported services](../../ai-integration/gen-ai-integration/gen-ai-overview#supported-services)
-   * [Common use cases](../../ai-integration/gen-ai-integration/gen-ai-overview#common-use-cases)
+   * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/overview#ravendb-genai-tasks)
+     * [The flow](../../ai-integration/gen-ai-integration/overview#the-flow)
+     * [The elements](../../ai-integration/gen-ai-integration/overview#the-elements)
+     * [How to create and run a GenAI task](../../ai-integration/gen-ai-integration/overview#how-to-create-and-run-a-genai-task)
+   * [Runtime](../../ai-integration/gen-ai-integration/overview#runtime)
+     * [Tracking of processed document parts](../../ai-integration/gen-ai-integration/overview#tracking-of-processed-document-parts)
+   * [Licensing](../../ai-integration/gen-ai-integration/overview#licensing)
+   * [Supported services](../../ai-integration/gen-ai-integration/overview#supported-services)
+   * [Common use cases](../../ai-integration/gen-ai-integration/overview#common-use-cases)
 
 </Admonition>
 
@@ -51,18 +51,18 @@ Let's put the stages described above in order.
 1. A GenAI task continuously monitors the collection it is associated with.  
 2. When a document is added or modified, the task retrieves it.  
 3. The task generates context objects based on the source document data.  
-   To generate these objects, the task applies a user-defined [context generation script](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_context-objects) 
+   To generate these objects, the task applies a user-defined [context generation script](../../ai-integration/gen-ai-integration/overview#the-elements_context-objects) 
    that runs through the source document and generates context objects based on the document data.  
 4. The task sends each context object to a GenAI model for processing.  
     * The task is associated with a [Connection string](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#studio_connection-string) 
       that defines how to connect to the AI model.
     * Each context object is sent via a separate connection to the AI model.  
       (note that the number of concurrent connections to the AI model is configurable via the [MaxConcurrency](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#genaiconfiguration) setting.)  
-    * Each context object is sent along with a user-defined [Prompt](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_prompt), 
+    * Each context object is sent along with a user-defined [Prompt](../../ai-integration/gen-ai-integration/overview#the-elements_prompt), 
       that instructs the AI model what to do with the data, and 
-      a user-defined [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) 
+      a user-defined [JSON schema](../../ai-integration/gen-ai-integration/overview#the-elements_json-schema) 
       that instructs the AI model how to shape its response.  
-5. When the AI model returns its response, a user-defined [Update script](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_update-script) 
+5. When the AI model returns its response, a user-defined [Update script](../../ai-integration/gen-ai-integration/overview#the-elements_update-script) 
    is applied to handle the results.  
 
 ### The elements:

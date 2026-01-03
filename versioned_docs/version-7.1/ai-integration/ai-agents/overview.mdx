@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # AI agents: Overview
 <Admonition type="note" title="">
 
-* An AI agent is a highly customizable [mediation component](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flowchart) that an authorized client can tailor to its needs and install on the server. The agent serves the client by facilitating communication between the client, an LLM, and a RavenDB database.  
+* An AI agent is a highly customizable [mediation component](../../ai-integration/ai-agents/overview#ai-agent-usage-flowchart) that an authorized client can tailor to its needs and install on the server. The agent serves the client by facilitating communication between the client, an LLM, and a RavenDB database.  
 
 * Clients can use AI agents to automate complex workflows by leveraging LLM capabilities such as data analysis, decision-making, and natural language processing.  
 
@@ -25,14 +25,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Delegating the communication with the LLM to an AI agent can significantly reduce client code complexity and development overhead.
 
 * In this article:
-   * [Defining and running AI agents](../../ai-integration/ai-agents/ai-agents_overview#defining-and-running-an-ai-agent)
-      * [The main stages in defining an AI agent](../../ai-integration/ai-agents/ai-agents_overview#the-main-stages-in-defining-an-ai-agent)
-      * [What is a conversation](../../ai-integration/ai-agents/ai-agents_overview#what-is-a-conversation)
-      * [Initiating a conversation](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation)
-   * [AI agent usage flowchart](../../ai-integration/ai-agents/ai-agents_overview#ai-agent-usage-flowchart)
-   * [Streaming LLM responses](../../ai-integration/ai-agents/ai-agents_overview#streaming-llm-responses)
-   * [Reducing throughput and expediting LLM response](../../ai-integration/ai-agents/ai-agents_overview#reducing-throughput-and-expediting-llm-response)
-   * [Common use cases](../../ai-integration/ai-agents/ai-agents_overview#common-use-cases)  
+   * [Defining and running AI agents](../../ai-integration/ai-agents/overview#defining-and-running-an-ai-agent)
+      * [The main stages in defining an AI agent](../../ai-integration/ai-agents/overview#the-main-stages-in-defining-an-ai-agent)
+      * [What is a conversation](../../ai-integration/ai-agents/overview#what-is-a-conversation)
+      * [Initiating a conversation](../../ai-integration/ai-agents/overview#initiating-a-conversation)
+   * [AI agent usage flowchart](../../ai-integration/ai-agents/overview#ai-agent-usage-flowchart)
+   * [Streaming LLM responses](../../ai-integration/ai-agents/overview#streaming-llm-responses)
+   * [Reducing throughput and expediting LLM response](../../ai-integration/ai-agents/overview#reducing-throughput-and-expediting-llm-response)
+   * [Common use cases](../../ai-integration/ai-agents/overview#common-use-cases)  
 
 </Admonition>
 
@@ -76,7 +76,7 @@ To define an AI agent, the client needs to specify -
      The LLM will be able to invoke query tools freely to retrieve data from the database.  
       * **Read-only operations**  
         Query tools can apply **read operations** only.  
-        To make changes in the database, use [action tools](../../ai-integration/ai-agents/ai-agents_overview#action-tools).  
+        To make changes in the database, use [action tools](../../ai-integration/ai-agents/overview#action-tools).  
         <Admonition type="note" title="">
         Note that actions can be performed only by the client. The LLM can just request the client to perform actions on its behalf.
         </Admonition>
@@ -100,7 +100,7 @@ To define an AI agent, the client needs to specify -
 
 ### What is a conversation:
 A conversation is a communication session between the client, the agent, and the LLM that maintains the history of messages exchanged between these participants since the conversation began.  
-* The conversation starts when the client invokes the agent and provides it with an [initial context](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation).  
+* The conversation starts when the client invokes the agent and provides it with an [initial context](../../ai-integration/ai-agents/overview#initiating-a-conversation).  
 * The conversation may include multiple "turns" of message exchanges between the client and the LLM, mediated by the agent.  
    * Each turn starts with a new **user prompt** from the client.  
    * During the turn, the LLM can trigger the agent to run queries or request the client to perform actions, using [defined query and action tools](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools).  
@@ -116,12 +116,12 @@ A conversation is a communication session between the client, the agent, and the
 ### Initiating a conversation:
 To start a conversation with the LLM, the agent will send it an **initial context** that includes -  
 
-* The pre-defined [agent configuration](../../ai-integration/ai-agents/ai-agents_overview#the-main-stages-in-defining-an-ai-agent) (automatically sent by the agent) with:  
+* The pre-defined [agent configuration](../../ai-integration/ai-agents/overview#the-main-stages-in-defining-an-ai-agent) (automatically sent by the agent) with:  
    * The system prompt  
    * A response object that defines the layout for the LLM response  
    * Optional agent parameters  
    * Optional Query tools  
-     (and if any query tool is configured as an [initial-context query](../../ai-integration/ai-agents/ai-agents_overview#initial-context-queries) - results for this query)  
+     (and if any query tool is configured as an [initial-context query](../../ai-integration/ai-agents/overview#initial-context-queries) - results for this query)  
    * Optional Action tools  
   
 * **Values for agent parameters**  
@@ -162,7 +162,7 @@ The flowchart below illustrates interactions between the User, RavenDB client, A
    The client can interact with the database directly, either by its own initiative or as a result of AI agent action requests (query requests are handled by the agent).  
 
 3. **Client`<->`Agent** flow  
-    * To invoke an agent, the client needs to provide it with an [initial context](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation).  
+    * To invoke an agent, the client needs to provide it with an [initial context](../../ai-integration/ai-agents/overview#initiating-a-conversation).  
     * During the conversation, the agent may send to the client action requests on behalf of the LLM.  
     * When the LLM provides the agent with its final response, the agent will provide it to the client.  
       The client does not need to reply to this message.  
@@ -176,7 +176,7 @@ The flowchart below illustrates interactions between the User, RavenDB client, A
     * When the agent is requested to run a query that includes _LLM parameters_, it will replace these parameters with values provided by the LLM before running the query.  
 
 5. **Agent`<->`Model** flow  
-    * **When a conversation is started**, the agent needs to provide the AI model with an [initial context](../../ai-integration/ai-agents/ai-agents_overview#initiating-a-conversation), partly defined by the agent configuration and partly by the client.  
+    * **When a conversation is started**, the agent needs to provide the AI model with an [initial context](../../ai-integration/ai-agents/overview#initiating-a-conversation), partly defined by the agent configuration and partly by the client.  
     * **During the conversation**, the AI model can respond to the agent with -  
        * Requests for queries.  
          If a query includes LLM parameters, the LLM will include values for them, and the agent will replace the parameters with these values, run the query, and return its results to the LLM.  

@@ -9,7 +9,7 @@ import Panel from '@site/src/components/Panel';
 
 * In RavenDB, you can define AI tasks to automatically generate embeddings from your document content.  
   These embeddings are then stored in [dedicated collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx) within the database,  
-  enabling [Vector search](../../../ai-integration/vector-search/vector-search-overview.mdx) on your documents.
+  enabling [Vector search](../../../ai-integration/vector-search/overview.mdx) on your documents.
 
 * This article explains how to configure such a task.  
   It is recommended to first refer to this [Overview](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---overview)
@@ -62,7 +62,7 @@ import Panel from '@site/src/components/Panel';
   5. **Responsible node**  
      Select a node from the [Database group](../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this task.
   6. **Connection string**  
-     Select a previously defined [AI connection string](../../../ai-integration/connection-strings/connection-strings-overview.mdx) or create a new one.
+     Select a previously defined [AI connection string](../../../ai-integration/connection-strings/overview.mdx) or create a new one.
   7. **Enable document expiration**  
      This toggle appears only if the [Document expiration feature](../../../studio/database/settings/document-expiration.mdx) is Not enabled in the database.
      Enabling document expiration ensures that embeddings in the `@embeddings-cache` collection are automatically deleted when they expire.
@@ -337,7 +337,7 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
 * To handle lengthy text, you can define chunking strategies in the task definition and specify the desired number of tokens per chunk.
   Chunking splits large input texts into smaller, manageable chunks, each containing no more than the specified maximum number of tokens.  
 
-* The maximum number of tokens per chunk depends on the AI service provider and the specific model defined in the [connection string](../../../ai-integration/connection-strings/connection-strings-overview.mdx).
+* The maximum number of tokens per chunk depends on the AI service provider and the specific model defined in the [connection string](../../../ai-integration/connection-strings/overview.mdx).
   While RavenDB does not tokenize text, it estimates the number of tokens for chunking purposes by dividing the text length by 4.
 
 * The AI provider generates a single embedding for each chunk.  

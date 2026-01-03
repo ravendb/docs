@@ -16,28 +16,28 @@ export default function AiFeaturesGrid() {
     {
       title: "AI agents",
       icon: "ai-agents",
-      url: `/${activeVersion.label}/ai-integration/ai-agents/ai-agents_start`,
+      url: `/${activeVersion.label}/ai-integration/ai-agents/start`,
       description: "Database-native agents that query & act safely",
       minimumSupportedVersion: "7.1"
     },
     {
       title: "Vector search",
       icon: "vector-search",
-      url: `/${activeVersion.label}/ai-integration/vector-search/vector-search_start`,
+      url: `/${activeVersion.label}/ai-integration/vector-search/start`,
       description: "Find contextually relevant data",
       minimumSupportedVersion: "7.0"
     },
     {
       title: "GenAI tasks",
       icon: "genai",
-      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai_start`,
+      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/start`,
       description: "Empower your application using intelligent task",
       minimumSupportedVersion: "7.1"
     },
     {
       title: "Embeddings generation",
       icon: "ai-etl",
-      url: `/${activeVersion.label}/ai-integration/generating-embeddings/embeddings-generation_start`,
+      url: `/${activeVersion.label}/ai-integration/generating-embeddings/start`,
       description: "Automatically turn your data into AI-ready vectors",
       minimumSupportedVersion: "7.0"
     },
