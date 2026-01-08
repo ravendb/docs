@@ -69,7 +69,8 @@ Incorrect usage may crash the server, corrupt data, or cause irreversible change
 * **If your script calls a method that requires one of these contexts**, you can use the corresponding variable.  
   They are created for you and disposed automatically after the script runs.   
 
-* Each context must be opened using `OpenReadTransaction()` or with `OpenWriteTransaction()` before it is used.
+* Before using a context,  
+  you must open a transaction on it using `OpenReadTransaction()` or `OpenWriteTransaction()`.
 
 ---
 
