@@ -170,7 +170,7 @@ Atomic guards are removed **automatically** in the following scenarios:
 
 * **Document expires via the expiration feature**:
     * Create a document using a cluster-wide session (an associated atomic guard is created).
-    * Add the `@expires` metadata property the document, as described in [Document expiration](../studio/database/settings/document-expiration.mdx).
+    * Add the `@expires` metadata property the document, as described in [Document expiration](../studio/database/settings/document-expiration).
     * When the expiration time is reached, the document and its atomic guard will both be removed automatically.
     * Since different cleanup tasks handle the removal of **expired** documents and the removal of their associated atomic guards,
       it may happen that atomic guards of removed documents would linger in the compare-exchange entries list a short while longer before they are removed.
