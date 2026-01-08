@@ -59,7 +59,7 @@ import CodeBlock from '@theme/CodeBlock';
     * PUT / DELETE a document
     * PUT / DELETE a compare-exchange item
 * To prevent from concurrent documents modifications,  
-  the server creates [Atomic-Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) that will be associated with the documents.  
+  the server creates [Atomic-Guards](../../../compare-exchange/atomic-guards.mdx) that will be associated with the documents.  
   An Atomic-Guard will be created when:
     * A new document is created
     * Modifying an existing document that doesn't have yet an Atomic-Guard

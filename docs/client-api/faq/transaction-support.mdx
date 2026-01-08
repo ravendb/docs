@@ -192,7 +192,7 @@ This protocol ensures that the transaction is acknowledged by a majority of the 
 
 Similar to single-node transactions, RavenDB requires that you submit the cluster-wide transaction as a single request of all the changes you want to commit to the database. 
 
-Cluster-wide transactions have the notion of [atomic guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) to prevent an overwrite of a document modified in a cluster transaction by a change made in another cluster transaction.
+Cluster-wide transactions have the notion of [atomic guards](../../compare-exchange/atomic-guards.mdx) to prevent an overwrite of a document modified in a cluster transaction by a change made in another cluster transaction.
 
 <Admonition type="info" title="">
 
