@@ -58,8 +58,8 @@ const config: Config = {
             }
           },
           onlyIncludeVersions: getOnlyIncludeVersions(),
-          //editUrl:
-          //    'https://github.com/ravendb/docs/tree/main/'
+          editUrl:
+             'https://github.com/ravendb/docs/tree/main/'
         },
         blog: false,
         theme: {
@@ -85,6 +85,7 @@ const config: Config = {
         path: 'cloud',
         routeBasePath: 'cloud',
         sidebarPath: './sidebarsCloud.js',
+        editUrl: 'https://github.com/ravendb/docs/tree/main'
       },
     ]
   ],
@@ -188,7 +189,6 @@ const config: Config = {
         },
         {
           items: [
-            { label: "Contributing", href: "https://ravendb.net/" },
             { label: "About us", href: "https://ravendb.net/about" },
             { label: "Legal", href: "https://ravendb.net/legal" },
           ],

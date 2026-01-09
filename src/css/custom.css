@@ -192,11 +192,6 @@ pre[class*="language-"] {
   background: transparent;
 }
 
-/* Custom margin-top for navigation */
-.pagination-nav {
-    margin-top: 12px !important;
-}
-
 /* Hide pagination container when empty */
 .pagination-nav:empty {
   display: none;
@@ -437,4 +432,9 @@ hr {
 /* Override custom word break for headers inside <header> tag */
 .theme-doc-markdown header :is(h1, h2, h3, h4, h5, h6) {
     @apply break-normal;
+}
+
+/* Smaller margin-top for pagination-nav */
+.pagination-nav {
+    @apply !mt-8;
 }
