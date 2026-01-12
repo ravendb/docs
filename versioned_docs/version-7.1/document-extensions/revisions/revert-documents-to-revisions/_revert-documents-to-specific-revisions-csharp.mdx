@@ -13,8 +13,7 @@ import Panel from '@site/src/components/Panel';
 
 * In this article:  
   * [Overview](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#overview)
-  * [Revert documents - using a session](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents-using-a-session)
-  * [Revert documents - using an operation](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents-using-an-operation)
+  * [Revert documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents)
     * [Revert single document](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-single-document)
     * [Revert multiple documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-multiple-documents)
   * [Syntax](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#syntax)  
@@ -41,67 +40,8 @@ import Panel from '@site/src/components/Panel';
     Time series data is Not reverted. Learn more in [Revisions and time series](../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
     
 </Panel>
-  
-<Panel heading="Revert documents - using a session">
-    
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-```csharp
-using (var session = store.OpenSession())
-{
-    // Load a document & get its change vector:
-    var currentOrder = session.Load<Order>("orders/830-A");
-    string currentOrderCV = session.Advanced.GetChangeVectorFor(currentOrder);
-    
-    // Get the revisions of this document
-    var revisions = session.Advanced.Revisions.GetFor<Order>(currentOrder.Id);
-    
-    // Choose a specific revision to revert to:
-    // revisions[0] contains the current document version
-    // revisions[1] is the latest actual revision
-    var previousRevision = revisions[1];
-        
-    // Evict both entities from the session
-    session.Advanced.Evict(currentOrder);
-    session.Advanced.Evict(previousRevision);
-    
-    // Store the previous revision content as the current document
-    session.Store(previousRevision, currentOrderCV, previousRevision.Id);
-    session.SaveChanges();
-}
-```
-</TabItem>
-<TabItem value="Async" label="Async">
-```csharp
-using (var asyncSession = store.OpenAsyncSession())
-{
-   // Load a document & get its change vector
-   var currentOrder = await asyncSession.LoadAsync<Order>("orders/830-A");
-   string currentOrderCV = asyncSession.Advanced.GetChangeVectorFor(currentOrder);
-    
-   // Get the revisions of this document
-   var revisions = await asyncSession.Advanced.Revisions.GetForAsync<Order>(currentOrder.Id);
-        
-   // Choose a specific revision to revert to:
-   // revisions[0] contains the current document version
-   // revisions[1] is the latest actual revision — the most recent past version
-   var previousRevision = revisions[1];
-        
-   // Evict both entities from the session
-   asyncSession.Advanced.Evict(currentOrder);
-   asyncSession.Advanced.Evict(previousRevision);
-        
-   // Store the previous revision content as the current document
-   asyncSession.StoreAsync(previousRevision, currentOrderCV, previousRevision.Id);
-   await asyncSession.SaveChangesAsync();
-}
-```
-</TabItem>
-</Tabs>    
-    
-</Panel>
 
-<Panel heading="Revert documents - using an operation">
+<Panel heading="Revert documents">
     
 * You can revert single or multiple documents to specific revisions using the `RevertRevisionsByIdOperation` operation.
 
