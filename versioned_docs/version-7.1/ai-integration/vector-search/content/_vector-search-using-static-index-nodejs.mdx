@@ -940,7 +940,6 @@ const results = await session.query({ index: Products_ByMultipleFields })
         {similarity: 0.8}
     )
     .waitForNonStaleResults()
-    .ofType(Product)
     .all();
 ```
 </TabItem>
@@ -954,6 +953,7 @@ const results = await session.advanced.rawQuery(`
         .addParameter("minPrice", 200)
         .addParameter("searchTerm1", "Alice")
         .addParameter("searchTerm2", "italian food")
+        .waitForNonStaleResults()
         .all();
 ```
 </TabItem>
@@ -1003,7 +1003,6 @@ const similarProducts = await session.query({ index: Products_ByVector_Text })
         }
     )
     .waitForNonStaleResults()
-    .ofType(Product)
     .all();
 ```
 </TabItem>
@@ -1014,6 +1013,7 @@ const similarProducts = await session.advanced.rawQuery(`
     // Pass a document ID to the 'forDoc' method to find similar documents
     where vector.search(vectorFromText, embedding.forDoc($documentID), 0.82)`)
         .addParameter("$documentID", "Products/7-A")
+        .waitForNonStaleResults()
         .all();
 ```
 </TabItem>
@@ -1021,7 +1021,7 @@ const similarProducts = await session.advanced.rawQuery(`
 ```sql
 from index "Products/ByVector/Text"
 // Pass a document ID to the 'forDoc' method to find similar documents
-where vector.search(VectorFromText, embedding.forDoc($documentID), 0.82)
+where vector.search(vectorFromText, embedding.forDoc($documentID), 0.82)
 {"documentID" : "Products/7-A"}
 ```
 </TabItem>
