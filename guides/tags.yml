@@ -1,0 +1,6 @@
+attachments:
+    label: 'Attachments'
+    permalink: '/attachments'
+    description: 'Content related to attachments.'
+querying:
+indexes:

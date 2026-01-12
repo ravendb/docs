@@ -59,7 +59,7 @@ const config: Config = {
           },
           onlyIncludeVersions: getOnlyIncludeVersions(),
           editUrl:
-             'https://github.com/ravendb/docs/edit/main'
+             'https://github.com/ravendb/docs/tree/main/'
         },
         blog: false,
         theme: {
