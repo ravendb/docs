@@ -12,7 +12,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   const {metadata} = useDoc();
   const docSlug = metadata.slug;
-  const canonicalUrl = `${siteConfig.url}/${siteConfig.customFields.latestVersion}${docSlug}`;
+  const canonicalUrl = `${siteConfig.url}/${siteConfig.customFields.latestVersion}${docSlug}/`;
 
   return (
     <>
