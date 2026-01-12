@@ -115,6 +115,9 @@ E.g., to add version `7.2`:
           //    'https://github.com/ravendb/docs/tree/main/'
         },
    ```
+3. Update `latestVersion` in `customFields` of `docusaurus.config.ts`.
+
+4. Update `defaultVersion` in `redirect_root_to_version.js`.
 
 ## Modifying latest version
 

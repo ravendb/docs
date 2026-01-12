@@ -26,6 +26,10 @@ const config: Config = {
     experimental_faster: true
   },
 
+  customFields: {
+      latestVersion: "7.2"
+  },
+
   url: "https://docs.ravendb.net/",
   baseUrl: "/",
 
