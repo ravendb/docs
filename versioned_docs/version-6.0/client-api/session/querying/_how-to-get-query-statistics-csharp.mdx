@@ -10,9 +10,12 @@ import CodeBlock from '@theme/CodeBlock';
 * Stats such as query duration, number of results, index name used in the query, and more,  
   are returned in the `QueryStatistics` object.
 
+* `Statistics` should be called on the **final query object that is executed/materialized** (e.g. by calling `ToList`, `ToListAsync`, `First`, `FirstOrDefault`, etc.). If you convert between query types (e.g. `ToDocumentQuery()`, `ToAsyncDocumentQuery()`, `ToQueryable()`), a new query object may be created and previously-requested statistics will **not** be carried over. In such cases, the original `stats` variable will remain with its default values.
+
 * In This Page:  
    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+ 
 
 </Admonition>
 ## Get query statistics
