@@ -499,7 +499,7 @@ In this example, imported data **includes** archived documents:
   for the existence of the `@archived: true` property, which indicates that the document is archived.
   Based on this check, the script can decide how to handle the document - for example, skip it entirely or send only selected fields.
 
-* With [RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx), documents that are archived in the source database and sent to the target
+* With [RavenDB ETL](../server/ongoing-tasks/etl/raven.mdx), documents that are archived in the source database and sent to the target
   are not archived in the destination database.
 
 * In the following example, the ETL script checks whether the document is archived, and skips it if it is:
