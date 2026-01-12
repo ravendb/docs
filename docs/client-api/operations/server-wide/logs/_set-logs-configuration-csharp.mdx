@@ -53,7 +53,8 @@ var configuration = new SetLogsConfigurationOperation.LogsConfiguration
         new LogFilter(
             minLevel: LogLevel.Error,
             maxLevel: LogLevel.Fatal,
-            condition: "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
+            condition:
+                "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
             action: LogFilterAction.LogFinal
         ),
 
@@ -96,7 +97,8 @@ var configuration = new SetLogsConfigurationOperation.LogsConfiguration
         new LogFilter(
             minLevel: LogLevel.Error,
             maxLevel: LogLevel.Fatal,
-            condition: "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
+            condition: 
+                "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
             action: LogFilterAction.LogFinal
         ),
 
@@ -125,6 +127,17 @@ await store.Maintenance.Server.SendAsync(setLogsOp);
 ```
 </TabItem>
 </Tabs>
+    
+<Admonition type="note" title="">
+
+If you're using an external `NLog.config` file,  
+you can define the logging level and filters directly in the XML file using `<logger>` and `<rules>`.
+
+* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).
+
+* Note: When an external NLog config file is used, its settings override any values set via `SetLogsConfigurationOperation`.
+
+</Admonition>    
     
 </Panel>
 
@@ -186,7 +199,8 @@ await store.Maintenance.Server.SendAsync(setLogsOp);
   This is a live stream of recent log activity shown only in the UI.
     
 * These logs are configured separately from the logs that are written to disk.
-  Any settings you apply here, such as minimum level or filters, apply **only** the admin logs and do not affect the server logs saved on disk.
+  Any settings you apply here, such as the minimum level or filters, apply **only** to the admin logs displayed in the Studio and do not affect the server logs saved on disk.
+  These changes are applied immediately and will affect all open Studio sessions that are displaying the Admin Logs view.
   
 * While these logs can be exported, their settings are Not persisted (even if you set _persist_ to _true_ in the operation).
 
@@ -215,7 +229,8 @@ var configuration = new SetLogsConfigurationOperation.AdminLogsConfiguration()
 // Define the set logs configuration operation.
 var setLogsOp = new SetLogsConfigurationOperation(configuration);
 
-// Execute the operation by passing it to 'Maintenance.Server.Send'
+// Execute the operation by passing it to 'Maintenance.Server.Send'.
+// The changes apply immediately to all open Studio sessions.
 store.Maintenance.Server.Send(setLogsOp);
 ```
 </TabItem>
@@ -241,7 +256,8 @@ var configuration = new SetLogsConfigurationOperation.AdminLogsConfiguration()
 // Define the set logs configuration operation.
 var setLogsOp = new SetLogsConfigurationOperation(configuration);
 
-// Execute the operation by passing it to 'Maintenance.Server.SendAsync'
+// Execute the operation by passing it to 'Maintenance.Server.SendAsync'.
+// The changes apply immediately to all open Studio sessions.
 await store.Maintenance.Server.SendAsync(setLogsOp);   
 ```
 </TabItem>
