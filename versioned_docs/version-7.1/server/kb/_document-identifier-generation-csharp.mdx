@@ -68,7 +68,8 @@ For example: `users/123-A` (HiLo ID), or `users/000000000001-A` (Server-side ID)
 This structure is common but not mandatory:  
   * RavenDB does not require the ID to include a collection prefix.  
   * The default slash separator (`/`) can be **customized** for [HiLo IDs](../../server/kb/document-identifier-generation.mdx#hilo-algorithm-id)
-    and [Identity IDs](../../server/kb/document-identifier-generation.mdx#identity-id). => see how below....
+    and [Identity IDs](../../server/kb/document-identifier-generation.mdx#identity-id).  
+    See [Customizing the separator character](../../server/kb/document-identifier-generation#customizing-the-separator-character) below.
 
 </ContentFrame>
 <ContentFrame>
@@ -201,8 +202,8 @@ using (var session = store.OpenSession())
   The server  
 
 * **Description**:   
-  * When you create a document and provide an ID string that ends with a _slash_ (`/`),  
-    the server will generate the full document ID for you.  
+  * When you create a document and provide an ID string that ends with the configured **_separator character_**  
+    (a _slash_ `/` by default), the server will generate the full document ID for you.      
   * The server handling the request increments its [last document etag](../../glossary/etag.mdx) and appends it,  
     along with the **server's node tag**, to the string you provided.  
   * Since the _etag_ reflects any document change (add, update, delete),  
@@ -227,6 +228,10 @@ using (var session = store.OpenSession())
   If you _manually_ generate a document ID with a pattern that matches the server-side generated IDs,  
   RavenDB will _not_ check for that and will overwrite the existing document.  
   The leading zeros in server-side generated IDs help reduce the risk of such accidental collisions.
+    
+* **Customizing the separator character**:  
+  The separator character can be customized. See: [Customizing the separator character](../../server/kb/document-identifier-generation.mdx#customizing-the-separator-character).  
+  If it was modified (e.g., to `$`), you must end your ID string with that character instead of `/`.  
 
 ---
 
@@ -420,8 +425,8 @@ using (var session = store.OpenSession())
 
 <Panel heading="Customizing the separator character">
 
-The separator character used in the [Identity](../../server/kb/document-identifier-generation.mdx#identity-id)
-and [HiLo](../../server/kb/document-identifier-generation.mdx#hilo-algorithm-id) document IDs can be customized.  
+The separator character used in the [Identity](../../server/kb/document-identifier-generation.mdx#identity-id),
+[HiLo](../../server/kb/document-identifier-generation.mdx#hilo-algorithm-id), and [Server-side](../../server/kb/document-identifier-generation#server-side-id) document IDs can be customized.  
 By default, the separator is a _slash_ (`/`), but this can be changed to any other character, except _pipe_ (`|`).
 
 There are several ways to customize the separator.  
@@ -433,7 +438,7 @@ It can be configured globally for all databases (server-wide), or per database, 
 
 * Configure the separator character globally in: [Client configuration (server-wide)](../../studio/server/client-configuration.mdx).  
 * Override the global setting for a specific database in: [Client configuration (per database)](../../studio/database/settings/client-configuration-per-database.mdx).  
-* This will apply to both **Identity** & **HiLo** IDs.
+* This will affect **Identity**, **HiLo**, and **Server-side** IDs.
 
 ---
     
@@ -441,7 +446,7 @@ It can be configured globally for all databases (server-wide), or per database, 
     
 * Set the separator globally using the [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).  
 * Override the global setting for a specific database using the [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration.mdx).
-* This will apply to both **Identity** & **HiLo** IDs.
+* This will affect **Identity**, **HiLo**, and **Server-side** IDs.
 
 <TabItem value="set_separator_via_operation" label="set_separator_via_operation">
 ```csharp
@@ -478,22 +483,33 @@ using (var session = store.OpenSession())
     
     session.SaveChanges();
     // The document is saved with ID: "users#1"
+    
+    // Create document - Server-side ID
+    // =================================
+    var user3 = new User() { Name = "Bob" };
+    
+    // Since the default separator was modified to '#', 
+    // you must explicitly end the ID string with '#' to trigger server-side ID generation.
+    session.Store(user3, "users#");
+    
+    session.SaveChanges();
+    // The document is saved with ID such as: "users#0000000000000008890-A"
 }
 ```
 </TabItem>
     
 ---
 
-## From the Client API - using conventions:
+### From the Client API - using conventions:
     
 * For HiLo IDs, you can also set the separator character using the [IdentityPartsSeparator convention](../../client-api/configuration/conventions.mdx#identitypartsseparator) 
   on the _DocumentStore_ during initialization.
 * Note: Any separator configured later via an operation or from the Studio will override this convention.
-* This **applies only to HiLo IDs** and has no effect on Identity IDs.
+* This **applies only to HiLo IDs** and has no effect on Identity and Server-side IDs.
 
 <TabItem value="set_separator_via_convention" label="set_separator_via_convention">
 ```csharp
-// Set the separator character for HiLo ID via conventions    
+// Set the separator character for HiLo ID via conventions
 var store = new DocumentStore
 {
     Urls = new[] { "http://localhost:8080" },
@@ -524,7 +540,19 @@ using (var session = store.OpenSession())
     session.Store(user2, "users|");
     
     session.SaveChanges();
-    // The document is saved with ID: "users/1" (uses default separator '/')
+    // Modifying the separator character via conventions does NOT affect Identity IDs,
+    // so the document is saved with ID: "users/1" (uses default separator '/')
+    
+    // Create document - Server-side ID
+    // ================================
+    var user3 = new User() { Name = "Bob" };
+    
+    // Modifying the separator character via conventions does NOT affect server-side IDs,
+    // so you must still end the ID string with '/' to trigger server-side ID generation.
+    session.Store(user3, "users/");
+    
+    session.SaveChanges();
+    // The document is saved with ID such as: "users/0000000000000008902-A"
 }
 ```
 </TabItem>
