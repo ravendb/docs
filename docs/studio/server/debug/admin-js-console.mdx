@@ -1,6 +1,6 @@
 ---
 title: "Admin JS Console"
-sidebar_label: Admin JS Console
+sidebar_label: "Admin JS Console"
 sidebar_position: 1
 ---
 
@@ -10,49 +10,113 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Admin JS Console
 <Admonition type="note" title="">
 
-* The Admin Console lets you run javascript code to execute advanced operations on the server.  
+* The Admin JS Console lets you run JavaScript code on the server or a specific database,  
+  with low-level access and context objects.
 
-<Admonition type="danger" title="Danger" id="danger" href="#danger">
-Do not use the console unless you are sure about what you're doing. Running a script in the Admin Console could cause your server to crash, cause loss of 
-data, or other irreversible harm.  
+* This page contains a partial list of available methods that can be executed using the console.
+    
+<Admonition type="danger" title="">
+Do not use the console unless you are sure of what you're doing.  
+Incorrect usage may crash the server, corrupt data, or cause irreversible changes.
 </Admonition>
 
-* This page contains a partial list of operations that can be executed with the console.  
-
-* In this page:
-    * [Console view](../../../studio/server/debug/admin-js-console.mdx#console-view)
-    * [Operations](../../../studio/server/debug/admin-js-console.mdx#operations)
+---
+    
+* In this article:
+    * [Admin JS Console view](../../../studio/server/debug/admin-js-console.mdx#admin-js-console-view)
+    * [Context objects in scripts](../../../studio/server/debug/admin-js-console#context-objects-in-scripts)
+    * [Console methods](../../../studio/server/debug/admin-js-console.mdx#console-methods)
 
 </Admonition>
-## Console view
+
+<Panel heading="Admin JS Console view">
 
 ![NoSQL DB Server Debug - Admin JS Console](./assets/AdminJSConsole.png)  
 
+1. Navigate to **Manage Server > Admin JS Console**.
+    
+2. **Script target**  
+   Choose the target for the script:  
+   Select _Server_ to run a script against the server,  
+   or choose a _database_ from the dropdown to run the script in the context of that database.
+    
+3. **Script**  
+   Write your JavaScript code in the editor:  
+   * If you selected the _server_ as the target, use the `server` variable.  
+     This object in your script is a direct reference to the live C# `RavenServer` instance in the RavenDB backend.  
+     Any method you call on it will be executed on the actual server object.
+   * If you selected a _database_ as the target, use the `database` variable.  
+     This object in your script is a direct reference to the live C# `DocumentDatabase` instance in the RavenDB backend.
+     Any method you call on it will be executed on the actual database object.
+    
+4. **Run**  
+   Click the _Run_ button to execute the script.
+    
+5. **Script results**  
+   The output will be displayed in this results panel.
 
-1. Select the target for the script you want to run. The options are `Server` and `Database`.  
-2. If you selected `Database` as your target, use this dropdown menu to select which database to run the script against.  
-3. Write your javascript code here. The server or database you have chosen as your target is represented by the variable `server` or `database` 
-respectively.  
-4. The output of the script.  
+</Panel>
 
+<Panel heading="Context objects in scripts">
+    
+* In addition to the _server_ and _database_ objects, the Admin JS Console provides access to three **context variables**: `serverCtx`, `databaseCtx`, and `clusterCtx`.
 
+* **If your script calls a method that requires one of these contexts**, you can use the corresponding variable.  
+  They are created for you and disposed automatically after the script runs.   
 
-## Operations
+* Before using a context,  
+  you must open a transaction on it using `OpenReadTransaction()` or `OpenWriteTransaction()`.
 
-This is a partial list of operations that can be used from the console. The operations are sorted into endpoints with a common parent path.  
+---
 
+#### Context Variables
 
-### Paths from `server`  
+| Variable        | Type                          | Scope                |
+|-----------------|-------------------------------|----------------------|
+| **databaseCtx** | `DocumentsOperationContext`   | Specific database    |
+| **serverCtx**   | `TransactionOperationContext` | Single RavenDB node  |
+| **clusterCtx**  | `ClusterOperationContext`     | Entire cluster       |
+
+---
+
+#### Script examples
 
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`server.ServerStore.Engine.*
-`}
-</CodeBlock>
+```javascript
+// Get number of documents in the selected database
+databaseCtx.OpenReadTransaction();
+return database.DocumentsStorage.GetNumberOfDocuments(databaseCtx);
+
+// Get the current server node tag
+clusterCtx.OpenReadTransaction();
+return server.ServerStore.Engine.ReadNodeTag(clusterCtx);
+
+// Get the name of a server-wide backup task by ID
+serverCtx.OpenReadTransaction();
+return server.ServerStore.Cluster.GetServerWideTaskNameByTaskId(serverCtx,
+    'server-wide/backup/configurations', 1);
+```
+</TabItem>
+    
+</Panel>
+
+<Panel heading="Console methods">
+
+This is a **partial** list of methods that can be invoked on the `server` object from the Admin JS Console.      
+
+---
+    
+### Methods under&nbsp;`server.ServerStore.Engine`
+
+<TabItem value="javascript" label="javascript">
+```javascript
+server.ServerStore.Engine.*
+```
 </TabItem>
 
 #### Methods
@@ -65,6 +129,8 @@ This is a partial list of operations that can be used from the console. The oper
 
 #### Variables
 
-| Endpoint | Type | Description |
-| - | - | - |
+| Variable          | Type    | Description |
+|-------------------|---------|-------------|
 | `RequestSnapshot` | boolean | Set this value to true to make this server request the raft logs from the leader node of its cluster. This will allow the server to resynchronize. |
+
+</Panel>
