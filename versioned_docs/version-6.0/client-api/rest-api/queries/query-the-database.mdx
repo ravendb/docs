@@ -141,9 +141,6 @@ Linebreaks are added for clarity.
 Returns _just_ the name of an existing index that can be used to satisfy this query. If no appropriate index could be found, returns the next best index with an explanation of why it is not appropriate for this query - e.g. it does not index the necessary fields.
 If no index was found, this query will _not_ trigger the creation of an auto index as it normally would. |
 | **serverSideQuery** | Returns _just_ the RQL query that is run on the server side, which may look slightly different than the query sent |
-| **graph** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results analyzed as nodes and edges |
-| **detailedGraphResult** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) results arranged by their corresponding parts of the query |
-
 
 #### Headers
 

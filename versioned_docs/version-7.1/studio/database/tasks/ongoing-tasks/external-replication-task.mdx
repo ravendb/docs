@@ -32,7 +32,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication.mdx) and [migration](../../../../sharding/migration.mdx) sections.  
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
-  See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
+  See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
 
 * In this page:  
   * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#general-information-about-external-replication-task)
@@ -47,22 +47,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <u>What is being replicated:</u>  
 All database documents and related data.
-* [Attachments](../../../../document-extensions/attachments/what-are-attachments.mdx)  
-* [Revisions](../../../../document-extensions/revisions/overview.mdx)  
-* [Counters](../../../../document-extensions/counters/overview.mdx)  
-* [Time Series](../../../../document-extensions/timeseries/overview.mdx)  
+* [Attachments](../../../../document-extensions/attachments/what-are-attachments)  
+* [Revisions](../../../../document-extensions/revisions/overview)  
+* [Counters](../../../../document-extensions/counters/overview)  
+* [Time Series](../../../../document-extensions/timeseries/overview)  
 
 <u>What is **not** being replicated:</u>  
 Server and cluster level features.  
-* [Indexes](../../../../indexes/creating-and-deploying.mdx)  
-* [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)  
-* [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview.mdx)
-* [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+* [Indexes](../../../../indexes/creating-and-deploying)  
+* [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+* [Compare-Exchange](../../../../compare-exchange/overview)
+* [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)
 * [Identities](../../../../server/kb/document-identifier-generation.mdx#strategy--3)  
 * Ongoing tasks
-   * [ETL](../../../../server/ongoing-tasks/etl/basics.mdx)
-   * [Backup](../../../../studio/database/tasks/backup-task.mdx)
-   * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
+   * [ETL](../../../../server/ongoing-tasks/etl/basics)
+   * [Backup](../../../../studio/database/tasks/backup-task)
+   * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
 
 <Admonition type="note" title="Why are cluster-level features not replicated?" id="why-are-cluster-level-features-not-replicated" href="#why-are-cluster-level-features-not-replicated">
 RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  

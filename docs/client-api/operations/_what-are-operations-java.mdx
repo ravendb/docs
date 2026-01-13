@@ -14,7 +14,7 @@ They are available in the DocumentStore under the **operations**, **maintenance*
 ## Common Operations
 
 Common operations include set-based operations for [Patching](../../client-api/operations/patching/set-based.mdx) or removal of documents by using queries (more can be read [here](../../client-api/operations/common/delete-by-query.mdx)).  
-There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview.mdx) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment.mdx) and [Counters](../../client-api/operations/counters/counter-batch.mdx).
+There is also the ability to handle distributed [Compare Exchange](../../compare-exchange/overview) operations and manage [Attachments](../../document-extensions/attachments/get-attachments) and [Counters](../../client-api/operations/counters/counter-batch.mdx).
 
 ### How to Send an Operation
 
@@ -56,7 +56,7 @@ public Operation sendAsync(IOperation<OperationIdResult> operation, SessionInfo 
 
 * [GetAttachmentOperation](../../document-extensions/attachments/get-attachments#get-attachment-via-an-operation)
 * [PutAttachmentOperation](../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachment-via-an-operation)
-* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)
+* [DeleteAttachmentOperation](../../document-extensions/attachments/delete-attachment)
 
 #### Patching
 

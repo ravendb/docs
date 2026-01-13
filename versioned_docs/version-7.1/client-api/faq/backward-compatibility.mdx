@@ -21,7 +21,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   compatible, and advises regarding upgrading.  
 
 * In this page:  
-  * [Client/Server Compatibility](../../client-api/faq/backward-compatibility.mdx#client/server-compatibility)  
+  * [Client-Server Compatibility](../../client-api/faq/backward-compatibility.mdx#client-server-compatibility)  
      * [Compatibility - Up to RavenDB 4.1](../../client-api/faq/backward-compatibility.mdx#compatibility---up-to-ravendb-41)  
      * [Compatibility - RavenDB 4.2 and Higher](../../client-api/faq/backward-compatibility.mdx#compatibility---ravendb-42-and-higher)  
   * [Upgrading](../../client-api/faq/backward-compatibility.mdx#upgrading)  
@@ -31,7 +31,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 </Admonition>
-## Client/Server Compatibility
+## Client-Server Compatibility
 
 ### Compatibility - Up to RavenDB 4.1
 RavenDB **Clients** of versions lower than 4.2 are compatible with **Servers 
@@ -68,24 +68,18 @@ E.g. -
 * `Client 4.2` is **compatible** with `Server 4.2`, `Server 4.5`, 
   `Server 5.2`, and any other server of a higher version.  
 
-
-
 ## Upgrading
 
 ### Upgrading - Up to RavenDB 4.1
-Upgrading RavenDB from a version earlier than 4.2 to a higher major version, 
-requires the upgrading of the server and all clients in lockstep.  
-Please visit our [migration introduction](../../migration/client-api/introduction.mdx) 
-page to learn more about migrating from early versions.  
+Upgrading RavenDB from a version earlier than 4.2 to a higher major version, requires the upgrading of the server and all clients in lockstep.  
+
 ### Upgrading - RavenDB 4.2 and Higher
-When RavenDB is upgraded from version 4.2 and higher, e.g. from 4.2 to 5.3, 
-it is recommended - but not mandatory - to upgrade the clients, since they 
-are [compatible with servers of versions higher than theirs](../../client-api/faq/backward-compatibility.mdx#ravendb-42-and-higher-compatibility).  
+When RavenDB is upgraded from version 4.2 and higher, e.g. from 4.2 to 5.3, it is recommended - but not mandatory - to upgrade the clients, since they are 
+[compatible with servers of versions higher than theirs](../../client-api/faq/backward-compatibility#compatibility---ravendb-42-and-higher).  
+
 ### Upgrading Order
-To properly upgrade your applications and server, we advise you to upgrade the server first, 
-then the clients.  
-This way, your applications will keep working as before and you can update 
-them one by one if needed.
+To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients.  
+This way, your applications will keep working as before and you can update them one by one if needed.
 
 
 

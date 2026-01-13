@@ -312,7 +312,7 @@ This setting will **override** the global configuration defined by the [Indexing
 * **Configuring the subscription task behavior**:
   * **At the database level or server-wide**:  
     To control whether queries in data subscription tasks process archived documents,  
-    set the [Subscriptions.ArchivedDataProcessingBehavior](../todo...mdx) configuration key at either the database level or server-wide   
+    set the `Subscriptions.ArchivedDataProcessingBehavior` configuration key at either the database level or server-wide   
     (default: `ExcludeArchived`).
   * **Per task**:  
     You can override this global behavior per data subscription task directly in the task definition,  
@@ -499,7 +499,7 @@ In this example, imported data **includes** archived documents:
   for the existence of the `@archived: true` property, which indicates that the document is archived.
   Based on this check, the script can decide how to handle the document - for example, skip it entirely or send only selected fields.
 
-* With [RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx), documents that are archived in the source database and sent to the target
+* With [RavenDB ETL](../server/ongoing-tasks/etl/raven), documents that are archived in the source database and sent to the target
   are not archived in the destination database.
 
 * In the following example, the ETL script checks whether the document is archived, and skips it if it is:
