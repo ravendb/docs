@@ -134,7 +134,7 @@ Each snapshot document includes the following fields, among others:
 **Atomic-guards usage**:  
 
   * As with every document created using a cluster-wide transaction in RavenDB, 
-    the server creates an [Atomic-Guard](../../client-api/session/cluster-transaction/atomic-guards.mdx) for each event or snapshot document that is stored to prevent concurrent modifications.
+    the server creates an [Atomic-Guard](../../compare-exchange/atomic-guards.mdx) for each event or snapshot document that is stored to prevent concurrent modifications.
 
   * The atomic-guard is particularly beneficial in scenarios where an actor recovers its events and snapshots from a node that failed, 
     came back up, but has not yet received the complete replication information from the other nodes in the database group. 
