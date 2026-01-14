@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -19,7 +21,7 @@ import CodeBlock from '@theme/CodeBlock';
     
 </Admonition>
 
-## Supported data types for vector search
+<Panel heading="Supported data types for vector search">
 
 ### Textual data
 
@@ -83,7 +85,9 @@ you can also use lists (for example, `List<float>` or `List<float[]>`) for dynam
 
 </Admonition>
 
-## RavenVector
+</Panel>
+
+<Panel heading="RavenVector">
 
 RavenVector is RavenDB's dedicated data type for storing and querying **numerical embeddings**.   
 It is highly optimized to minimize storage space and improve the speed of reading arrays from disk,  
@@ -126,3 +130,5 @@ For example:
 </Tabs>
 
 ![json document](../assets/json-document.png)
+
+</Panel>

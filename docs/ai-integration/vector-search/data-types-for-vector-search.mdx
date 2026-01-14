@@ -8,8 +8,9 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import DataTypesForVectorSearchCsharp from './content/_data-types-for-vector-search-csharp.mdx';
+import DataTypesForVectorSearchNodejs from './content/_data-types-for-vector-search-nodejs.mdx';
 
-export const supportedLanguages = ["csharp"];
+export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -17,6 +18,9 @@ export const supportedLanguages = ["csharp"];
    <DataTypesForVectorSearchCsharp />
 </LanguageContent>
 
+<LanguageContent language="nodejs">
+   <DataTypesForVectorSearchNodejs />
+</LanguageContent>
 
 <!---
 ### Vector Search

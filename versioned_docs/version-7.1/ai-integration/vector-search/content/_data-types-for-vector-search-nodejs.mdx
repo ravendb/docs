@@ -49,8 +49,8 @@ import Panel from '@site/src/components/Panel';
 **Raw embedding data**:  
 Use when precision is critical.  
 
-`float[]` - A single vector of numerical values representing raw embedding data.  
-`float[][]`- An array of vectors, where each entry is a separate embedding vector.  
+`number[]` - A single vector of numerical values representing raw embedding data.  
+`number[][]`- An array of vectors, where each entry is a separate embedding vector.  
 
 </Admonition>
 
@@ -59,8 +59,8 @@ Use when precision is critical.
 **Pre-quantized data**:   
 Use when you prioritize storage efficiency and query speed.  
 
-`byte[] / sbyte[]` - A single pre-quantized embedding vector in the _Int8_ or _Binary_ quantization format.  
-`byte[][] / sbyte[][]` - An array of pre-quantized embedding vectors.  
+`number[]` - A single pre-quantized embedding vector in the _Int8_ or _Binary_ quantization format.  
+`number[][]` - An array of pre-quantized embedding vectors.  
 
 When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#section-1).
 
@@ -76,59 +76,81 @@ Use when embedding data needs to be represented as a compact and easily serializ
 
 </Admonition>
 
-<Admonition type="note" title="">
-
-**Using lists**:  
-
-While arrays (`float[]`) are the most direct representation of numerical embeddings,  
-you can also use lists (for example, `List<float>` or `List<float[]>`) for dynamic sizing in your application code.
-
-</Admonition>
-
 </Panel>
 
 <Panel heading="RavenVector">
 
-RavenVector is RavenDB's dedicated data type for storing and querying **numerical embeddings**.   
-It is highly optimized to minimize storage space and improve the speed of reading arrays from disk,  
-making it ideal for vector search.
+* `RavenVector` is a helper function that wraps a numerical array into a dedicated `@vector` object in RavenDB.  
+  This structure is highly efficient - it minimizes disk space usage and improves read performance,  
+  making it ideal for both storing and querying embeddings.    
+    
+* `RavenVector` is purely structural - it does not apply any transformation or validation to the vector,  
+  it simply ensures that the vector is stored under the `@vector` field in the JSON document.  
+  All vector processing and comparisons are handled entirely by the server.    
 
-For example, you can define:
-
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`RavenVector<float>;       // A single vector of floating-point values.
-List<RavenVector<float>>; // A collection of float-based vectors.
-RavenVector<sbyte>;       // A single pre-quantized vector in Int8 format (8-bit signed integer).
-List<RavenVector<sbyte>>; // A collection of sbyte-based vectors.
-RavenVector<byte>;        // A single pre-quantized vector in Binary format (8-bit unsigned integer).
-List<RavenVector<byte>>;  // A collection of byte-based vectors.
-`}
-</CodeBlock>
-</TabItem>
-
-When a class property is stored as a `RavenVector`, the vector's content will appear under the `@vector` field in the JSON document stored in the database.
-For example:
+---
+    
+#### Example: storing a vector using RavenVector
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="CSharp_class" label="CSharp_class">
-<CodeBlock language="csharp">
-{`public class SampleClass
-{
-    public string Id { get; set; }
-    public string Title { get; set; }
+<TabItem value="Store_document" label="Store_document">
+```js
+const session = documentStore.openSession();
     
-    // Storing data in a RavenVector property for optimized storage and performance
-    public RavenVector<float> EmbeddingRavenVector { get; set; }
-    
-    // Storing data in a regular array property
-    public float[] EmbeddingVector { get; set; }
+const user = new User();
+
+// Store embedding in a 'RavenVector' format
+user.EmbeddingRavenVector = RavenVector([
+        6.599999904632568,
+        7.699999809265137
+    ]);
+
+// Store embedding in a raw numerical array
+// This won’t take advantage of RavenDB’s optimized storage format
+user.EmbeddingVector = [
+        6.599999904632568,
+        7.699999809265137
+    ];
+
+await session.store(user, "users/1");
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Class" label="Class">
+```js
+class User {
+    constructor(embeddingRavenVector, embeddingVector) {
+        this.embeddingRavenVector = embeddingRavenVector;
+        this.embeddingVector = embeddingVector;
+    }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-![json document](../assets/json-document.png)
+When stored, the vector's content created with the `RavenVector` function will appear under the `@vector` field in the JSON document:
+
+![json document](../assets/json-document-nodejs.png)
+
+To query the `embeddingRavenVector field`, use:
+
+<TabItem value="" label="">
+```js
+const similarUsers = await session.query({ collection: "Users" })
+    .vectorSearch(
+        field => field.withEmbedding("embeddingRavenVector"),
+
+        queryVector => queryVector.byEmbedding(
+            // Use 'RavenVector' to wrap the query vector
+            RavenVector([
+                6.599999904632568,
+                7.699999809265137
+            ])
+        )
+    )
+    .all();
+```
+</TabItem>
 
 </Panel>
+    
