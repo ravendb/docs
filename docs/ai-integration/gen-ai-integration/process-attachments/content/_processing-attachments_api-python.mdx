@@ -27,7 +27,7 @@ import Panel from "@site/src/components/Panel";
 <Panel heading="Sending attachments to the LLM">
 
 <Admonition type="note" title="">
-Find a complete example of defining and running a GenAI task that processes attachments in [Processing attachments: Studio](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio).  
+Find a complete example for defining and running a GenAI task that processes attachments in [Processing attachments: Studio](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio).  
 </Admonition>
 
 To send documents to the LLM along with their attachments using the API, define and run your GenAI task just as you would without attachments, with the following differences:  
@@ -72,84 +72,88 @@ To send documents to the LLM along with their attachments using the API, define 
 <ContentFrame>
 ## Example
 
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "open-ai-cs",
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
 
-        // Connection type
-        ModelType = AiModelType.Chat,
+# Define the connection string to OpenAI
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="open-ai-cs",
+    identifier="open-ai-cs",
 
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings(
-            apiKey: "your-api-key",
-            endpoint: "https://api.openai.com/v1",
-            model: "gpt-4.1-mini") // Model capable of handling image processing
-    };
+    # Connection type
+    model_type=AiModelType.CHAT,
 
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
+    # OpenAI connection settings
+    openai_settings=OpenAiSettings(
+        api_key="your-api-key",
+        endpoint="https://api.openai.com/v1",
+        model="gpt-4.1-mini" # Model capable of handling image processing
+    )
+)
 
-    // Define the GenAI task configuration
-    GenAiConfiguration config = new GenAiConfiguration
-    {
-        // Task name
-        Name = "electric-toy-circuit-description",
+# Deploy the connection string to the server
+operation = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(operation)
 
-        // Unique task identifier
-        Identifier = "electric-toy-circuit-description",
+# Define the GenAI task configuration
+config = GenAiConfiguration(
+    # Task name
+    name="electric-toy-circuit-description",
 
-        // Connection string to AI model
-        ConnectionStringName = "open-ai-cs",
+    # Unique task identifier
+    identifier="electric-toy-circuit-description",
 
-        // Task is enabled
-        Disabled = false,
+    # Connection string to AI model
+    connection_string_name="open-ai-cs",
 
-        // Collection associated with the task
-        Collection = "ElectricToys",
+    # Task is enabled
+    disabled=False,
 
-        // Context generation script - format for objects to be sent to the AI model
-        // Include document attachments in the context object using `with<FileType>` methods
-        GenAiTransformation = new GenAiTransformation {
-            Script = @"
-                     ai.genContext({ ToyName: this.Name, ToyId: id(this) })
-                    .withPng(loadAttachment(`electric-circuit.png`));"
-        },
+    # Collection associated with the task
+    collection="ElectricToys",
 
-        // AI model Prompt - the instructions sent to the AI model
-        Prompt = "You get documents from an `ElectricToys` document collection. " +  
-                 "These are toys for youth that wants to learn simple electronics. " +  
-                 "Each document includes a toy's ID and name, and an attached " +  
-                 "image with the scheme of a circuit that operates the toy. " +  
-                 "Your job is to provide a simple description of up to 20 words " +  
-                 "for the circuit, that will be added to the toy's document to " +  
-                 "describe how it is operated.",
+    # Context generation script - format for objects to be sent to the AI model
+    # Include document attachments in the context object using `with<FileType>` methods
+    gen_ai_transformation=GenAiTransformation(
+        script="""
+        ai.genContext({ ToyName: this.Name, ToyId: id(this) })
+        .withPng(loadAttachment(`electric-circuit.png`));
+        """
+    ),
 
-        // Sample object - a sample response object to format the AI model's replies by
-        SampleObject = JsonConvert.SerializeObject( new {
-                ToyName = "Toy name as provided by the GenAI task",
-                ToyId = "Toy ID as provided by the GenAI task",
-                CircuitDescription = "LLM's description of the electric circuit"
-                }),
+    # AI model prompt - the instructions sent to the AI model
+    prompt=(
+        "You get documents from an `ElectricToys` document collection. "
+        "These are toys for youth that wants to learn simple electronics. "
+        "Each document includes a toy's ID and name, and an attached "
+        "image with the scheme of a circuit that operates the toy. "
+        "Your job is to provide a simple description of up to 20 words "
+        "for the circuit, that will be added to the toy's document to "
+        "describe how it is operated."
+    ),
 
-        // Update script - specifies what to do with AI model replies
-        UpdateScript = @"    
-                       // Embed LLM response in source document  
-                       this.CircuitDescription = $output.CircuitDescription;",
+    # Sample object - a sample response object to format the AI model's replies by
+    sample_object=json.dumps({
+        "ToyName": "Toy name as provided by the GenAI task",
+        "ToyId": "Toy ID as provided by the GenAI task",
+        "CircuitDescription": "LLM's description of the electric circuit"
+    }),
 
-        // Max concurrent connections to AI model
-        MaxConcurrency = 4
-    };
+    # Update script - specifies what to do with AI model replies
+    update_script="""
+    // Embed LLM response in source document
+    this.CircuitDescription = $output.CircuitDescription;
+    """,
 
-    // Run the task
-    var GenAiOperation = new AddGenAiOperation(config);
-    var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
-}
+    # Max concurrent connections to AI model
+    max_concurrency=4
+)
+
+# Run the task
+gen_ai_operation = AddGenAiOperation(config)
+add_gen_ai_result = store.maintenance.send(gen_ai_operation)
 
 ```
 
