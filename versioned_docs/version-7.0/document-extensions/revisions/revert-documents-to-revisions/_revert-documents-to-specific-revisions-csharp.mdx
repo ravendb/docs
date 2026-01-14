@@ -2,52 +2,67 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* This article describes how to revert specific documents to specific revisions using the `RevertRevisionsByIdOperation` operation.
+* This article describes how to revert specific documents to **specific revisions**.  
+  To revert documents from all collections (or from selected collections) to a **specific point in time**,  
+  see [Revert documents to specific time](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time.mdx). 
 
-* To revert documents from all collections (or from selected collections) to a specified point in time,  
-  see [Revert documents to revisions](../../../../document-extensions/revisions/revert-revisions.mdx). 
-
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
-
-* In this page:  
-  * [Overview](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#overview)
-  * [Revert single document](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-single-document)
-  * [Revert multiple documents](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-multiple-documents)
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#syntax)  
+* In this article:  
+  * [Overview](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#overview)
+  * [Revert documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents)
+    * [Revert single document](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-single-document)
+    * [Revert multiple documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-multiple-documents)
+  * [Syntax](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#syntax)  
 
 </Admonition>
-## Overview
 
-* To revert a document to a specific revision, provide the document ID and the change-vector of the target revision to the `RevertRevisionsByIdOperation` operation.  
-  The document content will be overwritten by the content of the specified revision.
+<Panel heading="Overview">
+    
+* When reverting to a specific revision,
+  the document content will be overwritten by the content of the specified revision.
 
-* An exception will be thrown if the revision's change-vector is not found, does not exist for the specified document, or belongs to a different document.
-
-* Reverting a document with this operation can be executed even if the revisions configuration is disabled:
-  * When revisions are **enabled**:  
+* Reverting a document to a specific revision can be executed even if the revisions configuration is disabled:
+  * **When revisions are ENABLED**:  
     Reverting the document creates a new revision containing the content of the target revision.  
-  * When revisions are **disabled**:  
+  * **When revisions are DISABLED**:  
     The document is reverted to the target revision without creating a new revision.  
 
-* In addition to the document itself, reverting will impact Document Extensions as follows:  
+* In addition to the document itself, reverting will impact _Document Extensions_ as follows:  
   * **Attachments**:  
     If the target revision owns attachments, they are restored to their state when the revision was created.  
   * **Counters**:  
     If the target revision owns counters, they are restored to functionality with their values at the time the revision was created.  
   * **Time series**:  
-    Time series data is Not reverted. Learn more [here](../../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
+    Time series data is Not reverted. Learn more in [Revisions and time series](../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
+    
+</Panel>
 
-* When executing this operation on a document that had revisions and was deleted, placing it in the Revisions Bin,
+<Panel heading="Revert documents">
+    
+* You can revert single or multiple documents to specific revisions using the `RevertRevisionsByIdOperation` operation.
+
+* By default, the operation will be applied to the [default database](../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database, see [switch operations to different database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+    
+* To revert a document to a specific revision, provide the document ID and the change-vector of the target revision to the `RevertRevisionsByIdOperation` operation.  
+  The document content will be overwritten by the content of the specified revision.
+
+* An exception will be thrown if the revision's change-vector is not found, does not exist for the specified document, or belongs to a different document.
+    
+* When executing this operation on a document that had revisions and was deleted, placing it in the Revisions Bin,  
   the document will be **recreated** with the content of the specified target revision and will be removed from the Revisions Bin.
-##### How to obtain a revision's change-vector:  
+
+---
+
+### How to obtain a revision's change-vector:  
 
 The change-vector of a revision can be obtained via:  
 
-  * The Client API - follow the code in the examples [below](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-single-document)  
+  * The Client API - follow the code in the examples [below](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions#revert-single-document)  
   * Or from the document view in the Studio  
 
 ![Get revision CV](./assets/get-cv-for-revision.png)
@@ -58,17 +73,17 @@ The change-vector of a revision can be obtained via:
    This top label indicates that you are viewing a revision and not the current document.
 4. Click the copy button in the Properties pane to copy this revision's change-vector to your clipboard.
 
+</Panel>
 
-
-## Revert single document
+<Panel heading="Revert single document">
 
 Using RavenDB's sample data, document _orders/1-A_ has a total of 7 revisions.  
 In this example, we revert document _orders/1-A_ to its very first revision.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
+```csharp
+using (var session = store.OpenSession())
 {
     // Get the revisions metadata for the document you wish to revert
     // ==============================================================
@@ -76,28 +91,27 @@ In this example, we revert document _orders/1-A_ to its very first revision.
     var revisionsMetadata = session.Advanced.Revisions
         .GetMetadataFor(id: "orders/1-A");
 
-    // Get the CV of the revision you wish to revert to:
-    // =================================================
+    // Get the change-vector of the revision you wish to revert to:
+    // ============================================================
     
     // Note: revisionsMetadata[0] is the latest revision,
     // so specify the index of the revision you want.
     // In this example, it will be the very first revision of the document:
     
     var numberOfRevisions = revisionsMetadata.Count();
-    var changeVector = revisionsMetadata[numberOfRevisions-1]
+    var revisionChangeVector = revisionsMetadata[numberOfRevisions-1]
         .GetString(Constants.Documents.Metadata.ChangeVector);
 
     // Execute the operation
     store.Operations.Send(
         // Pass the document ID and the change-vector of the revision to revert to
-        new RevertRevisionsByIdOperation("orders/1-A", changeVector));
+        new RevertRevisionsByIdOperation("orders/1-A", revisionChangeVector));
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (var asyncSession = store.OpenAsyncSession())
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
 {
     // Get the revisions metadata for the document you wish to revert
     // ==============================================================
@@ -105,38 +119,37 @@ In this example, we revert document _orders/1-A_ to its very first revision.
     var revisionsMetadata = await asyncSession.Advanced.Revisions
         .GetMetadataForAsync(id: "Orders/1-A");
     
-    // Get the CV of the revision you wish to revert to:
-    // =================================================
+    // Get the change-vector of the revision you wish to revert to:
+    // ============================================================
     
     // Note: revisionsMetadata[0] is the latest revision,
     // so specify the index of the revision you want.
     // In this example, it will be the very first revision of the document:
     
     var numberOfRevisions = revisionsMetadata.Count();
-    var changeVector = revisionsMetadata[numberOfRevisions-1]
+    var revisionChangeVector = revisionsMetadata[numberOfRevisions-1]
         .GetString(Constants.Documents.Metadata.ChangeVector);
 
     // Execute the operation
     await store.Operations.SendAsync(
         // Pass the document ID and the change-vector of the revision to revert to
-        new RevertRevisionsByIdOperation("Orders/1-A", changeVector));
+        new RevertRevisionsByIdOperation("Orders/1-A", revisionChangeVector));
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Revert multiple documents
+<Panel heading="Revert multiple documents">
 
 You can use the operation to revert multiple documents.  
 Note: The documents do not need to belong to the same collection.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
+```csharp
+using (var session = store.OpenSession())
 {
     // Get the revisions metadata for the documents you wish to revert
     var revisionsMetadata1 = session.Advanced.Revisions
@@ -144,7 +157,7 @@ Note: The documents do not need to belong to the same collection.
     var revisionsMetadata2 = session.Advanced.Revisions
         .GetMetadataFor(id: "users/999");
 
-    // Get the CV of the revisions you wish to revert to
+    // Get the change-vector of the revisions you wish to revert to
     var changeVector1 = revisionsMetadata1[2]
         .GetString(Constants.Documents.Metadata.ChangeVector);
     var changeVector2 = revisionsMetadata1[3]
@@ -156,12 +169,11 @@ Note: The documents do not need to belong to the same collection.
         new RevertRevisionsByIdOperation(new Dictionary<string, string>()
             { { "orders/1-A", changeVector1 }, { "users/999", changeVector2 } }));
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (var asyncSession = store.OpenAsyncSession())
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
 {
     // Get the revisions metadata for the documents you wish to revert
     var revisionsMetadata1 = await asyncSession.Advanced.Revisions
@@ -169,7 +181,7 @@ Note: The documents do not need to belong to the same collection.
     var revisionsMetadata2 = await asyncSession.Advanced.Revisions
         .GetMetadataForAsync(id: "users/999");
 
-    // Get the CV of the revisions you wish to revert to
+    // Get the change-vector of the revisions you wish to revert to
     var changeVector1 = revisionsMetadata1[2]
         .GetString(Constants.Documents.Metadata.ChangeVector);
     var changeVector2 = revisionsMetadata1[3]
@@ -181,31 +193,29 @@ Note: The documents do not need to belong to the same collection.
         new RevertRevisionsByIdOperation(new Dictionary<string, string>()
             { { "orders/1-A", changeVector1 }, { "users/999", changeVector2 } }));
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Syntax
-
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="csharp">
-{`Available overloads:
+<Panel heading="Syntax">
+    
+### `RevertRevisionsByIdOperation`
+    
+<TabItem value="" label="">
+```csharp
+Available overloads:
 ====================
 public RevertRevisionsByIdOperation(string id, string cv);
 public RevertRevisionsByIdOperation(Dictionary<string, string> idToChangeVector);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameter            | Type                         | Description                                                                                                                                 |
 |----------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**               | `string`                     | The ID of the document to revert.                                                                                                           |
-| **cv**               | `string`                     | The change vector of the revision to which the document should be reverted.                                                                 |
+| **cv**               | `string`                     | The change-vector of the revision to which the document should be reverted.                                                                 |
 | **idToChangeVector** | `Dictionary<string, string>` | A dictionary where each key is a document ID, and each value is the change-vector of the revision to which the document should be reverted. |
-
-
-
-
+    
+</Panel>
