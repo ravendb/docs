@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
 
 # Creating AI agents: API
 <Admonition type="note" title="">
@@ -46,7 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Creating a connection string
+<Panel heading="Creating a connection string">
 
 Your agent will need a connection string to connect with the LLM. Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
 (You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings))
@@ -156,7 +158,9 @@ Or you can use a remote `OpenAI` service for its additional resources and capabi
   </TabItem>
   </Tabs>
 
-## Defining an agent configuration
+</Panel>
+
+<Panel heading="Defining an agent configuration">
 
 To create an AI agent you need to prepare an **agent configuration** and populate it with 
 your settings and tools.  
@@ -189,12 +193,12 @@ The agent will send the system prompt you define here to the LLM to define its b
   When you're done, return these details in your answer to the user as well.");
   ```
 
-* `AiAgentConfiguration` constructor  
+* `AiAgentConfiguration` Constructor  
   ```csharp
   public AiAgentConfiguration(string name, string connectionStringName, string systemPrompt);
   ```
 
-* `AiAgentConfiguration` class  
+* `AiAgentConfiguration` Class  
   ```csharp
   public class AiAgentConfiguration
   {
@@ -242,7 +246,9 @@ The agent will send the system prompt you define here to the LLM to define its b
 
 Once the initial agent configuration is created, we need to add it a few additional elements.  
 
-### Set the agent ID:
+<ContentFrame>
+
+### Set the agent ID
 Use the `Identifier` property to provide the agent with a unique ID that the 
 system will recognize it by.  
 
@@ -251,7 +257,10 @@ system will recognize it by.
 agent.Identifier = "reward-productive-employee";
 ```
 
-### Define a response object:
+</ContentFrame>
+<ContentFrame>
+
+### Define a response object
 Define a [structured output](https://platform.openai.com/docs/guides/structured-outputs) response object that the LLM will populate with its response to the user.  
 
 To define the response object, you can use the `SampleObject` and/or the `OutputSchema` property   
@@ -306,7 +315,10 @@ agent.OutputSchema = "{" +
 </TabItem>
 </Tabs>
 
-### Add agent parameters:
+</ContentFrame>
+<ContentFrame>
+
+### Add agent parameters
 Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
 Values for agent parameters are provided by the client, or by a user through the client, 
 when a chat is started.  
@@ -328,12 +340,15 @@ is for), and pass this instance to the `agent.Parameters.Add` method.
       "or \"everywhere\" to look for orders shipped to all countries"));
   ```
 
-* `AiAgentParameter` definition 
+* `AiAgentParameter` Definition 
   ```csharp
   public AiAgentParameter(string name, string description);
   ```
 
-### Set maximum number of iterations:
+</ContentFrame>
+<ContentFrame>
+
+### Set maximum number of iterations
 You can limit the number of times that the LLM is allowed to request the usage of 
 agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall` to change this limit.  
 
@@ -353,7 +368,10 @@ Note that you can improve the TTFB (Time To First Byte) by getting the LLM's res
 Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
 </Admonition>
 
-### Set chat trimming configuration:
+</ContentFrame>
+<ContentFrame>
+
+### Set chat trimming configuration
 
 To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
 use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
@@ -408,12 +426,17 @@ with your settings.
   }
   ```
 
-## Adding agent tools
+</ContentFrame>
+</Panel>
+
+<Panel heading="Adding agent tools">
 
 You can enhance your agent with Query and Action tools, that allow the LLM to query your database and trigger client actions.  
 After defining agent tools and submitting them to the LLM, it is up to the LLM to decide if and when to use them. 
 
-### Query tools:
+<ContentFrame>
+
+### Query tools
 
 [Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
 A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
@@ -541,7 +564,7 @@ A query tool includes a natural-language **description** that explains the LLM w
   }
   ```
 
-* **Syntax**  
+* `AiAgentToolQueryOptions` Class  
   ```csharp
   public class AiAgentToolQueryOptions : IDynamicJson
   {
@@ -550,10 +573,11 @@ A query tool includes a natural-language **description** that explains the LLM w
   }
     ```
 
-      |Property|Type|Description|
-      |--------|----|-----------|
-      |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
-      |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
+* `AiAgentToolQueryOptions` Properties
+  |Property|Type|Description|
+  |--------|----|-----------|
+  |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
+  |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
 
       <Admonition type="note" title="">
       Note: the two flags can be set regardless of each other.  
@@ -565,7 +589,10 @@ A query tool includes a natural-language **description** that explains the LLM w
           and the LLM will also be able to trigger its execution later in the conversation.  
       </Admonition>
 
-### Action tools:
+</ContentFrame>
+<ContentFrame>
+
+### Action tools
 
 Action tools allow the LLM to trigger the client to action (e.g., to modify or add a document).  
 An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
@@ -609,8 +636,11 @@ a response that explains how it went, e.g. `done`.
     public string ParametersSchema { get; set; }
   }
   ```
+</ContentFrame>
 
-## Creating the Agent
+</Panel>
+
+<Panel heading="Creating the Agent">
 
 The agent configuration is ready, and we can now register the agent with the server using the `CreateAgent` method.  
 
@@ -639,7 +669,7 @@ The agent configuration is ready, and we can now register the agent with the ser
   }
   ```
 
-* `CreateAgent` overloads  
+* `CreateAgent` Overloads  
   ```csharp
   // Asynchronously creates or updates an AI agent configuration on the database, 
   // with the given schema as an example for a response object
@@ -656,18 +686,19 @@ The agent configuration is ready, and we can now register the agent with the ser
   AiAgentConfigurationResult CreateAgent<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject) where TSchema : new()
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | configuration | `AiAgentConfiguration` | The agent configuration |
-      | sampleObject | `TSchema` | Example response object |
+* `CreateAgent` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | configuration | `AiAgentConfiguration` | The agent configuration |
+  | sampleObject | `TSchema` | Example response object |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID. |
+  | Return value | Description |
+  |--------------|-------------|
+  | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID. |
 
-<hr />
+</Panel>
 
-## Retrieving existing agent configurations
+<Panel heading="Retrieving existing agent configurations">
 
 You can retrieve the configuration of **an existing agent** using `GetAgent`.  
 
@@ -686,7 +717,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   var agents = existingAgentsList.AiAgents;
   ```
 
-* `GetAgent` and `GetAgents` overloads  
+* `GetAgent` and `GetAgents` Overloads  
   ```csharp
   // Synchronously retrieves the configuration of an AI agent by its ID
   AiAgentConfiguration GetAgent(string agentId)
@@ -701,15 +732,15 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   Task<GetAiAgentsResponse> GetAgentsAsync(CancellationToken token = default)
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | agentId | `string` | The unique ID of the agent you want to retrieve |
+* `GetAgent` and `GetAgents` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agentId | `string` | The unique ID of the agent you want to retrieve |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `AiAgentConfiguration` | The agent configuration |
-      | `GetAiAgentsResponse` | The response containing a list of all agent configurations |
-  ```
+  | Return value | Description |
+  |--------------|-------------|
+  | `AiAgentConfiguration` | The agent configuration |
+  | `GetAiAgentsResponse` | The response containing a list of all agent configurations |
 
 * `GetAiAgentsResponse` class  
   ```csharp
@@ -719,9 +750,11 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   }
   ```
 
-<hr />
+</Panel>
 
-## Managing conversations
+<Panel heading="Managing conversations">
+
+<ContentFrame>
 
 ### Setting a conversation:
 
@@ -730,6 +763,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
    * The **agent ID**  
    * The **conversation ID**  
      The conversation ID that you provide when starting a conversation determines whether a new conversation will start, or an existing conversation will be continued.  
+     <Admonition type="note" title="">
       * Conversations are kept in the `@conversations` collection.  
         A conversation document's name starts with a prefix (such as `Chats/`) that can be 
         set when the conversation is initiated.  
@@ -740,6 +774,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
       * If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
         the conversation will be retrieved from storage and continued where you left off.  
       * If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
+      </Admonition>
    * Values for **agent parameters**, if defined, in an `AiConversationCreationOptions` instance.  
 * Set the user prompt using the `SetUserPrompt`method.  
   The user prompt informs the agent of the user's requests and expectations for this chat.  
@@ -763,22 +798,23 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   public IAiConversationOperations Conversation(string agentId, string conversationId, AiConversationCreationOptions creationOptions, string changeVector = null)
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | agentId | `string` | The agent unique ID |
-      | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
-      | creationOptions | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
-      | changeVector | `string` | Optional change vector for concurrency control |
+* `Conversation` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agentId | `string` | The agent unique ID |
+  | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
+  | creationOptions | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
+  | changeVector | `string` | Optional change vector for concurrency control |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `IAiConversationOperations` | The conversation operations interface for conversation management.<br />Methods of this interface like `Run`, `StreamAsync`, `Handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
+  | Return value | Description |
+  |--------------|-------------|
+  | `IAiConversationOperations` | The conversation operations interface for conversation management.<br />Methods of this interface like `Run`, `StreamAsync`, `Handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
 
 * `SetUserPrompt` Definition  
   ```csharp
   void SetUserPrompt(string userPrompt);
   ```
-* `AiConversationCreationOptions` class  
+* `AiConversationCreationOptions` Class  
   Use this class to set conversation creation options, including values for agent parameters and the conversation's expiration time if it remains idle.  
   ```csharp
   // Conversation creation options, including agent parameters and idle expiration configuration
@@ -804,6 +840,9 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
       public AiConversationCreationOptions AddParameter(string name, object value);
   }
   ```
+
+</ContentFrame>
+<ContentFrame>
 
 ### Processing action-tool requests:
 During the conversation, the LLM can request the agent to trigger action tools.  
@@ -869,11 +908,12 @@ Handlers are typically used for simple, immediate operations like storing a docu
   void Handle<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, object> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel) where TArgs : class;
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | actionName | `string` | The action tool name |
-      | action | `Func<TArgs, Task<object>>` or `Func<TArgs, object>` or `Func<AiAgentActionRequest, TArgs, Task<object>>` or `Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the action request and returns a response to the LLM |
-      | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+* `Handle` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | actionName | `string` | The action tool name |
+  | action | `Func<TArgs, Task<object>>` or `Func<TArgs, object>` or `Func<AiAgentActionRequest, TArgs, Task<object>>` or `Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the action request and returns a response to the LLM |
+  | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
 
 #### <u>Action-tool Receivers</u>
 A **receiver** is created for a specific action tool and registered with the server using the `Receive` method.  
@@ -945,7 +985,7 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   </TabItem>
   </Tabs>
 
-* `Receive` overloads  
+* `Receive` Overloads  
   ```csharp
   // Registers an Asynchronous receiver for an action tool
   void Receive<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, Task> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
@@ -954,11 +994,12 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   void Receive<TArgs>(string actionName, Action<AiAgentActionRequest, TArgs> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | actionName | `string` | The action tool name |
-      | action | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request |
-      | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+* `Receive` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | actionName | `string` | The action tool name |
+  | action | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request |
+  | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
 
 * `AddActionResponse` Definition
   ```csharp
@@ -966,13 +1007,13 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   void AddActionResponse(string toolId, string actionResponse)
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | toolId | `string` | The action request unique ID |
-      | actionResponse | `string` | The response to send back to the LLM through the agent |
+* `AddActionResponse` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | toolId | `string` | The action request unique ID |
+  | actionResponse | `string` | The response to send back to the LLM through the agent |
 
-
-* `AiAgentActionRequest` class  
+* `AiAgentActionRequest` Class  
   Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
   ```csharp
   public class AiAgentActionRequest
@@ -988,11 +1029,14 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   }
   ```
 
+</ContentFrame>
+<ContentFrame>
+
 ### Conversation response:
 
 The LLM response is returned by the agent to the client in an `AiAnswer` object, with an answer to the user prompt and the conversation status, indicating whether the conversation is complete or a further "turn" is required.  
 
-* `AiAnswer`syntax  
+* `AiAnswer`Syntax  
   ```csharp
   public class AiAnswer<TAnswer>
   {
@@ -1011,6 +1055,9 @@ The LLM response is returned by the agent to the client in an `AiAnswer` object,
       ActionRequired
   }
   ```
+
+</ContentFrame>
+<ContentFrame>
 
 ### Setting user prompt and running the conversation:
 
@@ -1037,9 +1084,10 @@ if (LLMResponse.Status == AiConversationResult.Done)
 
 See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example).  
 
-<hr />
+</ContentFrame>
+</Panel>
 
-## Stream LLM responses
+<Panel heading="Stream LLM responses">
 
 You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
 
@@ -1071,7 +1119,7 @@ Streaming the response allows the client to start processing it before it is com
   }
   ```
 
-* `StreamAsync` overloads:  
+* `StreamAsync` Overloads:  
 
       ```csharp
       // The property to stream is indicated using a lambda expression
@@ -1087,20 +1135,21 @@ Streaming the response allows the client to start processing it before it is com
       Func<string, Task> streamedChunksCallback, CancellationToken token = default);
       ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | streamPropertyPath | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
-      | streamPropertyPath | `string` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
-      | streamedChunksCallback | `Func<string, Task>` | A callback function that is invoked with each incoming chunk of the streamed property |
-      | token | `CancellationToken` | An optional token that can be used to cancel the streaming operation |
+* `StreamAsync` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | streamPropertyPath | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
+  | streamPropertyPath | `string` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
+  | streamedChunksCallback | `Func<string, Task>` | A callback function that is invoked with each incoming chunk of the streamed property |
+  | token | `CancellationToken` | An optional token that can be used to cancel the streaming operation |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `Task<AiAnswer<TAnswer>>` | After streaming the specified property, the return value contains the final conversation result and status (e.g. "Done" or "ActionRequired"). |
+  | Return value | Description |
+  |--------------|-------------|
+  | `Task<AiAnswer<TAnswer>>` | After streaming the specified property, the return value contains the final conversation result and status (e.g. "Done" or "ActionRequired"). |
 
-<hr />
+</Panel>
 
-## Full example
+<Panel heading="Full example">
 
 The agent's user in this example is a human experience manager.  
 The agent helps its user to reward employees by searching, using query tools, 
@@ -1282,6 +1331,4 @@ public async Task createAndRunAiAgent_full()
     }
 }
 ```
-
-
-
+</Panel>

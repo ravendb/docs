@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
 
 # Creating AI agents: API
 <Admonition type="note" title="">
@@ -48,7 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Creating a connection string
+<Panel heading="Creating a connection string">
 
 Your agent will need a connection string to connect with the LLM. Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
 (You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings))
@@ -154,7 +156,9 @@ Or you can use a remote `OpenAI` service for its additional resources and capabi
   </TabItem>
   </Tabs>
 
-## Defining an agent configuration
+</Panel>
+
+<Panel heading="Defining an agent configuration">
 
 To create an AI agent you need to prepare an **agent configuration** and populate it with 
 your settings and tools.  
@@ -244,7 +248,9 @@ The agent will send the system prompt you define here to the LLM to define its b
 
 Once the initial agent configuration is created, we need to add it a few additional elements.  
 
-### Set the agent ID:
+<ContentFrame>
+
+### Set the agent ID
 Use the `agent.identifier` property to provide the agent with a unique ID that the 
 system will recognize it by.  
 
@@ -253,7 +259,10 @@ system will recognize it by.
 agent.identifier = "reward-productive-employee"
 ```
 
-### Define a response object:
+</ContentFrame>
+<ContentFrame>
+
+### Define a response object
 Define a [structured output](https://platform.openai.com/docs/guides/structured-outputs) response object that the LLM will populate with its response to the user.  
 
 To define the response object, you can use the `sample_object` and/or the `output_schema` property.  
@@ -310,10 +319,14 @@ agent.output_schema = """
 }
 """
 ```
+
 </TabItem>
 </Tabs>
 
-### Add agent parameters:
+</ContentFrame>
+<ContentFrame>
+
+### Add agent parameters
 Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
 Values for agent parameters are provided by the client, or by a user through the client, 
 when a chat is started.  
@@ -345,7 +358,10 @@ is for), and pass this instance to the `agent.parameters.append` method.
     description: Optional[str]
   ```
 
-### Set maximum number of iterations:
+</ContentFrame>
+<ContentFrame>
+
+### Set maximum number of iterations
 You can limit the number of times that the LLM is allowed to request the usage of 
 agent tools in response to a single user prompt. Use `max_model_iterations_per_call` to change this limit.  
 
@@ -365,7 +381,10 @@ Note that you can improve the TTFB (Time To First Byte) by getting the LLM's res
 Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
 </Admonition>
 
-### Set chat trimming configuration:
+</ContentFrame>
+<ContentFrame>
+
+### Set chat trimming configuration
 
 To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
 use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
@@ -422,12 +441,17 @@ with your settings.
         self.history_expiration_in_sec: Optional[int] = history_expiration_in_sec
   ```
 
-## Adding agent tools
+</ContentFrame>
+</Panel>
+
+<Panel heading="Adding agent tools">
 
 You can enhance your agent with Query and Action tools, that allow the LLM to query your database and trigger client actions.  
 After defining agent tools and submitting them to the LLM, it is up to the LLM to decide if and when to use them. 
 
-### Query tools:
+<ContentFrame>
+
+### Query tools
 
 [Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
 A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
@@ -516,6 +540,8 @@ A query tool includes a natural-language **description** that explains the LLM w
         self.parameters_schema: Optional[str] = parameters_schema
   ```
 
+</ContentFrame>
+
 <!---
 #### <u>Initial-context queries</u>
 
@@ -577,7 +603,9 @@ A query tool includes a natural-language **description** that explains the LLM w
       </Admonition>
 -->
 
-### Action tools:
+<ContentFrame>
+
+### Action tools
 
 Action tools allow the LLM to trigger the client to action (e.g., to modify or add a document).  
 An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
@@ -618,8 +646,11 @@ a response that explains how it went, e.g. `done`.
         self.parameters_sample_object: Optional[str] = parameters_sample_object
         self.parameters_schema: Optional[str] = parameters_schema
   ```
+</ContentFrame>
 
-## Creating the Agent
+</Panel>
+
+<Panel heading="Creating the Agent">
 
 Create or update the agent using the `add_or_update_agent` method, passing to it the agent configuration you created.  
 
@@ -640,18 +671,19 @@ Create or update the agent using the `add_or_update_agent` method, passing to it
         return self._store.maintenance.send(operation)
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | configuration | `AiAgentConfiguration` | The agent configuration |
-      | schema_type | `Type = None` | Optional type to use for generating sample schema |
+* `add_or_update_agent` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | configuration | `AiAgentConfiguration` | The agent configuration |
+  | schema_type | `Type = None` | Optional type to use for generating sample schema |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID and raft command index. |
+  | Return value | Description |
+  |--------------|-------------|
+  | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID and raft command index. |
 
-<hr />
+</Panel>
 
-## Retrieving existing agent configurations
+<Panel heading="Retrieving existing agent configurations">
 
 You can retrieve the configuration of **existing agents** using `get_agents`.  
 - To retrieve the configuration of a single agent, pass to the method the agent's ID.  
@@ -674,13 +706,14 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
   def get_agents(self, agent_id: str = None) -> GetAiAgentsResponse:
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | agent_id | `str` | The unique ID of the agent whose configuration you want to retrieve |
+* `get_agents` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agent_id | `str` | The unique ID of the agent whose configuration you want to retrieve |
 
-      | Return value | Description |
-      |--------------|-------------|
-      | `GetAiAgentsResponse` | A list of agent configurations |
+  | Return value | Description |
+  |--------------|-------------|
+  | `GetAiAgentsResponse` | A list of agent configurations |
 
 
 * `GetAiAgentsResponse` class  
@@ -690,17 +723,20 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
         self.ai_agents: List[AiAgentConfiguration] = []
   ```
 
-<hr />
+</Panel>
 
-## Managing conversations
+<Panel heading="Managing conversations">
 
-### Setting a conversation:
+<ContentFrame>
+
+### Setting a conversation
 
 * Set a conversation using the `store.ai.conversation` method.  
   Pass `conversation`:  
    * The **agent ID**  
    * The **conversation ID**  
      The conversation ID that you provide when starting a conversation determines whether a new conversation will start, or an existing conversation will be continued.  
+     <Admonition type="note" title="">
       * Conversations are kept in the `@conversations` collection.  
         A conversation document's name starts with a prefix (such as `Chats/`) that can be 
         set when the conversation is initiated.  
@@ -711,6 +747,7 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
       * If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
         the conversation will be retrieved from storage and continued where you left off.  
       * If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
+      </Admonition>
    * Values for **agent parameters**, if defined, in an `AiConversationCreationOptions` instance.  
 * Set the user prompt using the `set_user_prompt`method.  
   The user prompt informs the agent of the user's requests and expectations for this chat.  
@@ -741,12 +778,13 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
     ) -> AiConversation:
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | agent_id | `str` | The agent unique ID |
-      | conversation_id | `str` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
-      | creation_options | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
-      | change_vector | `str` | Optional change vector for concurrency control |
+* `conversation` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agent_id | `str` | The agent unique ID |
+  | conversation_id | `str` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
+  | creation_options | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
+  | change_vector | `str` | Optional change vector for concurrency control |
 
       | Return value | Description |
       |--------------|-------------|
@@ -771,19 +809,20 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
         ...
   ```
 
-* `add_parameter` properties  
-
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | name | `str` | The parameter name |
-      | value | `Any` | The parameter value |
+* `add_parameter` Properties  
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | name | `str` | The parameter name |
+  | value | `Any` | The parameter value |
 
       | Return value | Description |
       |--------------|-------------|
       | `AiConversationCreationOptions` | Return self for method chaining |
 
+</ContentFrame>
+<ContentFrame>
 
-### Processing action-tool requests:
+### Processing action-tool requests
 During the conversation, the LLM can request the agent to trigger action tools.  
 The agent will pass a requested action tool's name and parameters to the client,  
 and it is then up to the client to process the request.  
@@ -821,7 +860,6 @@ Handlers are typically used for simple, immediate operations like storing a docu
       employeeId: str
       profit: str
 
-
   # A dictionary (json) representing a response object 
   # Can be easily used to create an object if needed
   def store_performer_details(args: dict) -> str:
@@ -840,7 +878,7 @@ Handlers are typically used for simple, immediate operations like storing a docu
       AiHandleErrorStrategy.RAISE_IMMEDIATELY
   )
   ```
-* `handle` methods  
+* `handle` Methods  
   ```python
   def handle(
         self,
@@ -859,11 +897,12 @@ Handlers are typically used for simple, immediate operations like storing a docu
         ...
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | action_name | `str` | The action tool name |
-      | action | `Callable[[dict], Any]` or `Callable[[AiAgentActionRequest, dict], Any]` | The handler function that processes the action request and returns a response to the LLM |
-      | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+* `handle` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_name | `str` | The action tool name |
+  | action | `Callable[[dict], Any]` or `Callable[[AiAgentActionRequest, dict], Any]` | The handler function that processes the action request and returns a response to the LLM |
+  | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
 
 #### <u>Action-tool Receivers</u>
 A **receiver** is created for a specific action tool and registered with the server using the `receive` method.  
@@ -923,11 +962,12 @@ Receivers are typically used asynchronously for multi-step or delayed operations
     ):
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | action_name | `str` | The action tool name |
-      | action | `Callable[[AiAgentActionRequest, dict], None]` | The receiver function that processes the action request |
-      | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+* `receive` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_name | `str` | The action tool name |
+  | action | `Callable[[AiAgentActionRequest, dict], None]` | The receiver function that processes the action request |
+  | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
 
 * `add_action_response` Definition
   ```python
@@ -935,10 +975,11 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   ...
   ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | action_id | `str` | The action request unique ID |
-      | action_response | `str` | The response to send back to the LLM through the agent |
+* `add_action_response` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_id | `str` | The action request unique ID |
+  | action_response | `str` | The response to send back to the LLM through the agent |
 
 
 * `AiAgentActionRequest` class  
@@ -952,7 +993,10 @@ Receivers are typically used asynchronously for multi-step or delayed operations
         self.arguments = arguments
   ```
 
-### Conversation response:
+</ContentFrame>
+<ContentFrame>
+
+### Conversation response
 
 The LLM response is returned by the agent to the client in an `AiAnswer` object, containing:  
  - An answer to the user prompt  
@@ -989,16 +1033,18 @@ The LLM response is returned by the agent to the client in an `AiAnswer` object,
           self.elapsed = elapsed
   ```
 
-* `AiAnswer` properties  
+* `AiAnswer` Properties  
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | answer | `TAnswer` | Optional LLM answer |
+  | status | `AiConversationStatus` | Conversation status (`Done` or `ActionRequired`) |
+  | usage | `AiUsage` | Token usage reported by the model |
+  | elapsed | `timedelta` | The total time it took to produce the answer |
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | answer | `TAnswer` | Optional LLM answer |
-      | status | `AiConversationStatus` | Conversation status (`Done` or `ActionRequired`) |
-      | usage | `AiUsage` | Token usage reported by the model |
-      | elapsed | `timedelta` | The total time it took to produce the answer |
+</ContentFrame>
+<ContentFrame>
 
-### Setting user prompt and running the conversation:
+### Setting user prompt and running the conversation
 
 Set the user prompt using the `set_user_prompt` method, and run the conversationusing `chat.run`.
 <Admonition type="note" title="">
@@ -1022,9 +1068,10 @@ if llm_response.status == AiConversationStatus.DONE:
 
 See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example).  
 
-<hr />
+</ContentFrame>
+</Panel>
 
-## Stream LLM responses
+<Panel heading="Stream LLM responses">
 
 You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview#streaming-llm-responses) in real time as the LLM generates it, using the `chat.stream` method, instead of using [chat.run](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
 
@@ -1049,23 +1096,23 @@ Streaming the response allows the client to start processing it before it is com
   ```
 
 * `StreamAsync` Definition:  
-
       ```python
       def stream(self, stream_property_path: str = None, on_chunk: Optional[Callable[[str], None]] = None) -> AiAnswer:
       ```
 
-      | Property | Type | Description |
-      |----------|------|-------------|
-      | **stream_property_path** | `str` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
-      | **on_chunk** (optional) | `Callable[[str], None]` | A callback function that is invoked with each incoming chunk of the streamed property |
+* `StreamAsync` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | **stream_property_path** | `str` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
+  | **on_chunk** (optional) | `Callable[[str], None]` | A callback function that is invoked with each incoming chunk of the streamed property |
 
       | Return value | Description |
       |--------------|-------------|
       | `AiAnswer` | After streaming the specified property, the return value contains the final conversation response |
 
-<hr />
+</Panel>
 
-## Full example
+<Panel heading="Full example">
 
 The agent's user in this example is a human experience manager.  
 The agent helps its user to reward employees by searching, using query tools, 
@@ -1230,3 +1277,4 @@ def create_and_run_ai_agent_full():
         # collection by the action tool, and are also returned in the final LLM response.
         ...
 ```
+</Panel>
