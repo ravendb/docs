@@ -128,7 +128,8 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -164,7 +165,8 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -192,11 +194,11 @@ public class AzureOpenAiSettings : AbstractAiSettings
     public string Model { get; set; }
     public string DeploymentName { get; set; }
     
-    // Relevant only for text embedding models:
+    // Relevant only for TEXT EMBEDDING models:
     // Specifies the number of dimensions in the generated embedding vectors.
     public int? Dimensions { get; set; }
     
-    // Relevant only for chat models:
+    // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
