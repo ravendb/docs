@@ -141,7 +141,7 @@ connectionString.modelType = "Chat";
 // Ollama connection settings    
 connectionString.ollamaSettings = new OllamaSettings(
     "http://localhost:11434", // Uri
-    "mxbai-embed-large");     // Name of text embedding model to use
+    "llama3:8b-instruct");    // Name of chat model to use
 
 // Optionally, set the model's temperature
 connectionString.ollamaSettings.temperature = 0.4;
