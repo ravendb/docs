@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
     
@@ -10,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
   [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).
 
 * In this article:
-  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string-from-the-studio)
     * [Configuring a text embedding model](../../../ai-integration/connection-strings/ollama.mdx#configuring-a-text-embedding-model)
     * [Configuring a chat model](../../../ai-integration/connection-strings/ollama.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string---from-the-client-api)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/ollama.mdx#define-the-connection-string-from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/ollama.mdx#syntax) 
     
 </Admonition>
 
-## Define the connection string - from the Studio
+<Panel heading="Define the connection string - from the Studio">
 
 ### Configuring a text embedding model
 
@@ -52,6 +54,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 9. Click **Save** to store the connection string or **Cancel** to discard changes.
 
+---
+    
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/ollama.mdx#configuring-a-text-embedding-model),  
@@ -91,7 +95,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 ---
 
-## Define the connection string - from the Client API
+</Panel>
+
+<Panel heading="Define the connection string - from the Client API">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
@@ -123,7 +129,8 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -159,14 +166,17 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);    
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);    
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
 </TabItem>
 </Tabs>
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax">
 
 <TabItem value="ollama_settings" label="ollama_settings">
 ```csharp
@@ -187,11 +197,13 @@ public class OllamaSettings : AbstractAiSettings
     // The name of the model to use 
     public string Model { get; set; }
     
-    // Relevant only for chat models:
-    // Control whether the model outputs its internal reasoning steps before returning the final answer.
-    // 'true'  - the model outputs intermediate reasoning steps (chain of thought) before the final answer.
-    // 'false' - the model returns only the final answer, without exposing intermediate steps.
-    // 'null'  - the model’s default behavior is used.
+    // Relevant only for CHAT models: 
+    // Control whether the model outputs internal reasoning steps before returning the final answer.
+    // * 'true' - the model outputs intermediate reasoning steps (chain of thought)
+    //   before the final answer.
+    // * 'false' - the model returns only the final answer, 
+    //   without exposing intermediate steps.
+    // * 'null' - the model’s default behavior is used.
     public bool? Think { get; set; }
     
     // Relevant only for chat models:
@@ -208,3 +220,5 @@ public class AbstractAiSettings
 }
 ```
 </TabItem>
+    
+</Panel>
