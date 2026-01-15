@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -13,13 +15,13 @@ import CodeBlock from '@theme/CodeBlock';
   depending on your workload and usage patterns.
 
 * In this article:
-  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/embedded.mdx#define-the-connection-string---from-the-studio)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/embedded.mdx#define-the-connection-string---from-the-client-api)
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/embedded.mdx#define-the-connection-string-from-the-studio)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/embedded.mdx#define-the-connection-string-from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/embedded.mdx#syntax)
 
 </Admonition>
 
-## Define the connection string - from the Studio
+<Panel heading="Define the connection string - from the Studio">
 
 ![connection string to the embedded model](../assets/embedded.png)
 
@@ -43,7 +45,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 6. Click **Save** to store the connection string or **Cancel** to discard changes.
 
-## Define the connection string - from the Client API
+</Panel>
+
+<Panel heading="Define the connection string - from the Client API">
 
 <TabItem value="create_connection_string_embedded" label="create_connection_string_embedded">
 ```csharp
@@ -76,7 +80,9 @@ using (var store = new DocumentStore())
 ```
 </TabItem>
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax">
 
 <TabItem value="embedded_settings" label="embedded_settings">
 ```csharp
@@ -98,3 +104,5 @@ public class AbstractAiSettings
 }
 ```
 </TabItem>
+
+</Panel>
