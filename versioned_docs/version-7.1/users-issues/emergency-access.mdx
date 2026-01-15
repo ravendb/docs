@@ -14,8 +14,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Emergency access to a secured cluster
 
 If your RavenDB instance connection is lost in the following situations:
-- The certificate expired and was not renewed
-- The certificate was deleted
+- The client certificate expired and was not renewed
+- The client certificate was deleted
 - You were authenticating with a 2EKU server certificate, and it was renewed with 1EKU [(context)](https://ravendb.net/articles/ravendb-global-changes-in-lets-encrypt)
 
 There's a way to restore the connectivity, but it requires a manual intervention. 
@@ -27,7 +27,7 @@ You'll need to generate a new client certificate. Either:
 
 - use an existing, non-expired one
 - contact your system administrator to generate one for you
-- generate a new self-signed certificate (example below)
+- generate a new self-signed certificate yourself (example below)
 
 Generating a new self-signed certificate using `openssl`:
 ```bash
@@ -52,14 +52,14 @@ openssl pkcs12 -export -out certs/client.pfx \
 
 You will need to connect directly to the server environment where Raven.Server process is running.
 
-We need to send the new certificate to the production environment - so it's "reachable" for the `rvn` executable, which is located inside your RavenDB distribution package.
+We need to make the new certificate accessible by RavenDB through the file system - so that it's "reachable" for the `rvn` executable, which is located inside your RavenDB distribution package.
 
-You can use `scp`, copy via remote desktop (rdp), or any other relevant method.
+You can use `scp`, copy via remote desktop (RDP), or any other relevant method.
 
 e.g.
 
 ```bash
-scp certs/client.pfx user@my-server:/path/to/ravendb/RavenDB/Server/
+scp certs/client.pfx user@my-server:~/certs/client.pfx
 ```
 
 
@@ -77,9 +77,9 @@ ssh user@my-server.example.com
 
 Go to the directory where you have extracted/installed RavenDB, and run the `rvn` tool with `admin-channel` command. 
 
-The `rvn admin-channel` will connect directly to the local RavenDB server process using IPC pipe. 
+The `rvn admin-channel` will connect directly to the local RavenDB server process using IPC. 
 
-Once you're connected, use `trustClientCert` command.
+Once you're connected, use `trustClientCert [certName] [pathToPfx]` command.
 
 ```bash
 $root@my-machine:/ravendb/RavenDB/Server# ./rvn admin-channel
@@ -102,7 +102,7 @@ Will try to connect to discovered Raven.Server process : 1056...
 +---------------------------------------------------------------+
 Connected to RavenDB Console through named pipe connection...
 
-ravendb> trustClientCert emergency-access ./certs/client.pfx  # <------------ here
+ravendb> trustClientCert emergency-access ~/certs/client.pfx  # <------------ here
 Successfully read certificate: 5809A91F933B62A0B6A27BCCD3202365DCAE56DB
 [Subject]
   CN=test-client
@@ -126,7 +126,7 @@ Successfully registered the client certificate 5809A91F933B62A0B6A27BCCD3202365D
 ravendb>
 ```
 
-Success! Now let's go back to your local machine.
+Now let's go back to your local machine.
 
 ### 5. Connect to the server using the new certificate 
 
