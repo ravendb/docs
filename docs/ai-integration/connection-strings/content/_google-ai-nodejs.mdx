@@ -69,35 +69,30 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Define the connection string - from the Client API">
 
 <TabItem value="create_connection_string_google_ai" label="create_connection_string_google_ai">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Google AI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ConnectionStringToGoogleAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-    
-        // Google AI connection settings
-        GoogleSettings = new GoogleSettings(
-            apiKey: "your-api-key",
-            model: "text-embedding-004",
-            aiVersion: GoogleAIVersion.V1)
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+```js
+// Define the connection string to Google AI    
+const connectionString = new AiConnectionString();
+
+// Connection string name & identifier    
+connectionString.name = "ConnectionStringToGoogle";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type
+connectionString.modelType = "TextEmbeddings";
+
+// Google AI connection settings
+connectionString.googleSettings = new GoogleSettings(
+    "text-embedding-004", // Name of text embedding model to use
+    "https://language.googleapis.com/v1/documents:analyzeEntities?key=your-api-key",
+    "V1"); // Google's AI API version
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.googleSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 
@@ -106,32 +101,27 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="google_ai_settings" label="google_ai_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public GoogleSettings GoogleSettings { get; set; }
+    name;           // string
+    identifier;     // string (optional)
+    modelType;      // "TextEmbeddings" | "Chat"
+    googleSettings; // GoogleSettings
 }
 
-public class GoogleSettings : AbstractAiSettings
+class GoogleSettings
 {
-    public string ApiKey { get; set; }
-    public string Model { get; set; }
-    public GoogleAIVersion? AiVersion { get; set; }
-    public int? Dimensions { get; set; }
-}
-
-public enum GoogleAIVersion
-{
-    V1, // Represents the "v1" version of the Google AI API
-    V1_Beta // Represents the "v1beta" version of the Google AI API
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    model;      // string
+    apiKey;     // string
+    aiVersion;  // "V1" | "V1_Beta"
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number
+    
+    // Relevant only for TEXT EMBEDDING models:
+    // Specifies the number of dimensions in the generated embedding vectors.
+    dimensions; // number
 }
 ```
 </TabItem>
