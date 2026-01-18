@@ -781,7 +781,7 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
 
       | Return value | Description |
       |--------------|-------------|
-      | `AiConversation` | The conversation operations interface for conversation management.<br />Methods of this interface like `Run`, `StreamAsync`, `Handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
+      | `AiConversation` | The conversation operations interface for conversation management.<br />Methods of this interface like `run`, `handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
 
 * `set_user_prompt` Definition  
   ```python
@@ -1088,12 +1088,12 @@ Streaming the response allows the client to start processing it before it is com
       ...
   ```
 
-* `StreamAsync` Definition:  
+* `stream` Definition:  
       ```python
       def stream(self, stream_property_path: str = None, on_chunk: Optional[Callable[[str], None]] = None) -> AiAnswer:
       ```
 
-* `StreamAsync` Properties
+* `stream` Properties
   | Property | Type | Description |
   |----------|------|-------------|
   | **stream_property_path** | `str` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
