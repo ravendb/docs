@@ -203,88 +203,22 @@ import CodeBlock from '@theme/CodeBlock';
   Refer to [Quantization options](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options) for examples that specify the destination quantization.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarProducts = session.Query<Product>()
-     // Perform a vector search
-     // Call the 'VectorSearch' method
-    .VectorSearch(
-        // Call 'WithText'
-        // Specify the document field in which to search for similar values
-        field => field.WithText(x => x.Name),
-        // Call 'ByText' 
-        // Provide the term for the similarity comparison
-        searchTerm => searchTerm.ByText("italian food"),
-        // It is recommended to specify the minimum similarity level
-        0.82f,
-        // Optionally, specify the number of candidates for the search
-        20)
-     // Waiting for not-stale results is not mandatory
-     // but will assure results are not stale
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        .vector_search_text("Name", "italian food", minimum_similarity=0.82, number_of_candidates=20)
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarProducts = await asyncSession.Query<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name), 
-        searchTerm => searchTerm.ByText("italian food"),
-        0.82f,
-        20)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.82f,
-        20)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.82f,
-        20)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Product>(@"
-        from 'Products'
-        // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
-        where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Product>(@"
-        from 'Products'
-        // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
-        where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query("from 'Products' where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)")
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -325,90 +259,24 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
   To ensure consistent comparisons, the search term is transformed into an embedding using the same embeddings generation task.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarCategories = session.Query<Category>()
-    .VectorSearch(
-        field => field
-             // Call 'WithText'
-             // Specify the document field in which to search for similar values
-            .WithText(x => x.Name)
-             // Call 'UsingTask'
-             // Specify the identifier of the task that generated
-             // the embeddings for the Name field
-            .UsingTask("id-for-task-open-ai"),
-        // Call 'ByText' 
-        // Provide the search term for the similarity comparison
-        searchTerm => searchTerm.ByText("candy"),
-        // It is recommended to specify the minimum similarity level
-        0.75f)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_categories = list(
+        session.query(object_type=Category).vector_search_text_using_task(
+            "Name", "candy", "id-for-task-open-ai", minimum_similarity=0.75
+        )
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarCategories = await asyncSession.Query<Category>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .UsingTask("id-for-task-open-ai"),
-        searchTerm => searchTerm.ByText("candy"),
-        0.75f)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarCategories = session.Advanced
-    .DocumentQuery<Category>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .UsingTask("id-for-task-open-ai"),
-        searchTerm => searchTerm.ByText("candy"),
-        0.75f)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarCategories = await asyncSession.Advanced
-    .AsyncDocumentQuery<Category>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .UsingTask("id-for-task-open-ai"),
-        searchTerm => searchTerm.ByText("candy"),
-        0.75f)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarCategories = session.Advanced
-    .RawQuery<Category>(@"
-        from 'Categories'
-        // Specify the identifier of the task that generated the embeddings inside 'ai.task'
-        where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)")
-    .AddParameter("searchTerm", "candy")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarCategories = await asyncSession.Advanced
-    .AsyncRawQuery<Category>(@"
-        from 'Categories'
-        // Specify the identifier of the task that generated the embeddings inside 'ai.task'
-        where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)")
-    .AddParameter("searchTerm", "candy")
-    .WaitForNonStaleResults()
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_categories = list(
+        session.advanced.raw_query(
+            "from 'Categories' where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)"
+        )
+        .add_parameter("searchTerm", "candy")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -448,110 +316,80 @@ where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searc
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Class" label="Class">
-```csharp
-// Sample class representing a document with various formats of numerical vectors
-// The embedding vectors for these fields here are generated externally by you (not by RavenDB).
-public class Movie
-{
-    public string Id { get; set; }
-    public string Title { get; set; }
-    
-    // This field will hold numerical vector data - Not quantized
-    public RavenVector<float> TagsEmbeddedAsSingle { get; set; }
-    
-    // This field will hold numerical vector data - Quantized to Int8
-    public sbyte[][] TagsEmbeddedAsInt8 { get; set; }
-    
-    // This field will hold numerical vector data - Encoded in Base64 format
-    public List<string> TagsEmbeddedAsBase64 { get; set; }
-    
-    // A field for holding a numerical vector data produced by a multimodal model 
-    // that converts an image into an embedding
-    public RavenVector<float> MoviePhotoEmbedding { get; set; }
-}
+```python
+class Movie:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        tags_embedded_as_single: list[float] = None,
+        tags_embedded_as_int8: list[list[int]] = None,
+        tags_embedded_as_base_64: list[str] = None,
+        movie_photo_embedding: list[float] = None,
+    ):
+        self.Id = Id
+        self.title = title
+
+        # This field will hold numerical vector data - Not quantized
+        self.tags_embedded_as_single = tags_embedded_as_single
+
+        # This field will hold numerical vector data - Quantized to Int8
+        self.tags_embedded_as_int8 = tags_embedded_as_int8
+
+        # This field will hold numerical vector data - Encoded in Base64 format
+        self.tags_embedded_as_base_64 = tags_embedded_as_base_64
+
+        # A field for holding a numerical vector data produced by a multimodal model
+        # that converts an image into an embedding
+        self.movie_photo_embedding = movie_photo_embedding
 ```
 </TabItem>
 <TabItem value="Sample_data" label="Sample_data">
-```csharp
-using (var session = store.OpenSession())
-{    
-    var movie1 = new Movie()
-    {
-        Title = "Hidden Figures",
-        Id = "movies/1",
-    
-        // Embedded vector represented as float values
-        TagsEmbeddedAsSingle = new RavenVector<float>(new float[]
-        {
-            6.599999904632568f, 7.699999809265137f
-        }),
-        
-        // Embedded vectors encoded in Base64 format
-        TagsEmbeddedAsBase64 = new List<string>()
-        {
-            "zczMPc3MTD6amZk+", "mpmZPs3MzD4AAAA/"
-        },
-        
-        // Array of embedded vectors quantized to Int8
-        TagsEmbeddedAsInt8 = new sbyte[][]
-        {
-            // Use RavenDB's quantization methods to convert float vectors to Int8
-            VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f }),
-            VectorQuantizer.ToInt8(new float[] { 0.3f, 0.4f })
-        },
-        
-        // Example of an image embedding
-        // In a real scenario, this vector would come from a multimodal model
-        // such as CLIP, OpenCLIP, or similar
-        MoviePhotoEmbedding = new RavenVector<float>(new float[]
-        {
-            0.123f, -0.045f, 0.987f, 0.564f, -0.321f, 0.220f
-        })
-    };
+```python
+movie1 = Movie(
+        title="Hidden Figures",
+        Id="movies/1",
+        # Embedded vector represented as float values
+        tags_embedded_as_single=[6.599999904632568, 7.699999809265137],
 
-    var movie2 = new Movie()
-    {
-        Title = "The Shawshank Redemption",
-        Id = "movies/2",
-    
-        TagsEmbeddedAsSingle =new RavenVector<float>(new float[]
-        {
-            8.800000190734863f, 9.899999618530273f
-        }),
-        TagsEmbeddedAsBase64 = new List<string>() {"zcxMPs3MTD9mZmY/", "zcxMPpqZmT4zMzM/"},
-        TagsEmbeddedAsInt8 = new sbyte[][]
-        {
-            VectorQuantizer.ToInt8(new float[] { 0.5f, 0.6f }),
-            VectorQuantizer.ToInt8(new float[] { 0.7f, 0.8f })
-        },
+        # Embedded vectors encoded in Base64 format
+        tags_embedded_as_base_64=["zczMPc3MTD6amZk+", "mpmZPs3MzD4AAAA/"],
 
-        MoviePhotoEmbedding = new RavenVector<float>(new float[]
-        {
-            0.456f, -0.056f, 0.123f, 0.899f, -0.765f, 0.881f
-        })
-    };
+        # Array of embedded vectors quantized to Int8
+        # Use VectorQuantizer.to_int8() to convert float arrays to lists of signed integers
+        tags_embedded_as_int8=[VectorQuantizer.to_int8([0.1, 0.2]), VectorQuantizer.to_int8([0.3, 0.4])],
 
-    session.Store(movie1);
-    session.Store(movie2);
-    session.SaveChanges();
-}
+        # Example of an image embedding
+        # In a real scenario, this vector would come from a multimodal model
+        # such as CLIP, OpenCLIP, or similar
+        movie_photo_embedding=[0.123, -0.045, 0.987, 0.564, -0.321, 0.220],
+    )
+
+    movie2 = Movie(
+        title="The Shawshank Redemption",
+        Id="movies/2",
+        tags_embedded_as_single=[8.800000190734863, 9.899999618530273],
+        tags_embedded_as_base_64=["zcxMPs3MTD9mZmY/", "zcxMPpqZmT4zMzM/"],
+        tags_embedded_as_int8=[VectorQuantizer.to_int8([0.5, 0.6]), VectorQuantizer.to_int8([0.7, 0.8])],
+        movie_photo_embedding=[0.456, -0.056, 0.123, 0.899, -0.765, 0.881],
+    )
+
+    session.store(movie1, "movies/1")
+    session.store(movie2, "movies/2")
+    session.save_changes()
 ```
 </TabItem>
 <TabItem value="Sample_document" label="Sample_document">
-```csharp
+```python
 {
-    "Title": "Hidden Figures",
-    
-    "TagsEmbeddedAsSingle": {
-        "@vector": [
-            6.599999904632568,
-            7.699999809265137
-        ]
-    },
-    
-    "TagsEmbeddedAsInt8": [
+    "title": "Hidden Figures",
+    "tags_embedded_as_single": [
+        6.599999904632568,
+        7.699999809265137
+    ],
+    "tags_embedded_as_int8": [
         [
-            64,
+            63,
             127,
             -51,
             -52,
@@ -567,18 +405,21 @@ using (var session = store.OpenSession())
             62
         ]
     ],
-    
-    "TagsEmbeddedAsBase64": [
+    "tags_embedded_as_base_64": [
         "zczMPc3MTD6amZk+",
         "mpmZPs3MzD4AAAA/"
     ],
-    
-    "MoviePhotoEmbedding": {
-        "@vector": [0.123, -0.045, 0.987, 0.564, -0.321, 0.220]
-    }
-    
+    "movie_photo_embedding": [
+        0.123,
+        -0.045,
+        0.987,
+        0.564,
+        -0.321,
+        0.22
+    ],
     "@metadata": {
-        "@collection": "Movies"
+        "@collection": "Movies",
+        "Raven-Python-Type": "__main__.Movie"
     }
 }
 ```
@@ -591,103 +432,33 @@ These examples search for Movie documents with vectors similar to the one provid
 
 <Admonition type="note" title="">
 
-* Search on the `TagsEmbeddedAsSingle` field,  
-  which contains numerical data in **floating-point format**. 
+Search on the `TagsEmbeddedAsSingle` field,  
+which contains numerical data in **floating-point format**. 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarMovies = session.Query<Movie>()
-     // Perform a vector search
-     // Call the 'VectorSearch' method
-    .VectorSearch(
-        // Call 'WithEmbedding', specify:
-        // * The source field that contains the embedding in the document
-        // * The source embedding type
-        field => field.WithEmbedding(
-            x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-        // Call 'ByEmbedding'
-        // Provide the vector for the similarity comparison
-        queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-        // It is recommended to specify the minimum similarity level
-        0.85f,
-        // Optionally, specify the number of candidates for the search
-        10)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_movies = list(
+        session.query(object_type=Movie)
+        .vector_search(
+            embedding_field="tags_embedded_as_single",
+            vector=[6.599999904632568, 7.699999809265137],
+            minimum_similarity=0.85,
+            number_of_candidates=10,
+        )
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarMovies = await asyncSession.Query<Movie>()
-    .VectorSearch(
-        field => field.WithEmbedding(
-            x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-        queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-        0.85f,
-        10)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarMovies = session.Advanced
-    .DocumentQuery<Movie>()
-    .VectorSearch(
-        field => field.WithEmbedding(
-            x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-        queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-        0.85f,
-        10)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarMovies = await asyncSession.Advanced
-    .AsyncDocumentQuery<Movie>()
-    .VectorSearch(
-        field => field.WithEmbedding(
-            x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-        queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-        0.85f,
-        10)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Movie>(@"
-        from 'Movies' 
-        where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)")
-    .AddParameter("queryVector", new RavenVector<float>(new float[]
-        {
-            6.599999904632568f, 7.699999809265137f
-        }))
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Movie>(@"
-        from 'Movies' 
-        where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)")
-    .AddParameter("queryVector", new RavenVector<float>(new float[]
-        {
-            6.599999904632568f, 7.699999809265137f
-        }))
-    .WaitForNonStaleResults()
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_movies = list(
+        session.advanced.raw_query(
+            "from 'Movies' where vector.search(tags_embedded_as_single, $queryVector, 0.85, 10)", Movie
+        )
+        .add_parameter("queryVector", [6.599999904632568, 7.699999809265137])
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -703,28 +474,17 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
 </Admonition>
 <Admonition type="note" title="">
 
-* Search on the `TagsEmbeddedAsInt8` field,  
-  which contains numerical data that is already quantized in **_Int8_ format**.
+Search on the `TagsEmbeddedAsInt8` field,  
+which contains numerical data that is already quantized in **_Int8_ format**.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarMovies = session.Query<Movie>()
-    .VectorSearch(
-        // Call 'WithEmbedding', specify:
-        // * The source field that contains the embeddings in the document
-        // * The source embedding type
-        field => field.WithEmbedding(
-            x => x.TagsEmbeddedAsInt8, VectorEmbeddingType.Int8),
-        // Call 'ByEmbedding'
-        // Provide the vector for the similarity comparison
-        // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
-        queryVector => queryVector.ByEmbedding(
-            // The provided vector MUST be in the same format as was stored in your document
-            // Call 'VectorQuantizer.ToInt8' to transform the raw data to the Int8 format  
-            VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_movies = list(
+        session.query(object_type=Movie)
+        .vector_search_i8("tags_embedded_as_int8", VectorQuantizer.to_int8([0.1, 0.2]))
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -740,24 +500,17 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $queryVector)
 </Admonition>
 <Admonition type="note" title="">
 
-* Search on the `TagsEmbeddedAsBase64` field,  
-  which contains numerical data represented in **_Base64_ format**.
+Search on the `TagsEmbeddedAsBase64` field,  
+which contains numerical data represented in **_Base64_ format**.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarMovies = session.Query<Movie>()
-    .VectorSearch(
-        // Call 'WithBase64', specify:
-        // * The source field that contains the embeddings in the document
-        // * The source embedding type
-        //   (the type from which the Base64 string was constructed)
-        field => field.WithBase64(x => x.TagsEmbeddedAsBase64, VectorEmbeddingType.Single),
-        // Call 'ByBase64'
-        // Provide the Base64 string that represents the vector to query against
-        queryVector => queryVector.ByBase64("zczMPc3MTD6amZk+"))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_movies = list(
+        session.advanced.raw_query("from 'Movies' where vector.search(tags_embedded_as_base_64, $queryVectorBase64)", Movie)
+        .add_parameter("queryVectorBase64", "zczMPc3MTD6amZk+")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -782,7 +535,7 @@ where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
 
 * RavenDB also allows you to search for documents whose content is similar to an **existing document**:  
 
-   * To do so, use the `ForDocument` method and specify the existing document ID. See the example below.
+   * To do so, use the RQL `forDoc` method and specify the existing document ID. See the example below.
 
    * When performing a dynamic vector query over a field, index-entries are generated in the auto-index, 
      one per document in the collection. Each index-entry contains the document ID and the embedding vector for the queried field.  
@@ -791,114 +544,30 @@ where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
 
    * The results will include documents whose indexed embeddings are most similar to the one stored in the referenced document’s index-entry.
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarProducts = session.Query<Product>()
-    // Perform a vector search
-    // Call the 'VectorSearch' method
-    .VectorSearch(
-         // Call 'WithText'
-         // Specify the document field in which to search for similar values
-        field => field.WithText(x => x.Name),
-         // Call 'ForDocument' 
-         // Provide the document ID for which you want to find similar documents.
-         // The embedding stored in the auto-index for the specified document
-         // will be used as the "query vector".
-        embedding => embedding.ForDocument("Products/7-A"),
-        0.82f)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
-```
-</TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarProducts = await asyncSession.Query<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name), 
-        embedding => embedding.ForDocument("Products/7-A"),
-        0.82f)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        embedding => embedding.ForDocument("Products/7-A"),
-        0.82f)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        embedding => embedding.ForDocument("Products/7-A"),
-        0.82f)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Product>(@"
-        from 'Products'
-        // Pass a document ID to the 'forDoc' method to find similar documents
-        where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)")
-    .AddParameter("$documentID", "Products/7-A")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Product>(@"
-        from 'Products'
-        // Pass a document ID to the 'forDoc' method to find similar documents
-        where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)")
-    .AddParameter("$documentID", "Products/7-A")
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 // Pass a document ID to the 'forDoc' method to find similar documents
 where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)
 {"documentID" : "Products/7-A"}
 ```
-</TabItem>
-</Tabs>
 
 Running the above example on RavenDB’s sample data returns the following documents that have similar content in their _Name_ field:
 (Note: the results include the referenced document itself, _Products/7-A_)
 
-<TabItem value="csharp" label="csharp">
-```csharp
-// ID: products/7-A  ... Name: "Uncle Bob's Organic Dried Pears"
-// ID: products/51-A ... Name: "Manjimup Dried Apples"
-// ID: products/6-A  ... Name: "Grandma's Boysenberry Spread"
+```text
+ID: products/7-A  ... Name: "Uncle Bob's Organic Dried Pears"
+ID: products/51-A ... Name: "Manjimup Dried Apples"
+ID: products/6-A  ... Name: "Grandma's Boysenberry Spread"
 ```
-</TabItem>
 
 The auto-index generated by running the above dynamic query is:  
 `Auto/Products/ByVector.search(embedding.text(Name))`
 
-You can **view the index-entries** of this auto-index in the Studio's query view:
+You can **view the index-entries** of this auto-index in Studio's query view:
 
 ![Query the auto index](../assets/view-auto-index-entries-1.png)
 
-1. Go to the Query view in the Studio
+1. Go to the Query view in Studio
 2. Query the index
 3. Open the settings dialog:
 
@@ -917,87 +586,33 @@ You can **view the index-entries** of this auto-index in the Studio's query view
 
 * The following example demonstrates how to specify the exact method in the query.  
   Setting the param is similar for both text and numerical content searches.
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarProducts = session.Query<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        // Optionally, set the 'isExact' param to true to perform an Exact search
-        isExact: true)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
-```
-</TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarProducts = await asyncSession.Query<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name), 
-        searchTerm => searchTerm.ByText("italian food"),
-        isExact: true)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        isExact: true)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        isExact: true)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Product>(@"
-        from 'Products'
-        // Wrap the query with the 'exact()' method
-        where exact(vector.search(embedding.text(Name), $searchTerm))")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Product>(@"
-        from 'Products'
-        // Wrap the query with the 'exact()' method
-        where exact(vector.search(embedding.text(Name), $searchTerm))")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RQL" label="RQL">
-```sql
-from "Products"
-// Wrap the vector.search query with the 'exact()' method
-where exact(vector.search(embedding.text(Name), "italian food"))
-```
-</TabItem>
-</Tabs>
+  <Tabs groupId='languageSyntax'>
+  <TabItem value="query" label="query">
+  ```python
+  similar_products = list(
+          session.query(object_type=Product)
+          .vector_search_text("Name", "italian food", is_exact=True)
+          .wait_for_non_stale_results()
+      )
+  ```
+  </TabItem>
+  <TabItem value="raw_query" label="raw_query">
+  ```python
+  similar_products = list(
+          session.advanced.raw_query("from 'Products' where exact(vector.search(embedding.text(Name), $searchTerm))")
+          .add_parameter("searchTerm", "italian food")
+          .wait_for_non_stale_results()
+      )
+  ```
+  </TabItem>
+  <TabItem value="RQL" label="RQL">
+  ```sql
+  from "Products"
+  // Wrap the vector.search query with the 'exact()' method
+  where exact(vector.search(embedding.text(Name), "italian food"))
+  ```
+  </TabItem>
+  </Tabs>
 
 ## Quantization options
 
@@ -1052,85 +667,22 @@ The available quantization options are:
   * The generated embeddings will use the _Int8_ format.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarProducts = session.Query<Product>()
-    .VectorSearch(
-        field => field
-            // Specify the source text field for the embeddings
-            .WithText(x => x.Name)
-            // Set the quantization type for the generated embeddings
-            .TargetQuantization(VectorEmbeddingType.Int8),
-        searchTerm => searchTerm
-            // Provide the search term for comparison
-            .ByText("italian food"))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        .vector_search_text_i8("Name", "italian food")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarProducts = await asyncSession.Query<Product>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .TargetQuantization(VectorEmbeddingType.Int8),
-        searchTerm => searchTerm
-            .ByText("italian food"))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Product>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .TargetQuantization(VectorEmbeddingType.Int8), 
-        searchTerm => searchTerm
-            .ByText("italian food"))
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Product>()
-    .VectorSearch(
-        field => field
-            .WithText(x => x.Name)
-            .TargetQuantization(VectorEmbeddingType.Int8),
-        searchTerm => searchTerm
-            .ByText("italian food"))
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Product>(@"
-        from 'Products'
-        // Wrap the 'Name' field with 'embedding.text_i8'
-        where vector.search(embedding.text_i8(Name), $searchTerm)")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Product>(@"
-        from 'Products'
-        // Wrap the 'Name' field with 'embedding.text_i8'
-        where vector.search(embedding.text_i8(Name), $searchTerm)")
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query("from 'Products' where vector.search(embedding.text_i8(Name), $searchTerm)")
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1151,104 +703,23 @@ where vector.search(embedding.text_i8(Name), $searchTerm)
     * The generated embeddings will use the _Binary_ format.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarMovies = session.Query<Movie>()
-    .VectorSearch(
-        field => field
-            // Specify the source field and its type   
-            .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-            // Set the quantization type for the generated embeddings
-            .TargetQuantization(VectorEmbeddingType.Binary),
-        queryVector => queryVector
-            // Provide the vector to use for comparison
-            .ByEmbedding(new RavenVector<float>(new float[]
-            {
-                6.599999904632568f, 7.699999809265137f
-            })))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_movies = list(
+        session.query(object_type=Movie)
+        .vector_search_f32_i1("tags_embedded_as_single", [6.599999904632568, 7.699999809265137])
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarMovies = await asyncSession.Query<Movie>()
-    .VectorSearch(
-        field => field
-            .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-            .TargetQuantization(VectorEmbeddingType.Binary),
-        queryVector => queryVector
-            .ByEmbedding(new RavenVector<float>(new float[]
-             {
-                 6.599999904632568f, 7.699999809265137f
-             })))
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_movies = list(
+        session.advanced.raw_query("from 'Movies' where vector.search(embedding.f32_i1(tags_embedded_as_single), $queryVector)")
+        .add_parameter("queryVector", [6.599999904632568, 7.699999809265137])
+        .wait_for_non_stale_results()
+    )
 ```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Movie>()
-    .VectorSearch(
-        field => field
-            .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-            .TargetQuantization(VectorEmbeddingType.Binary),
-        queryVector => queryVector
-            .ByEmbedding(new RavenVector<float>(new float[]
-             {
-                 6.599999904632568f, 7.699999809265137f
-             })))
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Movie>()
-    .VectorSearch(
-        field => field
-            .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-            .TargetQuantization(VectorEmbeddingType.Binary),
-        queryVector => queryVector
-            .ByEmbedding(new RavenVector<float>(new float[]
-             {
-                 6.599999904632568f, 7.699999809265137f
-             })))
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarMovies = session.Advanced
-    .RawQuery<Movie>(@"
-        from 'Movies'
-        // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
-        where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)")
-    .AddParameter("queryVector", new RavenVector<float>(new float[]
-        {
-            6.599999904632568f, 7.699999809265137f
-        }))
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarMovies = await asyncSession.Advanced
-    .AsyncRawQuery<Movie>(@"
-        from 'Movies'
-        // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
-        where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)")
-    .AddParameter("queryVector", new RavenVector<float>(new float[]
-        {
-            6.599999904632568f, 7.699999809265137f
-        }))
-    .WaitForNonStaleResults()
-    .ToListAsync();
-`
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
@@ -1292,31 +763,21 @@ The following methods are available for performing a vector search via RQL:
 
 Wrap the field name using any of the relevant methods listed above, based on your requirements.  
 For example, the following RQL encodes **text to Int8**:
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 // Wrap the document field with 'embedding.text_i8'
 where vector.search(embedding.text_i8(Name), "italian food", 0.82, 20)
 ```
-</TabItem>
-</Tabs>
 
 When the field name is Not wrapped in any method,
 the underlying values are treated as numerical values in the form of **32-bit floating-point** (Single) precision.
 For example, the following RQL will use the floating-point values as they are, without applying further quantization:
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="RQL" label="RQL">
 ```sql
 from "Movies"
 // No wrapping
 where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
 {"queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
 ```
-</TabItem>
-</Tabs>
 
 ## Querying vector fields and regular data in the same query
 
@@ -1328,80 +789,26 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
   `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-```csharp
-var similarProducts = session.Query<Product>()
-     // Perform a filtering condition:
-    .Where(x => x.PricePerUnit > 35)
-     // Perform a vector search:
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.75f, 16)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToList();
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        .vector_search_text("Name", "italian food", 0.75, 16)
+        .where_greater_than("PricePerUnit", 35)
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
-<TabItem value="Query_async" label="Query_async">
-```csharp
-var similarProducts = await asyncSession.Query<Product>()
-    .Where(x => x.PricePerUnit > 35)
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.75f, 16)
-    .Customize(x => x.WaitForNonStaleResults())
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var similarProducts = session.Advanced
-    .DocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.75f, 16)
-    .WhereGreaterThan(x => x.PricePerUnit, 35)
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncDocumentQuery<Product>()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("italian food"),
-        0.75f, 16)
-    .WhereGreaterThan(x => x.PricePerUnit, 35)
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var similarProducts = session.Advanced
-    .RawQuery<Product>(@"
-        from 'Products'
-        where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
-    .AddParameter("minPrice", 35.0)
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var similarProducts = await asyncSession.Advanced
-    .AsyncRawQuery<Product>(@"
-        from 'Products'
-        where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
-    .AddParameter("minPrice", 35.0)
-    .AddParameter("searchTerm", "italian food")
-    .WaitForNonStaleResults()
-    .ToListAsync();
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            "from 'Products' where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))"
+        )
+        .add_parameter("minPrice", 35)
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1429,20 +836,14 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
 
 * However, if you increase _NumberOfCandidates_, the query will retrieve more candidate documents before applying the filtering condition.
   If you run the following query:
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="RQL" label="RQL">
-```sql
-from "Products"
-where (PricePerUnit > $minPrice)
-// Run vector search with similarity 0.75 and NumberOfCandidates 25
-and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
-{ "minPrice" : 35.0, "searchTerm" : "italian food" }
-```
-</TabItem>
-</Tabs>
-
-    now the query returns **4** documents instead of **2**.
+  ```sql
+  from "Products"
+  where (PricePerUnit > $minPrice)
+  // Run vector search with similarity 0.75 and NumberOfCandidates 25
+  and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
+  { "minPrice" : 35.0, "searchTerm" : "italian food" }
+  ```
+  now the query returns **4** documents instead of **2**.
 
 </Admonition>
 
@@ -1451,8 +852,7 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
 * You can combine multiple vector search statements in the same query using logical operators.  
   This is useful when you want to retrieve documents that match more than one vector-based criterion.
  
-* This can be done using [DocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery),
-  [RawQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) or raw [RQL](../../../client-api/session/querying/what-is-rql.mdx).
+* This can be done using [raw_query](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) or raw [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
 * In the example below, the results will include companies that match one of two vector search conditions:  
   * Companies from European countries with a _Name_ similar to "snack"
@@ -1463,113 +863,54 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
   This index includes two vector fields: _Address.Country_ and _Name_.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-var companies = session.Advanced
-    .DocumentQuery<Company>()
-     // Use OpenSubclause & CloseSubclause to differentiate between clauses:
-     // ====================================================================
-    
-    .OpenSubclause()
-    .VectorSearch( // Search for companies that sell snacks or similar
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("snack"),
-        minimumSimilarity: 0.78f
+<TabItem value="query" label="query">
+```python
+companies = list(
+        session.query(object_type=Company)
+        # Use open_subclause & close_subclause to differentiate between clauses:
+        # ======================================================================
+        .open_subclause()
+        # Search for companies that sell snacks or similar
+        .vector_search_text("Name", "snack", 0.78)
+        # Use 'and_also' for an AND operation
+        .and_also()
+        # Search for companies located in Europe
+        .vector_search_text("Address.Country", "europe", 0.82)
+        .close_subclause()
+        # Use 'or_else' for an OR operation
+        .or_else()
+        .open_subclause()
+        # Search for companies that sell dairy products or similar
+        .vector_search_text("Name", "dairy", 0.88)
+        .close_subclause()
+        .wait_for_non_stale_results()
     )
-     // Use 'AndAlso' for an AND operation
-    .AndAlso()
-    .VectorSearch( // Search for companies located in Europe
-        field => field.WithText(x => x.Address.Country),
-        searchTerm => searchTerm.ByText("europe"),
-        minimumSimilarity: 0.82f
-    )
-    .CloseSubclause()
-     // Use 'OrElse' for an OR operation
-    .OrElse()
-    .OpenSubclause()
-    .VectorSearch( // Search for companies that sell dairy products or similar
-        field => field.WithText(x => x.Name),
-        v => v.ByText("dairy"),
-        minimumSimilarity: 0.80f
-    )
-    .CloseSubclause()
-    .WaitForNonStaleResults()
-    .ToList();
 ```
 </TabItem>
-<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-```csharp
-var companies = await asyncSession.Advanced
-    .AsyncDocumentQuery<Company>()
-    .OpenSubclause()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("snack"),
-        minimumSimilarity: 0.78f
+<TabItem value="raw_query" label="raw_query">
+```python
+companies = list(
+        session.advanced.raw_query(
+            """
+            from Companies
+            where
+                (
+                    vector.search(embedding.text(Name), $searchTerm1, 0.78)
+                    and
+                    vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+                )
+                or
+                (
+                    vector.search(embedding.text(Name), $searchTerm3, 0.80)
+                )
+            """,
+            Company,
+        )
+        .add_parameter("searchTerm1", "snack")
+        .add_parameter("searchTerm2", "europe")
+        .add_parameter("searchTerm3", "dairy")
+        .wait_for_non_stale_results()
     )
-    .AndAlso()
-    .VectorSearch(
-        field => field.WithText(x => x.Address.Country),
-        searchTerm => searchTerm.ByText("europe"),
-        minimumSimilarity: 0.82f
-    )
-    .CloseSubclause()
-    .OrElse()
-    .OpenSubclause()
-    .VectorSearch(
-        field => field.WithText(x => x.Name),
-        searchTerm => searchTerm.ByText("dairy"),
-        minimumSimilarity: 0.80f
-    )
-    .CloseSubclause()
-    .WaitForNonStaleResults()
-    .ToListAsync();
-```
-</TabItem>
-<TabItem value="RawQuery" label="RawQuery">
-```csharp
-var companies = session.Advanced
-    .RawQuery<Company>(@"
-        from Companies
-        where 
-            (
-                vector.search(embedding.text(Name), $searchTerm1, 0.78)
-                and
-                vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
-            )
-            or
-            (
-                vector.search(embedding.text(Name), $searchTerm3, 0.80)
-            )
-    ")
-    .AddParameter("searchTerm1", "snack")
-    .AddParameter("searchTerm2","europe")
-    .AddParameter("searchTerm3", "dairy")
-    .WaitForNonStaleResults()
-    .ToList();
-```
-</TabItem>
-<TabItem value="RawQuery_async" label="RawQuery_async">
-```csharp
-var companies = await asyncSession.Advanced
-    .AsyncRawQuery<Company>(@"
-        from Companies
-        where 
-            (
-                vector.search(embedding.text(Name), $searchTerm1, 0.78)
-                and
-                vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
-            )
-            or
-            (
-                vector.search(embedding.text(Name), $searchTerm3, 0.80)
-            )
-    ")
-    .AddParameter("searchTerm1", "snack")
-    .AddParameter("searchTerm2","europe")
-    .AddParameter("searchTerm3", "dairy")
-    .WaitForNonStaleResults()
-    .ToListAsync();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1609,184 +950,158 @@ or
 
 ## Syntax
 
-`VectorSearch`:  
+`vector_search` methods:  
 
 <TabItem>
-```csharp
-public IRavenQueryable<T> VectorSearch<T>(
-    Func<IVectorFieldFactory<T>, IVectorEmbeddingTextField> textFieldFactory,
-    Action<IVectorEmbeddingTextFieldValueFactory> textValueFactory,
-    float? minimumSimilarity = null,
-    int? numberOfCandidates = null,
-    bool isExact = false);
+```python
+def vector_search(
+        self,
+        embedding_field: str,
+        vector: Union[List[float], str],
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
 
-public IRavenQueryable<T> VectorSearch<T>(
-    Func<IVectorFieldFactory<T>, IVectorEmbeddingField> embeddingFieldFactory,
-    Action<IVectorEmbeddingFieldValueFactory> embeddingValueFactory,
-    float? minimumSimilarity = null,
-    int? numberOfCandidates = null,
-    bool isExact = false);
 
-public IRavenQueryable<T> VectorSearch<T>(
-    Func<IVectorFieldFactory<T>, IVectorField> embeddingFieldFactory,
-    Action<IVectorFieldValueFactory> embeddingValueFactory,
-    float? minimumSimilarity = null,
-    int? numberOfCandidates = null,
-    bool isExact = false);
+def vector_search_i8(
+        self,
+        embedding_field: str,
+        vector: List[int],
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_i1(
+        self,
+        embedding_field: str,
+        vector: List[int],
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text(
+        self,
+        embedding_field: str,
+        vector: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text_using_task(
+        self,
+        embedding_field: str,
+        vector: str,
+        task_name: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_f32_i8(
+        self,
+        embedding_field: str,
+        vector: List[float],
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_f32_i1(
+        self,
+        embedding_field: str,
+        vector: List[float],
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text_i8(
+        self,
+        embedding_field: str,
+        vector: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text_i1(
+        self,
+        embedding_field: str,
+        vector: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text_i8_using_task(
+        self,
+        embedding_field: str,
+        vector: str,
+        task_name: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
+
+
+def vector_search_text_i1_using_task(
+        self,
+        embedding_field: str,
+        vector: str,
+        task_name: str,
+        minimum_similarity: float = None,
+        number_of_candidates: int = None,
+        is_exact: bool = VectorSearch.DEFAULT_IS_EXACT,
+) -> DocumentQuery[_T]:
+    ...
 ```
 </TabItem>
 
-| Parameter                 | Type                                                      | Description                                                                                                                         |
-|---------------------------|-----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| **textFieldFactory**      | `Func<IVectorFieldFactory<T>, IVectorEmbeddingTextField>` | Factory creating textual vector field for indexing purposes.                                                                        |
-| **textValueFactory**      | `Action<IVectorEmbeddingTextFieldValueFactory>`           | Factory preparing queried data to be used in vector search.                                                                         |
-| **embeddingFieldFactory** | `Func<IVectorFieldFactory<T>, IVectorEmbeddingField>`     | Factory creating embedding vector field for indexing purposes.                                                                      |
-| **embeddingValueFactory** | `Action<IVectorEmbeddingFieldValueFactory>`               | Factory preparing queried data to be used in vector search.                                                                         |
-| **embeddingFieldFactory** | `Func<IVectorFieldFactory<T>, IVectorField>`              | Factory using existing, already indexed vector field.                                                                               |
-| **embeddingValueFactory** | `Action<IVectorFieldValueFactory>`                        | Factory preparing queried data to be used in vector search.                                                                         |
-| **minimumSimilarity**     | `float?`                                                  | Minimum similarity between the queried value and the indexed value for the vector search to match.                                  |
-| **numberOfCandidates**    | `int?`                                                    | Number of candidate nodes for the HNSW algorithm.<br/>Higher values improve accuracy but require more computation.                   |
-| **isExact**               | `bool`                                                    | `false` - vector search will be performed in an approximate manner.<br/>`true` - vector search will be performed in an exact manner. |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **embedding_field** | `str` | Name of the document field whose content or embeddings are used for the vector search (e.g. `"Name"`, `"tags_embedded_as_single"`). |
+| **vector** | `str` | Query value: for text methods, the search string; for numeric methods, the embedding/vector value passed to the search. |
+| **task_name** | `str` | Identifier of the embeddings generation task to use when querying pre-generated embeddings. |
+| **minimum_similarity** | `float` | Minimum similarity between the queried value and the indexed value for the vector search to match. |
+| **number_of_candidates** | `int` | Number of candidate nodes for the HNSW algorithm.<br/>Higher values improve accuracy but require more computation. |
+| **is_exact** | `bool` | `false` - vector search will be performed in an approximate manner.<br/>`true` - vector search will be performed in an exact manner. |
 
-The default value for `minimumSimilarity` is defined by this configuration key:  
+The default value for `minimum_similarity` is defined by this configuration key:  
 [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
-The default value for `numberOfCandidates` is defined by this configuration key:  
+The default value for `number_of_candidates` is defined by this configuration key:  
 [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
-`IVectorFieldFactory`:
-
+`VectorEmbeddingType`:
 <TabItem>
-```csharp
-public interface IVectorFieldFactory<T>
-{
-    // Methods for the dynamic query:
-    // ==============================
-    
-    public IVectorEmbeddingTextField WithText(string documentFieldName);
-    public IVectorEmbeddingTextField WithText(Expression<Func<T, object>> propertySelector);
-    
-    public IVectorEmbeddingField WithEmbedding(string documentFieldName, 
-        VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
-    public IVectorEmbeddingField WithEmbedding(Expression<Func<T, object>> propertySelector,
-        VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
-    
-    public IVectorEmbeddingField WithBase64(string documentFieldName,
-        VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
-    public IVectorEmbeddingField WithBase64(Expression<Func<T, object>> propertySelector,
-        VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
-    
-    // Methods for querying a static index:
-    // ====================================
-    
-    public IVectorField WithField(string indexFieldName);
-    public IVectorField WithField(Expression<Func<T, object>> indexPropertySelector);
-}
-```
-</TabItem>
-
-| Parameter                       | Type                          | Description                                                                            |
-|---------------------------------|-------------------------------|----------------------------------------------------------------------------------------|
-| **documentFieldName**           | `string`                      | The name of the document field containing<br/>text / embedding / base64 encoded data.   |
-| **indexFieldName**              | `string`                      | The name of the index-field that vector search will be performed on.                   |
-| **propertySelector**            | `Expression<Func<T, object>>` | Path to the document field containing<br/>text / embedding /base64 encoded data.        |
-| **indexPropertySelector**       | `Expression<Func<T, object>>` | Path to the index-field containing indexed data.                                       |
-| **storedEmbeddingQuantization** | `VectorEmbeddingType`         | Quantization format of the stored embeddings.<br/>Default: `VectorEmbeddingType.Single` |
-
-`IVectorEmbeddingTextField` & `IVectorEmbeddingField`:
-
-<TabItem>
-```csharp
-public interface IVectorEmbeddingTextField
-{
-    public IVectorEmbeddingTextField TargetQuantization(
-        VectorEmbeddingType targetEmbeddingQuantization);
-    
-    public IVectorEmbeddingTextField UsingTask(
-        string embeddingsGenerationTaskIdentifier);
-}
-
-public interface IVectorEmbeddingField
-{
-    public IVectorEmbeddingField TargetQuantization(
-        VectorEmbeddingType targetEmbeddingQuantization);
-}
-```
-</TabItem>
-
-| Parameter                              | Type                  | Description                                                                                                                                                                                               |
-|----------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **targetEmbeddingQuantization**        | `VectorEmbeddingType` | The desired target quantization format.                                                                                                                                                                   |
-| **embeddingsGenerationTaskIdentifier** | `string `             | The identifier of an embeddings generation task.<br/>Used to locate the embeddings generated by the task in the [Embedding collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx). |
-
-<TabItem>
-```csharp
-public enum VectorEmbeddingType
-{
-    Single,
-    Int8,
-    Binary,
-    Text
-}
-```
-</TabItem>
-
-`IVectorEmbeddingTextFieldValueFactory` & `IVectorEmbeddingFieldValueFactory`:
-
-<TabItem>
-```csharp
-public interface IVectorEmbeddingTextFieldValueFactory
-{
-    // Defines the queried text(s)
-    public void ByText(string text);
-    public void ByTexts(IEnumerable<string> texts);
-
-    // Defines the queried text(s) and the embedding generation task to use.
-    // These overloads should be used only when querying a static-index where vector fields contain 
-    // numerical embeddings that were not generated by RavenDB's built-in embedding tasks.
-    // The text is embedded at query time using the specified task ID and compared to the indexed vectors.
-    public void ByText(string text, string embeddingsGenerationTaskIdentifier);
-    public void ByTexts(IEnumerable<string> texts, string embeddingsGenerationTaskIdentifier);
-    
-    // Query by the embedding(s) indexed from the specified document for the queried field 
-    public void ForDocument(string documentId);
-}
-
-public interface IVectorEmbeddingFieldValueFactory
-{
-    // Define the queried embedding:
-    // =============================
-    
-    // 'embeddings' is an enumerable containing embedding values
-    public void ByEmbedding<T>(IEnumerable<T> embedding) where T : unmanaged, INumber<T>;
-    public void ByEmbedding<T>(IEnumerable<IEnumerable<T>> embeddings) where T : unmanaged, INumber<T>;
-    
-    
-    // 'embeddings' is an array containing embedding values
-    public void ByEmbedding<T>(T[] embedding) where T : unmanaged, INumber<T>;
-    public void ByEmbeddings<T>(T[][] embeddings) where T : unmanaged, INumber<T>;
-    
-    // 'embedding` is a `RavenVector` containing embedding values
-    public void ByEmbedding<T>(RavenVector<T> embedding) where T : unmanaged, INumber<T>;
-    
-    // 'base64Embedding' is encoded as base64 string(s).
-    public void ByBase64(string base64Embedding);
-    public void ByBase64(IEnumerable<string> base64Embeddings);
-}
-```
-</TabItem>
-
-#### `RavenVector`:  
-
-RavenVector is RavenDB's dedicated data type for storing and querying numerical embeddings.  
-Learn more in [RavenVector](../../../ai-integration/vector-search/data-types-for-vector-search.mdx#ravenvector).
-
-<TabItem>
-```csharp
-public class RavenVector<T>()
-{
-    public T[] Embedding { get; set; }
-} 
+```python
+class VectorEmbeddingType(Enum):
+    SINGLE = "Single" 
+    INT8 = "Int8"  
+    BINARY = "Binary" 
+    TEXT = "Text" 
 ```
 </TabItem>
 
@@ -1797,11 +1112,14 @@ Use them to transform your raw data to the desired format.
 Other quantizers may not be compatible.  
 
 <TabItem>
-```csharp
-public static class VectorQuantizer
-{
-    public static sbyte[] ToInt8(float[] rawEmbedding);
-    public static byte[] ToInt1(ReadOnlySpan<float> rawEmbedding);
-}
+```python
+class VectorQuantizer:
+    @staticmethod
+    def to_int8(raw_embedding: List[float]) -> List[int]:
+        ...
+
+    @staticmethod
+    def to_int1(raw_embedding: List[float]) -> List[int]:
+        ...
 ```
 </TabItem>
