@@ -1,0 +1,118 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article explains how to define a connection string to the [Hugging Face's text embedding services](https://huggingface.co/docs/text-embeddings-inference/en/index),  
+  enabling RavenDB to seamlessly integrate its [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) within your environment.
+    
+* Note: RavenDB currently supports only text embeddings with Hugging Face.  
+  Chat models are not supported through this integration.    
+
+* In this article:
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/hugging-face.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/hugging-face.mdx#define-the-connection-string---from-the-client-api)
+  * [Syntax](../../../ai-integration/connection-strings/hugging-face.mdx#syntax) 
+    
+</Admonition>
+
+## Define the connection string - from the Studio
+
+![connection string to hugging face](../assets/hugging-face.png)
+
+1. **Name**  
+   Enter a name for this connection string.
+
+2. **Identifier** (optional)  
+   Learn more about the identifier in the [connection string identifier](../../../ai-integration/connection-strings/overview.mdx#the-connection-string-identifier) section.
+
+3. **Model Type**  
+   Select "Text Embeddings".
+
+4. **Connector**  
+   Select **Hugging Face** from the dropdown menu.
+
+5. **API key**  
+   Enter the API key used to authenticate requests to Hugging Face's text embedding services.
+
+6. **Endpoint** (optional)  
+   Select or enter the Hugging Face endpoint for generating embeddings from text.  
+   If not specified, the default endpoint is used.  
+   (`https://api-inference.huggingface.co/`)
+
+7. **Model**  
+   Specify the Hugging Face text embedding model to use.
+
+8. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.  
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches) configuration key.
+
+9. Click **Test Connection** to confirm the connection string is set up correctly.
+
+10. Click **Save** to store the connection string or **Cancel** to discard changes.
+
+## Define the connection string - from the Client API
+
+<TabItem value="create_connection_string_hugging_face" label="create_connection_string_hugging_face">
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
+
+# Define the connection string to Hugging Face
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="ConnectionStringToHuggingFace",
+    identifier="identifier-to-the-connection-string",
+    # Model type
+    model_type=AiModelType.TEXT_EMBEDDINGS,
+    # Hugging Face connection settings
+    huggingface_settings=HuggingFaceSettings(
+        api_key="your-api-key",
+        endpoint="https://api-inference.huggingface.co/",
+        model="sentence-transformers/all-MiniLM-L6-v2",
+    ),
+)
+
+# Optionally, override the default maximum number of query embedding batches that can be processed concurrently.
+connection_string.huggingface_settings.embeddings_max_concurrent_batches = 10
+
+# Deploy the connection string to the server
+put_connection_string_op = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(put_connection_string_op)
+```
+</TabItem>
+
+## Syntax
+
+<TabItem value="hugging_face_settings" label="hugging_face_settings">
+```python
+class AiConnectionString(ConnectionString):
+    def __init__(
+        self,
+        name: str,
+        identifier: str,
+        # ...
+        model_type: AiModelType = None,
+        huggingface_settings: Optional[HuggingFaceSettings] = None,
+    ): ...
+
+
+class HuggingFaceSettings(AbstractAiSettings):
+    def __init__(
+        self,
+        api_key: str = None,
+        model: str = None,
+        endpoint: str = None,
+        embeddings_max_concurrent_batches: int = None,
+    ):
+        super().__init__(embeddings_max_concurrent_batches)
+        ...
+
+class AbstractAiSettings:
+    def __init__(self, embeddings_max_concurrent_batches: int = None): ...
+```
+</TabItem>

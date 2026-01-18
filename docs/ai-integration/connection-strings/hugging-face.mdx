@@ -8,13 +8,18 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import HuggingFaceCsharp from './content/_hugging-face-csharp.mdx';
+import HuggingFacePython from './content/_hugging-face-python.mdx';
 
-export const supportedLanguages = ["csharp"];
+export const supportedLanguages = ["csharp", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HuggingFaceCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HuggingFacePython />
 </LanguageContent>
 
 <!---
