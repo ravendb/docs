@@ -148,7 +148,15 @@ store.maintenance.send(UpdateGenAiOperation(task_id, new_config))
 
 * `UpdateGenAiOperation` Definition
   ```python
-  public class UpdateGenAiOperation(long task_id, GenAiConfiguration configuration, StartingPointChangeVector startingPoint = null) : IMaintenanceOperation<UpdateEtlOperationResult>
+class UpdateGenAiOperation(MaintenanceOperation[UpdateEtlOperationResult]):
+    def __init__(
+        self,
+        task_id: int,
+        configuration: GenAiConfiguration,
+        starting_point: Optional[StartingPointChangeVector] = None,
+        reset: bool = False,
+    ):
+        ...
   ```
 
 * `UpdateGenAiOperation` Parameters
@@ -157,6 +165,6 @@ store.maintenance.send(UpdateGenAiOperation(task_id, new_config))
   | `task_id` | `int` | The internal RavenDB task ID of the task to update. |
   | `configuration` | `GenAiConfiguration` | The new or modified configuration for the GenAI task. |
   | `starting_point` | `StartingPointChangeVector` | Optional starting point for the update operation. |
-
+  | `reset` | `bool` | Whether to reset the task's state. |
 </ContentFrame>
 </Panel>
