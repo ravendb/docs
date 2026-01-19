@@ -148,7 +148,7 @@ store.maintenance.send(UpdateGenAiOperation(task_id, new_config))
 
 * `UpdateGenAiOperation` Definition
   ```python
-class UpdateGenAiOperation(MaintenanceOperation[UpdateEtlOperationResult]):
+  class UpdateGenAiOperation(MaintenanceOperation[UpdateEtlOperationResult]):
     def __init__(
         self,
         task_id: int,
