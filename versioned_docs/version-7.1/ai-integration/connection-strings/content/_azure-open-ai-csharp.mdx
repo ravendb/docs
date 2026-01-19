@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -10,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
   [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).    
     
 * In this article:
-  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string-from-the-studio)
     * [Configuring a text embedding model](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-text-embedding-model)
     * [Configuring a chat model](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string-from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/azure-open-ai.mdx#syntax) 
     
 </Admonition>
 
-## Define the connection string - from the Studio
+<Panel heading="Define the connection string - from the Studio">
 
 ### Configuring a text embedding model
 
@@ -64,6 +66,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 12. Click **Save** to store the connection string or **Cancel** to discard changes.
 
+--- 
+    
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-text-embedding-model),  
@@ -87,9 +91,9 @@ import CodeBlock from '@theme/CodeBlock';
      * If not explicitly set, Azure OpenAI uses a default temperature of `1.0`.  
        See [Azure OpenAI chat completions parameters](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/reference#request-body-2).
 
----
+</Panel>
 
-## Define the connection string - from the Client API
+<Panel heading="Define the connection string - from the Client API">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
@@ -124,7 +128,8 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -160,14 +165,17 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
 </TabItem>
 </Tabs>
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax">
 
 <TabItem value="azure_open_ai_settings" label="azure_open_ai_settings">
 ```csharp
@@ -186,11 +194,11 @@ public class AzureOpenAiSettings : AbstractAiSettings
     public string Model { get; set; }
     public string DeploymentName { get; set; }
     
-    // Relevant only for text embedding models:
+    // Relevant only for TEXT EMBEDDING models:
     // Specifies the number of dimensions in the generated embedding vectors.
     public int? Dimensions { get; set; }
     
-    // Relevant only for chat models:
+    // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
@@ -204,3 +212,5 @@ public class AbstractAiSettings
 }
 ```
 </TabItem>
+
+</Panel>

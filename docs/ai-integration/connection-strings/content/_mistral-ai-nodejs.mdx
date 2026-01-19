@@ -60,34 +60,30 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Define the connection string - from the Client API">
 
 <TabItem value="create_connection_string_mistral_ai" label="create_connection_string_mistral_ai">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Mistral AI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ConnectionStringToMistralAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-    
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // Mistral AI connection settings
-        MistralAiSettings = new MistralAiSettings(
-            apiKey: "your-api-key",
-            endpoint: "https://api.mistral.ai/v1",
-            model: "mistral-embed")
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.MistralAiSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+```js
+// Define the connection string to Mistral AI
+const connectionString = new AiConnectionString();
+
+// Connection string name & identifier    
+connectionString.name = "ConnectionStringToMistralAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type
+connectionString.modelType = "TextEmbeddings";
+
+// Mistral AI connection settings
+connectionString.mistralAiSettings = new MistralAiSettings(
+    "mistral-embed", // Name of text embedding model to use
+    "your-api-key",
+    "https://api.mistral.ai/v1");
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.mistralAiSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 
@@ -96,25 +92,23 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="mistral_ai_settings" label="mistral_ai_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public MistralAiSettings MistralAiSettings { get; set; }
-}
+    name;              // string
+    identifier;        // string (optional)
+    modelType;         // "TextEmbeddings" | "Chat"
+    mistralAiSettings; // MistralAiSettings
+} 
 
-public class MistralAiSettings : AbstractAiSettings
+class MistralAiSettings
 {
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    model;          // string
+    endpoint;       // string
+    apiKey;         // string
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number
 }
 ```
 </TabItem>

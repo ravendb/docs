@@ -111,74 +111,61 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
-    
-            // Name of text embedding model to use
-            Model = "text-embedding-3-small",
-            
-            // Optionally, override the default maximum number of query embedding batches
-            // that can be processed concurrently 
-            EmbeddingsMaxConcurrentBatches = 10
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+```js
+// Define the connection string to OpenAI
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier    
+connectionString.name = "ConnectionStringToOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type    
+connectionString.modelType = "TextEmbeddings";
+
+// OpenAI connection settings    
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "text-embedding-3-small", // Name of text embedding model to use
+    "your-organization-id",   // optional
+    "your-project-id",        // optional
+    1536,  // dimensions, optional
+    null); // temperature is not relevant for text embedding models
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.openAiSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.Chat,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
+```js
+// Define the connection string to OpenAI
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
     
-            // Name of chat model to use
-            Model = "gpt-4o",
-            
-            // Optionally, set the model's temperature
-            Temperature = 0.4
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+// Model type    
+connectionString.modelType = "Chat";
+
+// OpenAI connection settings
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "gpt-4o", // Name of chat model to use
+    "your-organization-id",   // optional
+    "your-project-id",        // optional
+    null,  // dimensions is not relevant for chat models
+    0.4);  // temperature (optional)
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 </Tabs>
@@ -188,39 +175,37 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="open_ai_settings" label="open_ai_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public OpenAiSettings OpenAiSettings { get; set; }
+    name;           // string
+    identifier;     // string (optional)
+    modelType;      // "TextEmbeddings" | "Chat"
+    OpenAiSettings; // OpenAiSettings
 }
 
-public class OpenAiSettings : AbstractAiSettings
+class OpenAiSettings
 {
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
+    apiKey;   // string
+    endpoint; // string
+    model;    // string
     
-    public string OrganizationId { get; set; } // default organization is used if not set 
-    public string ProjectId { get; set; }      // default project is used if not set
+    organizationId; // string (optional, set to 'null' to use default)
+    projectId;      // string (optional, set to 'null' to use default)
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number (optional)
     
     // Relevant only for TEXT EMBEDDING models:
     // Specifies the number of dimensions in the generated embedding vectors.
-    public int? Dimensions { get; set; } // optional
+    dimensions; // number (optional)
     
     // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
-    public double? Temperature { get; set; } // optional
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    temperature; // number (optional)
 }
 ```
 </TabItem>

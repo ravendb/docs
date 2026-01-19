@@ -62,34 +62,30 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Define the connection string - from the Client API">    
 
 <TabItem value="create_connection_string_hugging_face" label="create_connection_string_hugging_face">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Hugging Face
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToHuggingFace", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
+```js
+// Define the connection string to Hugging Face    
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier    
+connectionString.name = "ConnectionStringToHuggingFace";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type    
+connectionString.modelType = "TextEmbeddings";
     
-        // Hugging Face connection settings
-        HuggingFaceSettings = new HuggingFaceSettings(
-            apiKey: "your-api-key",
-            endpoint: "https://api-inference.huggingface.co/",
-            model: "sentence-transformers/all-MiniLM-L6-v2")
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.HuggingFaceSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+// Hugging Face connection settings    
+connectionString.huggingFaceSettings = new HuggingFaceSettings(
+    "your-api-key",
+    "sentence-transformers/all-MiniLM-L6-v2", // Name of text embedding model to use
+    "https://api-inference.huggingface.co/");
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.huggingFaceSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 
@@ -98,25 +94,23 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax"> 
 
 <TabItem value="hugging_face_settings" label="hugging_face_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public HuggingFaceSettings HuggingFaceSettings { get; set; }
+    name;                // string
+    identifier;          // string (optional)
+    modelType;           // "TextEmbeddings" | "Chat"
+    huggingFaceSettings; // HuggingFaceSettings
 }
-
-public class HuggingFaceSettings : AbstractAiSettings
+    
+class HuggingFaceSettings
 {
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    apiKey;         // string
+    model;          // string
+    endpoint;       // string
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number (optional)
 }
 ```
 </TabItem>

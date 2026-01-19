@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -13,15 +15,15 @@ import CodeBlock from '@theme/CodeBlock';
   As long as the provider follows the OpenAI API format, RavenDB will be able to use it for Embeddings generation, Gen AI tasks, and chat-based agent interactions.  
 
 * In this article:
-  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Studio](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string-from-the-studio)
     * [Configuring a text embedding model](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-model)
     * [Configuring a chat model](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string-from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/open-ai.mdx#syntax) 
     
 </Admonition>
 
-## Define the connection string - from the Studio
+<Panel heading="Define the connection string - from the Studio">
 
 ### Configuring a text embedding model
 
@@ -78,6 +80,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 13. Click **Save** to store the connection string or **Cancel** to discard changes.
 
+---
+    
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-mode),  
@@ -101,9 +105,9 @@ import CodeBlock from '@theme/CodeBlock';
      * If not explicitly set, OpenAI uses a default temperature of `1.0`.  
        See [OpenAI chat completions parameters](https://platform.openai.com/docs/api-reference/chat/create#chat_create-temperature).
 
----
+</Panel>
 
-## Define the connection string - from the Client API
+<Panel heading="Define the connection string - from the Client API">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
@@ -136,7 +140,8 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
@@ -161,7 +166,7 @@ using (var store = new DocumentStore())
             ApiKey = "your-api-key",
             Endpoint = "https://api.openai.com/v1",
     
-            // Name of text embedding model to use
+            // Name of chat model to use
             Model = "gpt-4o",
             
             // Optionally, set the model's temperature
@@ -170,14 +175,17 @@ using (var store = new DocumentStore())
     };
     
     // Deploy the connection string to the server
-    var putConnectionStringOp = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringOp = 
+        new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
 }
 ```
 </TabItem>
 </Tabs>
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax">
 
 <TabItem value="open_ai_settings" label="open_ai_settings">
 ```csharp
@@ -194,19 +202,20 @@ public class OpenAiSettings : AbstractAiSettings
     public string ApiKey { get; set; }
     public string Endpoint { get; set; }
     public string Model { get; set; }
-    public string OrganizationId { get; set; }
-    public string ProjectId { get; set; }
     
-    // Relevant only for text embedding models:
+    public string OrganizationId { get; set; } // default organization is used if not set 
+    public string ProjectId { get; set; }      // default project is used if not set
+    
+    // Relevant only for TEXT EMBEDDING models:
     // Specifies the number of dimensions in the generated embedding vectors.
-    public int? Dimensions { get; set; }
+    public int? Dimensions { get; set; } // optional
     
-    // Relevant only for chat models:
+    // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
-    public double? Temperature { get; set; }
+    public double? Temperature { get; set; } // optional
 }
 
 public class AbstractAiSettings
@@ -215,3 +224,5 @@ public class AbstractAiSettings
 }
 ```
 </TabItem>
+
+</Panel>

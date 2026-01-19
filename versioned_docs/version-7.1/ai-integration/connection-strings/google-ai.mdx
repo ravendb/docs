@@ -8,13 +8,18 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import GoogleAiCsharp from './content/_google-ai-csharp.mdx';
+import GoogleAiNodejs from './content/_google-ai-nodejs.mdx';
 
-export const supportedLanguages = ["csharp"];
+export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GoogleAiCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GoogleAiNodejs />
 </LanguageContent>
 
 <!---

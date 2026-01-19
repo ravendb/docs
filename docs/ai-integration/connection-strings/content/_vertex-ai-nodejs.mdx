@@ -90,35 +90,43 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Define the connection string - from the Client API">
 
 <TabItem value="create_connection_string_vertex_ai" label="create_connection_string_vertex_ai">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Vertex AI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ConnectionStringToVertexAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
+```js
+// Define the connection string to Vertex AI    
+const connectionString = new AiConnectionString();
+
+// Connection string name & identifier
+connectionString.name = "ConnectionStringToVertex";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
     
-        // Vertex AI connection settings
-        VertexSettings = new VertexSettings(
-            model: "text‑embedding‑005",     // Name of the Vertex AI model to use
-            googleCredentialsJson: "{...}",  // Contents of your service account JSON file
-            location: "us-central1",         // Region where the model is hosted
-            aiVersion: VertexAIVersion.V1)   // Optional: specify V1 or V1_Beta
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+// Model type    
+connectionString.modelType = "TextEmbeddings";
+
+// Vertex AI connection settings
+connectionString.vertexSettings = new VertexSettings(
+    "text-embedding-005", // Name of the Vertex AI model to use
+    // Contents of your service account JSON file:
+    JSON.stringify({
+        "type": "service_account",
+        "project_id": "<GOOGLE CLOUD PROJECT ID>",
+        "private_key_id": "<GOOGLE CLOUD SERVICE ACCOUNT PRIVATE KEY ID>",
+        "private_key": "<GOOGLE CLOUD SERVICE ACCOUNT PRIVATE KEY>",
+        "client_email": "<GOOGLE CLOUD SERVICE ACCOUNT CLIENT EMAIL>",
+        "client_id": "<GOOGLE CLOUD SERVICE ACCOUNT CLIENT ID>",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "<GOOGLE CLOUD SERVICE ACCOUNT CERT URL>"
+    }), 
+    "us-central1", // Region where the model is hosted
+    "V1");         // Optional: specify "V1" or "V1_Beta"
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.vertexSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 
@@ -127,32 +135,24 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="vertex_ai_settings" label="vertex_ai_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public VertexSettings VertexSettings { get; set; }
+    name;           // string
+    identifier;     // string (optional)
+    modelType;      // "TextEmbeddings" | "Chat"
+    vertexSettings; // VertexSettings
 }
 
-public class VertexSettings : AbstractAiSettings
+class VertexSettings
 {
-    public string Model { get; set; }
-    public string GoogleCredentialsJson { get; set; }
-    public string Location { get; set; }
-    public VertexAIVersion? AiVersion { get; set; }
-}
-
-public enum VertexAIVersion
-{
-    V1, // Represents the "V1" version of the Vertex AI API.
-    V1_Beta // Represents the "V1 beta" version of the Vertex AI API.
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    model;                 // string
+    googleCredentialsJson; // string
+    location;              // string
+    aiVersion;             // string (optional)
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number
 }
 ```
 </TabItem>

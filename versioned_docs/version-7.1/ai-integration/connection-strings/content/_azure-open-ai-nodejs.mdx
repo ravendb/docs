@@ -66,7 +66,7 @@ import Panel from '@site/src/components/Panel';
 
 12. Click **Save** to store the connection string or **Cancel** to discard changes.
 
---- 
+---
     
 ### Configuring a chat model
 
@@ -97,78 +97,55 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Azure OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToAzureOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // Azure OpenAI connection settings
-        AzureOpenAiSettings = new AzureOpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://your-resource-name.openai.azure.com",
+```js
+// Define the connection string to Azure OpenAI    
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier    
+connectionString.name = "ConnectionStringToAzureOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
     
-            // Name of text embedding model to use
-            Model = "text-embedding-3-small",
+// Model type    
+connectionString.modelType = "TextEmbeddings";
     
-            DeploymentName = "your-deployment-name",
-    
-            // Optionally, override the default maximum number of query embedding batches
-            // that can be processed concurrently 
-            EmbeddingsMaxConcurrentBatches = 10
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+// Azure OpenAI connection settings    
+connectionString.azureOpenAiSettings = new AzureOpenAiSettings(
+    "your-api-key",
+    "https://your-resource-name.openai.azure.com",
+    "text-embedding-3-small", // Name of text embedding model to use
+    "your-deployment-name");
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently.
+connectionString.azureOpenAiSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Azure OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToAzureOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.Chat,
-        
-        // Azure OpenAI connection settings
-        AzureOpenAiSettings = new AzureOpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://your-resource-name.openai.azure.com",
+```js
+// Define the connection string to Azure OpenAI    
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier    
+connectionString.name = "ConnectionStringToAzureOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
     
-            // Name of chat model to use
-            Model = "gpt-4o-mini",
+// Model type    
+connectionString.modelType = "Chat";
     
-            DeploymentName = "your-deployment-name",
-            
-            // Optionally, set the model's temperature
-            Temperature = 0.4
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+// Azure OpenAI connection settings    
+connectionString.azureOpenAiSettings = new AzureOpenAiSettings(
+    "your-api-key",
+    "https://your-resource-name.openai.azure.com",
+    "gpt-4o-mini", // Name of chat model to use
+    "your-deployment-name",
+    0.4); // Optionally, set the model's temperature
+
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 </Tabs>
@@ -178,37 +155,35 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="azure_open_ai_settings" label="azure_open_ai_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public AzureOpenAiSettings AzureOpenAiSettings { get; set; }
+    name;                // string
+    identifier;          // string (optional)
+    modelType;           // "TextEmbeddings" | "Chat"
+    azureOpenAiSettings; // AzureOpenAiSettings
 }
 
-public class AzureOpenAiSettings : AbstractAiSettings
+class AzureOpenAiSettings
 {
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-    public string DeploymentName { get; set; }
+    apiKey;         // string
+    endpoint;       // string
+    model;          // string
+    deploymentName; // string
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number
     
     // Relevant only for TEXT EMBEDDING models:
     // Specifies the number of dimensions in the generated embedding vectors.
-    public int? Dimensions { get; set; }
+    dimensions; // number
     
     // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
-    public double? Temperature { get; set; }
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    temperature; // number
 }
 ```
 </TabItem>

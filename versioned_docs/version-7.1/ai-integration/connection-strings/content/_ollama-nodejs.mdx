@@ -101,75 +101,57 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Ollama
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOllama", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // Ollama connection settings
-        OllamaSettings = new OllamaSettings
-        {
-            Uri = "http://localhost:11434",
-            
-            // Name of text embedding model to use
-            Model = "mxbai-embed-large",
-            
-            // Optionally, override the default maximum number of query embedding batches
-            // that can be processed concurrently 
-            EmbeddingsMaxConcurrentBatches = 10
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+```js
+// Define the connection string to Ollama
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOllama";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type    
+connectionString.modelType = "TextEmbeddings";
+
+// Ollama connection settings    
+connectionString.ollamaSettings = new OllamaSettings(
+    "http://localhost:11434", // Uri
+    "mxbai-embed-large");     // Name of text embedding model to use
+
+// Optionally, override the default maximum number of query embedding batches
+// that can be processed concurrently
+connectionString.ollamaSettings.embeddingsMaxConcurrentBatches = 10;
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Ollama
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOllama", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.Chat,
-        
-        // Ollama connection settings
-        OllamaSettings = new OllamaSettings
-        {
-            Uri = "http://localhost:11434",
-            
-            // Name of chat model to use
-            Model = "llama3:8b-instruct",
-            
-            // Optionally, set the model's temperature
-            Temperature = 0.4,
-            
-            // Optionally, set the model's thinking behavior
-            Think = true
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);    
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+```js
+// Define the connection string to Ollama
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOllama";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type    
+connectionString.modelType = "Chat";
+
+// Ollama connection settings    
+connectionString.ollamaSettings = new OllamaSettings(
+    "http://localhost:11434", // Uri
+    "llama3:8b-instruct");    // Name of chat model to use
+
+// Optionally, set the model's temperature
+connectionString.ollamaSettings.temperature = 0.4;
+
+// Optionally, set the model's thinking behavior
+connectionString.ollamaSettings.think = true;
+
+// Deploy the connection string to the server
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
 </TabItem>
 </Tabs>
@@ -179,23 +161,26 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="ollama_settings" label="ollama_settings">
-```csharp
-public class AiConnectionString
+```js
+class AiConnectionString
 {
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public OllamaSettings OllamaSettings { get; set; }
+    name;           // string
+    identifier;     // string (optional)
+    modelType;      // "TextEmbeddings" | "Chat"
+    ollamaSettings; // OllamaSettings
 }
 
-public class OllamaSettings : AbstractAiSettings
+class OllamaSettings
 {
     // The base URI of your Ollama server
     // For a local setup, use: "http://localhost:11434"
-    public string Uri { get; set; }
+    uri; // string
     
     // The name of the model to use 
-    public string Model { get; set; }
+    model; // string
+    
+    // Maximum number of query embedding batches that can be processed concurrently.
+    embeddingsMaxConcurrentBatches; // number
     
     // Relevant only for CHAT models: 
     // Control whether the model outputs internal reasoning steps before returning the final answer.
@@ -204,19 +189,14 @@ public class OllamaSettings : AbstractAiSettings
     // * 'false' - the model returns only the final answer, 
     //   without exposing intermediate steps.
     // * 'null' - the model’s default behavior is used.
-    public bool? Think { get; set; }
+    think; // boolean
     
-    // Relevant only for chat models:
+    // Relevant only for CHAT models:
     // Controls the randomness and creativity of the model’s output.
     // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
-    public double? Temperature { get; set; }
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+    temperature; // number
 }
 ```
 </TabItem>

@@ -1,6 +1,6 @@
 ---
 title: "Connection String to OpenAI and  OpenAI-Compatible Providers"
-sidebar_label: OpenAI & Compatible Providers
+sidebar_label: "OpenAI & Compatible Providers"
 sidebar_position: 2
 ---
 
@@ -8,13 +8,18 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import OpenAiCsharp from './content/_open-ai-csharp.mdx';
+import OpenAiNodejs from './content/_open-ai-nodejs.mdx';
 
-export const supportedLanguages = ["csharp"];
+export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
 <LanguageContent language="csharp">
    <OpenAiCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <OpenAiNodejs />
 </LanguageContent>
 
 <!---
