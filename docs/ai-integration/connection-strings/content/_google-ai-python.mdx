@@ -2,8 +2,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ContentFrame from '@site/src/components/ContentFrame';
-import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -17,13 +15,13 @@ import Panel from '@site/src/components/Panel';
   Chat models are not supported through this integration.    
 
 * In this article:
-  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string-from-studio)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string-from-the-client-api)
+  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string---from-studio)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string---from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/google-ai.mdx#syntax) 
     
 </Admonition>
 
-<Panel heading="Define the connection string - from Studio">
+## Define the connection string - from Studio
 
 ![connection string to google ai](../assets/google-ai.png)
 
@@ -64,76 +62,64 @@ import Panel from '@site/src/components/Panel';
 
 11. Click **Save** to store the connection string or **Cancel** to discard changes.
 
-</Panel>
+## Define the connection string - from the Client API
 
-<Panel heading="Define the connection string - from the Client API">
+<TabItem value="google_ai_connection_string_embedding" label="google_ai_connection_string_embedding">
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
 
-<TabItem value="create_connection_string_google_ai" label="create_connection_string_google_ai">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Google AI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ConnectionStringToGoogleAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-    
-        // Google AI connection settings
-        GoogleSettings = new GoogleSettings(
-            apiKey: "your-api-key",
-            model: "text-embedding-004",
-            aiVersion: GoogleAIVersion.V1)
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+# Define the connection string to Google AI
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="ConnectionStringToGoogleAI",
+    identifier="identifier-to-the-connection-string",
+    # Model type
+    model_type=AiModelType.TEXT_EMBEDDINGS,
+    # Google AI connection settings
+    google_settings=GoogleSettings(api_key="your-api-key", model="text-embedding-004", ai_version=GoogleAiVersion.V1),
+)
+
+# Optionally, override the default maximum number of query embedding batches that can be processed concurrently
+connection_string.google_settings.embeddings_max_concurrent_batches = 10
+
+# Deploy the connection string to the server
+put_connection_string_op = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(put_connection_string_op)
 ```
 </TabItem>
 
-</Panel>
-
-<Panel heading="Syntax">
+## Syntax
 
 <TabItem value="google_ai_settings" label="google_ai_settings">
-```csharp
-public class AiConnectionString
-{
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public GoogleSettings GoogleSettings { get; set; }
-}
+```python
+class AiConnectionString(ConnectionString):
+    def __init__(
+       self,
+       name: str,
+       identifier: str,
+       # ...
+       model_type: AiModelType = None,
+       google_settings: Optional[GoogleSettings] = None,
+    ): ...
 
-public class GoogleSettings : AbstractAiSettings
-{
-    public string ApiKey { get; set; }
-    public string Model { get; set; }
-    public GoogleAIVersion? AiVersion { get; set; }
-    public int? Dimensions { get; set; }
-}
+class GoogleSettings(AbstractAiSettings):
+    def __init__(
+        self,
+        model: str = None,
+        api_key: str = None,
+        ai_version: GoogleAiVersion = None,
+        dimensions: int = None,
+        embeddings_max_concurrent_batches: int = None,
+    ):
+        super().__init__(embeddings_max_concurrent_batches)
+        ...
 
-public enum GoogleAIVersion
-{
-    V1, // Represents the "v1" version of the Google AI API
-    V1_Beta // Represents the "v1beta" version of the Google AI API
-}
+class GoogleAiVersion(Enum):
+    V1 = "V1" # Represents the "v1" version of the Google AI API
+    V1_Beta = "V1_Beta" # Represents the "v1beta" version of the Google AI API
 
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
-}
+class AbstractAiSettings:
+    def __init__(self, embeddings_max_concurrent_batches: int = None): ...
 ```
 </TabItem>
-    
-</Panel>

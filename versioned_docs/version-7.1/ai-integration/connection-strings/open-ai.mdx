@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import OpenAiCsharp from './content/_open-ai-csharp.mdx';
 import OpenAiNodejs from './content/_open-ai-nodejs.mdx';
+import OpenAiPython from './content/_open-ai-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,6 +21,10 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageContent language="nodejs">
    <OpenAiNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <OpenAiPython />
 </LanguageContent>
 
 <!---

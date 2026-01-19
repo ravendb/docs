@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import MistralAiCsharp from './content/_mistral-ai-csharp.mdx';
 import MistralAiNodejs from './content/_mistral-ai-nodejs.mdx';
+import MistralAiPython from './content/_mistral-ai-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,6 +21,10 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageContent language="nodejs">
    <MistralAiNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <MistralAiPython />
 </LanguageContent>
 
 <!---

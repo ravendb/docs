@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import EmbeddedCsharp from './content/_embedded-csharp.mdx';
 import EmbeddedNodejs from './content/_embedded-nodejs.mdx';
+import EmbeddedPython from './content/_embedded-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,6 +21,10 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageContent language="nodejs">
    <EmbeddedNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <EmbeddedPython />
 </LanguageContent>
 
 <!---

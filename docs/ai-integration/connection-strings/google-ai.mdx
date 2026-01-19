@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import GoogleAiCsharp from './content/_google-ai-csharp.mdx';
 import GoogleAiNodejs from './content/_google-ai-nodejs.mdx';
+import GoogleAiPython from './content/_google-ai-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,6 +21,10 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageContent language="nodejs">
    <GoogleAiNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GoogleAiPython />
 </LanguageContent>
 
 <!---
