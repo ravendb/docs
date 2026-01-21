@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import VectorSearchUsingDynamicQueryCsharp from './content/_vector-search-using-dynamic-query-csharp.mdx';
 import VectorSearchUsingDynamicQueryNodejs from './content/_vector-search-using-dynamic-query-nodejs.mdx';
+import VectorSearchUsingDynamicQueryPython from './content/_vector-search-using-dynamic-query-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -22,14 +23,6 @@ export const supportedLanguages = ["csharp", "nodejs"];
    <VectorSearchUsingDynamicQueryNodejs />
 </LanguageContent>
 
-
-<!---
-### Vector Search
-- [Vector search overview](../../ai-integration/vector-search/overview)
-- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
-- [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
-
-### Querying
-- [Query overview](../../client-api/session/querying/how-to-query)
-- [Full-text search](../../client-api/session/querying/text-search/full-text-search)
--->
+<LanguageContent language="python">
+   <VectorSearchUsingDynamicQueryPython />
+</LanguageContent>

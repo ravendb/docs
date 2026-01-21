@@ -1,0 +1,602 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Admonition type="note" title="">
+
+* This article explains how to index attachments using a **static-index** to enable vector search on their content.  
+  Note: Vector search on attachment content is not available when making a [dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx).  
+  
+* **Prior to this article**, refer to the [Vector search using a static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx) article for general knowledge about  
+  indexing a vector field.
+
+* In this article:
+    * [Overview](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
+    * [Indexing TEXT attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
+      * [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
+      * [JS index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
+    * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
+
+</Admonition>
+
+## Overview
+
+<Admonition type="note" title="">
+
+#### Attachments in RavenDB
+
+* Attachments in RavenDB allow you to associate binary files with your JSON documents.  
+  You can use attachments to store images, PDFs, videos, text files, or any other format.  
+
+* Attachments are stored separately from documents, reducing document size and avoiding unnecessary duplication.
+  They are stored as **binary data**, regardless of content type.
+
+* Attachments are handled as streams, allowing efficient upload and retrieval.  
+  Learn more in: [What are attachments](../../../document-extensions/attachments/what-are-attachments.mdx).
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### Indexing attachment content for vector search
+
+You can index attachment content in a vector field within a static-index,    
+enabling vector search on text or numerical data that is stored in the attachments:
+
+* **Attachments with TEXT**:  
+    * During indexing, RavenDB processes the text into a single embedding per attachment using the built-in  
+      [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
+
+* **Attachments with NUMERICAL data**:  
+    * While attachments can store any file type, RavenDB does Not generate embeddings from images, videos, or other non-textual content.  
+      Each attachment must contain a **single** precomputed embedding vector, generated externally.  
+    * RavenDB indexes the embedding vector from the attachment in and can apply [quantization](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
+      (e.g., index it in _Int8_ format) if this is configured.  
+    * All embeddings indexed within the same vector-field in the static-index must be vectors of the **same dimension** to ensure consistency in indexing and search.
+      They must also be created using the **same model**.
+
+</Admonition>
+
+## Indexing TEXT attachments
+ 
+* The following index defines a **vector field** named `vector_from_attachment`.
+
+* It indexes embeddings generated from the text content of the `description.txt` attachment.  
+  This applies to all _Company_ documents that contain an attachment with that name.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```python
+class Companies_ByVector_FromTextAttachment(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+
+        # Load the attachment from the document (ensure it is not null)
+        # Then, index the text content from the attachment in the vector field
+        self.map = """
+        from company in docs.Companies
+
+        let attachment = LoadAttachment(company, "description.txt")
+        where attachment != null
+
+        select new 
+        {
+            vector_from_attachment =
+                CreateVector(attachment.GetContentAsString(Encoding.UTF8))
+        }
+        """
+
+        # Configure the vector field:
+        self._vector("vector_from_attachment", VectorOptions(
+            # Specify 'Text' as the source format
+            source_embedding_type=VectorEmbeddingType.TEXT,
+            # Specify the described destination format within the index
+            destination_embedding_type=VectorEmbeddingType.SINGLE,
+        ))
+
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+```python
+class Companies_ByVector_FromTextAttachment_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Companies', function (company) {
+                var attachment = loadAttachment(company, "description.txt");
+                if (!attachment) return null;
+                
+                return {
+                    vector_from_attachment: createVector(attachment.getContentAsString('utf-8'))
+                };
+            })
+            """
+        }
+        self.fields = {
+            "vector_from_attachment": IndexFieldOptions(
+                vector=VectorOptions(
+                    source_embedding_type=VectorEmbeddingType.TEXT,
+                    destination_embedding_type=VectorEmbeddingType.SINGLE,
+                )
+            )
+        }
+        
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```python
+index_definition = IndexDefinition(
+    name="Companies/ByVector/FromTextAttachment",
+    maps={
+        """
+        from company in docs.Companies
+
+        let attachment = LoadAttachment(company, "description.txt")
+        where attachment != null
+
+        select new 
+        {
+            vector_from_attachment =
+                CreateVector(attachment.GetContentAsString(Encoding.UTF8))
+        }
+        """
+    },
+    fields={
+        "vector_from_attachment": IndexFieldOptions(
+            vector=VectorOptions(
+                source_embedding_type=VectorEmbeddingType.TEXT,
+                destination_embedding_type=VectorEmbeddingType.SINGLE,
+            )
+        )
+    },
+    configuration={"Indexing.Static.SearchEngineType": "Corax"},
+)
+
+store.maintenance.send(PutIndexesOperation(index_definition))
+```
+</TabItem>
+<TabItem value="Storing_text_attachments" label="Storing_text_attachments">
+```python
+# Prepare text as 'bytes' to be stored as attachments:
+# ====================================================
+bytes1 = "Supplies soft drinks, fruit juices, and flavored syrups to restaurants and retailers.".encode("utf-8")
+bytes2 = "Supplies fine dining restaurants with premium meats, cheeses, and wines across France.".encode("utf-8")
+bytes3 = "An American grocery chain known for its fresh produce, organic foods, and local meats.".encode("utf-8")
+bytes4 = "An Asian grocery store specializing in ingredients for Japanese and Thai cuisine.".encode("utf-8")
+bytes5 = "A rural general store offering homemade jams, fresh-baked bread, and locally crafted gifts.".encode("utf-8")
+
+
+with store.open_session() as session:
+    # Load existing Company documents from RavenDB's sample data:
+    # ===========================================================
+    company1 = session.load("companies/11-A", Company)
+    company2 = session.load("companies/26-A", Company)
+    company3 = session.load("companies/32-A", Company)
+    company4 = session.load("companies/41-A", Company)
+    company5 = session.load("companies/43-A", Company)
+    
+    # Store the attachments in the documents
+    session.advanced.attachments.store(company1, "description.txt", bytes1, "text/plain")
+    session.advanced.attachments.store(company2, "description.txt", bytes2, "text/plain")
+    session.advanced.attachments.store(company3, "description.txt", bytes3, "text/plain")
+    session.advanced.attachments.store(company4, "description.txt", bytes4, "text/plain")
+    session.advanced.attachments.store(company5, "description.txt", bytes5, "text/plain")
+    
+    session.save_changes()
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains text similar to `"chinese food"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="raw_query" label="raw_query">
+```python
+relevant_companies = list(
+        session.advanced.raw_query(
+            "from index 'Companies/ByVector/FromTextAttachment' where vector.search(vector_from_attachment, $searchTerm, 0.8)",
+            object_type=Company,
+        )
+        .add_parameter("searchTerm", "chinese food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+{`from index "Companies/ByVector/FromTextAttachment"
+where vector.search(vector_from_attachment, $searchTerm, 0.8)
+{ "searchTerm" : "chinese food" }
+`}
+```
+</TabItem>
+</Tabs>
+
+You can now extract the text from the attachments of the resulting documents:
+
+<TabItem value="extract_attachment_content" label="extract_attachment_content">
+```python
+# Extract text from the attachment of the first resulting document
+# ================================================================
+
+# Retrieve the attachment stream
+company = relevant_companies[0]
+attachment_result = session.advanced.attachments.get(company, "description.txt")
+attachment_stream = attachment_result.data
+
+# Read the attachment content as text - decode it as utf-8 string
+attachment_text = attachment_stream.decode("utf-8")
+```
+</TabItem>
+
+## Indexing NUMERICAL attachments
+
+### LINQ index
+
+* The following index defines a **vector field** named `vector_from_attachment`.  
+
+* It indexes embeddings generated from the numerical data stored in the `vector.raw` attachment.  
+  This applies to all _Company_ documents that contain an attachment with that name.
+
+* Each attachment contains raw numerical data in 32-bit floating-point format.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```python
+class Companies_ByVector_FromNumericalAttachment(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+
+        # Load the attachment from the document (ensure it is not null)
+        # Then, index the attachment's content in the vector field
+        self.map = """
+        from company in docs.Companies
+
+        let attachment = LoadAttachment(company, "vector.raw")
+        where attachment != null
+  
+        select new
+        {
+            vector_from_attachment = CreateVector(attachment.GetContentAsStream())
+        }
+        """
+
+        # Configure the vector field:
+        self._vector(
+            "vector_from_attachment",
+            VectorOptions(
+                # Define the source embedding type
+                source_embedding_type=VectorEmbeddingType.SINGLE,
+                # Define the desired destination format within the index
+                destination_embedding_type=VectorEmbeddingType.SINGLE,
+            )
+        )
+
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```python
+index_definition = IndexDefinition(
+    name="Companies/ByVector/FromNumericalAttachment",
+    maps={
+        """
+        from company in docs.Companies
+
+        let attachment = LoadAttachment(company, "vector.raw")
+        where attachment != null
+  
+        select new
+        {
+            vector_from_attachment = CreateVector(attachment.GetContentAsStream())
+        }
+        """
+    },
+    fields={
+        "vector_from_attachment": IndexFieldOptions(
+            vector=VectorOptions(
+                source_embedding_type=VectorEmbeddingType.SINGLE,
+                destination_embedding_type=VectorEmbeddingType.SINGLE,
+            )
+        )
+    },
+    configuration={"Indexing.Static.SearchEngineType": "Corax"},
+)
+
+store.maintenance.send(PutIndexesOperation(index_definition))
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
+```python
+# These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+# Note: In a real scenario, embeddings would be generated by a model.
+# ==========================================================================================
+v1 = [0.1, 0.2, 0.3, 0.4]
+v2 = [0.1, 0.7, 0.8, 0.9]
+v3 = [0.5, 0.6, 0.7, 0.8]
+
+# Prepare the embedding vectors as `bytes` to be stored as attachments:
+# =====================================================================
+bytes1 = struct.pack("f" * len(v1), *v1)
+bytes2 = struct.pack("f" * len(v2), *v2)
+bytes3 = struct.pack("f" * len(v3), *v3)
+
+with store.open_session() as session:
+    # Load existing Company documents from RavenDB's sample data:
+    # ===========================================================
+    company1 = session.load("companies/50-A", Company)
+    company2 = session.load("companies/51-A", Company)
+    company3 = session.load("companies/52-A", Company)
+    
+    # Store the attachments in the documents:
+    # =======================================
+    session.advanced.attachments.store(company1, "vector.raw", bytes1)
+    session.advanced.attachments.store(company2, "vector.raw", bytes2)
+    session.advanced.attachments.store(company3, "vector.raw", bytes3)
+    
+    session.save_changes()
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_companies = list(
+        session.advanced.raw_query(
+            "from index 'Companies/ByVector/FromNumericalAttachment' where vector.search(vector_from_attachment, $queryVector)"
+        )
+        .add_parameter("queryVector", [0.1, 0.2, 0.3, 0.4])
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+{`from index "Companies/ByVector/FromNumericalAttachment"
+where vector.search(vector_from_attachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, 0.3, 0.4] }
+`}
+```
+</TabItem>
+</Tabs>
+
+### JS index
+
+* The following is the JavaScript index format equivalent to the index defined above using `AbstractIndexCreationTask`.
+
+* The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
+  * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  
+  * Use `getContentAsString()` to retrieve the attachment content as a string, as shown in this example.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JS_index" label="JS_index">
+```python
+class Companies_ByVector_FromNumericalAttachment_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('Companies', function (company) {
+
+               var attachment = loadAttachment(company, 'vector_base64.raw');
+               if (!attachment) return null;
+
+               return {
+                   vector_from_attachment: createVector(attachment.getContentAsString('utf8'))
+               };
+            })
+            """
+        }
+        
+        self.fields = {
+            "vector_from_attachment": IndexFieldOptions(
+                vector=VectorOptions(
+                    source_embedding_type=VectorEmbeddingType.SINGLE,
+                    destination_embedding_type=VectorEmbeddingType.SINGLE,
+                )
+            )
+        }
+        
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments_as_base64" label="Storing_numerical_attachments_as_base64">
+```python
+# These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+# Note: In a real scenario, embeddings would be generated by a model.
+# ==========================================================================================
+v1 = [0.1, 0.2, 0.3, 0.4]
+v2 = [0.1, 0.7, 0.8, 0.9]
+v3 = [0.5, 0.6, 0.7, 0.8]
+
+# Prepare the embedding vectors as BASE64 'bytes' to be stored as attachments:
+# =====================================================================
+bytes1 = base64.b64encode(struct.pack("f" * len(v1), *v1))
+bytes2 = base64.b64encode(struct.pack("f" * len(v2), *v2))
+bytes3 = base64.b64encode(struct.pack("f" * len(v3), *v3))
+
+
+with store.open_session() as session:
+    # Load existing Company documents from RavenDB's sample data:
+    # ===========================================================
+    company1 = session.load("companies/60-A", Company)
+    company2 = session.load("companies/61-A", Company)
+    company3 = session.load("companies/62-A", Company)
+
+    # Store the attachments in the documents:
+    # =======================================
+    session.advanced.attachments.store(company1, "vector_base64.raw", bytes1)
+    session.advanced.attachments.store(company2, "vector_base64.raw", bytes2)
+    session.advanced.attachments.store(company3, "vector_base64.raw", bytes3)
+    session.save_changes()
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_companies = list(
+        session.advanced.raw_query(
+            "from index 'Companies/ByVector/FromNumericalAttachment/JS' where vector.search(vector_from_attachment, $queryVector)",
+            object_type=Company,
+        )
+        .add_parameter("queryVector", [0.1, 0.2, 0.3, 0.4])
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+{`from index "Companies/ByVector/FromNumericalAttachment/JS"
+where vector.search(vector_from_attachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, 0.3, 0.4] }
+`}
+```
+</TabItem>
+</Tabs>
+
+## Indexing ALL attachments
+
+* The following index defines a vector field named `vector_from_attachment`.
+
+* It indexes embeddings generated from the numerical data stored in ALL attachments of all _Company_ documents.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```python
+class Companies_ByVector_AllAttachments(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # Load ALL attachments from the document
+        # Index the attachments content in the vector field
+        
+        # The 'vector_from_attachment' field will hold embeddings generated from the NUMERICAL content of ALL attachments
+        self.map = """
+        from company in docs.Companies
+
+        let attachments = LoadAttachments(company)
+  
+        select new
+        {
+            vector_from_attachment =
+                CreateVector(attachments.Select(e => e.GetContentAsStream()))
+        }
+        """
+        
+        # Configure the vector field:
+        self._vector("vector_from_attachment", VectorOptions(
+            source_embedding_type=VectorEmbeddingType.SINGLE,
+            destination_embedding_type=VectorEmbeddingType.SINGLE,
+        ))
+
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```python
+index_definition = IndexDefinition(
+    name="Companies/ByVector/AllAttachments",
+    maps={
+        """
+        from company in docs.Companies
+
+        let attachments = LoadAttachments(company)
+  
+        select new
+        {
+            vector_from_attachment =
+                CreateVector(attachments.Select(e => e.GetContentAsStream()))
+        }
+        """
+    },
+    fields={
+        "vector_from_attachment": IndexFieldOptions(
+            vector=VectorOptions(
+                source_embedding_type=VectorEmbeddingType.SINGLE,
+                destination_embedding_type=VectorEmbeddingType.SINGLE,
+            )
+        )
+    },
+    configuration={"Indexing.Static.SearchEngineType": "Corax"}
+)
+
+store.maintenance.send(PutIndexesOperation(index_definition))
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
+```python
+# These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+# Note: In a real scenario, embeddings would be generated by a model.
+v1 = [0.1, 0.2, 0.3, 0.4]
+v2 = [0.5, 0.6, 0.7, 0.8]
+
+v3 = [-0.1, 0.2, -0.7, -0.8]
+v4 = [0.3, -0.6, 0.9, -0.9]
+
+# Prepare the embedding vectors as 'bytes' to be stored as attachments:
+# =====================================================================
+bytes1 = struct.pack("f" * len(v1), *v1)
+bytes2 = struct.pack("f" * len(v2), *v2)
+
+bytes3 = struct.pack("f" * len(v3), *v3)
+bytes4 = struct.pack("f" * len(v4), *v4)
+
+with store.open_session() as session:
+    # Load existing Company documents from RavenDB's sample data:
+    # ===========================================================
+    company1 = session.load("companies/70-A", Company)
+    company2 = session.load("companies/71-A", Company)
+    
+    # Store multiple attachments in the documents:
+    # ============================================
+    session.advanced.attachments.store(company1, "vector1.raw", bytes1)
+    session.advanced.attachments.store(company1, "vector2.raw", bytes2)
+
+    session.save_changes()
+    
+    session.advanced.attachments.store(company2, "vector1.raw", bytes3)
+    session.advanced.attachments.store(company2, "vector2.raw", bytes4)
+    
+    session.save_changes()
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include Company documents whose attachments contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+similar_companies = list(
+        session.advanced.raw_query(
+            "from index 'Companies/ByVector/AllAttachments' where vector.search(vector_from_attachment, $queryVector)",
+            object_type=Company,
+        )
+        .add_parameter("queryVector", [0.1, 0.2, -0.7, -0.8])
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+{`from index "Companies/ByVector/AllAttachments"
+where vector.search(vector_from_attachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, -0.7, -0.8] }
+`}
+```
+</TabItem>
+</Tabs>
