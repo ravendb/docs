@@ -102,7 +102,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Time series](https://docs.ravendb.net/document-extensions/timeseries/overview): Store and query timestamped data natively.
 
-- [Attachments](https://docs.ravendb.net/document-extensions/attachments/what-are-attachments): Attach binary files directly to documents.
+- [Attachments](https://docs.ravendb.net/document-extensions/attachments/overview): Attach binary files directly to documents.
 
 - [Documents compression](https://docs.ravendb.net/server/storage/documents-compression): Automatically compress document content for storage efficiency.
 
