@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import OllamaCsharp from './content/_ollama-csharp.mdx';
 import OllamaNodejs from './content/_ollama-nodejs.mdx';
+import OllamaPython from './content/_ollama-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -21,6 +22,11 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <LanguageContent language="nodejs">
    <OllamaNodejs />
 </LanguageContent> 
+
+<LanguageContent language="python">
+   <OllamaPython />
+</LanguageContent> 
+
 
 <!---
 ### Vector Search

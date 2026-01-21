@@ -2,8 +2,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ContentFrame from '@site/src/components/ContentFrame';
-import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -15,15 +13,15 @@ import Panel from '@site/src/components/Panel';
   As long as the provider follows the OpenAI API format, RavenDB will be able to use it for Embeddings generation, Gen AI tasks, and chat-based agent interactions.  
 
 * In this article:
-  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string-from-studio)
+  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-studio)
     * [Configuring a text embedding model](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-model)
     * [Configuring a chat model](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string-from-the-client-api)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/open-ai.mdx#syntax) 
     
 </Admonition>
 
-<Panel heading="Define the connection string - from Studio">
+## Define the connection string - from Studio
 
 ### Configuring a text embedding model
 
@@ -80,8 +78,6 @@ import Panel from '@site/src/components/Panel';
 
 13. Click **Save** to store the connection string or **Cancel** to discard changes.
 
----
-    
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-mode),  
@@ -89,7 +85,7 @@ import Panel from '@site/src/components/Panel';
 
 * One additional setting is specific to chat models: _Temperature_.
 
-![connection string to azure open ai](../assets/open-ai-2.png)
+![connection string to open ai](../assets/open-ai-2.png)
 
 1. **Model Type**  
    Select "Chat".
@@ -105,124 +101,123 @@ import Panel from '@site/src/components/Panel';
      * If not explicitly set, OpenAI uses a default temperature of `1.0`.  
        See [OpenAI chat completions parameters](https://platform.openai.com/docs/api-reference/chat/create#chat_create-temperature).
 
-</Panel>
+---
 
-<Panel heading="Define the connection string - from the Client API">
+## Define the connection string - from the Client API
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
-    
-            // Name of text embedding model to use
-            Model = "text-embedding-3-small",
-            
-            // Optionally, override the default maximum number of query embedding batches
-            // that can be processed concurrently 
-            EmbeddingsMaxConcurrentBatches = 10
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
+
+# Define the connection string to OpenAI
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="ConnectionStringToOpenAI",
+    identifier="identifier-to-the-connection-string",
+    # Model type
+    model_type=AiModelType.TEXT_EMBEDDINGS,
+    # OpenAI settings
+    openai_settings=OpenAiSettings(
+        api_key="your-api-key",
+        endpoint="https://api.openai.com/v1",
+        # Name of text embedding model to use
+        model="text-embedding-3-small",
+        # Optionally, override the default maximum number of query embedding batches
+        # that can be processed concurrently.
+        embeddings_max_concurrent_batches=10,
+    ),
+)
+
+# Deploy the connection string to the server
+put_connection_string_op = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(put_connection_string_op)
 ```
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.Chat,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
-    
-            // Name of chat model to use
-            Model = "gpt-4o",
-            
-            // Optionally, set the model's temperature
-            Temperature = 0.4
-        }
-    };
-    
-    // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
-}
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
+
+# Define the connection string to OpenAI
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="ConnectionStringToOpenAI",
+    identifier="identifier-to-the-connection-string",
+    # Model type
+    model_type=AiModelType.CHAT,
+    # OpenAI settings
+    openai_settings=OpenAiSettings(
+        api_key="your-api-key",
+        endpoint="https://api.openai.com/v1",
+        # Name of chat model to use
+        model="gpt-4o",
+        # Optionally, set the model's temperature
+        temperature=0.4,
+    ),
+)
+
+# Deploy the connection string to the server
+put_connection_string_op = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(put_connection_string_op)
 ```
 </TabItem>
 </Tabs>
 
-</Panel>
-
-<Panel heading="Syntax">
+## Syntax
 
 <TabItem value="open_ai_settings" label="open_ai_settings">
-```csharp
-public class AiConnectionString
-{
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public OpenAiSettings OpenAiSettings { get; set; }
-}
+```python
+class AiConnectionString(ConnectionString):
+    def __init__(
+        self,
+        name: str,
+        identifier: str,
+        # ...
+        model_type: AiModelType = None,
+        openai_settings: Optional[OpenAiSettings] = None,
+    ):
+        ...
 
-public class OpenAiSettings : AbstractAiSettings
-{
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-    
-    public string OrganizationId { get; set; } // default organization is used if not set 
-    public string ProjectId { get; set; }      // default project is used if not set
-    
-    // Relevant only for TEXT EMBEDDING models:
-    // Specifies the number of dimensions in the generated embedding vectors.
-    public int? Dimensions { get; set; } // optional
-    
-    // Relevant only for CHAT models:
-    // Controls the randomness and creativity of the model’s output.
-    // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
-    // Lower values (e.g., 0.2) result in more focused and deterministic output.
-    // If set to 'null', the temperature is not sent and the model's default will be used.
-    public double? Temperature { get; set; } // optional
-}
 
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
-}
+class OpenAiSettings(OpenAiBaseSettings):
+    def __init__(
+        self,
+        api_key: str = None,
+        endpoint: str = None,
+        model: str = None,
+        organization_id: str = None,
+        project_id: str = None,
+        # Relevant only for text embedding models:
+        # Specifies the number of dimensions in the generated embedding vectors.
+        dimensions: int = None,
+        # Relevant only for chat models:
+        # Controls the randomness and creativity of the model's output.
+        # Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
+        # Lower values (e.g., 0.2) result in more focused and deterministic output.
+        # If set to 'null', the temperature is not sent and the model's default will be used.
+        temperature: float = None,
+        embeddings_max_concurrent_batches: int = None,
+    ):
+        super().__init__(api_key, endpoint, model, dimensions, temperature, embeddings_max_concurrent_batches)
+        ...
+
+class OpenAiBaseSettings(AbstractAiSettings, ABC):
+    def __init__(
+        self,
+        api_key: str = None,
+        endpoint: str = None,
+        model: str = None,
+        dimensions: int = None,
+        temperature: float = None,
+        embeddings_max_concurrent_batches: int = None,
+    ):
+        super().__init__(embeddings_max_concurrent_batches)
+        ...
+
+class AbstractAiSettings:
+    def __init__(self, embeddings_max_concurrent_batches: int = None):
+        ...
 ```
 </TabItem>
-
-</Panel>

@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import HuggingFaceCsharp from './content/_hugging-face-csharp.mdx';
 import HuggingFaceNodejs from './content/_hugging-face-nodejs.mdx';
+import HuggingFacePython from './content/_hugging-face-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
+export const supportedLanguages = ["csharp", "nodejs", "python"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,6 +21,10 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <LanguageContent language="nodejs">
    <HuggingFaceNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <HuggingFacePython />
 </LanguageContent>
 
 <!---

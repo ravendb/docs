@@ -2,8 +2,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ContentFrame from '@site/src/components/ContentFrame';
-import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -17,13 +15,13 @@ import Panel from '@site/src/components/Panel';
   Chat models are not supported through this integration.  
 
 * In this article:
-  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string-from-studio)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string-from-the-client-api)
+  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string---from-studio)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string---from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/vertex-ai.mdx#syntax) 
     
 </Admonition>
 
-<Panel heading="Define the connection string - from Studio">
+## Define the connection string - from Studio
 
 ![connection string to vetex ai](../assets/vertex-ai.png)
 
@@ -85,76 +83,70 @@ import Panel from '@site/src/components/Panel';
 
 11. Click **Save** to store the connection string or **Cancel** to discard changes.
 
-</Panel>
+## Define the connection string - from the Client API
 
-<Panel heading="Define the connection string - from the Client API">
+<TabItem value="vertex_ai_connection_string_embedding" label="vertex_ai_connection_string_embedding">
+```python
+store = DocumentStore([ravendb_url], database_name)
+store.initialize()
 
-<TabItem value="create_connection_string_vertex_ai" label="create_connection_string_vertex_ai">
-```csharp
-using (var store = new DocumentStore())
-{
-    // Define the connection string to Vertex AI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ConnectionStringToVertexAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-    
-        // Vertex AI connection settings
-        VertexSettings = new VertexSettings(
-            model: "text‑embedding‑005",     // Name of the Vertex AI model to use
-            googleCredentialsJson: "{...}",  // Contents of your service account JSON file
-            location: "us-central1",         // Region where the model is hosted
-            aiVersion: VertexAIVersion.V1)   // Optional: specify V1 or V1_Beta
-    };
-    
-    // Optionally, override the default maximum number of query embedding batches
-    // that can be processed concurrently 
-    connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
-    
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-}
+# Define the connection string to Vertex AI
+connection_string = AiConnectionString(
+    # Connection string name & identifier
+    name="ConnectionStringToVertexAI",
+    identifier="identifier-to-the-connection-string",
+    # Model type
+    model_type=AiModelType.TEXT_EMBEDDINGS,
+    # Vertex AI connection settings
+    vertex_settings=VertexSettings(
+        model="text-embedding-005", # Name of the Vertex AI model to use
+        google_credentials_json="{...}", # Contents of your service account JSON file
+        location="us-central1", # Region when the model is hosted
+        ai_version=VertexAIVersion.V1 # Optional: specify V1 or V1_Beta
+    ),
+)
+
+# Optionally, override the default maximum number of query embedding batches that can be processed concurrently
+connection_string.vertex_settings.embeddings_max_concurrent_batches = 10
+
+# Deploy the connection string to the server
+put_connection_string_op = PutConnectionStringOperation(connection_string)
+put_connection_string_result = store.maintenance.send(put_connection_string_op)
 ```
 </TabItem>
 
-</Panel>
-
-<Panel heading="Syntax">
+## Syntax
 
 <TabItem value="vertex_ai_settings" label="vertex_ai_settings">
-```csharp
-public class AiConnectionString
-{
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public VertexSettings VertexSettings { get; set; }
-}
+```python
+class AiConnectionString(ConnectionString):
+    def __init__(
+        self,
+        name: str,
+        identifier: str,
+        # ...
+        model_type: AiModelType = None,
+        vertex_settings: Optional[VertexSettings] = None,
+    ): ...
 
-public class VertexSettings : AbstractAiSettings
-{
-    public string Model { get; set; }
-    public string GoogleCredentialsJson { get; set; }
-    public string Location { get; set; }
-    public VertexAIVersion? AiVersion { get; set; }
-}
 
-public enum VertexAIVersion
-{
-    V1, // Represents the "V1" version of the Vertex AI API.
-    V1_Beta // Represents the "V1 beta" version of the Vertex AI API.
-}
+class VertexSettings(AbstractAiSettings):
+    def __init__(
+        self,
+        model: Optional[str] = None,
+        google_credentials_json: Optional[str] = None,
+        location: Optional[str] = None,
+        ai_version: Optional[VertexAIVersion] = None,
+        embeddings_max_concurrent_batches: Optional[int] = None,
+    ):
+        super().__init__(embeddings_max_concurrent_batches)
+        ...
 
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
-}
+class VertexAIVersion(Enum):
+    V1 = "V1" # Represents the "V1" version of the Vertex AI API
+    V1_BETA = "V1_Beta" # Represents the "V1 beta" version of the Vertex AI API
+
+class AbstractAiSettings:
+    def __init__(self, embeddings_max_concurrent_batches: int = None): ...
 ```
 </TabItem>
-    
-</Panel>
