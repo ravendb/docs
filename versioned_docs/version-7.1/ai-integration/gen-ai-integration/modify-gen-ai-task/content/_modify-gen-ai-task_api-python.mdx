@@ -1,0 +1,170 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* To modify an existing GenAI task, register a modified task configuration object with the server using the existing task ID (`task_id`), via the `UpdateGenAiOperation` store operation.  
+* Note that this task ID is **not** the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings) that we define as part of the task configuration, but an identifier that RavenDB uses internally to manage the task (same as it does with other ongoing tasks like ETL tasks, backup tasks, and others).  
+   * The **user-defined task identifier** is a `str` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../ai-integration/gen-ai-integration/overview#tracking-of-processed-document-parts) in the document metadata.  
+   * The `task_id` is an `int` variable that is used by RavenDB to identify and manage the task.  
+     See the examples below to learn how to extract the `task_id` and use it to register the modified task configuration.  
+
+* In this article:
+   * [Modify task configuration](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#modify-task-configuration) 
+   * [Syntax](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#syntax)  
+
+</Admonition>
+
+<Panel heading="Modify task configuration">
+
+To modify the configuration of an existing GenAI task:  
+* Retrieve the ongoing task information using `GetOngoingTaskInfoOperation`, passing it:  
+  * The existing task's user-defined task identifier (a `str` variable).  
+  * The task type (`OngoingTaskType.GEN_AI` for GenAI tasks).  
+* Extract the `task_id` (an `int` variable) from the returned `OngoingTaskInfo` object.  
+* You can -  
+   * Either **modify the existing task configuration** and change only selected sections of it  
+     (this approach is often easier as you can change only relevant details),  
+   * Or **create a new configuration object** and populate it from scratch with new settings for your task  
+     (this approach may be preferable if you want to redefine the whole configuration).  
+* Register the new or modified configuration with the server using `UpdateGenAiOperation`, passing it:  
+   * The extracted `task_id`  
+   * The configuration object  
+
+### Examples:
+The below examples modify the spam-filter demonstrated in the [create GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#full-example) article, which removes spam comments from documents in the `Posts` collection.  
+ * The first example, **modify-selected-configuration-details**, demonstrates how to retrieve the existing configuration, modify selected sections of it, and register it with the server again.  
+ * The second example, **create-configuration-from-scratch**, demonstrates how to create a new configuration object, populate it with all necessary configuration details, and register it with the server again.  
+ * Both examples leave all details as configured in the original example except for the task **name**, the user-defined task **identifier**, and the **update script** - which doesn't remove spammy comments but instead adds a `Warning` property to each comment suspected as spam and explains in it why the comment might be spam.  
+
+<Tabs groupId='modifyTaskConfiguration'>
+<TabItem value="modify-selected-configuration-details" label="modify-selected-configuration-details">
+
+```python
+# Provide the existing user-defined task identifier to retrieve the ongoing task info
+get_task_info = GetOngoingTaskInfoOperation("spam-filter", OngoingTaskType.GEN_AI)
+ongoing_task = store.maintenance.send(get_task_info)
+
+# Extract the internal task_id that RavenDB uses to manage the task
+task_id = ongoing_task.task_id
+
+# Use the existing task configuration as a base for modifications
+modified_config = ongoing_task.configuration
+
+# Modify selected details
+modified_config.identifier = "spam-warning-filter"
+modified_config.name = "spam-warning-filter"
+modified_config.update_script = """
+// Find the comment
+const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+// Was detected as spam
+if($output.Blocked)
+{
+    // Add a warning to the comment instead of removing it
+    this.Comments[idx].Warning = 'This comment may be spam: ' + $output.Reason;
+}
+"""
+
+# Update the GenAI task using the existing task_id and the modified configuration
+store.maintenance.send(UpdateGenAiOperation(task_id, modified_config))
+```
+</TabItem>
+<TabItem value="create-configuration-from-scratch" label="create-configuration-from-scratch">
+
+```python
+# Provide the existing user-defined task identifier to retrieve the ongoing task info
+get_task_info = GetOngoingTaskInfoOperation("spam-filter", OngoingTaskType.GEN_AI)
+ongoing_task = store.maintenance.send(get_task_info)
+
+# Extract the internal task_id that RavenDB uses to manage the task
+task_id = ongoing_task.task_id
+
+# Create and populate a new task configuration object
+new_config = GenAiConfiguration(
+    # New user-defined task identifier
+    identifier="spam-warning-filter",
+
+    # New task name
+    name="spam-warning-filter",
+
+    # Connection string to AI model
+    connection_string_name="open-ai-cs",
+
+    # Task is enabled
+    disabled=False,
+
+    # Collection associated with the task
+    collection="Posts",
+
+    # Context generation script - format for objects to be sent to the AI model
+    gen_ai_transformation=GenAiTransformation(
+        script="""
+        for(const comment of this.Comments)
+        {
+            ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});}"""
+    ),
+
+    # AI model Prompt - the instructions sent to the AI model
+    prompt = "Check if the following blog post comment is spam or not",
+
+    # Sample object - the layout for the AI model's response
+    sample_object = """
+    {
+        "Blocked": true,
+        "Reason": "Concise reason for why this comment was marked as spam or ham"
+    }
+    """,
+
+    # New Update script - specifies what to do with AI model replies.
+    update_script = """
+    // Find the comment
+    const idx = this.Comments.findIndex(c => c.Id == $input.Id);
+    // Was detected as spam
+    if($output.Blocked)
+    {
+        // Add a warning to the comment instead of removing it
+        this.Comments[idx].Warning = 'This comment may be spam: ' + $output.Reason;
+    }""",
+
+    # Max concurrent connections to AI model
+    max_concurrency=4
+)
+
+# Update the GenAI task using the existing task_id and the new configuration
+store.maintenance.send(UpdateGenAiOperation(task_id, new_config))
+```
+</TabItem>
+</Tabs>
+
+<ContentFrame>
+
+### Syntax:
+
+* `UpdateGenAiOperation` Definition
+  ```python
+  class UpdateGenAiOperation(MaintenanceOperation[UpdateEtlOperationResult]):
+    def __init__(
+        self,
+        task_id: int,
+        configuration: GenAiConfiguration,
+        starting_point: Optional[StartingPointChangeVector] = None,
+        reset: bool = False,
+    ):
+        ...
+  ```
+
+* `UpdateGenAiOperation` Parameters
+  | Parameters | Type | Description |
+  | ------------- | ------------- | ----- |
+  | `task_id` | `int` | The internal RavenDB task ID of the task to update. |
+  | `configuration` | `GenAiConfiguration` | The new or modified configuration for the GenAI task. |
+  | `starting_point` | `StartingPointChangeVector` | Optional starting point for the update operation. |
+  | `reset` | `bool` | Whether to reset the task's state. |
+</ContentFrame>
+</Panel>
