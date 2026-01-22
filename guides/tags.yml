@@ -1,6 +1,120 @@
-attachments:
-    label: 'Attachments'
-    permalink: '/attachments'
-    description: 'Content related to attachments.'
-querying:
+ai:
+    label: "AI"
+    permalink: "/ai"
+    description: "Content related to AI."
 indexes:
+    label: "Indexes"
+    permalink: "/indexes"
+    description: "Content related to Indexes."
+querying:
+    label: "Querying"
+    permalink: "/querying"
+    description: "Content related to Querying."
+document-extensions:
+    label: "Document Extensions"
+    permalink: "/document-extensions"
+    description: "Content related to Document Extensions."
+time-series:
+    label: "Time Series"
+    permalink: "/time-series"
+    description: "Content related to Time Series."
+attachments:
+    label: "Attachments"
+    permalink: "/attachments"
+    description: "Content related to Attachments."
+background-tasks:
+    label: "Background Tasks"
+    permalink: "/background-tasks"
+    description: "Content related to Background Tasks."
+clusters:
+    label: "Clusters"
+    permalink: "/clusters"
+    description: "Content related to Clusters."
+ongoing-tasks:
+    label: "Ongoing Tasks"
+    permalink: "/ongoing-tasks"
+    description: "Content related to Ongoing Tasks."
+security:
+    label: "Security"
+    permalink: "/security"
+    description: "Content related to Security."
+monitoring:
+    label: "Monitoring"
+    permalink: "/monitoring"
+    description: "Content related to Monitoring."
+administration:
+    label: "Administration"
+    permalink: "/administration"
+    description: "Content related to Administration."
+data-governance:
+    label: "Data governance"
+    permalink: "/data-governance"
+    description: "Content related to Data governance."
+integration:
+    label: "Integration"
+    permalink: "/integration"
+    description: "Content related to Integration."
+csharp:
+    label: "C#"
+    permalink: "/csharp"
+    description: "Content related to C#."
+python:
+    label: "Python"
+    permalink: "/python"
+    description: "Content related to Python."
+nodejs:
+    label: "Nodejs"
+    permalink: "/nodejs"
+    description: "Content related to Nodejs."
+java:
+    label: "Java"
+    permalink: "/java"
+    description: "Content related to Java."
+php:
+    label: "PHP"
+    permalink: "/php"
+    description: "Content related to PHP."
+asp-net:
+    label: "ASP.NET"
+    permalink: "/asp-net"
+    description: "Content related to ASP.NET."
+svelte:
+    label: "Svelte"
+    permalink: "/svelte"
+    description: "Content related to Svelte."
+fastapi:
+    label: "FastAPI"
+    permalink: "/fastapi"
+    description: "Content related to FastAPI."
+getting-started:
+    label: "Getting started"
+    permalink: "/getting-started"
+    description: "Content related to Getting started."
+migration:
+    label: "Migration"
+    permalink: "/migration"
+    description: "Content related to Migration."
+deployment:
+    label: "Deployment"
+    permalink: "/deployment"
+    description: "Content related to Deployment."
+testing:
+    label: "Testing"
+    permalink: "/testing"
+    description: "Content related to Testing."
+troubleshooting:
+    label: "Troubleshooting"
+    permalink: "/troubleshooting"
+    description: "Content related to Troubleshooting."
+perf-tuning:
+    label: "Perf-tuning"
+    permalink: "/perf-tuning"
+    description: "Content related to Perf-tuning."
+deep-dive:
+    label: "Deep Dive"
+    permalink: "/deep-dive"
+    description: "Content related to Deep Dive."
+demo:
+    label: "Demo"
+    permalink: "/demo"
+    description: "Content related to Demo."

@@ -7,9 +7,9 @@ import isInternalUrl from "@docusaurus/isInternalUrl";
 
 export type ButtonVariant =
 | "default"
-| "outline" 
-| "ghost" 
-| "destructive" 
+| "outline"
+| "ghost"
+| "destructive"
 | "secondary";
 
 
@@ -49,7 +49,7 @@ export default function Button({
 }: ButtonProps) {
   const baseClasses = clsx(
     "inline-flex items-center justify-center rounded-md font-medium",
-    "!no-underline !transition-colors !transition-duration-300",
+    "!no-underline !transition-all",
     "disabled:opacity-50 disabled:pointer-events-none",
     variantClasses[variant],
     sizeClasses[size],

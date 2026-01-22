@@ -39,7 +39,7 @@ function SocialIcons({ items }: { items: CustomFooterLinkItem[] }) {
         <Link
           key={index}
           href={item.href}
-          className="w-8 h-8 flex items-center justify-center card !rounded-lg !text-ifm-menu border border-black/10 dark:border-white/10 bg-muted/40 p-4 hover:border-black/20 dark:hover:border-white/20 transition-colors hover:!no-underline"
+          className="w-8 h-8 flex items-center justify-center card !rounded-lg !text-ifm-menu border border-black/10 dark:border-white/10 bg-muted/40 p-4 hover:border-black/20 dark:hover:border-white/20 !transition-all hover:!no-underline"
           aria-label={item.label}
         >
           <Icon icon={item.icon} size="xs" />
@@ -61,7 +61,7 @@ export default function FooterLayout({ copyright }: Props) {
 
   return (
     <footer className="footer">
-      <div className="container">
+      <div>
         <TopLinks items={topItems} />
         <hr className="!mt-6 !mb-5 !bg-black/10 dark:!bg-white/10" />
         <div className="flex justify-between items-center gap-4 flex-wrap">

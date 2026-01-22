@@ -1,8 +1,25 @@
 ---
+title: Guides
+hide_title: true
 slug: /
 pagination_next: null
 pagination_prev: null
+wrapperClassName: guides-home-page
+hide_table_of_contents: true
 ---
 
-# RavenDB Guides
-text
+import GuidesHeader from "@site/src/components/Guides/GuidesHeader";
+import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
+import RecentGuides from "@site/src/components/Guides/RecentGuides";
+import GetStartedGuides from "@site/src/components/Guides/GetStartedGuides";
+import TagsGrid from "@site/src/components/Guides/TagsGrid";
+
+<GuidesHeader />
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4 mb-8">
+    <div className="lg:col-span-2">
+        <FeaturedGuides guidesTitles={["Example Guide", "Other Guide"]} />
+    </div>
+    <RecentGuides />
+</div>
+<GetStartedGuides />
+<TagsGrid />

@@ -3,7 +3,7 @@ import CardWithImage, {
 } from "@site/src/components/Common/CardWithImage";
 
 export default function UseCaseItem(props: CardWithImageProps) {
-  const { title, url, description, imgSrc, imgAlt, ctaLabel } = props;
+  const { title, url, description, imgSrc, imgAlt } = props;
   return (
     <CardWithImage
       title={title}
@@ -11,8 +11,6 @@ export default function UseCaseItem(props: CardWithImageProps) {
       url={url}
       imgSrc={imgSrc}
       imgAlt={imgAlt}
-      ctaLabel={ctaLabel}
-      buttonVariant="default"
       />
   );
 }

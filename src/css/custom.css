@@ -2,6 +2,54 @@
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+/* Custom animations for layout switcher */
+@keyframes slide-in-from-bottom {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-from-left {
+    from {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-in {
+    animation-fill-mode: both;
+}
+
+.fade-in {
+    animation-name: fade-in;
+}
+
+.slide-in-from-bottom-4 {
+    animation-name: slide-in-from-bottom;
+}
+
+.slide-in-from-left-4 {
+    animation-name: slide-in-from-left;
+}
+
 /* Custom selection */
 ::selection {
   background: var(--ifm-color-primary);
@@ -36,6 +84,7 @@
   --docsearch-searchbox-focus-background: var(--ifm-background-color) !important;
   --docsearch-hit-color: var(--ifm-color-primary-lightest) !important;
   --ifm-footer-color: var(--ifm-menu-color);
+  --default-transition-duration: 300ms;
 }
 
 [data-theme="dark"] {
@@ -298,7 +347,7 @@ code {
 
 /* Custom footer styling */
 .footer {
-  @apply !pb-5  !border-t-black/10 dark:!border-t-white/10;
+  @apply !p-7 !border-t !border-t-black/10 dark:!border-t-white/10;
 }
 
 /* Custom styling for secondary alerts */
@@ -437,4 +486,16 @@ hr {
 /* Smaller margin-top for pagination-nav */
 .pagination-nav {
     @apply !mt-8;
+}
+
+/* Home Page full width override */
+.guides-home-page [class*="docItemCol"],
+.cloud-home-page [class*="docItemCol"],
+.docs-home-page [class*="docItemCol"] {
+    max-width: 100% !important;
+}
+
+/* Reset default Docusaurus transition for a */
+a {
+    transition: none;
 }
