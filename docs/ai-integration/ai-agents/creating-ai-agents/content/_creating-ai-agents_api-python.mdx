@@ -380,7 +380,7 @@ Find more about streaming in the [overview](../../../ai-integration/ai-agents/ov
 ### Set chat trimming configuration
 
 To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
-use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
+use it to configure your trimming strategy, and set the agent's `chat_trimming` property 
 with the instance.  
 
 When creating the instance, pass its constructor a summarization strategy using 
@@ -543,11 +543,11 @@ A query tool includes a natural-language **description** that explains the LLM w
      runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
    * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
 
-*  You can use the `Options.AllowModelQueries` property to Enable or Disable a query tool .  
+*  You can use the `options.allow_model_queries` property to Enable or Disable a query tool .  
    * When a query tool is enabled, the LLM can freely trigger its execution.  
    * When a query tool is disabled, the LLM cannot trigger its execution.  
    * If a query tool is set as an initial-context query, it will be executed when the conversation 
-     starts even if disabled using `AllowModelQueries`.  
+     starts even if disabled using `options.allow_model_queries`.  
 
 * **Example**  
   Set a query tool that runs when the agent is started and retrieves all the orders sent everywhere.
@@ -562,11 +562,11 @@ A query tool includes a natural-language **description** that explains the LLM w
      Options = new AiAgentToolQueryOptions
      {
          // The LLM is allowed to trigger the execution of this query during the conversation
-         AllowModelQueries = true,
+         allow_model_queries = true,
 
          // The query will be executed when the conversation starts 
          // and its results will be added to the initial context
-         AddToInitialContext = true
+         add_to_initial_context = true
       }
   }
   ```
@@ -575,22 +575,22 @@ A query tool includes a natural-language **description** that explains the LLM w
   ```csharp
   public class AiAgentToolQueryOptions : IDynamicJson
   {
-      public bool? AllowModelQueries { get; set; }
-      public bool? AddToInitialContext { get; set; }
+      public bool? allow_model_queries { get; set; }
+      public bool? add_to_initial_context { get; set; }
   }
     ```
 
       |Property|Type|Description|
       |--------|----|-----------|
-      |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
-      |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
+      |`allow_model_queries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
+      |`add_to_initial_context`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
 
       <Admonition type="note" title="">
       Note: the two flags can be set regardless of each other.  
-        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `false`  
+        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `false`  
           will cause the query to be executed when the conversation starts,  
           but the LLM will not be able to trigger its execution later in the conversation.  
-        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `true`  
+        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `true`  
           will cause the query to be executed when the conversation starts,  
           and the LLM will also be able to trigger its execution later in the conversation.  
       </Admonition>
