@@ -1,0 +1,1273 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* To create an AI agent, a client defines its configuration, provides it with settings and tools, and registers the agent with the server.  
+
+* Once the agent is created, the client can initiate or resume conversations, get LLM responses, and perform actions based on LLM insights.  
+
+* This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
+
+* In this article:
+   * [Creating a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
+   * [Defining an agent configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#defining-an-agent-configuration)
+      * [Set the agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-the-agent-id)
+      * [Define a response object](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#define-a-response-object)
+      * [Add agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#add-agent-parameters)
+      * [Set maximum number of iterations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-maximum-number-of-iterations)
+      * [Set chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)
+   * [Adding agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools)
+      * [Query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools)
+<!---
+         * [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
+-->
+      * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
+   * [Creating the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-the-agent)
+   * [Retrieving existing agent configurations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#retrieving-existing-agent-configurations)
+   * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
+      * [Setting a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation)
+      * [Processing action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#processing-action-tool-requests)
+         * [Action-tool Handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers)
+         * [Action-tool Receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers)
+      * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
+      * [Setting user prompt and running the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation)
+   * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
+   * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)
+
+</Admonition>
+
+<Panel heading="Creating a connection string">
+
+Your agent will need a connection string to connect with the LLM. Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
+(You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings))
+
+You can use a local `Ollama` model if your considerations are mainly speed, cost, open-source, or security,  
+Or you can use a remote `OpenAI` service for its additional resources and capabilities.  
+
+* **Example**  
+  <Tabs groupId='languageSyntax'>
+  <TabItem value="open-ai-cs" label="open-ai-cs">
+  ```python
+  store = DocumentStore([ravendb_url], database_name)
+  store.initialize()
+
+  # Define the connection string to OpenAI
+  connection_string = AiConnectionString(
+    
+    # Connection string name & identifier
+    name="open-ai-cs",
+    identifier="open-ai-cs",
+
+    # Connection type
+    model_type=AiModelType.CHAT,
+
+    # OpenAI connection settings
+    openai_settings=OpenAiSettings(
+        api_key="your-api-key",
+        endpoint="https://api.openai.com/v1",
+        # LLM model for text generation
+        model="gpt-4.1"
+    )
+  )
+
+  # Deploy the connection string to the server
+  operation = PutConnectionStringOperation(connection_string)
+  put_connection_string_result = store.maintenance.send(operation)
+  ```
+  </TabItem>
+  <TabItem value="ollama-cs" label="ollama-cs">
+  ```python
+  store = DocumentStore([ravendb_url], database_name)
+  store.initialize()
+
+  # Define the connection string to Ollama
+  connection_string = AiConnectionString(
+    
+    # Connection string name & identifier
+    name="ollama-cs",
+    identifier="ollama-cs",
+
+    # Connection type
+    model_type=AiModelType.CHAT,
+
+    # Ollama connection settings
+    ollama_settings=OllamaSettings(
+        # LLM Ollama model for text generation
+        model="llama3.2",
+        # local URL
+        uri="http://localhost:11434",
+    )
+  )
+
+  # Deploy the connection string to the server
+  operation = PutConnectionStringOperation(connection_string)
+  put_connection_string_result = store.maintenance.send(operation)
+  ```
+  </TabItem>
+  </Tabs>
+
+* **Syntax**  
+  <Tabs groupId='languageSyntax'>
+  <TabItem value="open-ai-cs-syntax" label="open-ai-cs-syntax">
+  ```python
+  class AiConnectionString(ConnectionString):
+    name: str
+    model_type: AiModelType
+    identifier: str
+    openai_settings: Optional[OpenAiSettings]
+    ...
+    
+  class OpenAiSettings(OpenAiBaseSettings):
+    api_key: str
+    endpoint: str
+    model: str
+    dimentsions: int
+    organization_id: str
+    project_id: str
+  ```
+  </TabItem>
+  <TabItem value="ollama-cs-syntax" label="ollama-cs-syntax">
+  ```python
+  class AiConnectionString(ConnectionString):
+    name: str
+    model_type: AiModelType
+    identifier: str
+    ollama_settings: Optional[OllamaSettings]
+    ...
+
+  class OllamaSettings(AbstractAiSettings):
+    model: str
+    uri: str
+  ```
+  </TabItem>
+  </Tabs>
+
+</Panel>
+
+<Panel heading="Defining an agent configuration">
+
+To create an AI agent you need to prepare an **agent configuration** and populate it with 
+your settings and tools.  
+
+Start by creating a new `AiAgentConfiguration` instance.  
+While creating the instance, pass its constructor:  
+
+- The agent's Name  
+- The [connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string) you created  
+- A System prompt  
+
+The agent will send the system prompt you define here to the LLM to define its basic characteristics, including its role, purpose, behavior, and the tools it can use.  
+
+* **Example**  
+  ```python
+  # Start setting an agent configuration
+  agent = AiAgentConfiguration(
+    "reward-productive-employee",
+    connection_string.name,
+    """You work for a human experience manager.
+    The manager uses your services to find which employee has made the largest profit and to suggest a reward.
+    The manager provides you with the name of a country, or with the word ""everything"" to indicate all countries.
+    Then you:
+    1. use a query tool to load all the orders sent to the selected country,
+      or a query tool to load all orders sent to all countries.
+    2. calculate which employee made the largest profit.
+    3. use a query tool to learn in what general area this employee lives.
+    4. find suitable vacations sites or other rewards based on the employee's 
+    residence area.
+    5. use an action tool to store in the database the employee's ID, profit, and your 
+      reward suggestions.
+    When you're done, return these details in your answer to the user as well.""",
+  )
+  ```
+
+* `AiAgentConfiguration` constructor  
+  ```python
+  class AiAgentConfiguration:
+    def __init__(
+        self,
+        name: str = None,
+        connection_string_name: str = None,
+        system_prompt: str = None,
+        identifier: str = None,
+        sample_object: str = None,
+        output_schema: str = None,
+        queries: List[AiAgentToolQuery] = None,
+        actions: List[AiAgentToolAction] = None,
+        persistence: AiAgentPersistenceConfiguration = None,
+        parameters: List[Union[str, AiAgentParameter]] = None,
+        chat_trimming: AiAgentChatTrimmingConfiguration = None,
+        max_model_iterations_per_call: int = None,
+    ):
+  ```
+
+* `AiAgentConfiguration` class  
+  ```python
+  class AiAgentConfiguration:
+    def __init__(
+        self,
+        name: str = None,
+        connection_string_name: str = None,
+        system_prompt: str = None,
+        identifier: str = None,
+        sample_object: str = None,
+        output_schema: str = None,
+        queries: List[AiAgentToolQuery] = None,
+        actions: List[AiAgentToolAction] = None,
+        persistence: AiAgentPersistenceConfiguration = None,
+        parameters: List[Union[str, AiAgentParameter]] = None,
+        chat_trimming: AiAgentChatTrimmingConfiguration = None,
+        max_model_iterations_per_call: int = None,
+    ):
+        self.name = name
+        self.connection_string_name = connection_string_name
+        self.system_prompt = system_prompt
+        self.identifier: Optional[str] = identifier
+        self.sample_object: Optional[str] = sample_object
+        self.output_schema: Optional[str] = output_schema
+        self.queries: List[AiAgentToolQuery] = queries or []
+        self.actions: List[AiAgentToolAction] = actions or []
+        self.persistence: Optional[AiAgentPersistenceConfiguration] = persistence
+        self.parameters: List[AiAgentParameter] = self._normalize_parameters(parameters)
+        self.chat_trimming: Optional[AiAgentChatTrimmingConfiguration] = chat_trimming
+        self.max_model_iterations_per_call: Optional[int] = max_model_iterations_per_call
+  ```
+
+Once the initial agent configuration is created, we need to add it a few additional elements.  
+
+<ContentFrame>
+
+### Set the agent ID
+Use the `agent.identifier` property to provide the agent with a unique ID that the 
+system will recognize it by.  
+
+```python
+# Set agent ID
+agent.identifier = "reward-productive-employee"
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Define a response object
+Define a [structured output](https://platform.openai.com/docs/guides/structured-outputs) response object that the LLM will populate with its response to the user.  
+
+To define the response object, you can use the `sample_object` and/or the `output_schema` property.  
+* `sample_object` is a straightforward sample of the response object that you expect the LLM to return.  
+  It is usually simpler to define the response object this way.  
+* `output_schema` is a formal JSON schema that the LLM can understand.  
+  Even when defining the response object as a `sample_object`, RavenDB will translate the object to a JSON schema before sending it to the LLM. If you prefer it however, you can explicitly define it as a schema yourself.  
+* If you define both a sample object and a schema, the agent will send only the schema to the LLM.  
+
+<Tabs groupId='responseObject'>
+<TabItem value="sample-object" label="sample-object">
+
+```python
+# Set sample object
+agent.sample_object = """
+{
+    "suggestedReward": "your suggestions for a reward",
+    "employeeId": "the ID of the employee that made the largest profit",
+    "profit": "the profit the employee made"
+}
+```
+</TabItem>
+<TabItem value="json-schema" label="json-schema">
+
+```python
+# Set output schema
+agent.output_schema = """
+{
+  "name": "RHkxaWo5ZHhMM1RuVnIzZHhxZm9vM0c0UnYrL0JWbkhyRDVMd0tJa1g4Yz0",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "employeeID": {
+        "type": "string",
+        "description": "the ID of the employee that made the largest profit"
+      },
+      "profit": {
+        "type": "string",
+        "description": "the profit the employee made"
+      },
+      "suggestedReward": {
+        "type": "string",
+        "description": "your suggestions for a reward"
+      }
+    },
+    "required": [
+      "employeeID",
+      "profit",
+      "suggestedReward"
+    ],
+    "additionalProperties": false
+  }
+}
+"""
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add agent parameters
+Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
+Values for agent parameters are provided by the client, or by a user through the client, 
+when a chat is started.  
+When the agent is requested to use a query tool that uses agent parameters, it replaces these parameters with the values provided by the user before running the query.  
+Using agent parameters allows the client to focus the queries and the entire interaction on its current needs.  
+
+In the example below, an agent parameter is used to determine what area 
+of the world a query will handle. 
+
+To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
+the parameter's **name** and **description** (explaining to the LLM what the parameter 
+is for), and pass this instance to the `agent.parameters.append` method.  
+
+* **Example**  
+  ```python
+  # Set agent parameters
+  agent.parameters.append(
+      AiAgentParameter(
+          "country",
+          "A specific country that orders were shipped to, or everywhere to look for orders shipped to all countries.",
+      )
+  )
+  ```
+
+* `AiAgentParameter` Definition 
+  ```python
+  class AiAgentParameter:
+    name: str
+    description: Optional[str]
+  ```
+
+</ContentFrame>
+<ContentFrame>
+
+### Set maximum number of iterations
+You can limit the number of times that the LLM is allowed to request the usage of 
+agent tools in response to a single user prompt. Use `max_model_iterations_per_call` to change this limit.  
+
+* **Example**  
+  ```python
+  # Limit the number of times the LLM can request for tools in response to a single user prompt
+  agent.max_model_iterations_per_call = 3
+  ```
+
+* `max_model_iterations_per_call` Definition  
+  ```python
+  self.max_model_iterations_per_call: Optional[int] = max_model_iterations_per_call
+  ```
+
+<Admonition type="note" title="">
+Note that you can improve the TTFB (Time To First Byte) by getting the LLM's response in chunks using streaming.  
+Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Set chat trimming configuration
+
+To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
+use it to configure your trimming strategy, and set the agent's `chat_trimming` property 
+with the instance.  
+
+When creating the instance, pass its constructor a summarization strategy using 
+a `AiAgentSummarizationByTokens` class.  
+
+The original conversation, before it was summarized, can optionally be 
+kept in the `@conversations-history` collection.  
+To determine whether to keep the original messages and for how long, also pass the 
+`AiAgentChatTrimmingConfiguration` constructor an `AiAgentHistoryConfiguration` instance 
+with your settings.  
+
+* **Example**  
+  ```python
+  # Set chat trimming configuration
+  summarization = AiAgentSummarizationByTokens(
+      # When the number of tokens stored in the conversation exceeds this limit
+      # summarization of old messages will be triggered.
+      max_tokens_before_summarization=32768,
+      # The maximum number of tokens that the conversation is allowed to contain
+      # after summarization.
+      max_tokens_after_summarization=1024
+  )
+  agent.chat_trimming = AiAgentChatTrimmingConfiguration(tokens_config=summarization)
+  ```
+
+* **Syntax**  
+  ```python
+  # Configuration settings for AI agent conversation summarization
+  class AiAgentSummarizationByTokens:
+    DEFAULT_MAX_TOKENS_BEFORE_SUMMARIZATION = 32 * 1024
+
+    def __init__(
+        self,
+        summarization_task_beginning_prompt: str = None,
+        summarization_task_end_prompt: str = None,
+        result_prefix: str = None,
+        max_tokens_before_summarization: int = None,
+        max_tokens_after_summarization: int = None,
+    ):
+        self.summarization_task_beginning_prompt: Optional[str] = summarization_task_beginning_prompt
+        self.summarization_task_end_prompt: Optional[str] = summarization_task_end_prompt
+        self.result_prefix: Optional[str] = result_prefix
+        self.max_tokens_before_summarization: int = (
+            max_tokens_before_summarization or self.DEFAULT_MAX_TOKENS_BEFORE_SUMMARIZATION
+        )
+        self.max_tokens_after_summarization: int = max_tokens_after_summarization or 1024
+
+  # Configuration for retention and expiration of AI agent chat history documents
+  class AiAgentHistoryConfiguration:
+    def __init__(self, history_expiration_in_sec: int = None):
+        self.history_expiration_in_sec: Optional[int] = history_expiration_in_sec
+  ```
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Adding agent tools">
+
+You can enhance your agent with Query and Action tools, that allow the LLM to query your database and trigger client actions.  
+After defining agent tools and submitting them to the LLM, it is up to the LLM to decide if and when to use them. 
+
+<ContentFrame>
+
+### Query tools
+
+[Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
+A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
+
+* **Passing values to query tools**  
+   * Query tools optionally include [parameters](../../../ai-integration/ai-agents/overview#query-parameters), identified by a `$` prefix.  
+     Both the user and the LLM can pass values to these parameters.  
+   * **Passing values from the user**  
+     Users can pass values to queries through **agent parameters**.  
+     If agent parameters are defined in the agent configuration -  
+       * The client has to provide values for them when initiating a conversation with the agent.  
+       * The parameters can be included in query tools RQL queries.  
+     Before running a query, the agent will replace any agent parameter included in it with its value.  
+   * **Passing values from the LLM**  
+     The LLM can pass values to queries through a **parameters schema**.  
+      * The parameters schema layout is defined as part of the query tool.  
+      * When the LLM requests the agent to run a query, it will add parameter values to the request.  
+      * You can define a parameters schema either as a **sample object** or a **formal JSON schema**.  
+        If you define both, the LLM will pass parameter values only through the JSON schema.  
+      * Before running a query, the agent will replace any parameter included in it with its value.  
+
+* **Example**  
+   * The first query tool will be used by the LLM when it needs to retrieve all the 
+     orders sent to any place in the world. (the system prompt instructs it to use this 
+     tool when the user enters "everywhere" when the conversation is started.)  
+   * The second query tool will be used by the LLM when it needs to retrieve all the 
+     orders that were sent to a particular country, using the `$country` agent parameter.  
+   * The third tool retrieves from the database the general location of an employee.  
+     To do this it uses a `$employeeId` parameter, whose value is set by the LLM in its 
+     request to run this tool.  
+
+          ```python
+          agent.queries = [
+            # Set a query tool that triggers the agent to retrieve all the orders sent everywhere
+            AiAgentToolQuery(
+                # Query tool name
+                name="retrieve-orders-sent-to-all-countries",
+
+                # Query tool description
+                description="a query tool that allows you to retrieve all orders sent to all countries.",
+
+                # Query tool RQL query
+                query="from Orders as O select O.Employee, O.Lines.Quantity",
+
+                # Sample parameters object for the query tool
+                # The LLM can use this object to pass parameters to the query tool
+                parameters_sample_object="{}"
+            ),
+
+            # Set a query tool that triggers the agent to retrieve all the orders sent to a 
+            # specific country
+            AiAgentToolQuery(
+                name="retrieve-orders-sent-to-a-specific-country",
+                description="a query tool that allows you to retrieve all orders sent to a specific country",
+                query="from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+                parameters_sample_object="{}"
+            ),
+
+            # Set a query tool that triggers the agent to retrieve the performer's
+            # residence region details (country, city, and region) from the database
+            AiAgentToolQuery(
+                name="retrieve-performer-living-region",
+                description="a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+                query="from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
+                parameters_sample_object='{"employeeId": "embed the employee\'s ID here"}'
+            )
+          ]
+          ```
+
+* **Syntax**  
+  Query tools are defined in a list of `AiAgentToolQuery` classes.  
+  ```python
+  class AiAgentToolQuery:
+    def __init__(
+        self,
+        name: str = None,
+        description: str = None,
+        query: str = None,
+        parameters_sample_object: str = None,
+        parameters_schema: str = None,
+    ):
+        self.name = name
+        self.description = description
+        self.query = query
+        self.parameters_sample_object: Optional[str] = parameters_sample_object
+        self.parameters_schema: Optional[str] = parameters_schema
+  ```
+
+</ContentFrame>
+
+<!---
+#### <u>Initial-context queries</u>
+
+* You can set a query tool as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
+   * An initial-context query is **not allowed** to use LLM parameters, since the query 
+     runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
+   * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
+
+*  You can use the `options.allow_model_queries` property to Enable or Disable a query tool .  
+   * When a query tool is enabled, the LLM can freely trigger its execution.  
+   * When a query tool is disabled, the LLM cannot trigger its execution.  
+   * If a query tool is set as an initial-context query, it will be executed when the conversation 
+     starts even if disabled using `options.allow_model_queries`.  
+
+* **Example**  
+  Set a query tool that runs when the agent is started and retrieves all the orders sent everywhere.
+  ```csharp
+  new AiAgentToolQuery
+  {
+     Name = "retrieve-orders-sent-to-all-countries",
+     Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+     Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+     ParametersSampleObject = "{}"
+
+     Options = new AiAgentToolQueryOptions
+     {
+         // The LLM is allowed to trigger the execution of this query during the conversation
+         allow_model_queries = true,
+
+         // The query will be executed when the conversation starts 
+         // and its results will be added to the initial context
+         add_to_initial_context = true
+      }
+  }
+  ```
+
+* **Syntax**  
+  ```csharp
+  public class AiAgentToolQueryOptions : IDynamicJson
+  {
+      public bool? allow_model_queries { get; set; }
+      public bool? add_to_initial_context { get; set; }
+  }
+    ```
+
+      |Property|Type|Description|
+      |--------|----|-----------|
+      |`allow_model_queries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
+      |`add_to_initial_context`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
+
+      <Admonition type="note" title="">
+      Note: the two flags can be set regardless of each other.  
+        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `false`  
+          will cause the query to be executed when the conversation starts,  
+          but the LLM will not be able to trigger its execution later in the conversation.  
+        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `true`  
+          will cause the query to be executed when the conversation starts,  
+          and the LLM will also be able to trigger its execution later in the conversation.  
+      </Admonition>
+-->
+
+<ContentFrame>
+
+### Action tools
+
+Action tools allow the LLM to trigger the client to action (e.g., to modify or add a document).  
+An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
+
+In the example below, the action tool requests the client to store an employee's details 
+in the database. The LLM will provide the employee's ID and other details whenever it requests the agent 
+to apply the tool. 
+
+When the client finishes performing the action, it is required to send the LLM 
+a response that explains how it went, e.g. `done`.  
+
+* **Example**  
+  The following action tool sends to the client employee details that the tool needs to store in the database.  
+  ```python
+  agent.actions = [
+    # Set an action tool that triggers the client to store the performer's details
+    AiAgentToolAction(
+        name="store-performer-details",
+        description="an action tool that allows you to store the ID of the employee that made the largest profit, the profit, and your suggestions for a reward, in the database.",
+        parameters_sample_object='{"suggestedReward": "embed your suggestions for a reward here", "employeeId": "embed the employee\'s ID here", "profit": "embed the employee\'s profit here"}'
+    )
+  ]
+  ```
+
+* **Syntax**  
+  Action tools are defined in a list of `AiAgentToolAction` classes.  
+  ```python
+  class AiAgentToolAction:
+    def __init__(
+        self,
+        name: str = None,
+        description: str = None,
+        parameters_sample_object: str = None,
+        parameters_schema: str = None,
+    ):
+        self.name = name
+        self.description = description
+        self.parameters_sample_object: Optional[str] = parameters_sample_object
+        self.parameters_schema: Optional[str] = parameters_schema
+  ```
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Creating the Agent">
+
+Create or update the agent using the `add_or_update_agent` method, passing to it the agent configuration you created.  
+
+* **Example**  
+  ```python
+  # Create the agent
+  create_result = store.ai.add_or_update_agent(agent)
+  ```
+
+* `add_or_update_agent` Definition  
+  ```python
+  def add_or_update_agent(
+        self, configuration: AiAgentConfiguration, schema_type: Type = None
+    ) -> AiAgentConfigurationResult:
+        from ravendb.documents.operations.ai.agents import AddOrUpdateAiAgentOperation
+
+        operation = AddOrUpdateAiAgentOperation(configuration, schema_type)
+        return self._store.maintenance.send(operation)
+  ```
+
+* `add_or_update_agent` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | configuration | `AiAgentConfiguration` | The agent configuration |
+  | schema_type | `Type = None` | Optional type to use for generating sample schema |
+
+  | Return value | Description |
+  |--------------|-------------|
+  | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID and raft command index. |
+
+</Panel>
+
+<Panel heading="Retrieving existing agent configurations">
+
+You can retrieve the configuration of **existing agents** using `get_agents`.  
+- To retrieve the configuration of a single agent, pass to the method the agent's ID.  
+- To retrieve the configurations of all existing agents, call the method without parameters.  
+
+* **Examples**  
+  ```python
+  # Retrieve an agent configuration by its ID
+  get_ai_agents_response = store.ai.get_agents("reward-productive-employee")
+  agent = get_ai_agents_response.ai_agents[0]
+  ```
+  ```python
+  # Extract the agent configurations from the response
+  get_ai_agents_response = store.ai.get_agents()
+  agents = get_ai_agents_response.ai_agent
+  ```
+
+* `get_agents` Definition  
+  ```python
+  def get_agents(self, agent_id: str = None) -> GetAiAgentsResponse:
+  ```
+
+* `get_agents` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agent_id | `str` | The unique ID of the agent whose configuration you want to retrieve |
+
+  | Return value | Description |
+  |--------------|-------------|
+  | `GetAiAgentsResponse` | A list of agent configurations |
+
+
+* `GetAiAgentsResponse` class  
+  ```python
+  class GetAiAgentsResponse:
+    def __init__(self):
+        self.ai_agents: List[AiAgentConfiguration] = []
+  ```
+
+</Panel>
+
+<Panel heading="Managing conversations">
+
+<ContentFrame>
+
+### Setting a conversation
+
+* Set a conversation using the `store.ai.conversation` method.  
+  Pass `conversation`:  
+   * The **agent ID**  
+   * The **conversation ID**  
+     The conversation ID that you provide when starting a conversation determines whether a new conversation will start, or an existing conversation will be continued.  
+     <Admonition type="note" title="">
+      * Conversations are kept in the `@conversations` collection.  
+        A conversation document's name starts with a prefix (such as `Chats/`) that can be 
+        set when the conversation is initiated.  
+      * You can -  
+        **Provide a full ID**, including a prefix and the ID that follows it.  
+        **Provide a prefix that ends with `/` or `|`** to trigger automatic ID creation, 
+        similarly to the creation of automatic IDs for documents.  
+      * If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
+        the conversation will be retrieved from storage and continued where you left off.  
+      * If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
+      </Admonition>
+   * Values for **agent parameters**, if defined, in an `AiConversationCreationOptions` instance.  
+* Set the user prompt using the `set_user_prompt`method.  
+  The user prompt informs the agent of the user's requests and expectations for this chat.  
+* Use the value returned by the `conversation` method to run the chat.
+
+* **Example**  
+  ```python
+  # Create a conversation instance
+  # Initialize it with -
+  # The agent's ID,
+  # A prefix (Performers/) for conversations stored in the @Conversations collection,
+  # Agent parameters' values
+  chat = store.ai.conversation(
+      create_result.identifier,
+      "Performers/",
+      AiConversationCreationOptions().add_parameter("country", "France"),
+  )
+  ```
+
+* `conversation` Definition  
+  ```python
+  def conversation(
+        self,
+        agent_id: str,
+        conversation_id: str,
+        creation_options: "AiConversationCreationOptions" = None,
+        change_vector: str = None,
+    ) -> AiConversation:
+  ```
+
+* `conversation` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agent_id | `str` | The agent unique ID |
+  | conversation_id | `str` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
+  | creation_options | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
+  | change_vector | `str` | Optional change vector for concurrency control |
+
+      | Return value | Description |
+      |--------------|-------------|
+      | `AiConversation` | The conversation operations interface for conversation management.<br />Methods of this interface like `run`, `handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
+
+* `set_user_prompt` Definition  
+  ```python
+  def set_user_prompt(self, user_prompt: str) -> None:
+  ```
+* `AiConversationCreationOptions` class  
+  Use this class to set conversation creation options, including values for agent parameters and the conversation's expiration time if it remains idle.  
+  Use its `add_parameter` method to add values for agent parameters.  
+
+  ```python
+  class AiConversationCreationOptions:
+
+    def __init__(self, parameters: Optional[Dict[str, Any]] = None, expiration_in_sec: Optional[int] = None):
+        self.expiration_in_sec: Optional[int] = expiration_in_sec
+        self.parameters: Optional[Dict[str, Any]] = parameters
+
+    def add_parameter(self, name: str, value: Any) -> AiConversationCreationOptions:
+        ...
+  ```
+
+* `add_parameter` Properties  
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | name | `str` | The parameter name |
+  | value | `Any` | The parameter value |
+
+      | Return value | Description |
+      |--------------|-------------|
+      | `AiConversationCreationOptions` | Return self for method chaining |
+
+</ContentFrame>
+<ContentFrame>
+
+### Processing action-tool requests
+During the conversation, the LLM can request the agent to trigger action tools.  
+The agent will pass a requested action tool's name and parameters to the client,  
+and it is then up to the client to process the request.  
+
+The client can process an action-tool request using a [handler](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers) or a [receiver](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers).  
+
+#### <u>Action-tool Handlers</u>
+A **handler** is created for a specific action tool and registered with the server using the `handle` method.  
+When the LLM triggers this action tool with an action request, the handler is invoked to process the request, returns a response to the LLM, and ends automatically.  
+
+<Admonition type="note" title="">
+Handlers are typically used for simple, immediate operations like storing a document in the database and returning a confirmation, performing a quick calculation and sending its results, and other scenarios where the response can be generated and returned in a single step.  
+</Admonition>
+
+* To **create a handler**,  
+  pass to the `handle` method -  
+   * The action tool's name.  
+   * An object to populate with the data sent with the action request.  
+     Make sure that the object has the same structure defined for the action tool's parameters schema.  
+
+* When an **action request for this tool is received**,  
+  the handler will be given -  
+   * The populated object with the data sent with the action request.  
+
+* When you **finish handling the requested action**,  
+  `return` a response that will be sent by the agent back to the LLM.  
+
+* **Example**  
+  In this example, the action tool is requested to store an employee's details in the database.  
+  ```python
+  # An object that represents the arguments provided by the LLM for this tool call
+  @dataclass
+  class Performer:
+      suggestedReward: str
+      employeeId: str
+      profit: str
+
+  # A dictionary (json) representing a response object 
+  # Can be easily used to create an object if needed
+  def store_performer_details(args: dict) -> str:
+      performer = Performer(**args)
+      with store.open_session() as session:
+          session.store(performer)
+          session.save_changes()
+
+      # Return to the agent an indication that the action went well
+      return "done"
+
+  # "store-performer-details" action tool handler
+  chat.handle(
+      "store-performer-details",
+      store_performer_details,
+      AiHandleErrorStrategy.RAISE_IMMEDIATELY
+  )
+  ```
+* `handle` Methods  
+  ```python
+  def handle(
+        self,
+        action_name: str,
+        action: Callable[[dict], Any],
+        ai_handle_error: AiHandleErrorStrategy,
+    ) -> None:
+        ...
+
+    def handle_ai_agent_action_request(
+        self,
+        action_name: str,
+        action: Callable[[AiAgentActionRequest, dict], Any],
+        ai_handle_error: AiHandleErrorStrategy = AiHandleErrorStrategy.SEND_ERRORS_TO_MODEL,
+    ) -> None:
+        ...
+  ```
+
+* `handle` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_name | `str` | The action tool name |
+  | action | `Callable[[dict], Any]` or `Callable[[AiAgentActionRequest, dict], Any]` | The handler function that processes the action request and returns a response to the LLM |
+  | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+
+#### <u>Action-tool Receivers</u>
+A **receiver** is created for a specific action tool and registered with the server using the `receive` method.  
+When the LLM triggers this action tool with an action request, the receiver is invoked to process the request, but unlike a handler, the receiver remains active until `AddActionResponse` is explicitly called to close the pending request and send a response to the LLM.  
+  
+<Admonition type="note" title="">
+Receivers are typically used asynchronously for multi-step or delayed operations such as waiting for an external event or for user input before responding, performing long-running operations like batch processing or integration with an external system, and other use cases where the response cannot be generated immediately.  
+</Admonition>
+
+* To **create a receiver**,  
+  pass the `receive` method -  
+   * The action tool's name.  
+   * An object to populate with the data sent with the action request.  
+     Make sure that this object has the same structure defined for the action tool's parameters schema.  
+
+* When an **action request for this tool is received**,  
+  the receiver will be given -  
+   * An `AiAgentActionRequest` object containing the details of the action request.  
+   * The populated object with the data sent with the action request.  
+
+* When you **finish handling the requested action**,  
+  call `AddActionResponse`. Pass it -  
+   * The action tool's ID.  
+   * The response to send back to the LLM.  
+     <Admonition type="note" title="">
+     Note that the response can be sent at any time, even after the receiver has finished executing,  
+     and from any context, not necessarily from within the receiver callback.  
+     </Admonition>
+
+* **Example**  
+  ```python
+  def store_performer_details_receive(ai_agent_action_request: AiAgentActionRequest, args: dict):
+    # A dictionary (json) representing a response object 
+    # Can be easily used to create an object if needed
+    performer = Performer(**args)
+
+    # Perform work
+    with store.open_session() as session:
+        session.store(performer)
+        session.save_changes()
+
+    # Add any processing logic here
+
+    # Manually send the response and close the action
+    chat.add_action_response(ai_agent_action_request.tool_id, "done")
+
+  chat.receive("store-performer-details", store_performer_details_receive, AiHandleErrorStrategy.RAISE_IMMEDIATELY)
+  ```
+
+* `receive` Definition  
+  ```python
+  def receive(
+        self,
+        action_name: str,
+        action: Callable[[AiAgentActionRequest, dict], None],
+        ai_handle_error: AiHandleErrorStrategy = AiHandleErrorStrategy.SEND_ERRORS_TO_MODEL,
+    ):
+  ```
+
+* `receive` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_name | `str` | The action tool name |
+  | action | `Callable[[AiAgentActionRequest, dict], None]` | The receiver function that processes the action request |
+  | ai_handle_error | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
+
+* `add_action_response` Definition
+  ```python
+  def add_action_response(self, action_id: str, action_response: str) -> None:
+  ...
+  ```
+
+* `add_action_response` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | action_id | `str` | The action request unique ID |
+  | action_response | `str` | The response to send back to the LLM through the agent |
+
+
+* `AiAgentActionRequest` class  
+  Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
+  ```python
+  class AiAgentActionRequest:
+
+    def __init__(self, name: str = None, tool_id: str = None, arguments: str = None):
+        self.name = name
+        self.tool_id = tool_id
+        self.arguments = arguments
+  ```
+
+</ContentFrame>
+<ContentFrame>
+
+### Conversation response
+
+The LLM response is returned by the agent to the client in an `AiAnswer` object, containing:  
+ - An answer to the user prompt  
+ - An `AiConversationStatus` Enum indicating whether the conversation is complete or a further "turn" is required  
+ - An optional `AiUsage` class with token usage statistics  
+ - Timing information  
+
+* `AiAnswer`syntax  
+  ```python
+  @dataclass
+  class AiUsage:
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    cached_tokens: int = 0
+    reasoning_tokens: int = 0
+
+  class AiConversationStatus(enum.Enum):
+    DONE = "Done"
+    ACTION_REQUIRED = "ActionRequired"
+
+
+  class AiAnswer(Generic[TAnswer]):
+      def __init__(
+          self,
+          answer: Optional[TAnswer] = None,
+          status: AiConversationStatus = AiConversationStatus.DONE,
+          usage: Optional[AiUsage] = None,
+          elapsed: Optional[timedelta] = None,
+      ):
+          self.answer = answer
+          self.status = status
+          self.usage = usage
+          self.elapsed = elapsed
+  ```
+
+* `AiAnswer` Properties  
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | answer | `TAnswer` | Optional LLM answer |
+  | status | `AiConversationStatus` | Conversation status (`Done` or `ActionRequired`) |
+  | usage | `AiUsage` | Token usage reported by the model |
+  | elapsed | `timedelta` | The total time it took to produce the answer |
+
+</ContentFrame>
+<ContentFrame>
+
+### Setting user prompt and running the conversation
+
+Set the user prompt using the `set_user_prompt` method, and run the conversationusing `chat.run`.
+<Admonition type="note" title="">
+You can also use `chat.stream` to stream the LLM's response as it is generated.  
+Learn how to do this in the [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses) section.
+</Admonition>
+
+```python
+# Set the user prompt and run the conversation
+chat.set_user_prompt("send a few suggestions to reward the employee that made the largest profit")
+
+llm_response = chat.run()
+
+if llm_response.status == AiConversationStatus.DONE:
+  # The LLM successfully processed the user prompt and returned its response.
+  # The performer's ID, profit, and suggested rewards were stored in the Performers
+  # collection by the action tool, and are also returned in the final LLM response.
+  ...
+
+```
+
+See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example).  
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Stream LLM responses">
+
+You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview#streaming-llm-responses) in real time as the LLM generates it, using the `chat.stream` method, instead of using [chat.run](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
+
+Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
+
+* **Example**  
+  ```python
+  # A `str` collection, used in this example to collect the streamed response
+  reward: List[str] = []
+
+  # Using `stream` to collect the streamed response
+  # The response property to stream is in this case `suggestedReward`
+  llm_response = chat.stream("suggestedReward", reward.append)
+
+  if llm_response.status == AiConversationStatus.DONE:
+      # Handle the full response when ready
+
+      # The streamed property was fully loaded and handled by the callback above,
+      # remaining parts of the response (including other properties if exist)
+      # will arrive when the whole response is ready and can be handled here.
+      ...
+  ```
+
+* `stream` Definition:  
+      ```python
+      def stream(self, stream_property_path: str = None, on_chunk: Optional[Callable[[str], None]] = None) -> AiAnswer:
+      ```
+
+* `stream` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | **stream_property_path** | `str` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
+  | **on_chunk** (optional) | `Callable[[str], None]` | A callback function that is invoked with each incoming chunk of the streamed property |
+
+      | Return value | Description |
+      |--------------|-------------|
+      | `AiAnswer` | After streaming the specified property, the return value contains the final conversation response |
+
+</Panel>
+
+<Panel heading="Full example">
+
+The agent's user in this example is a human experience manager.  
+The agent helps its user to reward employees by searching, using query tools, 
+for orders sent to a certain country or (if the user prompts it "everywhere") 
+to all countries, and finding the employee that made the largest profit.  
+The agent then runs another query tool to find, by the employee's ID (that 
+was fetched from the retrieved orders) the employee's residence region, 
+and finds rewards suitable for the employee based on this region.  
+Finally, it uses an action tool to store the employee's ID, profit, and reward 
+suggestions in the `Performers` collection in the database, and returns the same 
+details in its final response as well.  
+
+```python
+def create_and_run_ai_agent_full():
+    store = DocumentStore([ravendb_url], database_name)
+    store.initialize()
+
+    # Define connection string to OpenAI
+    connection_string = AiConnectionString(
+        name="open-ai-cs",
+        identifier="open-ai-cs",
+        model_type=AiModelType.CHAT,
+        openai_settings=OpenAiSettings(
+            api_key="your-api-key",
+            endpoint="https://api.openai.com/v1",
+            # LLM model for text generation
+            model="gpt-4.1"
+        )
+    )
+
+    # Deploy connection string to server
+    operation = PutConnectionStringOperation(connection_string)
+    put_connection_string_result = store.maintenance.send(operation)
+
+    # Start setting an agent configuration
+    agent = AiAgentConfiguration(
+        name="reward-productive-employee",
+        connection_string_name=connection_string.name,
+        system_prompt="""
+        You work for a human experience manager.
+        The manager uses your services to find which employee has made the largest profit and to suggest a reward.
+        The manager provides you with the name of a country, or with the word ""everything"" to indicate all countries.
+        Then you:
+        1. use a query tool to load all the orders sent to the selected country,
+           or a query tool to load all orders sent to all countries.
+        2. calculate which employee made the largest profit.
+        3. use a query tool to learn in what general area this employee lives.
+        4. find suitable vacations sites or other rewards based on the employee's residence area.
+        5. use an action tool to store in the database the employee's ID, profit, and your reward 
+           suggestions.
+           When you're done, return these details in your answer to the user as well.
+        """)
+
+    # Set agent ID
+    agent.identifier = "reward-productive-employee"
+
+    # Define LLM response object
+    agent.sample_object = """
+    {
+      "EmployeeID": "embed the employee's ID here",
+      "Profit": "embed the employee's profit here",
+      "SuggestedReward": "embed your suggestions for a reward here"
+    }
+    """
+
+    # Set agent parameters
+    agent.parameters.append(AiAgentParameter("country", 'A specific country that orders were shipped to, or "everywhere" to look for orders shipped to all countries.'))
+
+    agent.queries = [
+        # Set a query tool to retrieve all orders sent everywhere
+        AiAgentToolQuery(
+            # Query tool name
+            name="retrieve-orders-sent-to-all-countries",
+            # Query tool description
+            description="a query tool that allows you to retrieve all orders sent to all countries",
+            # Query tool RQL query
+            query="from Orders as O select O.Employee, O.Lines.Quantity",
+            # Sample parameters object
+            parameters_sample_object="{}",
+        ),
+
+        # Set a query tool to retrieve all orders sent to a specific country
+        AiAgentToolQuery(
+            name="retrieve-orders-sent-to-a-specific-country",
+            description="a query tool that allows you to retrieve all orders sent to a specific country",
+            query="from Orders as O where O.ShipTo.Country == $country select O.Employee, O.Lines.Quantity",
+            parameters_sample_object="{}",
+        ),
+
+        # Set a query tool to retrieve the performer's residence region details (country, city, and region) from the database
+        AiAgentToolQuery(
+            name="retrieve-performer-living-region",
+            description="a query tool that allows you to retrieve an employee's country, city, and region, by the employee's ID",
+            query="from Employees as E where id() == $employeeId select E.Address.Country, E.Address.City, E.Address.Region",
+            parameters_sample_object='{"employeeId": "embed the employee\'s ID here"}',
+        ),
+    ]
+
+    agent.actions = [
+        # Set an action tool to store the performer's details
+        AiAgentToolAction(
+            name="store-performer-details",
+            description="an action tool that allows you to store the ID of the employee that made the largest profit, the profit, and your suggestions for a reward, in the database.",
+            parameters_sample_object='{"suggestedReward": "embed your suggestions for a reward here", "employeeId": "embed the employee\'s ID here", "profit": "embed the employee\'s profit here"}',
+        )
+    ]
+
+    # Set chat trimming configuration
+    summarization = AiAgentSummarizationByTokens(
+        # Summarize old messages when the number of tokens stored in the conversation exceeds this limit
+        max_tokens_before_summarization=32768,
+        # Max number of tokens that the conversation is allowed to contain after summarization
+        max_tokens_after_summarization=1024,
+    )
+
+    agent.chat_trimming = AiAgentChatTrimmingConfiguration(tokens_config=summarization)
+
+    # Limit the number of times the LLM can request for tools in response to a single user prompt
+    agent.max_model_iterations_per_call = 3
+
+    # Create the agent
+    create_result = store.ai.add_or_update_agent(agent)
+
+    # Set chat ID, prefix, agent parameters.
+    # (specific country activates one query tool, "everywhere" activates another)
+    chat = store.ai.conversation(
+        create_result.identifier,
+        "Performers/",
+        AiConversationCreationOptions().add_parameter("country", "France"),
+    )
+
+    # An object that represents the arguments provided by LLM for this tool call (defined previously in the agent definition)
+    @dataclass
+    class Performer:
+        suggestedReward: str
+        employeeId: str
+        profit: str
+
+    def store_performer_details(args: dict) -> str:
+        performer = Performer(**args)
+        with store.open_session() as session:
+            # store values in Performers collection in database
+            session.store(performer)
+            session.save_changes()
+
+        return "done"
+
+    # Handle the action tool that the LLM uses to store the performer's details in the database
+    chat.handle(
+        "store-performer-details",
+        store_performer_details,
+        AiHandleErrorStrategy.SEND_ERRORS_TO_MODEL,
+    )
+
+    # Set user prompt and run chat
+    chat.set_user_prompt("send a few suggestions to reward the employee that made the largest profit")
+
+    llm_response = chat.run()
+    if llm_response.status == AiConversationStatus.DONE:
+        # The LLM successfully processed the user prompt and returned its response.
+        # The performer's ID, profit, and suggested rewards were stored in the Performers
+        # collection by the action tool, and are also returned in the final LLM response.
+        ...
+```
+</Panel>
