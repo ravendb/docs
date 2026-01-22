@@ -2,6 +2,7 @@
 title: "Operations: How to Add a Connection String"
 sidebar_label: Add Connection String
 sidebar_position: 0
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import AddConnectionStringCsharp from './_add-connection-string-csharp.mdx';
 import AddConnectionStringJava from './_add-connection-string-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <AddConnectionStringCsharp />

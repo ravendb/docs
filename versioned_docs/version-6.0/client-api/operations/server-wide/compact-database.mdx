@@ -2,6 +2,7 @@
 title: "Compact Database Operation"
 sidebar_label: Compact Database
 sidebar_position: 1
+supportedLanguages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import CompactDatabasePython from './_compact-database-python.mdx';
 import CompactDatabasePhp from './_compact-database-php.mdx';
 import CompactDatabaseNodejs from './_compact-database-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CompactDatabaseCsharp />

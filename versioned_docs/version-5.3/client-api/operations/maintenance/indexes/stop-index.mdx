@@ -2,6 +2,7 @@
 title: "Pause Index Operation"
 sidebar_label: Pause Index
 sidebar_position: 8
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import StopIndexCsharp from './_stop-index-csharp.mdx';
 import StopIndexJava from './_stop-index-java.mdx';
 import StopIndexNodejs from './_stop-index-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StopIndexCsharp />

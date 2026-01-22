@@ -2,6 +2,7 @@
 title: "Conventions: Deserialization"
 sidebar_label: DeSerialization
 sidebar_position: 2
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DeserializationCsharp from './_deserialization-csharp.mdx';
 import DeserializationJava from './_deserialization-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeserializationCsharp />

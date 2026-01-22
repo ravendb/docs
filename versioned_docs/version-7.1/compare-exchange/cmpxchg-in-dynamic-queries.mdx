@@ -2,6 +2,7 @@
 title: "Compare-Exchange in Dynamic Queries"
 sidebar_label: "Compare-Exchange in Dynamic Queries"
 sidebar_position: 9
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import CmpXchgInDynamicQueriesCsharp from './content/_cmpxchg-in-dynamic-queries-csharp.mdx';
 import CmpXchgInDynamicQueriesNodejs from './content/_cmpxchg-in-dynamic-queries-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CmpXchgInDynamicQueriesCsharp />

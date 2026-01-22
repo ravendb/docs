@@ -2,6 +2,7 @@
 title: "Boost Search Results"
 sidebar_label: Boost Search Results
 sidebar_position: 4
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import BoostSearchResultsCsharp from './_boost-search-results-csharp.mdx';
 import BoostSearchResultsNodejs from './_boost-search-results-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <BoostSearchResultsCsharp />

@@ -2,6 +2,7 @@
 title: "Get Index Terms Operation"
 sidebar_label: Get Index Terms
 sidebar_position: 16
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetTermsPython from './_get-terms-python.mdx';
 import GetTermsPhp from './_get-terms-php.mdx';
 import GetTermsNodejs from './_get-terms-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetTermsCsharp />

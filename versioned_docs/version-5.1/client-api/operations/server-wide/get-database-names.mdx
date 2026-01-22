@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Get the Names of Databases on a Server"
 sidebar_label: Get Database Names
 sidebar_position: 5
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetDatabaseNamesCsharp from './_get-database-names-csharp.mdx';
 import GetDatabaseNamesJava from './_get-database-names-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetDatabaseNamesCsharp />

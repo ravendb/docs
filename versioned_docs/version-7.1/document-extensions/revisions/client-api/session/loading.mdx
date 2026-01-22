@@ -2,6 +2,7 @@
 title: "Get Revisions"
 sidebar_label: Get Revisions
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import LoadingPython from './_loading-python.mdx';
 import LoadingPhp from './_loading-php.mdx';
 import LoadingNodejs from './_loading-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <LoadingCsharp />

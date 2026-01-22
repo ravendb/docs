@@ -2,6 +2,7 @@
 title: "Session: Querying: Debugging: How to include Query Timings"
 sidebar_label: Include Query Timings
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import QueryTimingsCsharp from './_query-timings-csharp.mdx';
 import QueryTimingsJava from './_query-timings-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <QueryTimingsCsharp />

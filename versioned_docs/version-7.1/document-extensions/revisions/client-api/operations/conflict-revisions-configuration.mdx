@@ -2,6 +2,7 @@
 title: "Configure Conflict Revisions Operation"
 sidebar_label: Configure Conflict Revisions
 sidebar_position: 1
+supportedLanguages: ["csharp", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ConflictRevisionsConfigurationCsharp from './_conflict-revisions-configur
 import ConflictRevisionsConfigurationPhp from './_conflict-revisions-configuration-php.mdx';
 import ConflictRevisionsConfigurationNodejs from './_conflict-revisions-configuration-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ConflictRevisionsConfigurationCsharp />

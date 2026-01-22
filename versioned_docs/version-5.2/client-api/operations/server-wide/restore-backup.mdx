@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Restore a Database from the Backup"
 sidebar_label: Restore Backup
 sidebar_position: 8
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import RestoreBackupCsharp from './_restore-backup-csharp.mdx';
 import RestoreBackupJava from './_restore-backup-java.mdx';
 import RestoreBackupNodejs from './_restore-backup-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <RestoreBackupCsharp />

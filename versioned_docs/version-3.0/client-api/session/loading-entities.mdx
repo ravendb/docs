@@ -2,6 +2,7 @@
 title: "Session: Loading entities"
 sidebar_label: Loading Entities
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import LoadingEntitiesCsharp from './_loading-entities-csharp.mdx';
 import LoadingEntitiesJava from './_loading-entities-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <LoadingEntitiesCsharp />

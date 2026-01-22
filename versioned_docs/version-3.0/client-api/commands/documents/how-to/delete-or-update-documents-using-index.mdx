@@ -2,6 +2,7 @@
 title: "Commands: Documents: How to delete or update documents using index?"
 sidebar_label: ...delete/update documents using index
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import DeleteOrUpdateDocumentsUsingIndexCsharp from './_delete-or-update-documen
 import DeleteOrUpdateDocumentsUsingIndexJava from './_delete-or-update-documents-using-index-java.mdx';
 import DeleteOrUpdateDocumentsUsingIndexHttp from './_delete-or-update-documents-using-index-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeleteOrUpdateDocumentsUsingIndexCsharp />

@@ -2,6 +2,7 @@
 title: "Client API: Creating a Document Store"
 sidebar_label: Creating Document Store
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CreatingDocumentStoreCsharp from './_creating-document-store-csharp.mdx';
 import CreatingDocumentStoreJava from './_creating-document-store-java.mdx';
 import CreatingDocumentStoreNodejs from './_creating-document-store-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CreatingDocumentStoreCsharp />

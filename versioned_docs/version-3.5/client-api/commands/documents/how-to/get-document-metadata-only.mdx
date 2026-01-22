@@ -2,6 +2,7 @@
 title: "Commands: Documents: How to get document metadata only?"
 sidebar_label: ...get document metadata only
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetDocumentMetadataOnlyCsharp from './_get-document-metadata-only-csharp.
 import GetDocumentMetadataOnlyJava from './_get-document-metadata-only-java.mdx';
 import GetDocumentMetadataOnlyHttp from './_get-document-metadata-only-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetDocumentMetadataOnlyCsharp />

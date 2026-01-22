@@ -2,6 +2,7 @@
 title: "What are Operations"
 sidebar_label: What are Operations
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatAreOperationsCsharp from './_what-are-operations-csharp.mdx';
 import WhatAreOperationsJava from './_what-are-operations-java.mdx';
 import WhatAreOperationsNodejs from './_what-are-operations-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatAreOperationsCsharp />

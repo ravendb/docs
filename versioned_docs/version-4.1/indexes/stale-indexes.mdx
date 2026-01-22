@@ -2,6 +2,7 @@
 title: "Indexes: Stale Indexes"
 sidebar_label: Stale Indexes
 sidebar_position: 9
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import StaleIndexesCsharp from './_stale-indexes-csharp.mdx';
 import StaleIndexesJava from './_stale-indexes-java.mdx';
 import StaleIndexesNodejs from './_stale-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StaleIndexesCsharp />

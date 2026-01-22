@@ -2,6 +2,7 @@
 title: "Session: Querying: How to Use Fuzzy"
 sidebar_label: How to Use Fuzzy
 sidebar_position: 19
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToUseFuzzyCsharp from './_how-to-use-fuzzy-csharp.mdx';
 import HowToUseFuzzyJava from './_how-to-use-fuzzy-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseFuzzyCsharp />

@@ -2,6 +2,7 @@
 title: "Indexes: Term Vectors"
 sidebar_label: Term Vectors
 sidebar_position: 27
+supportedLanguages: ["java", "nodejs", "csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import UsingTermVectorsJava from './_using-term-vectors-java.mdx';
 import UsingTermVectorsNodejs from './_using-term-vectors-nodejs.mdx';
 import UsingTermVectorsCsharp from './_using-term-vectors-csharp.mdx';
 
-export const supportedLanguages = ["java", "nodejs", "csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="java">
    <UsingTermVectorsJava />

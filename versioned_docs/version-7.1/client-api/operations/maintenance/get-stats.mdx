@@ -2,6 +2,7 @@
 title: "Get Statistics"
 sidebar_label: Get Statistics
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetStatsPython from './_get-stats-python.mdx';
 import GetStatsPhp from './_get-stats-php.mdx';
 import GetStatsNodejs from './_get-stats-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetStatsCsharp />

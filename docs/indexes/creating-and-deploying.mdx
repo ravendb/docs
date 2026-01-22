@@ -2,6 +2,7 @@
 title: "Creating and Deploying Indexes"
 sidebar_label: Creating and Deploying Indexes
 sidebar_position: 2
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CreatingAndDeployingCsharp from './_creating-and-deploying-csharp.mdx';
 import CreatingAndDeployingJava from './_creating-and-deploying-java.mdx';
 import CreatingAndDeployingNodejs from './_creating-and-deploying-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CreatingAndDeployingCsharp />

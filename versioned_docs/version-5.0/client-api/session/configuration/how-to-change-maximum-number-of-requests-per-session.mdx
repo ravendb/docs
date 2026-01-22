@@ -2,6 +2,7 @@
 title: "Session: How to Change Maximum Number of Requests per Session"
 sidebar_label: How to Change Maximum Number of Requests per Session
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToChangeMaximumNumberOfRequestsPerSessionCsharp from './_how-to-change
 import HowToChangeMaximumNumberOfRequestsPerSessionJava from './_how-to-change-maximum-number-of-requests-per-session-java.mdx';
 import HowToChangeMaximumNumberOfRequestsPerSessionNodejs from './_how-to-change-maximum-number-of-requests-per-session-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToChangeMaximumNumberOfRequestsPerSessionCsharp />

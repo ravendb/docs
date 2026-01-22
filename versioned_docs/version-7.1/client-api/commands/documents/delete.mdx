@@ -2,6 +2,7 @@
 title: "Delete Document Command"
 sidebar_label: Delete Document
 sidebar_position: 2
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import DeletePython from './_delete-python.mdx';
 import DeletePhp from './_delete-php.mdx';
 import DeleteNodejs from './_delete-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeleteCsharp />

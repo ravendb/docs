@@ -2,6 +2,7 @@
 title: "Changes API: How to subscribe to transformer changes?"
 sidebar_label: How to subscribe to transformer changes?
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToSubscribeToTransformerChangesCsharp from './_how-to-subscribe-to-transformer-changes-csharp.mdx';
 import HowToSubscribeToTransformerChangesJava from './_how-to-subscribe-to-transformer-changes-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToSubscribeToTransformerChangesCsharp />

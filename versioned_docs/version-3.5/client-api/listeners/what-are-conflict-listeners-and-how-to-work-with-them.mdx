@@ -2,6 +2,7 @@
 title: "Listeners: What are conflict listeners and how to work with them?"
 sidebar_label: Conflict listeners
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import WhatAreConflictListenersAndHowToWorkWithThemCsharp from './_what-are-conflict-listeners-and-how-to-work-with-them-csharp.mdx';
 import WhatAreConflictListenersAndHowToWorkWithThemJava from './_what-are-conflict-listeners-and-how-to-work-with-them-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatAreConflictListenersAndHowToWorkWithThemCsharp />

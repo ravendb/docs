@@ -2,6 +2,7 @@
 title: "Operations: How to Get Collection Statistics"
 sidebar_label: Get Collection Statistics
 sidebar_position: 0
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetCollectionStatisticsCsharp from './_get-collection-statistics-csharp.mdx';
 import GetCollectionStatisticsJava from './_get-collection-statistics-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetCollectionStatisticsCsharp />

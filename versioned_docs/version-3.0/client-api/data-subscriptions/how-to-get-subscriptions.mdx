@@ -2,6 +2,7 @@
 title: "How to get all subscriptions?"
 sidebar_label: How to get all subscriptions?
 sidebar_position: 5
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToGetSubscriptionsCsharp from './_how-to-get-subscriptions-csharp.mdx';
 import HowToGetSubscriptionsJava from './_how-to-get-subscriptions-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToGetSubscriptionsCsharp />

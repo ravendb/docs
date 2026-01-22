@@ -2,6 +2,7 @@
 title: "Indexing Metadata"
 sidebar_label: Indexing Metadata
 sidebar_position: 21
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import IndexingMetadataPython from './_indexing-metadata-python.mdx';
 import IndexingMetadataPhp from './_indexing-metadata-php.mdx';
 import IndexingMetadataNodejs from './_indexing-metadata-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <IndexingMetadataCsharp />

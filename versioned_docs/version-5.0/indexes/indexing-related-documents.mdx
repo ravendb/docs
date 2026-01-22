@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Related Documents"
 sidebar_label: Indexing Related Documents
 sidebar_position: 11
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import IndexingRelatedDocumentsCsharp from './_indexing-related-documents-csharp.mdx';
 import IndexingRelatedDocumentsJava from './_indexing-related-documents-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <IndexingRelatedDocumentsCsharp />

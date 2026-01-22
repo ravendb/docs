@@ -2,6 +2,7 @@
 title: "How to Check for Entity Changes"
 sidebar_label: ...check for entity changes
 sidebar_position: 14
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import CheckIfEntityHasChangedPython from './_check-if-entity-has-changed-python
 import CheckIfEntityHasChangedPhp from './_check-if-entity-has-changed-php.mdx';
 import CheckIfEntityHasChangedNodejs from './_check-if-entity-has-changed-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CheckIfEntityHasChangedCsharp />

@@ -2,6 +2,7 @@
 title: "Changes API"
 sidebar_label: What is Changes API
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatIsChangesApiCsharp from './_what-is-changes-api-csharp.mdx';
 import WhatIsChangesApiJava from './_what-is-changes-api-java.mdx';
 import WhatIsChangesApiNodejs from './_what-is-changes-api-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatIsChangesApiCsharp />

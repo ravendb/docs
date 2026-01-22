@@ -2,6 +2,7 @@
 title: "Pause Indexing Operation"
 sidebar_label: Pause Indexing
 sidebar_position: 9
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import StopIndexingPython from './_stop-indexing-python.mdx';
 import StopIndexingPhp from './_stop-indexing-php.mdx';
 import StopIndexingNodejs from './_stop-indexing-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StopIndexingCsharp />

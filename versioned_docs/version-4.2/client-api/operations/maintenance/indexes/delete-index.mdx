@@ -2,6 +2,7 @@
 title: "Operations: How to Delete an Index"
 sidebar_label: Delete Index
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DeleteIndexCsharp from './_delete-index-csharp.mdx';
 import DeleteIndexJava from './_delete-index-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeleteIndexCsharp />

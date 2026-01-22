@@ -2,6 +2,7 @@
 title: "Sort Index Query Results"
 sidebar_label: Sorting
 sidebar_position: 4
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import SortingPython from './_sorting-python.mdx';
 import SortingPhp from './_sorting-php.mdx';
 import SortingNodejs from './_sorting-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <SortingCsharp />

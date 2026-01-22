@@ -2,6 +2,7 @@
 title: "Session: Querying: How to use Highlighting"
 sidebar_label: How to Use Highlighting
 sidebar_position: 16
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToUseHighlightingCsharp from './_how-to-use-highlighting-csharp.mdx';
 import HowToUseHighlightingJava from './_how-to-use-highlighting-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseHighlightingCsharp />

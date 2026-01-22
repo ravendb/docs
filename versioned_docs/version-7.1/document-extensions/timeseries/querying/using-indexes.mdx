@@ -2,6 +2,7 @@
 title: "Querying Time Series Indexes"
 sidebar_label: Querying Time Series Indexes
 sidebar_position: 5
+supportedLanguages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import UsingIndexesPython from './_using-indexes-python.mdx';
 import UsingIndexesPhp from './_using-indexes-php.mdx';
 import UsingIndexesNodejs from './_using-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <UsingIndexesCsharp />

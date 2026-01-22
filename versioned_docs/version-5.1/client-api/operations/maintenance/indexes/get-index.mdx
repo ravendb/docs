@@ -2,6 +2,7 @@
 title: "Operations: How to Get an Index"
 sidebar_label: Get Index
 sidebar_position: 12
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetIndexCsharp from './_get-index-csharp.mdx';
 import GetIndexJava from './_get-index-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetIndexCsharp />

@@ -2,6 +2,7 @@
 title: "Document Revisions Overview"
 sidebar_label: Overview
 sidebar_position: 0
+supportedLanguages: ["csharp", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import OverviewCsharp from './_overview-csharp.mdx';
 import OverviewPython from './_overview-python.mdx';
 import OverviewNodejs from './_overview-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <OverviewCsharp />

@@ -2,6 +2,7 @@
 title: "Revisions and Other Features"
 sidebar_label: Revisions and Other Features
 sidebar_position: 3
+supportedLanguages: ["java", "csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import RevisionsAndOtherFeaturesPython from './_revisions-and-other-features-pyt
 import RevisionsAndOtherFeaturesPhp from './_revisions-and-other-features-php.mdx';
 import RevisionsAndOtherFeaturesNodejs from './_revisions-and-other-features-nodejs.mdx';
 
-export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="java">
    <RevisionsAndOtherFeaturesJava />

@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Compare Exchange Values"
 sidebar_label: Indexing Compare Exchange Values
 sidebar_position: 20
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IndexingCompareExchangeValuesCsharp from './_indexing-compare-exchange-va
 import IndexingCompareExchangeValuesJava from './_indexing-compare-exchange-values-java.mdx';
 import IndexingCompareExchangeValuesNodejs from './_indexing-compare-exchange-values-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <IndexingCompareExchangeValuesCsharp />

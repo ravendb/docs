@@ -2,6 +2,7 @@
 title: "Commands: BrowseAsync"
 sidebar_label: Browse
 sidebar_position: 0
+supportedLanguages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import BrowseOverviewCsharp from './_browse-overview-csharp.mdx';
 import BrowseOverviewHttp from './_browse-overview-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <BrowseOverviewCsharp />

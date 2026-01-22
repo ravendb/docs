@@ -2,6 +2,7 @@
 title: "Storing Data in Index"
 sidebar_label: Storing Data in Index
 sidebar_position: 26
+supportedLanguages: ["java", "python", "php", "nodejs", "csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import StoringDataInIndexPhp from './_storing-data-in-index-php.mdx';
 import StoringDataInIndexNodejs from './_storing-data-in-index-nodejs.mdx';
 import StoringDataInIndexCsharp from './_storing-data-in-index-csharp.mdx';
 
-export const supportedLanguages = ["java", "python", "php", "nodejs", "csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="java">
    <StoringDataInIndexJava />

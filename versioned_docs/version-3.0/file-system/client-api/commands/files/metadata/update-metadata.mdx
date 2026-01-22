@@ -2,6 +2,7 @@
 title: "Commands: UpdateMetadataAsync"
 sidebar_label: UpdateMetadata
 sidebar_position: 1
+supportedLanguages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import UpdateMetadataCsharp from './_update-metadata-csharp.mdx';
 import UpdateMetadataHttp from './_update-metadata-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <UpdateMetadataCsharp />

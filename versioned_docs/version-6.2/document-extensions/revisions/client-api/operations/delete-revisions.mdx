@@ -2,6 +2,7 @@
 title: "Delete Revisions Operation"
 sidebar_label: Delete Revisions
 sidebar_position: 3
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import DeleteRevisionsCsharp from './_delete-revisions-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeleteRevisionsCsharp />

@@ -2,6 +2,7 @@
 title: "Using MoreLikeThis"
 sidebar_label: Using MoreLikeThis
 sidebar_position: 17
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToUseMorelikethisCsharp from './_how-to-use-morelikethis-csharp.mdx';
 import HowToUseMorelikethisJava from './_how-to-use-morelikethis-java.mdx';
 import HowToUseMorelikethisNodejs from './_how-to-use-morelikethis-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseMorelikethisCsharp />

@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Compact a Database"
 sidebar_label: Compact Database
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import CompactDatabaseCsharp from './_compact-database-csharp.mdx';
 import CompactDatabaseJava from './_compact-database-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CompactDatabaseCsharp />

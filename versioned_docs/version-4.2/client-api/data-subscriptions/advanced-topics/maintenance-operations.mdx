@@ -2,6 +2,7 @@
 title: "Data Subscriptions: Maintenance Operations"
 sidebar_label: Maintenance Operations
 sidebar_position: 1
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import MaintenanceOperationsCsharp from './_maintenance-operations-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <MaintenanceOperationsCsharp />

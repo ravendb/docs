@@ -2,6 +2,7 @@
 title: "Commands: Querying: How to work with Suggestion query?"
 sidebar_label: How to work with Suggestion query?
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToWorkWithSuggestionQueryCsharp from './_how-to-work-with-suggestion-q
 import HowToWorkWithSuggestionQueryJava from './_how-to-work-with-suggestion-query-java.mdx';
 import HowToWorkWithSuggestionQueryHttp from './_how-to-work-with-suggestion-query-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToWorkWithSuggestionQueryCsharp />

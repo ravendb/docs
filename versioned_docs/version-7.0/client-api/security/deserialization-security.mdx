@@ -2,6 +2,7 @@
 title: "Security: Deserialization"
 sidebar_label: Deserialization Security
 sidebar_position: 0
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import DeserializationSecurityCsharp from './_deserialization-security-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeserializationSecurityCsharp />

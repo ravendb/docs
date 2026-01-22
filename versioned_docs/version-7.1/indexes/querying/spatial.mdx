@@ -2,6 +2,7 @@
 title: "Query a Spatial Index"
 sidebar_label: Spatial
 sidebar_position: 11
+supportedLanguages: ["csharp", "python", "php", "nodejs", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import SpatialPhp from './_spatial-php.mdx';
 import SpatialNodejs from './_spatial-nodejs.mdx';
 import SpatialJava from './_spatial-java.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <SpatialCsharp />

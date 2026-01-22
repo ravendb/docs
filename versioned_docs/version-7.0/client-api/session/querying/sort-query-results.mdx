@@ -2,6 +2,7 @@
 title: "Sort Query Results"
 sidebar_label: Sort Query Results
 sidebar_position: 5
+supportedLanguages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import SortQueryResultsPython from './_sort-query-results-python.mdx';
 import SortQueryResultsPhp from './_sort-query-results-php.mdx';
 import SortQueryResultsNodejs from './_sort-query-results-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <SortQueryResultsCsharp />

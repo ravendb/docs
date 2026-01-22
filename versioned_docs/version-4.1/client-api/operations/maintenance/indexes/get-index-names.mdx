@@ -2,6 +2,7 @@
 title: "Operations: How to Get Index Names"
 sidebar_label: Get Index Names
 sidebar_position: 15
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetIndexNamesCsharp from './_get-index-names-csharp.mdx';
 import GetIndexNamesJava from './_get-index-names-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetIndexNamesCsharp />

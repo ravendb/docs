@@ -2,6 +2,7 @@
 title: "How to Check if a Document Exists"
 sidebar_label: ...check if document exists
 sidebar_position: 15
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CheckIfDocumentExistsCsharp from './_check-if-document-exists-csharp.mdx'
 import CheckIfDocumentExistsJava from './_check-if-document-exists-java.mdx';
 import CheckIfDocumentExistsNodejs from './_check-if-document-exists-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CheckIfDocumentExistsCsharp />

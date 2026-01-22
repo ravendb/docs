@@ -2,6 +2,7 @@
 title: "Enable Data Archiving"
 sidebar_label: Enable Data Archiving
 sidebar_position: 1
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import EnableDataArchivingCsharp from './_enable-data-archiving-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <EnableDataArchivingCsharp />

@@ -2,6 +2,7 @@
 title: "Commands: How to create or delete database?"
 sidebar_label: ...create or delete database
 sidebar_position: 5
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CreateDeleteDatabaseCsharp from './_create-delete-database-csharp.mdx';
 import CreateDeleteDatabaseJava from './_create-delete-database-java.mdx';
 import CreateDeleteDatabaseHttp from './_create-delete-database-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CreateDeleteDatabaseCsharp />

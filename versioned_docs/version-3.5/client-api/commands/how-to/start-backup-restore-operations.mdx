@@ -2,6 +2,7 @@
 title: "Commands: How to start backup or restore operations?"
 sidebar_label: ...start backup or restore operations
 sidebar_position: 9
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import StartBackupRestoreOperationsCsharp from './_start-backup-restore-operatio
 import StartBackupRestoreOperationsJava from './_start-backup-restore-operations-java.mdx';
 import StartBackupRestoreOperationsHttp from './_start-backup-restore-operations-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StartBackupRestoreOperationsCsharp />

@@ -2,6 +2,7 @@
 title: "Querying: Projections"
 sidebar_label: Projections
 sidebar_position: 5
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ProjectionsCsharp from './_projections-csharp.mdx';
 import ProjectionsJava from './_projections-java.mdx';
 import ProjectionsNodejs from './_projections-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ProjectionsCsharp />

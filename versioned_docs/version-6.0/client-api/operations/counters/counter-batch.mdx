@@ -2,6 +2,7 @@
 title: "Counters Batch Operation"
 sidebar_label: Counters Batch
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import CounterBatchJava from './_counter-batch-java.mdx';
 import CounterBatchPhp from './_counter-batch-php.mdx';
 import CounterBatchNodejs from './_counter-batch-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CounterBatchCsharp />

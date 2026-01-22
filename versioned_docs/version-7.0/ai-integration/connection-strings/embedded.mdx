@@ -2,6 +2,7 @@
 title: "Connection String to bge-micro-v2 (Embedded)"
 sidebar_label: bge-micro-v2 (Embedded)
 sidebar_position: 7
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import EmbeddedCsharp from './_embedded-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <EmbeddedCsharp />

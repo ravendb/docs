@@ -2,6 +2,7 @@
 title: "Session: Querying: How to customize query?"
 sidebar_label: Customize Query
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToCustomizeQueryCsharp from './_how-to-customize-query-csharp.mdx';
 import HowToCustomizeQueryJava from './_how-to-customize-query-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToCustomizeQueryCsharp />

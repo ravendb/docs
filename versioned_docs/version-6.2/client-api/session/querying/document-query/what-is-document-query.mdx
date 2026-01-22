@@ -2,6 +2,7 @@
 title: "What is a Document Query?"
 sidebar_label: What is a Document Query
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import WhatIsDocumentQueryPython from './_what-is-document-query-python.mdx';
 import WhatIsDocumentQueryPhp from './_what-is-document-query-php.mdx';
 import WhatIsDocumentQueryNodejs from './_what-is-document-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatIsDocumentQueryCsharp />

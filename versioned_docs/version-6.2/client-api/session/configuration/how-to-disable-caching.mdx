@@ -2,6 +2,7 @@
 title: "Disable Caching per Session"
 sidebar_label: Disable Caching
 sidebar_position: 6
+supportedLanguages: ["csharp", "java", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import HowToDisableCachingJava from './_how-to-disable-caching-java.mdx';
 import HowToDisableCachingPhp from './_how-to-disable-caching-php.mdx';
 import HowToDisableCachingNodejs from './_how-to-disable-caching-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToDisableCachingCsharp />

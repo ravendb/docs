@@ -2,6 +2,7 @@
 title: "Guides: Add RavenDB to an Existing Azure Functions Project (.NET C#)"
 sidebar_label: Add to Existing Project
 sidebar_position: 1
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ExistingProjectCsharp from './_existing-project-csharp.mdx';
 import ExistingProjectNodejs from './_existing-project-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ExistingProjectCsharp />

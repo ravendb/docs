@@ -2,6 +2,7 @@
 title: "What is a document store?"
 sidebar_label: What is a Document Store
 sidebar_position: 0
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import WhatIsADocumentStoreCsharp from './_what-is-a-document-store-csharp.mdx';
 import WhatIsADocumentStoreJava from './_what-is-a-document-store-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatIsADocumentStoreCsharp />

@@ -2,6 +2,7 @@
 title: "Counters and Other Features"
 sidebar_label: Counters and Other Features
 sidebar_position: 6
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import CountersAndOtherFeaturesPython from './_counters-and-other-features-pytho
 import CountersAndOtherFeaturesPhp from './_counters-and-other-features-php.mdx';
 import CountersAndOtherFeaturesNodejs from './_counters-and-other-features-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CountersAndOtherFeaturesCsharp />

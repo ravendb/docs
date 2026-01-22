@@ -2,6 +2,7 @@
 title: "Session: How to Customize Collection Assignment for Entities"
 sidebar_label: How to Customize Collection Assignment for Entities
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import HowToCustomizeCollectionAssignmentForEntitiesPython from './_how-to-custo
 import HowToCustomizeCollectionAssignmentForEntitiesPhp from './_how-to-customize-collection-assignment-for-entities-php.mdx';
 import HowToCustomizeCollectionAssignmentForEntitiesNodejs from './_how-to-customize-collection-assignment-for-entities-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToCustomizeCollectionAssignmentForEntitiesCsharp />

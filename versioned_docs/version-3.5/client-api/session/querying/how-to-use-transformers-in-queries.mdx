@@ -2,6 +2,7 @@
 title: "Session: Querying: How to use transformers in queries?"
 sidebar_label: How to use transformers in queries?
 sidebar_position: 4
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToUseTransformersInQueriesCsharp from './_how-to-use-transformers-in-queries-csharp.mdx';
 import HowToUseTransformersInQueriesJava from './_how-to-use-transformers-in-queries-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseTransformersInQueriesCsharp />

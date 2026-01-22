@@ -2,6 +2,7 @@
 title: "What are Attachments"
 sidebar_label: What are Attachments
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatAreAttachmentsCsharp from './_what-are-attachments-csharp.mdx';
 import WhatAreAttachmentsJava from './_what-are-attachments-java.mdx';
 import WhatAreAttachmentsNodejs from './_what-are-attachments-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatAreAttachmentsCsharp />

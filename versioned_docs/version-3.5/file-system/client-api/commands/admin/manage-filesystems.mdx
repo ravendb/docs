@@ -2,6 +2,7 @@
 title: "Manage file systems"
 sidebar_label: Manage file systems
 sidebar_position: 0
+supportedLanguages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ManageFilesystemsCsharp from './_manage-filesystems-csharp.mdx';
 import ManageFilesystemsHttp from './_manage-filesystems-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ManageFilesystemsCsharp />

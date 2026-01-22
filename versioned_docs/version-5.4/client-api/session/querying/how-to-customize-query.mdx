@@ -2,6 +2,7 @@
 title: "Customize Query"
 sidebar_label: Customize Query
 sidebar_position: 4
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import HowToCustomizeQueryPython from './_how-to-customize-query-python.mdx';
 import HowToCustomizeQueryPhp from './_how-to-customize-query-php.mdx';
 import HowToCustomizeQueryNodejs from './_how-to-customize-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToCustomizeQueryCsharp />

@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Counters"
 sidebar_label: Indexing Counters
 sidebar_position: 17
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import IndexingCountersCsharp from './_indexing-counters-csharp.mdx';
 import IndexingCountersJava from './_indexing-counters-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <IndexingCountersCsharp />

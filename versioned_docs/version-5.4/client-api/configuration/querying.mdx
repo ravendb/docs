@@ -2,6 +2,7 @@
 title: "Conventions: Querying"
 sidebar_label: Querying
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import QueryingCsharp from './_querying-csharp.mdx';
 import QueryingJava from './_querying-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <QueryingCsharp />

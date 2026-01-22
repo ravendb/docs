@@ -2,6 +2,7 @@
 title: "Commands: Querying: How to stream query results?"
 sidebar_label: How to stream query results?
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToStreamQueryResultsCsharp from './_how-to-stream-query-results-csharp
 import HowToStreamQueryResultsJava from './_how-to-stream-query-results-java.mdx';
 import HowToStreamQueryResultsHttp from './_how-to-stream-query-results-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToStreamQueryResultsCsharp />

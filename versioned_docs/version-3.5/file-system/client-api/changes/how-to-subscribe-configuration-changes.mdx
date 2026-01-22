@@ -2,6 +2,7 @@
 title: "How to subscribe to configuration item changes?"
 sidebar_label: How to subscribe to configuration changes?
 sidebar_position: 3
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import HowToSubscribeConfigurationChangesCsharp from './_how-to-subscribe-configuration-changes-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToSubscribeConfigurationChangesCsharp />

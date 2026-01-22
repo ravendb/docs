@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Basics"
 sidebar_label: Indexing Basics
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IndexingBasicsCsharp from './_indexing-basics-csharp.mdx';
 import IndexingBasicsJava from './_indexing-basics-java.mdx';
 import IndexingBasicsNodejs from './_indexing-basics-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <IndexingBasicsCsharp />

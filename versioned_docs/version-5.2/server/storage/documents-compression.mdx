@@ -2,6 +2,7 @@
 title: "Documents Compression"
 sidebar_label: Documents Compression
 sidebar_position: 3
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DocumentsCompressionCsharp from './_documents-compression-csharp.mdx';
 import DocumentsCompressionNodejs from './_documents-compression-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DocumentsCompressionCsharp />

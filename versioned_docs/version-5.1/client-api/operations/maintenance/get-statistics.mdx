@@ -2,6 +2,7 @@
 title: "Operations: How to Get Database Statistics"
 sidebar_label: Get Statistics
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetStatisticsCsharp from './_get-statistics-csharp.mdx';
 import GetStatisticsJava from './_get-statistics-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetStatisticsCsharp />

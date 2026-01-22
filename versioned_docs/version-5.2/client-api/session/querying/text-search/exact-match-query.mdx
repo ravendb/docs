@@ -2,6 +2,7 @@
 title: "Exact Match Query"
 sidebar_label: Exact Match Query
 sidebar_position: 2
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ExactMatchQueryCsharp from './_exact-match-query-csharp.mdx';
 import ExactMatchQueryJava from './_exact-match-query-java.mdx';
 import ExactMatchQueryNodejs from './_exact-match-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ExactMatchQueryCsharp />

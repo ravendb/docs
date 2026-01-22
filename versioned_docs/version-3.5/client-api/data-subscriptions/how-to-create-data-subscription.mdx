@@ -2,6 +2,7 @@
 title: "No title"
 sidebar_label: How to create a data subscription?
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToCreateDataSubscriptionCsharp from './_how-to-create-data-subscription-csharp.mdx';
 import HowToCreateDataSubscriptionJava from './_how-to-create-data-subscription-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToCreateDataSubscriptionCsharp />

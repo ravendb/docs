@@ -2,6 +2,7 @@
 title: "How to enable optimistic concurrency?"
 sidebar_label: How to enable optimistic concurrency?
 sidebar_position: 1
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import HowToEnableOptimisticConcurrencyCsharp from './_how-to-enable-optimistic-concurrency-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToEnableOptimisticConcurrencyCsharp />

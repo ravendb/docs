@@ -2,6 +2,7 @@
 title: "Count Revisions"
 sidebar_label: Count Revisions
 sidebar_position: 2
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import CountingCsharp from './_counting-csharp.mdx';
 import CountingNodejs from './_counting-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <CountingCsharp />

@@ -2,6 +2,7 @@
 title: "Getting file systems stats"
 sidebar_label: Statistics
 sidebar_position: 4
+supportedLanguages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import StatsCsharp from './_stats-csharp.mdx';
 import StatsHttp from './_stats-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StatsCsharp />

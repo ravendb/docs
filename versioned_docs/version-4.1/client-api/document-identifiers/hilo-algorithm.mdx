@@ -2,6 +2,7 @@
 title: "HiLo Algorithm"
 sidebar_label: HiLo algorithm
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HiloAlgorithmCsharp from './_hilo-algorithm-csharp.mdx';
 import HiloAlgorithmJava from './_hilo-algorithm-java.mdx';
 import HiloAlgorithmNodejs from './_hilo-algorithm-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HiloAlgorithmCsharp />

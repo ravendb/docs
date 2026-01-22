@@ -2,6 +2,7 @@
 title: "Query for Suggestions"
 sidebar_label: Query for Suggestions
 sidebar_position: 16
+supportedLanguages: ["java", "csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import HowToWorkWithSuggestionsPython from './_how-to-work-with-suggestions-pyth
 import HowToWorkWithSuggestionsPhp from './_how-to-work-with-suggestions-php.mdx';
 import HowToWorkWithSuggestionsNodejs from './_how-to-work-with-suggestions-nodejs.mdx';
 
-export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="java">
    <HowToWorkWithSuggestionsJava />

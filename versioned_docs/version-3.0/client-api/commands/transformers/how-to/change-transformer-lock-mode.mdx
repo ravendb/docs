@@ -2,6 +2,7 @@
 title: "Commands: Transformers: How to change transformer lock mode?"
 sidebar_label: ...change transformer lock mode
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ChangeTransformerLockModeCsharp from './_change-transformer-lock-mode-csh
 import ChangeTransformerLockModeJava from './_change-transformer-lock-mode-java.mdx';
 import ChangeTransformerLockModeHttp from './_change-transformer-lock-mode-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ChangeTransformerLockModeCsharp />

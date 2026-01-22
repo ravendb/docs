@@ -2,6 +2,7 @@
 title: "Session: Querying: How to perform queries lazily?"
 sidebar_label: Perform a Lazy Query
 sidebar_position: 15
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToPerformQueriesLazilyCsharp from './_how-to-perform-queries-lazily-csharp.mdx';
 import HowToPerformQueriesLazilyJava from './_how-to-perform-queries-lazily-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToPerformQueriesLazilyCsharp />

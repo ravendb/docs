@@ -2,6 +2,7 @@
 title: "Connection String to Azure OpenAI"
 sidebar_label: "Azure OpenAI"
 sidebar_position: 1
+supportedLanguages: ["csharp", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,7 +14,7 @@ import AzureOpenAiPython from './content/_azure-open-ai-python.mdx';
 
 export const supportedLanguages = ["csharp", "nodejs", "python"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <AzureOpenAiCsharp />

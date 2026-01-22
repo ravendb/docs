@@ -2,6 +2,7 @@
 title: "Session: How to Defer Operations"
 sidebar_label: ...defer commands
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import DeferOperationsCsharp from './_defer-operations-csharp.mdx';
 import DeferOperationsJava from './_defer-operations-java.mdx';
 import DeferOperationsNodejs from './_defer-operations-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <DeferOperationsCsharp />

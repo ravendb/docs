@@ -2,6 +2,7 @@
 title: "Commands: Documents: Stream"
 sidebar_label: Stream
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import StreamCsharp from './_stream-csharp.mdx';
 import StreamJava from './_stream-java.mdx';
 import StreamHttp from './_stream-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StreamCsharp />

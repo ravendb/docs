@@ -2,6 +2,7 @@
 title: "Get Client Configuration Operation  (for database)"
 sidebar_label: Get Client Configuration
 sidebar_position: 2
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetClientConfigurationPython from './_get-client-configuration-python.mdx
 import GetClientConfigurationPhp from './_get-client-configuration-php.mdx';
 import GetClientConfigurationNodejs from './_get-client-configuration-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetClientConfigurationCsharp />

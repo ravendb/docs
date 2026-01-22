@@ -2,6 +2,7 @@
 title: "Get Attachments"
 sidebar_label: "Get Attachments"
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetAttachmentsPython from './content/_get-attachments-python.mdx';
 import GetAttachmentsPhp from './content/_get-attachments-php.mdx';
 import GetAttachmentsNodejs from './content/_get-attachments-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetAttachmentsCsharp />

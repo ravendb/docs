@@ -2,6 +2,7 @@
 title: "Commands: Documents: Put"
 sidebar_label: Put Document
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import PutCsharp from './_put-csharp.mdx';
 import PutJava from './_put-java.mdx';
 import PutHttp from './_put-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <PutCsharp />

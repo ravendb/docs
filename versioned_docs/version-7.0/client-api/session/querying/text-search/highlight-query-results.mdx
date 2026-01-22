@@ -2,6 +2,7 @@
 title: "Highlight Search Results"
 sidebar_label: Highlight Search Results
 sidebar_position: 5
+supportedLanguages: ["java", "csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import HighlightQueryResultsPython from './_highlight-query-results-python.mdx';
 import HighlightQueryResultsPhp from './_highlight-query-results-php.mdx';
 import HighlightQueryResultsNodejs from './_highlight-query-results-nodejs.mdx';
 
-export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="java">
    <HighlightQueryResultsJava />

@@ -2,6 +2,7 @@
 title: "Session: How to Get the Current Session Node"
 sidebar_label: ...get current session node
 sidebar_position: 11
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetCurrentSessionNodeCsharp from './_get-current-session-node-csharp.mdx'
 import GetCurrentSessionNodeJava from './_get-current-session-node-java.mdx';
 import GetCurrentSessionNodeNodejs from './_get-current-session-node-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetCurrentSessionNodeCsharp />

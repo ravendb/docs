@@ -2,6 +2,7 @@
 title: "Querying: Faceted (Aggregation) Search"
 sidebar_label: Faceted Search
 sidebar_position: 12
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import FacetedSearchCsharp from './_faceted-search-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <FacetedSearchCsharp />

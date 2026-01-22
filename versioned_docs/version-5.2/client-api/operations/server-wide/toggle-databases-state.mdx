@@ -2,6 +2,7 @@
 title: "Toggle Databases State Operation  (Enable / Disable)"
 sidebar_label: Toggle Databases State
 sidebar_position: 9
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ToggleDatabasesStateCsharp from './_toggle-databases-state-csharp.mdx';
 import ToggleDatabasesStateNodejs from './_toggle-databases-state-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ToggleDatabasesStateCsharp />

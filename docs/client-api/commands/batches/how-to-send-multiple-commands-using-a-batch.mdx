@@ -2,6 +2,7 @@
 title: "Send Multiple Commands in a Batch"
 sidebar_label: Send Multiple Commands
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToSendMultipleCommandsUsingABatchCsharp from './_how-to-send-multiple-
 import HowToSendMultipleCommandsUsingABatchJava from './_how-to-send-multiple-commands-using-a-batch-java.mdx';
 import HowToSendMultipleCommandsUsingABatchNodejs from './_how-to-send-multiple-commands-using-a-batch-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToSendMultipleCommandsUsingABatchCsharp />

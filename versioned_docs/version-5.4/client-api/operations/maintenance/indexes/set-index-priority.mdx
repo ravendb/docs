@@ -2,6 +2,7 @@
 title: "Set Index Priority Operation"
 sidebar_label: Set Index Priority
 sidebar_position: 2
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import SetIndexPriorityPython from './_set-index-priority-python.mdx';
 import SetIndexPriorityPhp from './_set-index-priority-php.mdx';
 import SetIndexPriorityNodejs from './_set-index-priority-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <SetIndexPriorityCsharp />

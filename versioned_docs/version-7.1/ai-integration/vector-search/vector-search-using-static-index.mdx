@@ -2,6 +2,7 @@
 title: "Vector Search using a Static Index"
 sidebar_label: Vector Search using a Static Index
 sidebar_position: 3
+supportedLanguages: ["csharp", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,7 @@ import VectorSearchUsingStaticIndexCsharp from './content/_vector-search-using-s
 import VectorSearchUsingStaticIndexNodejs from './content/_vector-search-using-static-index-nodejs.mdx';
 import VectorSearchUsingStaticIndexPython from './content/_vector-search-using-static-index-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs", "python"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <VectorSearchUsingStaticIndexCsharp />

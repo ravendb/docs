@@ -2,6 +2,7 @@
 title: "Get Counters Operation"
 sidebar_label: Get Counters
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import GetCountersJava from './_get-counters-java.mdx';
 import GetCountersPhp from './_get-counters-php.mdx';
 import GetCountersNodejs from './_get-counters-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetCountersCsharp />

@@ -2,6 +2,7 @@
 title: "Connection String to Mistral AI"
 sidebar_label: "Mistral AI"
 sidebar_position: 5
+supportedLanguages: ["csharp", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,7 @@ import MistralAiCsharp from './content/_mistral-ai-csharp.mdx';
 import MistralAiNodejs from './content/_mistral-ai-nodejs.mdx';
 import MistralAiPython from './content/_mistral-ai-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs", "python"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <MistralAiCsharp />

@@ -2,6 +2,7 @@
 title: "Commands: Patches: How to use JavaScript to patch your documents?"
 sidebar_label: How to use JavaScript to patch your documents
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToUseJavascriptToPatchYourDocumentsCsharp from './_how-to-use-javascri
 import HowToUseJavascriptToPatchYourDocumentsJava from './_how-to-use-javascript-to-patch-your-documents-java.mdx';
 import HowToUseJavascriptToPatchYourDocumentsHttp from './_how-to-use-javascript-to-patch-your-documents-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseJavascriptToPatchYourDocumentsCsharp />

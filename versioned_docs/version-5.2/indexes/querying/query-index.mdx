@@ -2,6 +2,7 @@
 title: "Querying an Index"
 sidebar_label: Querying an Index
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import QueryIndexCsharp from './_query-index-csharp.mdx';
 import QueryIndexJava from './_query-index-java.mdx';
 import QueryIndexNodejs from './_query-index-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <QueryIndexCsharp />

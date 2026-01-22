@@ -2,6 +2,7 @@
 title: "Load balance behavior"
 sidebar_label: Load balance behavior
 sidebar_position: 2
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import LoadBalanceBehaviorCsharp from './_load-balance-behavior-csharp.mdx';
 import LoadBalanceBehaviorNodejs from './_load-balance-behavior-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <LoadBalanceBehaviorCsharp />

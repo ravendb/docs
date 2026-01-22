@@ -2,6 +2,7 @@
 title: "Archived Documents and Other Features"
 sidebar_label: Archived Documents and Other Features
 sidebar_position: 3
+supportedLanguages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ArchivedDocumentsAndOtherFeaturesCsharp from './_archived-documents-and-other-features-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <ArchivedDocumentsAndOtherFeaturesCsharp />

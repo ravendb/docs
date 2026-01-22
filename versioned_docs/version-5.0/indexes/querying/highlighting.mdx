@@ -2,6 +2,7 @@
 title: "Querying: Highlighting"
 sidebar_label: Highlighting
 sidebar_position: 14
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HighlightingCsharp from './_highlighting-csharp.mdx';
 import HighlightingJava from './_highlighting-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HighlightingCsharp />

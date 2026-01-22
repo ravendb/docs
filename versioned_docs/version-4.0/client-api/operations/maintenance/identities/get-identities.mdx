@@ -2,6 +2,7 @@
 title: "Operations: How to Get Identities"
 sidebar_label: Get Identities
 sidebar_position: 0
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetIdentitiesCsharp from './_get-identities-csharp.mdx';
 import GetIdentitiesJava from './_get-identities-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetIdentitiesCsharp />

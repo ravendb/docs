@@ -2,6 +2,7 @@
 title: "Fuzzy Search"
 sidebar_label: Fuzzy Search
 sidebar_position: 7
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import FuzzySearchCsharp from './_fuzzy-search-csharp.mdx';
 import FuzzySearchJava from './_fuzzy-search-java.mdx';
 import FuzzySearchNodejs from './_fuzzy-search-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <FuzzySearchCsharp />

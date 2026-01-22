@@ -2,6 +2,7 @@
 title: "Include Query Timings"
 sidebar_label: Include Query Timings
 sidebar_position: 1
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import QueryTimingsPython from './_query-timings-python.mdx';
 import QueryTimingsPhp from './_query-timings-php.mdx';
 import QueryTimingsNodejs from './_query-timings-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <QueryTimingsCsharp />

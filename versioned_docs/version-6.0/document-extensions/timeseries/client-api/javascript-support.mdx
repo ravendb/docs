@@ -2,6 +2,7 @@
 title: "Time Series: JavaScript Support"
 sidebar_label: JavaScript Support
 sidebar_position: 4
+supportedLanguages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import JavascriptSupportCsharp from './_javascript-support-csharp.mdx';
 import JavascriptSupportNodejs from './_javascript-support-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <JavascriptSupportCsharp />

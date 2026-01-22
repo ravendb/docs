@@ -2,6 +2,7 @@
 title: "Session: How to Subscribe to Events"
 sidebar_label: ...subscribe to events
 sidebar_position: 5
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import SubscribeToEventsCsharp from './_subscribe-to-events-csharp.mdx';
 import SubscribeToEventsJava from './_subscribe-to-events-java.mdx';
 import SubscribeToEventsNodejs from './_subscribe-to-events-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <SubscribeToEventsCsharp />

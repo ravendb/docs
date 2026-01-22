@@ -2,6 +2,7 @@
 title: "Put Client Certificate Operation"
 sidebar_label: Put Client Certificate
 sidebar_position: 4
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import PutClientCertificateCsharp from './_put-client-certificate-csharp.mdx';
 import PutClientCertificateJava from './_put-client-certificate-java.mdx';
 import PutClientCertificateNodejs from './_put-client-certificate-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <PutClientCertificateCsharp />

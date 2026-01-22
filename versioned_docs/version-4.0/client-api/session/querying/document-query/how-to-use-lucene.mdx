@@ -2,6 +2,7 @@
 title: "Session: Querying: How to use Lucene"
 sidebar_label: How to Use Lucene
 sidebar_position: 3
+supportedLanguages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToUseLuceneCsharp from './_how-to-use-lucene-csharp.mdx';
 import HowToUseLuceneJava from './_how-to-use-lucene-java.mdx';
 import HowToUseLuceneNodejs from './_how-to-use-lucene-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <HowToUseLuceneCsharp />

@@ -2,6 +2,7 @@
 title: "What is a Session and How Does it Work"
 sidebar_label: What is a Session and How Does it Work
 sidebar_position: 0
+supportedLanguages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import WhatIsASessionAndHowDoesItWorkPython from './_what-is-a-session-and-how-d
 import WhatIsASessionAndHowDoesItWorkPhp from './_what-is-a-session-and-how-does-it-work-php.mdx';
 import WhatIsASessionAndHowDoesItWorkNodejs from './_what-is-a-session-and-how-does-it-work-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <WhatIsASessionAndHowDoesItWorkCsharp />

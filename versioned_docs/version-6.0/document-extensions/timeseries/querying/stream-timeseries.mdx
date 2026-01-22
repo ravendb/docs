@@ -2,6 +2,7 @@
 title: "Stream Time Series Data"
 sidebar_label: Streaming Time Series
 sidebar_position: 7
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import StreamTimeseriesCsharp from './_stream-timeseries-csharp.mdx';
 import StreamTimeseriesJava from './_stream-timeseries-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <StreamTimeseriesCsharp />

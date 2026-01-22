@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Get a Certificate"
 sidebar_label: Get Certificate
 sidebar_position: 1
+supportedLanguages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetCertificateCsharp from './_get-certificate-csharp.mdx';
 import GetCertificateJava from './_get-certificate-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetCertificateCsharp />

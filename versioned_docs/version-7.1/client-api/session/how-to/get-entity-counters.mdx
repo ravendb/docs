@@ -2,6 +2,7 @@
 title: "How to Get Entity Counters"
 sidebar_label: ...get entity counters
 sidebar_position: 10
+supportedLanguages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import GetEntityCountersPython from './_get-entity-counters-python.mdx';
 import GetEntityCountersPhp from './_get-entity-counters-php.mdx';
 import GetEntityCountersNodejs from './_get-entity-counters-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
 
 <LanguageContent language="csharp">
    <GetEntityCountersCsharp />
