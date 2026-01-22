@@ -5,8 +5,22 @@ import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import TagsListInline from "@theme/TagsListInline";
 import EditMetaRow from "@theme/EditMetaRow";
 import { HIDDEN_EDIT_PAGE_ROUTES } from "@site/src/typescript/hiddenEditPageRoutes";
+import {useLanguage} from "@site/src/components/LanguageStore";
+
+const getEditUrlWithLanguage = (url: string, language: string, supportedLanguages: string[]) : string => {
+    if (!supportedLanguages || supportedLanguages.length === 0) {
+        return url;
+    }
+
+    const lastSlashIndex = url.lastIndexOf('/');
+    const path = url.substring(0, lastSlashIndex + 1);
+    const filename = url.substring(lastSlashIndex + 1).replace('.mdx', '');
+
+    return `${path}_${filename}-${language}.mdx`;
+}
 
 export default function DocItemFooter(): ReactNode {
+    const { language } = useLanguage();
     const { metadata } = useDoc();
     const { editUrl, lastUpdatedAt, lastUpdatedBy, tags, permalink } = metadata;
 
@@ -38,7 +52,7 @@ export default function DocItemFooter(): ReactNode {
             {canDisplayEditMetaRow && (
                 <EditMetaRow
                     className={clsx(ThemeClassNames.docs.docFooterEditMetaRow)}
-                    editUrl={editUrl}
+                    editUrl={getEditUrlWithLanguage(editUrl, language, metadata.frontMatter.supportedLanguages)}
                     lastUpdatedAt={lastUpdatedAt}
                     lastUpdatedBy={lastUpdatedBy}
                 />
