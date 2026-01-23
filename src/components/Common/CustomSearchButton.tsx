@@ -46,7 +46,7 @@ export default function CustomSearchButton({
       type="button"
       ref={buttonRef}
       className={clsx(
-        "flex items-center gap-2 text-sm !transition-all cursor-pointer",
+        "flex items-center gap-2 text-sm cursor-pointer",
         "bg-ifm-background border border-black/10 p-2.5 md:py-1.5 md:pr-1.5 md:pl-3",
         "dark:border-white/10 text-ifm-menu justify-between rounded-[32px] hover:bg-black/5 dark:hover:bg-white/5",
       )}

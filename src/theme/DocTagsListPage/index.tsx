@@ -11,10 +11,10 @@ import SearchMetadata from "@theme/SearchMetadata";
 import type { Props } from "@theme/DocTagsListPage";
 import Heading from "@theme/Heading";
 import { Icon } from "@site/src/components/Common/Icon";
-import Link from "@docusaurus/Link";
 import DocSidebar from "@theme/DocSidebar";
 import SidebarStyles from "@docusaurus/theme-classic/lib/theme/DocRoot/Layout/Sidebar/styles.module.css";
 import DocRootStyles from "@docusaurus/theme-classic/lib/theme/DocRoot/Layout/styles.module.css";
+import CustomBreadcrumbs from "@site/src/components/Common/CustomBreadcrumbs";
 
 function DocTagsListPageMetadata({
     title,
@@ -59,21 +59,17 @@ function DocTagsListPageContent({
                         isHidden={false}
                     />
                 </aside>
-                <main className="container margin-vert--lg">
+                <main className="container padding-top--md">
                     <div className="row">
                         <main className="col">
+                            <CustomBreadcrumbs
+                                items={[
+                                    { label: "Guides", href: "/guides" },
+                                    { label: "Tags" },
+                                ]}
+                            />
                             <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
                                 <div className="flex items-center gap-4">
-                                    <Link
-                                        to={"/guides"}
-                                        className="!text-inherit hover:opacity-75 !transition-all"
-                                        title="Back to guides"
-                                    >
-                                        <Icon
-                                            icon="arrow-thin-left"
-                                            className="w-6 h-6"
-                                        />
-                                    </Link>
                                     <Heading as="h1" className="!mb-0">
                                         {title}
                                     </Heading>
@@ -115,7 +111,23 @@ function DocTagsListPageContent({
                                     )}
                                 </div>
                             </header>
-                            <TagsListByLetter tags={filteredTags} />
+                            {filteredTags.length > 0 ? (
+                                <TagsListByLetter tags={filteredTags} />
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-16 text-center">
+                                    <Icon
+                                        icon="search"
+                                        size="lg"
+                                        className="opacity-20 mb-4"
+                                    />
+                                    <p className="text-lg font-medium text-gray-600 dark:text-gray-400 !mb-1">
+                                        No tags found
+                                    </p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-500">
+                                        Try adjusting your search filter
+                                    </p>
+                                </div>
+                            )}
                         </main>
                     </div>
                 </main>
@@ -125,7 +137,7 @@ function DocTagsListPageContent({
 }
 
 export default function DocTagsListPage(props: Props): ReactNode {
-    const title = translateTagsPageTitle();
+    const title = "Browse by topic";
     return (
         <>
             <DocTagsListPageMetadata {...props} title={title} />

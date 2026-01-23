@@ -1,6 +1,5 @@
 import React, { type ReactNode, useState, useMemo } from "react";
 import clsx from "clsx";
-import Link from "@docusaurus/Link";
 import {
     PageMetadata,
     HtmlClassNameProvider,
@@ -8,7 +7,6 @@ import {
 } from "@docusaurus/theme-common";
 import SearchMetadata from "@theme/SearchMetadata";
 import Heading from "@theme/Heading";
-import { Icon } from "@site/src/components/Common/Icon";
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 import GuideListItem from "@site/src/components/Common/GuideListItem";
 import LayoutSwitcher, {
@@ -20,6 +18,7 @@ import DocSidebar from "@theme/DocSidebar";
 import SidebarStyles from "@docusaurus/theme-classic/lib/theme/DocRoot/Layout/Sidebar/styles.module.css";
 import DocRootStyles from "@docusaurus/theme-classic/lib/theme/DocRoot/Layout/styles.module.css";
 import Layout from "@theme/Layout";
+import CustomBreadcrumbs from "@site/src/components/Common/CustomBreadcrumbs";
 
 function AllGuidesPageMetadata(): ReactNode {
     return (
@@ -67,22 +66,18 @@ function AllGuidesPageContent(): ReactNode {
                         isHidden={false}
                     />
                 </aside>
-                <main className="container margin-vert--lg">
+                <main className="container padding-top--md">
                     <div className="row">
                         <main className="col">
+                            <CustomBreadcrumbs
+                                items={[
+                                    { label: "Guides", href: "/guides" },
+                                    { label: "All Guides" },
+                                ]}
+                            />
                             <div className="flex flex-col gap-8">
                                 <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div className="flex items-center gap-4">
-                                        <Link
-                                            to="/guides"
-                                            className="!text-inherit hover:opacity-75 !transition-all"
-                                            title="Back to guides"
-                                        >
-                                            <Icon
-                                                icon="arrow-thin-left"
-                                                className="w-6 h-6"
-                                            />
-                                        </Link>
                                         <Heading as="h1" className="!mb-0">
                                             All Guides
                                         </Heading>

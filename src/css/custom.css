@@ -270,6 +270,64 @@ pre[class*="language-"] {
   @apply flex items-center;
 }
 
+/* Custom breadcrumbs styling */
+.breadcrumbsContainer {
+    --ifm-breadcrumb-size-multiplier: 0.8;
+    margin-bottom: 0.8rem;
+}
+
+.breadcrumbs {
+  @apply flex items-center gap-1 text-sm mb-4;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs__item {
+  @apply flex items-center gap-1;
+}
+
+.breadcrumbs__item:first-child .breadcrumbs__link::before {
+  content: '';
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -3px;
+  margin-right: 6px;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L4 12.414V21a1 1 0 001 1h4a1 1 0 001-1v-5h4v5a1 1 0 001 1h4a1 1 0 001-1v-8.586l.293.293a1 1 0 001.414-1.414l-9-9z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L4 12.414V21a1 1 0 001 1h4a1 1 0 001-1v-5h4v5a1 1 0 001 1h4a1 1 0 001-1v-8.586l.293.293a1 1 0 001.414-1.414l-9-9z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.breadcrumbs__item--active {
+    @apply pointer-events-none;
+}
+
+.breadcrumbs__item:not(:last-child)::after {
+  content: '';
+  @apply text-gray-400 dark:text-gray-600 mx-1;
+}
+
+.breadcrumbs__link {
+  @apply text-gray-600 dark:text-gray-400 no-underline transition-colors leading-[1];
+  display: inline-flex;
+  align-items: center;
+}
+
+a.breadcrumbs__link:hover {
+  @apply text-primary dark:text-primary-light;
+}
+
+.breadcrumbs__link--active {
+  @apply text-gray-900 dark:text-gray-100 font-medium pointer-events-none;
+}
+
 .hash-link:before {
   @apply inline-flex h-[1.5rem] w-[1.5rem] bg-black/10 dark:!bg-white/10 rounded-sm bg-center bg-size-[0.875rem] bg-no-repeat transition-all duration-300;
   content: "" !important;
@@ -498,4 +556,11 @@ hr {
 /* Reset default Docusaurus transition for a */
 a {
     transition: none;
+}
+
+/* Disable navigation for Guides */
+.plugin-id-guides {
+    .pagination-nav {
+        display: none;
+    }
 }
