@@ -65,18 +65,15 @@ or their behavior is inconsistent with their behavior in previous versions.
 </CodeBlock>
 </TabItem>
 
-
-
 ## Breaking changes in a sharded database
 
 #### Unsupported features:  
-
 RavenDB 6.0 introduces [sharding](../../sharding/overview.mdx).  
 Features that are currently unavailable under a sharded database (but remain available in regular databases)
 are listed in the sharding [unsupported features](../../sharding/unsupported.mdx) page.  
 Attempting to use these features when the database is sharded will normally throw a `NotSupportedInShardingException` exception.  
-#### Casting smuggler results:  
 
+#### Casting smuggler results:  
 The result sets returned by Smuggler and features that use it (import, export, Backup 
 and Restore) are sharding-specific and should not be cast to a non-sharded type.  
 
@@ -107,8 +104,8 @@ For the code to succeed, replace the last line with:
 * For Smuggler, Import, and Export: `ShardedSmugglerResult`  
 
 </Admonition>
-#### Endpoints:
 
+#### Endpoints:
 * `GET /databases/*/revisions/bin`  
   Pass `start` instead of `etag`.  
   We now fetch from the last entry backward rather than from a specific etag.  
@@ -135,10 +132,7 @@ For the code to succeed, replace the last line with:
 * `GET database/*/debug/documents/get-revisions`  
   Operation parameter changed from `etag` to `start`.  
 
-
-
 ## Additional breaking changes
-
 * [Failed to project when having a backing private field](https://issues.hibernatingrhinos.com/issue/RavenDB-18657)  
 * [Unexpected results on projection query on a static index with a dictionary](https://issues.hibernatingrhinos.com/issue/RavenDB-19560)  
 * [Check that query relays on PropertyNameConverter to get property name](https://issues.hibernatingrhinos.com/issue/RavenDB-19209)  
@@ -154,6 +148,3 @@ For the code to succeed, replace the last line with:
 * [Index deletion is prevented when index lock mode is locked](https://issues.hibernatingrhinos.com/issue/RavenDB-19239)  
 * [Wrong query result with CamelCasePropertyNamesContractResolver](https://issues.hibernatingrhinos.com/issue/RavenDB-20634)  
 * [Compare Exchange includes do not override compare exchange values that are already tracked in the session](https://issues.hibernatingrhinos.com/issue/RavenDB-21069)  
-
-
-

@@ -1,25 +1,30 @@
 ---
-title: "Migration: Server Breaking Changes"
-sidebar_label: Server Breaking Changes
-sidebar_position: 2
+title: "Migration: Server breaking changes"
+sidebar_label: Breaking changes
+sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
 import Panel from '@site/src/components/Panel';
 
-# Migration: Server Breaking Changes
+# Migration: Server breaking changes
+
 <Admonition type="note" title="">
-The features listed on this page were available in former RavenDB versions.  
-In RavenDB `7.2.x`, they are either unavailable or their behavior is inconsistent with their behavior in previous versions.  
+
+* The features listed on this page were available in former RavenDB versions.  
+  In RavenDB `7.2.x`, they are either unavailable or their behavior is inconsistent with their behavior in previous versions.  
+
+* Find breaking changes for previous RavenDB versions [here](../../migration/server/previous-versions-server-breaking-changes).
+
 
 * In this article:  
-   * [Elasticsearch .Net client library version change](../../migration/server/server-breaking-changes.mdx#elasticsearch-net-client-library-version-change)  
+   * [Elasticsearch .NET client library version change](../../migration/server/server-breaking-changes.mdx#elasticsearch-net-client-library-version-change)  
 
 </Admonition>
 
-<Panel heading="Elasticsearch .Net client library version change">
+<Panel heading="Elasticsearch .NET client library version change">
 
-- RavenDB `6.2`, `7.0` and `7.1` use `Elastic.Clients.Elasticsearch 8.x`, enabling RavenDB to use Elasticsearch server `8.x` and `9.x`.  
+- RavenDB `6.2`, `7.0`, and `7.1` use `Elastic.Clients.Elasticsearch 8.x`, enabling RavenDB to use Elasticsearch server `8.x` and `9.x`.  
 - Starting with version `7.2`, RavenDB uses `Elastic.Clients.Elasticsearch 9.x`, compatible with Elasticsearch server `9.x` and `10.x`.  
 
 If you use ETL to send data from [RavenDB to Elasticsearch](../../server/ongoing-tasks/etl/elasticsearch), please make sure that the RavenDB and Elasticsearch servers you use are compatible to prevent any transfer issues.

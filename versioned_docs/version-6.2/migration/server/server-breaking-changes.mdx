@@ -23,8 +23,8 @@ with their behavior in previous versions.
    * [Customizable identifier parts separator](../../migration/server/server-breaking-changes.mdx#customizable-identifier-parts-separator)  
 
 </Admonition>
-## MSSQL connection string requires an Encrypt property
 
+## MSSQL connection string requires an Encrypt property
 To establish a connection with an MSSQL server via ETL, RavenDB is required 
 by the `Microsoft.Data.SqlClient` package it utilizes (which replaces the 
 deprecated `System.Data.SqlClient` package we've been using in previous versions) 
@@ -51,10 +51,7 @@ or via Studio:
 
 ![SQL ETL task](./assets/breaking-changes_SQL-ETL-task.png)
 
-
-
 ## Corax handling of complex JSON objects in static indexes is configurable
-
 The behavior of RavenDB's [Corax](../../indexes/search-engine/corax.mdx) search engine while 
 handling [complex JSON objects](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects) 
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
@@ -82,10 +79,7 @@ remains unchanged).
 
 </Admonition>
 
-
-
 ## Customizable identifier parts separator
-
 Picking an [identifier parts separator](../../server/kb/document-identifier-generation.mdx#id-generation-by-server) 
 allows you to choose which character would be placed as a separator between ID parts 
 when new documents are given their IDs.  

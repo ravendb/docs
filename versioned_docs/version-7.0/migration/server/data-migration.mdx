@@ -35,7 +35,7 @@ and logging should continue by these settings without interference after the mig
 
 If you want to use NLog-specific features, though, you will have to address a different set 
 of settings that NLog requires.  
-You can [learn more here about migration and the new logging system](../../server/troubleshooting/logging.mdx#customize-after-migration).  
+[Learn more here about migration and the new logging system.](../../server/troubleshooting/logging.mdx#customize-after-migration).  
 
 </Admonition> 
 <Admonition type="note" title="Migration and HTTP Compression:" id="migration-and-http-compression" href="#migration-and-http-compression">
@@ -59,7 +59,6 @@ Earlier versions used `Gzip`.
 </Admonition>
 
 
-
 ## Migration from RavenDB 5.x to 6.x
 
 * RavenDB `6.x` supports in-place data migration from RavenDB `5.x`.
@@ -72,7 +71,6 @@ Please note that once upgraded, RavenDB `6.x` cannot be downgraded to version `5
 and the migrated data will no longer be accessible via RavenDB `5.x`.  
 **Please create a backup of your data before migrating.**  
 </Admonition>
-
 
 
 ## Migration from RavenDB 4.x to RavenDB 5.x and 6.x
@@ -94,13 +92,11 @@ and data migrated to `5.x` or `6.x` will no longer be accessible via RavenDB `4.
 </Admonition>
 
 
-
 ## Migration from RavenDB 3.x
 
-* The information above relates only to data migration from RavenDB `4.x` to `5.x`/`6.x` and from `5.x` to `6.x`.
+* The information above relates only to data migration from RavenDB `4.x` and above.  
 * If you want to migrate your data from a RavenDB version earlier than `4.x`,  
   please read the dedicated article [here](https://ravendb.net/docs/article-page/4.2/csharp/migration/server/data-migration).
-
 
 
 ## Migrating data into a sharded database

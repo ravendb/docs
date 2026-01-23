@@ -1,0 +1,74 @@
+---
+title: "Data Migration"
+sidebar_label: Legacy versions data migration
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Legacy versions data Migration
+<Admonition type="note" title="">
+
+* Learn in this article how to upgrade RavenDB versions lower than `6.x`.
+
+* Find a migration guide for RavenDB `6.x` and above [here](../../migration/server/data-migration.mdx).
+
+* In this article:
+    * [Migration from RavenDB 5.x to a higher version](../../migration/server/legacy-versions-data-migration#migration-from-ravendb-5-x-to-a-higher-version)
+    * [Migration from RavenDB 4.x to a higher version](../../migration/server/legacy-versions-data-migration#migration-from-ravendb-4-x-to-a-higher-version)
+    * [Migration from RavenDB 3.x to a higher version](../../migration/server/legacy-versions-data-migration#migration-from-ravendb-3-x-to-a-higher-version)
+    * [Migrating data into a sharded database](../../migration/server/legacy-versions-data-migration#migrating-data-into-a-sharded-database)
+
+</Admonition>
+
+<Panel heading="Migration from RavenDB 5.x to a higher version">
+
+* Upgrading RavenDB `5.x` to a higher version supports in-place data migration: exporting and re-importing the data are not needed.  
+
+* RavenDB `5.x` licenses **do not apply** to RavenDB `6.x` and above.  
+  To upgrade a valid `5.x` license to a RavenDB `6.x` and above license, use the **License upgrade tool** [as explained here](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x).
+
+<Admonition type="warning" title="">
+Note that once upgraded, RavenDB `6.x` and higher versions cannot be downgraded to version `5.x`, and the migrated data will no longer be accessible via RavenDB `5.x`.  
+Create a backup of your data before upgrading to keep the data safe and accessible.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Migration from RavenDB 4.x to a higher version">
+
+* Upgrading RavenDB `4.x` to version `5.x` or higher supports in-place data migration: exporting and re-importing the data are not needed.  
+  <Admonition type="info" title="">
+  Upgrading directly from version `4.x` to `6.x` and above is possible, but it is recommended to upgrade RavenDB `4.x` to `5.x` first, and then proceed with an upgrade from version `5.x` to `6.x` or above.
+  </Admonition>
+
+* RavenDB `4.x` licenses **do not apply** to RavenDB `6.x` and above.  
+  To upgrade a valid `4.x` license to a RavenDB `6.x` and above license, use the **License upgrade tool** [as explained here](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x).
+
+<Admonition type="warning" title="">
+Note that once upgraded, RavenDB `6.x` and higher versions cannot be downgraded to version `4.x`, and the migrated data will no longer be accessible via RavenDB `4.x`.  
+Create a backup of your data before upgrading to keep the data safe and accessible.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Migration from RavenDB 3.x to a higher version">
+
+If you want to migrate your data from a RavenDB version earlier than `4.x`, please read the dedicated article [here](https://ravendb.net/docs/article-page/4.2/csharp/migration/server/data-migration).
+
+</Panel>
+
+<Panel heading="Migrating data into a sharded database">
+
+If you want to migrate your data to a [sharded](../../sharding/overview.mdx) database (supported by RavenDB `6.0` and above),  
+please read the related article [here](../../sharding/migration.mdx).
+
+</Panel>
+
