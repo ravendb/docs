@@ -1,0 +1,528 @@
+---
+title: "Migration: previous-versions breaking changes"
+sidebar_label: Previous versions breaking changes
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Migration: previous-versions breaking changes
+
+<Admonition type="note" title="">
+
+This page lists client breaking changes introduced in RavenDB versions earlier than `7.2`.  
+Each breaking change indicates a behavior change or a function that is no longer available in the specified version.
+
+* In this article:  
+   * [RavenDB 7.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-7-0-client-breaking-changes)  
+      * [Subscription creation overload modification](../../migration/client-api/previous-versions-client-breaking-changes#subscription-creation-overload-modification)  
+      * [HTTP-Compression algorithm is now `Zstd` by default](../../migration/client-api/previous-versions-client-breaking-changes#http-compression-algorithm-is-now-zstd-by-default)  
+      * [Bulk-insert Compression is now Enabled by default](../../migration/client-api/previous-versions-client-breaking-changes#bulk-insert-compression-is-now-enabled-by-default)  
+      * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/previous-versions-client-breaking-changes#removed-irrelevant-singlenodebatchcommand-parameters)  
+      * [Removed obsolete methods](../../migration/client-api/previous-versions-client-breaking-changes#removed-obsolete-methods)  
+      * [`FromEtl` is now internal](../../migration/client-api/previous-versions-client-breaking-changes#frometl-is-now-internal)  
+   * [RavenDB 6.2 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-6-2-client-breaking-changes)  
+      * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/previous-versions-client-breaking-changes#counterbatchoperation-default-increment-delta-is-1)  
+      * [CmpXchg item can only be created with an index of 0](../../migration/client-api/previous-versions-client-breaking-changes#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
+      * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/previous-versions-client-breaking-changes#dynamic-linq-query-cannot-apply-any-with-logical-and-)  
+      * [`LoadDocument` must be provided with a collection name String](../../migration/client-api/previous-versions-client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
+      * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/previous-versions-client-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
+      * [Consistency in `null` handling](../../migration/client-api/previous-versions-client-breaking-changes#consistency-in-null-handling)  
+   * [RavenDB 6.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-6-0-client-breaking-changes)  
+      * [6.0 Breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#60-breaking-changes)  
+      * [6.0 Breaking changes in a sharded database](../../migration/client-api/previous-versions-client-breaking-changes#60-breaking-changes-in-a-sharded-database)  
+      * [Additional 6.0 breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#additional-60-breaking-changes)  
+
+</Admonition>
+
+<Panel heading="RavenDB 7.0 client breaking changes">
+
+<ContentFrame>
+
+## Subscription creation overload modification
+* In RavenDB versions earlier than **7.0**, the `Create<T>` method overload that accepted a predicate also allowed specifying a query through `SubscriptionCreationOptions`, 
+  which could cause errors and confusion.
+* To eliminate this ambiguity, starting from **7.0**, the `Create<T>` overload for predicate-based subscriptions now accepts `PredicateSubscriptionCreationOptions`,
+  which no longer includes a `Query` property.
+* Refer to the [Subscription creation API overview](../../client-api/data-subscriptions/creation/api-overview.mdx) for the complete list of available `Create` method overloads.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="7.0_and_on" label="7.0_and_on">
+```csharp
+// The create overload using a predicate:
+// ======================================
+string Create<T>(Expression<Func<T, bool>> predicate = null,
+    PredicateSubscriptionCreationOptions options = null,
+    string database = null);
+
+Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+    PredicateSubscriptionCreationOptions options = null,
+    string database = null,
+    CancellationToken token = default);
+
+// The options class:
+// ==================
+public sealed class PredicateSubscriptionCreationOptions
+{
+    public string Name { get; set; }
+    public string ChangeVector { get; set; }
+    public string MentorNode { get; set; }
+    public bool Disabled { get; set; }
+    public bool PinToMentorNode { get; set; }
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+}
+```
+</TabItem>
+<TabItem value="up_to_6.2" label="up_to_6.2">
+```csharp
+// The create overload using a predicate:
+// ======================================
+string Create<T>(Expression<Func<T, bool>> predicate = null,
+    SubscriptionCreationOptions options = null,
+    string database = null);
+
+Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+    SubscriptionCreationOptions options = null,
+    string database = null,
+    CancellationToken token = default);
+
+// The options class:
+// ==================
+public class SubscriptionCreationOptions
+{
+    public string Name { get; set; }
+    public string Query { get; set; }
+    public string ChangeVector { get; set; }
+    public string MentorNode { get; set; }
+    public virtual bool Disabled { get; set; }
+    public virtual bool PinToMentorNode { get; set; }
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+</ContentFrame>
+
+<ContentFrame>
+
+## HTTP-Compression algorithm is now `Zstd` by default
+From RavenDB `7.0` on, the default HTTP compression algorithm is `Zstd` (instead of `Gzip`, used in earlier versions).  
+
+<Admonition type="note" title="To switch the HTTP-compression algorithm:" id="to-switch-the-http-compression-algorithm" href="#to-switch-the-http-compression-algorithm">
+
+Clients can switch to a different HTTP-Compression algorithm using `DocumentStore`'s 
+[DocumentConventions.HttpCompressionAlgorithm](../../client-api/configuration/conventions.mdx#httpcompressionalgorithm) convention.  
+
+```csharp
+var DocumentConventions = new DocumentConventions
+{
+    // Switch HTTP compression algorithm
+    HttpCompressionAlgorithm = HttpCompressionAlgorithm.Gzip
+};
+```
+
+</Admonition>
+
+<Admonition type="warning" title="">
+If you migrate from an earlier RavenDB version to version `7.0` or higher,  
+please note the [potential significance of this change](../../migration/client-api/client-migration.mdx#client-migration-to-ravendb-7x).  
+</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+## Bulk-insert Compression is now Enabled by default
+Compression is now [Enabled by default for bulk-insert operations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section).  
+
+```csharp
+CompressionLevel DefaultCompressionLevel = CompressionLevel.Fastest;
+```
+
+<Admonition type="note" title="To switch the bulk-insert state:" id="to-switch-the-bulk-insert-state" href="#to-switch-the-bulk-insert-state">
+
+Clients can switch to a different bulk-insert compression state using `Store`'s
+[BulkInsertOptions.CompressionLevel](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) option.  
+
+```csharp
+using (var bulk = store.BulkInsert(new BulkInsertOptions
+{
+    // Disable bulk-insert compression
+    CompressionLevel = CompressionLevel.NoCompression
+}));
+```
+
+</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+## Removed irrelevant `SingleNodeBatchCommand` parameters
+We removed from [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)'s
+definition the parameters that are mainly used internally and kept only those relevant to the user.
+
+<Admonition type="note" title="`SingleNodeBatchCommand` signature:" id="singlenodebatchcommand-signature" href="#singlenodebatchcommand-signature">
+<Tabs groupId='languageSyntax'>
+<TabItem value="7.0_and_on" label="7.0_and_on">
+```plain
+public SingleNodeBatchCommand
+    (DocumentConventions conventions, 
+     IList<ICommandData> commands, 
+     BatchOptions options = null)
+```
+</TabItem>
+<TabItem value="up_to_6.2" label="up_to_6.2">
+```plain
+public SingleNodeBatchCommand
+    (DocumentConventions conventions, 
+     JsonOperationContext context, 
+     IList<ICommandData> commands, 
+     BatchOptions options = null, 
+     TransactionMode mode = TransactionMode.SingleNode)
+```
+</TabItem>
+</Tabs>
+</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+## Removed obsolete methods
+The following methods are no longer used and have been removed from RavenDB `7.0`.  
+
+* `NextPageStart`  
+  ```csharp
+  public int NextPageStart { get; set; }
+  ```
+
+* `GenerateEntityIdOnTheClient`  
+  ```csharp
+  public GenerateEntityIdOnTheClient(DocumentConventions conventions,
+                                    Func<object, string> generateId)
+  ```
+
+* `InMemoryDocumentSessionOperations.GenerateId`  
+  ```csharp
+  protected override string GenerateId(object entity)
+  ```
+
+* `InMemoryDocumentSessionOperations.GetOrGenerateDocumentIdAsync`  
+  ```csharp
+  protected async Task<string> GetOrGenerateDocumentIdAsync(object entity)
+  ```
+</ContentFrame>
+
+<ContentFrame>
+
+## `FromEtl` is now internal
+The `CounterBatch` class `FromEtl` property is now **internal**.  
+`FromEtl` is used internally to get or set a value indicating whether a counters batch originated from an ETL process.
+</ContentFrame>
+
+
+
+</Panel>
+
+<Panel heading="RavenDB 6.2 client breaking changes">
+
+<ContentFrame>
+
+## `CounterBatchOperation` default increment Delta is 1
+When [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) is 
+called to `Increment` a batch of counters, and no `Delta` is specified to indicate 
+what value should be added to the counters, the operation will increment the counters 
+by a default `Delta`.  
+
+* Previous RavenDB versions set a default `Delta` of `0`, leaving the counters value unchanged.  
+* Starting RavenDB `6.2` the default `Delta` is `1` to make it consistent with the rest of the API.  
+
+```csharp
+var operationResult = store.Operations.Send(new CounterBatchOperation(new CounterBatch
+{
+    Documents = new List<DocumentCountersOperation>
+    {
+        new DocumentCountersOperation
+        {
+            DocumentId = "users/1",
+            Operations = new List<CounterOperation>
+            {
+                new CounterOperation
+                {
+                    Type = CounterOperationType.Increment,
+                    CounterName = "likes",
+                    Delta = 5
+                },
+                new CounterOperation
+                {
+                    // No delta specified, value will be incremented by 1
+                    Type = CounterOperationType.Increment,
+                    CounterName = "dislikes"
+                }
+            }
+        }
+    }
+}));
+```
+</ContentFrame>
+
+<ContentFrame>
+
+## CmpXchg item can only be created with an index of 0
+Creating a [compare exchange item](../../compare-exchange/create-cmpxchg-items#create-item-using-a-store-operation) 
+using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
+passed to the method is `0`.  
+```csharp
+// Creating the item will fail because the index is not 0
+CompareExchangeResult<string> compareExchangeResult
+    = store.Operations.Send(
+        new PutCompareExchangeValueOperation<string>("key", "value", 123));
+
+// Creating the item will succeed because the index is 0
+compareExchangeResult = store.Operations.Send(
+        new PutCompareExchangeValueOperation<string>("key", "value", 0));
+```
+</ContentFrame>
+
+<ContentFrame>
+
+## Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)
+RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) 
+when they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
+The below query, for example, is *not supported*.  
+```sql
+using (var store = new DocumentStore())
+{
+    var guestsCarryingSmallSilverSuitcases = session.Query<Guest>()
+        // Applying .Any with && is not supported
+        .Where(x => x.Suitcase.Any(p => p.Size == "Small" && p.Color == "Silver"))
+        .ToList();
+}
+```
+
+<Admonition type="info" title="">
+While _auto_ indexes do not currently support this type of query, _static_ indexes do.  
+You can define a **static fanout index** that creates separate index entries for different 
+document sub-objects, and run your query over these entries.  
+Read about the indexing of nested data [here](../../indexes/indexing-nested-data.mdx),  
+and find explanations and samples for fanout indexes [here](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).  
+</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+## `LoadDocument` must be provided with a collection name String
+When [LoadDocument](../../indexes/indexing-related-documents.mdx) is used in an index query 
+to load related documents, it is passed a **document ID** and a **collection name**.  
+
+The collection name **must** be passed to `LoadDocument` as a regular string; attempting 
+to pass it a dynamic expression instead of a string will fail with an `IndexCompilationException` 
+exception and this message: `LoadDocument method has to be called with constant value as collection name`
+
+The following query, for example, will fail because it attempts to build the collection name dynamically.  
+```sql
+from doc in docs.Orders
+select new {
+    // This attempt to construct a collection name will fail with an exception
+    CompanyName = LoadDocument(doc.Company, doc.Company.Split('/')[0]).Name
+}
+```
+
+<Admonition type="note" title="">
+Note that the validation of the collection name string will be forced only during 
+the creation of a **new** index. 
+An attempt to update an existing index with a collection name expression rather 
+than a string will fail but the failure will remain unnoticed and an exception 
+will not be thrown.
+</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+## Tracking operations using the Changes API now requires Node Tag
+[Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) 
+now requires that you pass the changes API both a database name **and** a node tag for the specific node that 
+runs the operation/s you want to track, to ensure that the API consistently tracks this selected node.  
+
+The changes API can be opened using two `Changes` overloads. The first passes the API only the database name 
+and is capable of tracking all entities besides operations. Attempting to track operations after opening the 
+API this way will fail with an `ArgumentException` exception and the following message:  
+`"Changes API must be provided a node tag in order to track node-specific operations."`
+
+To track operations, open the API using this overload:  
+```csharp
+ISingleNodeDatabaseChanges Changes(string database, string nodeTag);
+```
+
+Then, you can use `ForOperationId` or `ForAllOperations` to track a certain operation or all 
+the operations executed by the selected node. Here's a simple usage example:  
+```csharp
+IDisposable subscription = store
+    .Changes(database, nodeTag)
+    .ForOperationId(operationId)
+    .Subscribe(
+        change =>
+        {
+            switch (change.State.Status)
+            {
+                case OperationStatus.InProgress:
+                    //Do Something
+                    break;
+                case OperationStatus.Completed:
+                    //Do Something
+                    break;
+                case OperationStatus.Faulted:
+                    //Do Something
+                    break;
+                case OperationStatus.Canceled:
+                    //Do Something
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        });
+```
+</ContentFrame>
+
+<ContentFrame>
+
+## Consistency in `null` handling
+`IAsyncDocumentSession.LoadAsync` and `IAsyncLazySessionsOperations.LoadAsync` now 
+do not throw an exception when they are passed `null`, becoming consistent with the 
+behavior of the majority of RavenDB's methods.  
+```csharp
+// This will work without issues
+IAsyncDocumentSession.LoadAsync(null)
+```
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="RavenDB 6.0 client breaking changes">
+
+<ContentFrame>
+
+## 6.0 Breaking changes
+
+* **Include from a non-tracking session**  
+  * A non-tracking session will now throw an exception if an `Include` operation is used in it.
+  * Like other entities in a `NoTracking` session,
+    included items are not tracked and will not prevent additional server requests during subsequent _Load_ operations for the same data.
+    To avoid confusion, _Include_ operations are disallowed during non-tracking session actions such as _Load_ or _Query_.
+  * Learn more in [Using 'Include' in a NoTracking session will throw](../../client-api/session/configuration/how-to-disable-tracking.mdx#using-).
+  
+* **Type changes**  
+  Many methods related to paging information (Skip, Take, PageSize, TotalResults, etc.) that used the `int` type in former RavenDB versions now use `long`, 
+  e.g. [QueryStatistics.TotalResults](../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax).
+
+* **Indexing**  
+  The default value of the
+  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyticksautomaticallywhendatesareinvolved)
+  configuration option is now `true`.  
+
+* **Facets**  
+ `FacetOptions` were removed from [RangeFacet](../../indexes/querying/faceted-search.mdx#syntax).  
+
+* **Obsolete entities removed**  
+  Many obsolete attributes, properties, and methods were removed from the public API. 
+
+* **Certificate disposal**  
+  The [DisposeCertificate](../../client-api/configuration/conventions.mdx#disposecertificate) convention has been introduced
+  to prevent or allow the disposal of `DocumentStore.Certificate` when the store is disposed,
+  helping users mitigate the [X509Certificate2 leak](https://snede.net/the-most-dangerous-constructor-in-net/).
+
+* **Serialization**  
+  Only _Public_ fields are serialized/deserialized when projecting query results.  
+  _Private_ fields are **not** serialized/deserialized.  
+
+* **HiLo ID generator**  
+  `DefaultAsyncHiLoIdGenerator` is replaced with `AsyncHiLoIdGenerator`  
+  ```csharp
+  public AsyncHiLoIdGenerator(string tag, DocumentStore store, string dbName, char identityPartsSeparator)
+  ```
+</ContentFrame>
+
+<ContentFrame>
+
+## 6.0 Breaking changes in a sharded database
+
+#### Unsupported features:  
+RavenDB 6.0 introduces [sharding](../../sharding/overview.mdx).  
+Features that are currently unavailable under a sharded database (but remain available in regular databases)
+are listed in the sharding [unsupported features](../../sharding/unsupported.mdx) page.  
+Attempting to use these features when the database is sharded will normally throw a `NotSupportedInShardingException` exception.  
+
+#### Casting smuggler results:  
+The result sets returned by Smuggler and features that use it (import, export, Backup 
+and Restore) are sharding-specific and should not be cast to a non-sharded type.  
+
+For example, the following code **will fail** when the database is sharded.  
+```csharp
+var operation = await store.Maintenance.SendAsync(new BackupOperation(config));
+var result = await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(60));
+
+// This will fail with a sharded database
+var backupResult = (BackupResult)result;
+```
+
+For the code to succeed, replace the last line with:  
+```csharp
+{`var backupResult = (ShardedBackupResult)result;
+```
+
+<Admonition type="info" title="Sharding-specific types" id="sharding-specific-types" href="#sharding-specific-types">
+
+* For Backup: `ShardedBackupResult`  
+* For Restore: `ShardedRestoreResult`  
+* For Smuggler, Import, and Export: `ShardedSmugglerResult`  
+
+</Admonition>
+
+#### Endpoints:
+* `GET /databases/*/revisions/bin`  
+  Pass `start` instead of `etag`.  
+  We now fetch from the last entry backward rather than from a specific etag.  
+  <Admonition type="info" title="">
+  `GetRevisionsBinEntryCommand`  
+  Previous definition: `GetRevisionsBinEntryCommand(long etag, int? pageSize)`  
+  Current definition: `GetRevisionsBinEntryCommand(int start, int? pageSize)`  
+  </Admonition>
+
+* `GET /databases/*/indexes/terms`  
+  The `Terms` field of the returned results is now `List<String>` instead of `HashSet<String>`.
+  ```csharp
+  public class TermsQueryResult
+  {
+    public List<string> Terms { get; set; }
+    public long ResultEtag { get; set; }
+    public string IndexName { get; set; }
+  }
+  ```
+
+* `GET database/*/debug/documents/get-revisions`  
+  Operation parameter changed from `etag` to `start`.  
+</ContentFrame>
+
+<ContentFrame>
+
+## Additional 6.0 breaking changes
+* [Failed to project when having a backing private field](https://issues.hibernatingrhinos.com/issue/RavenDB-18657)  
+* [Unexpected results on projection query on a static index with a dictionary](https://issues.hibernatingrhinos.com/issue/RavenDB-19560)  
+* [Check that query relays on PropertyNameConverter to get property name](https://issues.hibernatingrhinos.com/issue/RavenDB-19209)  
+* [Overflow of ReduceAttempts](https://issues.hibernatingrhinos.com/issue/RavenDB-19729)  
+* [Review all Obsolete() attributes in 6.0](https://issues.hibernatingrhinos.com/issue/RavenDB-19989)  
+* [Inconsistency in `BlittableJsonTraverserHelper.TryRead` when trying to filter docs with nested non-existing field](https://issues.hibernatingrhinos.com/issue/RavenDB-19856)  
+* [Removed non-typed inheritance from typed incremental time series client API](https://issues.hibernatingrhinos.com/issue/RavenDB-19511)  
+* [`CollectionStatistics` properties are now `long`](https://issues.hibernatingrhinos.com/issue/RavenDB-19602)  
+* [Removed private fields from the projection](https://issues.hibernatingrhinos.com/issue/RavenDB-18865)  
+* [DocumentConventions.UseCompression is not respected by BlittableJsonContent](https://issues.hibernatingrhinos.com/issue/RavenDB-20057)  
+* [LINQ projection convention is not applied inside javascript projection when querying static index](https://issues.hibernatingrhinos.com/issue/RavenDB-17708)  
+* [RavenBooleanQuery - merging two RavenBooleanQuery requires an additional boosting check](https://issues.hibernatingrhinos.com/issue/RavenDB-20449)  
+* [Index deletion is prevented when index lock mode is locked](https://issues.hibernatingrhinos.com/issue/RavenDB-19239)  
+* [Wrong query result with CamelCasePropertyNamesContractResolver](https://issues.hibernatingrhinos.com/issue/RavenDB-20634)  
+* [Compare Exchange includes do not override compare exchange values that are already tracked in the session](https://issues.hibernatingrhinos.com/issue/RavenDB-21069)  
+</ContentFrame>
+
+</Panel>

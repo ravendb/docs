@@ -26,8 +26,8 @@ with their behavior in previous versions.
    * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes.mdx#consistency-in-null-handling)  
 
 </Admonition>
-## `CounterBatchOperation` default increment Delta is 1
 
+## `CounterBatchOperation` default increment Delta is 1
 When [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) is 
 called to `Increment` a batch of counters, and no `Delta` is specified to indicate 
 what value should be added to the counters, the operation will increment the counters 
@@ -67,10 +67,7 @@ by a default `Delta`.
 </CodeBlock>
 </TabItem>
 
-
-
 ## CmpXchg item can only be created with an index of 0
-
 Creating a [compare exchange item](../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) 
 using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
 passed to the method is `0`.  
@@ -89,10 +86,7 @@ compareExchangeResult = store.Operations.Send(
 </CodeBlock>
 </TabItem>  
 
-
-
 ## Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)
-
 RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) 
 when they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
 The below query, for example, is *not supported*.  
@@ -118,10 +112,7 @@ Read about the indexing of nested data [here](../../indexes/indexing-nested-data
 and find explanations and samples for fanout indexes [here](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).  
 </Admonition>
 
-
-
 ## `LoadDocument` must be provided with a collection name String
-
 When [LoadDocument](../../indexes/indexing-related-documents.mdx) is used in an index query 
 to load related documents, it is passed a **document ID** and a **collection name**.  
 
@@ -150,10 +141,7 @@ than a string will fail but the failure will remain unnoticed and an exception
 will not be thrown.
 </Admonition>
 
-
-
 ## Tracking operations using the Changes API now requires Node Tag
-
 [Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) 
 now requires that you pass the changes API both a database name **and** a node tag for the specific node that 
 runs the operation/s you want to track, to ensure that the API consistently tracks this selected node.  
@@ -202,11 +190,8 @@ the operations executed by the selected node. Here's a simple usage example:
 `}
 </CodeBlock>
 </TabItem>  
- 
-
 
 ## Consistency in `null` handling
-
 `IAsyncDocumentSession.LoadAsync` and `IAsyncLazySessionsOperations.LoadAsync` now 
 do not throw an exception when they are passed `null`, becoming consistent with the 
 behavior of the majority of RavenDB's methods.  
@@ -218,6 +203,3 @@ IAsyncDocumentSession.LoadAsync(null)
 `}
 </CodeBlock>
 </TabItem>
-
-
-

@@ -1,7 +1,7 @@
 ---
 title: "Migration: Migrating from Docker Image 5.x or lower to 6.0 or higher"
 sidebar_label: Docker
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import Admonition from '@theme/Admonition';
@@ -14,14 +14,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Migration: Migrating from Docker Image 5.x or lower to 6.0 or higher
 <Admonition type="note" title="">
 
-* Starting from version `6.0` RavenDB for Docker introduces an 
-  improved security model, using a dedicated user rather than `root`.  
+* Starting from version `6.0` RavenDB for Docker introduces an improved security model, using a dedicated user rather than `root`.  
 * RavenDB `6.0` and up also use a Debian archive file 
-  ([.deb package](../../start/installation/gnu-linux/deb.mdx)), 
-  applying a uniform internal structure for Ubuntu OS platforms.  
-* To conform with these changes, installing RavenDB `6.0` or higher 
-  in a system that already hosts RavenDB `5.x` or lower requires 
-  the migration procedure explained below.  
+  ([.deb package](../../start/installation/gnu-linux/deb.mdx)), applying a uniform internal structure for Ubuntu OS platforms.  
+* To conform with these changes, installing RavenDB `6.0` or higher in a system that already hosts RavenDB `5.x` or lower requires the migration procedure explained below.  
 * Read [here](../../start/containers/image-usage.mdx) more about running a RavenDB Docker image.  
 
 * In this article:  
@@ -31,9 +27,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </Admonition>
 ## Changes Made In RavenDB 6.0 And Up  
 
-The **directory structure** used by RavenDB of version `6.0` 
-and above, and the **user** we use to run RavenDB, are different 
-from the directory structure and user used by older versions.  
+The **directory structure** used by RavenDB of version `6.0` and above, and the **user** we use to run RavenDB, are different from the directory structure and user used by older versions.  
 
 * RavenDB Docker images up to `5.x`:  
    * Create a unique directory structure under Windows.  
@@ -42,13 +36,9 @@ from the directory structure and user used by older versions.
 * RavenDB Docker images from `6.0` up:  
    * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb.mdx)) 
      and create a similar directory structure under Windows and Ubuntu.  
-   * Are installed and accessed using a dedicated `ravendb` user 
-     instead of `root`, to improve security.  
+   * Are installed and accessed using a dedicated `ravendb` user instead of `root`, to improve security.  
 
-Learn below how to address these differences when migrating 
-from version `5.x` or lower to version `6.0` or higher.  
-
-
+Learn below how to address these differences when migrating from version `5.x` or lower to version `6.0` or higher.  
 
 ## Migrating To `6.0` And Up  
 
@@ -65,7 +55,7 @@ To customize the **UID** and **GID** of the `ravendb` user (e.g. to match your h
 
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
-{`FROM ravendb/ravendb:7.0-ubuntu-latest
+{`FROM ravendb/ravendb:7.2-ubuntu-latest
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
