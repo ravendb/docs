@@ -2,6 +2,7 @@
 title: "Append & Delete Time Series Operations"
 sidebar_label: Append & Delete
 sidebar_position: 0
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import AppendAndDeleteCsharp from './_append-and-delete-csharp.mdx';
 import AppendAndDeleteNodejs from './_append-and-delete-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AppendAndDeleteCsharp />

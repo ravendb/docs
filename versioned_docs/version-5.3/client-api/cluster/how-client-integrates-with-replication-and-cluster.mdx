@@ -2,6 +2,7 @@
 title: "Client Integration with the Cluster"
 sidebar_label: Client Integration with the Cluster
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowClientIntegratesWithReplicationAndClusterCsharp from './_how-client-in
 import HowClientIntegratesWithReplicationAndClusterJava from './_how-client-integrates-with-replication-and-cluster-java.mdx';
 import HowClientIntegratesWithReplicationAndClusterNodejs from './_how-client-integrates-with-replication-and-cluster-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowClientIntegratesWithReplicationAndClusterCsharp />

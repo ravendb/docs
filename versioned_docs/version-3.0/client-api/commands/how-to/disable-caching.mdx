@@ -2,6 +2,7 @@
 title: "Commands: How to disable caching?"
 sidebar_label: ...disable caching
 sidebar_position: 2
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DisableCachingCsharp from './_disable-caching-csharp.mdx';
 import DisableCachingJava from './_disable-caching-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DisableCachingCsharp />

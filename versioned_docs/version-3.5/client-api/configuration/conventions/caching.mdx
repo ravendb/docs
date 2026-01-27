@@ -2,6 +2,7 @@
 title: "Conventions related to caching"
 sidebar_label: Caching
 sidebar_position: 3
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import CachingCsharp from './_caching-csharp.mdx';
 import CachingJava from './_caching-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CachingCsharp />

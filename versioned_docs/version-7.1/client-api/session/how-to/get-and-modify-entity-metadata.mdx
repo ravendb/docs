@@ -2,6 +2,7 @@
 title: "Session: How to Get and Modify Entity Metadata"
 sidebar_label: ...get and modify entity metadata
 sidebar_position: 7
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetAndModifyEntityMetadataCsharp from './_get-and-modify-entity-metadata-
 import GetAndModifyEntityMetadataJava from './_get-and-modify-entity-metadata-java.mdx';
 import GetAndModifyEntityMetadataNodejs from './_get-and-modify-entity-metadata-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetAndModifyEntityMetadataCsharp />

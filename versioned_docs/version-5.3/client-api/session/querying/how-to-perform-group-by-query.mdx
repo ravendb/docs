@@ -2,6 +2,7 @@
 title: "Perform Dynamic Group By Query"
 sidebar_label: Perform Group By Query
 sidebar_position: 7
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToPerformGroupByQueryCsharp from './_how-to-perform-group-by-query-csh
 import HowToPerformGroupByQueryJava from './_how-to-perform-group-by-query-java.mdx';
 import HowToPerformGroupByQueryNodejs from './_how-to-perform-group-by-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToPerformGroupByQueryCsharp />

@@ -2,6 +2,7 @@
 title: "Commands: StartsWithAsync"
 sidebar_label: StartsWith
 sidebar_position: 2
+supported_languages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import StartsWithCsharp from './_starts-with-csharp.mdx';
 import StartsWithHttp from './_starts-with-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <StartsWithCsharp />

@@ -2,6 +2,7 @@
 title: "Commands: Indexes: How to change index priority?"
 sidebar_label: ...change index priority
 sidebar_position: 5
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ChangeIndexPriorityCsharp from './_change-index-priority-csharp.mdx';
 import ChangeIndexPriorityJava from './_change-index-priority-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ChangeIndexPriorityCsharp />

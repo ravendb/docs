@@ -2,6 +2,7 @@
 title: "Consume Subscriptions API"
 sidebar_label: API Overview
 sidebar_position: 2
+supported_languages: ["csharp", "java", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import ApiOverviewJava from './_api-overview-java.mdx';
 import ApiOverviewPython from './_api-overview-python.mdx';
 import ApiOverviewNodejs from './_api-overview-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ApiOverviewCsharp />

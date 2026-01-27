@@ -2,6 +2,7 @@
 title: "Server: Running an Embedded Instance"
 sidebar_label: Embedded
 sidebar_position: 0
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import EmbeddedCsharp from './_embedded-csharp.mdx';
 import EmbeddedJava from './_embedded-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <EmbeddedCsharp />

@@ -2,6 +2,7 @@
 title: "How to Get Entity Counters"
 sidebar_label: ...get entity counters
 sidebar_position: 10
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetEntityCountersCsharp from './_get-entity-counters-csharp.mdx';
 import GetEntityCountersNodejs from './_get-entity-counters-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetEntityCountersCsharp />

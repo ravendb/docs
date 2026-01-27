@@ -2,6 +2,7 @@
 title: "Bulk Insert: How to Work With Bulk Insert Operation"
 sidebar_label: How to Work With Bulk Insert Operation
 sidebar_position: 0
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToWorkWithBulkInsertOperationCsharp from './_how-to-work-with-bulk-insert-operation-csharp.mdx';
 import HowToWorkWithBulkInsertOperationJava from './_how-to-work-with-bulk-insert-operation-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToWorkWithBulkInsertOperationCsharp />

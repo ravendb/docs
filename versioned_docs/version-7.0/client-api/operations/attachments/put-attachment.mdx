@@ -2,6 +2,7 @@
 title: "Put Attachment Operation"
 sidebar_label: Put Attachment
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import PutAttachmentCsharp from './_put-attachment-csharp.mdx';
 import PutAttachmentJava from './_put-attachment-java.mdx';
 import PutAttachmentNodejs from './_put-attachment-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <PutAttachmentCsharp />

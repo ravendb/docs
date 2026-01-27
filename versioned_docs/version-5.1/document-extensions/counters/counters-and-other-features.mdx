@@ -2,6 +2,7 @@
 title: "Counters and Other Features"
 sidebar_label: Counters and Other Features
 sidebar_position: 5
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CountersAndOtherFeaturesCsharp from './_counters-and-other-features-cshar
 import CountersAndOtherFeaturesJava from './_counters-and-other-features-java.mdx';
 import CountersAndOtherFeaturesNodejs from './_counters-and-other-features-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CountersAndOtherFeaturesCsharp />

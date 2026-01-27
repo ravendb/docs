@@ -2,6 +2,7 @@
 title: "Choosing Time Series Range"
 sidebar_label: Choosing Query Range
 sidebar_position: 1
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import ChoosingQueryRangePython from './_choosing-query-range-python.mdx';
 import ChoosingQueryRangePhp from './_choosing-query-range-php.mdx';
 import ChoosingQueryRangeNodejs from './_choosing-query-range-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ChoosingQueryRangeCsharp />

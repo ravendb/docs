@@ -2,6 +2,7 @@
 title: "Session: How to get entity metadata?"
 sidebar_label: ...get entity metadata
 sidebar_position: 6
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetEntityMetadataCsharp from './_get-entity-metadata-csharp.mdx';
 import GetEntityMetadataJava from './_get-entity-metadata-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetEntityMetadataCsharp />

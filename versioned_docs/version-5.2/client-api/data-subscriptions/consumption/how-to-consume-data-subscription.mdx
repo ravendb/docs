@@ -2,6 +2,7 @@
 title: "Data Subscriptions: How to Consume a Data Subscription"
 sidebar_label: How to Consume a Data Subscription
 sidebar_position: 0
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToConsumeDataSubscriptionCsharp from './_how-to-consume-data-subscription-csharp.mdx';
 import HowToConsumeDataSubscriptionJava from './_how-to-consume-data-subscription-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToConsumeDataSubscriptionCsharp />

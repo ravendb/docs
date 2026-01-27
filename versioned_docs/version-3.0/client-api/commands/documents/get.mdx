@@ -2,6 +2,7 @@
 title: "Commands: Documents: Get"
 sidebar_label: Get Documents
 sidebar_position: 1
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetCsharp from './_get-csharp.mdx';
 import GetJava from './_get-java.mdx';
 import GetHttp from './_get-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetCsharp />

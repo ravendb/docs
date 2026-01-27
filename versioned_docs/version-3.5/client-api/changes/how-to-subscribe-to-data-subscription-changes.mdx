@@ -2,6 +2,7 @@
 title: "Changes API: How to subscribe to data subscription changes?"
 sidebar_label: How to subscribe to data subscription changes?
 sidebar_position: 6
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToSubscribeToDataSubscriptionChangesCsharp from './_how-to-subscribe-to-data-subscription-changes-csharp.mdx';
 import HowToSubscribeToDataSubscriptionChangesJava from './_how-to-subscribe-to-data-subscription-changes-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToSubscribeToDataSubscriptionChangesCsharp />

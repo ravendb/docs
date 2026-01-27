@@ -2,6 +2,7 @@
 title: "Delete Compare-Exchange Items"
 sidebar_label: "Delete Compare-Exchange Items"
 sidebar_position: 5
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import DeleteCmpXchgItemsNodejs from './content/_delete-cmpxchg-items-nodejs.mdx
 import DeleteCmpXchgItemsPython from './content/_delete-cmpxchg-items-python.mdx';
 import DeleteCmpXchgItemsPhp from './content/_delete-cmpxchg-items-php.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeleteCmpXchgItemsCsharp />

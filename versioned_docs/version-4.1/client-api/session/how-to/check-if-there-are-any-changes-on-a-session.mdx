@@ -2,6 +2,7 @@
 title: "Session: How to Check if There are Any Changes on a Session"
 sidebar_label: ...check for session changes
 sidebar_position: 13
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import CheckIfThereAreAnyChangesOnASessionCsharp from './_check-if-there-are-any
 import CheckIfThereAreAnyChangesOnASessionJava from './_check-if-there-are-any-changes-on-a-session-java.mdx';
 import CheckIfThereAreAnyChangesOnASessionNodejs from './_check-if-there-are-any-changes-on-a-session-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CheckIfThereAreAnyChangesOnASessionCsharp />

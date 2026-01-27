@@ -2,6 +2,7 @@
 title: "Replication conventions"
 sidebar_label: Replication
 sidebar_position: 4
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ReplicationCsharp from './_replication-csharp.mdx';
 import ReplicationJava from './_replication-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ReplicationCsharp />

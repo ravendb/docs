@@ -2,6 +2,7 @@
 title: "How to release a data subscription?"
 sidebar_label: How to release a data subscription?
 sidebar_position: 4
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToReleaseDataSubscriptionCsharp from './_how-to-release-data-subscription-csharp.mdx';
 import HowToReleaseDataSubscriptionJava from './_how-to-release-data-subscription-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToReleaseDataSubscriptionCsharp />

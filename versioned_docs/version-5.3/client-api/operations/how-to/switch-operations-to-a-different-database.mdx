@@ -2,6 +2,7 @@
 title: "Switch Operations to a Different Database"
 sidebar_label: Switch operations to different database
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import SwitchOperationsToADifferentDatabaseCsharp from './_switch-operations-to-
 import SwitchOperationsToADifferentDatabaseJava from './_switch-operations-to-a-different-database-java.mdx';
 import SwitchOperationsToADifferentDatabaseNodejs from './_switch-operations-to-a-different-database-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SwitchOperationsToADifferentDatabaseCsharp />

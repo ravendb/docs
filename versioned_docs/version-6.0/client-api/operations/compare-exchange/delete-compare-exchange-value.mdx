@@ -2,6 +2,7 @@
 title: "Delete Compare Exchange Operation"
 sidebar_label: Delete Compare Exchange
 sidebar_position: 2
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import DeleteCompareExchangeValueCsharp from './_delete-compare-exchange-value-c
 import DeleteCompareExchangeValueJava from './_delete-compare-exchange-value-java.mdx';
 import DeleteCompareExchangeValueNodejs from './_delete-compare-exchange-value-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeleteCompareExchangeValueCsharp />

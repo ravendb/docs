@@ -2,6 +2,7 @@
 title: "Session: Storing Entities"
 sidebar_label: Storing Entities
 sidebar_position: 2
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import StoringEntitiesPython from './_storing-entities-python.mdx';
 import StoringEntitiesPhp from './_storing-entities-php.mdx';
 import StoringEntitiesNodejs from './_storing-entities-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <StoringEntitiesCsharp />

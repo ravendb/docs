@@ -2,6 +2,7 @@
 title: "Full-Text Search"
 sidebar_label: Full-Text Search
 sidebar_position: 3
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import FullTextSearchCsharp from './_full-text-search-csharp.mdx';
 import FullTextSearchNodejs from './_full-text-search-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <FullTextSearchCsharp />

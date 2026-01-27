@@ -2,29 +2,61 @@ import React, { type ReactNode } from "react";
 import clsx from "clsx";
 import { ThemeClassNames } from "@docusaurus/theme-common";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
-import EditThisPage from "@site/src/theme/EditThisPage";
+import TagsListInline from "@theme/TagsListInline";
+import EditMetaRow from "@theme/EditMetaRow";
+import { HIDDEN_EDIT_PAGE_ROUTES } from "@site/src/typescript/hiddenEditPageRoutes";
+import { DocsLanguage, useLanguage } from "@site/src/components/LanguageStore";
+
+const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLanguages: DocsLanguage[]) : string => {
+    if (!supportedLanguages || supportedLanguages.length === 0) {
+        return url;
+    }
+
+    const lastSlashIndex = url.lastIndexOf('/');
+    const path = url.substring(0, lastSlashIndex + 1);
+    const filename = url.substring(lastSlashIndex + 1).replace('.mdx', '');
+
+    return `${path}_${filename}-${language}.mdx`;
+}
 
 export default function DocItemFooter(): ReactNode {
-  const { metadata } = useDoc();
-  const { editUrl, lastUpdatedAt, lastUpdatedBy, tags } = metadata;
+    const { language } = useLanguage();
+    const { metadata } = useDoc();
+    const { editUrl, lastUpdatedAt, lastUpdatedBy, tags, permalink } = metadata;
 
-  const canDisplayTagsRow = tags.length > 0;
-  const canDisplayEditMetaRow = !!(editUrl || lastUpdatedAt || lastUpdatedBy);
+    const isPathHidden = HIDDEN_EDIT_PAGE_ROUTES.some((route) => {
+        return permalink.endsWith(route);
+    });
 
-  const canDisplayFooter = canDisplayTagsRow || canDisplayEditMetaRow;
+    const canDisplayTagsRow = tags.length > 0;
+    const canDisplayEditMetaRow = !!editUrl && !isPathHidden;
 
-  if (!canDisplayFooter) {
-    return null;
-  }
+    if (!canDisplayTagsRow && !canDisplayEditMetaRow) {
+        return null;
+    }
 
-  return (
-    <footer
-      className={clsx(
-        ThemeClassNames.docs.docFooter,
-        "docusaurus-mt-lg flex justify-end",
-      )}
-    >
-      <EditThisPage editUrl={editUrl} />
-    </footer>
-  );
+    return (
+        <footer className={clsx(ThemeClassNames.docs.docFooter, "mt-6")}>
+            {canDisplayTagsRow && (
+                <div
+                    className={clsx(
+                        "row",
+                        ThemeClassNames.docs.docFooterTagsRow,
+                    )}
+                >
+                    <div className="col">
+                        <TagsListInline tags={tags} />
+                    </div>
+                </div>
+            )}
+            {canDisplayEditMetaRow && (
+                <EditMetaRow
+                    className={clsx(ThemeClassNames.docs.docFooterEditMetaRow)}
+                    editUrl={getEditUrlWithLanguage(editUrl, language, metadata.frontMatter.supported_languages)}
+                    lastUpdatedAt={lastUpdatedAt}
+                    lastUpdatedBy={lastUpdatedBy}
+                />
+            )}
+        </footer>
+    );
 }

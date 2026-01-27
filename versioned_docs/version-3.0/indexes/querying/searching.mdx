@@ -2,6 +2,7 @@
 title: "Searching"
 sidebar_label: Full-Text Search
 sidebar_position: 7
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SearchingCsharp from './_searching-csharp.mdx';
 import SearchingJava from './_searching-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SearchingCsharp />

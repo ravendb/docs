@@ -2,6 +2,7 @@
 title: "Querying: Intersection"
 sidebar_label: Intersection
 sidebar_position: 9
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IntersectionCsharp from './_intersection-csharp.mdx';
 import IntersectionJava from './_intersection-java.mdx';
 import IntersectionNodejs from './_intersection-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IntersectionCsharp />

@@ -2,6 +2,7 @@
 title: "Session: Deleting Entities"
 sidebar_label: Deleting Entities
 sidebar_position: 3
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import DeletingEntitiesPython from './_deleting-entities-python.mdx';
 import DeletingEntitiesPhp from './_deleting-entities-php.mdx';
 import DeletingEntitiesNodejs from './_deleting-entities-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeletingEntitiesCsharp />

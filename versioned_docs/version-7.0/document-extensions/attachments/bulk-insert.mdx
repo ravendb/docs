@@ -2,6 +2,7 @@
 title: "Bulk Insert Attachments"
 sidebar_label: Bulk Insert
 sidebar_position: 6
+supported_languages: ["csharp", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import BulkInsertCsharp from './_bulk-insert-csharp.mdx';
 import BulkInsertPython from './_bulk-insert-python.mdx';
 import BulkInsertNodejs from './_bulk-insert-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <BulkInsertCsharp />

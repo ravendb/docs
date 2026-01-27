@@ -2,6 +2,7 @@
 title: "Indexes: Indexing LINQ Extensions"
 sidebar_label: Indexing LINQ Extensions
 sidebar_position: 19
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IndexingLinqExtensionsCsharp from './_indexing-linq-extensions-csharp.mdx
 import IndexingLinqExtensionsJava from './_indexing-linq-extensions-java.mdx';
 import IndexingLinqExtensionsNodejs from './_indexing-linq-extensions-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingLinqExtensionsCsharp />

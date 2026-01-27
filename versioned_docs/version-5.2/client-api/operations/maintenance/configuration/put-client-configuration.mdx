@@ -2,6 +2,7 @@
 title: "Put Client Configuration Operation  (for database)"
 sidebar_label: Put Client Configuration
 sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import PutClientConfigurationCsharp from './_put-client-configuration-csharp.mdx
 import PutClientConfigurationJava from './_put-client-configuration-java.mdx';
 import PutClientConfigurationNodejs from './_put-client-configuration-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <PutClientConfigurationCsharp />

@@ -2,6 +2,7 @@
 title: "Get Counter Values"
 sidebar_label: Get Counter Values
 sidebar_position: 3
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import RetrieveCounterValuesPython from './_retrieve-counter-values-python.mdx';
 import RetrieveCounterValuesPhp from './_retrieve-counter-values-php.mdx';
 import RetrieveCounterValuesNodejs from './_retrieve-counter-values-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <RetrieveCounterValuesCsharp />

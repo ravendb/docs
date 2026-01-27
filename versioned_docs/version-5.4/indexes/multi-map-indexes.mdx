@@ -2,6 +2,7 @@
 title: "Multi-Map Indexes"
 sidebar_label: Multi-Map Indexes
 sidebar_position: 6
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import MultiMapIndexesPython from './_multi-map-indexes-python.mdx';
 import MultiMapIndexesPhp from './_multi-map-indexes-php.mdx';
 import MultiMapIndexesNodejs from './_multi-map-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <MultiMapIndexesCsharp />

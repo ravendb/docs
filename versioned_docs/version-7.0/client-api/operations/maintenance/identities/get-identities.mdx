@@ -2,6 +2,7 @@
 title: "Get Identities Operation"
 sidebar_label: Get Identities
 sidebar_position: 0
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetIdentitiesPython from './_get-identities-python.mdx';
 import GetIdentitiesPhp from './_get-identities-php.mdx';
 import GetIdentitiesNodejs from './_get-identities-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetIdentitiesCsharp />

@@ -2,6 +2,7 @@
 title: "Exploration Queries"
 sidebar_label: Exploration Queries
 sidebar_position: 2
+supported_languages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ExplorationQueriesCsharp from './_exploration-queries-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ExplorationQueriesCsharp />

@@ -2,6 +2,7 @@
 title: "Attachments: How to update an attachment metadata only?"
 sidebar_label: ...update attachment metadata only
 sidebar_position: 1
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import UpdateAttachmentMetadataOnlyCsharp from './_update-attachment-metadata-on
 import UpdateAttachmentMetadataOnlyJava from './_update-attachment-metadata-only-java.mdx';
 import UpdateAttachmentMetadataOnlyHttp from './_update-attachment-metadata-only-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <UpdateAttachmentMetadataOnlyCsharp />

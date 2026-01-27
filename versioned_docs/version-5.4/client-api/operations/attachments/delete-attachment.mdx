@@ -2,6 +2,7 @@
 title: "Delete Attachment Operation"
 sidebar_label: Delete Attachment
 sidebar_position: 2
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import DeleteAttachmentCsharp from './_delete-attachment-csharp.mdx';
 import DeleteAttachmentJava from './_delete-attachment-java.mdx';
 import DeleteAttachmentNodejs from './_delete-attachment-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeleteAttachmentCsharp />

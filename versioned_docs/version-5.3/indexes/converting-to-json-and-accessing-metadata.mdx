@@ -2,6 +2,7 @@
 title: "Indexes: Converting to JSON and Accessing Metadata"
 sidebar_label: Converting to JSON and Accessing Metadata
 sidebar_position: 21
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ConvertingToJsonAndAccessingMetadataCsharp from './_converting-to-json-an
 import ConvertingToJsonAndAccessingMetadataJava from './_converting-to-json-and-accessing-metadata-java.mdx';
 import ConvertingToJsonAndAccessingMetadataNodejs from './_converting-to-json-and-accessing-metadata-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ConvertingToJsonAndAccessingMetadataCsharp />

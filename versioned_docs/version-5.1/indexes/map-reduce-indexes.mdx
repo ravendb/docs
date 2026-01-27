@@ -2,6 +2,7 @@
 title: "Indexes: Map-Reduce Indexes"
 sidebar_label: Map-Reduce Indexes
 sidebar_position: 7
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import MapReduceIndexesCsharp from './_map-reduce-indexes-csharp.mdx';
 import MapReduceIndexesJava from './_map-reduce-indexes-java.mdx';
 import MapReduceIndexesNodejs from './_map-reduce-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <MapReduceIndexesCsharp />

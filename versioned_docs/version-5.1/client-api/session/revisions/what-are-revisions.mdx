@@ -2,6 +2,7 @@
 title: "What are Revisions"
 sidebar_label: What are Revisions
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatAreRevisionsCsharp from './_what-are-revisions-csharp.mdx';
 import WhatAreRevisionsJava from './_what-are-revisions-java.mdx';
 import WhatAreRevisionsNodejs from './_what-are-revisions-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WhatAreRevisionsCsharp />

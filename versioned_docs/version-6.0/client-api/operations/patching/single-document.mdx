@@ -2,6 +2,7 @@
 title: "Single Document Patch Operations"
 sidebar_label: Single Document
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import SingleDocumentCsharp from './_single-document-csharp.mdx';
 import SingleDocumentJava from './_single-document-java.mdx';
 import SingleDocumentNodejs from './_single-document-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SingleDocumentCsharp />

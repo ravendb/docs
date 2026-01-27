@@ -2,6 +2,7 @@
 title: "Project Index Query Results"
 sidebar_label: Projections
 sidebar_position: 5
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import ProjectionsPython from './_projections-python.mdx';
 import ProjectionsPhp from './_projections-php.mdx';
 import ProjectionsNodejs from './_projections-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ProjectionsCsharp />

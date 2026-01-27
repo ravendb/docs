@@ -2,6 +2,7 @@
 title: "Delete Index Errors Operation"
 sidebar_label: Delete Index Errors
 sidebar_position: 5
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DeleteIndexErrorsCsharp from './_delete-index-errors-csharp.mdx';
 import DeleteIndexErrorsNodejs from './_delete-index-errors-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeleteIndexErrorsCsharp />

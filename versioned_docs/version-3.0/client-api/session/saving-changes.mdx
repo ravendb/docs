@@ -2,6 +2,7 @@
 title: "Session: Saving changes"
 sidebar_label: Saving changes
 sidebar_position: 6
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SavingChangesCsharp from './_saving-changes-csharp.mdx';
 import SavingChangesJava from './_saving-changes-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SavingChangesCsharp />

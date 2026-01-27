@@ -2,6 +2,7 @@
 title: "Querying: Spatial"
 sidebar_label: Spatial
 sidebar_position: 11
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import SpatialCsharp from './_spatial-csharp.mdx';
 import SpatialJava from './_spatial-java.mdx';
 import SpatialNodejs from './_spatial-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SpatialCsharp />

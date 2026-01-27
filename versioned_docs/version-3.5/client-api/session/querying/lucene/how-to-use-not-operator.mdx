@@ -2,6 +2,7 @@
 title: "Session: Querying: How to use NOT operator?"
 sidebar_label: How to use NOT operator?
 sidebar_position: 1
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToUseNotOperatorCsharp from './_how-to-use-not-operator-csharp.mdx';
 import HowToUseNotOperatorJava from './_how-to-use-not-operator-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToUseNotOperatorCsharp />

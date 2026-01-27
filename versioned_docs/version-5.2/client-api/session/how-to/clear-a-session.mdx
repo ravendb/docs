@@ -2,6 +2,7 @@
 title: "Session: How to Clear a Session"
 sidebar_label: ...clear a session
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ClearASessionCsharp from './_clear-a-session-csharp.mdx';
 import ClearASessionJava from './_clear-a-session-java.mdx';
 import ClearASessionNodejs from './_clear-a-session-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ClearASessionCsharp />

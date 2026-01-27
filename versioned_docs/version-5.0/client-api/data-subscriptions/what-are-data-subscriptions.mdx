@@ -2,6 +2,7 @@
 title: "Data Subscriptions"
 sidebar_label: What are Data Subscriptions
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatAreDataSubscriptionsCsharp from './_what-are-data-subscriptions-cshar
 import WhatAreDataSubscriptionsJava from './_what-are-data-subscriptions-java.mdx';
 import WhatAreDataSubscriptionsNodejs from './_what-are-data-subscriptions-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WhatAreDataSubscriptionsCsharp />

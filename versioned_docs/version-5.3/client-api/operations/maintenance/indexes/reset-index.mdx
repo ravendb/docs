@@ -2,6 +2,7 @@
 title: "Reset Index Operation"
 sidebar_label: Reset Index
 sidebar_position: 3
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ResetIndexCsharp from './_reset-index-csharp.mdx';
 import ResetIndexJava from './_reset-index-java.mdx';
 import ResetIndexNodejs from './_reset-index-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ResetIndexCsharp />

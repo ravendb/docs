@@ -2,6 +2,7 @@
 title: "Session: Querying: How to Work with Suggestions"
 sidebar_label: Query for Suggestions
 sidebar_position: 16
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToWorkWithSuggestionsCsharp from './_how-to-work-with-suggestions-csha
 import HowToWorkWithSuggestionsJava from './_how-to-work-with-suggestions-java.mdx';
 import HowToWorkWithSuggestionsNodejs from './_how-to-work-with-suggestions-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToWorkWithSuggestionsCsharp />

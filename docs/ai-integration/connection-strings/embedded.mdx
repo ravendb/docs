@@ -2,6 +2,7 @@
 title: "Connection String to bge-micro-v2 (Embedded)"
 sidebar_label: bge-micro-v2 (Embedded)
 sidebar_position: 8
+supported_languages: ["csharp", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import EmbeddedCsharp from './content/_embedded-csharp.mdx';
 import EmbeddedNodejs from './content/_embedded-nodejs.mdx';
 import EmbeddedPython from './content/_embedded-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs", "python"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <EmbeddedCsharp />

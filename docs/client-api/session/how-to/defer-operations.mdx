@@ -2,6 +2,7 @@
 title: "How to Defer Commands"
 sidebar_label: ...defer commands
 sidebar_position: 3
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import DeferOperationsPython from './_defer-operations-python.mdx';
 import DeferOperationsPhp from './_defer-operations-php.mdx';
 import DeferOperationsNodejs from './_defer-operations-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DeferOperationsCsharp />

@@ -2,6 +2,7 @@
 title: "Operations: How to Update ETL"
 sidebar_label: Update ETL
 sidebar_position: 1
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import UpdateEtlCsharp from './_update-etl-csharp.mdx';
 import UpdateEtlJava from './_update-etl-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <UpdateEtlCsharp />

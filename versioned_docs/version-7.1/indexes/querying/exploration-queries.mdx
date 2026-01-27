@@ -2,6 +2,7 @@
 title: "Exploration Queries"
 sidebar_label: Exploration Queries
 sidebar_position: 2
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import ExplorationQueriesPython from './_exploration-queries-python.mdx';
 import ExplorationQueriesPhp from './_exploration-queries-php.mdx';
 import ExplorationQueriesNodejs from './_exploration-queries-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ExplorationQueriesCsharp />

@@ -2,6 +2,7 @@
 title: "Replication: How client integrates with replication bundle?"
 sidebar_label: How client integrates with replication bundle?
 sidebar_position: 0
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowClientIntegratesWithReplicationBundleCsharp from './_how-client-integrates-with-replication-bundle-csharp.mdx';
 import HowClientIntegratesWithReplicationBundleJava from './_how-client-integrates-with-replication-bundle-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowClientIntegratesWithReplicationBundleCsharp />

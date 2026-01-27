@@ -2,6 +2,7 @@
 title: "What Indexes Are"
 sidebar_label: What are Indexes
 sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatAreIndexesCsharp from './_what-are-indexes-csharp.mdx';
 import WhatAreIndexesJava from './_what-are-indexes-java.mdx';
 import WhatAreIndexesNodejs from './_what-are-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WhatAreIndexesCsharp />

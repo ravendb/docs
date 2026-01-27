@@ -2,6 +2,7 @@
 title: "Include Time Series with Load"
 sidebar_label: With Load
 sidebar_position: 1
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import WithSessionLoadCsharp from './_with-session-load-csharp.mdx';
 import WithSessionLoadNodejs from './_with-session-load-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WithSessionLoadCsharp />

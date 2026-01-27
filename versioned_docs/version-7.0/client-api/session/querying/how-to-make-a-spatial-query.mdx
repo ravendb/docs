@@ -2,6 +2,7 @@
 title: "Make a Spatial Query"
 sidebar_label: Make a Spatial Query
 sidebar_position: 9
+supported_languages: ["csharp", "java", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import HowToMakeASpatialQueryJava from './_how-to-make-a-spatial-query-java.mdx'
 import HowToMakeASpatialQueryPython from './_how-to-make-a-spatial-query-python.mdx';
 import HowToMakeASpatialQueryNodejs from './_how-to-make-a-spatial-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToMakeASpatialQueryCsharp />

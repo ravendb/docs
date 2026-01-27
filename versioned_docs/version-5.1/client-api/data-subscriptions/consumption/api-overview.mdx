@@ -2,6 +2,7 @@
 title: "Data Subscriptions: Consumption API Overview"
 sidebar_label: API Overview
 sidebar_position: 2
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ApiOverviewCsharp from './_api-overview-csharp.mdx';
 import ApiOverviewJava from './_api-overview-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ApiOverviewCsharp />

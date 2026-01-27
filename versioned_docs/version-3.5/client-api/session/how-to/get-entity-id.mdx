@@ -2,6 +2,7 @@
 title: "Session: How to get entity Id?"
 sidebar_label: ...get entity id
 sidebar_position: 6
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetEntityIdCsharp from './_get-entity-id-csharp.mdx';
 import GetEntityIdJava from './_get-entity-id-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetEntityIdCsharp />

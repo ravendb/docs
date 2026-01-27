@@ -2,6 +2,7 @@
 title: "Attachments: Copy, Move, Rename"
 sidebar_label: Copying, Moving & Renaming
 sidebar_position: 4
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import CopyingMovingRenamingPython from './_copying-moving-renaming-python.mdx';
 import CopyingMovingRenamingPhp from './_copying-moving-renaming-php.mdx';
 import CopyingMovingRenamingNodejs from './_copying-moving-renaming-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CopyingMovingRenamingCsharp />

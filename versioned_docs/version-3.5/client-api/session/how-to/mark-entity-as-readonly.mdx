@@ -2,6 +2,7 @@
 title: "Session: How to mark entity as readonly?"
 sidebar_label: ...mark entity as readonly
 sidebar_position: 11
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import MarkEntityAsReadonlyCsharp from './_mark-entity-as-readonly-csharp.mdx';
 import MarkEntityAsReadonlyJava from './_mark-entity-as-readonly-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <MarkEntityAsReadonlyCsharp />

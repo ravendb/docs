@@ -2,6 +2,7 @@
 title: "Add ETL Operation"
 sidebar_label: Add ETL
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import AddEtlCsharp from './_add-etl-csharp.mdx';
 import AddEtlJava from './_add-etl-java.mdx';
 import AddEtlNodejs from './_add-etl-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AddEtlCsharp />

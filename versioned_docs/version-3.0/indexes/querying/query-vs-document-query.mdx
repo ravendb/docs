@@ -2,6 +2,7 @@
 title: "Query vs DocumentQuery"
 sidebar_label: Query vs DocumentQuery
 sidebar_position: 15
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import QueryVsDocumentQueryCsharp from './_query-vs-document-query-csharp.mdx';
 import QueryVsDocumentQueryJava from './_query-vs-document-query-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <QueryVsDocumentQueryCsharp />

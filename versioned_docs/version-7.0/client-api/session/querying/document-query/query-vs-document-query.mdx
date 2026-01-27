@@ -2,6 +2,7 @@
 title: "Query vs DocumentQuery"
 sidebar_label: Query vs DocumentQuery
 sidebar_position: 1
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import QueryVsDocumentQueryPython from './_query-vs-document-query-python.mdx';
 import QueryVsDocumentQueryPhp from './_query-vs-document-query-php.mdx';
 import QueryVsDocumentQueryNodejs from './_query-vs-document-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <QueryVsDocumentQueryCsharp />

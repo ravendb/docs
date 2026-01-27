@@ -2,6 +2,7 @@
 title: "Projections"
 sidebar_label: Projections
 sidebar_position: 5
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ProjectionsCsharp from './_projections-csharp.mdx';
 import ProjectionsJava from './_projections-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ProjectionsCsharp />

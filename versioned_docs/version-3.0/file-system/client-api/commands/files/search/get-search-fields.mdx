@@ -2,6 +2,7 @@
 title: "Commands: GetSearchFieldsAsync"
 sidebar_label: GetSearchFields
 sidebar_position: 2
+supported_languages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import GetSearchFieldsCsharp from './_get-search-fields-csharp.mdx';
 import GetSearchFieldsHttp from './_get-search-fields-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetSearchFieldsCsharp />

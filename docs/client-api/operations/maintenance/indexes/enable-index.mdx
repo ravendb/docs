@@ -2,6 +2,7 @@
 title: "Enable Index Operation"
 sidebar_label: Enable Index
 sidebar_position: 7
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import EnableIndexPython from './_enable-index-python.mdx';
 import EnableIndexPhp from './_enable-index-php.mdx';
 import EnableIndexNodejs from './_enable-index-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <EnableIndexCsharp />

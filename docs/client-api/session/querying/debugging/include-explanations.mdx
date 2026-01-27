@@ -2,6 +2,7 @@
 title: "Include Query Explanations"
 sidebar_label: Include Query Explanations
 sidebar_position: 0
+supported_languages: ["java", "csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import IncludeExplanationsPython from './_include-explanations-python.mdx';
 import IncludeExplanationsPhp from './_include-explanations-php.mdx';
 import IncludeExplanationsNodejs from './_include-explanations-nodejs.mdx';
 
-export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="java">
    <IncludeExplanationsJava />

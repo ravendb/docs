@@ -2,6 +2,7 @@
 title: "Revisions: Loading Revisions"
 sidebar_label: Loading
 sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import LoadingCsharp from './_loading-csharp.mdx';
 import LoadingJava from './_loading-java.mdx';
 import LoadingNodejs from './_loading-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <LoadingCsharp />

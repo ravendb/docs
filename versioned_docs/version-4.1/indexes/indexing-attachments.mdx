@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Attachments"
 sidebar_label: Indexing Attachments
 sidebar_position: 16
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import IndexingAttachmentsCsharp from './_indexing-attachments-csharp.mdx';
 import IndexingAttachmentsJava from './_indexing-attachments-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingAttachmentsCsharp />

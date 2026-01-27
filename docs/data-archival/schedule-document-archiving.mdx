@@ -2,6 +2,7 @@
 title: "Schedule Document Archiving"
 sidebar_label: Schedule Document Archiving
 sidebar_position: 2
+supported_languages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ScheduleDocumentArchivingCsharp from './_schedule-document-archiving-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ScheduleDocumentArchivingCsharp />

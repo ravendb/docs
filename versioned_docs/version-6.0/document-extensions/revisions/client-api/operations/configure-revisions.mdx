@@ -2,6 +2,7 @@
 title: "Configure Revisions Operation"
 sidebar_label: Configure Revisions
 sidebar_position: 0
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import ConfigureRevisionsPython from './_configure-revisions-python.mdx';
 import ConfigureRevisionsPhp from './_configure-revisions-php.mdx';
 import ConfigureRevisionsNodejs from './_configure-revisions-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ConfigureRevisionsCsharp />

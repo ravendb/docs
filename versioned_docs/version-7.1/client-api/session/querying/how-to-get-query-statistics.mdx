@@ -2,6 +2,7 @@
 title: "Get Query Statistics"
 sidebar_label: Get Query Statistics
 sidebar_position: 10
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import HowToGetQueryStatisticsPython from './_how-to-get-query-statistics-python
 import HowToGetQueryStatisticsPhp from './_how-to-get-query-statistics-php.mdx';
 import HowToGetQueryStatisticsNodejs from './_how-to-get-query-statistics-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToGetQueryStatisticsCsharp />

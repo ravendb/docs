@@ -2,6 +2,7 @@
 title: "Session: Querying: How to perform projection?"
 sidebar_label: How to perform projection?
 sidebar_position: 10
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToPerformProjectionCsharp from './_how-to-perform-projection-csharp.mdx';
 import HowToPerformProjectionJava from './_how-to-perform-projection-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToPerformProjectionCsharp />

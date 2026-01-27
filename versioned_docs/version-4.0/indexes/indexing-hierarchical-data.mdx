@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Hierarchical Data"
 sidebar_label: Indexing Hierarchical Data
 sidebar_position: 13
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IndexingHierarchicalDataCsharp from './_indexing-hierarchical-data-csharp
 import IndexingHierarchicalDataJava from './_indexing-hierarchical-data-java.mdx';
 import IndexingHierarchicalDataNodejs from './_indexing-hierarchical-data-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingHierarchicalDataCsharp />

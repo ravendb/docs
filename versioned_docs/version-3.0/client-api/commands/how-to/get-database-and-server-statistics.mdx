@@ -2,6 +2,7 @@
 title: "Commands: How to get database and server statistics?"
 sidebar_label: ...get database and server statistics
 sidebar_position: 7
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetDatabaseAndServerStatisticsCsharp from './_get-database-and-server-sta
 import GetDatabaseAndServerStatisticsJava from './_get-database-and-server-statistics-java.mdx';
 import GetDatabaseAndServerStatisticsHttp from './_get-database-and-server-statistics-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetDatabaseAndServerStatisticsCsharp />

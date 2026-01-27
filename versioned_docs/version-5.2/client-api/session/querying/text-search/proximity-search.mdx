@@ -2,6 +2,7 @@
 title: "Proximity Search"
 sidebar_label: Proximity Search
 sidebar_position: 6
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import ProximitySearchCsharp from './_proximity-search-csharp.mdx';
 import ProximitySearchJava from './_proximity-search-java.mdx';
 import ProximitySearchNodejs from './_proximity-search-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ProximitySearchCsharp />

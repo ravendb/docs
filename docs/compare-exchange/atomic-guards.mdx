@@ -2,6 +2,7 @@
 title: "Atomic Guards"
 sidebar_label: Atomic Guards
 sidebar_position: 11
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import AtomicGuardsPython from './content/_atomic-guards-python.mdx';
 import AtomicGuardsPhp from './content/_atomic-guards-php.mdx';
 import AtomicGuardsNodejs from './content/_atomic-guards-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AtomicGuardsCsharp />

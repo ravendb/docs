@@ -2,6 +2,7 @@
 title: "Type-Specific Identifier Generation"
 sidebar_label: Type-specific
 sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import TypeSpecificCsharp from './_type-specific-csharp.mdx';
 import TypeSpecificJava from './_type-specific-java.mdx';
 import TypeSpecificNodejs from './_type-specific-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <TypeSpecificCsharp />

@@ -2,6 +2,7 @@
 title: "Switch Operations to a Different Node"
 sidebar_label: Switch operations to different node
 sidebar_position: 1
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SwitchOperationsToADifferentNodeCsharp from './_switch-operations-to-a-different-node-csharp.mdx';
 import SwitchOperationsToADifferentNodeNodejs from './_switch-operations-to-a-different-node-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SwitchOperationsToADifferentNodeCsharp />

@@ -2,6 +2,7 @@
 title: "Append Time Series with Bulk Insert"
 sidebar_label: Append In Bulk
 sidebar_position: 0
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import AppendInBulkCsharp from './_append-in-bulk-csharp.mdx';
 import AppendInBulkNodejs from './_append-in-bulk-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AppendInBulkCsharp />

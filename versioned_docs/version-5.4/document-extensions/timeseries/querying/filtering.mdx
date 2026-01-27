@@ -2,6 +2,7 @@
 title: "Filtering Time Series Queries"
 sidebar_label: Filtering
 sidebar_position: 2
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import FilteringPython from './_filtering-python.mdx';
 import FilteringPhp from './_filtering-php.mdx';
 import FilteringNodejs from './_filtering-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <FilteringCsharp />

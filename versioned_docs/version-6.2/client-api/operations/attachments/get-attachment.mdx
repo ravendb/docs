@@ -2,6 +2,7 @@
 title: "Get Attachment Operation"
 sidebar_label: Get Attachment
 sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetAttachmentCsharp from './_get-attachment-csharp.mdx';
 import GetAttachmentJava from './_get-attachment-java.mdx';
 import GetAttachmentNodejs from './_get-attachment-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetAttachmentCsharp />

@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Create a Database"
 sidebar_label: Create Database
 sidebar_position: 2
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import CreateDatabaseCsharp from './_create-database-csharp.mdx';
 import CreateDatabaseJava from './_create-database-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CreateDatabaseCsharp />

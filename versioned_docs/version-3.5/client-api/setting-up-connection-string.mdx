@@ -2,6 +2,7 @@
 title: "How to setup connection string?"
 sidebar_label: Setting up connection string
 sidebar_position: 3
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SettingUpConnectionStringCsharp from './_setting-up-connection-string-csharp.mdx';
 import SettingUpConnectionStringJava from './_setting-up-connection-string-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SettingUpConnectionStringCsharp />

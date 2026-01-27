@@ -2,6 +2,7 @@
 title: "Get Index Operation"
 sidebar_label: Get Index
 sidebar_position: 12
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import GetIndexPython from './_get-index-python.mdx';
 import GetIndexPhp from './_get-index-php.mdx';
 import GetIndexNodejs from './_get-index-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetIndexCsharp />

@@ -2,6 +2,7 @@
 title: "Spatial"
 sidebar_label: Spatial
 sidebar_position: 11
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SpatialCsharp from './_spatial-csharp.mdx';
 import SpatialJava from './_spatial-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SpatialCsharp />

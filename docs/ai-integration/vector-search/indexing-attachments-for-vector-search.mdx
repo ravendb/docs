@@ -2,6 +2,7 @@
 title: "Indexing Attachments for Vector Search"
 sidebar_label: Indexing Attachments for Vector Search
 sidebar_position: 4
+supported_languages: ["csharp", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,7 @@ import IndexingAttachmentsForVectorSearchCsharp from './content/_indexing-attach
 import IndexingAttachmentsForVectorSearchNodejs from './content/_indexing-attachments-for-vector-search-nodejs.mdx';
 import IndexingAttachmentsForVectorSearchPython from './content/_indexing-attachments-for-vector-search-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs", "python"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingAttachmentsForVectorSearchCsharp />

@@ -2,6 +2,7 @@
 title: "Put Indexes Operation"
 sidebar_label: Put Indexes
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import PutIndexesCsharp from './_put-indexes-csharp.mdx';
 import PutIndexesJava from './_put-indexes-java.mdx';
 import PutIndexesNodejs from './_put-indexes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <PutIndexesCsharp />

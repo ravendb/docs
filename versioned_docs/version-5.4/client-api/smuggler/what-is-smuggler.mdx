@@ -2,6 +2,7 @@
 title: "What is Smuggler"
 sidebar_label: What is Smuggler
 sidebar_position: 0
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import WhatIsSmugglerCsharp from './_what-is-smuggler-csharp.mdx';
 import WhatIsSmugglerJava from './_what-is-smuggler-java.mdx';
 import WhatIsSmugglerNodejs from './_what-is-smuggler-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WhatIsSmugglerCsharp />

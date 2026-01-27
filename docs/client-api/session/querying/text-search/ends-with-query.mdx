@@ -2,6 +2,7 @@
 title: "Ends-With Query"
 sidebar_label: Ends-With Query
 sidebar_position: 1
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import EndsWithQueryPython from './_ends-with-query-python.mdx';
 import EndsWithQueryPhp from './_ends-with-query-php.mdx';
 import EndsWithQueryNodejs from './_ends-with-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <EndsWithQueryCsharp />

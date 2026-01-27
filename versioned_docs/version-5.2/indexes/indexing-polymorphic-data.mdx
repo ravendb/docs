@@ -2,6 +2,7 @@
 title: "Indexes: Indexing Polymorphic Data"
 sidebar_label: Indexing Polymorphic Data
 sidebar_position: 14
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import IndexingPolymorphicDataCsharp from './_indexing-polymorphic-data-csharp.mdx';
 import IndexingPolymorphicDataJava from './_indexing-polymorphic-data-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingPolymorphicDataCsharp />

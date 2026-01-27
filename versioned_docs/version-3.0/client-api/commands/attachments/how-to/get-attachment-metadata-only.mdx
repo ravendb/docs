@@ -2,6 +2,7 @@
 title: "Attachments: How to get attachment metadata only?"
 sidebar_label: ...get attachment metadata only
 sidebar_position: 0
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetAttachmentMetadataOnlyCsharp from './_get-attachment-metadata-only-csh
 import GetAttachmentMetadataOnlyJava from './_get-attachment-metadata-only-java.mdx';
 import GetAttachmentMetadataOnlyHttp from './_get-attachment-metadata-only-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetAttachmentMetadataOnlyCsharp />

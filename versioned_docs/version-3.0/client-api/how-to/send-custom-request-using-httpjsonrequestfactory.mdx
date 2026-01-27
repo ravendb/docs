@@ -2,6 +2,7 @@
 title: "How to send custom request using HttpJsonRequestFactory?"
 sidebar_label: ...send custom request
 sidebar_position: 2
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SendCustomRequestUsingHttpjsonrequestfactoryCsharp from './_send-custom-request-using-httpjsonrequestfactory-csharp.mdx';
 import SendCustomRequestUsingHttpjsonrequestfactoryJava from './_send-custom-request-using-httpjsonrequestfactory-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SendCustomRequestUsingHttpjsonrequestfactoryCsharp />

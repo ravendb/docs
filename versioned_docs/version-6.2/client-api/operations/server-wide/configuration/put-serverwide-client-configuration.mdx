@@ -2,6 +2,7 @@
 title: "Put Client Configuration Operation (Server-Wide)"
 sidebar_label: Put Server Wide Client Configuration
 sidebar_position: 1
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import PutServerwideClientConfigurationCsharp from './_put-serverwide-client-configuration-csharp.mdx';
 import PutServerwideClientConfigurationNodejs from './_put-serverwide-client-configuration-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <PutServerwideClientConfigurationCsharp />

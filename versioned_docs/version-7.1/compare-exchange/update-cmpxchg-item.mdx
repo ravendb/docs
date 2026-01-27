@@ -2,6 +2,7 @@
 title: "Update Compare-Exchange Item"
 sidebar_label: "Update Compare-Exchange Item"
 sidebar_position: 6
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import UpdateCmpXchgItemCsharp from './content/_update-cmpxchg-item-csharp.mdx';
 import UpdateCmpXchgItemJava from './content/_update-cmpxchg-item-java.mdx';
 import UpdateCmpXchgItemNodejs from './content/_update-cmpxchg-item-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <UpdateCmpXchgItemCsharp />

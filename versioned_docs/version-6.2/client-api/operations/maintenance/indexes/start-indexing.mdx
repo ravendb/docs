@@ -2,6 +2,7 @@
 title: "Resume Indexing Operation"
 sidebar_label: Resume Indexing
 sidebar_position: 11
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import StartIndexingPython from './_start-indexing-python.mdx';
 import StartIndexingPhp from './_start-indexing-php.mdx';
 import StartIndexingNodejs from './_start-indexing-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <StartIndexingCsharp />

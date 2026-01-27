@@ -2,6 +2,7 @@
 title: "Commands: GetActiveAsync"
 sidebar_label: GetActive
 sidebar_position: 2
+supported_languages: ["csharp", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import ActiveCsharp from './_active-csharp.mdx';
 import ActiveHttp from './_active-http.mdx';
 
-export const supportedLanguages = ["csharp", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ActiveCsharp />

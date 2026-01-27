@@ -2,6 +2,7 @@
 title: "Commands: How to get server build number?"
 sidebar_label: ...get server build number
 sidebar_position: 11
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetServerBuildNumberCsharp from './_get-server-build-number-csharp.mdx';
 import GetServerBuildNumberJava from './_get-server-build-number-java.mdx';
 import GetServerBuildNumberHttp from './_get-server-build-number-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetServerBuildNumberCsharp />

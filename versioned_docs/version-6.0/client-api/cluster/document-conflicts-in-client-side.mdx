@@ -2,6 +2,7 @@
 title: "Cluster: Document Conflicts in Client-side"
 sidebar_label: Document Conflict Exceptions at Client-Side
 sidebar_position: 1
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import DocumentConflictsInClientSideCsharp from './_document-conflicts-in-client-side-csharp.mdx';
 import DocumentConflictsInClientSideJava from './_document-conflicts-in-client-side-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <DocumentConflictsInClientSideCsharp />

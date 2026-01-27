@@ -2,6 +2,7 @@
 title: "How to setup a default database?"
 sidebar_label: Setting up Default Database
 sidebar_position: 3
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import SettingUpDefaultDatabaseCsharp from './_setting-up-default-database-csharp.mdx';
 import SettingUpDefaultDatabaseJava from './_setting-up-default-database-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SettingUpDefaultDatabaseCsharp />

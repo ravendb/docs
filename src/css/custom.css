@@ -433,3 +433,8 @@ hr {
 .theme-doc-markdown header :is(h1, h2, h3, h4, h5, h6) {
     @apply break-normal;
 }
+
+/* Smaller margin-top for pagination-nav */
+.pagination-nav {
+    @apply !mt-8;
+}

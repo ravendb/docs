@@ -2,6 +2,7 @@
 title: "Session: Querying: How to Perform Proximity Search"
 sidebar_label: How to Perform Proximity Search
 sidebar_position: 20
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import HowToPerformProximitySearchCsharp from './_how-to-perform-proximity-search-csharp.mdx';
 import HowToPerformProximitySearchJava from './_how-to-perform-proximity-search-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToPerformProximitySearchCsharp />

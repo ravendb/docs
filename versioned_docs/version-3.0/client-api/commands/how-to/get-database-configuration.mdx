@@ -2,6 +2,7 @@
 title: "Commands: How to get database configuration?"
 sidebar_label: ...get database configuration
 sidebar_position: 8
+supported_languages: ["csharp", "java", "http"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GetDatabaseConfigurationCsharp from './_get-database-configuration-csharp
 import GetDatabaseConfigurationJava from './_get-database-configuration-java.mdx';
 import GetDatabaseConfigurationHttp from './_get-database-configuration-http.mdx';
 
-export const supportedLanguages = ["csharp", "java", "http"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetDatabaseConfigurationCsharp />

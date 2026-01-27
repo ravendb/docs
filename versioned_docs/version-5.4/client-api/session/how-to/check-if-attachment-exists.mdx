@@ -2,6 +2,7 @@
 title: "How to Check if an Attachment Exists"
 sidebar_label: ...check if attachment exists
 sidebar_position: 16
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import CheckIfAttachmentExistsPython from './_check-if-attachment-exists-python.
 import CheckIfAttachmentExistsPhp from './_check-if-attachment-exists-php.mdx';
 import CheckIfAttachmentExistsNodejs from './_check-if-attachment-exists-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CheckIfAttachmentExistsCsharp />

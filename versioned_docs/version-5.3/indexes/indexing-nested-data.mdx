@@ -2,6 +2,7 @@
 title: "Indexing Nested data"
 sidebar_label: Indexing Nested Data
 sidebar_position: 12
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import IndexingNestedDataCsharp from './_indexing-nested-data-csharp.mdx';
 import IndexingNestedDataJava from './_indexing-nested-data-java.mdx';
 import IndexingNestedDataNodejs from './_indexing-nested-data-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IndexingNestedDataCsharp />

@@ -2,6 +2,7 @@
 title: "Append & Update Time Series"
 sidebar_label: Append
 sidebar_position: 0
+supported_languages: ["csharp", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,8 @@ import AppendPython from './_append-python.mdx';
 import AppendPhp from './_append-php.mdx';
 import AppendNodejs from './_append-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AppendCsharp />

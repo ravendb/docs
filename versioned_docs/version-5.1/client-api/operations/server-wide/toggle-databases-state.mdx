@@ -2,6 +2,7 @@
 title: "Operations: Server: How to Enable or Disable a Database"
 sidebar_label: Toggle Databases State
 sidebar_position: 9
+supported_languages: ["csharp"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -9,9 +10,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ToggleDatabasesStateCsharp from './_toggle-databases-state-csharp.mdx';
 
-export const supportedLanguages = ["csharp"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ToggleDatabasesStateCsharp />

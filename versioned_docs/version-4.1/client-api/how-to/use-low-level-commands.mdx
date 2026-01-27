@@ -2,6 +2,7 @@
 title: "Client API: How to Use Low-Level Commands"
 sidebar_label: ...use low-level commands
 sidebar_position: 3
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import UseLowLevelCommandsCsharp from './_use-low-level-commands-csharp.mdx';
 import UseLowLevelCommandsJava from './_use-low-level-commands-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <UseLowLevelCommandsCsharp />

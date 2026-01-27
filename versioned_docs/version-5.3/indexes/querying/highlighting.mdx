@@ -2,6 +2,7 @@
 title: "Highlight Index Search Results"
 sidebar_label: Highlighting
 sidebar_position: 14
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HighlightingCsharp from './_highlighting-csharp.mdx';
 import HighlightingJava from './_highlighting-java.mdx';
 import HighlightingNodejs from './_highlighting-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HighlightingCsharp />

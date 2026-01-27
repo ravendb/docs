@@ -2,6 +2,7 @@
 title: "Data Gap Filling"
 sidebar_label: Data Gap Filling
 sidebar_position: 6
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import GapFillingCsharp from './_gap-filling-csharp.mdx';
 import GapFillingJava from './_gap-filling-java.mdx';
 import GapFillingNodejs from './_gap-filling-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GapFillingCsharp />

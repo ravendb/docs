@@ -2,6 +2,7 @@
 title: "Operations: How to Put Client Configuration"
 sidebar_label: Put Client Configuration
 sidebar_position: 1
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import PutClientConfigurationCsharp from './_put-client-configuration-csharp.mdx';
 import PutClientConfigurationJava from './_put-client-configuration-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <PutClientConfigurationCsharp />

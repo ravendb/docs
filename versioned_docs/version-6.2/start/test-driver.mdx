@@ -2,6 +2,7 @@
 title: "Getting Started: Writing your Unit Test using TestDriver"
 sidebar_label: Unit Tests
 sidebar_position: 4
+supported_languages: ["csharp", "java"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import TestDriverCsharp from './_test-driver-csharp.mdx';
 import TestDriverJava from './_test-driver-java.mdx';
 
-export const supportedLanguages = ["csharp", "java"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <TestDriverCsharp />

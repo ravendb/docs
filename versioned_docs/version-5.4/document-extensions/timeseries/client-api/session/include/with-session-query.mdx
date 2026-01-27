@@ -2,6 +2,7 @@
 title: "Include Time Series with Query"
 sidebar_label: With Query
 sidebar_position: 2
+supported_languages: ["csharp", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -10,9 +11,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import WithSessionQueryCsharp from './_with-session-query-csharp.mdx';
 import WithSessionQueryNodejs from './_with-session-query-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <WithSessionQueryCsharp />

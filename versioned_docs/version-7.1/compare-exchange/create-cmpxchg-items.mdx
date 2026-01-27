@@ -2,6 +2,7 @@
 title: "Create Compare-Exchange Items"
 sidebar_label: "Create Compare-Exchange Items"
 sidebar_position: 2
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import CreateCmpXchgItemsNodejs from './content/_create-cmpxchg-items-nodejs.mdx
 import CreateCmpXchgItemsPython from './content/_create-cmpxchg-items-python.mdx';
 import CreateCmpXchgItemsPhp from './content/_create-cmpxchg-items-php.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <CreateCmpXchgItemsCsharp />

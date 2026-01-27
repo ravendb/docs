@@ -2,6 +2,7 @@
 title: "Changes API: How to Subscribe to Index Changes"
 sidebar_label: How to Subscribe to Index Changes
 sidebar_position: 2
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,8 @@ import HowToSubscribeToIndexChangesCsharp from './_how-to-subscribe-to-index-cha
 import HowToSubscribeToIndexChangesJava from './_how-to-subscribe-to-index-changes-java.mdx';
 import HowToSubscribeToIndexChangesNodejs from './_how-to-subscribe-to-index-changes-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <HowToSubscribeToIndexChangesCsharp />

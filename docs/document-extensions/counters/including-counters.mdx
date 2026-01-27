@@ -2,6 +2,7 @@
 title: "Including Counters"
 sidebar_label: Including Counters
 sidebar_position: 5
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -13,9 +14,8 @@ import IncludingCountersPython from './_including-counters-python.mdx';
 import IncludingCountersPhp from './_including-counters-php.mdx';
 import IncludingCountersNodejs from './_including-counters-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <IncludingCountersCsharp />
