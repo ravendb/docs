@@ -5,7 +5,7 @@ import {
     HtmlClassNameProvider,
     ThemeClassNames,
 } from "@docusaurus/theme-common";
-import Translate, { translate } from "@docusaurus/Translate";
+import { translate } from "@docusaurus/Translate";
 import SearchMetadata from "@theme/SearchMetadata";
 import type { Props } from "@theme/DocTagDocListPage";
 import Unlisted from "@theme/ContentVisibility/Unlisted";

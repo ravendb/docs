@@ -46,10 +46,10 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
     })();
 
     const landingPagePath: string = (() => {
-        if (pathType == PathType.Cloud) {
+        if (pathType === PathType.Cloud) {
             return "/cloud";
         }
-        if (pathType == PathType.Guides) {
+        if (pathType === PathType.Guides) {
             return "/guides";
         }
         return `/${versionLabel}`;
@@ -72,7 +72,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                         <Icon icon="home" size="xs" className="me-2" /> Start
                     </Link>
                 </div>
-                {pathType != PathType.Documentation && (
+                {pathType !== PathType.Documentation && (
                     <Link to={`/${versionLabel}`} className="menu__link group">
                         <Icon icon="database" size="xs" className="me-2" />{" "}
                         RavenDB Docs
@@ -81,7 +81,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                         </small>
                     </Link>
                 )}
-                {pathType != PathType.Cloud && (
+                {pathType !== PathType.Cloud && (
                     <Link to="/cloud" className="menu__link group">
                         <Icon icon="cloud" size="xs" className="me-2" /> RavenDB
                         Cloud Docs
@@ -90,7 +90,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                         </small>
                     </Link>
                 )}
-                {pathType != PathType.Guides && (
+                {pathType !== PathType.Guides && (
                     <Link to="/guides" className="menu__link group">
                         <Icon icon="guides" size="xs" className="me-2" />{" "}
                         RavenDB Guides
@@ -111,7 +111,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                         className="ms-auto opacity-0 group-hover:opacity-100 !transition-all"
                     />
                 </Link>
-                {pathType == PathType.Documentation && (
+                {pathType === PathType.Documentation && (
                     <Link
                         to={`/${versionLabel}/whats-new`}
                         className="menu__link"
@@ -121,11 +121,11 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                     </Link>
                 )}
             </div>
-            {pathType != PathType.Guides && (
+            {pathType !== PathType.Guides && (
                 <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />
             )}
-            {pathType == PathType.Documentation && <SidebarVersionDropdown />}
-            {pathType != PathType.Guides && (
+            {pathType === PathType.Documentation && <SidebarVersionDropdown />}
+            {pathType !== PathType.Guides && (
                 <Content path={path} sidebar={sidebar} />
             )}
             {hideable && <CollapseButton onClick={onCollapse} />}

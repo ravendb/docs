@@ -62,6 +62,7 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                     const fileContent = fs.readFileSync(tagsYmlPath, "utf8");
                     predefinedTags = (yaml.load(fileContent) as any) || {};
                 } catch (e) {
+                    // eslint-disable-next-line no-console
                     console.error("Failed to load tags.yml", e);
                 }
             }
@@ -93,7 +94,7 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                 const permalink = `/guides/${slug === "index" ? "" : slug}`;
 
                 let tags = data.tags || [];
-                if (!Array.isArray(tags)) tags = [];
+                if (!Array.isArray(tags)) {tags = [];}
 
                 tags.forEach((tag: string) => {
                     tagCounts[tag] = (tagCounts[tag] || 0) + 1;

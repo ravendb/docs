@@ -16,16 +16,10 @@ export default function TagsGrid() {
         }>;
     };
 
-    const [tags, setTags] = React.useState(pluginData?.tags || []);
-
-    React.useEffect(() => {
-        setTags((currentTags) =>
-            [...currentTags]
-                .filter((tag) => tag.count > 0)
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 25),
-        );
-    }, []);
+    const tags = (pluginData?.tags || [])
+        .filter((tag) => tag.count > 0)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 25);
 
     return (
         <div className="flex flex-col gap-6">

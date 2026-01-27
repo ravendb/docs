@@ -27,6 +27,7 @@ export default function DocItemFooter(): ReactNode {
     const isPathHidden = HIDDEN_EDIT_PAGE_ROUTES.some((route) => {
         return permalink.endsWith(route);
     });
+    const { tags } = metadata;
 
     const canDisplayTagsRow = tags.length > 0;
     const canDisplayEditMetaRow = !!editUrl && !isPathHidden;

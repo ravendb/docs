@@ -4,7 +4,6 @@ import {
     PageMetadata,
     HtmlClassNameProvider,
     ThemeClassNames,
-    translateTagsPageTitle,
 } from "@docusaurus/theme-common";
 import TagsListByLetter from "@theme/TagsListByLetter";
 import SearchMetadata from "@theme/SearchMetadata";
@@ -76,39 +75,19 @@ function DocTagsListPageContent({
                                 </div>
                                 <div className="relative w-full sm:max-w-[300px]">
                                     <input
-                                        type="text"
+                                        type="search"
                                         placeholder="Filter tags..."
                                         value={searchQuery}
                                         onChange={(e) =>
                                             setSearchQuery(e.target.value)
                                         }
                                         className={clsx(
-                                            "w-full py-2 px-4 pr-10 rounded-full text-sm font-normal",
+                                            "w-full py-2 px-4 rounded-full text-sm font-normal",
                                             "border border-black/10 dark:border-white/10",
                                             "hover:border-black/20 dark:hover:border-white/20",
                                             "outline-none focus:bg-black/5 dark:focus:bg-white/5 focus:border-black/20 dark:focus:border-white/20 transition-all",
                                         )}
                                     />
-                                    {searchQuery && (
-                                        <button
-                                            onClick={() => setSearchQuery("")}
-                                            className={clsx(
-                                                "absolute right-3 top-1/2 -translate-y-1/2",
-                                                "p-1 rounded-full",
-                                                "hover:bg-black/5 dark:hover:bg-white/5",
-                                                "!transition-all cursor-pointer",
-                                            )}
-                                            aria-label="Clear filter"
-                                            title="Clear filter"
-                                            type="button"
-                                        >
-                                            <Icon
-                                                icon="close"
-                                                size="xs"
-                                                className="opacity-50 hover:opacity-100"
-                                            />
-                                        </button>
-                                    )}
                                 </div>
                             </header>
                             {filteredTags.length > 0 ? (

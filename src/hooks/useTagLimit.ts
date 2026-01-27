@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export interface UseTagLimitOptions {
     tags: Array<{ label: string; permalink: string }>;
@@ -18,11 +18,6 @@ export function useTagLimit({
 }: UseTagLimitOptions): UseTagLimitReturn {
     const [isExpanded, setIsExpanded] = useState(false);
     const [limit, setLimit] = useState(defaultLimit);
-
-    useEffect(() => {
-        setLimit(defaultLimit);
-        setIsExpanded(false);
-    }, [tags, defaultLimit]);
 
     const visibleTags = isExpanded ? tags : tags.slice(0, limit);
     const hiddenCount = tags.length - visibleTags.length;

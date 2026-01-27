@@ -1,6 +1,5 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import Link from "@docusaurus/Link";
-import { Icon } from "./Icon";
 import clsx from "clsx";
 import { ThemeClassNames } from "@docusaurus/theme-common";
 
@@ -17,7 +16,7 @@ export interface BreadcrumbsProps {
 export default function CustomBreadcrumbs({
     items,
     className,
-}: BreadcrumbsProps): ReactNode {
+}: BreadcrumbsProps) {
     if (!items || items.length === 0) {
         return null;
     }
@@ -66,7 +65,10 @@ export default function CustomBreadcrumbs({
                                     {item.label}
                                 </span>
                             )}
-                            <meta itemProp="position" content={String(index + 1)} />
+                            <meta
+                                itemProp="position"
+                                content={String(index + 1)}
+                            />
                         </li>
                     );
                 })}
@@ -74,4 +76,3 @@ export default function CustomBreadcrumbs({
         </nav>
     );
 }
-

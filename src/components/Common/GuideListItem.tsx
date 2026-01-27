@@ -43,7 +43,7 @@ export default function GuideListItem({
                     {title}
                 </p>
                 <div className="flex gap-1 items-center flex-wrap">
-                    {visibleTags.map((tag, index) => (
+                    {visibleTags.map((tag) => (
                         <Tag
                             key={tag.label}
                             size="xs"
