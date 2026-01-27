@@ -12,9 +12,7 @@ import AzureOpenAiCsharp from './content/_azure-open-ai-csharp.mdx';
 import AzureOpenAiNodejs from './content/_azure-open-ai-nodejs.mdx';
 import AzureOpenAiPython from './content/_azure-open-ai-python.mdx';
 
-export const supportedLanguages = ["csharp", "nodejs", "python"];
-
-<LanguageSwitcher supportedLanguages={frontMatter.supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <AzureOpenAiCsharp />
