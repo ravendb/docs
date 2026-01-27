@@ -38,7 +38,7 @@ export default function RecentGuides() {
         .filter((doc) => doc.id !== "home")
         .map((doc: any) => ({
             title: doc.title || doc.id,
-            url: doc.permalink,
+            url: doc.externalUrl || doc.permalink,
             tags: doc.tags || [],
             time: doc.lastUpdatedAt
                 ? getRelativeTime(doc.lastUpdatedAt)
@@ -48,7 +48,7 @@ export default function RecentGuides() {
         .slice(0, 10);
 
     return (
-        <div className="flex flex-col gap-6 lg:h-[0px] lg:min-h-full">
+        <div className="flex flex-col gap-6 xl:h-[0px] xl:min-h-full">
             <div className="flex flex-wrap items-center justify-between shrink-0">
                 <Heading as="h2" className="!mb-0">
                     Recent guides

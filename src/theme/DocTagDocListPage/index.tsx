@@ -146,7 +146,7 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                         description={
                                                             doc.description
                                                         }
-                                                        url={doc.permalink}
+                                                        url={guide?.externalUrl || doc.permalink}
                                                         imgSrc={guide?.image}
                                                         imgIcon={guide?.icon}
                                                         tags={guide?.tags}
@@ -199,7 +199,7 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                     >
                                                         <GuideListItem
                                                             title={doc.title}
-                                                            url={doc.permalink}
+                                                            url={guide?.externalUrl || doc.permalink}
                                                             tags={guide?.tags}
                                                             date={formattedDate}
                                                         />

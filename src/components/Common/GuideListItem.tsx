@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import clsx from "clsx";
 import { useTagLimit } from "@site/src/hooks/useTagLimit";
 import Tag from "@site/src/theme/Tag";
+import isInternalUrl from "@docusaurus/isInternalUrl";
 
 export interface GuideListItemProps {
     title: string;
@@ -25,7 +26,7 @@ export default function GuideListItem({
         <Link
             to={url}
             className={clsx(
-                "flex items-center py-3 px-2",
+                "flex items-center py-3 px-2 gap-4",
                 "border-b border-black/10 dark:border-white/10 !text-inherit",
                 "hover:!no-underline",
                 "group relative",
@@ -72,10 +73,10 @@ export default function GuideListItem({
                     className={clsx(
                         "!mb-0 text-xs",
                         "overflow-hidden text-ellipsis text-right whitespace-nowrap",
-                        "shrink-0",
-                        "w-[92px]",
+                        "shrink-0"
                     )}
                 >
+                    {!isInternalUrl(url) && "External • "}
                     {date}
                 </p>
             )}

@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import Tag from "../../theme/Tag";
 import clsx from "clsx";
+import isInternalUrl from "@docusaurus/isInternalUrl";
 import { useTagLimit } from "@site/src/hooks/useTagLimit";
 
 export interface RecentGuidesListItemProps {
@@ -68,7 +69,10 @@ export default function RecentGuidesListItem({
                         </Tag>
                     )}
                 </div>
-                <span className="text-xs shrink-0">{time}</span>
+                <span className="text-xs shrink-0">
+                    {!isInternalUrl(url) && "External • "}
+                    {time}
+                </span>
             </div>
         </div>
     );

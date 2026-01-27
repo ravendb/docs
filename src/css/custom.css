@@ -315,7 +315,7 @@ pre[class*="language-"] {
 }
 
 .breadcrumbs__link {
-  @apply text-gray-600 dark:text-gray-400 no-underline transition-colors leading-[1];
+  @apply text-gray-600 dark:text-gray-200 no-underline transition-colors leading-[1];
   display: inline-flex;
   align-items: center;
 }

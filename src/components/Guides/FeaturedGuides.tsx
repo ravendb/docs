@@ -40,7 +40,7 @@ export default function FeaturedGuides({ guidesTitles }: FeaturedGuidesProps) {
                         description={guide.description}
                         imgSrc={guide.image}
                         imgIcon={guide.icon}
-                        url={guide.permalink}
+                        url={guide.externalUrl || guide.permalink}
                         tags={guide.tags}
                         animationDelay={index * 50}
                     />

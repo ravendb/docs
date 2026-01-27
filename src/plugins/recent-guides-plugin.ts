@@ -14,6 +14,7 @@ export interface Guide {
     description?: string;
     image?: string | { light: string; dark: string };
     icon?: IconName;
+    externalUrl?: string;
 }
 
 export interface PluginData {
@@ -93,8 +94,39 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                     : baseName;
                 const permalink = `/guides/${slug === "index" ? "" : slug}`;
 
+                const externalUrl: string | undefined =
+                    (data as any).externalUrl || (data as any).external_url;
+
+                const frontmatterDate: unknown = (data as any).publishedAt;
+
+                let lastUpdatedAt: number;
+                if (frontmatterDate) {
+                    let millis: number | null = null;
+                    if (typeof frontmatterDate === "string") {
+                        const parsed = Date.parse(frontmatterDate);
+                        if (!Number.isNaN(parsed)) {
+                            millis = parsed;
+                        }
+                    } else if (frontmatterDate instanceof Date) {
+                        millis = frontmatterDate.getTime();
+                    } else if (typeof frontmatterDate === "number") {
+                        millis =
+                            frontmatterDate > 1e12
+                                ? frontmatterDate
+                                : frontmatterDate * 1000;
+                    }
+
+                    lastUpdatedAt = millis
+                        ? Math.floor(millis / 1000)
+                        : Math.floor(stats.mtimeMs / 1000);
+                } else {
+                    lastUpdatedAt = Math.floor(stats.mtimeMs / 1000);
+                }
+
                 let tags = data.tags || [];
-                if (!Array.isArray(tags)) {tags = [];}
+                if (!Array.isArray(tags)) {
+                    tags = [];
+                }
 
                 tags.forEach((tag: string) => {
                     tagCounts[tag] = (tagCounts[tag] || 0) + 1;
@@ -124,10 +156,11 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                         path.basename(filePath, path.extname(filePath)),
                     permalink: data.slug || permalink,
                     tags: formattedTags,
-                    lastUpdatedAt: Math.floor(stats.mtimeMs / 1000),
+                    lastUpdatedAt,
                     description: data.description,
                     image: data.image,
                     icon: data.icon,
+                    externalUrl,
                 };
             });
 

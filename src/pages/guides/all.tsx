@@ -127,7 +127,7 @@ function AllGuidesPageContent(): ReactNode {
                                                         description={
                                                             guide.description
                                                         }
-                                                        url={guide.permalink}
+                                                        url={guide.externalUrl || guide.permalink}
                                                         imgSrc={guide.image}
                                                         imgIcon={guide.icon}
                                                         tags={guide.tags}
@@ -175,7 +175,7 @@ function AllGuidesPageContent(): ReactNode {
                                                     >
                                                         <GuideListItem
                                                             title={guide.title}
-                                                            url={guide.permalink}
+                                                            url={guide.externalUrl || guide.permalink}
                                                             tags={guide.tags}
                                                             date={formattedDate}
                                                         />
