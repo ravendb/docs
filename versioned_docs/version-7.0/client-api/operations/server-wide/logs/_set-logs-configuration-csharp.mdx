@@ -2,60 +2,394 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-To set the server logs configuration, use **SetLogsConfigurationOperation** from `Maintenance.Server`. The server logs configuration is not persisted and will get back to the original value after server restart.
+<Admonition type="note" title="">
 
-## Syntax
+* Logging settings are loaded from configuration sources (environment variables, _settings.json_, or command-line arguments) when the server starts.
+  Command-line arguments override _settings.json_, and _settings.json_ overrides environment variables.  
+  * See the full list of available logging keys in: [Logs Options](../../../../server/configuration/logs-configuration.mdx).
+  * Learn how to configure them in: [Configuration overview](../../../../server/configuration/configuration-options.mdx). 
+    
+* After the server is up and running,  
+  you can override the logging minimum level and configure logging filters at **runtime**:  
+  * From the **Client API** - use `SetLogsConfigurationOperation`, as explained below.  
+  * From the **Studio** - see: [Admin Logs view](../../../../studio/server/debug/admin-logs).
 
-<TabItem value="set_logs_1" label="set_logs_1">
-<CodeBlock language="csharp">
-{`public SetLogsConfigurationOperation(Parameters parameters)
-`}
-</CodeBlock>
-</TabItem>
+* Learn more about RavenDB's logging system in the [Logging](../../../../server/troubleshooting/logging.mdx) article. 
+    
+* In this article:
+    * [Set logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-logs-configuration)
+    * [Set Microsoft logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-microsoft-logs-configuration)
+    * [Set Admin logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-admin-logs-configuration)
+    * [Syntax](../../../../client-api/operations/server-wide/logs/set-logs-configuration#syntax)
 
-<TabItem value="set_logs_2" label="set_logs_2">
-<CodeBlock language="csharp">
-{`public class Parameters
-\{
-    public LogMode Mode \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+</Admonition>
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **Mode** | `LogMode`  | Logging mode (level) to be set |
+<Panel heading="Set logs configuration">
 
-## Example
+* The default minimum log level for server logs is `LogLevel.Info`.  
+  You can override this level and apply filters to control which log entries are written.
 
+* Setting `persist` to `true` in the operation will persist **only the minimum level** to the `settings.json` file.    
+  The value will be written under the [Logs.MinLevel](../../../../server/configuration/logs-configuration#logsminlevel) configuration key.  
+  Filter rules are currently Not persisted and must be reapplied after a server restart.
+    
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`store
-    .Maintenance
-    .Server
-    .Send(new SetLogsConfigurationOperation(
-        new SetLogsConfigurationOperation.Parameters
-        {
-            Mode = LogMode.Information
-        }));
-`}
-</CodeBlock>
+```csharp
+// Define the logs configuration:
+var configuration = new SetLogsConfigurationOperation.LogsConfiguration
+{
+    // Override the default minimum log level.
+    // Only messages at 'Warn' level or higher will be written.
+    MinLevel = LogLevel.Warn,
+
+    // Apply filters:
+    Filters = new List<LogFilter>
+    {
+        // Log entries for database "DB1" that include an exception:
+        new LogFilter(
+            minLevel: LogLevel.Error,
+            maxLevel: LogLevel.Fatal,
+            condition: 
+                "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
+            action: LogFilterAction.LogFinal
+        ),
+
+        // Log entries that exceed 200 characters in length.
+        // Note: Although this filter starts at 'Debug',
+        //       entries must still pass the global 'Warn' level to be logged.
+        new LogFilter(
+            minLevel: LogLevel.Debug,
+            maxLevel: LogLevel.Fatal,
+            condition: "length(message) > 200",
+            action: LogFilterAction.LogFinal
+        )
+    },
+    
+    // The default action to take if no filter matches.
+    LogFilterDefaultAction = LogFilterAction.IgnoreFinal 
+};
+
+// Define the set logs configuration operation:
+// Setting 'persist' to true will persist only the min level to settings.json    
+var setLogsOp = new SetLogsConfigurationOperation(configuration, persist: true)    
+
+// Execute the operation by passing it to 'Maintenance.Server.Send'
+store.Maintenance.Server.Send(setLogsOp);
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`await store
-    .Maintenance
-    .Server
-    .SendAsync(new SetLogsConfigurationOperation(
-        new SetLogsConfigurationOperation.Parameters
-        {
-            Mode = LogMode.Information
-        }));
-`}
-</CodeBlock>
+```csharp
+// Define the server logs configuration:
+var configuration = new SetLogsConfigurationOperation.LogsConfiguration
+{
+    // Override the default minimum log level.
+    // Only messages at 'Warn' level or higher will be written.
+    MinLevel = LogLevel.Warn,
+
+    // Apply filters:
+    Filters = new List<LogFilter>
+    {
+        // Log entries for database "DB1" that include an exception:
+        new LogFilter(
+            minLevel: LogLevel.Error,
+            maxLevel: LogLevel.Fatal,
+            condition: 
+                "contains('${event-properties:item=Resource}', 'DB1') and exception != null",
+            action: LogFilterAction.LogFinal
+        ),
+
+        // Log entries that exceed 200 characters in length.
+        // Note: Although this filter starts at 'Debug',
+        //       entries must still pass the global 'Warn' level to be logged.
+        new LogFilter(
+            minLevel: LogLevel.Debug,
+            maxLevel: LogLevel.Fatal,
+            condition: "length(message) > 200",
+            action: LogFilterAction.LogFinal
+        )
+    },
+
+    // The default action to take if no filter matches.
+    LogFilterDefaultAction = LogFilterAction.IgnoreFinal
+};
+
+// Define the set logs configuration operation.
+// Setting 'persist' to true will persist only the min level to settings.json
+var setLogsOp = new SetLogsConfigurationOperation(configuration, persist: true);
+
+// Execute the operation by passing it to 'Maintenance.Server.SendAsync'
+await store.Maintenance.Server.SendAsync(setLogsOp);
+
+```
 </TabItem>
 </Tabs>
+    
+<Admonition type="note" title="">
 
+If you're using an external `NLog.config` file,  
+you can define the logging level and filters directly in the XML file using `<logger>` and `<rules>`.
+
+* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).
+
+* Note: When an external NLog config file is used, its settings override any values set via `SetLogsConfigurationOperation`.
+
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Set Microsoft logs configuration">
+
+* The default minimum log level for Microsoft logs is `LogLevel.Error`.  
+  You can override this level to control which log entries are written.
+
+* To persist this minimum level to the _settings.json file_, set `persist` to `true`.  
+  The value will be written under the [Logs.Microsoft.MinLevel](../../../../server/configuration/logs-configuration#logsmicrosoftminlevel) configuration key.  
+  If set to `false`, the change will take effect immediately but will Not be saved across server restarts.
+
+<Admonition type="warning" title="">
+* To configure Microsoft logs,  
+  you must first enable them by setting `"Logs.Microsoft.Enabled": "true"` in the `settings.json` file.  
+* This change requires a server restart to take effect.
+</Admonition>
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Define Microsoft logs configuration:    
+var configuration = new SetLogsConfigurationOperation.MicrosoftLogsConfiguration()
+{
+   MinLevel = LogLevel.Debug 
+};
+    
+// Define the set logs configuration operation.
+// Setting 'persist' to true will persist the min level to settings.json
+var setLogsOp = new SetLogsConfigurationOperation(configuration, persist: true);
+
+// Execute the operation by passing it to 'Maintenance.Server.Send'
+store.Maintenance.Server.Send(setLogsOp);
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Define Microsoft logs configuration:    
+var configuration = new SetLogsConfigurationOperation.MicrosoftLogsConfiguration()
+{
+   MinLevel = LogLevel.Debug 
+};
+    
+// Define the set logs configuration operation.
+// Setting 'persist' to true will persist the min level to settings.json
+var setLogsOp = new SetLogsConfigurationOperation(configuration, persist: true);
+
+// Execute the operation by passing it to 'Maintenance.Server.SendAsync'
+await store.Maintenance.Server.SendAsync(setLogsOp);
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Set admin logs configuration">
+    
+* The admin logs are displayed in the **Admin Logs view** in the Studio, under the [Logs on this view](../../../../studio/server/debug/admin-logs#logs-on-this-view) section.  
+  This is a live stream of recent log activity shown only in the UI.
+    
+* These logs are configured separately from the logs that are written to disk.
+  Any settings you apply here, such as the minimum level or filters, apply **only** to the admin logs displayed in the Studio and do not affect the server logs saved on disk.
+  These changes are applied immediately and will affect all open Studio sessions that are displaying the Admin Logs view.
+  
+* While these logs can be exported, their settings are Not persisted (even if you set _persist_ to _true_ in the operation).
+
+* The default minimum log level for admin logs is `LogLevel.Trace`. 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+var configuration = new SetLogsConfigurationOperation.AdminLogsConfiguration()
+{
+   MinLevel = LogLevel.Info,
+    
+   Filters = new List<LogFilter>
+   {
+       // Log entries associated with index "MyIndex":
+       new LogFilter(
+           minLevel: LogLevel.Info, 
+           maxLevel: LogLevel.Fatal,
+           condition: "contains('${event-properties:item=Component}', 'MyIndex')",
+           action: LogFilterAction.LogFinal),
+   },
+    
+   LogFilterDefaultAction = LogFilterAction.IgnoreFinal 
+};
+    
+// Define the set logs configuration operation.
+var setLogsOp = new SetLogsConfigurationOperation(configuration);
+
+// Execute the operation by passing it to 'Maintenance.Server.Send'.
+// The changes apply immediately to all open Studio sessions.
+store.Maintenance.Server.Send(setLogsOp);
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+var configuration = new SetLogsConfigurationOperation.AdminLogsConfiguration()
+{
+   MinLevel = LogLevel.Info,
+    
+   Filters = new List<LogFilter>
+   {
+       // Log entries associated with index "MyIndex":
+       new LogFilter(
+           minLevel: LogLevel.Info, 
+           maxLevel: LogLevel.Fatal,
+           condition: "contains('${event-properties:item=Component}', 'MyIndex')",
+           action: LogFilterAction.LogFinal),
+   },
+    
+   LogFilterDefaultAction = LogFilterAction.IgnoreFinal 
+};
+    
+// Define the set logs configuration operation.
+var setLogsOp = new SetLogsConfigurationOperation(configuration);
+
+// Execute the operation by passing it to 'Maintenance.Server.SendAsync'.
+// The changes apply immediately to all open Studio sessions.
+await store.Maintenance.Server.SendAsync(setLogsOp);   
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+<TabItem>
+```csharp
+// Available overloads:
+public SetLogsConfigurationOperation(LogsConfiguration configuration, bool persist = false)
+public SetLogsConfigurationOperation(MicrosoftLogsConfiguration configuration, bool persist = false) 
+public SetLogsConfigurationOperation(AdminLogsConfiguration configuration, bool persist = false)
+```
+</TabItem>
+
+### `SetLogsConfigurationOperation.LogsConfiguration`
+    
+<TabItem>
+```csharp
+public class LogsConfiguration
+{
+    // The minimum log level that will be written to the server log.
+    // Will be persisted to the 'settings.json' file if 'persist' is true.
+    public LogLevel MinLevel { get; set; }
+    
+    // A list of active log filters that determine whether specific log entries 
+    // should be included or excluded.
+    public List<LogFilter> Filters { get; set; } = new();
+    
+    // This action does Not apply when no filters are defined.
+    // This action applies only in the following cases:
+    // * When a log entry does Not match any defined filter.
+    // * When a log entry matches a filter with a 'Neutral' action, 
+    //   provided that no subsequent filters apply.
+    public LogFilterAction LogFilterDefaultAction { get; set; }
+}
+```
+</TabItem>
+    
+### `SetLogsConfigurationOperation.MicrosoftLogsConfiguration`
+    
+<TabItem>
+```csharp
+public class MicrosoftLogsConfiguration
+{
+    // The minimum log level that will be written to Microsoft logs.
+    // Will be persisted to the 'settings.json' file if 'persist' is true.
+    public LogLevel MinLevel { get; set; }
+}
+```
+</TabItem>
+
+### `SetLogsConfigurationOperation.AdminLogsConfiguration`    
+    
+<TabItem>
+```csharp
+public class AdminLogsConfiguration
+{
+    // The minimum log level that will be written to the Admin Logs visible in the Studio.
+    // This value is Not persisted to the 'settings.json' file. (even if persist is true).
+    public LogLevel MinLevel { get; set; }
+    
+    public List<LogFilter> Filters { get; set; } = new();
+    
+    public LogFilterAction LogFilterDefaultAction { get; set; }
+}
+```
+</TabItem>
+
+---
+    
+<TabItem>
+```csharp
+public class LogFilter
+{
+    // A log entry matches the filter if:
+    // - its log level is between MinLevel and MaxLevel (inclusive),
+    // - it passes the global minimum level ('CurrentMinLevel'), and
+    // - it satisfies the condition.
+    
+    // The minimum log level this filter applies to. 
+    public LogLevel MinLevel { get; internal set; }
+    
+    // The maximum log level this filter applies to.
+    public LogLevel MaxLevel { get; internal set; }
+
+    // An NLog expression evaluated against the log entry; must return true for the filter to match.    
+    public string Condition { get; internal set; }
+    
+    // The action to take when a log entry matches this filter.
+    // Determines whether the entry is logged, ignored, or passed to the next filter.
+    public LogFilterAction Action { get; internal set; }
+}
+```
+</TabItem>
+    
+ <TabItem>
+```csharp
+public enum LogLevel
+{
+    Trace = 0,
+    Debug = 1,
+    Info = 2,
+    Warn = 3,
+    Error = 4,
+    Fatal = 5,
+    Off = 6
+}
+     
+public enum LogFilterAction
+{
+    // The action to take is deferred to the next filter that matches the log entry. 
+    // If no other filter matches, the "Default Filter Action" will be applied.
+    Neutral,
+     
+    // The log entry will be logged.
+    Log,
+     
+    // The log entry will Not be logged.
+    Ignore,
+     
+    // The log entry will be logged.
+    // Any subsequent filters with the same logging-rules as this filter will be ignored. 
+    LogFinal,
+     
+    // The log entry will Not be logged.
+    // Any subsequent filters with the same logging-rules as this filter will be ignored.
+    IgnoreFinal
+```
+</TabItem>    
+    
+</Panel>
