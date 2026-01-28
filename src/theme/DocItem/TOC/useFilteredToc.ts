@@ -36,6 +36,7 @@ function getFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const filteredToc: TOCItem[] = [];
 
     uniqueIds.forEach((id) => {
+        // eslint-disable-next-line no-undef
         const headingEl = markdownEl.querySelector(`#${CSS.escape(id)}`);
 
         if (headingEl) {

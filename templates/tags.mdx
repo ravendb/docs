@@ -1,0 +1,76 @@
+---
+title: "Tags"
+hide_table_of_contents: false
+sidebar_label: Tags
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+
+# Tags
+
+## Add a new tag
+
+Tags are defined centrally in `guides/tags.yml` and then referenced from guide
+frontmatter.
+
+### Define the tag in `guides/tags.yml`
+
+Each top‑level key is a tag id used in the `tags` array. Example:
+
+```yml
+ai:
+  label: "AI"
+  permalink: "/ai"
+  description: "Content related to AI."
+```
+
+To add a new tag, append a new entry:
+
+```yml
+vector-search:
+  label: "Vector search"
+  permalink: "/vector-search"
+  description: "Guides related to semantic search and embeddings."
+```
+
+### Use the tag in a guide
+
+In a guide MDX file, reference the tag by its key:
+
+```mdx
+---
+title: "Vector search basics"
+tags: [ai, vector-search]
+image: "/img/guides-vector-search.webp"
+description: "Intro to semantic search in RavenDB."
+---
+```
+
+The `recent-guides-plugin`:
+
+- Reads `guides/tags.yml` and builds a list of known tags
+- Counts how many guides use each tag
+- Exposes this data to the Guides UI (cards, tag pages, and `TagsGrid`)
+
+<Panel heading="Where tags show up" headingLevel={3}>
+
+- On the Guides home page, under **Browse by topic**, `TagsGrid` shows tags
+  with `count > 0` and links to `/guides/tags/<tag>`.
+- On guide cards (e.g., in **Recent guides**), selected tags may be rendered
+  as labels.
+- On individual tag pages, users can browse all guides for a specific topic.
+
+</Panel>
+
+<Admonition type="tip" title="Tagging guidelines">
+- Prefer a **small, focused set** of tags per guide (2–4 is typical).
+- Reuse existing tags from `guides/tags.yml` whenever possible.
+- When introducing a new tag, think of it as a "topic bucket" that might
+  contain multiple guides over time.
+</Admonition>
+

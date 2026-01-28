@@ -45,7 +45,7 @@ export default function DocsTopbar({
             className={clsx(
                 "sticky top-[71.46px] z-30",
                 "rounded-xl",
-                "transition-all duration-50 ease-in-out",
+                "!transition-all",
                 {
                     "max-h-[60px] opacity-100": isVisible,
                     "max-h-0 opacity-0 hidden": !isVisible,
@@ -62,7 +62,7 @@ export default function DocsTopbar({
                             "border border-black/10 dark:border-white/10",
                             "backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#1b1b1d]/40 bg-white/90 dark:bg-[#1b1b1d]/90",
                             "shadow-xl/30",
-                            "transition-all duration-300 ease-in-out",
+                            "!transition-all",
                             {
                                 "gap-2": !isCollapsed,
                             },
@@ -80,7 +80,7 @@ export default function DocsTopbar({
                                     "md:hidden ms-auto",
                                     "p-1 rounded",
                                     "hover:bg-black/5 dark:hover:bg-white/5",
-                                    "transition-colors",
+                                    "!transition-all",
                                 )}
                                 onClick={() => setIsCollapsed(!isCollapsed)}
                                 aria-label={
@@ -92,7 +92,7 @@ export default function DocsTopbar({
                                 <svg
                                     className={clsx(
                                         "w-4 h-4",
-                                        "transition-transform duration-200",
+                                        "!transition-transform",
                                         {
                                             "rotate-180": isCollapsed,
                                         },
@@ -117,15 +117,11 @@ export default function DocsTopbar({
                             />
                         </div>
                         <div
-                            className={clsx(
-                                "md:hidden",
-                                "transition-all duration-300 ease-in-out",
-                                {
-                                    "max-h-0 opacity-0 overflow-hidden":
-                                        isCollapsed,
-                                    "opacity-100": !isCollapsed,
-                                },
-                            )}
+                            className={clsx("md:hidden", "!transition-all", {
+                                "max-h-0 opacity-0 overflow-hidden":
+                                    isCollapsed,
+                                "opacity-100": !isCollapsed,
+                            })}
                         >
                             <LanguageSwitcher
                                 supportedLanguages={supportedLanguages}

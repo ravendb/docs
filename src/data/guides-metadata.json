@@ -1,0 +1,55 @@
+[
+    {
+        "title": "Data ETL and Transformations",
+        "tags": [
+            "etl",
+            "integration",
+            "dashboards"
+        ],
+        "date": "2026-01-15 15:02:57",
+        "url": "/guides/data-etl",
+        "id": "data-etl"
+    },
+    {
+        "title": "Advanced Querying with RQL",
+        "tags": [
+            "querying",
+            "rql",
+            "performance"
+        ],
+        "date": "2026-01-15 15:02:51",
+        "url": "/guides/advanced-querying",
+        "id": "advanced-querying"
+    },
+    {
+        "title": "Securing your RavenDB Cluster",
+        "tags": [
+            "security",
+            "authentication",
+            "certificates"
+        ],
+        "date": "2026-01-15 15:02:44",
+        "url": "/guides/securing-cluster",
+        "id": "securing-cluster"
+    },
+    {
+        "title": "Example Guide",
+        "tags": [
+            "indexes",
+            "attachments"
+        ],
+        "date": "2026-01-12 15:16:17 +0100",
+        "url": "/guides/example-guide",
+        "id": "example-guide"
+    },
+    {
+        "title": "Other Guide",
+        "tags": [
+            "attachments",
+            "querying"
+        ],
+        "date": "2026-01-12 15:16:17 +0100",
+        "url": "/guides/other-guide",
+        "id": "other-guide"
+    }
+]

@@ -1,0 +1,66 @@
+---
+title: "Featured guides"
+hide_table_of_contents: false
+sidebar_label: Featured guides
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+
+# Featured guides
+
+## Mark a guide as featured
+
+Featured guides are rendered on the `/guides` home page using the
+`FeaturedGuides` component.
+
+Open `guides/home.mdx` and locate the `FeaturedGuides` usage:
+
+````mdx
+import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
+
+<FeaturedGuides guidesTitles={["Begin analysis with OLAP ETL", "Other Guide"]} />
+````
+
+### How it works
+
+- The `recent-guides-plugin` collects all guides from the `guides` folder.
+- `FeaturedGuides` looks up guides **by their `title` frontmatter**.
+- The `guidesTitles` prop is an array of up to two titles that should be
+  highlighted.
+
+### Steps to feature a guide
+
+1. **Create or edit the guide** in `guides` and set the `title` in frontmatter,
+   for example:
+
+   ```mdx
+   ---
+   title: "Example Guide"
+   tags: [ai, demo]
+   image: "/img/guides-ai-agents.webp"
+   description: "Short description used in cards and lists."
+   ---
+   ```
+
+2. **Update `guides/home.mdx`** and set the titles you want to feature:
+
+   ````mdx
+   <FeaturedGuides guidesTitles={["Example Guide", "Begin analysis with OLAP ETL"]} />
+   ````
+
+3. Make sure the strings in `guidesTitles` **exactly match** the `title`
+   values in the guide frontmatter (including punctuation and casing).
+
+4. Save and refresh the Guides home page – the cards in the **Featured guides**
+   section will update automatically.
+
+<Admonition type="info" title="Without guidesTitles">
+If you omit the `guidesTitles` prop, `FeaturedGuides` will fall back to showing
+the two most recently updated guides based on file timestamps or `publishedAt`.
+</Admonition>
+

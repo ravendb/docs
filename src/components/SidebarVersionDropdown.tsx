@@ -46,7 +46,7 @@ export default function CustomVersionDropdown() {
       <button
         ref={buttonRef}
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex justify-between items-center rounded-md border border-black/10 dark:border-white/10 px-3 text-sm py-2 bg-transparent text-ifm-menu hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors transition-duration-300"
+        className="w-full flex justify-between items-center rounded-md border border-black/10 dark:border-white/10 px-3 text-sm py-2 bg-transparent text-ifm-menu hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer !transition-all"
       >
         <span>{currentLabel}.x</span>
         <svg
