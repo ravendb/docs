@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -12,6 +14,7 @@ import CodeBlock from '@theme/CodeBlock';
    * Pre-made embeddings that you created yourself and stored using these [Data types](../../../ai-integration/vector-search/data-types-for-vector-search.mdx#numerical-data).  
    * Pre-made embeddings that are automatically generated from your document content by RavenDB's  
      **embeddings generation tasks** using external service providers, as explained below.
+
 * In this article:
   * [Embeddings generation - overview](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---overview)
      * [Embeddings generation - process flow](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---process-flow)
@@ -22,11 +25,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 </Admonition>
 
-## Embeddings generation - overview
+<Panel heading="Embeddings generation - overview">
 
-<Admonition type="note" title="">
+<ContentFrame>
 
-#### Embeddings generation - process flow
+### Embeddings generation - process flow
     
 * **Define an Embeddings Generation Task**:  
   Specify a [connection string](../../../ai-integration/connection-strings/overview.mdx) that defines the AI provider and model for generating embeddings.  
@@ -68,11 +71,17 @@ import CodeBlock from '@theme/CodeBlock';
   * A failed embeddings generation task will retry after the duration set in the  
     [Ai.Embeddings.MaxFallbackTimeInSec](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
 
-</Admonition>
+---   
+    
+![flow chart](../assets/embeddings-generation-task-flow.png)
 
-<Admonition type="note" title="">
+![flow chart](../assets/vector-search-flow.png)
+    
+</ContentFrame>
 
-#### Supported providers
+<ContentFrame>
+
+### Supported providers
     
 * The following service providers are supported for auto-generating embeddings using tasks:
 
@@ -85,13 +94,11 @@ import CodeBlock from '@theme/CodeBlock';
     * [Mistral AI](../../../ai-integration/connection-strings/mistral-ai.mdx)
     * [bge-micro-v2](../../../ai-integration/connection-strings/embedded.mdx) (a local embedded model within RavenDB)
 
-</Admonition>
+</ContentFrame>
 
-![flow chart](../assets/embeddings-generation-task-flow.png)
+</Panel>
 
-![flow chart](../assets/vector-search-flow.png)
-
-## Creating an embeddings generation task
+<Panel heading="Creating an embeddings generation task">
 
 * An embeddings generation tasks can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx).
@@ -108,7 +115,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 * See the complete details of the task configuration in the [Embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx) article.
 
-## Monitoring the tasks
+</Panel>
+
+<Panel heading="Monitoring the tasks">
 
 * The status and state of each embeddings generation task are visible in the [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx).
 
@@ -121,7 +130,9 @@ import CodeBlock from '@theme/CodeBlock';
   * [5.1.11.25](../../../server/administration/snmp/snmp-overview.mdx#511125) – Total number of enabled embeddings generation tasks.
   * [5.1.11.26](../../../server/administration/snmp/snmp-overview.mdx#511126) – Total number of active embeddings generation tasks.
 
-## Get embeddings generation task details
+</Panel>
+
+<Panel heading="Get embeddings generation task details">   
 
 * Besides viewing the list of tasks in the [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx) in the Studio,  
   you can also retrieve embeddings generation task details programmatically.
@@ -143,7 +154,7 @@ import CodeBlock from '@theme/CodeBlock';
 var getOngoingTaskOp = 
     new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
     
-// Execute the operation by by passing it to Maintenance.Send
+// Execute the operation by passing it to Maintenance.Send
 // Explicitly cast the result to the "EmbeddingsGeneration" type 
 var task = (EmbeddingsGeneration)store.Maintenance.Send(getOngoingTaskOp);
     
@@ -183,3 +194,5 @@ if (tasks.Count > 0)
 ```
 </TabItem>
 </Tabs>
+
+</Panel>
