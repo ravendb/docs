@@ -28,6 +28,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
         Cloud = "CLOUD",
         Guides = "GUIDES",
         Documentation = "DOCUMENTATION",
+        Templates = "TEMPLATES"
     }
 
     const pluginId = "default";
@@ -72,6 +73,15 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                         <Icon icon="home" size="xs" className="me-2" /> Start
                     </Link>
                 </div>
+                {pathType !== PathType.Guides && (
+                    <Link to="/guides" className="menu__link group">
+                        <Icon icon="guides" size="xs" className="me-2" />{" "}
+                        Guides
+                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
+                            Switch <Icon icon="arrow-thin-right" size="xs" />
+                        </small>
+                    </Link>
+                )}
                 {pathType !== PathType.Documentation && (
                     <Link to={`/${versionLabel}`} className="menu__link group">
                         <Icon icon="database" size="xs" className="me-2" />{" "}
@@ -85,15 +95,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                     <Link to="/cloud" className="menu__link group">
                         <Icon icon="cloud" size="xs" className="me-2" /> RavenDB
                         Cloud Docs
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                {pathType !== PathType.Guides && (
-                    <Link to="/guides" className="menu__link group">
-                        <Icon icon="guides" size="xs" className="me-2" />{" "}
-                        RavenDB Guides
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>

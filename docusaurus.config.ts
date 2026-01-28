@@ -98,6 +98,16 @@ const config: Config = {
                 showLastUpdateTime: true,
             },
         ],
+        [
+            'content-docs',
+            {
+                id: 'templates',
+                path: 'templates',
+                routeBasePath: 'templates',
+                sidebarPath: require.resolve('./sidebarsTemplates.js'),
+                showLastUpdateTime: true,
+            }
+        ],
         require.resolve("./src/plugins/recent-guides-plugin"),
     ],
     themeConfig: {

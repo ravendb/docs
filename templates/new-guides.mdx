@@ -1,0 +1,87 @@
+---
+title: "Adding new guides"
+hide_table_of_contents: false
+sidebar_label: Adding new guides
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import Link from '@docusaurus/Link';
+
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+
+# Adding new guides
+
+This template explains how to create new Guides.
+
+## Hosted guides
+
+### Create the file
+
+Place the file under the `guides` directory:
+
+```mdx
+guides/my-new-guide.mdx
+```
+
+### Internal guide frontmatter
+
+
+```mdx
+---
+title: "My new guide"
+tags: [indexes, querying]
+image: "/img/guides-ai-agents.webp"
+icon: "guides" // To be used when no `image` have been defined
+description: "One-sentence summary used in cards and lists."
+---
+
+# My new guide
+
+Intro paragraph...
+
+<!-- Guide content goes here -->
+```
+
+**Fields explained**
+
+- `title` – main page title and default card title.
+- `tags` – keys from `guides/tags.yml` (see <Link to="/templates/tags">Tags</Link>).
+- `image` – card image; can be a string or a themed image object (see <Link to="/templates/themed-images">Themed Images</Link> template).
+- `icon` – icon name used in cards (see <Link to="/templates/icon-gallery">Icon Gallery</Link> template).
+- `description` – short summary shown in cards and lists.
+
+### Tags
+
+- Define reusable tags and their labels in `guides/tags.yml`.
+- In guide frontmatter, reference tags by key, for example: `tags: [ai, querying]`.
+- The recent-guides plugin maps these keys to friendly labels and tag URLs.
+
+## External guides (linking to blog/articles)
+
+Use this pattern when the actual content lives elsewhere but you still want it listed in Guides and under tags.
+
+<Panel heading="External guide frontmatter">
+
+```mdx
+---
+title: "Begin analysis with OLAP ETL"
+tags: [integration, getting-started]
+description: "Short description shown in cards and lists."
+externalUrl: "https://ravendb.net/articles/begin-analysis-with-olap-etl"
+publishedAt: 2025-12-23
+image: "https://ravendb.net/wp-content/uploads/2025/12/OLAP-article-image.svg"
+---
+
+Leave the body empty.
+Once clicked, the item will redirect users to the external article.
+```
+
+</Panel>
+
+<Admonition type="tip" title="When to use external guides">
+Use an external guide when the canonical content is on the main website or blog, but you still want it discoverable from the Guides home, tags grid, and search.
+</Admonition>
+
