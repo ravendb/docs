@@ -58,8 +58,8 @@ const config: Config = {
                         }
                     },
                     onlyIncludeVersions: getOnlyIncludeVersions(),
-                    //editUrl:
-                    //    'https://github.com/ravendb/docs/tree/main/'
+                    editUrl:
+                       'https://github.com/ravendb/docs/edit/main/'
                 },
                 blog: false,
                 theme: {

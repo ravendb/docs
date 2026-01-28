@@ -8,6 +8,7 @@ export default {
                 type: 'doc',
                 id: 'home',
             },
+            collapsible: false,
             items: [
                 {
                     type: 'doc',

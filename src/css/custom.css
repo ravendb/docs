@@ -564,3 +564,12 @@ a {
         display: none;
     }
 }
+
+/* Hide main category from sidebar */
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible {
+    display: none;
+}
+
+.theme-doc-sidebar-item-category-level-1 > .menu__list {
+    @apply !m-0 !p-0 !border-0;
+}
