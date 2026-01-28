@@ -149,47 +149,46 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_task_info_via_operataion" label="Get_task_info_via_operataion">
-```csharp
+```js
 // Define the get task operation, pass the task NAME
-var getOngoingTaskOp = 
-    new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
+const getOngoingTaskOp = 
+    new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", "EmbeddingsGeneration");
     
-// Execute the operation by passing it to Maintenance.Send
-// Explicitly cast the result to the "EmbeddingsGeneration" type 
-var task = (EmbeddingsGeneration)store.Maintenance.Send(getOngoingTaskOp);
+// Execute the operation by passing it to maintenance.send
+const task = await documentStore.maintenance.send(getOngoingTaskOp);
     
 // Verify the task exists
 if (task != null)
 {
     // Access any of the task details
-    var taskStatus = task.TaskState;
+    const taskStatus = task.taskState;
     
     // Access the task identifier
-    var taskIdentifier = task.Configuration.Identifier;
+    const taskIdentifier = task.configuration.identifier;
 }
 ```
 </TabItem>
 <TabItem value="Get_task_info_via_database_record" label="Get_task_info_via_database_record">
-```csharp
+```js
 // Define the get database record operation, pass your database name
-var getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
+const getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
   
-// Execute the operation by passing it to Maintenance.Send
-var dbRecord = store.Maintenance.Server.Send(getDatabaseRecordOp);
+// Execute the operation by passing it to maintenance.send
+const dbRecord = await documentStore.maintenance.server.send(getDatabaseRecordOp) 
   
 // Access the list of embeddings generation tasks
-var tasks = dbRecord.EmbeddingsGenerations;
+const tasks = dbRecord.embeddingsGenerations;
     
-if (tasks.Count > 0)
+if (tasks.length > 0)
 {
     // Access the first task
-    var task = tasks[0];
+    const task = tasks[0];
       
     // Access any of the task details
-    var isTaskDisabled = task.Disabled;
+    const isTaskDisabled = task.disabled;
       
     // Access the task identifier
-    var taskIdentifier = task.Identifier;
+    const taskIdentifier = task.identifier;
 }
 ```
 </TabItem>
