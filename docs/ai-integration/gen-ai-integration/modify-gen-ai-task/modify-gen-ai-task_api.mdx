@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ModifyGenAiTaskApiCsharp from './content/_modify-gen-ai-task_api-csharp.mdx';
 import ModifyGenAiTaskApiPython from './content/_modify-gen-ai-task_api-python.mdx';
+import ModifyGenAiTaskApiNodejs from './content/_modify-gen-ai-task_api-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python"];
+export const supportedLanguages = ["csharp", "python", "nodejs"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,4 +21,8 @@ export const supportedLanguages = ["csharp", "python"];
 
 <LanguageContent language="python">
    <ModifyGenAiTaskApiPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ModifyGenAiTaskApiNodejs />
 </LanguageContent>

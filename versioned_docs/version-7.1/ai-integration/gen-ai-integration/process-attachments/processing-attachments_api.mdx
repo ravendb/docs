@@ -1,6 +1,6 @@
 ---
 title: "Process attachments: API"
-sidebar_label: Client API
+sidebar_label: "Client API"
 sidebar_position: 1
 ---
 
@@ -9,8 +9,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import ProcessingAttachmentsApiCsharp from './content/_processing-attachments_api-csharp.mdx';
 import ProcessingAttachmentsApiPython from './content/_processing-attachments_api-python.mdx';
+import ProcessingAttachmentsApiNodejs from './content/_processing-attachments_api-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python"];
+export const supportedLanguages = ["csharp", "python", "nodejs"];
 
 <LanguageSwitcher supportedLanguages={supportedLanguages} />
 
@@ -20,4 +21,8 @@ export const supportedLanguages = ["csharp", "python"];
 
 <LanguageContent language="python">
    <ProcessingAttachmentsApiPython />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ProcessingAttachmentsApiNodejs />
 </LanguageContent>
