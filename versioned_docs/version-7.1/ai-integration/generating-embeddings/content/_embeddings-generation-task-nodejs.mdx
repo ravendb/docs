@@ -166,87 +166,77 @@ import Panel from '@site/src/components/Panel';
 
 #### Configure an embeddings generation task - define source using PATHS:
 
-<TabItem value="create_embeddings_task_1" label="create_embeddings_task_1">
-```csharp
+<TabItem>
+```js
 // Define a connection string that will be used in the task definition:
 // ====================================================================
+const connectionString = new AiConnectionString();
 
-var connectionString = new AiConnectionString
-{
-    // Connection string name & identifier
-    Name = "ConnectionStringToOpenAI", 
-    Identifier = "id-for-open-ai-connection-string",
-        
-    // OpenAI connection settings
-    OpenAiSettings = new OpenAiSettings(
-        apiKey: "your-api-key",
-        endpoint: "https://api.openai.com/v1",
-        model: "text-embedding-3-small")
-};
+connectionString.name = "ConnectionStringToOpenAi";
+connectionString.identifier = 'id-for-open-ai-connection-string';
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "text-embedding-3-small");
 
 // Deploy the connection string to the server:
 // ===========================================
-var putConnectionStringOp = 
-    new PutConnectionStringOperation<AiConnectionString>(connectionString);
-var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);
 
 // Define the embeddings generation task:
 // ======================================
-var embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration
-{
-    // General info:
-    Name = "GetEmbeddingsFromOpenAI",
-    Identifier = "id-for-task-open-ai",
-    ConnectionStringName = "ConnectionStringToOpenAI",
-    Disabled = false,
+const embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration();
+
+// General info:    
+embeddingsTaskConfiguration.name = "GetEmbeddingsFromOpenAI";
+embeddingsTaskConfiguration.identifier = "id-for-task-open-ai";
+embeddingsTaskConfiguration.connectionStringName = connectionString.name;
+embeddingsTaskConfiguration.disabled = false;    
     
-    // Embeddings source & chunking methods - using PATHS configuration:
-    Collection = "Categories",
-    EmbeddingsPathConfigurations = [
-        new EmbeddingPathConfiguration() { 
-            Path = "Name", 
-            ChunkingOptions = new()
-            {
-                ChunkingMethod = ChunkingMethod.PlainTextSplit,
-                MaxTokensPerChunk = 2048
-            }
-        },
-        new EmbeddingPathConfiguration()
-        {
-            Path = "Description", 
-            ChunkingOptions = new()
-            {
-                ChunkingMethod = ChunkingMethod.PlainTextSplitParagraphs,
-                MaxTokensPerChunk = 2048,
-    
-                // 'OverlapTokens' is only applicable when ChunkingMethod is 
-                // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
-                OverlapTokens = 128
-            }
-        },
-    ],
-    
-    // Quantization & expiration -
-    // for embeddings generated from source documents:
-    Quantization = VectorEmbeddingType.Single,
-    EmbeddingsCacheExpiration = TimeSpan.FromDays(90),
-    
-    // Chunking method and expiration -
-    // for the embeddings generated from search term in vector search query:
-    ChunkingOptionsForQuerying = new()
+// Embeddings source & chunking methods - using PATHS configuration:
+embeddingsTaskConfiguration.collection = "Categories";    
+embeddingsTaskConfiguration.embeddingsPathConfigurations = [
     {
-        ChunkingMethod = ChunkingMethod.PlainTextSplit,
-        MaxTokensPerChunk = 2048
+        path: "Name",
+        chunkingOptions: {
+            chunkingMethod: "PlainTextSplit",
+            maxTokensPerChunk: 2048
+        }
     },
+    {
+        path: "Description",
+        chunkingOptions: {
+            chunkingMethod: "PlainTextSplitParagraphs",
+            maxTokensPerChunk: 2048,
     
-    EmbeddingsCacheForQueryingExpiration = TimeSpan.FromDays(14)
-};
+            // 'overlapTokens' is only applicable when 'chunkingMethod' is 
+            // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
+            overlapTokens: 128
+        }
+    }
+];    
+
+// Quantization & expiration -
+// for embeddings generated from source documents: 
+embeddingsTaskConfiguration.quantization = "Single";
+embeddingsTaskConfiguration.embeddingsCacheExpiration = 90 * 24 * 60 * 60 * 1000; // 90 days    
+    
+// Chunking method and expiration -
+// for the embeddings generated from search term in vector search query:
+embeddingsTaskConfiguration.chunkingOptionsForQuerying = {
+    chunkingMethod: "PlainTextSplit",
+    maxTokensPerChunk: 2048
+}
+
+embeddingsTaskConfiguration.embeddingsCacheExpiration = 14 * 24 * 60 * 60 * 1000; // 14 days
 
 // Deploy the embeddings generation task to the server:
 // ====================================================
-var addEmbeddingsGenerationTaskOp =
+const addEmbeddingsGenerationOp =
     new AddEmbeddingsGenerationOperation(embeddingsTaskConfiguration);
-var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationTaskOp);
+const addAiIntegrationTaskResult = 
+    await documentStore.maintenance.send(addEmbeddingsGenerationOp);
 ```
 </TabItem>
 
@@ -257,7 +247,7 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
 #### Configure an embeddings generation task - define source using SCRIPT:
 
 * To configure the source content using a script -  
-  use the `EmbeddingsTransformation` object instead of the `EmbeddingsPathConfigurations` object.
+  use the `embeddingsTransformation` object instead of the `embeddingsPathConfigurations` object.
 
 * The rest of the configuration properties are the same as in the example above.
 
@@ -269,54 +259,51 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
  
 * For example:  
 
-<TabItem value="create_embeddings_task_2" label="create_embeddings_task_2">
-```csharp
+<TabItem>
+```js
 // Source collection:
-Collection = "Categories",
+embeddingsTaskConfiguration.collection = "Categories";
 
-// Use 'EmbeddingsTransformation':
-EmbeddingsTransformation = new EmbeddingsTransformation()
-{
-    // Define the script:
-    Script = 
-        @"embeddings.generate({
+Use 'embeddingsTransformation':
+embeddingsTaskConfiguration.embeddingsTransformation = {
+    script: `
+        embeddings.generate({
 
             // Process the document 'Name' field using method text.split().
             // The text content will be split into chunks of up to 2048 tokens.
             Name: text.split(this.Name, 2048),
-
+    
             // Process the document 'Description' field using method text.splitParagraphs().
             // The text content will be split into chunks of up to 2048 tokens.
-            // 128 overlapping tokens will be repeated at the start of each chunk 
+            // 128 overlapping tokens will be repeated at the start of each chunk
             // from the end of the previous one.
             Description: text.splitParagraphs(this.Description, 2048, 128)
-        });"
-},
+        });`
+}
 ```
 </TabItem>
 
 * If no chunking method is provided in the script, you can set default values as follows:  
 
-<TabItem value="create_embeddings_task_3" label="create_embeddings_task_3">
-```csharp
-Collection = "Categories",
-EmbeddingsTransformation = new EmbeddingsTransformation()
-{
-    Script = 
-        @"embeddings.generate({
+<TabItem>
+```js
+embeddingsTaskConfiguration.collection = "Categories";
+    
+embeddingsTaskConfiguration.embeddingsTransformation = {
+    script: `
+        embeddings.generate({
 
             // No chunking method is specified here
             Name: this.Name,
             Description: this.Description
-        });",
-    
+        });`,
+        
     // Specify the default chunking options to use in the script
-    ChunkingOptions = new ChunkingOptions()
-    {
-        ChunkingMethod = ChunkingMethod.PlainTextSplit,
-        MaxTokensPerChunk = 2048
-    } 
-},
+    chunkingOptions: {
+        chunkingMethod: "PlainTextSplit",
+        maxTokensPerChunk: 2048
+    }
+}
 ```
 </TabItem>
 
@@ -414,7 +401,7 @@ These methods determine how input text is split before being sent to the provide
 </Admonition>
 **Chunking method syntax for the JavaScript scripts**:  
 
-<TabItem value="javascript" label="javascript">
+<TabItem>
 ```js
 // Available text-splitting methods:
 // =================================
@@ -446,89 +433,117 @@ html.strip(htmlText | [htmlText], maxTokensPerChunk);
 
 <Panel heading="Syntax">
 
-#### The embeddings generation task configuration:
+`EmbeddingsGenerationConfiguration`
 
-<TabItem value="syntax_1" label="syntax_1">
-```csharp
-// The 'EmbeddingsGenerationConfiguration' class inherits from 'EtlConfiguration'
+<TabItem>
+```js
+// The 'EmbeddingsGenerationConfiguration' class extends 'EtlConfiguration'
 // and provides the following specialized configurations for the embeddings generation task:
 // =========================================================================================
 
-public class EmbeddingsGenerationConfiguration : EtlConfiguration<AiConnectionString>
+class EmbeddingsGenerationConfiguration 
 {
-    public string Identifier { get; set; }
-    public string Collection { get; set; }
-    public List<EmbeddingPathConfiguration> EmbeddingsPathConfigurations { get; set; }
-    public EmbeddingsTransformation EmbeddingsTransformation { get; set; }
-    public VectorEmbeddingType Quantization { get; set; }
-    public ChunkingOptions ChunkingOptionsForQuerying { get; set; }
-    public TimeSpan EmbeddingsCacheExpiration { get; set; } = TimeSpan.FromDays(90);
-    public TimeSpan EmbeddingsCacheForQueryingExpiration { get; set; } = TimeSpan.FromDays(14);
+    // The identifier of the embeddings generation task. 
+    identifier; // string
+    
+    // The name of the source collection from which documents are processed
+    // for embeddings generation.
+    collection; // string
+    
+    // A list of properties inside documents that contain text to be embedded, 
+    // along with their chunking settings. 
+    embeddingsPathConfigurations; // object[]
+    
+    // An object that contains a script defining the transformations and processing applied 
+    // to the source text before generating embeddings.  
+    embeddingsTransformation; // object
+    
+    // The quantization type for the generated embeddings.
+    // Can be: "Single" | "Int8" | "Binary" 
+    // Cannot be "Text". Default is "Single".
+    quantization; // string
+    
+    // The chunking method, maximum token limit, 
+    // and overlap tokens used when processing search terms in vector search queries. 
+    chunkingOptionsForQuerying; // object
+    
+    // The expiration period for documents in the 'embedding cache collection' that contain 
+    // embeddings generated from source documents.
+    embeddingsCacheExpiration; // number
+    
+    // The expiration period for documents in the 'embedding cache collection' that contain
+    // embeddings generated from search terms in vector search queries. 
+    embeddingsCacheForQueryingExpiration; // number
 }
 ```
 </TabItem>
-
-| Parameter                                | Type                               | Description                                                                                                                                                                                                                        |
-|------------------------------------------|------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Identifier**                           | `string`                           | The identifier of the embeddings generation task.                                                                                                                                                                                  |
-| **Collection**                           | `string`                           | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                    |
-| **EmbeddingsPathConfigurations**         | `List<EmbeddingPathConfiguration>` | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                        |
-| **EmbeddingsTransformation**             | `EmbeddingsTransformation `        | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                              |
-| **Quantization**                         | `VectorEmbeddingType  `            | The quantization type for the generated embeddings.                                                                                                                                                                                |
-| **ChunkingOptionsForQuerying**           | `ChunkingOptions `                 | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                            |
-| **EmbeddingsCacheExpiration**            | `TimeSpan `                        | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents. |
-| **EmbeddingsCacheForQueryingExpiration** | `TimeSpan `                        | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                |
-
-<TabItem value="syntax_2" label="syntax_2">
-```csharp
-public class EmbeddingPathConfiguration
+    
+`EmbeddingPathConfiguration`  
+    
+<TabItem>
+```js
+// The embedding path configuration object    
 {
-    public string Path { get; set; }
-    public ChunkingOptions ChunkingOptions { get; set; }
+    // JSON path to the document field.
+    path // string
+    
+    // Chunking configuration for this specific field.
+    chunkingOptions // object
 }
-
-public class ChunkingOptions
+```    
+</TabItem>
+    
+`ChunkingOptions` 
+    
+<TabItem>
+```js    
+// The chunking options object
 {
-    public ChunkingMethod ChunkingMethod { get; set; } // Default is PlainTextSplit
-    public int MaxTokensPerChunk { get; set; } = 512;
-        
-    // 'OverlapTokens' is only applicable when ChunkingMethod is 
-    // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
-    public int OverlapTokens { get; set; } = 0;
+    // The method to use for splitting text into chunks. Can be:
+    // "PlainTextSplit", "PlainTextSplitLines", "PlainTextSplitParagraphs", "MarkDownSplitLines", 
+    // "MarkDownSplitParagraphs", "HtmlStrip"
+    // Default is "PlainTextSplit"
+    chunkingMethod, // string 
+    
+    // Maximum number of tokens per chunk.
+    // Default is 512
+    maxTokensPerChunk, // number 
+    
+    // Number of tokens to overlap between consecutive chunks.
+    // 'OverlapTokens' is only applicable when chunkingMethod is 
+    // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'.
+    // Default is 0
+    overlapTokens // number
 }
-
-public enum ChunkingMethod
+```
+</TabItem>
+    
+`EmbeddingsTransformation`
+    
+<TabItem>
+```js
+// The embeddings transformation object
 {
-    PlainTextSplit,
-    PlainTextSplitLines,
-    PlainTextSplitParagraphs,
-    MarkDownSplitLines,
-    MarkDownSplitParagraphs,
-    HtmlStrip
-}
-
-public class EmbeddingsTransformation
-{
-    public string Script { get; set; }
-    public ChunkingOptions ChunkingOptions {get; set;}
-}
-
-public enum VectorEmbeddingType
-{
-    Single,
-    Int8,
-    Binary,
-    Text
+    // JavaScript transformation script.
+    // Must call embeddings.generate() function.    
+    script; // string
+    
+    // Chunking configuration for the transformation output.
+    chunkingOptions; // object
 }
 ```
 </TabItem>
     
 #### Deploying the embeddings generation task:
 
-<TabItem value="syntax_3" label="syntax_3">
-```csharp
-public AddEmbeddingsGenerationOperation(EmbeddingsGenerationConfiguration configuration);
+<TabItem>
+```js
+const result = AddEmbeddingsGenerationOperation(configuration);    
 ```
 </TabItem>
+
+| Parameter         | Type                                | Description                                   |
+|-------------------|-------------------------------------|-----------------------------------------------|
+| **configuration** | `EmbeddingsGenerationConfiguration` | The embeddings generation task configuration. |    
     
 </Panel>

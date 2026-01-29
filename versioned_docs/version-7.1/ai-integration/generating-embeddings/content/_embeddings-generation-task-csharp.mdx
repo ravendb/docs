@@ -162,7 +162,7 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Configuring an embeddings generation task - from the Client API">
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 #### Configure an embeddings generation task - define source using PATHS:
 
@@ -250,9 +250,9 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
 ```
 </TabItem>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 #### Configure an embeddings generation task - define source using SCRIPT:
 
@@ -320,7 +320,7 @@ EmbeddingsTransformation = new EmbeddingsTransformation()
 ```
 </TabItem>
 
-</Admonition>
+</ContentFrame>
 
 </Panel>
 
@@ -415,7 +415,7 @@ These methods determine how input text is split before being sent to the provide
 **Chunking method syntax for the JavaScript scripts**:  
 
 <TabItem value="javascript" label="javascript">
-```javascript
+```js
 // Available text-splitting methods:
 // =================================
 

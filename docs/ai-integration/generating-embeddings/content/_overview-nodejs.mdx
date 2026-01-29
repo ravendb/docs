@@ -149,48 +149,58 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_task_info_via_operataion" label="Get_task_info_via_operataion">
-```csharp
-// Define the get task operation, pass the task NAME
-var getOngoingTaskOp = 
-    new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
-    
-// Execute the operation by passing it to Maintenance.Send
-// Explicitly cast the result to the "EmbeddingsGeneration" type 
-var task = (EmbeddingsGeneration)store.Maintenance.Send(getOngoingTaskOp);
-    
-// Verify the task exists
-if (task != null)
-{
+```js
+try {
+    // Define the get task operation, pass the task NAME
+    const getOngoingTaskOp = new GetOngoingTaskInfoOperation(
+        "theEmbeddingsGenerationTaskName", // task name
+        "EmbeddingsGeneration"             // task type
+    );
+        
+    // Execute the operation by passing it to maintenance.send
+    const task = await documentStore.maintenance.send(getOngoingTaskOp);
+        
     // Access any of the task details
-    var taskStatus = task.TaskState;
+    const taskStatus = task.taskState;
     
     // Access the task identifier
-    var taskIdentifier = task.Configuration.Identifier;
+    const taskIdentifier = task.configuration.identifier;
+} 
+catch (error) {
+    // Task does not exist or failed to load - ignore or log
+    // console.log("Ongoing task not found", error);
 }
 ```
 </TabItem>
 <TabItem value="Get_task_info_via_database_record" label="Get_task_info_via_database_record">
-```csharp
-// Define the get database record operation, pass your database name
-var getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
-  
-// Execute the operation by passing it to Maintenance.Send
-var dbRecord = store.Maintenance.Server.Send(getDatabaseRecordOp);
-  
-// Access the list of embeddings generation tasks
-var tasks = dbRecord.EmbeddingsGenerations;
-    
-if (tasks.Count > 0)
-{
+```js
+try {    
+    // Define the get database record operation, pass your database name
+    const getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
+      
+    // Execute the operation by passing it to maintenance.send
+    const dbRecord = await documentStore.maintenance.server.send(getDatabaseRecordOp) 
+      
+    // Access the list of embeddings generation tasks
+    const tasks = dbRecord?.embeddingsGenerations;
+        
+    if (!tasks || tasks.length === 0) {
+        return;
+    }
+
     // Access the first task
-    var task = tasks[0];
+    const task = tasks[0];
       
     // Access any of the task details
-    var isTaskDisabled = task.Disabled;
+    const isTaskDisabled = task.disabled;
       
     // Access the task identifier
-    var taskIdentifier = task.Identifier;
+    const taskIdentifier = task.identifier;
 }
+catch (error) {
+    // Database does not exist or cannot be accessed - ignore or log
+    // console.log("Failed to load database record", error);
+}   
 ```
 </TabItem>
 </Tabs>
