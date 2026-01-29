@@ -504,6 +504,24 @@ class GenAiTransformation
     script; // string
 }
 ```    
-</TabItem>     
+</TabItem>
     
+`AddGenAiOperation`
+    
+<TabItem>
+```js
+const addGenAiOp = new AddGenAiOperation(configuration, startingPoint?);
+```
+</TabItem>
+    
+| Parameter         | Type                        | Description |
+| ----------------- | --------------------------- | ----------- |
+| **configuration** | `GenAiConfiguration`        | The new or modified configuration for the GenAI task. |
+| **startingPoint** | `StartingPointChangeVector` | Optional.<br />Defines the starting point for task processing.   |
+    
+Available startingPoint values:  
+`StartingPointChangeVector.DoNotChange` - Keep the current starting point (default behavior).  
+`StartingPointChangeVector.LastDocument` - Start processing from the last processed document.  
+`StartingPointChangeVector.BeginningOfTime` - Reprocess all documents from the beginning.      
+
 </Panel>

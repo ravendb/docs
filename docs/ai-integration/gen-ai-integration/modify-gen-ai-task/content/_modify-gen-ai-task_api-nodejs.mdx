@@ -157,7 +157,7 @@ const result = await documentStore.maintenance.send(new UpdateGenAiOperation(tas
     
 <TabItem>
 ```js
-const putCmpXchgOp = new UpdateGenAiOperation(taskId, configuration, startingPoint);
+const updateGenAiOp = new UpdateGenAiOperation(taskId, configuration, startingPoint?);
 ```
 </TabItem>
     
