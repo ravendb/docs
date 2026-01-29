@@ -1,0 +1,509 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* A **GenAI task** leverages an AI model to enable intelligent processing of documents at runtime.  
+   * The task is associated with a document collection and an AI model.  
+   * It is an **ongoing task** that:  
+      1. Continuously monitors the collection.  
+      2. Whenever needed (e.g., when a document is added to the collection),  
+         generates user-defined context objects based on the document data.    
+      3. Sends each context object to the AI model for processing.  
+      4. Receives structured JSON responses from the model.
+      5. Runs a user-defined script that may act on those results. 
+    
+* The main steps in defining a GenAI task are:  
+   * Defining a [Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string) 
+     to the AI model  
+   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/overview#the-elements_context-objects)  
+   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/overview#the-elements_prompt)  
+   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/overview#the-elements_json-schema)  
+   * Defining an [Update script](../../../ai-integration/gen-ai-integration/overview#the-elements_update-script)  
+
+* In this article:
+    * [Define a connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string)
+    * [Define the GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-the-genai-task)
+    * [Full example](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#full-example)
+    * [Syntax](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#syntax)
+
+
+</Admonition>
+
+<Panel heading="Define a connection string">
+    
+* Your GenAI task will need a connection string to connect to a **generative AI model**.  
+  RavenDB supports the following providers for these model types:  
+  [Ollama](../../../ai-integration/connection-strings/ollama),
+  [OpenAI and compatible providers](../../../ai-integration/connection-strings/open-ai),
+  and [Azure OpenAI](../../../ai-integration/connection-strings/azure-open-ai).
+   
+* Choose the model that best suits your needs:  
+  You can use a local _Ollama_ model (e.g. `llama3.2`) if your priorities are speed, cost, open-source usage, or security.  
+  Or use a remote _OpenAI_ service (e.g. `gpt-4o-mini`) for its broader resources and capabilities.
+    
+* **From the Client API**:  
+  Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation, as shown in the example below.    
+
+* **From the Studio**:    
+  You can define a connection string in the _AI Connection Strings_ view.
+  See [AI connection strings - Overview](../../../ai-integration/connection-strings/overview).  
+  You can also create a connection string when defining the GenAI task.
+  See [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings).      
+
+---
+    
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Connection_string_to_ollama" label="Connection_string_to_ollama">
+```js
+// Define the connection string to Ollama
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOllama";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+
+// Model type
+connectionString.modelType = "Chat";
+
+// Ollama connection settings    
+connectionString.ollamaSettings = new OllamaSettings(
+    "http://localhost:11434", // Uri
+    "llama3:8b-instruct");    // Name of chat model to use
+    
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="Connection_string_to_open_ai" label="Connection-string_to_open_ai">
+```js
+// Define the connection string to OpenAI
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string"; // optional
+    
+// Model type    
+connectionString.modelType = "Chat";
+
+// OpenAI connection settings
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "gpt-4.1"); // Name of chat model to use  
+
+// Deploy the connection string to the server    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="Connection_string_to_azure_open_ai" label="Connection-string_to_azure_open_ai">
+```js
+// Define the connection string to Azure OpenAI    
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier    
+connectionString.name = "ConnectionStringToAzureOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string" // optional;
+    
+// Model type    
+connectionString.modelType = "Chat";
+    
+// Azure OpenAI connection settings
+connectionString.azureOpenAiSettings = new AzureOpenAiSettings(
+    "your-api-key",
+    "https://your-resource-name.openai.azure.com",
+    "gpt-4o-mini", // Name of chat model to use
+    "your-deployment-name");
+
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+---
+
+**Syntax reference**    
+See the dedicated syntax sections in the following articles for full configuration details:    
+* [Ollama (syntax)](../../../ai-integration/connection-strings/ollama#syntax)  
+* [OpenAI and compatible providers (syntax)](../../../ai-integration/connection-strings/open-ai#syntax)  
+* [Azure OpenAI (syntax)](../../../ai-integration/connection-strings/azure-open-ai#syntax)  
+
+</Panel>
+
+<Panel heading="Define the GenAI task">
+
+* Define a GenAI task using a `GenAiConfiguration` object.  
+* Run the task using `AddGenAiOperation`.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Define_task_using_sample_object" label="Define_task_using_sample_object">
+```js
+// Define the GenAI task configuration
+// ===================================
+const config = new GenAiConfiguration();
+    
+// Task name    
+config.name = "spam-filter";
+
+// Unique user-defined task identifier
+config.identifier = "spam-filter";
+    
+// Connection string to AI model    
+config.connectionStringName = "ConnectionStringToOpenAI";
+  
+// Task is enabled    
+config.disabled = false;
+    
+// Collection associated with the task    
+config.collection = "Posts"; 
+    
+// Context generation script - format for objects to be sent to the AI model
+config.genAiTransformation = new GenAiTransformation();
+config.genAiTransformation.script = `
+    for(const comment of this.Comments) {
+        ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+    }`;
+
+// AI model Prompt - the instructions sent to the AI model
+config.prompt = `
+    Check if the following blog post comment is spam or not. 
+    A spam comment typically includes irrelevant or promotional content, 
+    excessive links, misleading information, or is written with the intent 
+    to manipulate search engines or advertise products/services. 
+    Consider the language, intent, and relevance of the comment for the blog post content.`;
+
+// Sample object – defines the expected structure of the AI model's response      
+config.sampleObject = JSON.stringify({
+    blocked: true,
+    reason: "Concise reason for why this comment was marked as spam or ham"
+})
+    
+// Update script - specifies what to do with AI model replies.
+// Use '$input' to access the context object that was sent to the AI model.
+// Use '$output' to access the results object returned from the AI model.
+// Use 'this' to access and modify the currently processed document.
+config.updateScript = `
+    // Find the comment
+    const idx = this.Comments.findIndex(c => c.Id == $input.Id);
+    
+    // Was detected as spam
+    if($output.blocked)  {
+        // Remove this comment
+        this.Comments.splice(idx, 1);
+    }`;
+    
+// Max concurrent connections to AI model    
+config.maxConcurrency = 4;
+
+// Run the task
+// ============
+const addGenAiOp = new AddGenAiOperation(config);
+const addGenAiTaskResult = await documentStore.maintenance.send(addGenAiOp);
+```
+</TabItem>
+<TabItem value="Define_task_using_JSON_schema" label="Define_task_using_JSON_schema">
+```js
+// Define the GenAI task configuration
+// ===================================
+const config = new GenAiConfiguration();
+    
+// Task name    
+config.name = "spam-filter";
+
+// Unique user-defined task identifier
+config.identifier = "spam-filter";
+    
+// Connection string to AI model    
+config.connectionStringName = "ConnectionStringToOpenAI";
+  
+// Task is enabled    
+config.disabled = false;
+    
+// Collection associated with the task    
+config.collection = "Posts"; 
+    
+// Context generation script - format for objects to be sent to the AI model
+config.genAiTransformation = new GenAiTransformation();
+config.genAiTransformation.script = `
+    for(const comment of this.Comments) {
+        ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+    }`;
+
+// AI model Prompt - the instructions sent to the AI model
+config.prompt = `
+    Check if the following blog post comment is spam or not. 
+    A spam comment typically includes irrelevant or promotional content, 
+    excessive links, misleading information, or is written with the intent 
+    to manipulate search engines or advertise products/services. 
+    Consider the language, intent, and relevance of the comment for the blog post content.`;
+
+// JSON schema – defines the expected structure of the AI model's response    
+config.jsonSchema = JSON.stringify({
+    "name": "some-name",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "blocked": {
+                "type": "boolean"
+            },
+            "reason": {
+                "type": "string",
+                "description": "Concise reason for why this comment was marked as spam or ham"
+            }
+        },
+        "required": [
+            "blocked",
+            "reason"
+        ],
+        "additionalProperties": false
+    }
+});
+    
+// Update script - specifies what to do with AI model replies.
+// Use '$input' to access the context object that was sent to the AI model.
+// Use '$output' to access the results object returned from the AI model.
+// Use 'this' to access and modify the currently processed document.
+config.updateScript = `
+    // Find the comment
+    const idx = this.Comments.findIndex(c => c.Id == $input.Id);
+    
+    // Was detected as spam
+    if($output.blocked)  {
+        // Remove this comment
+        this.Comments.splice(idx, 1);
+    }`;
+    
+// Max concurrent connections to AI model    
+config.maxConcurrency = 4;
+
+// Run the task
+// ============
+const addGenAiOp = new AddGenAiOperation(config);
+const addGenAiTaskResult = await documentStore.maintenance.send(addGenAiOp);
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Full example">
+
+The following example defines a GenAI task that removes spam comments from blog posts.  
+After creating a connection string to the AI model, we configure a GenAI task that:
+    
+1. Monitors the `Posts` collection.  
+2. For each document,  
+   generates a context object for every comment in the `Comments` array.  
+3. Sends each context object to the AI model with a prompt to detect if the comment is spam.  
+4. For each context object,  
+   receives a structured response from the AI model, indicating whether the comment is spam and why.
+5. If a comment is flagged as spam, the task's update script removes the comment from the document.
+
+To demonstrate the task in action, we add a post to the _Posts_ collection that contains a spammy comment.  
+This triggers the task, which analyzes the post’s comments and removes the one identified as spam.
+
+```js
+// Define a connection string to OpenAI
+// ====================================
+    
+// Define the connection string to OpenAI
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string";
+    
+// Model type    
+connectionString.modelType = "Chat";
+
+// OpenAI connection settings
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "gpt-4.1"); // Name of chat model to use  
+
+// Deploy the connection string to the server
+// ==========================================
+    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);
+
+// Define the GenAI task configuration
+// ===================================
+const config = new GenAiConfiguration();
+    
+// Task name    
+config.name = "spam-filter";
+
+// Unique user-defined task identifier
+config.identifier = "spam-filter";
+    
+// Connection string to AI model    
+config.connectionStringName = "ConnectionStringToOpenAI";
+  
+// Task is enabled    
+config.disabled = false;
+    
+// Collection associated with the task    
+config.collection = "Posts"; 
+    
+// Context generation script - format for objects to be sent to the AI model
+config.genAiTransformation = new GenAiTransformation();
+config.genAiTransformation.script = `
+    for(const comment of this.Comments) {
+        ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+    }`;
+
+// AI model Prompt - the instructions sent to the AI model
+config.prompt = `
+    Check if the following blog post comment is spam or not. 
+    A spam comment typically includes irrelevant or promotional content, 
+    excessive links, misleading information, or is written with the intent 
+    to manipulate search engines or advertise products/services. 
+    Consider the language, intent, and relevance of the comment for the blog post content.`;
+
+// Sample object – defines the expected structure of the AI model's response      
+config.sampleObject = JSON.stringify({
+    blocked: true,
+    reason: "Concise reason for why this comment was marked as spam or ham"
+})
+    
+// Update script - specifies what to do with AI model replies.
+// Use '$input' to access the context object that was sent to the AI model.
+// Use '$output' to access the results object returned from the AI model.
+// Use 'this' to access and modify the currently processed document.
+config.updateScript = `
+    // Find the comment
+    const idx = this.Comments.findIndex(c => c.Id == $input.Id);
+    
+    // Was detected as spam
+    if($output.blocked)  {
+        // Remove this comment
+        this.Comments.splice(idx, 1);
+    }`;
+    
+// Max concurrent connections to AI model    
+config.maxConcurrency = 4;
+
+// Run the task
+// ============
+    
+const addGenAiOp = new AddGenAiOperation(config);
+const addGenAiTaskResult = await documentStore.maintenance.send(addGenAiOp);
+
+// Add a document to trigger the task
+// ==================================
+    
+// Add a blog post document that includes a spam comment to the Posts collection.
+// Adding the post will trigger the GenAI task to process it.
+    
+const session = documentStore.openSession();
+
+const post = {
+    Name: "First post",
+    Body: "This is my first post",
+    Comments: [
+        {
+            Id: "comment/1",
+            Text: `This article really helped me understand how indexes work in RavenDB.
+                   Great write-up!`,
+            Author: "John"
+        },
+        {
+            Id: "comment/2",
+            Text: `Learn how to make $5000/month from home! Visit click4cash.biz.example now!!!`,
+            Author: "shady_marketer"
+        },
+        {
+            Id: "comment/3",
+            Text: `I tried this approach with IO_Uring in the past, but I run into problems
+                with security around the IO systems and the CISO didn't let us deploy that to
+                production. It is more mature at this point?`,
+            Author: "Dave"
+        }
+    ]
+};
+
+session.store(post, "posts/1");
+session.advanced.getMetadataFor(post)["@collection"] = "Posts";
+await session.saveChanges();
+```
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+`GenAiConfiguration`
+    
+<TabItem>
+```js
+class GenAiConfiguration {
+    // Task name.
+    name; // string
+    
+    // Unique user-defined task identifier.
+    // Use only lowercase letters, numbers, and hyphens.
+    identifier; // string
+    
+    // Connection string name.    
+    connectionStringName; // string
+    
+    // Determines whether the task is enabled or disabled.
+    disabled; // boolean
+    
+    // The collection to monitor for changes.
+    collection; // string
+    
+    // The transformation script that extracts context from documents.
+    genAiTransformation; // GenAiTransformation object
+    
+    // The prompt template to send to the AI model.
+    prompt; // string
+    
+    // Sample JSON object showing the expected structure of AI responses.
+    // If both a sampleObject and a jsonSchema are provided, the schema takes precedence
+    sampleObject; // string
+    
+    // JSON schema defining the expected structure of AI responses.
+    // If both a sampleObject and a jsonSchema are provided, the schema takes precedence.
+    jsonSchema; // string
+    
+    // JavaScript function to update documents based on AI responses.
+    // Should have signature: function update(doc, result) { ... return doc; }
+    updateScript; // string
+
+    // The maximum number of concurrent requests sent to the model. 
+    // Each request includes: a context object, the prompt, and the JSON schema.
+    // Default: 4
+    maxConcurrency; // number
+}
+```
+</TabItem>   
+    
+`GenAiTransformation`
+    
+<TabItem>
+```js
+class GenAiTransformation
+{
+    // JavaScript transformation script that extracts context from documents.
+    // Must call ai.genContext(ctx) to provide context to the AI.
+    script; // string
+}
+```    
+</TabItem>     
+    
+</Panel>
