@@ -37,7 +37,7 @@ export default function GuideListItem({
             <div className="flex flex-1 items-center justify-between flex-wrap min-w-0 gap-1">
                 <p
                     className={clsx(
-                        "!mb-0 text-base leading-5",
+                        "!mb-0 text-base font-semibold leading-5",
                         "overflow-hidden text-ellipsis whitespace-nowrap shrink-0",
                     )}
                 >

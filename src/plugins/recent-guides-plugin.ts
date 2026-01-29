@@ -70,11 +70,20 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
 
             const tagCounts: Record<string, number> = {};
 
-            const files = getFiles(guidesDir).filter((f) =>
-                /\.(md|mdx)$/.test(f),
-            );
+	            const files = getFiles(guidesDir)
+	                .filter((f) => /\.(md|mdx)$/.test(f))
+	                .filter((f) => {
+	                    const relativePath = path.relative(guidesDir, f);
+	                    const normalized = relativePath
+	                        .split(path.sep)
+	                        .join("/");
+	                    // Exclude the guides home page from guides data
+	                    return (
+	                        normalized !== "home.mdx" && normalized !== "home.md"
+	                    );
+	                });
 
-            const guides = files.map((filePath) => {
+	            const guides = files.map((filePath) => {
                 const fileContent = fs.readFileSync(filePath, "utf-8");
                 const { data } = matter(fileContent);
                 const stats = fs.statSync(filePath);

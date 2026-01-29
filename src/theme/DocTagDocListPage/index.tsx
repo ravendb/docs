@@ -68,7 +68,6 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                     className={clsx(
                         ThemeClassNames.docs.docSidebarContainer,
                         SidebarStyles.docSidebarContainer,
-                        "h-[calc(100vh-var(--ifm-navbar-height))]",
                     )}
                 >
                     <DocSidebar

@@ -56,7 +56,6 @@ function AllGuidesPageContent(): ReactNode {
                     className={clsx(
                         ThemeClassNames.docs.docSidebarContainer,
                         SidebarStyles.docSidebarContainer,
-                        "h-[calc(100vh-var(--ifm-navbar-height))]",
                     )}
                 >
                     <DocSidebar
@@ -101,7 +100,7 @@ function AllGuidesPageContent(): ReactNode {
                                     {layoutMode === "grid" ? (
                                         <div
                                             className={clsx(
-                                                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
+                                                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12",
                                                 "animate-in fade-in",
                                             )}
                                         >
@@ -142,7 +141,7 @@ function AllGuidesPageContent(): ReactNode {
                                     ) : (
                                         <div
                                             className={clsx(
-                                                "flex flex-col",
+                                                "flex flex-col mb-12",
                                                 "animate-in fade-in",
                                             )}
                                         >

@@ -14,56 +14,56 @@ const GUIDES: GuideItem[] = [
     {
         title: "Get started with Documents",
         description:
-            "Understand the core: dive into architecture, data modeling, and fundamental concepts.",
+            "Learn how to handle documents efficiently: explore data modeling, document structure, and CRUD operations.",
         icon: "database",
         url: "#",
     },
     {
         title: "Get started with Querying",
         description:
-            "Scale with ease: strategies for data sharding, replication, and distribution across clusters.",
+            "Master the fundamentals of querying: understand filtering, projections, and advanced query techniques.",
         icon: "query",
         url: "#",
     },
     {
         title: "Get started with Indexing",
         description:
-            "Ensure data reliability: master validation, transactions, and consistency models.",
+            "Dive into indexing: learn how to optimize searches, improve performance, and manage indexes effectively.",
         icon: "index",
         url: "#",
     },
     {
         title: "Get started with Attachments",
         description:
-            "Unlock smart search: explore similarity, NLP, and advanced cognitive techniques.",
+            "Work with attachments: store, manage, and retrieve files associated with your documents seamlessly.",
         icon: "attachment",
         url: "#",
     },
     {
         title: "Get started with RQL",
         description:
-            "Boost performance: techniques for indexing, caching, and query optimization.",
+            "Unlock the full power of Raven Query Language (RQL): write expressive, efficient, and precise queries.",
         icon: "rql",
         url: "#",
     },
     {
         title: "Get started with Studio",
         description:
-            "Bring intelligence to the edge: data sync, edge analytics, and IoT integration strategies.",
+            "Navigate RavenDB Studio: manage your data, analyze performance metrics, and simplify database operations using the visual interface.",
         icon: "studio",
         url: "#",
     },
     {
         title: "Get started with Compare-Exchange",
         description:
-            "Build robust data solutions: schema design, performance tuning, and scalability practices.",
+            "Leverage Compare-Exchange to achieve atomic operations across distributed environments and ensure data integrity.",
         icon: "cluster-wide-transactions",
         url: "#",
     },
     {
         title: "Get started with Counters",
         description:
-            "Administer databases effectively: setup, monitoring, troubleshooting, and HA configuration.",
+            "Learn how to use counters: track numeric values, such as statistics or metrics, in your application efficiently.",
         icon: "new-counter",
         url: "#",
     },

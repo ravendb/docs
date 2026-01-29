@@ -34,10 +34,11 @@ export default function RecentGuidesListItem({
                 !isLast && "border-b border-black/10 dark:border-white/10",
             )}
         >
-            <Heading as="h6" className="!mb-0 !font-normal !text-inherit">
+            <Heading as="h6" className="!mb-0 !font-bold !text-inherit">
                 <Link
                     to={url}
-                    className="!text-inherit no-underline hover:!no-underline after:absolute after:inset-0"
+                    className="!text-inherit no-underline hover:!no-underline after:absolute after:inset-0 block truncate w-full"
+                    title={title}
                 >
                     {title}
                 </Link>

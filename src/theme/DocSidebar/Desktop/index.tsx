@@ -43,6 +43,9 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
         if (path.includes("/guides")) {
             return PathType.Guides;
         }
+        if (path.includes("/templates")) {
+            return PathType.Templates;
+        }
         return PathType.Documentation;
     })();
 
@@ -52,6 +55,9 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
         }
         if (pathType === PathType.Guides) {
             return "/guides";
+        }
+        if (pathType === PathType.Templates) {
+            return "/templates";
         }
         return `/${versionLabel}`;
     })();
