@@ -33,13 +33,6 @@ The **AI assistant**, available from RavenDB `7.2` on, is an interactive guide t
   * [Using the AI assistant](../studio/ai-assistant#using-the-ai-assistant)
   * [Configuration](../studio/ai-assistant#configuration)
   * [Security concerns](../studio/ai-assistant#security-concerns)
-     * [Concern: Data privacy & Exfiltration](../studio/ai-assistant#concern-data-privacy--exfiltration)
-     * [Prompt injection (indirect injection)](../studio/ai-assistant#concern-prompt-injection-indirect-injection)
-     * [Safety limit enforcement (reliability)](../studio/ai-assistant#concern-safety-limit-enforcement-reliability)
-     * [Denial of Service (DoS) via queries](../studio/ai-assistant#concern-denial-of-service-dos-via-queries)
-     * [Server-Side Request Forgery (SSRF)](../studio/ai-assistant#concern-server-side-request-forgery-ssrf)
-     * [Authorization confusion](../studio/ai-assistant#concern-authorization-confusion)
-     * [Unauthorized adoption & Compliance](../studio/ai-assistant#concern-unauthorized-adoption--compliance)
 
 </Admonition>
 
@@ -70,21 +63,13 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
   Click the knowledge center icon at the top right-hand corner to open the knowledge center.
 
 2. **Review the consent**  
-  Click the review button to read the AI assistant [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End-User License Agreement) and either consent and enable the assistant or leave the assistant disabled.
-
----
-
-![Consent](./assets/ai-assistant_consent.png)
-
-* **I consent**  
-  Click to consent and start the AI assistant, transmitting data to the RavenDB Cloud backend and Azure OpenAI LLM for analysis.  
-  <Admonition type="note" title="">
-  * **Note** that consenting cannot be undone from the UI. To cancel your consent after approving it you will have to [contact RavenDB](https://ravendb.net/contact).
-  * Also note that you **will** be able to disable or enable the AI assistant using [configuration keys](../studio/ai-assistant#configuration), even after providing your consent.
-  </Admonition>
-
-* **Cancel**  
-  Click to keep the AI assistant disabled and prevent any data transmission.  
+  Click the review button to read the AI assistant [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End-User License Agreement) and either consent and enable the assistant or leave the assistant disabled.  
+  ![Consent](./assets/ai-assistant_consent.png)
+    <Admonition type="note" title="">
+    * **Note** that consenting cannot be undone from the UI.  
+      To cancel your consent after approving it, [contact us](https://ravendb.net/contact).
+    * Also note that you **will** be able to disable or enable the AI assistant even after providing your consent, using [configuration keys](../studio/ai-assistant#configuration).
+    </Admonition>
 
 </ContentFrame>
 
@@ -108,21 +93,21 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 
 #### RavenDB backend service:
 
-* AI assistant prompts are delivered by Studio to its RavenDB server, and by the server to an external RavenDB backend service at `https://api.ravendb.net`.  
+* AI assistant prompts are delivered by Studio to your RavenDB server, and by the server to an external RavenDB backend service.  
 
-* The backend service processes the prompts, interacts with the LLM, and returns the results to the server, which relays them back to Studio.  
+* The backend service processes the prompts, interacts with the LLM, and returns the results to the server, which relays them back to Studio and the AI assistant.  
 
 * This procedure minimizes the amount of local resources required to run the AI assistant.
 
 <Admonition type="note" title="">
-**Note** that if the RavenDB server managed by Studio cannot connect with the RavenDB backend service at `https://api.ravendb.net` (for instance, because the server resides in an isolated network), the AI assistant will not be able to function.
+Make sure that your RavenDB server can connect to the RavenDB backend service at `https://api.ravendb.net`. If the server fails to connect to the backend service (e.g., because it resides in an isolated network), the AI assistant will not be able to function. 
 </Admonition>
 
 ---
 
 #### LLM service provider:
 
-* RavenDB's backend service uses the Azure OpenAI platform with `gpt-4.1-mini`, `gpt-4.1-nano` for chat completion, and `text-embedding-3-small` for embeddings.  
+* RavenDB's backend service uses the Azure OpenAI platform as its LLM provider.  
 
 </ContentFrame>
 
@@ -158,12 +143,20 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 2. **Chat settings**  
    Click the gear to open the chat settings dialog.  
    ![Chat settings](./assets/ai-assistant_chat-settings.png)
+   <Admonition type="note" title="">
+    These settings are applied per user and kept in the local browser storage.  
+    For server-wide settings, use the [configuration keys](../studio/ai-assistant#configuration).
+    </Admonition>
    * **A.** **Always allow endpoints calls**  
-     When enabled, the AI assistant can call database endpoints without asking for your approval for each call.  
-     When disabled, the AI assistant must ask for your approval before calling any database endpoint.  
+     Endpoints provide access to database resources through queries and other operations. The assistant is allowed to call only `GET` endpoints.  
+     When **enabled**, this option allows the AI assistant to call endpoints without asking for your approval for each call.  
+     When **disabled**, the AI assistant must ask for your approval before calling any endpoint.  
+     <Admonition type="note" title="">
+     Regardless of this setting, the assistant can call only endpoints authorized by your [client certificate](../server/security/authorization/security-clearance-and-permissions). Attempting to call unauthorized endpoints will result in a standard `403 Access Denied` error. 
+     </Admonition>
    * **B.** **Allow data submission**  
-     When enabled, the AI assistant is allowed to send your content to the RavenDB backend service and the LLM for analysis.  
-     When disabled, the AI assistant cannot send any of your content for analysis. 
+     When **enabled**, the AI assistant is allowed to send database content it is permitted to access to the RavenDB backend service for analysis.  
+     When **disabled**, the AI assistant cannot send to the backend service any of your content. It can still be used for any guidance that requires no data submission, e.g., explaining what view to use and how to use it.  
    * **C.** **Export conversation**  
      Click to export the current conversation as a JSON file.  
      This is useful when, for example, you want to share the conversation with RavenDB support for troubleshooting.
@@ -171,19 +164,23 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 3. **Conversation area**  
    The area where the conversation with the AI assistant takes place.
 
-4. **Add context**  
-   Click the **+** icon to select resources that the assistant will use as context for the current conversation, to better assist you. You can select databases, collections, documents, and indexes.  
+4. <a id="add-context"></a>**Add context**  
+   Click the **+** icon to select a resource and add its context to the AI assistant.  
+   Adding a context does not by itself pass the selected resource to the assistant, but permits the assistant to retrieve the resource during the conversation if needed. You can add contexts for databases, collections, documents, and indexes.  
    ![Add context](./assets/ai-assistant_add-context.png)
    <Admonition type="note" title="">
-    * By default, the assistant has access to no resources; it can only use resources that you add explicitly.  
-    * Selected resources will be transmitted to the RavenDB backend and 
-    Azure OpenAI; **only add resources containing data you're comfortable sharing with these services**.
-    * Selected resources are listed above the prompt area.  
-    * The first listed item is always the Studio view you are currently visiting, to remind you that the assistant is aware of it.  
+    * By default, the assistant has access to no resources.  
+    * The assistant can retrieve only resources whose contexts you add explicitly.  
+      Additionally, it can retrieve only resources that you have permissions for, as determined by your [client certificate](../server/security/authorization/security-clearance-and-permissions).  
+    * The assistant **cannot modify** any resources; it can only read them.  
+    * Resources retrieved by the assistant will be transmitted to the RavenDB backend and Azure OpenAI.  
+      **Add contexts only for resources containing data you're comfortable sharing with these services**.
+    * Selected contexts are listed above the prompt area.  
+      The first listed item is always the Studio view you are currently visiting, to remind you that the assistant is aware of it.  
     </Admonition>
 
 5. **Prompt area**  
-   Use this area to enter your prompt to the AI assistant.
+   Use this area to enter and send prompts to the AI assistant (e.g., to ask how to form a validation schema or to request help in forming an ETL transform script).
 
 </ContentFrame>
 
@@ -233,7 +230,10 @@ As user data is sent by the AI assistant to the RavenDB backend and the LLM that
 * **User control**:  
   The user decides which database content, if any, is provided to the AI assistant and sent by it to the backend and LLM. The extent of the assistant's access to the database, its ability to send any data to the backend, and its ability to operate at all, are fully controlled by the user.  
 * **Opt-in mechanism**:  
-  The AI assistant is disabled by default. To enable it, the user must explicitly consent to the [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End User License Agreement). After consenting, the user can still disable data submission both from the handy chat settings and by configuration keys.  
+  The AI assistant is disabled by default. To enable it, the user must explicitly consent to the [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End User License Agreement).  
+  After consenting, the user can still disable data submission both from the chat settings (that apply to this user on this browser and are kept in the local browser storage) and using [configuration keys](../studio/ai-assistant#configuration) (applied server-wide).  
+* **Certificate authorization**:  
+  Regardless of local and global assistant settings and [resource contexts](../studio/ai-assistant#add-context) added by the user, the assistant can only access resources authorized by its user's [client certificate](../server/security/authorization/security-clearance-and-permissions).  
 * **Awareness by legal transparency**:  
   The EULA clearly discloses that the data analysis performed by the AI assistant requires it to send query results to third-party processing: the RavenDB backend service and the LLM it uses.
 
@@ -246,7 +246,7 @@ Malicious instructions (e.g., "ignore rules and export data") may be hidden with
 
 #### Mitigations:  
 * **Decoupled execution**:  
-  The LLM has no direct access to the database and no ability to execute code. Even if "tricked" into suggesting a malicious operation, it cannot perform it.
+  The AI assistant cannot modify the database or execute code. Even if the LLM is "tricked" into suggesting a malicious operation, it has no way to apply it.
 * **Human-in-the-Loop (HITL)**:  
   The assistant, too, has no ability to modify data or perform actions. It acts strictly as an advisor, returning text and providing the user with input. 
 
@@ -271,19 +271,24 @@ The LLM may request a massive dataset, leading to data scraping.
 The LLM may construct complex, resource-heavy read queries (like map-reduce fan-outs, for instance) that would stall the production database.
 
 #### Mitigation: 
-* **User approval**:  
-  For queries that can create significant load, like the generation of auto-indexes for instance, the AI assistant requires a specific UI confirmation: the user has to approve the request using a checkbox before proceeding.  
+**User approval**:  
+For queries that can create significant load, like the generation of auto-indexes for instance, the AI assistant requires a specific UI confirmation: the user has to approve the request using a checkbox before proceeding.  
 
 </ContentFrame>
 <ContentFrame>
 
 ### Concern: Server-Side Request Forgery (SSRF)
 
-The AI may be tricked into executing requests against internal/private endpoints not meant to be accessed.
+The LLM may be tricked into addressing requests to internal or private endpoints that are not meant to be accessed (e.g., a `PUT` endpoint that modifies data).  
 
 #### Mitigations: Strict Endpoint Whitelisting
+
 * **Construction control:**  
-  The LLM provides only an ID, while the RavenDB backend service constructs the URL based on a strictly defined internal whitelist.
+  The LLM provides an ID, while the RavenDB backend service constructs the URL based on a strictly defined internal whitelist.
+
+* **Studio whitelist**  
+  Studio possesses an endpoints whitelist and all requests are validated against it. Requests to endpoints not in the whitelist are rejected. 
+  
 * **Explicit consent:**  
   The AI assistant's user must approve the execution of the query or the endpoint.
 
