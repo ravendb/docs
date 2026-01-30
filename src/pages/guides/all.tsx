@@ -74,7 +74,7 @@ function AllGuidesPageContent(): ReactNode {
                                     { label: "All Guides" },
                                 ]}
                             />
-                            <div className="flex flex-col gap-8">
+                            <div className="flex flex-col gap-8 mb-8">
                                 <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div className="flex items-center gap-4">
                                         <Heading as="h1" className="!mb-0">
@@ -100,87 +100,103 @@ function AllGuidesPageContent(): ReactNode {
                                     {layoutMode === "grid" ? (
                                         <div
                                             className={clsx(
-                                                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12",
+                                                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
                                                 "animate-in fade-in",
                                             )}
                                         >
-                                            {sortedGuides.map((guide, index) => {
-                                                const formattedDate =
-                                                    guide.lastUpdatedAt
-                                                        ? new Date(
-                                                              guide.lastUpdatedAt *
-                                                                  1000,
-                                                          ).toLocaleDateString(
-                                                              "en-US",
-                                                              {
-                                                                  month: "short",
-                                                                  day: "numeric",
-                                                                  year: "numeric",
-                                                              },
-                                                          )
-                                                        : undefined;
-                                                return (
-                                                    <CardWithImage
-                                                        key={guide.id}
-                                                        title={guide.title}
-                                                        description={
-                                                            guide.description
-                                                        }
-                                                        url={guide.externalUrl || guide.permalink}
-                                                        imgSrc={guide.image}
-                                                        imgIcon={guide.icon}
-                                                        tags={guide.tags}
-                                                        date={formattedDate}
-                                                        animationDelay={
-                                                            index * 50
-                                                        }
-                                                    />
-                                                );
-                                            })}
+                                            {sortedGuides.map(
+                                                (guide, index) => {
+                                                    const formattedDate =
+                                                        guide.lastUpdatedAt
+                                                            ? new Date(
+                                                                  guide.lastUpdatedAt *
+                                                                      1000,
+                                                              ).toLocaleDateString(
+                                                                  "en-US",
+                                                                  {
+                                                                      month: "short",
+                                                                      day: "numeric",
+                                                                      year: "numeric",
+                                                                  },
+                                                              )
+                                                            : undefined;
+                                                    return (
+                                                        <CardWithImage
+                                                            key={guide.id}
+                                                            title={guide.title}
+                                                            description={
+                                                                guide.description
+                                                            }
+                                                            url={
+                                                                guide.externalUrl ||
+                                                                guide.permalink
+                                                            }
+                                                            imgSrc={guide.image}
+                                                            imgIcon={guide.icon}
+                                                            tags={guide.tags}
+                                                            date={formattedDate}
+                                                            animationDelay={
+                                                                index * 50
+                                                            }
+                                                        />
+                                                    );
+                                                },
+                                            )}
                                         </div>
                                     ) : (
                                         <div
                                             className={clsx(
-                                                "flex flex-col mb-12",
+                                                "flex flex-col",
                                                 "animate-in fade-in",
                                             )}
                                         >
-                                            {sortedGuides.map((guide, index) => {
-                                                const formattedDate =
-                                                    guide.lastUpdatedAt
-                                                        ? new Date(
-                                                              guide.lastUpdatedAt *
-                                                                  1000,
-                                                          ).toLocaleDateString(
-                                                              "en-US",
-                                                              {
-                                                                  month: "short",
-                                                                  day: "numeric",
-                                                                  year: "numeric",
-                                                              },
-                                                          )
-                                                        : undefined;
-                                                return (
-                                                    <div
-                                                        key={guide.id}
-                                                        className="animate-in fade-in slide-in-from-left-4"
-                                                        style={{
-                                                            animationDelay: `${index * 30}ms`,
-                                                            animationDuration:
-                                                                "300ms",
-                                                            animationFillMode:
-                                                                "backwards",
-                                                        }}
-                                                    >
-                                                        <GuideListItem
-                                                            title={guide.title}
-                                                            url={guide.externalUrl || guide.permalink}
-                                                            tags={guide.tags}
-                                                            date={formattedDate}
-                                                        />
-                                                    </div>
-                                                );
-                                            })}
+                                            {sortedGuides.map(
+                                                (guide, index) => {
+                                                    const formattedDate =
+                                                        guide.lastUpdatedAt
+                                                            ? new Date(
+                                                                  guide.lastUpdatedAt *
+                                                                      1000,
+                                                              ).toLocaleDateString(
+                                                                  "en-US",
+                                                                  {
+                                                                      month: "short",
+                                                                      day: "numeric",
+                                                                      year: "numeric",
+                                                                  },
+                                                              )
+                                                            : undefined;
+                                                    return (
+                                                        <div
+                                                            key={guide.id}
+                                                            className="animate-in fade-in slide-in-from-left-4"
+                                                            style={{
+                                                                animationDelay: `${index * 30}ms`,
+                                                                animationDuration:
+                                                                    "300ms",
+                                                                animationFillMode:
+                                                                    "backwards",
+                                                            }}
+                                                        >
+                                                            <GuideListItem
+                                                                title={
+                                                                    guide.title
+                                                                }
+                                                                url={
+                                                                    guide.externalUrl ||
+                                                                    guide.permalink
+                                                                }
+                                                                tags={
+                                                                    guide.tags
+                                                                }
+                                                                date={
+                                                                    formattedDate
+                                                                }
+                                                            />
+                                                        </div>
+                                                    );
+                                                },
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -201,4 +217,3 @@ export default function AllGuidesPage(): ReactNode {
         </Layout>
     );
 }
-

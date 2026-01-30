@@ -71,7 +71,7 @@ const GUIDES: GuideItem[] = [
 
 export default function GetStartedGuides() {
     return (
-        <div className="flex flex-col gap-6 items-start relative w-full mb-12">
+        <div className="flex flex-col gap-6 items-start relative w-full mb-8">
             <div className="flex flex-col gap-1 items-start w-full">
                 <Heading as="h2" className="!mb-0">
                     Get started with RavenDB

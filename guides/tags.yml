@@ -54,6 +54,10 @@ integration:
     label: "Integration"
     permalink: "/integration"
     description: "Content related to Integration."
+replication:
+    label: "Replication"
+    permalink: "/replication"
+    description: "Content related to Replication."
 csharp:
     label: "C#"
     permalink: "/csharp"
@@ -86,6 +90,14 @@ fastapi:
     label: "FastAPI"
     permalink: "/fastapi"
     description: "Content related to FastAPI."
+nextjs:
+    label: "Next.js"
+    permalink: "/nextjs"
+    description: "Content related to Next.js."
+aspire:
+    label: "Aspire"
+    permalink: "/aspire"
+    description: "Content related to Aspire."
 getting-started:
     label: "Getting started"
     permalink: "/getting-started"

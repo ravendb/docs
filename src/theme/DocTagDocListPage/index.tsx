@@ -88,7 +88,7 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                     { label: tag.label },
                                 ]}
                             />
-                            <div className="flex flex-col gap-8">
+                            <div className="flex flex-col gap-8 mb-8">
                                 <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div className="flex items-center gap-4">
                                         <Heading as="h1" className="!mb-0">
@@ -145,7 +145,10 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                         description={
                                                             doc.description
                                                         }
-                                                        url={guide?.externalUrl || doc.permalink}
+                                                        url={
+                                                            guide?.externalUrl ||
+                                                            doc.permalink
+                                                        }
                                                         imgSrc={guide?.image}
                                                         imgIcon={guide?.icon}
                                                         tags={guide?.tags}
@@ -198,7 +201,10 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                     >
                                                         <GuideListItem
                                                             title={doc.title}
-                                                            url={guide?.externalUrl || doc.permalink}
+                                                            url={
+                                                                guide?.externalUrl ||
+                                                                doc.permalink
+                                                            }
                                                             tags={guide?.tags}
                                                             date={formattedDate}
                                                         />
