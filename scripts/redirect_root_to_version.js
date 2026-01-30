@@ -6,7 +6,7 @@ function handler(event) {
         return request;
     }
 
-    var defaultVersion = "7.1";
+    var defaultVersion = "7.2";
 
     var staticAssetRegex = /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
 
