@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import IconGalleryCard from "./IconGalleryCard";
-import { ALL_ICON_NAMES } from "../../typescript/iconName";
+import { ALL_ICON_NAMES } from "@site/src/typescript/iconName";
 
 export default function IconGallery() {
   const iconNames = useMemo(() => {
