@@ -81,18 +81,22 @@ This feature is available only for *RavenDB* **6.0 and newer**.
 
 
 
-## Data Archival 
+## Data Governance: Data Archival, Remote Attachments & Schema Validation
 
-*RavenDB Cloud* offers the ability to archive selected documents.
+The **Data Governance** feature in *RavenDB Cloud* bundles several capabilities to help manage your data lifecycle and integrity.
+
+Its primary function is **Data Archival**, which offers the ability to archive selected documents.
 Archived documents are compressed and can be handled differently by *RavenDB* functions (e.g. Indexing can exclude
 archived documents from indexes and Data Subscriptions can avoid sending archived docs to workers), helping to keep the
 database smaller and quicker and its contents more relevant.
 
-Usage of this feature is
-described [here](https://ravendb.net/docs/article-page/latest/csharp/server/extensions/archival).
+Usage of Data Archival is described [here](https://docs.ravendb.net/data-archival/overview).
 
-<Admonition type="info" title="Availability " id="availability" href="#availability">
-This feature is available only for *RavenDB* **6.0 and newer**.
+Additionally, for newer server versions, enabling Data Governance grants access to [Remote Attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/store-attachments/store-attachments-remote/) and [Schema Validation](https://docs.ravendb.net/7.2/documents/schema-validation/schema-validation_overview/).
+
+<Admonition type="info" title="Availability & Versions" id="availability" href="#availability">
+    * **Data Archival**: Available for *RavenDB* **6.0 and newer**.
+    * **Remote Attachments & Schema Validation**: Automatically included if running *RavenDB* **7.2 or higher**.
 </Admonition>
 
 
@@ -213,7 +217,7 @@ indexing and querying features, enabling efficient storage and management of hig
 *RavenDB* can now be combined with generative AI using LLM of your choice.
 
 Usage of this feature is
-described [here](https://ravendb.net/docs/article-page/latest/csharp/ai-integration).
+described [here](https://docs.ravendb.net/7.1/ai-integration/start/).
 
 <Admonition type="info" title="Availability " id="availability" href="#availability">
 AI Embeddings is available only for *RavenDB* **7.0 and newer**.
