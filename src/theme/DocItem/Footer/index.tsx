@@ -2,10 +2,10 @@ import React, { type ReactNode } from "react";
 import clsx from "clsx";
 import { ThemeClassNames } from "@docusaurus/theme-common";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
-import TagsListInline from "@theme/TagsListInline";
 import EditMetaRow from "@theme/EditMetaRow";
 import { HIDDEN_EDIT_PAGE_ROUTES } from "@site/src/typescript/hiddenEditPageRoutes";
 import { DocsLanguage, useLanguage } from "@site/src/components/LanguageStore";
+import Tag from "../../Tag";
 
 const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLanguages: DocsLanguage[]) : string => {
     if (!supportedLanguages || supportedLanguages.length === 0) {
@@ -38,15 +38,12 @@ export default function DocItemFooter(): ReactNode {
     return (
         <footer className={clsx(ThemeClassNames.docs.docFooter, "mt-6")}>
             {canDisplayTagsRow && (
-                <div
-                    className={clsx(
-                        "row",
-                        ThemeClassNames.docs.docFooterTagsRow,
-                    )}
-                >
-                    <div className="col">
-                        <TagsListInline tags={tags} />
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                        <Tag key={tag.label} permalink={tag.permalink}>
+                            {tag.label}
+                        </Tag>
+                    ))}
                 </div>
             )}
             {canDisplayEditMetaRow && (

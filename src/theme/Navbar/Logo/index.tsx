@@ -22,7 +22,7 @@ export default function NavbarLogo(): ReactNode {
           <Link
             to="https://ravendb.net/cloud"
             aria-label="RavenDB Cloud"
-            className="inline-block !transition-opacity transition-duration-300 hover:opacity-75 group"
+            className="inline-block !transition-all hover:opacity-75 group"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ export default function NavbarLogo(): ReactNode {
           <Link
             to="/cloud"
             aria-label="Homepage"
-            className="!no-underline !text-ifm-menu hover:opacity-75 !transition-opacity !transition-duration-300 flex justify-center items-center"
+            className="!no-underline !text-ifm-menu hover:opacity-75 !transition-all flex justify-center items-center"
           >
             <span className="text-base/4 font-normal">
               <span className="block md:hidden">Docs</span>
@@ -57,7 +57,7 @@ export default function NavbarLogo(): ReactNode {
           <Link
             to="https://ravendb.net"
             aria-label="RavenDB"
-            className="inline-block !transition-opacity transition-duration-300 hover:opacity-75 group"
+            className="inline-block !transition-all hover:opacity-75 group"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ export default function NavbarLogo(): ReactNode {
           <Link
             to={isCloudPath ? "/cloud" : `/${versionLabel}`}
             aria-label="Homepage"
-            className="!no-underline !text-ifm-menu hover:opacity-75 !transition-opacity !transition-duration-300 flex justify-center items-center"
+            className="!no-underline !text-ifm-menu hover:opacity-75 !transition-all flex justify-center items-center"
           >
             <span className="text-base/4 font-normal">
               <span className="block md:hidden">Docs</span>
