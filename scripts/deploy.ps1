@@ -133,8 +133,8 @@ if ($LASTEXITCODE) { throw 'npm ci failed' }
 
 Prepare-RobotsTxt
 
-Write-Host "Running 'npx docusaurus build'..." -ForegroundColor Gray
-npx docusaurus build
+Write-Host "Running 'npm run build'..." -ForegroundColor Gray
+npm run build
 if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
