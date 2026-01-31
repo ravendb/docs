@@ -17,10 +17,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-**RavenDB** is equipped with a wide selection of features and capabilities, unified in a database built to make your life easier. The [Studio](../studio/overview) UI is designed to support this aim by making your navigation through the database feature set simple, effective, and enjoyable. Still, when looking for a new option in an abundant interface or defining an unfamiliar script or task, it can be challenging to quickly get to the location or result you are looking for.  
-The **AI assistant**, available from RavenDB `7.2` on, is an interactive guide that remains available throughout the Studio interface. It can direct you to locations and solutions you're seeking and provide you with needed information and help. 
+**RavenDB** is equipped with a wide selection of features and capabilities, unified in a database built to make your life easier. The [Studio](../studio/overview) UI is designed to support this aim by making your navigation through the database feature set simple, effective, and enjoyable. Still, when looking for a new option in this extensive interface or defining an unfamiliar script or task, it can be challenging to quickly get to the location or result you are looking for.  
 
-* AI capabilities are provided to the assistant through an external RavenDB backend service, requiring no significant local resources.  
+RavenDB `7.2` and on address this challenge via the **AI assistant**, an interactive context-aware guide, intended to minimize the time and effort spent on learning Studio and RavenDB.  
+
+You can approach the assistant from any Studio view for navigation instructions, explanations regarding your current location, and information about the database or other topics you may bring up. For example, you can ask for its assistance in views that require specialized information such as RQL queries or ETL scripts.  
+
+Additionally, you can grant the assistant [read access](../studio/ai-assistant#add-context) to database resources such as documents or collections, to allow it to base its answers on your content.  
 
 * In this article:
   * [Overview](../studio/ai-assistant#overview)
@@ -193,9 +196,9 @@ Use the following keys to configure the AI assistant server-wide.
 
 <ContentFrame>
 
-#### Ai.Assistant.Disable
+### Ai.Assistant.Disable
 
-Use this key to completely disable the AI Assistant for all users, regardless of individual user consent. The AI assistant option will be blocked in the Knowledge Center.
+Use this key to completely disable the AI assistant for all users regardless of individual [user consent](../studio/ai-assistant#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -205,16 +208,15 @@ Use this key to completely disable the AI Assistant for all users, regardless of
 
 <ContentFrame>
 
-#### Ai.Assistant.DisableDataSubmission
+### Ai.Assistant.DisableDataSubmission
 
-Use this key to prevent the transmission of any user data to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
+Use this key to prevent the transmission of any user data [exposed to the AI assistant](../studio/ai-assistant#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide
 
 </ContentFrame>
-
 
 </Panel>
 
