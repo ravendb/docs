@@ -10,12 +10,13 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Studio Overview
 <Admonition type="note" title="">
 
-* RavenDB's **Management Studio** is installed along with the server and can 
-  be accessed via any modern browser.  
+* RavenDB's **Management Studio** is installed along with the server and can be accessed via any modern browser.  
   Access Studio using the server's URL, including its port number. E.g.: `http://localhost:8080` 
 
 * Use Studio to manage your RavenDB 
@@ -32,17 +33,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and [export](../studio/database/tasks/export-database.mdx) data, 
   and much more.
 
-* In this page:  
-   * [Accessing Studio After Setup](../studio/overview.mdx#accessing-studio-after-setup)  
+* Studio includes an **AI assistant** that can help you navigate the interface and leverage its capabilities. [Learn more.](../studio/ai-assistant)  
+
+* In this article:  
+   * [Accessing Studio after setup](../studio/overview.mdx#accessing-studio-after-setup)  
       * [Connecting to an Unsecure server](../studio/overview.mdx#connecting-to-an-unsecure-server)  
       * [Connecting to a Secure server](../studio/overview.mdx#connecting-to-a-secure-server)  
          * [Where should the certificate be located](../studio/overview.mdx#where-should-the-certificate-be-located)  
-   * [The Cluster Dashboard](../studio/overview.mdx#the-cluster-dashboard)  
-   * [Manage Your Server](../studio/overview.mdx#manage-your-server)  
-   * [Manage Your Databases](../studio/overview.mdx#manage-your-databases)  
-   * [Header and Footer Areas](../studio/overview.mdx#header-and-footer-areas)  
+   * [The cluster dashboard](../studio/overview.mdx#the-cluster-dashboard)  
+   * [Manage your server](../studio/overview.mdx#manage-your-server)  
+   * [Manage your databases](../studio/overview.mdx#manage-your-databases)  
+   * [Header and footer areas](../studio/overview.mdx#header-and-footer-areas)  
+
 </Admonition>
-## Accessing Studio After Setup
+
+<Panel heading="Accessing Studio After Setup">
 
 Studio, the server's GUI, is installed along with the server. You can connect to it 
 using your browser to access and manage the server.  
@@ -59,6 +64,8 @@ certificate) or an [Unsecure](../start/installation/setup-wizard.mdx#unsecure-se
 Connecting your browser to Studio is **different** when the server you attempt to access 
 is secure and when it isn't.  
 
+<ContentFrame>
+
 ## Connecting to an Unsecure server:
 
 When connecting to an [unsecure](../start/installation/setup-wizard.mdx#unsecure-setup) 
@@ -68,6 +75,9 @@ the server's URL.
 Please be aware that using an unsecure server is **not** recommended except for 
 experiments in a development environment.  
 </Admonition>
+
+</ContentFrame>
+<ContentFrame>
 
 ## Connecting to a Secure server:
 
@@ -95,8 +105,10 @@ Certificates must be installed where the browser can find them.
   into the browser's root store.  
   </Admonition>
 
+</ContentFrame>
+</Panel>
 
-## The Cluster Dashboard
+<Panel heading="The Cluster Dashboard">
 
 * Open the **Cluster Dashboard** from Studio's main menu.  
 * A [Let's get started](../studio/cluster/cluster-dashboard/cluster-dashboard-widgets.mdx#let) 
@@ -112,9 +124,9 @@ Certificates must be installed where the browser can find them.
 
 ![Cluster Dashboard](./assets/overview_cluster-dashboard.png)
 
+</Panel>
 
-
-## Manage your Server
+<Panel heading="Manage your Server">
 
 To access your server's configuration and debugging options, open the **Manage Server** 
 menu from Studio's main menu.  
@@ -130,9 +142,9 @@ assign it CPU cores.
 
 ![Manage Server menu: Cluster view](./assets/overview_manage-server_cluster-view.png)
 
+</Panel>
 
-
-## Manage your Databases
+<Panel heading="Manage your Databases">
 
 Access the **Databases View** from Studio's main menu.  
 ![Click to manage databases](./assets/overview_click-to-manage-databases.png)
@@ -143,9 +155,9 @@ or enabling a database or modifying its database group.
 
 ![Databases view](./assets/overview_databases-view.png)
 
+</Panel>
 
-
-## Header and Footer Areas
+<Panel heading="Header and Footer Areas">
 
 ![Header and Footer areas](./assets/overview_header-and-footer.png)
 
@@ -173,4 +185,4 @@ or enabling a database or modifying its database group.
     * **J**. **Support information**
     * **K**. [RavenDB Community](https://ravendb.net/community)
 
-
+</Panel>
