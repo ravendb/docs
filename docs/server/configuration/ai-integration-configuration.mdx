@@ -16,10 +16,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Configuration: AI Integration
 <Admonition type="note" title="">
 
-* The following configuration keys apply to integrating **AI-powered embeddings generation**:
- 
-  * Embeddings can be generated from your document content via [AI-powered tasks](../../ai-integration/generating-embeddings/overview.mdx) and stored in a dedicated collection in the database.  
-  * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.  
+* Use the configuration keys listed below to set AI-related options for your RavenDB server.  
+* Learn how to apply these keys in the [Configuration Overview](../../server/configuration/configuration-options) article.
 
 * On this page:
    * [Embeddings configuration keys](../../server/configuration/ai-integration-configuration#embeddings-configuration-keys)  
@@ -38,6 +36,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 </Admonition>
 
 <Panel heading="Embeddings configuration keys">
+
+The following configuration keys apply to integrating **AI-powered embeddings generation** into your RavenDB server.
+ 
+  * Embeddings can be generated from your document content via [AI-powered tasks](../../ai-integration/generating-embeddings/overview.mdx) and stored in a dedicated collection in the database.  
+  * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.  
 
 <ContentFrame>
 
