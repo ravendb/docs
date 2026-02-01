@@ -47,7 +47,7 @@ Additionally, you can grant the assistant [read access](../studio/ai-assistant#a
 
 Using the AI assistant can ease and enhance your database management capabilities via Studio in various ways.  
 - You can use the assistant where **specialized knowledge** is required.  
-  E.g., pass to the assistant in natural language a description of a query you want to run and get its help in forming RQL code that can be executed in Studio's Query view.  
+  For example, describe a query in natural language to get help forming executable RQL code for Studio's Query view.  
 - The assistant **remains accessible from any Studio view**, providing you with the help you need and saving you the distraction of leaving Studio to look for it elsewhere.
 - In addition to its constant availability, the assistant is also **aware of your current location** in Studio. It can, for example, direct you to the view where a specific type of ETL task can be defined and guide you through the task definition fields and settings.  
 - You can give the assistant access to selected collections, documents, and indexes in your database for help specifically tailored to your data and use cases.  
@@ -60,7 +60,7 @@ Using the AI assistant can ease and enhance your database management capabilitie
 
 The AI assistant is **disabled by default**. To enable it, you must provide explicit consent. 
 
-![Knowledge center](./assets/ai-assistant_knowledge-center.png)
+![Knowledge center](./assets/ai-assistant_knowledge-center_assistant-consent.png)
 
 1. **Knowledge center icon**  
   Click to open the knowledge center panel.
@@ -103,7 +103,7 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 * This procedure minimizes the amount of local resources required to run the AI assistant.
 
 <Admonition type="note" title="">
-Make sure that your RavenDB server can connect to the RavenDB backend service at `https://api.ravendb.net`. If the server fails to connect to the backend service (e.g., because it resides in an isolated network), the AI assistant will not be able to function. 
+Make sure your RavenDB server can connect to the RavenDB backend service at `https://api.ravendb.net`. If the server fails to connect to the backend service (e.g., because it resides in an isolated network), the AI assistant will not be able to function. 
 </Admonition>
 
 ---
@@ -123,7 +123,7 @@ Make sure that your RavenDB server can connect to the RavenDB backend service at
 
 ### Opening the AI assistant
 
-![AI assistant panel](./assets/ai-assistant_panel.png)
+![Knowledge Center panel](./assets/ai-assistant_knowledge-center_panel.png)
 
 </ContentFrame>
 
@@ -131,7 +131,7 @@ Make sure that your RavenDB server can connect to the RavenDB backend service at
 
 ### Setting and using the assistant
 
-![AI assistant panel](./assets/ai-assistant_ai-assistant.png)
+![AI assistant tab](./assets/ai-assistant_knowledge-center_assistant-tab.png)
 
 1. **Start a new conversation**  
    Click to start a new conversation with the AI assistant.  
@@ -145,7 +145,7 @@ Make sure that your RavenDB server can connect to the RavenDB backend service at
     For server-wide settings, use the [configuration keys](../studio/ai-assistant#configuration).
     </Admonition>
    * **A.** **Always allow endpoints calls**  
-     Endpoints provide access to database resources through queries and other operations. The assistant is allowed to call only `GET` endpoints.  
+     Endpoints provide access to database resources. The assistant can call only `GET` endpoints.  
      When **enabled**, this option allows the AI assistant to call endpoints without asking for your approval for each call.  
      When **disabled**, the AI assistant must ask for your approval before calling any endpoint.  
      <Admonition type="note" title="">
@@ -226,7 +226,7 @@ As user data is sent by the AI assistant to the RavenDB backend and the LLM that
 * **User control**:  
   The user decides which database content, if any, is provided to the AI assistant and sent by it to the backend and LLM. The extent of the assistant's access to the database, its ability to send any data to the backend, and its ability to operate at all, are fully controlled by the user.  
 * **Opt-in mechanism**:  
-  The AI assistant is disabled by default. To enable it, the user must explicitly consent to the [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End User License Agreement).  
+  The AI assistant is disabled by default. To enable it, the user must explicitly consent to the [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End-User License Agreement).  
   After consenting, the user can still disable data submission both from the chat settings (that apply to this user on this browser and are kept in the local browser storage) and using [configuration keys](../studio/ai-assistant#configuration) (applied server-wide).  
 * **Certificate authorization**:  
   Regardless of local and global assistant settings and [resource contexts](../studio/ai-assistant#add-context) added by the user, the assistant can only access resources authorized by its user's [client certificate](../server/security/authorization/security-clearance-and-permissions).  
