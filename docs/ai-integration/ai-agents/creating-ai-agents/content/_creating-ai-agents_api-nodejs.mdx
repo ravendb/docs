@@ -13,7 +13,8 @@ import Panel from "@site/src/components/Panel";
     
 * Once the agent is created, the client can initiate or resume **conversations**, get LLM responses, and perform actions based on LLM insights.
     
-* This article provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.
+* This article provides a step-by-step guide to creating an AI agent and interacting with it using the **Client API**.  
+  To create an AI agent from Studio, see [Creating AI agents - Studio](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio).
     
 * In this article:
    * [Create a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
@@ -147,7 +148,7 @@ See the dedicated syntax sections in the following articles for full configurati
 <span id="defining-an-agent-configuration"></span>
 <Panel heading="Define the agent">
 
-* To create an AI agent, start by creating an **agent configuration** object (link to syntax here ?):
+* To create an AI agent, start by creating an **agent configuration** object:
  
   <TabItem>    
   ```js
@@ -156,7 +157,7 @@ See the dedicated syntax sections in the following articles for full configurati
   </TabItem>    
     
 * Then populate the object with your system prompt, agent settings, and tools.  
-  The sections below explain how to set up each part of the agent configuration:    
+  The following sections explain how to configure each component of the agent:  
   * [System prompt](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#system-prompt)  
   * [Agent name](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-name)  
   * [Agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-id)  
@@ -229,7 +230,7 @@ agentConfiguration.connectionStringName = connectionString.name;
 <ContentFrame>
 ### Expected response format   
 
-Define a response format using a [structued output](https://platform.openai.com/docs/guides/structured-outputs) that the LLM will populate as its reply.  
+Define a response format using a [structured output](https://platform.openai.com/docs/guides/structured-outputs) that the LLM will populate as its reply.  
 This will be the format you expect to receive from the LLM via the agent during the conversation.      
 You can define it in one of two ways:
     
@@ -297,15 +298,18 @@ agent.OutputSchema = outputSchema: JSON.stringify({
 <ContentFrame>
 ### Agent parameters   
 
-Agent parameters let you define named placeholders for values used in queries inside query tools.  
-These values are not set by the LLM, they must be provided by you at [conversation startup](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation).
-
-When the agent is requested to execute a query tool that uses agent parameters, it replaces the placeholders in the query with the fixed values you supplied at chat startup, before running the query.    
+Agent parameters let you define named placeholders for values used in queries inside query tools.
     
-This allows the same query tool to adapt to different contexts based on user-provided input -  
-such as geographic region, product category, or customer ID - tailoring the agent’s behavior and ensuring that queries run only within the intended data scope.    
+At configuration time, you define the parameter name (e.g. `country`),  
+which you can then use in the RQL of your [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) as a placeholder (e.g. `$country`).  
+The values for these parameters are Not set by the LLM - 
+you must provide the actual value at [conversation startup](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation).
+
+When the agent is requested to execute a query that references an agent parameter,   
+it replaces each placeholder with the corresponding value you supplied at chat startup, before running the query.
     
 ```js
+// Set agent parameters
 agentConfiguration.parameters = [{
     name: "country", // Use '$country' in your query to reference this parameter
     description: `
@@ -337,14 +341,15 @@ agentConfiguration.maxModelIterationsPerCall = 3;
     
 <ContentFrame>
 ### Chat trimming configuration 
-   
-You can configure automatic trimming of long conversations by summarizing older messages in the chat conversation document.
-When the total number of tokens exceeds a configured threshold, RavenDB will generate a compact summary and replace the earlier part of the conversation with it.
 
-The original conversation (before summarization) can optionally be stored in a document under the `@conversations-history` collection.
-You can also configure how long these history documents are kept before expiration.  
+You can configure RavenDB to automatically trim long conversations by summarizing older messages stored in the chat conversation document.
+When the total number of tokens exceeds the configured threshold, RavenDB will generate a summary and replace the earlier part of the conversation with it.
+
+Optionally, the original (unsummarized) conversation can be saved in a document under the `@conversations-history` collection.
+You can also configure how long these history documents are retained before they expire.   
     
 ```js
+// Set chat trimming configuration    
 agentConfiguration.chatTrimming = {
     tokens: {
         // Summarization is triggered when the total number of tokens 
@@ -387,29 +392,31 @@ agentConfiguration.chatTrimming = {
   see: [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries) below.
 
 * **Passing values to a query tool**  
-  * The RQL in the query tool may include parameter placeholders prefixed with `$` (e.g. `$country`).  
-    Both the user and the LLM can pass values to these parameters.  
+  The RQL in the query tool may include parameter placeholders prefixed with `$` (e.g. `$country`).  
+  Both the user and the LLM can pass values to these parameters.  
   * **Passing values from the user**:  
     Users can pass values to queries through [Agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-parameters).  
     If agent parameters are defined in the agent configuration -  
     * The client must provide values for them when initiating a conversation with the agent.
     * Before executing the query, the agent will replace the placeholders with the provided values.
-  * **Passing values from the LLM**  
+  * **Passing values from the LLM**:  
     You can define parameters that the LLM will fill in dynamically based on the conversation context when it invokes the query.
     To do this, define a sample object (or a formal JSON schema) that describes the parameters the LLM is expected to supply when requesting the agent to run the query.    
     * If both a sample object and a JSON schema are defined, the schema is used.  
     * If only a sample object is provided, RavenDB will convert it into a JSON schema.  
     * When the LLM triggers the tool, it will fill in values for the defined parameters based on the conversation.
-  * Note: You cannot define both an agent parameter and a tool parameter with the same name.  
+  * Note:  
+    You cannot define both an agent parameter and a tool parameter with the same name.  
     Each parameter name must be unique across both types.
 
 * **Example**  
   The example below defines three query tools:  
-  * The first query tool is used by the LLM to retrieve all orders sent anywhere in the world.  
+  * **The first query tool** is used by the LLM to retrieve all orders sent anywhere in the world.  
     The system prompt instructs it to use this tool when the user starts the conversation with the value "everywhere".
-  * The second query tool retrieves all orders sent to a specific country, using the `$country` agent parameter provided by the client at conversation startup.
-  * The third query tool retrieves the general location of an employee, using the `$employeeId` parameter,  
-    whose value is set by the LLM when it requests to run this tool.  
+  * **The second query tool** retrieves all orders sent to a specific country,  
+    using the `$country` agent parameter provided by the client at conversation startup.
+  * **The third query tool** retrieves the general location of an employee,  
+    using the `$employeeId` parameter, whose value is set by the LLM when it requests to run this tool.  
 
         ```js
         agentConfiguration.queries = [
@@ -418,7 +425,7 @@ agentConfiguration.chatTrimming = {
                 // Query tool name
                 name: "retrieve-orders-sent-to-all-countries",
     
-                // Query tool description
+                // Query description
                 description:
                     `A query that allows you to retrieve all orders sent to all countries`,
     
@@ -468,7 +475,7 @@ agentConfiguration.chatTrimming = {
   so that it executes immediately when the agent starts, before the LLM receives any user input.  
   The results are provided to the LLM as part of the initial conversation context.
  
-   * An initial-context query is **not allowed** to use LLM parameters, because the LLM has no opportunity to supply values - the query runs before the conversation starts.
+   * An initial-context query is **not allowed** to use LLM parameters because the LLM has no opportunity to supply values - the query runs before the conversation starts.
    * An initial-context query **can use** agent parameters, since their values are supplied by the client at conversation startup.
 
 *  Use the `options.allowModelQueries` property to control whether the LLM is allowed to trigger the query tool later in the conversation.
@@ -477,7 +484,8 @@ agentConfiguration.chatTrimming = {
    * If the query tool is set as an initial-context query, it will be executed at startup regardless of the `allowModelQueries` setting. 
 
 * **Example**  
-  Set a query tool to run when the agent starts and retrieve all orders sent worldwide:
+  Set a query tool to retrieve all orders sent worldwide.  
+  The query will run when the agent is started.   
     
   ```js
   agentConfiguration.queries = [
@@ -509,9 +517,11 @@ agentConfiguration.chatTrimming = {
 ### Action tools
 
 * Action tools allow the LLM to instruct the client to perform an operation (e.g., to modify or create a document).  
-  Each action tool includes:  
-  * **Description** - a natural-language description that tells the LLM what the tool does,  
-  * **Schema** - a schema that the LLM will fill with the required action data before sending it to the agent.
+  This communication is mediated by the agent, which receives the tool call from the LLM and passes the request to the client.
+    
+    Each action tool includes:  
+    * **Description** - a natural-language description that tells the LLM what the tool does,  
+    * **Schema** - a schema that the LLM will fill with the required action data before sending it to the agent.
     
 * Once the client completes the requested action, it must send a response back to the LLM indicating the result,
   for example, `"done"`. 
@@ -522,7 +532,7 @@ agentConfiguration.chatTrimming = {
   ```js
   agentConfiguration.actions = [
       {
-           // Set an action tool to store the performer's details
+          // Set an action tool to store the performer's details
           name: "store-performer-details",
           description: 
               `An action tool that allows you to store the ID of the employee that made the
@@ -543,8 +553,8 @@ agentConfiguration.chatTrimming = {
 <span id="creating-the-agent"></span>
 <Panel heading="Create the agent">
 
-* When the agent configuration is complete,  
-  you can register the agent with the server using the `createAgent` method:
+* Once the agent configuration is complete,  
+  register the agent with the server using the `createAgent` method:
   * Define a response object class that matches the response schema in your agent configuration.    
   * Call `createAgent` and pass:  
     * The agent configuration  
@@ -555,10 +565,12 @@ agentConfiguration.chatTrimming = {
   <Tabs groupId='languageSyntax'>  
   <TabItem value="Create_agent" label="Create_agent">
   ```js
-  const createdAgentResult = await documentStore.ai.createAgent(agentConfiguration,
-  new Performer("Your suggestions for a reward", 
-      "The ID of the employee that made the largest profit",
-      "The profit the employee made"));
+  const createdAgentResult = await documentStore.ai.createAgent(
+      agentConfiguration,
+      new Performer(
+          "Your suggestions for a reward", 
+          "The ID of the employee that made the largest profit",
+          "The profit the employee made"));
   ```
   </TabItem>
   <TabItem value="Performer_class" label="Performer_class">
@@ -740,7 +752,8 @@ performing a long-running task like batch processing or external system integrat
           await session.saveChanges();
   
           // Perform a long-running operation
-          // For example, send a notification
+          // For example, send a notification email
+          // (emailService is assumed to be defined elsewhere)
           await emailService.SendNotification("manager@company.com", performer);
   
           // Call 'addActionResponse' to send a response back to the LLM when done
@@ -807,13 +820,17 @@ See [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/
 
 Each time you call `run()`, the agent returns a **response object** to the client.  
 This object contains:  
-* An **answer** -  the LLM's reply to the user prompt (if available).
-* A **status** - the current state of the conversation.
+* `answer` -  The LLM's reply to the user prompt (if available).  
+* `status` - The current state of the conversation.  
+* `usage` - Token usage reported by the model for generating this answer.  
+            Reflects usage for the current turn only.  
+* `elapsed` - The total time elapsed to produce the answer.  
+              Measured from the server's request to the LLM until the response was received.
 
 The status can be:
-* `"Done"` -  
+* `"Done"`  
   The conversation is complete, and a final answer is available in the answer field.  
-* `"ActionRequired"` -  
+* `"ActionRequired"`  
   The conversation requires further interaction.
   For example, the LLM may have triggered a tool request, and the conversation is paused until the client processes it.
 
@@ -841,7 +858,7 @@ The status can be:
   let rewardText = "";
     
   // Call 'stream' to collect the streamed response
-  const streamAnswer = await chat.stream(
+  const streamedAnswer = await chat.stream(
     
       // The response property to stream
       "suggestedReward",
@@ -854,9 +871,13 @@ The status can be:
   
   // Check the conversation status
   if (llmResponse.status === "Done") {
-  {
-    // The full streamed property has been received and handled
-    console.log("Final streaming answer", streamAnswer);
+  {    
+      console.log("Final streamed answer", streamedAnswer);
+    
+      // The streamed property (`suggestedReward`) was processed chunk by chunk above
+      // and is fully received.
+      // Other properties in the response (e.g., employeeId, profit) are not streamed,
+      // they will be available in the final response object once the conversation is complete.
   }
   ```
 </ContentFrame>
@@ -909,7 +930,7 @@ const putConnectionStringResult = await documentStore.maintenance.send(putConnec
 // ================
 
 const agentConfiguration = {
-    name: "reward-productive-employee",
+    name: "Reward productive employee",
     connectionStringName: connectionString.name,
     systemPrompt: `
         You work for a human experience manager.
@@ -1158,6 +1179,7 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
     name, // string
     
     // A description of the query tool.
+    // This helps the LLM understand when to invoke this query.
     description, // string
     
     // The RQL query that will be executed against the database when this query tool is invoked.   
@@ -1206,7 +1228,8 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
     // The name of the action tool.
     name, // string
     
-    // A description of the action tool.
+    // A description of the action tool.    
+    // This helps the LLM understand when to trigger this action.
     description, // string
     
     // Define the format in which the LLM will supply data for the requested action
@@ -1324,7 +1347,7 @@ await documentStore.ai.createAgent(configuration, sampleObject)
 
 <TabItem>
 ```js    
-// Opens an AI conversation/chat for an agent.
+// Open a conversation with an agent.
 documentStore.ai.conversation(agentId, conversationId, creationOptions, changeVector) 
 ```    
 </TabItem>
@@ -1375,7 +1398,7 @@ class AiConversation {
     // Closes the action request and sends the response back to the LLM.
     addActionResponse(toolId, actionResponse);
     
-    // Get action request details
+    // Retrieve the list of action-tool requests the AI agent needs you to execute.
     requiredActions(): AiAgentActionRequest[];
     
     // Execute one “turn” of the conversation: 
