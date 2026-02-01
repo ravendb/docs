@@ -40,25 +40,74 @@ To validate documents against a JSON schema:
 
 <ContentFrame>
 
-### 1. **Define your [schema](https://json-schema.org/) as a string**.  
-Ensure that the schema sets all the constraints needed to validate your documents.  
+### 1. Define your schema as a string  
+Ensure that the [schema](https://json-schema.org/) you define sets all the constraints needed to validate your documents.  
   
-**Example**:
-```csharp
-// Ensure that a `Name` property exists.
-string schemaJson = "{\"required\":[\"Name\"]}";
-```
-
-**Example**:
+**Example: Validate name length**
 ```csharp
 // Ensure that a `Name` property has a maximum length of 7 characters.
 string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
 ```
+---
+**Example: Validate nested elements of an array**
+<Tabs groupId='languageSyntax'>
+<TabItem value="Validation_schema" label="Validation_schema">
+
+```csharp
+// Validate properties of documents in the Orders collection
+// Including nested items added to the Lines array
+string schemaDefinition = @"{
+    ""additionalProperties"": true,
+    ""properties"": {
+        ""Company"": {
+            ""type"": ""string"",
+            ""minLength"": 1
+        },
+        ""Lines"": {
+            ""type"": ""array"",
+            ""items"": {
+                ""type"": ""object"",
+                ""additionalProperties"": true,
+                ""properties"": {
+                    ""Product"": { ""type"": ""string"" },
+                    ""Quantity"": { ""type"": ""integer"", ""minimum"": 1 }
+                },
+                ""required"": [""Product"", ""Quantity""]
+            }
+        }
+    },
+    ""required"": [
+        ""Company"",
+        ""Lines""
+    ]
+}";
+```
+</TabItem>
+<TabItem value="Example_document" label="Example_document">
+
+```json
+{
+    "Company": "companies/1-A",
+    "Lines": [
+        {
+            "Product": "products/1-A",
+            "Quantity": 1
+        },
+        {
+            "Product": "products/2-A",
+            "Quantity": 2
+        }
+    ]
+}
+```
+</TabItem>
+</Tabs>
+
 </ContentFrame>
 
 <ContentFrame>
 
-### 2. **Create the schema configuration**.  
+### 2. Create the schema configuration  
 Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
 E.g., to associate your schema with the `Users` collection:  
@@ -82,7 +131,7 @@ var configuration = new SchemaValidationConfiguration
 
 <ContentFrame>
 
-### 3. **Register the schema with the server**.  
+### 3. Register the schema with the server  
 
 Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
 
@@ -100,14 +149,14 @@ Once a schema is enabled for a collection, collection documents are validated wh
 
 <ContentFrame>
 
-### 4. **Validate documents**.  
+### 4. Validate documents  
 After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
    
 E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
 ```plain
 Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
 ``` 
-
+---
 To handle such exceptions, you can use a try-catch block when saving documents:
 ```csharp
 using (var session = store.OpenSession())
@@ -130,12 +179,13 @@ using (var session = store.OpenSession())
 
 <Panel heading="Example">
 
-In this example we validate documents saved in the `Users` collection by constraints set by a JSON schema.
+Validate documents of the `Users` collection by JSON schema constraints.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Usage" label="Usage">
+
 ```csharp
-// The JSON schema as a string (without comments)
+// JSON schema as a string
 var schemaJson = @"{
 ""type"": ""object"",
 ""properties"": {
@@ -163,29 +213,27 @@ var configuration = new SchemaValidationConfiguration
 
 await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
 ```
+
 </TabItem>
-<TabItem value="JSON-schema" label="JSON-schema">
+<TabItem value="JSON_schema" label="JSON_schema">
+- `Id` is the RavenDB document ID (e.g., `users/1-A`)
+- `Name` is the user's name, mustn't be empty
+- `Email` is the user's email address, must match a basic email pattern
+- `Id`, `Name`, and `Email` must be present in every User document
+- Adding additional properties is allowed
+
 ```json
 {
-   // Define the allowed properties and their types
    "properties": {
-      // 'Id' is the RavenDB document ID (e.g., "users/1-A")
       "Id": { "type": "string" },
-
-      // 'Name' is the user's name, must be a non-empty string
       "Name": { "type": "string", "minLength": 1 },
-
-      // 'Email' is the user's email address, must match a basic email pattern
       "Email": {
          "type": "string",
          "pattern": "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$"
       }
    },
 
-   // These properties must be present in every User document
    "required": ["Id", "Name", "Email"],
-
-   // Allow additional properties beyond those defined here
    "additionalProperties": true
 }
 ```
