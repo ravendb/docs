@@ -1,0 +1,69 @@
+---
+title: "Studio configuration options"
+sidebar_label: "Configuration options"
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Studio configuration options
+<Admonition type="note" title="">
+
+Use the configuration keys listed below to set Studio-related options for your RavenDB server.  
+Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options) article.
+
+* On this page:  
+   * [Configuration keys](../studio/configuration#configuration-keys)
+      * [Studio.Path](../studio/configuration#studiopath)
+      * [Ai.Assistant.Disable](../studio/configuration#aiassistantdisable)
+      * [Ai.Assistant.DisableDataSubmission](../studio/configuration#aiassistantdisabledatasubmission)
+
+</Admonition>
+
+<Panel heading="Configuration keys">
+
+<ContentFrame>
+
+### Studio.Path
+
+The directory in which RavenDB searches for Studio files.  
+Defaults to the base directory of the RavenDB server installation.
+
+- **Type**: `string`
+- **Default**: `null` (base directory)
+- **Scope**: Server-wide
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Ai.Assistant.Disable
+
+Use this key to completely disable the [AI assistant](../studio/ai-assistant) for all users regardless of individual [user consent](../studio/ai-assistant#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Ai.Assistant.DisableDataSubmission
+
+Use this key to prevent the transmission of any user data [exposed to the AI assistant](../studio/ai-assistant#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide
+
+</ContentFrame>
+
+</Panel>
