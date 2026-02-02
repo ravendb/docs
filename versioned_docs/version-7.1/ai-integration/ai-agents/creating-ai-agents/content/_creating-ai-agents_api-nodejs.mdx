@@ -772,12 +772,15 @@ performing a long-running task like batch processing or external system integrat
 ### Set user prompt and RUN the conversation
 
 Set the user prompt using the `setUserPrompt` method, and run the conversation using the `run` method.
+    
+Each call to _run_ represents a single exchange between the user and the LLM - one prompt and one response.  
+To continue chatting, call _setUserPrompt_ again with a new prompt, and then call _run_ again.    
 
 <TabItem>    
 ```js
 // Set the user prompt:
 chat.setUserPrompt(
-    `Send suggestions to reward the employee that made the largest profit
+    `Send suggestions to reward the employee who made the largest profit
     and store the results in the database`);
 
 // Run the conversation:

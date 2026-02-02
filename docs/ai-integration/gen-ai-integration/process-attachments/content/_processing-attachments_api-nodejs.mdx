@@ -1,0 +1,164 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* In addition to sending context objects generated from documents,  
+  a GenAI task can also send the files attached to those documents to the LLM.    
+
+* The following attachment types are supported:
+   * **Plain text files**  
+     Text files are sent to the LLM as is, with no additional encoding.
+   * **Image files: `jpeg`, `png`, `webp`, `gif`**  
+     Image files are sent as base64-encoded strings.
+   * **PDF files**  
+     PDF files are sent as base64-encoded strings.
+
+* A complete example of how to define and run a GenAI task that processes attachments **via Studio**  
+  is available in [Processing attachments: Studio](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio).
+
+* In this article:
+  * [Sending attachments to the LLM - via the Client API](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_api#sending-attachments-to-the-llm)
+
+</Admonition>
+
+<Panel heading="Sending attachments to the LLM - via the Client API">
+
+To send context objects to the LLM along with document attachments,  
+define and run the GenAI task as you normally would, with the following differences:    
+
+* When [defining the connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string) to the LLM,
+  make sure the AI model you use is capable of processing the attachment types.
+  For example, use OpenAI’s `gpt-4.1-mini` to process attached image files.
+
+* When [creating the context object](../../../ai-integration/gen-ai-integration/overview#the-elements) that will be sent to the LLM, 
+  include the document's attachments using the context generation script. 
+  The LLM will receive and process the attachments along with the main context object.
+
+      * Use the `with<FileType>` method of the `ai.genContext` object to include document attachments.  
+      
+      * Replace `<FileType>` with the file type you want to include:  
+        `withText`: for plain text files  
+        `withPng`:  for PNG images  
+        `withJpeg`: for JPEG images  
+        `withWebp`: for WEBP images  
+        `withGif`:  for GIF images  
+        `withPdf`:  for PDF files
+      
+      * Pass the attached file to `with<FileType>` using `loadAttachment`, with the file name as the argument.  
+        For example, to include a PNG file named `electric-circuit.png`:
+        <TabItem>
+        ```js
+        ai.genContext({ ToyName: this.Name, ToyId: id(this) })
+            .withPng(loadAttachment("electric-circuit.png"));
+        ```
+        </TabItem>            
+            
+            <ContentFrame>
+            Additional options include:   
+            * [Conditional attachment](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#conditional-attachment)  
+            * [Multiple attachments](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#multiple-attachments)  
+            * [Embedding base64-encoded images in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-base64-encoded-images-in-the-context-object)  
+            * [Embedding text in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-text-in-the-context-object)             
+            </ContentFrame>    
+
+* When [defining the task Prompt and JSON schema](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-prompt-and-json-schema),   
+  make sure to include instructions in the prompt for how the LLM should handle the attachments,  
+  and define schema fields for the expected response. 
+
+* When [defining the task Update script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-update-script),   
+  make sure to include logic to handle the LLM's response related to the attachments.
+
+---
+    
+#### Example
+
+```js
+// Define a connection string to OpenAI
+// ====================================
+    
+// Define the connection string to OpenAI
+const connectionString = new AiConnectionString();
+
+// Connection string Name & Identifier
+connectionString.name = "ConnectionStringToOpenAI";
+connectionString.identifier = "identifier-to-the-connection-string";
+    
+// Model type    
+connectionString.modelType = "Chat";
+
+// OpenAI connection settings
+connectionString.openAiSettings = new OpenAiSettings(
+    "your-api-key",
+    "https://api.openai.com/v1",
+    "gpt-4.1-mini"); // Name of chat model to use  
+
+// Deploy the connection string to the server
+// ==========================================
+    
+const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
+const putConnectionStringResult = await documentStore.maintenance.send(putConnectionStringOp);            
+
+// Define the GenAI task configuration
+// ===================================
+    
+const config = new GenAiConfiguration();
+  
+// Task name
+config.name = "electric-toy-circuit-description";
+            
+// Unique identifier
+config.identifier = "electric-toy-circuit-description";
+            
+// Connection string to AI model
+config.connectionStringName = "ConnectionStringToOpenAI";
+            
+// Task is enabled
+config.disabled = false;
+
+// Collection associated with the task            
+config.collection = "ElectricToys";
+
+// Context generation script - format for objects to be sent to the AI model
+// Include document attachments in the context object using `with<FileType>` methods
+config.genAiTransformation = new GenAiTransformation();
+config.genAiTransformation.script = `
+    ai.genContext({ ToyName: this.Name, ToyId: id(this) })
+        .withPng(loadAttachment("electric-circuit.png"));`;
+
+config.prompt = `
+    You receive documents from an 'ElectricToys' collection. 
+    These are toys designed for youth who want to learn simple electronics. 
+    Each document includes a toy's ID and name, along with an attached image 
+    showing the circuit that operates the toy. 
+    Your task is to provide a simple description (up to 20 words) of the circuit, 
+    which will be added to the document to explain how it works.`;
+
+// Sample object - defines the format of the AI model's response
+config.sampleObject = JSON.stringify({
+    ToyName: "Toy name as provided by the GenAI task",
+    ToyId: "Toy ID as provided by the GenAI task",
+    CircuitDescription: "LLM's description of the electric circuit"
+});
+
+config.updateScript = `
+    // Embed LLM response in source document  
+    this.CircuitDescription = $output.CircuitDescription;`;
+
+// Max concurrent connections to AI model 
+config.maxConcurrency = 4;                
+   
+// Run the task
+// ============
+                
+const addGenAiOp = new AddGenAiOperation(config);
+const addGenAiTaskResult = await documentStore.maintenance.send(addGenAiOp);
+```
+                
+</Panel>
