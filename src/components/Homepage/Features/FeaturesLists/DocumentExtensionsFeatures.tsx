@@ -52,7 +52,7 @@ export default function DocumentExtensionsFeaturesGrid() {
     {
       title: "JSON Schema Validation",
       icon: "document-schema",
-      url: `/${activeVersion.label}/documents/schema-validation/schema-validation_overview`,
+      url: `/${activeVersion.label}/documents/schema-validation/overview`,
       description: "Simple, scalable, and conflict-free numeric counters",
       minimumSupportedVersion: "7.2",
     },
