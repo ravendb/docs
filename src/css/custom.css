@@ -505,15 +505,17 @@ code {
 }
 
 .theme-code-block {
-  @apply border border-black/10 dark:border-white/10;
+  @apply !border !border-black/10 dark:!border-white/10;
 }
 
-/* Remove borders for code blocks when placed inside tabs container */
+.theme-code-block, .codeBlockContainer, pre[class*="language-"] {
+  @apply !bg-black/2.5 dark:!bg-white/2.5 ;
+}
+
+/* Remove box-shadow for code blocks when placed inside tabs container */
 .tabs-container .theme-code-block,
 .tabs-container .codeBlockContainer,
 .tabs-container pre[class*="language-"] {
-  @apply !border-0;
-  border: 0 !important;
   box-shadow: none !important;
 }
 
