@@ -2,7 +2,7 @@ function handler(event) {
     var request = event.request;
     var uri = request.uri;
 
-    if (uri.startsWith('/cloud')) {
+    if (uri.startsWith('/cloud') || uri.startsWith('/guides')) {
         return request;
     }
 
