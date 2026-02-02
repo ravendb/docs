@@ -42,6 +42,20 @@ export default function DocumentExtensionsFeaturesGrid() {
       url: `/${activeVersion.label}/document-extensions/counters/overview`,
       description: "Simple, scalable, and conflict-free numeric counters",
     },
+    {
+      title: "Remote Attachments",
+      icon: "remote-attachment",
+      url: `/${activeVersion.label}/document-extensions/attachments/store-attachments/store-attachments-remote`,
+      description: "Simple, scalable, and conflict-free numeric counters",
+      minimumSupportedVersion: "7.2",
+    },
+    {
+      title: "JSON Schema Validation",
+      icon: "document-schema",
+      url: `/${activeVersion.label}/documents/schema-validation/schema-validation_overview`,
+      description: "Simple, scalable, and conflict-free numeric counters",
+      minimumSupportedVersion: "7.2",
+    },
   ];
 
   return (
