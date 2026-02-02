@@ -101,7 +101,7 @@ export default function CardWithImage({
                 <div className="flex flex-col gap-0.5">
                     <Heading
                         as="h4"
-                        className="!mb-0 !text-base !font-bold !leading-5"
+                        className="!mb-0 !text-base !font-bold !leading-5 !break-normal"
                     >
                         {title}
                     </Heading>
