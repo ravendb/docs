@@ -51,7 +51,7 @@ string schemaJson = "{\"properties\":{\"Name\":{\"maxLength\":7}}}";
 ---
 **Example: Validate nested elements of an array**
 <Tabs groupId='languageSyntax'>
-<TabItem value="Validation_schema" label="Validation_schema">
+<TabItem value="Schema_as_string" label="Schema as string">
 
 ```csharp
 // Validate properties of documents in the Orders collection
@@ -83,6 +83,46 @@ string schemaDefinition = @"{
 }";
 ```
 </TabItem>
+
+<TabItem value="JSON_schema" label="JSON_schema">
+
+```json
+{
+    "additionalProperties": true,
+    "properties": {
+        "Company": {
+            "type": "string",
+            "minLength": 1
+        },
+        "Lines": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                    "Product": {
+                        "type": "string"
+                    },
+                    "Quantity": {
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "required": [
+                    "Product",
+                    "Quantity"
+                ]
+            }
+        }
+    },
+    "required": [
+        "Company",
+        "Lines"
+    ]
+}
+```
+</TabItem>
+
 <TabItem value="Example_document" label="Example_document">
 
 ```json
