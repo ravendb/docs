@@ -1,0 +1,55 @@
+---
+title: "Start"
+sidebar_label: "Start"
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import Card from "@site/src/components/Common/Card";
+
+# Data Archival
+
+### Archive your documents for long-term storage without impacting performance.
+
+RavenDB’s Data Archival feature is ideal when you need to keep historical documents without including them in active queries, indexes, or subscriptions.
+Archiving lets you retain documents for as long as needed without bloating indexes or slowing queries.
+Simply add an `@archive-at` timestamp to a document’s metadata to tell RavenDB when to archive it.
+
+Once archived:  
+* Documents are compressed.
+* Excluded from indexes and subscriptions by default.
+* Still fully retrievable and can be unarchived anytime.
+
+This keeps your active dataset lean while preserving historical data.
+
+### Use cases
+
+A company maintains an Orders collection with millions of records, but only needs to search and process orders from the last 6 months.
+Older orders must remain available for audits and customer service.
+By enabling data archiving, RavenDB automatically compresses and excludes older orders from indexing and subscriptions.
+The team gets faster queries, smaller indexes, and lower storage costs - while still being able to load any archived order when needed.
+
+### Technical documentation links ✨
+
+* [Overview](../data-archival/overview) 
+* [Enable data archiving](../data-archival/enable-data-archiving) 
+* [Schedule data archiving](../data-archival/schedule-document-archiving) 
+* [Archived Documents and Other Features](../data-archival/archived-documents-and-other-features) 
+* [Unarchiving Documents](../data-archival/unarchiving-documents) 
+* [Configuration](../data-archival/configuration)
+
+### Related blog posts
+
+<ColGrid colCount={2}>
+    <CardWithImage title="Indexing only recent data - adventures with large datasets & archiving" 
+                   description="Read blog post" 
+                   url="https://ayende.com/blog/201442-B/indexing-only-recent-data-adventures-with-large-datasets-archiving"
+                   imgIcon="data-archival" />
+</ColGrid>
+
+
+
+
