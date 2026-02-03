@@ -1164,7 +1164,10 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
     
     // The maximum number of times the LLM is allowed to invoke agent tools
     // in response to a single user prompt.  
-    maxModelIterationsPerCall // number
+    maxModelIterationsPerCall, // number
+    
+    // Indicate whether the agent is disabled.
+    disabled // boolean
 }
 ```    
 </TabItem> 
