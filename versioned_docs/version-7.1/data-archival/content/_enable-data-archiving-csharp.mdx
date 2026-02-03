@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -13,22 +15,24 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Once enabled, the archiving task runs periodically at the configured frequency,  
   scanning the database for documents that have been scheduled for archival.  
-  Learn how to schedule documents for archival in [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).
+  Learn how to schedule documents for archival in [Schedule document archiving](../../data-archival/schedule-document-archiving.mdx).
 
 * In this article:
-  * [Enable archiving - from the Client API](../data-archival/enable-data-archiving.mdx#enable-archiving---from-the-client-api)
-  * [Enable archiving - from the Studio](../data-archival/enable-data-archiving.mdx#enable-archiving---from-the-studio)  
+  * [Enable archiving - from the Client API](../../data-archival/enable-data-archiving.mdx#enable-archiving-from-the-client-api)
+  * [Enable archiving - from the Studio](../../data-archival/enable-data-archiving.mdx#enable-archiving-from-the-studio)  
 
 </Admonition>
-## Enable archiving - from the Client API
+
+<Panel heading="Enable archiving - from the Client API">
  
 Use `ConfigureDataArchivalOperation` to enable archiving for the database and configure the archiving task.
+    
 **Example**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Enable_archiving" label="Enable_archiving">
-<CodeBlock language="csharp">
-{`// Define the archival configuration object
+```csharp
+// Define the archival configuration object
 var configuration = new DataArchivalConfiguration
 {
     // Enable archiving
@@ -47,12 +51,11 @@ var configureArchivalOp = new ConfigureDataArchivalOperation(configuration);
     
 // Execute the operation by passing it to Maintenance.Send
 store.Maintenance.Send(configureArchivalOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Enable_archiving_async" label="Enable_archiving_async">
-<CodeBlock language="csharp">
-{`// Define the archival configuration object
+```csharp
+// Define the archival configuration object
 var configuration = new DataArchivalConfiguration
 {
     // Enable archiving
@@ -71,42 +74,40 @@ var configureArchivalOp = new ConfigureDataArchivalOperation(configuration);
     
 // Execute the operation by passing it to Maintenance.SendAsync
 await store.Maintenance.SendAsync(configureArchivalOp);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+    
 **Syntax**:
 
-<TabItem value="syntax_1" label="syntax_1">
-<CodeBlock language="csharp">
-{`public ConfigureDataArchivalOperation(DataArchivalConfiguration configuration)
-`}
-</CodeBlock>
+<TabItem>
+```csharp
+public ConfigureDataArchivalOperation(DataArchivalConfiguration configuration)
+```
 </TabItem>
 
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="csharp">
-{`public class DataArchivalConfiguration
-\{
-    public bool Disabled \{ get; set; \}
-    public long? ArchiveFrequencyInSec \{ get; set; \}
-    public long? MaxItemsToProcess \{ get; set; \}
-\}
-`}
-</CodeBlock>
+<TabItem>
+```csharp
+public class DataArchivalConfiguration
+{
+    public bool Disabled { get; set; }
+    public long? ArchiveFrequencyInSec { get; set; }
+    public long? MaxItemsToProcess { get; set; }
+}
+```
 </TabItem>
 
 | Parameter                 | Type    | Description                                                                                                                                                            |
 |---------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Disabled**              | `bool`  | `true` - archiving is disabled for the entire database (default).<br/>`false` - archiving is enabled for the database.                                                  |
+| **Disabled**              | `bool`  | `true` - archiving is disabled for the entire database (default).<br/>`false` - archiving is enabled for the database.                                                 |
 | **ArchiveFrequencyInSec** | `long?` | Frequency (in seconds) at which the server scans for documents scheduled for archiving. Default: `60`                                                                  |
-| **MaxItemsToProcess**     | `long?` | The maximum number of documents the archiving task will process in a single run (i.e., each time it is triggered by the configured frequency). Default: `int.MaxValue` |
+| **MaxItemsToProcess**     | `long?` | The maximum number of documents the archiving task will process in a single run (i.e., each time it is triggered by the configured frequency).<br/>Default: `int.MaxValue` |
 
+</Panel>
 
+<Panel heading="Enable archiving - from the Studio">
 
-## Enable archiving - from the Studio
-
-![Enable archiving](./assets/enable-archiving.png)
+![Enable archiving](../assets/enable-archiving.png)
 
 1. Go to **Settings &gt; Data Archival**.
 2. Toggle on to enable data archival.
@@ -114,7 +115,5 @@ await store.Maintenance.SendAsync(configureArchivalOp);
    Default is 60 seconds.
 4. Toggle on to customize the maximum number of documents the archiving task will process in a single run.
 5. Click Save to apply your settings.
-
-
-
-
+    
+</Panel>    
