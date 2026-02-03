@@ -23,6 +23,7 @@ Manage [schema validation](../../../documents/schema-validation/overview) using 
    * [Creating a collection schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema)  
    * [Managing and Testing existing schemas](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas)  
    * [The schema playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground)  
+   * [Validating a specific document](../../../documents/schema-validation/write-validation/write-validation_studio#validating-a-specific-document)  
    
 </Admonition>
 
@@ -181,7 +182,18 @@ To create and test schemas in a secluded environment, without affecting your pro
 
 </Panel>
 
+<Panel heading="Validating a specific document">
 
+To validate a specific document against the schema defined for its collection, open the [document view](../../../studio/database/documents/document-view#the-document-view), select the document, and click the **Validate document** button.  
+* The validation button will be displayed only if a schema is defined for the document's collection.
+* To validate a whole collection, use the **Document Schema** view [Test](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) as described above.
 
+![Validate document button](./assets/schema-validation_studio_validate-document-button.png)
 
+If the document fails the validation, an alert will appear.
+![Validation alert](./assets/schema-validation_studio_validate-document-alert.png)
 
+Click the alert to view the validation errors.
+![Validation errors](./assets/schema-validation_studio_validate-document-errors.png)
+
+</Panel>
