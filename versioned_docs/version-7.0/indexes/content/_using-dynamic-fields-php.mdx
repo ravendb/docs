@@ -1,0 +1,560 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* In RavenDB different documents can have different shapes.  
+  Documents are schemaless - new fields can be added or removed as needed.
+
+* For such dynamic data, you can define indexes with **dynamic-index-fields**.
+
+* This allows querying the index on fields that aren't yet known at index creation time,  
+  which is very useful when working on highly dynamic systems.
+
+* Any value type can be indexed, string, number, date, etc.
+
+* An index definition can contain both dynamic-index-fields and regular-index-fields.
+
+* In this page:
+
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
+
+</Admonition>
+
+## Indexing documents fields KEYS
+
+## Example - index any field under object
+
+<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
+
+* Index any field that is under the some object from the document.  
+* After index is deployed, any new field added to the this object will be indexed as well.
+
+</Admonition>
+
+* **The document**:  
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
+<CodeBlock language="php">
+{`use Ds\\Map as DSMap;
+
+class Product
+\{
+    private ?string $id = null;
+
+    // The KEYS under the Attributes object will be dynamically indexed
+    // Fields added to this object after index creation time will also get indexed
+    public ?DSMap $attributes = null;
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "Attributes": \{
+        "Color": "Red",
+        "Size": 42
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **The index**:  
+  The below index will index any field under the `Attributes` object from the document,  
+  a dynamic-index-field will be created for each such field.  
+  New fields added to the object after index creation time will be dynamically indexed as well.  
+  
+     The actual dynamic-index-field name on which you can query will be the attribute field **key**.  
+     E.g., Keys `Color` & `Size` will become the actual dynamic-index-fields.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Products_ByAttributeKey extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from p in docs.Products select new {" .
+            "_ = p.attributes.Select(item => CreateField(item.Key, item.Value))" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="php">
+{`class Products_ByAttributeKey_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Products', function (p) { " .
+            "    return { " .
+            "        _: Object.keys(p.attributes).map(key => createField(key, p.attributes[key], " .
+            "            { indexing: 'Search', storage: false, termVector: null })) " .
+            "    }; " .
+            "}) "
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+
+* **The query**:  
+   * You can now query the generated dynamic-index fields.  
+   * To get all documents with some 'size' use:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$matchingDocuments = $session
+    ->advanced()
+    ->documentQuery(Product::class, Products_ByAttributeKey::class)
+    // 'Size' is a dynamic-index-field that was indexed from the Attributes object
+    ->whereEquals("Size", 42)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'Size' is a dynamic-index-field that was indexed from the Attributes object
+from index 'Products/ByAttributeKey' where Size = 42
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example - index any field
+
+<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
+
+  * Define an index on a collection **without** needing any common structure between the indexed documents.  
+  * After index is deployed, any new field added to the document will be indexed as well.  
+
+</Admonition>
+
+<Admonition type="info" title="">
+Consider whether this is really necessary, as indexing every single field can end up costing time and disk space.  
+</Admonition>
+
+* **The document**:  
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
+<CodeBlock language="php">
+{`class Product
+\{
+    private ?string $id = null;
+
+    // All KEYS in the document will be dynamically indexed
+    // Fields added to the document after index creation time will also get indexed
+    public ?string $firstName = null;
+    public ?string $lastName = null;
+    public ?string $title = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+    \{
+        "FirstName": "John",
+        "LastName": "Doe",
+        "Title": "Engineer",
+        // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **The index**:  
+  The below index will index any field from the document,  
+  a dynamic-index-field will be created for each field.  
+  New fields added to the document after index creation time will be dynamically indexed as well.  
+  
+     The actual dynamic-index-field name on which you can query will be the field **key**.  
+     E.g., Keys `FirstName` & `LastName` will become the actual dynamic-index-fields.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="php">
+{`class Products_ByAnyField_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // This will index EVERY FIELD under the top level of the document
+        $this->setMaps([
+            "map('Products', function (p) {
+                return {
+                    _: Object.keys(p).map(key => createField(key, p[key],
+                        { indexing: 'Search', storage: true, termVector: null }))
+                }
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+* **The query**:
+   * To get all documents with some 'LastName' use:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$matchingDocuments = $session
+    ->advanced()
+    ->documentQuery(Product::class, Products_ByAnyField_JS::class)
+     // 'LastName' is a dynamic-index-field that was indexed from the document
+    ->whereEquals("LastName", "Doe")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'LastName' is a dynamic-index-field that was indexed from the document
+from index 'Products/ByAnyField/JS' where LastName = "Doe"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Indexing documents fields VALUES
+
+## Example - basic
+
+<Admonition type="note" title="The following example shows:" id="the-following-example-shows" href="#the-following-example-shows">
+
+* Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
+* Documents can then be queried based on those indexed values.  
+
+</Admonition>
+
+* **The document**:  
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
+<CodeBlock language="php">
+{`class Product
+\{
+    public ?string $id = null;
+
+    // The VALUE of ProductType will be dynamically indexed
+    public ?string $productType = null;
+    public ?int $pricePerUnit = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "ProductType": "Electronics",
+    "PricePerUnit": 23
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **The index**:  
+  The below index will index the **value** of document field 'ProductType'.  
+  
+     This value will be the dynamic-index-field name on which you can query.  
+     E.g., Field value `Electronics` will be the dynamic-index-field.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Products_ByProductType extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Call 'CreateField' to generate the dynamic-index-fields
+        // The field name will be the value of document field 'ProductType'
+        // The field terms will be derived from document field 'PricePerUnit'
+        $this->map = "docs.Products.Select(p => new { " .
+            "    _ = this.CreateField(p.productType, p.pricePerUnit) " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="php">
+{`class Products_ByProductType_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Products', function (p) {
+                return {
+                    _: createField(p.ProductType, p.PricePerUnit,
+                        { indexing: 'Search', storage: true, termVector: null })
+                };
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+* **The query**:  
+   * To get all documents of some product type having a specific price per unit use:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$matchingDocuments = $session
+    ->advanced()
+    ->documentQuery(Product::class, Products_ByProductType::class)
+// 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
+->whereEquals("Electronics", 23)
+->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
+from index 'Products/ByProductType' where Electronics = 23
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example - list
+
+<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
+
+* Index **values** from items in a list
+* After index is deployed, any item added this list in the document will be dynamically indexed as well.
+
+</Admonition>
+
+* **The document**:  
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
+<CodeBlock language="php">
+{`class Product
+\{
+    public ?string $id = null;
+    public ?string $name = null;
+
+    // For each element in this list, the VALUE of property 'PropName' will be dynamically indexed
+    // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
+    public ?AttributeList $attributes = null;
+
+    // ... getters and setters
+\}
+
+class Attribute
+\{
+    public ?string $propName = null;
+    public ?string $propValue = null;
+
+    // ... getters and setters
+\}
+
+class AttributeList extends TypedList
+\{
+    protected function __construct()
+    \{
+        parent::__construct(Attribute::class);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+Name": "SomeName",
+Attributes": [
+   \{  
+       "PropName": "Color",
+       "PropValue": "Blue"
+   \},
+   \{
+       "PropName": "Width",
+       "PropValue": "10"
+   \},
+   \{
+       "PropName": "Length",
+       "PropValue": "20"
+   \},
+   ...
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **The index**:  
+  The below index will create a dynamic-index-field per item in the document's `Attributes` list.  
+  New items added to the Attributes list after index creation time will be dynamically indexed as well.  
+  
+     The actual dynamic-index-field name on which you can query will be the item's PropName **value**.  
+     E.g., 'PropName' value `width` will be a dynamic-index-field.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Attributes_ByName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Define the dynamic-index-fields by calling CreateField
+        // A dynamic-index-field will be generated for each item in the Attributes list
+
+        // For each item, the field name will be the value of field 'PropName'
+        // The field terms will be derived from field 'PropValue'
+
+        $this->map =
+            "docs.Products.Select(p => new { " .
+            "    _ = p.attributes.Select(item => this.CreateField(item.propName, item.propValue)), " .
+            "    Name = p.name " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="php">
+{`class Attributes_ByName_JS extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('Products', function (p) {
+                return {
+                    _: p.Attributes.map(item => createField(item.PropName, item.PropValue,
+                        { indexing: 'Search', storage: true, termVector: null })),
+                   Name: p.Name
+                };
+            })"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+     </Tabs>
+
+* **The query**:  
+  To get all documents matching a specific attribute property use:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Product> $matchingDocuments */
+$matchingDocuments = $session
+    ->advanced()
+    ->documentQuery(Product::class, Attributes_ByName::class)
+     // 'Width' is a dynamic-index-field that was indexed from the Attributes list
+    ->whereEquals("Width", 10)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'Width' is a dynamic-index-field that was indexed from the Attributes list
+from index 'Attributes/ByName' where Width = 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## CreateField syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="php">
+{`object CreateField(string name, object value);
+
+object CreateField(string name, object value, bool stored, bool analyzed);
+
+object CreateField(string name, object value, CreateFieldOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                | Description                                                                                                                                                     |
+|------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**   | `string`            | Name of the dynamic-index-field                                                                                                                                 |
+| **value**  | `object`            | Value of the dynamic-index-field <br/> The field Terms are derived from this value.                                                                             |
+| **stored** | `bool`              | Sets [FieldStorage](../indexes/storing-data-in-index.mdx) <br/><br/> `False` - will set `FieldStorage.NO` (default value) <br/> `True` - will set `FieldStorate.YES` |
+| **analyzed** | `bool`            | Sets [FieldIndexing](../indexes/using-analyzers.mdx) <br/><br/> `None` - `FieldIndexing.Default` (default value) <br/> `False` - `FieldIndexing.Exact` <br/> `True` - `FieldIndexing.Search` |
+| **options**  | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                     |
+
+| CreateFieldOptions |                    |                                                                            |
+|--------------------|--------------------|----------------------------------------------------------------------------|
+| **Storage** | `FieldStorage` | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing** | `FieldIndexing` | |
+| **TermVector** | `FieldTermVector` | |
+
+<Admonition type="info" title="">
+
+* All above examples have used the character `_` in the dynamic-index-field definition.  
+  However, using `_` is just a convention. Any other string can be used instead.
+
+* This property is Not queryable, it is only used in the index definition syntax.  
+  The actual dynamic-index-fields that are generated are defined by the `CreateField` method.
+
+</Admonition>
+
+
+
+## Indexed fields & terms view
+
+The generated dynamic-index-fields and their indexed terms can be viewed in the **Terms View**.  
+Below are sample index fields & their terms generated from the last example.
+
+![Figure 1. Go to terms view](../assets/dynamic-index-fields-1.png)
+
+![Figure 2. Indexed fields & terms](../assets/dynamic-index-fields-2.png)
+
+
+
+

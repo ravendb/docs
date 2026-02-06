@@ -1,0 +1,165 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To perform a spatial search, you can use the `Spatial` method which contains a full spectrum of spatial capabilities. You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+## Radius Search
+
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `WithinRadius` method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Query<Event>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Advanced
+    .DocumentQuery<Event>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced Search
+
+The most advanced (and low-level) method available is `RelatesToShape`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Query<Event>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.RelatesToShape(
+            shapeWkt: "Circle(30 30 d=500.0000)",
+            relation: SpatialRelation.Within))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Advanced
+    .DocumentQuery<Event>()
+    .Spatial(
+        factory => factory.Point(x => x.Latitude, x => x.Longitude),
+        criteria => criteria.RelatesToShape(
+            shapeWkt: "Circle(30 30 d=500.0000)",
+            relation: SpatialRelation.Within))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `Within`, `Contains`, `Disjoint`, `Intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+
+<Admonition type="info" title="Polygons" id="polygons" href="#polygons">
+When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
+in a counter-clockwise order:  
+
+
+
+![NoSQL DB - Query a Spatial Index](../assets/spatial_1.png)
+</Admonition>
+
+
+## Static Indexes
+
+All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Query<Event, Events_ByCoordinates>()
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Event> results = session
+    .Advanced
+    .DocumentQuery<Event>()
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(500, 30, 30))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Events_ByCoordinates : AbstractIndexCreationTask<Event>
+{
+    public Events_ByCoordinates()
+    {
+        Map = events => from e in events
+                        select new
+                        {
+                            Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
+                        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Events/ByCoordinates'
+where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data.mdx) article.
+</Admonition>
+
+## Ordering
+
+In order to sort the results by distance, please use the `OrderByDistance` or `OrderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+## Remarks
+
+<Admonition type="info" title="">
+Distance in RavenDB by default is measured in **kilometers**.
+</Admonition>
+
+
