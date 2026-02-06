@@ -1,0 +1,274 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Documents cannot be archived directly - they must be scheduled for archival.
+  To **schedule a document** for archival, add the `@archive-at` property to the document's metadata and set its value to the desired archival time (in UTC).
+  This can be done in several ways, as described in this article.
+
+* **Note**:  
+  Just scheduling a document for archival does Not archive it at the specified time.  
+  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../data-archival/enable-data-archiving.mdx).  
+  This task periodically scans the database for documents scheduled for archival.  
+  The scan frequency is configurable when [enabling ](../data-archival/enable-data-archiving.mdx) the archival feature (default: 60 seconds).
+ 
+* The archiving task will archive any document whose `@archive-at` time has passed at the time of the scan.  
+  The `@archive-at` metadata property will then be replaced with `@archived: true`.
+
+* You can schedule documents for archival even if the archiving feature is not yet enabled.
+  These documents will be archived once the feature is enabled and the task runs - provided the scheduled time has already passed.
+* In this article:  
+  * [Schedule a SINGLE document for archiving - from the Client API](../data-archival/schedule-document-archiving.mdx#schedule-a-single-document-for-archiving---from-the-client-api)
+  * [Schedule a SINGLE document for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-a-single-document-for-archiving---from-the-studio)
+  * [Schedule MULTIPLE documents for archiving - from the Client API](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api)
+  * [Schedule MULTIPLE documents for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-studio)
+
+</Admonition>
+## Schedule a SINGLE document for archiving - from the Client API
+
+To schedule a single document for archival from the Client API,  
+add the `@archive-at` property directly to the document metadata as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Schedule_document" label="Schedule_document">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    // Load the document to schedule for archiving
+    var company = session.Load<Company>("companies/91-A");
+    
+    // Access the document's metadata
+    var metadata = session.Advanced.GetMetadataFor(company);
+    
+    // Set the future archival date (in UTC)
+    var archiveDate = SystemTime.UtcNow.AddDays(1);
+    metadata["@archive-at"] = archiveDate;
+    
+    // Save the changes
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Schedule_document_async" label="Schedule_document_async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    // Load the document to schedule for archiving
+    var company = await asyncSession.LoadAsync<Company>("companies/91-A");
+    
+    // Access the document's metadata
+    var metadata = asyncSession.Advanced.GetMetadataFor(company);
+
+    // Set the future archival date (in UTC)
+    var archiveDate = SystemTime.UtcNow.AddDays(1);
+    metadata["@archive-at"] = archiveDate;
+    
+    // Save the changes
+    await asyncSession.SaveChangesAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Learn more about modifying the metadata of a document in [Modifying Document Metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
+
+
+
+## Schedule a SINGLE document for archiving - from the Studio
+
+* To schedule a single document for archival from the Studio:  
+  * Open the Document view. 
+  * Add the `@archive-at` property to the document's metadata.
+  * Set its value to the desired archive time in UTC format.
+  * Save the document.
+
+![Schedule a document for archiving](../assets/schedule-document-for-archiving.png)
+
+1. This is the `@archive-at` property that was added to the document's metadata.  
+   E.g.: `"@archive-at": "2025-06-25T14:00:00.0000000Z"`
+2. After saving the document, the Studio displays the time remaining until the document is archived.
+
+
+
+## Schedule MULTIPLE documents for archiving - from the Client API
+
+* Use the `PatchByQueryOperation` to schedule multiple documents for archiving.  
+
+* In the **patch query**, you can apply any filtering condition to select only the documents you want to archive.  
+  In the **patch script**, call the `archived.archiveAt` method to set the desired archival time (in UTC).
+
+* When the patch operation is executed,  
+  the server will add the `@archive-at` property to the metadata of all documents that match the query filter.
+**Example:**  
+
+The following example schedules all orders that were made at least a year ago for archival.  
+The **patch query** filters for these older orders.  
+Any document matching the query is then scheduled for archival by the **patch script**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Schedule_documents" label="Schedule_documents">
+<CodeBlock language="csharp">
+{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+string archiveDateString = archiveDate.ToString("o");
+
+var oldDate = SystemTime.UtcNow.AddYears(-1);
+string oldDateString = oldDate.ToString("o");
+
+// Define the patch query string
+// Request to archive all Orders older than one year
+string patchByQuery = $@"
+    // The patch query:
+    // ================
+    from Orders
+    where OrderedAt < '{oldDateString}'
+    update {{
+        // The patch script - schedule for archival:
+        // =========================================
+        archived.archiveAt(this, '{archiveDateString}')
+    }}";
+
+// Define the patch operation, pass the patch query string
+var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
+    
+// Execute the operation by passing it to Operations.Send
+store.Operations.Send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Schedule_documents_async" label="Schedule_documents_async">
+<CodeBlock language="csharp">
+{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+string archiveDateString = archiveDate.ToString("o");
+
+var oldDate = SystemTime.UtcNow.AddYears(-1);
+string oldDateString = oldDate.ToString("o");
+
+// Define the patch query string
+// Request to archive all Orders older than one year
+string patchByQuery = $@"
+    from Orders
+    where OrderedAt < '{oldDateString}'
+    update {{
+        archived.archiveAt(this, '{archiveDateString}')
+    }}";
+
+// Define the patch operation, pass the patch query string
+var patchByQueryOp = new PatchByQueryOperation(patchByQuery);
+    
+// Execute the operation by passing it to Operations.SendAsync
+await store.Operations.SendAsync(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation_overload" label="Operation_overload">
+<CodeBlock language="csharp">
+{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+string archiveDateString = archiveDate.ToString("o");
+
+var oldDate = SystemTime.UtcNow.AddYears(-1);
+string oldDateString = oldDate.ToString("o");
+
+// Define the patch string
+// Request to archive all Orders older than one year
+string patchByQuery = $@"
+    from Orders
+    where OrderedAt < $p0 
+    update {{
+        archived.archiveAt(this, $p1)
+    }}";
+
+// Define the patch operation, pass the patch query
+var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
+{
+    Query = patchByQuery,
+    QueryParameters = new Parameters()
+    {
+        { "p0", oldDateString },
+        { "p1", archiveDateString }
+    }
+});
+    
+// Execute the operation by passing it to Operations.Send
+store.Operations.Send(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation_overload_async" label="Operation_overload_async">
+<CodeBlock language="csharp">
+{`var archiveDate = SystemTime.UtcNow.AddDays(1);
+string archiveDateString = archiveDate.ToString("o");
+
+var oldDate = SystemTime.UtcNow.AddYears(-1);
+string oldDateString = oldDate.ToString("o");
+
+// Define the patch string
+// Request to archive all Orders older than one year
+string patchByQuery = $@"
+    from Orders
+    where OrderedAt < $p0 
+    update {{
+        archived.archiveAt(this, $p1)
+    }}";
+
+// Define the patch operation, pass the patch query
+var patchByQueryOp = new PatchByQueryOperation(new IndexQuery()
+{
+    Query = patchByQuery,
+    QueryParameters = new Parameters()
+    {
+        { "p0", oldDateString },
+        { "p1", archiveDateString }
+    }
+});
+    
+// Execute the operation by passing it to Operations.SendAsync
+await store.Operations.SendAsync(patchByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Syntax:**
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`archived.archiveAt(doc, utcDateTimeString)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type        | Description                                                                          |
+|-----------------------|-------------|--------------------------------------------------------------------------------------|
+| **doc**               | `object`    | The document to schedule for archiving.                                              |
+| **utcDateTimeString** | `string`    | The UTC timestamp (as a string) that specifies when the document should be archived. |
+
+To learn more about the `PatchByQueryOperation`, see [Set-based patch operations](../client-api/operations/patching/set-based.mdx).
+
+
+
+## Schedule MULTIPLE documents for archiving - from the Studio
+
+* To schedule multiple documents for archiving from the Studio:  
+  * Open the Patch view. 
+  * Enter a patch script that uses the `archived.archiveAt` method, providing the desired archive date in UTC.
+  * Execute the patch.
+**Example**:
+
+The following patch script, used directly in the Studio,  
+performs the same operation as the [Client API example](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api) shown above.
+
+![Schedule multiple documents for archiving](../assets/schedule-multiple-documents-for-archiving.png)
+
+1. Open the Patch view.
+2. Enter the patch script.
+3. Click to execute the patch.
+4. You can test the patch on a sample document before executing the whole operation.  
+   Learn more in [Test patch](../studio/database/documents/patch-view.mdx#test-patch).
+
+
+
+
