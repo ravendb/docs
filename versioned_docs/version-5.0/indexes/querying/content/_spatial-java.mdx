@@ -1,0 +1,120 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+To perform a spatial search, you can use the `spatial` method which contains a full spectrum of spatial capabilities. You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+## Radius Search
+
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `withinRadius` method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class)
+    .spatial(new PointField("latitude", "longitude"),
+        criteria -> criteria.withinRadius(500, 30, 30))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(latitude, longitude), spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced Search
+
+The most advanced (and low-level) method available is `relatesToShape`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class)
+    .spatial(new PointField("latitude", "longitude"),
+        criteria -> criteria.relatesToShape(
+            "Circle(30 30 d=500.0000)",
+            SpatialRelation.WITHIN
+        ))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `within`, `contains`, `disjoint`, `intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+
+<Admonition type="info" title="Polygons" id="polygons" href="#polygons">
+When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
+in a counter-clockwise order:  
+
+
+
+![NoSQL ACID DB - Query a Spatial Index](../assets/spatial_1.png)
+</Admonition>
+
+## Static Indexes
+
+All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class, Events_ByCoordinates.class)
+    .spatial("coordinates",
+        criteria -> criteria.withinRadius(500, 30, 30))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Events_ByCoordinates extends AbstractIndexCreationTask {
+    public Events_ByCoordinates() {
+        map = "docs.Events.Select(e => new {" +
+            "    Coordinates = this.CreateSpatialField(((double ? ) e.latitude), ((double ? ) e.longitude))" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Events/ByCoordinates'
+where spatial.within(coordinates, spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data.mdx) article.
+</Admonition>
+
+## Ordering
+
+In order to sort the results by distance, please use the `orderByDistance` or `orderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+
+## Remarks
+
+<Admonition type="info" title="">
+Distance in RavenDB by default is measured in **kilometers**.
+</Admonition>
+
+

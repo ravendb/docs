@@ -1,0 +1,465 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* Given a string term, the Suggestion feature will offer **similar terms** from your data.
+
+* Word similarities are found using string distance algorithms.
+
+* Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
+* In this page:
+
+    * Overview:
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
+      
+    * Examples:
+        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-fields)
+        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---customize-options-and-display-name)
+      
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
+
+</Admonition>
+## What are terms
+
+* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
+  Whether making a dynamic query which generates an auto-index or using a static index,  
+  the data from your documents is 'broken' into **terms** that are kept in the index.  
+
+* This tokenization process (what terms will be generated) depends on the analyzer used,    
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
+
+* The terms can then be queried to retrieve matching documents that contain them.
+
+
+
+## When to use suggestions
+
+Querying for suggestions is useful in the following scenarios:
+
+  * **When query has no results**:
+
+      * When searching for documents that match some condition on a given string term,  
+        if the term is misspelled then you will Not get any results.  
+        You can then ask RavenDB to suggest similar terms that do exist in the index.
+
+      * The suggested terms can then be used in a new query to retrieve matching documents,  
+        or simply presented to the user asking what they meant to query.
+
+  * **When looking for alternative terms**:
+
+      * When simply searching for additional alternative terms for a term that does exist.  
+
+<Admonition type="warning" title="">
+
+The resulting suggested terms will Not include the term for which you search,  
+they will only contain the similar terms.
+
+</Admonition>
+
+
+
+## Suggest terms - for single term
+
+Consider this example:  
+Based on the Northwind sample data, the following query has no resulting documents,  
+as no document in the Products collection contains the term `chaig` in its `Name` field.
+
+<TabItem value="suggest_1" label="suggest_1">
+<CodeBlock language="python">
+{`# This dynamic query on the 'Products' collection has NO documents
+products = list(session.query(object_type=Product).where_equals("name", "chaig"))
+`}
+</CodeBlock>
+</TabItem>
+
+* Executing the above query will generate the auto-index `Auto/Products/ByName`.  
+  This auto-index will contain a list of all available terms from the document field `Name`.  
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
+
+* If you suspect that the term `chaig` in the query criteria is written incorrectly,   
+  you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Query for suggested terms for single term:
+# ==========================================
+suggestions = (
+    session.query(object_type=Product)
+    .suggest_using(lambda builder: builder.by_field("name", "chaig"))
+    .execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Single_term_suggestion" label="Single_term_suggestion">
+<CodeBlock language="python">
+{`# Define the suggestion request for single term
+suggestion_request = SuggestionWithTerm("name")
+suggestion_request.term = "chaig"
+
+# Query for suggestions
+suggestions = (
+    session.query(object_type=Product)
+    # Call 'suggest_using' - pass the suggestion request
+    .suggest_using(suggestion_request).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Query for terms from field 'Name' that are similar to 'chaig'
+from "Products"
+select suggest(Name, "chaig")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="suggest_6" label="suggest_6">
+<CodeBlock language="python">
+{`# The resulting suggested terms:
+# ==============================
+
+print("Suggested terms in field 'name' that are similar to 'chaig':")
+for suggested_term in suggestions["name"].suggestions:
+    print(f"\\t\{suggested_term\}")
+
+#  Suggested terms in field 'Name' that are similar to 'chaig':
+#  chai
+#  chang
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggest terms - for multiple terms
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Query for suggested terms for multiple terms:
+# =============================================
+
+suggestions = (
+    session
+    # Make a dynamic query on collection 'Products'
+    .query(object_type=Product)
+    # Call 'suggest_using'
+    .suggest_using(
+        lambda builder: builder
+        # Request to get terms from field 'name' that are similar to 'chaig' OR 'tof'
+        .by_field("name", ["chaig", "tof"])
+    ).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Multi_terms_suggestion" label="Multi_terms_suggestion">
+<CodeBlock language="python">
+{`# Define the suggestion request for multiple terms
+suggestion_request = SuggestionWithTerms("name")
+# Looking for terms from field 'name' that are similar to 'chaig' OR 'tof'
+suggestion_request.terms = ["chaig", "tof"]
+
+# Query for suggestions
+suggestions = (
+    session.query(object_type=Product)
+    # Call 'suggest_using' - pass the suggestion request
+    .suggest_using(suggestion_request).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Query for terms from field 'Name' that are similar to 'chaig' OR 'tof'
+from "Products" select suggest(Name, $p0)
+{ "p0" : ["chaig", "tof"] }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="suggest_11" label="suggest_11">
+<CodeBlock language="python">
+{`# The resulting suggested terms:
+#  ==============================
+#
+# Suggested terms in field 'Name' that are similar to 'chaig' OR to 'tof':
+#      chai
+#      chang
+#      tofu
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggest terms - for multiple fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Query for suggested terms in multiple fields:
+# =============================================
+
+suggestions = (
+    session
+    # Make a dynamic query on collection 'Companies'
+    .query(object_type=Company)
+    # Call 'suggest_using' to get suggestions for terms that are
+    # similar to 'chop-soy china' in first document field (e.g. 'name')
+    .suggest_using(lambda builder: builder.by_field("name", "chop-soy china"))
+    # Call 'and_suggest_using' to get suggestions for terms that are
+    # similar to 'maria larson' in an additional field (e.g. 'Contact.Name')
+    .and_suggest_using(lambda builder: builder.by_field("contact.name", "maria larson")).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Multi_fields_suggestion" label="Multi_fields_suggestion">
+<CodeBlock language="python">
+{`# Define suggestion requests for multiple fields:
+
+request1 = SuggestionWithTerm("name")
+# Looking for terms from field 'Name' that are similar to 'chop-soy china'
+request1.term = "chop-soy china"
+
+request2 = SuggestionWithTerm("contact.name")
+# Looking for terms from nested field 'Contact.Name' that are similar to 'maria larson'
+request2.term = ["maria larson"]
+
+suggestions = (
+    session.query(object_type=Company)
+    # Call 'suggest_using' - pass the suggestion request for the first field
+    .suggest_using(request1)
+    # Call 'and_suggest_using' - pass the suggestion request for the second field
+    .and_suggest_using(request2).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Query for suggested terms from field 'Name' and field 'Contact.Name'
+from "Companies"
+select suggest(Name, "chop-soy china"), suggest(Contact.Name, "maria larson")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="suggest_16" label="suggest_16">
+<CodeBlock language="python">
+{`# The resulting suggested terms:
+# ==============================
+#
+# Suggested terms in field 'name' that is similar to 'chop-soy china':
+#     chop-suey chinese
+#
+# Suggested terms in field 'contact.name' that are similar to 'maria larson':
+#     maria larsson
+#     marie bertrand
+#     aria cruz
+#     paula wilson
+#     maria anders
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggest terms - customize options and display name
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`#  Query for suggested terms - customize options and display name:
+#  ===============================================================
+suggestions = (
+    session
+    # Make a dynamic query on collection 'Products'
+    .query(object_type=Product)
+    # Call 'suggest_using'
+    .suggest_using(
+        lambda builder: builder.by_field("name", "chaig")
+        # Customize suggestion options
+        .with_options(
+            SuggestionOptions(
+                accuracy=0.4,
+                page_size=5,
+                distance=StringDistanceTypes.JARO_WINKLER,
+                sort_mode=SuggestionSortMode.POPULARITY,
+            )
+        )
+        # Customize display name for results
+        .with_display_name("SomeCustomName")
+    ).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Customize_options" label="Customize_options">
+<CodeBlock language="python">
+{`# Define the suggestion request
+suggestion_request = SuggestionWithTerm("name")
+# Looking for terms from field 'Name' that are similar to term 'chaig'
+suggestion_request.term = "chaig"
+# Customize options
+suggestion_request.options = SuggestionOptions(
+    accuracy=5,
+    page_size=5,
+    distance=StringDistanceTypes.JARO_WINKLER,
+    sort_mode=SuggestionSortMode.POPULARITY,
+)
+# Customize display name
+suggestion_request.display_field = "SomeCustomName"
+
+# Query for suggestions
+suggestions = (
+    session.query(object_type=Product)
+    # Call 'suggest_using' - pass the suggestion request
+    .suggest_using(suggestion_request).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Query for suggested terms - customize options and display name
+from "Products"
+select suggest(
+    Name,
+    'chaig',
+    '{ "Accuracy" : 0.4, "PageSize" : 5, "Distance" : "JaroWinkler", "SortMode" : "Popularity" }'
+) as "SomeCustomName"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<TabItem value="suggest_21" label="suggest_21">
+<CodeBlock language="python">
+{`# The resulting suggested terms:
+# ==============================
+
+print("Suggested terms:")
+# Results are available under the custom name entry
+for suggested_term in suggestions["SomeCustomName"].suggestions:
+    print(f"\\t\{suggested_term\}")
+
+# Suggested terms:
+#     chai
+#     chang
+#     chartreuse verte
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## The auto-index terms in Studio
+
+Based on the Northwind sample data, these are the terms generated for index `Auto/Products/ByName`:
+
+![Figure 1. Auto-index terms](../assets/auto-index-terms.png)
+
+1. **The field name** - derived from the document field that was used in the dynamic-query.  
+   In this example the field name is `Name`.
+
+2. **The terms** generated from the data that the Products collection documents have in their `Name` field.
+
+
+
+## Syntax
+
+**Suggest using**:
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`# Method for requesting suggestions for term(s) in a field:
+def suggest_using(
+    self, suggestion_or_builder: Union[SuggestionBase, Callable[[SuggestionBuilder[_T]], None]]
+) -> SuggestionDocumentQuery[_T]: ...
+
+# Method for requesting suggestions for term(s) in another field in the same query:
+def and_suggest_using(
+    self, suggestion_or_builder: Union[SuggestionBase, Callable[[SuggestionBuilder[_T]], None]]
+) -> SuggestionDocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter      | Type                                         | Description  |
+|----------------|----------------------------------------------|--------------|
+| **suggestion_or_builder**<br/>(Union) | `SuggestionBase`| **Suggestion instance**<br/>Pass `suggest_using` a `SuggestionBase` instance with the term or terms (`SuggestionWithTerm` or `SuggestionWithTerms`) it will generate suggestions by. |
+| | `Callable[[SuggestionBuilder[_T]], None]` | **Suggestion builder**<br/>Use `suggest_using`'s fluent API to pass it a method that takes `SuggestionBuilder` as a parameter and generate a suggestion definition that matches your needs.   |
+
+| Return type    | Description  |
+|----------------|--------------|
+| `SuggestionDocumentQuery[_T]` | The generated suggestions query, that can now be executed using `execute()` or further altered.<br/>When `execute()` is called, it will return the suggestions in a `Dict[str, SuggestionResult]` dictionary. |
+
+
+**Builder operations**:
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="python">
+{`def by_field(self, field_name: str, term_or_terms: Union[str, List[str]]) -> SuggestionOperations[_T]: ...
+
+def with_display_name(self, display_name: str) -> SuggestionOperations[_T]: ...
+def with_options(self, options: SuggestionOptions) -> SuggestionOperations[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter       | Type                           | Description                                 |
+|-----------------|--------------------------------|---------------------------------------------|
+| **field_name**  | `str`                          | The index field to search for similar terms |
+| **term_or_terms** (Union) | `str` or `List[str]` | Term or List of terms to get suggested similar terms for |
+| **display_name** | `str`                         | A custom name for the suggestions result |
+| **options**     | `SuggestionOptions`            | Non-default options to use in the operation |
+
+**Suggestion options**:
+
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="python">
+{`DEFAULT_ACCURACY = 0.5
+DEFAULT_PAGE_SIZE = 15
+DEFAULT_DISTANCE = StringDistanceTypes.LEVENSHTEIN
+DEFAULT_SORT_MODE = SuggestionSortMode.POPULARITY
+
+def __init__(
+    self,
+    page_size: int = DEFAULT_PAGE_SIZE,
+    distance: StringDistanceTypes = DEFAULT_DISTANCE,
+    accuracy: float = DEFAULT_ACCURACY,
+    sort_mode: SuggestionSortMode = DEFAULT_SORT_MODE,
+):
+    self.page_size = page_size
+    self.distance = distance
+    self.accuracy = accuracy
+    self.sort_mode = sort_mode
+`}
+</CodeBlock>
+</TabItem>
+
+|--------------|-----------------------|-------------------------------------------------------------|
+| **page_size** | `int` | Maximum number of suggested terms that will be returned<br/>Default: **15** |
+| **distance** | `StringDistanceTypes` | String distance algorithm to use (`NONE` / `LEVENSHTEIN` / `JAROWINKLER` / `NGRAM`)<br/>Default: **LEVENSHTEIN** |
+| **accuracy** | `float` | Suggestion accuracy<br/>Default: **0.5** |
+| **sort_mode** | `SuggestionSortMode ` | Indicates the order by which results are returned (`NONE` / `POPULARITY`)<br/>Default: **POPULARITY** |
+
+
+
+

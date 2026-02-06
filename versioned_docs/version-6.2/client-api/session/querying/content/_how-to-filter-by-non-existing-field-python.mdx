@@ -1,0 +1,157 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* There are situations where new fields are added to some documents in a collection over time.  
+
+* To find the documents that are missing the newly added fields you can either:  
+    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
+
+----
+
+</Admonition>
+## Query the collection (dynamic query)
+
+To run a dynamic query over a collection and find which documents are missing a specified field,  
+use the `not_` and `where_exists` methods, accessible from the [document_query](../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
+API, as demonstrated below.  
+
+This will either create a new auto-index or add the queried field to an existing auto-index.  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="document_query" label="document_query">
+<CodeBlock language="python">
+{`orders_without_freight_field = list(
+    session
+    # Define a DocumentQuery on 'Orders' collection
+    .document_query(object_type=Order)
+    # Search for documents that do not contain field 'freight'
+    .not_().where_exists("freight")
+)
+
+# Results will be only the documents that do not contain the 'freight' field in 'Orders' collection
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where true and not exists("Freight")
+// \`not\` cannot be used immediately after \`where\`, thus we use \`where true\`.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Query a static index
+
+Documents with missing fields can be searched by querying a static index.  
+
+The index definition must contain the following document fields indexed:
+
+* A document field that **exists** in **all** documents of the queried collection, e.g. the _Id_ field.  
+  Indexing this field will ensure that all the documents of this collection are indexed.
+* A document field that is suspected to be **missing** from some documents of the queried collection.  
+
+**Example**
+
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="python">
+{`# Define a static index on the 'Orders' collection
+# ================================================
+
+
+class Orders_ByFreight(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, freight: int = None, Id: str = None):
+            self.freight = freight
+            self.Id = Id
+
+    def __init__(self):
+        # Call super().__init__() to initialize your index class
+        super().__init__()
+        # Define the index Map function
+        self.map = "from o in docs.Orders select new \{ freight = o.freight, Id = o.Id \}"
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="python">
+{`# Query the index
+# ===============
+fields = list(session.query_index_type(Orders_ByFreight, Orders_ByFreight.IndexEntry))
+orders_without_freight_field = list(
+    session
+    # Define a DocumentQuery on the index
+    .query_index_type(Orders_ByFreight, Orders_ByFreight.IndexEntry)
+    # Verify the index is not stale (optional)
+    .wait_for_non_stale_results()
+    # Search for documents that do not contain field 'freight'
+    .not_().where_exists("freight")
+)
+
+# Results will be only the documents that do not contain the 'freight' field in 'Orders' collection
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByFreight"
+where true and not exists("Freight")
+// \`not\` cannot come immediately after \`where\`, thus we use \`where true\`.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Use Studio to Run an RQL Query
+
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
+
+* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from "Orders"    
+where exists("Company") and not exists("Freight")
+`}
+</CodeBlock>
+</TabItem>
+
+* In the `where` clause:  
+  First search for a field that **exists** in **all** documents of the queried collection, e.g. the _Id_ field.  
+  Then search for a field that **may be missing** from some documents of the queried collection.  
+
+    ![List Documents Without a Specified Field](../assets/non-existing-field-studio-rql.png)
+
+    1. **Indexes**  
+       Click to see the Indexes menu.
+    2. **Query**  
+       Select to open the Query view.
+    3. **Query editor**  
+       Write the RQL query.
+    4. **Run Query**  
+       Click to run the query.
+    5. **Index used**  
+       The name of the auto-index created to serve this query.  
+       You can click it to see the available Studio options for this index.  
+    6. **Results**  
+       This is the list of documents that do not contain the specified 'Freight' field.  
+       (the "Freight" Field was removed from these Northwind documents for this example.)
+
+
+
+

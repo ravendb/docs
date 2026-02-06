@@ -1,0 +1,100 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The fanout index is the index that outputs multiple index entries per each document. Here is an example of such one:
+
+<TabItem value="fanout_index_def_1" label="fanout_index_def_1">
+<CodeBlock language="csharp">
+{`public class Orders_ByProduct : AbstractIndexCreationTask<Order>
+\{
+	public Orders_ByProduct()
+	\{
+		Map = orders => from order in orders
+			from orderLine in order.Lines
+			select new
+			\{
+				orderLine.Product,
+				orderLine.ProductName
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+A large order, having a lot of line items, will create an index entry per each `OrderLine` item from the `Lines` collection. A single document can generate hundreds of index entries.
+
+The fanout index concept is not specific for map-only indexes. It also applies to map-reduce indexes:
+
+<TabItem value="fanout_index_def_2" label="fanout_index_def_2">
+<CodeBlock language="csharp">
+{`public class Product_Sales : AbstractIndexCreationTask<Order, Product_Sales.Result>
+\{
+	public class Result
+	\{
+		public string Product \{ get; set; \}
+		public int Count \{ get; set; \}
+		public decimal Total;
+	\}
+
+	public Product_Sales()
+	\{
+		Map = orders => from order in orders
+			from line in order.Lines
+			select new Result
+			\{
+				Product = line.Product,
+				Count = 1,
+				Total = ((line.Quantity*line.PricePerUnit)*(1 - line.Discount))
+			\};
+
+		Reduce = results => from result in results
+			group result by result.Product
+			into g
+			select new
+			\{
+				Product = g.Key,
+				Count = g.Sum(x => x.Count),
+				Total = g.Sum(x => x.Total)
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The above index definitions are correct. In both cases this is actually what we want. However, you need to be aware that fanout indexes are typically more expensive than regular ones.
+RavenDB has to index many more entries than usual. What can result is higher utilization of CPU and memory, and overall declining performance of the index.
+
+<Admonition type="note" title="Note" id="note" href="#note">
+Starting from version 4.0, the fanout indexes won't error when the number of index entries created from a single document exceeds the configured limit. The configuration options from 3.x:
+
+- `Raven/MaxSimpleIndexOutputsPerDocument` 
+- `Raven/MaxMapReduceIndexOutputsPerDocument` 
+
+are no longer valid.
+
+RavenDB will give you a performance hint regarding high fanout ratio using the Studio's notification center.
+</Admonition>
+
+
+## Performance Hints
+
+Once RavenDB notices that the number of indexing outputs created from a document is high, the notification that will appear in the Studio:
+
+![Figure 1. High indexing fanout ratio notification](../assets/fanout-index-performance-hint-1.png)
+
+The details will give you the following info:
+
+![Figure 2. Fanout index, performance hint details](../assets/fanout-index-performance-hint-2.png)
+
+You can control when a performance hint should be created using the `PerformanceHints.Indexing.MaxIndexOutputsPerDocument` setting (default: 1024).
+
+## Paging 
+
+Since the fanout index creates multiple entries for a single document and queries return documents by default (it can change if the query defines the projection) the paging of query results
+is a bit more complex. Please read the dedicated article about [paging through tampered results](../indexes/querying/paging.mdx#paging-through-tampered-results).
+
+

@@ -1,0 +1,400 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* **Paging**:  
+  Paging is the process of fetching a subset (a page) of results from a dataset, rather than retrieving the entire results at once.
+  This method enables processing query results one page at a time.
+
+* **Default page size**:
+
+    * Querying **Lucene** indexes:  
+      If the client's query definition does Not explicitly specify the page size, the server will default to `2,147,483,647` (equivalent to  `int.MaxValue` in C#). 
+      In such case, all results will be returned in a single server call.
+
+    * Querying **Corax** indexes:  
+      The default page size is the same as the one employed by Lucene.  
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, indexes with more than `2,147,483,647` entries can be created and used.
+      To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.  
+
+* **Performance**:  
+  Using paging is beneficial when handling large result datasets, contributing to improved performance.  
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
+
+* In this page:
+
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
+
+</Admonition>
+## No-paging example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// A simple query without paging:
+// ==============================
+
+const allResults = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+    .whereGreaterThan("UnitsInStock", 10)
+    .all();
+
+// Executing the query on the Northwind sample data
+// will result in all 47 Product documents that match the query predicate.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Products", p => ({
+            UnitsInStock: p.UnitsInStock
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Paging examples
+
+#### Retrieve a specific page:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Retrieve only the 3'rd page - when page size is 10:
+// ===================================================
+
+// Define an output param for getting the query stats
+let stats;
+
+const thirdPageResults = await session
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // Get the query stats if you wish to know the TOTAL number of results
+    .statistics(s => stats = s)
+     // Apply some filtering condition as needed
+    .whereGreaterThan("UnitsInStock", 10)
+     // Call 'Skip', pass the number of items to skip from the beginning of the result set
+     // Skip the first 20 resulting documents
+    .skip(20)
+     // Call 'Take' to define the number of documents to return
+     // Take up to 10 products => so 10 is the "Page Size"
+    .take(10)
+    .all();
+
+// When executing this query on the Northwind sample data,
+// results will include only 10 Product documents ("products/45-A" to "products/54-A")
+
+const totalResults = stats.totalResults;
+
+// While the query returns only 10 results,
+// \`totalResults\` will hold the total number of matching documents (47).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Products", p => ({
+            UnitsInStock: p.UnitsInStock
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Page through all results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query for all results - page by page:
+// =====================================
+
+const PAGE_SIZE = 10;
+let pageNumber = 0;
+let pagedResults;
+
+do {
+    pagedResults = await session
+        .query({ indexName: "Products/ByUnitsInStock" })
+         // Apply some filtering condition as needed
+        .whereGreaterThan("UnitsInStock", 10)
+         // Skip the number of results that were already fetched
+        .skip(pageNumber * PAGE_SIZE)
+         // Request to get 'pageSize' results
+        .take(PAGE_SIZE)
+        .all();
+
+    pageNumber++;
+
+    // Make any processing needed with the current paged results here
+    // ... 
+}
+while (pagedResults.length > 0); // Fetch next results
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Products", p => ({
+            UnitsInStock: p.UnitsInStock
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 0, 10 // First loop will skip 0, take 10
+
+// The next loops in the code will each generate the above RQL with an increased 'skip' value:
+// limit 10, 10
+// limit 20, 10
+// limit 30, 10
+// ...
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Paging and performance
+**Better performance**:
+
+It is recommended to explicitly set a page size when making a query that is expected to generate a significant number of results.
+This practice has several benefits:
+
+* Optimizes bandwidth usage by reducing data transfer between the server and client.
+* Prevents delays in response times caused by sending too much data over the network.
+* Avoids high memory consumption when dealing with numerous documents.
+* Ensures a more manageable user experience by not overwhelming users with massive datasets at once.
+**Performance hints**:
+
+* By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
+
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehintsmaxnumberofresults) configuration key.
+
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
+
+![Figure 1. Performance Hint](../assets/performance-hint.png)
+
+
+
+## Paging through tampered results
+
+* The `QueryStatistics` object contains the `totalResults` property,  
+  which represents the total number of matching documents found in the query results.
+
+* The `QueryStatistics` object also contains the `skippedResults` property.  
+  Whenever this property is greater than **0**, that implies the server has skipped that number of results from the index.
+
+* The server will skip duplicate results internally in the following two scenarios:
+
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [distinct](../../indexes/querying/distinct.mdx).
+
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
+
+* In those cases:
+
+    * The `skippedResults` property from the stats object will hold the count of skipped (duplicate) results.
+
+    * The `totalResults` property will be invalidated -  
+      it will Not deduct the number of skipped results from the total number of results.
+
+* In order to do proper paging in those scenarios:  
+  include the `skippedResults` value when specifying the number of documents to skip for each page using:  
+  `(currentPage * pageSize) + skippedResults`.
+
+## Examples
+
+#### A projection query with Distinct:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`let pagedResults;
+let stats;
+
+let totalResults = 0;
+let totalUniqueResults = 0;
+let skippedResults = 0;
+
+let pageNumber = 0;
+const PAGE_SIZE = 10;
+
+do {
+    pagedResults = await session
+        .query({ indexName: "Products/ByUnitsInStock" })
+        .statistics(s => stats = s)
+        .whereGreaterThan("UnitsInStock", 10)
+         // Define a projection
+        .selectFields(["Category", "Supplier"])
+         // Call Distinct to remove duplicate projected results
+        .distinct()
+         // Add the number of skipped results to the "start location"  
+        .skip((pageNumber * PAGE_SIZE) + skippedResults)
+         // Define how many items to return
+        .take(PAGE_SIZE)
+        .all();
+
+    totalResults = stats.totalResults;         // Number of total matching documents (includes duplicates)
+    skippedResults += stats.skippedResults;    // Number of duplicate results that were skipped
+    totalUniqueResults += pagedResults.length; // Number of unique results returned in this server call 
+
+    pageNumber++;
+}
+while (pagedResults.length > 0); // Fetch next results
+
+// When executing the query on the Northwind sample data:
+// ======================================================
+
+// The total matching results reported in the stats is 47 (totalResults),
+// but the total unique objects returned while paging the results is only 29 (totalUniqueResults)
+// due to the 'distinct' usage which removes duplicates.
+
+// This is solved by adding the skipped results count to skip().
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Products", p => ({
+            UnitsInStock: p.UnitsInStock
+        }));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+select distinct Category, Supplier
+limit 0, 10  // First loop will skip 0, take 10, etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+#### Querying a Fanout index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`let pagedResults;
+let stats;
+
+let totalResults = 0;
+let totalUniqueResults = 0;
+let skippedResults = 0;
+
+let pageNumber = 0;
+const PAGE_SIZE = 50;
+
+do {
+    pagedResults = await session
+        .query({ indexName: "Orders/ByProductName" })
+        .statistics(s => stats = s)
+         // Add the number of skipped results to the "start location"  
+        .skip((pageNumber * PAGE_SIZE) + skippedResults)
+        .take(PAGE_SIZE)
+        .all();
+
+    totalResults = stats.totalResults;
+    skippedResults += stats.skippedResults;
+    totalUniqueResults += pagedResults.length;
+
+    pageNumber++;
+}
+while (pagedResults.length > 0); // Fetch next results
+
+// When executing the query on the Northwind sample data:
+// ======================================================
+
+// The total results reported in the stats is 2155 (totalResults),
+// which represent the multiple index-entries generated as defined by the fanout index.
+
+// By adding the skipped results count to the Skip() method,
+// we get the correct total unique results which is 830 Order documents.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// A fanout index - creating MULTIPLE index-entries per document:
+// ==============================================================
+
+class Orders_ByProductName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Orders", order => {
+            return order.Lines.map(line => {
+                return {
+                    ProductName: line.ProductName
+                };
+            });
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByProductName"
+limit 0, 50  // First loop will skip 0, take 50, etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+

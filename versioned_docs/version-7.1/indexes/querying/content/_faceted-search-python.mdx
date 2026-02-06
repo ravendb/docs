@@ -1,0 +1,945 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.
+ 
+* Multiple filters (facets) are applied to narrow down the search results according to different attributes or categories.
+
+![Facets](../assets/CNET_faceted_search.jpg)
+* In this page
+   * [Define an index](../../indexes/querying/faceted-search.mdx#define-an-index)
+   * [Facets - Basics](../../indexes/querying/faceted-search.mdx#facets---basics)
+   * [Facets - Options](../../indexes/querying/faceted-search.mdx#facets---options)
+   * [Facets - Aggregations](../../indexes/querying/faceted-search.mdx#facets---aggregations)
+   * [Storing facets definition in a document](../../indexes/querying/faceted-search.mdx#storing-facets-definition-in-a-document)
+   * [Syntax](../../indexes/querying/faceted-search.mdx#syntax)
+   
+</Admonition>
+## Define an index
+
+* To make a faceted search, **a static-index must be defined** for the fields you want to query and apply facets on.
+
+* The examples in this article will be based on the following Class, Index, and Sample Data:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Class" label="Class">
+<CodeBlock language="python">
+{`class Camera:
+    def __init__(
+        self,
+        manufacturer: str = None,
+        cost: float = None,
+        mega_pixels: float = None,
+        max_focal_length: int = None,
+        units_in_stock: int = None,
+    ):
+        self.manufacturer = manufacturer
+        self.cost = cost
+        self.mega_pixels = mega_pixels
+        self.max_focal_length = max_focal_length
+        self.units_in_stock = units_in_stock
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Cameras_ByFeatures(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(
+            self,
+            brand: str = None,
+            price: float = None,
+            mega_pixels: float = None,
+            max_focal_length: int = None,
+            units_in_stock: int = None,
+        ):
+            self.brand = brand
+            self.price = price
+            self.mega_pixels = mega_pixels
+            self.max_focal_length = max_focal_length
+            self.units_in_stock = units_in_stock
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from camera in docs.Cameras "
+            "select new "
+            "{ "
+            " brand = camera.manufacturer,"
+            " price = camera.cost,"
+            " mega_pixels = camera.mega_pixels,"
+            " max_focal_length = camera.max_focal_length,"
+            " units_in_stock = camera.units_in_stock"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Sample_data" label="Sample_data">
+<CodeBlock language="python">
+{`# Creating sample data for the examples in this article:
+# ======================================================
+
+cameras = [
+    Camera(manufacturer="Sony", cost=100, mega_pixels=20.1, max_focal_length=200, units_in_stock=10),
+    Camera(manufacturer="Sony", cost=200, mega_pixels=29, max_focal_length=250, units_in_stock=15),
+    Camera(manufacturer="Nikon", cost=120, mega_pixels=22.3, max_focal_length=300, units_in_stock=2),
+    Camera(manufacturer="Nikon", cost=180, mega_pixels=32, max_focal_length=300, units_in_stock=5),
+    Camera(manufacturer="Nikon", cost=220, mega_pixels=40, max_focal_length=300, units_in_stock=20),
+    Camera(manufacturer="Canon", cost=200, mega_pixels=30.4, max_focal_length=400, units_in_stock=30),
+    Camera(manufacturer="Olympus", cost=250, mega_pixels=32.5, max_focal_length=600, units_in_stock=4),
+    Camera(manufacturer="Olympus", cost=390, mega_pixels=40, max_focal_length=600, units_in_stock=6),
+    Camera(manufacturer="Fuji", cost=410, mega_pixels=45, max_focal_length=700, units_in_stock=1),
+    Camera(manufacturer="Fuji", cost=590, mega_pixels=45, max_focal_length=700, units_in_stock=5),
+    Camera(manufacturer="Fuji", cost=650, mega_pixels=61, max_focal_length=800, units_in_stock=17),
+    Camera(manufacturer="Fuji", cost=850, mega_pixels=102, max_focal_length=800, units_in_stock=19),
+]
+
+with store.open_session() as session:
+    for camera in cameras:
+        session.store(camera)
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Facets - Basics
+
+#### Facets definition:
+
+* Define a list of facets by which to aggregate the data.
+
+* There are two **Facet types**:
+    * `Facet` - returns a count for each unique term found in the specified index-field.
+    * `RangeFacet` - returns a count per range within the specified index-field.
+  
+<TabItem value="facets_1" label="facets_1">
+<CodeBlock language="python">
+{`# Define a Facet:
+# ===============
+facet = Facet(
+    # Specify the index-field for which to get count of documents per unique ITEM
+    # e.g. get the number of Camera documents for each unique brand
+    field_name="brand",
+)
+
+# Set a display name for this field in the results (optional)
+facet.display_field_name = "Camera Brand"
+
+# Define a RangeFacet:
+# ====================
+range_facet = RangeFacet()
+# Specify ranges within an index-field in order to get count per RANGE
+# e.g. get the number of Camera documents that cost below 200, between 200 & 400, etc...
+range_facet.ranges = [
+    "price < 200",
+    "price between 200 and 400",
+    "price between 400 and 600",
+    "price between 600 and 800",
+    "price >= 800",
+]
+
+# Set a display name for this field in the results (optional)
+range_facet.display_field_name = "Camera Price"
+
+# Define a list of facets to query by:
+# ====================================
+facets = [facet, range_facet]
+`}
+</CodeBlock>
+</TabItem>
+#### Query the index for facets results:
+
+* Query the index to get the aggregated facets information.  
+
+* Either:  
+
+  * Pass the facets definition from above directly to the query  
+  
+  * Or - construct a facet using a builder with the Fluent API option, as shown below.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by' to aggregate the data by facets
+    # Pass the defined facets from above
+    .aggregate_by_facets(facets).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_FluentAPI" label="Query_FluentAPI">
+<CodeBlock language="python">
+{`# Query the index
+results = (
+    session.query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by' to aggregate the data by facets
+    # Use a builder as follows:
+    .aggregate_by(
+        lambda builder: builder
+        # Specify the index-field (e.g. 'brand') for which to get count per unique ITEM
+        .by_field("brand")
+        # Set a display name for the field in the results (optional)
+        .with_display_name("Camera Brand")
+    )
+    .and_aggregate_by(
+        lambda builder: builder
+        # Specify ranges within an index field (e.g. 'Price') in order to get count per RANGE
+        .by_ranges(
+            RangeBuilder("price").is_less_than(200),
+            RangeBuilder("price").is_greater_than_or_equal_to(200).is_less_than(400),
+            RangeBuilder("price").is_greater_than_or_equal_to(400).is_less_than(600),
+            RangeBuilder("price").is_greater_than_or_equal_to(600).is_less_than(800),
+            RangeBuilder("price").is_greater_than_or_equal_to(800),
+        )
+        # Set a display name for the field in the results (optional)
+        .with_display_name("Camera Price")
+    )
+    .execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = (
+    session.advanced
+    # Query the index
+    # Provide the RQL string to the raw_query method
+    .raw_query(
+        """from index 'Cameras/ByFeatures'
+       select
+           facet(brand) as 'Camera Brand',
+           facet(price < 200.0,
+                 price >= 200.0 and price < 400.0,
+                 price >= 400.0 and price < 600.0,
+                 price >= 600.0 and price < 800.0,
+                 price >= 800.0) as 'Camera Price'""",
+        object_type=Camera,
+    )
+    # Execute the query
+    .execute_aggregation()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Cameras/ByFeatures"
+select
+    facet(Brand) as "Camera Brand",
+    facet(Price < 200.0,
+          Price >= 200.0 and Price < 400.0,
+          Price >= 400.0 and Price < 600.0,
+          Price >= 600.0 and Price < 800.0,
+          Price >= 800.0) as "Camera Price"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query results:
+
+* **Query results** are Not the collection documents, they are of type:  
+  `Dict[str, FacetResult]` which is the facets results per index-field specified.  
+
+* Using the sample data from this article, the resulting aggregations will be:
+
+<TabItem value="facets_6" label="facets_6">
+<CodeBlock language="python">
+{`# The resulting aggregations per display name will contain:
+# =========================================================
+
+# For the "Camera Brand" Facet:
+#     "canon"   - Count: 1
+#     "fuji"    - Count: 4
+#     "nikon"   - Count: 3
+#     "olympus" - Count: 2
+#     "sony"    - Count: 2
+
+# For the "Camera Price" Ranges:
+#     "price < 200"                      - Count: 3
+#     "200 <= price < 400" - Count: 5
+#     "400 <= price < 600" - Count: 2
+#     "600 <= price < 800" - Count: 1
+#     "price >= 800"                   - Count: 1
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="facets_7" label="facets_7">
+<CodeBlock language="python">
+{`# Get facets results for index-field 'brand' using the display name specified:
+# ============================================================================
+brand_facets = results["Camera Brand"]
+number_of_brands = len(brand_facets.values)  # 5 unique brands
+
+# Get the aggregated facet value for a specific brand:
+facet_value = brand_facets.values[0]
+# The brand name is available in the 'Range' property
+# Note: value is lower-case since the default RavenDB analyzer was used by the index
+self.assertEqual("canon", facet_value.range_)
+# Number of documents for 'Canon' is available in the 'Count' property
+self.assertEqual(1, facet_value.count_)
+
+# Get facets results for index-field 'Price' using the display name specified:
+# ============================================================================
+price_facets = results["Camera Price"]
+number_of_ranges = len(price_facets.values)  # 5 different ranges
+
+# Get the aggregated facet value for a specific Range:
+facet_value = price_facets.values[0]
+self.assertEqual("price < 200", facet_value.range_)  # The range string
+self.assertEqual(3, facet_value.count_)
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="">
+
+**Query further**:
+
+* Typically, after presenting users with the initial facets results which show the available options,  
+  users can select specific categories to explore further.
+
+* For example, if the user selects Fuji and Nikon,  
+  then your next query can include a filter to focus only on those selected brands.
+
+<TabItem value="facets_8" label="facets_8">
+<CodeBlock language="python">
+{`filtered_results = list(
+    session.query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    .where_in("brand", ["Fuji", "Nikon"])
+    .aggregate_by_facets(facets)
+    .execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## Facets - Options
+
+#### Facets definition:
+
+* **Options** are available only for the `Facet` type.  
+
+* Available options:  
+
+    * `start` - The position from which to send items (how many to skip).  
+    * `page_size` - Number of items to return.  
+    * `include_remaining_terms` - Show summary of items that didn't make it into the requested PageSize.  
+    * `term_sort_mode` - Set the sort order on the resulting items. 
+
+<TabItem value="facets_9" label="facets_9">
+<CodeBlock language="python">
+{`# Define the list of facets to query by:
+# ======================================
+facets_with_options = [
+    # Define a Facet:
+    Facet(
+        # Specify the index-field for which to get count of documents per unique ITEM
+        field_name="brand",
+    )
+]
+# Set some facets options
+# Assign facet options after creating the object
+facets_with_options[0].options = FacetOptions()
+# Return the top 3 brands with most items count:
+facets_with_options[0].options.page_size = 3
+facets_with_options[0].options.term_sort_mode = FacetTermSortMode.COUNT_DESC
+facets_with_options[0].options.start = 0
+`}
+</CodeBlock>
+</TabItem>
+#### Query the index for facets results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by' to aggregate the data by facets
+    # Pass the defined facets from above
+    .aggregate_by_facets(facets_with_options).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_FluentAPI" label="Query_FluentAPI">
+<CodeBlock language="python">
+{`# Return the top 3 brands with most items count:
+facet_options = FacetOptions()
+facet_options.start = 0
+facet_options.page_size = 3
+facet_options.term_sort_mode = FacetTermSortMode.COUNT_DESC
+
+results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by' to aggregate the data by facets
+    # Use a builder as follows:
+    .aggregate_by(
+        lambda builder: builder
+        # Specify an index-field (e.g. 'brand') for which to get count per unique ITEM
+        .by_field("brand")
+        # Specify the facets options
+        .with_options(facet_options)
+    ).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = (
+    session.advanced
+    # Query the index
+    # Provide the RQL string to the raw_query method
+    .raw_query(
+        """from index 'Cameras/ByFeatures'
+       select facet(brand, $p0)""",
+        object_type=Camera,
+    )
+    # Add the facet options to the "p0" parameter
+    .add_parameter("p0", {"PageSize": 3, "TermSortMode": FacetTermSortMode.COUNT_DESC})
+    # Execute the query
+    .execute_aggregation()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Cameras/ByFeatures"
+select facet(Brand, $p0)
+{"p0": { "TermSortMode": "CountDesc", "PageSize": 3 }}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query results:
+
+<TabItem value="facets_14" label="facets_14">
+<CodeBlock language="python">
+{`# The resulting items will contain:
+# =================================
+# For the "brand" Facet:
+#     "fuji"    - Count: 4
+#     "nikon"   - Count: 3
+#     "olympus" - Count: 2
+# As requested, only 3 unique items are returned, ordered by documents count descending:
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="facets_15" label="facets_15">
+<CodeBlock language="python">
+{`# Get facets results for index-field 'brand':
+# ===========================================
+brand_facets = results["brand"]
+number_of_brands = len(brand_facets.values)  # 3 brands
+
+# Get the aggregated facet value for a specific brand:
+facet_value = brand_facets.values[0]
+# The brand name is available in the 'Range' property
+# Note: value is lower-case since the default RavenDB analyzer was used by the index
+self.assertEqual("fuji", facet_value.range_)
+# Number of documents for 'Fuji' is available in the 'Count' property
+self.assertEqual(4, facet_value.count_)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Facets - Aggregations
+
+#### Facets definition:
+
+* Aggregation of data is available for an index-field per unique Facet or Range item.  
+  For example:  
+  * Get the total number of UnitsInStock per Brand  
+  * Get the highest MegaPixels value for documents that cost between 200 & 400   
+
+* The following aggregation operations are available:  
+  * Sum
+  * Average
+  * Min
+  * Max
+
+* Multiple operations can be added on each facet, for multiple fields.
+
+<TabItem value="facets_16" label="facets_16">
+<CodeBlock language="python">
+{`# Define the list of facets to query by:
+# =====================================
+
+# Define a facet:
+# ===============
+facet_with_aggregations = Facet()
+facet_with_aggregations.field_name = "brand"
+facet_with_aggregations.aggregations = \{
+    # Set the aggregation operation:
+    FacetAggregation.SUM:
+    # Create a set specifying the index-fields for which to perform the aggregation
+    \{
+        # Get total number of units_in_stock per brand
+        FacetAggregationField("units_in_stock")
+    \},
+    FacetAggregation.AVERAGE: \{
+        # Get average price per brand
+        FacetAggregationField("price")
+    \},
+    FacetAggregation.MIN: \{
+        # Get min price per brand
+        FacetAggregationField("price")
+    \},
+    FacetAggregation.MAX: \{
+        # Get max mega_pixels per brand
+        FacetAggregationField("mega_pixels"),
+        # Get max max_focal_length per brand
+        FacetAggregationField("max_focal_length"),
+    \},
+\}
+
+# Define a RangeFacet:
+# ===================
+range_facet_with_aggregations = RangeFacet()
+range_facet_with_aggregations.ranges = [
+    "price < 200",
+    "price between 200 and 400",
+    "price between 400 and 600",
+    "price between 600 and 800",
+    "price >= 800",
+]
+range_facet_with_aggregations.aggregations = \{
+    FacetAggregation.SUM: \{
+        # Get total number of units_in_stock for each group of documents per range specified
+        FacetAggregationField("units_in_stock")
+    \},
+    FacetAggregation.AVERAGE: \{
+        # Get average price of each group of documents per range specified
+        FacetAggregationField("price")
+    \},
+    FacetAggregation.MIN: \{
+        # Get min price of each group of documents per range specified
+        FacetAggregationField("price")
+    \},
+    FacetAggregation.MAX: \{
+        # Get max mega_pixels for each group of documents per range specified
+        FacetAggregationField("mega_pixels"),
+        # Get max max_focal_length for each group of documents per range specified
+        FacetAggregationField("max_focal_length"),
+    \},
+\}
+
+facets_with_aggregations = [facet_with_aggregations, range_facet_with_aggregations]
+`}
+</CodeBlock>
+</TabItem>
+#### Query the index for facets results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by_facets' to aggregate the data by facets
+    # Pass the defined facets from above
+    .aggregate_by_facets(facets_with_aggregations).execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_FluentAPI" label="Query_FluentAPI">
+<CodeBlock language="python">
+{`results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_by' to aggregate the data by facets
+    # Use a builder as follows:
+    .aggregate_by(
+        lambda builder: builder
+        # Specify an index-field (e.g. 'brand') for which to get count per unique ITEM
+        .by_field("brand")
+        # Specify the aggregations per the brand facet:
+        .sum_on("units_in_stock")
+        .average_on("price")
+        .min_on("price")
+        .max_on("mega_pixels")
+        .max_on("max_focal_length")
+    )
+    .and_aggregate_by(
+        lambda builder: builder
+        # Specify ranges within an index field (e.g. 'price') in order to get count per RANGE
+        .by_ranges(
+            RangeBuilder("price").is_less_than(200),
+            RangeBuilder("price").is_greater_than_or_equal_to(200).is_less_than(400),
+            RangeBuilder("price").is_greater_than_or_equal_to(400).is_less_than(600),
+            RangeBuilder("price").is_greater_than_or_equal_to(600).is_less_than(800),
+            RangeBuilder("price").is_greater_than_or_equal_to(800),
+        )
+        # Specify the aggregations per the price range:
+        .sum_on("units_in_stock")
+        .average_on("price")
+        .min_on("price")
+        .max_on("mega_pixels")
+        .max_on("max_focal_length")
+    )
+    .execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = (
+    session.advanced
+    # Query the index
+    # Provide the RQL string to the raw_query method
+    .raw_query(
+        """
+           from index 'Cameras/ByFeatures'
+                                select
+                                    facet(brand,
+                                          sum(units_in_stock),
+                                          avg(price),
+                                          min(price),
+                                          max(mega_pixels),
+                                          max(max_focal_length)),
+                                    facet(price < $p0,
+                                          price >= $p1 and price < $p2,
+                                          price >= $p3 and price < $p4,
+                                          price >= $p5 and price < $p6,
+                                          price >= $p7,
+                                          sum(units_in_stock),
+                                          avg(price),
+                                          min(price),
+                                          max(mega_pixels),
+                                          max(max_focal_length))
+           """
+    )
+    .add_parameter("p0", 200.0)
+    .add_parameter("p1", 200.0)
+    .add_parameter("p2", 400.0)
+    .add_parameter("p3", 400.0)
+    .add_parameter("p4", 600.0)
+    .add_parameter("p5", 600.0)
+    .add_parameter("p6", 800.0)
+    .add_parameter("p7", 800.0)
+    # Execute the query
+    .execute_aggregation()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Cameras/ByFeatures"
+select
+    facet(Brand,
+          sum(UnitsInStock),
+          avg(Price),
+          min(Price),
+          max(MegaPixels),
+          max(MaxFocalLength)),
+    facet(Price < $p0,
+          Price >= $p1 and Price < $p2,
+          Price >= $p3 and Price < $p4,
+          Price >= $p5 and Price < $p6,
+          Price >= $p7,
+          sum(UnitsInStock),
+          avg(Price),
+          min(Price),
+          max(MegaPixels),
+          max(MaxFocalLength))
+{"p0":200.0,"p1":200.0,"p2":400.0,"p3":400.0,"p4":600.0,"p5":600.0,"p6":800.0,"p7":800.0}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Query results:
+
+<TabItem value="facets_21" label="facets_21">
+<CodeBlock language="python">
+{`# The resulting items will contain (Showing partial results):
+# ===========================================================
+
+# For the "brand" Facet:
+#     "canon" Count:1, Sum: 30, Name: UnitsInStock
+#     "canon" Count:1, Min: 200, Average: 200, Name: Price
+#     "canon" Count:1, Max: 30.4, Name: MegaPixels
+#     "canon" Count:1, Max: 400, Name: MaxFocalLength
+
+#     "fuji" Count:4, Sum: 42, Name: UnitsInStock
+#     "fuji" Count:4, Min: 410, Name: Price
+#     "fuji" Count:4, Max: 102, Name: MegaPixels
+#     "fuji" Count:4, Max: 800, Name: MaxFocalLength
+
+#     etc.....
+#
+# For the "Price" Ranges:
+#     "Price < 200.0" Count:3, Sum: 17, Name: UnitsInStock
+#     "Price < 200.0" Count:3, Min: 100, Average: 133.33, Name: Price
+#     "Price < 200.0" Count:3, Max: 32, Name: MegaPixels
+#     "Price < 200.0" Count:3, Max: 300, Name: MaxFocalLength
+
+#     "Price < 200.0 and Price > 400.0" Count:5, Sum: 75, Name: UnitsInStock
+#     "Price < 200.0 and Price > 400.0" Count:5, Min: 200, Average: 252, Name: Price
+#     "Price < 200.0 and Price > 400.0" Count:5, Max: 40, Name: MegaPixels
+#     "Price < 200.0 and Price > 400.0" Count:5, Max: 600, Name: MaxFocalLength
+
+#     etc.....
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="facets_22" label="facets_22">
+<CodeBlock language="python">
+{`# Get results for the 'brand' facets:
+# ========================================
+brand_facets = results["brand"]
+
+# Get the aggregated facet value for a specific brand:
+facet_value = brand_facets.values[0]
+# The brand name is available in the 'Range' property:
+self.assertEqual("canon", facet_value.range_)
+# The index-field on which aggregation was done is in the 'name' property:
+self.assertEqual("units_in_stock", facet_value.name)
+# The requested aggregation result
+self.assertEqual(30, facet_value.sum_)
+
+# Get results for the 'price' RangeFacets:
+# ========================================
+price_range_facets = results["price"]
+
+# Get the aggregated facet value for a specific brand:
+facet_value = price_range_facets.values[0]
+# The range string is available in the 'Range' property:
+self.assertEqual("price < 200", facet_value.range_)
+# The index-field on which aggregation was done is in the 'Name' property:
+self.assertEqual("units_in_stock", facet_value.name)
+# The requested aggregation result:
+self.assertEqual(17, facet_value.sum_)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Storing facets definition in a document
+
+#### Define and store facets in a document:
+
+* The facets definitions can be stored in a document.
+
+* That document can then be used by a faceted search query.
+
+<TabItem value="facets_23" label="facets_23">
+<CodeBlock language="python">
+{`facet_setup = FacetSetup()
+# Provide  the ID of the document in which the facet setup will be stored.
+# This is optional -
+# if not provided then the session will assign an ID for the stored document.
+facet_setup.Id = "customDocumentID"
+
+# Define Facets and RangeFacets to query by:
+facet = Facet("brand")
+range_facet = RangeFacet()
+range_facet.ranges = [
+    "mega_pixels < 20",
+    "mega_pixels between 20 and 30",
+    "mega_pixels between 30 and 50",
+    "mega_pixels >= 50",
+]
+
+facet_setup.facets = [facet]
+facet_setup.range_facets = [range_facet]
+
+# Store the facet setup document and save changes:
+# ===============================================
+session.store(facet_setup)
+session.save_changes()
+
+# The document will be stored under the 'FacetSetups' collection
+`}
+</CodeBlock>
+</TabItem>
+#### Query using facets from document:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = (
+    session
+    # Query the index
+    .query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
+    # Call 'aggregate_using'
+    # Pass the ID of the document that contains your facets setup
+    .aggregate_using("customDocumentID").execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = (
+    session.advanced
+    # Query the index
+    # Provide the RQL string to the raw_query method
+    .raw_query("from index 'Cameras/ByFeatures' select facet(id('customDocumentID'))", Camera)
+    # Execute the query
+    .execute_aggregation()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Cameras/ByFeatures"
+select facet(id("customDocumentID"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="python">
+{`def aggregate_by(
+    self, builder_or_facet: Union[Callable[[FacetBuilder], None], FacetBase]
+) -> AggregationDocumentQuery[_T]: ...
+
+def aggregate_by_facets(self, facets: List[FacetBase]) -> AggregationDocumentQuery[_T]: ...
+
+def aggregate_using(self, facet_setup_document_id: str) -> AggregationDocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter                    | Type                       | Description           |
+|------------------------------|----------------------------|-----------------------|
+| **builder_or_facet** (Union) | `Callable[[FacetBuilder]`<br/>**or**<br/>`FacetBase` | Builder with a fluent API that constructs a `FacetBase` implementation instance<br/>**or**<br/>`FacetBase` implementation instance |
+| **facets** | `List[FacetBase]` | A list of `FacetBase` implementations instances. |
+| **facet_setup_document_id**  | `str` | ID of a document containing `FacetSetup` |
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Facet" label="Facet">
+<CodeBlock language="python">
+{`class Facet(FacetBase):
+    def __init__(self, field_name: str = None):
+        super().__init__()
+        self.field_name = field_name
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RangeFacet" label="RangeFacet">
+<CodeBlock language="python">
+{`class RangeFacet(FacetBase):
+    def __init__(self, parent: Optional[FacetBase] = None):
+        super().__init__()
+        self.ranges: List[str] = []
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FacetBase" label="FacetBase">
+<CodeBlock language="python">
+{`class FacetBase(ABC):
+    def __init__(self):
+        self.display_field_name: Union[None, str] = None
+        self.options: Union[None, FacetOptions] = None
+        self.aggregations: Dict[FacetAggregation, Set[FacetAggregationField]] = {}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FacetAggregation" label="FacetAggregation">
+<CodeBlock language="python">
+{`class FacetAggregation(enum.Enum):
+    NONE = "None"
+    MAX = "Max"
+    MIN = "Min"
+    AVERAGE = "Average"
+    SUM = "Sum"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Fluent API builder methods**:
+
+<TabItem value="syntax_6" label="syntax_6">
+<CodeBlock language="python">
+{`def by_ranges(self, range_: RangeBuilder, *ranges: RangeBuilder) -> FacetOperations[_T]: ...
+
+def by_field(self, field_name: str) -> FacetOperations[_T]: ...
+
+def with_display_name(self, display_name: str) -> FacetOperations[_T]: ...
+
+def with_options(self, options: FacetOptions) -> FacetOperations[_T]: ...
+
+def sum_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def min_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def max_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type                        | Description |
+|------------------|-----------------------------|-------------|
+| **range_**       | `RangeBuilder` | A range of indexes |
+| **\*ranges**     | `RangeBuilder` | Multiple index ranges (at least one), separated by `,` |
+| **field_name**   | `str` | The index-field to use for the facet |
+| **path**         | `str` | Points to the index-field to use for the facet (`ByRanges`, `ByField`) or for the aggregation (`SUM_ON`, `MIN_ON`, `MAX_ON`, `AVERAGE_ON`) |
+| **display_name** | `str` | If set, results of a facet will be returned under this name |
+| **options**      | `FacetOptions` | Non-default options to use in the facet definition |
+
+
+
+**Options**:
+
+<TabItem value="syntax_7" label="syntax_7">
+<CodeBlock language="python">
+{`class FacetOptions:
+    def __init__(self):
+        self.page_size: int = constants.int_max
+        self.start: Union[None, int] = None
+        self.term_sort_mode: FacetTermSortMode = FacetTermSortMode.VALUE_ASC
+        self.include_remaining_terms: bool = False
+`}
+</CodeBlock>
+</TabItem>
+
+| Option                    | Type                | Description                                                                                                 |
+|---------------------------|---------------------|-------------------------------------------------------------------------------------------------------------|
+| **term_sort_mode**          | `FacetTermSortMode` | Set the sort order on the resulting items<br/>(`VALUE_ASC` (Default), `VALUE_DESC`, `COUNT_ASC`, `COUNT_DESC`) |
+| **start**                 | `int` | The position from which to send items (how many to skip) |
+| **page_size**              | `int` | Number of items to return |
+| **include_remaining_terms** | `bool` | Indicates if remaining terms that didn't make it into the requested PageSize should be included in results<br/>Default value: `False` |
+
+
+
+
