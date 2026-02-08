@@ -10,7 +10,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * These methods can be used for both a dynamic-query and an index-query.
 
-* A [query](../../../client-api/session/querying/how-to-query.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+* A [query](../../../querying/overview.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx).
 
 * Customization methods available:
@@ -451,7 +451,7 @@ const results = await session.query(\{ collection: "Products" \})
 ## waitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
 

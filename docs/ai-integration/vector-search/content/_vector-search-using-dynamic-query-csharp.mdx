@@ -167,7 +167,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)),  
   performing a vector search using a dynamic query will create a new auto-index based on Corax.
 
-* Normally, new dynamic queries extend existing [auto-indexes](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
+* Normally, new dynamic queries extend existing [auto-indexes](../../../querying/overview.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
   However, a dynamic query with a vector search will not extend an existing Lucene-based auto-index.
 
     <Admonition type="note" title="">
@@ -1451,8 +1451,8 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
 * You can combine multiple vector search statements in the same query using logical operators.  
   This is useful when you want to retrieve documents that match more than one vector-based criterion.
  
-* This can be done using [DocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery),
-  [RawQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) or raw [RQL](../../../client-api/session/querying/what-is-rql.mdx).
+* This can be done using [DocumentQuery](../../../querying/overview.mdx#session-advanced-documentquery),
+  [RawQuery](../../../querying/overview.mdx#session-advanced-rawquery) or raw [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
 * In the example below, the results will include companies that match one of two vector search conditions:  
   * Companies from European countries with a _Name_ similar to "snack"

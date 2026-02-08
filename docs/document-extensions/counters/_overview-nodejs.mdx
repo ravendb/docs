@@ -145,7 +145,7 @@ Managing Counters is performed using the `countersFor` Session object.
   * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
       * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
+        e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
   * Use Counter methods to manage the document's Counters.  
   * If you execute [increment](../../document-extensions/counters/create-or-modify.mdx) or [delete](../../document-extensions/counters/delete.mdx), call `session.saveChanges` for the action to take effect on the server.  
 

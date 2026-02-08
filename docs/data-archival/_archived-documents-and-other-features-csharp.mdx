@@ -286,14 +286,14 @@ This setting will **override** the global configuration defined by the [Indexing
 * **Full collection queries**:  
   * Queries that scan an entire collection without any filtering condition (e.g. `from Orders`) will include archived documents.  
   * These queries are not influenced by indexing configuration related to archived documents because they do not use indexes.
-  * Learn more about full collection queries in [Full collection query](../client-api/session/querying/how-to-query.mdx#collectionQuery).  
+  * Learn more about full collection queries in [Full collection query](../querying/overview.mdx#collectionQuery).  
 
 * **Dynamic queries (auto-indexes)**:
   * When making a dynamic query, RavenDB creates an auto-index to serve it.
     Whether that index processes archived documents depends on the value of the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key at the time the query is made.
   * Once created, the auto-index retains that behavior.
     Query results will continue to reflect the configuration that was in effect when the index was first built - even if the setting is changed later.
-  * Learn more about dynamic queries in [Query a collection - with filtering](../client-api/session/querying/how-to-query.mdx#dynamicQuery).
+  * Learn more about dynamic queries in [Query a collection - with filtering](../querying/overview.mdx#dynamicQuery).
 
 * **Querying static-indexes**:  
   * When querying a static-index, the results will include, exclude, or consist solely of archived documents depending on how the static-index was configured.

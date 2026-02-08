@@ -24,7 +24,7 @@ const GUIDES: GuideItem[] = [
         description:
             "Master the fundamentals of querying: understand filtering, projections, and advanced query techniques.",
         icon: "query",
-        url: "/client-api/session/querying/how-to-query",
+        url: "/querying/overview",
     },
     {
         title: "Get started with Indexing",

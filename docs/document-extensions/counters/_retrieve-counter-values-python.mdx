@@ -31,7 +31,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Create an instance of `counters_for`.
     * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+      e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
 * Call `counters_for.get` to retrieve the current value of a single Counter.
 #### `get` example:  
 
@@ -74,7 +74,7 @@ with store.open_session() as session:
 * Create an instance of `counters_for`.
     * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+      e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
 * Call `counters_for.get_all` to retrieve the names and values of all counters associated with the document.
 #### `get_all` example:  
 
