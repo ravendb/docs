@@ -1,10 +1,10 @@
 import React from "react";
 import clsx from "clsx";
-import {useThemeConfig} from "@docusaurus/theme-common";
+import { useThemeConfig } from "@docusaurus/theme-common";
 import Logo from "@theme/Logo";
 import CollapseButton from "@theme/DocSidebar/Desktop/CollapseButton";
 import Content from "@theme/DocSidebar/Desktop/Content";
-import type {Props} from "@theme/DocSidebar/Desktop";
+import type { Props } from "@theme/DocSidebar/Desktop";
 
 import styles from "./styles.module.css";
 import Link from "@docusaurus/Link";
@@ -14,60 +14,35 @@ import {
     useActiveDocContext,
     useLatestVersion,
 } from "@docusaurus/plugin-content-docs/client";
-import {Icon} from "@site/src/components/Common/Icon";
+import { Icon } from "@site/src/components/Common/Icon";
+import {
+    getPathType,
+    getLandingPagePath,
+    PathType,
+} from "../../../typescript/pathUtils";
 
-function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
+function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
     const {
-        navbar: {hideOnScroll},
+        navbar: { hideOnScroll },
         docs: {
-            sidebar: {hideable},
+            sidebar: { hideable },
         },
     } = useThemeConfig();
 
-    enum PathType {
-        Cloud = "CLOUD",
-        Guides = "GUIDES",
-        Documentation = "DOCUMENTATION",
-        Templates = "TEMPLATES"
-    }
-
     const pluginId = "default";
-    const {activeVersion} = useActiveDocContext(pluginId);
+    const { activeVersion } = useActiveDocContext(pluginId);
     const latestVersion = useLatestVersion(pluginId);
     const versionLabel = activeVersion?.label ?? latestVersion.label;
 
-    const pathType: PathType = (() => {
-        if (path.includes("/cloud")) {
-            return PathType.Cloud;
-        }
-        if (path.includes("/guides")) {
-            return PathType.Guides;
-        }
-        if (path.includes("/templates")) {
-            return PathType.Templates;
-        }
-        return PathType.Documentation;
-    })();
-
-    const landingPagePath: string = (() => {
-        if (pathType === PathType.Cloud) {
-            return "/cloud";
-        }
-        if (pathType === PathType.Guides) {
-            return "/guides";
-        }
-        if (pathType === PathType.Templates) {
-            return "/templates";
-        }
-        return `/${versionLabel}`;
-    })();
+    const pathType = getPathType(path);
+    const landingPagePath = getLandingPagePath(pathType, versionLabel);
 
     return (
         <div
             className={clsx(
                 styles.sidebar,
                 hideOnScroll && styles.sidebarWithHideableNavbar,
-                isHidden && styles.sidebarHidden
+                isHidden && styles.sidebarHidden,
             )}
         >
             {hideOnScroll && (
@@ -81,8 +56,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}: Props) {
                 </div>
                 {pathType !== PathType.Guides && (
                     <Link to="/guides" className="menu__link group">
-                        <Icon icon="guides" size="xs" className="me-2" />{" "}
-                        Guides
+                        <Icon icon="guides" size="xs" className="me-2" /> Guides
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>
