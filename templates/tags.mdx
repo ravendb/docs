@@ -2,13 +2,22 @@
 title: "Tags"
 hide_table_of_contents: false
 sidebar_label: Tags
+seeAlso:
+    - title: "New guides"
+      link: "/templates/new-guides"
+      source: "docs"
+      path: "Templates > Guides"
+    - title: "Featured guides"
+      link: "/templates/featured-guides"
+      source: "docs"
+      path: "Templates > Guides"
 ---
 
-import Admonition from '@theme/Admonition';
-import Panel from '@site/src/components/Panel';
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
 
 <head>
-  <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
 </head>
 
 # Tags
@@ -24,18 +33,18 @@ Each top‑level key is a tag id used in the `tags` array. Example:
 
 ```yml
 ai:
-  label: "AI"
-  permalink: "/ai"
-  description: "Content related to AI."
+    label: "AI"
+    permalink: "/ai"
+    description: "Content related to AI."
 ```
 
 To add a new tag, append a new entry:
 
 ```yml
 vector-search:
-  label: "Vector search"
-  permalink: "/vector-search"
-  description: "Guides related to semantic search and embeddings."
+    label: "Vector search"
+    permalink: "/vector-search"
+    description: "Guides related to semantic search and embeddings."
 ```
 
 ### Use the tag in a guide
@@ -68,9 +77,5 @@ The `recent-guides-plugin`:
 </Panel>
 
 <Admonition type="tip" title="Tagging guidelines">
-- Prefer a **small, focused set** of tags per guide (2–4 is typical).
-- Reuse existing tags from `guides/tags.yml` whenever possible.
-- When introducing a new tag, think of it as a "topic bucket" that might
-  contain multiple guides over time.
+    - Prefer a **small, focused set** of tags per guide (2–4 is typical). - Reuse existing tags from `guides/tags.yml` whenever possible. - When introducing a new tag, think of it as a "topic bucket" that might contain multiple guides over time.
 </Admonition>
-

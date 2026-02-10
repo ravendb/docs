@@ -2,13 +2,18 @@
 title: "Icon Gallery"
 hide_table_of_contents: false
 sidebar_label: Icon Gallery
+seeAlso:
+    - title: "Themed Images"
+      link: "/templates/themed-images"
+      source: "docs"
+      path: "Templates > Themed Images"
 ---
 
 import IconGallery from "@site/src/components/IconGallery/IconGallery";
-import Admonition from '@theme/Admonition';
+import Admonition from "@theme/Admonition";
 
 <head>
-  <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
 </head>
 
 # Icon Gallery
@@ -22,7 +27,7 @@ To use an icon in a component, import the `Icon` component and pass the icon nam
 ```tsx
 import { Icon } from "@site/src/components/Common/Icon";
 
-<Icon icon="database" size="lg" />
+<Icon icon="database" size="lg" />;
 ```
 
 ## Available Icons
@@ -30,7 +35,7 @@ import { Icon } from "@site/src/components/Common/Icon";
 <IconGallery />
 
 <Admonition type="info" title="">
-Icons are automatically loaded from the `static/icons` directory. When you add a new SVG file to this directory, the icon will automatically appear in this gallery after restarting the development server.
+    Icons are automatically loaded from the `static/icons` directory. When you add a new SVG file to this directory, the icon will automatically appear in this gallery after restarting the development server.
 </Admonition>
 
 ## Icon Sizes
@@ -50,7 +55,7 @@ The `Icon` component supports the following sizes:
 ```tsx
 import { Icon } from "@site/src/components/Common/Icon";
 
-<Icon icon="database" />
+<Icon icon="database" />;
 ```
 
 ### With Custom Size
@@ -70,9 +75,5 @@ import { Icon } from "@site/src/components/Common/Icon";
 ```tsx
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 
-<CardWithImage
-  title="Database"
-  description="Database icon"
-  imgIcon="database"
-/>
+<CardWithImage title="Database" description="Database icon" imgIcon="database" />;
 ```
