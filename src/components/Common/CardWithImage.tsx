@@ -108,7 +108,7 @@ export default function CardWithImage({
                 </div>
                 <p className="!mb-0 text-sm pt-2">{description}</p>
                 {(hasTags || hasDate) && (
-                    <div className="flex justify-between pt-2 gap-3">
+                    <div className="flex flex-wrap justify-between pt-2 gap-3">
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
