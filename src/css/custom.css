@@ -285,14 +285,14 @@ pre[class*="language-"] {
 }
 
 .breadcrumbs {
-  @apply flex items-center gap-1 text-sm mb-4;
+  @apply flex items-center gap-1 text-sm mb-4 overflow-x-auto;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .breadcrumbs__item {
-  @apply flex items-center gap-1;
+  @apply flex items-center gap-1 shrink-0;
 }
 
 .breadcrumbs__item:first-child .breadcrumbs__link::before {
@@ -334,6 +334,11 @@ a.breadcrumbs__link:hover {
 
 .breadcrumbs__link--active {
   @apply text-gray-900 dark:text-gray-100 font-medium pointer-events-none;
+}
+
+.breadcrumbs__item:not(:last-child):after {
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .hash-link:before {
