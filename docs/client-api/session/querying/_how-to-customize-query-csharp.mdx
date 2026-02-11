@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query.mdx).   
+* Use `Customize()` to set the following customization options on a specific [Query](../../../querying/overview.mdx).   
   Can be set for both **dynamic** and **index** queries.
 
 * Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API.
@@ -785,7 +785,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 ## WaitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 

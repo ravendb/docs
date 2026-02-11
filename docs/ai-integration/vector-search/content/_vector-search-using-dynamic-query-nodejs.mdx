@@ -167,7 +167,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)),  
   performing a vector search using a dynamic query will create a new auto-index based on Corax.
 
-* Normally, new dynamic queries extend existing [auto-indexes](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
+* Normally, new dynamic queries extend existing [auto-indexes](../../../querying/overview.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
   However, a dynamic query with a vector search will not extend an existing Lucene-based auto-index.
 
     <Admonition type="note" title="">
