@@ -20,8 +20,8 @@ export default function DocItemWrapper(props: Props): ReactNode {
     const isExcluded = isHomepage || fileName === "whats-new.mdx";
 
     const supportedLanguages =
-        (props.content as any)?.supportedLanguages ||
-        (props.content as any)?.frontMatter?.supportedLanguages ||
+        (props.content as any)?.supported_languages ||
+        (props.content as any)?.frontMatter?.supported_languages ||
         (props.content as any)?.exports?.supportedLanguages;
 
     const showTopbar = Boolean(isDocsOrVersioned && !isExcluded);
