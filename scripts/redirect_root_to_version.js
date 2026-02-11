@@ -2,13 +2,14 @@ function handler(event) {
     var request = event.request;
     var uri = request.uri;
 
-    if (uri.startsWith('/cloud') || uri.startsWith('/guides')) {
+    if (uri.startsWith("/cloud") || uri.startsWith("/guides")) {
         return request;
     }
 
     var defaultVersion = "7.2";
 
-    var staticAssetRegex = /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
+    var staticAssetRegex =
+        /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
 
     if (staticAssetRegex.test(uri)) {
         return request;
@@ -21,10 +22,10 @@ function handler(event) {
 
         return {
             statusCode: 301,
-            statusDescription: 'Moved Permanently',
+            statusDescription: "Moved Permanently",
             headers: {
-                location: { value: newUri }
-            }
+                location: { value: newUri },
+            },
         };
     }
 

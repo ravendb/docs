@@ -25,22 +25,14 @@ export default function Card({ title, description, url, iconName }: CardProps) {
                     "bg-black/5 dark:bg-white/5",
                     "hover:border-black/20 dark:hover:border-white/20",
                     "hover:bg-black/10 dark:hover:bg-white/10",
-                    "!transition-all",
+                    "!transition-all"
                 )}
             >
                 {iconName && (
                     <div className="flex items-center justify-center rounded-xl mb-4 bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%] aspect-[79/24] relative">
-                        <Icon
-                            icon={iconName}
-                            size="xl"
-                            className="filter brightness-0 invert"
-                        />
+                        <Icon icon={iconName} size="xl" className="filter brightness-0 invert" />
                         {!isInternalUrl(url) && (
-                            <Badge
-                                className="absolute top-2 right-2"
-                                variant="default"
-                                size="sm"
-                            >
+                            <Badge className="absolute top-2 right-2" variant="default" size="sm">
                                 External
                             </Badge>
                         )}

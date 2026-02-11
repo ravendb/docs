@@ -45,9 +45,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                 isHidden && styles.sidebarHidden,
             )}
         >
-            {hideOnScroll && (
-                <Logo tabIndex={-1} className={styles.sidebarLogo} />
-            )}
+            {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
             <div className="menu thin-scrollbar menu_Y1UP shrink-0 !grow-0">
                 <div className="menu__list-item-collapsible">
                     <Link to={landingPagePath} className="menu__link">
@@ -64,8 +62,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                 )}
                 {pathType !== PathType.Documentation && (
                     <Link to={`/${versionLabel}`} className="menu__link group">
-                        <Icon icon="database" size="xs" className="me-2" />{" "}
-                        RavenDB Docs
+                        <Icon icon="database" size="xs" className="me-2" /> RavenDB Docs
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>
@@ -73,19 +70,14 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                 )}
                 {pathType !== PathType.Cloud && (
                     <Link to="/cloud" className="menu__link group">
-                        <Icon icon="cloud" size="xs" className="me-2" /> RavenDB
-                        Cloud Docs
+                        <Icon icon="cloud" size="xs" className="me-2" /> RavenDB Cloud Docs
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>
                     </Link>
                 )}
-                <Link
-                    to="https://ravendb.net/community"
-                    className="menu__link group"
-                >
-                    <Icon icon="community" size="xs" className="me-2" />{" "}
-                    Community
+                <Link to="https://ravendb.net/community" className="menu__link group">
+                    <Icon icon="community" size="xs" className="me-2" /> Community
                     <Icon
                         icon="newtab"
                         size="xs"
@@ -93,22 +85,14 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                     />
                 </Link>
                 {pathType === PathType.Documentation && (
-                    <Link
-                        to={`/${versionLabel}/whats-new`}
-                        className="menu__link"
-                    >
-                        <Icon icon="star-filled" size="xs" className="me-2" />{" "}
-                        What's new
+                    <Link to={`/${versionLabel}/whats-new`} className="menu__link">
+                        <Icon icon="star-filled" size="xs" className="me-2" /> What's new
                     </Link>
                 )}
             </div>
-            {pathType !== PathType.Guides && (
-                <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />
-            )}
+            {pathType !== PathType.Guides && <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />}
             {pathType === PathType.Documentation && <SidebarVersionDropdown />}
-            {pathType !== PathType.Guides && (
-                <Content path={path} sidebar={sidebar} />
-            )}
+            {pathType !== PathType.Guides && <Content path={path} sidebar={sidebar} />}
             {hideable && <CollapseButton onClick={onCollapse} />}
         </div>
     );

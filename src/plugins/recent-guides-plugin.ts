@@ -40,10 +40,7 @@ function getFiles(dir: string, files: string[] = []) {
     return files;
 }
 
-const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
-    context,
-    _options,
-) {
+const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options) {
     return {
         name: "recent-guides-plugin",
         async loadContent() {
@@ -54,10 +51,7 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
             }
 
             const tagsYmlPath = path.join(guidesDir, "tags.yml");
-            let predefinedTags: Record<
-                string,
-                { label: string; permalink: string }
-            > = {};
+            let predefinedTags: Record<string, { label: string; permalink: string }> = {};
             if (fs.existsSync(tagsYmlPath)) {
                 try {
                     const fileContent = fs.readFileSync(tagsYmlPath, "utf8");
@@ -78,28 +72,20 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                     return normalized !== "home.mdx";
                 });
 
-	            const guides = files.map((filePath) => {
+            const guides = files.map((filePath) => {
                 const fileContent = fs.readFileSync(filePath, "utf-8");
                 const { data } = matter(fileContent);
                 const stats = fs.statSync(filePath);
 
                 const relativePath = path.relative(guidesDir, filePath);
 
-                const relativePathNormalized = relativePath
-                    .split(path.sep)
-                    .join("/");
-                const baseName = relativePathNormalized.replace(
-                    /\.(md|mdx)$/,
-                    "",
-                );
+                const relativePathNormalized = relativePath.split(path.sep).join("/");
+                const baseName = relativePathNormalized.replace(/\.(md|mdx)$/, "");
 
-                const slug = baseName.endsWith("/index")
-                    ? baseName.replace(/\/index$/, "")
-                    : baseName;
+                const slug = baseName.endsWith("/index") ? baseName.replace(/\/index$/, "") : baseName;
                 const permalink = `/guides/${slug === "index" ? "" : slug}`;
 
-                const externalUrl: string | undefined =
-                    (data as any).externalUrl || (data as any).external_url;
+                const externalUrl: string | undefined = (data as any).externalUrl || (data as any).external_url;
 
                 const frontmatterDate: unknown = (data as any).publishedAt;
 
@@ -114,15 +100,10 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                     } else if (frontmatterDate instanceof Date) {
                         millis = frontmatterDate.getTime();
                     } else if (typeof frontmatterDate === "number") {
-                        millis =
-                            frontmatterDate > 1e12
-                                ? frontmatterDate
-                                : frontmatterDate * 1000;
+                        millis = frontmatterDate > 1e12 ? frontmatterDate : frontmatterDate * 1000;
                     }
 
-                    lastUpdatedAt = millis
-                        ? Math.floor(millis / 1000)
-                        : Math.floor(stats.mtimeMs / 1000);
+                    lastUpdatedAt = millis ? Math.floor(millis / 1000) : Math.floor(stats.mtimeMs / 1000);
                 } else {
                     lastUpdatedAt = Math.floor(stats.mtimeMs / 1000);
                 }
@@ -141,10 +122,7 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                     if (definedTag) {
                         return {
                             label: definedTag.label,
-                            permalink: path.posix.join(
-                                "/guides/tags",
-                                definedTag.permalink || tag.toLowerCase(),
-                            ),
+                            permalink: path.posix.join("/guides/tags", definedTag.permalink || tag.toLowerCase()),
                         };
                     }
                     return {
@@ -155,9 +133,7 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
 
                 return {
                     id: path.basename(filePath, path.extname(filePath)),
-                    title:
-                        data.title ||
-                        path.basename(filePath, path.extname(filePath)),
+                    title: data.title || path.basename(filePath, path.extname(filePath)),
                     permalink: data.slug || permalink,
                     tags: formattedTags,
                     lastUpdatedAt,
@@ -168,18 +144,14 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(
                 };
             });
 
-            const allTags = Object.entries(predefinedTags).map(
-                ([key, value]) => ({
-                    ...value,
-                    key,
-                    count: tagCounts[key] || 0,
-                }),
-            );
+            const allTags = Object.entries(predefinedTags).map(([key, value]) => ({
+                ...value,
+                key,
+                count: tagCounts[key] || 0,
+            }));
 
             return {
-                guides: guides.sort(
-                    (a, b) => b.lastUpdatedAt - a.lastUpdatedAt,
-                ),
+                guides: guides.sort((a, b) => b.lastUpdatedAt - a.lastUpdatedAt),
                 tags: allTags,
             };
         },

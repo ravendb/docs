@@ -12,10 +12,7 @@ export interface UseTagLimitReturn {
     expandTags: () => void;
 }
 
-export function useTagLimit({
-    tags,
-    defaultLimit = 3,
-}: UseTagLimitOptions): UseTagLimitReturn {
+export function useTagLimit({ tags, defaultLimit = 3 }: UseTagLimitOptions): UseTagLimitReturn {
     const [isExpanded, setIsExpanded] = useState(false);
     const [limit, setLimit] = useState(defaultLimit);
 

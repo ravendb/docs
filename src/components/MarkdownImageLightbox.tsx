@@ -13,16 +13,12 @@ function decodeHTML(html: string) {
 
 export default function MarkdownImageLightbox() {
     const [open, setOpen] = useState(false);
-    const [slides, setSlides] = useState<
-        { src: string; description?: string }[]
-    >([]);
+    const [slides, setSlides] = useState<{ src: string; description?: string }[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const location = useLocation();
 
     useEffect(() => {
-        const images = Array.from(
-            document.querySelectorAll(".theme-doc-markdown img"),
-        );
+        const images = Array.from(document.querySelectorAll(".theme-doc-markdown img"));
 
         const imageList: { src: string; description?: string }[] = [];
 

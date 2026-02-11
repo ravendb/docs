@@ -79,8 +79,7 @@ export default function GetStartedGuides() {
                     Get started with RavenDB
                 </Heading>
                 <p className="text-base text-black/60 dark:text-white/60 !mb-0">
-                    If you’re new to RavenDB, get started by learning how it
-                    works.
+                    If you’re new to RavenDB, get started by learning how it works.
                 </p>
             </div>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

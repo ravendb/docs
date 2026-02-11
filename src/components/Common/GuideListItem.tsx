@@ -12,12 +12,7 @@ export interface GuideListItemProps {
     date?: string;
 }
 
-export default function GuideListItem({
-    title,
-    url,
-    tags = [],
-    date,
-}: GuideListItemProps) {
+export default function GuideListItem({ title, url, tags = [], date }: GuideListItemProps) {
     const { visibleTags, hiddenCount, isExpanded, expandTags } = useTagLimit({
         tags,
     });
@@ -56,11 +51,7 @@ export default function GuideListItem({
                     )}
                 >
                     {visibleTags.map((tag) => (
-                        <Tag
-                            key={tag.label}
-                            size="xs"
-                            permalink={tag.permalink}
-                        >
+                        <Tag key={tag.label} size="xs" permalink={tag.permalink}>
                             {tag.label}
                         </Tag>
                     ))}

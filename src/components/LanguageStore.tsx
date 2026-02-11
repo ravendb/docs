@@ -6,10 +6,7 @@ const DEFAULT_LANGUAGE: DocsLanguage = "csharp";
 const LANGUAGE_STORAGE_KEY = "docs-language";
 
 const getLanguageFromLocalStorage = (): DocsLanguage => {
-    return (
-        (window.localStorage.getItem(LANGUAGE_STORAGE_KEY) as DocsLanguage) ||
-        DEFAULT_LANGUAGE
-    );
+    return (window.localStorage.getItem(LANGUAGE_STORAGE_KEY) as DocsLanguage) || DEFAULT_LANGUAGE;
 };
 
 const subscribe = (callback: () => void): (() => void) => {
@@ -23,11 +20,7 @@ export const useLanguage = (): {
     language: DocsLanguage;
     setLanguage: (newLanguage: DocsLanguage) => void;
 } => {
-    const language = useSyncExternalStore(
-        subscribe,
-        getLanguageFromLocalStorage,
-        () => DEFAULT_LANGUAGE,
-    );
+    const language = useSyncExternalStore(subscribe, getLanguageFromLocalStorage, () => DEFAULT_LANGUAGE);
 
     const setLanguage = useCallback((newLanguage: DocsLanguage) => {
         window.localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);

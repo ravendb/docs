@@ -21,10 +21,7 @@ type LanguageSwitcherProps = {
     flush?: boolean;
 };
 
-export default function LanguageSwitcher({
-    supportedLanguages,
-    flush = false,
-}: LanguageSwitcherProps) {
+export default function LanguageSwitcher({ supportedLanguages, flush = false }: LanguageSwitcherProps) {
     const { language, setLanguage } = useLanguage();
 
     const isCurrentLanguageSupported = supportedLanguages.includes(language);
@@ -37,7 +34,7 @@ export default function LanguageSwitcher({
     }, [isCurrentLanguageSupported, firstSupportedLanguage, setLanguage]);
 
     return (
-        <div className={clsx("flex flex-wrap gap-2", { 'mb-8': !flush })}>
+        <div className={clsx("flex flex-wrap gap-2", { "mb-8": !flush })}>
             {languageOptions
                 .filter((lang) => supportedLanguages.includes(lang.value))
                 .map((lang) => {
@@ -51,7 +48,7 @@ export default function LanguageSwitcher({
                             className={clsx(
                                 "px-3 py-1.5 rounded-md border text-sm transition-colors cursor-pointer",
                                 "border-black/10 text-gray-500 hover:bg-black/5 hover:border-black/15 hover:text-gray-600",
-                                "dark:text-gray-300 dark:border-white/10 dark:hover:text-gray-200 dark:hover:border-white/15 dark:hover:bg-white/5",
+                                "dark:text-gray-300 dark:border-white/10 dark:hover:text-gray-200 dark:hover:border-white/15 dark:hover:bg-white/5"
                             )}
                             style={
                                 isActive

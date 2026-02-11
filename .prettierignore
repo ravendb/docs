@@ -1,0 +1,16 @@
+# Ignore all markdown files
+*.md
+*.mdx
+
+# Ignore all docs files
+/cloud
+/docs
+/guides
+/templates
+/versioned_docs
+
+# Ignore all autogenrated files
+src/data/guides-metadata.json
+src/typescript/iconName.ts
+
+/.github

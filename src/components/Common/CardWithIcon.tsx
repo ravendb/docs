@@ -13,13 +13,7 @@ export interface CardWithIconProps {
     animationDelay?: number;
 }
 
-export default function CardWithIcon({
-    title,
-    icon,
-    description,
-    url,
-    animationDelay = 0,
-}: CardWithIconProps) {
+export default function CardWithIcon({ title, icon, description, url, animationDelay = 0 }: CardWithIconProps) {
     return (
         <Link to={url} className="card-wrapper">
             <div
@@ -31,7 +25,7 @@ export default function CardWithIcon({
                     "hover:border-black/20 dark:hover:border-white/20",
                     "hover:!bg-black/10 dark:hover:!bg-white/10",
                     "!transition-all",
-                    "animate-in fade-in slide-in-from-bottom-4",
+                    "animate-in fade-in slide-in-from-bottom-4"
                 )}
                 style={{
                     animationDelay: `${animationDelay}ms`,

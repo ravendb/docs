@@ -12,9 +12,7 @@ import { useEffect, useState } from "react";
 // Docusaurus team has an open issue for this problem:
 // https://github.com/facebook/docusaurus/issues/6201
 
-export default function useFilteredToc(
-    originalToc: readonly TOCItem[],
-): readonly TOCItem[] {
+export default function useFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const { language } = useLanguage();
     const [filteredToc, setFilteredToc] = useState<readonly TOCItem[]>([]);
 

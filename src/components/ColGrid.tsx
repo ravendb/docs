@@ -22,17 +22,9 @@ function getGridColsClass(colCount: GridColCount): string {
     return "";
 }
 
-export default function ColGrid({
-    children,
-    className = "",
-    colCount = 1,
-    ...props
-}: ColGridProps) {
+export default function ColGrid({ children, className = "", colCount = 1, ...props }: ColGridProps) {
     return (
-        <div
-            className={clsx(getGridColsClass(colCount), "gap-4", className)}
-            {...props}
-        >
+        <div className={clsx(getGridColsClass(colCount), "gap-4", className)} {...props}>
             {children}
         </div>
     );

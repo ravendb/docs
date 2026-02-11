@@ -13,10 +13,7 @@ export interface BreadcrumbsProps {
     className?: string;
 }
 
-export default function CustomBreadcrumbs({
-    items,
-    className,
-}: BreadcrumbsProps) {
+export default function CustomBreadcrumbs({ items, className }: BreadcrumbsProps) {
     if (!items || items.length === 0) {
         return null;
     }
@@ -27,15 +24,11 @@ export default function CustomBreadcrumbs({
                 "breadcrumbsContainer",
                 ThemeClassNames.docs.docBreadcrumbs,
                 "theme-doc-breadcrumbs",
-                className,
+                className
             )}
             aria-label="Breadcrumbs"
         >
-            <ul
-                className="breadcrumbs"
-                itemScope
-                itemType="https://schema.org/BreadcrumbList"
-            >
+            <ul className="breadcrumbs" itemScope itemType="https://schema.org/BreadcrumbList">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;
 
@@ -50,25 +43,15 @@ export default function CustomBreadcrumbs({
                             itemType="https://schema.org/ListItem"
                         >
                             {!isLast && item.href ? (
-                                <Link
-                                    className="breadcrumbs__link"
-                                    itemProp="item"
-                                    to={item.href}
-                                >
+                                <Link className="breadcrumbs__link" itemProp="item" to={item.href}>
                                     <span itemProp="name">{item.label}</span>
                                 </Link>
                             ) : (
-                                <span
-                                    className="breadcrumbs__link breadcrumbs__link--active"
-                                    itemProp="name"
-                                >
+                                <span className="breadcrumbs__link breadcrumbs__link--active" itemProp="name">
                                     {item.label}
                                 </span>
                             )}
-                            <meta
-                                itemProp="position"
-                                content={String(index + 1)}
-                            />
+                            <meta itemProp="position" content={String(index + 1)} />
                         </li>
                     );
                 })}

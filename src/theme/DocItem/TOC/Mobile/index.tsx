@@ -15,10 +15,7 @@ export default function DocItemTOCMobile(): ReactNode {
             toc={filteredToc}
             minHeadingLevel={frontMatter.toc_min_heading_level}
             maxHeadingLevel={frontMatter.toc_max_heading_level}
-            className={clsx(
-                ThemeClassNames.docs.docTocMobile,
-                styles.tocMobile,
-            )}
+            className={clsx(ThemeClassNames.docs.docTocMobile, styles.tocMobile)}
         />
     );
 }

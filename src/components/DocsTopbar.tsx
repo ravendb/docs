@@ -8,10 +8,7 @@ type DocsTopbarProps = {
     supportedLanguages?: DocsLanguage[];
 };
 
-export default function DocsTopbar({
-    title,
-    supportedLanguages,
-}: DocsTopbarProps) {
+export default function DocsTopbar({ title, supportedLanguages }: DocsTopbarProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -42,15 +39,10 @@ export default function DocsTopbar({
 
     return (
         <div
-            className={clsx(
-                "sticky top-[71.46px] z-30",
-                "rounded-xl",
-                "!transition-all",
-                {
-                    "max-h-[60px] opacity-100": isVisible,
-                    "max-h-0 opacity-0 hidden": !isVisible,
-                },
-            )}
+            className={clsx("sticky top-[71.46px] z-30", "rounded-xl", "!transition-all", {
+                "max-h-[60px] opacity-100": isVisible,
+                "max-h-0 opacity-0 hidden": !isVisible,
+            })}
         >
             <div className="row">
                 <div className="col min-[1640px]:!p-0">
@@ -65,14 +57,11 @@ export default function DocsTopbar({
                             "!transition-all",
                             {
                                 "gap-2": !isCollapsed,
-                            },
+                            }
                         )}
                     >
                         <div className="flex justify-between items-center gap-2 truncate">
-                            <div
-                                className="text-base font-medium truncate"
-                                title={title}
-                            >
+                            <div className="text-base font-medium truncate" title={title}>
                                 {title}
                             </div>
                             <button
@@ -80,23 +69,15 @@ export default function DocsTopbar({
                                     "md:hidden ms-auto",
                                     "p-1 rounded",
                                     "hover:bg-black/5 dark:hover:bg-white/5",
-                                    "!transition-all",
+                                    "!transition-all"
                                 )}
                                 onClick={() => setIsCollapsed(!isCollapsed)}
-                                aria-label={
-                                    isCollapsed
-                                        ? "Show language switcher"
-                                        : "Hide language switcher"
-                                }
+                                aria-label={isCollapsed ? "Show language switcher" : "Hide language switcher"}
                             >
                                 <svg
-                                    className={clsx(
-                                        "w-4 h-4",
-                                        "!transition-transform",
-                                        {
-                                            "rotate-180": isCollapsed,
-                                        },
-                                    )}
+                                    className={clsx("w-4 h-4", "!transition-transform", {
+                                        "rotate-180": isCollapsed,
+                                    })}
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -111,22 +92,15 @@ export default function DocsTopbar({
                             </button>
                         </div>
                         <div className="hidden md:block">
-                            <LanguageSwitcher
-                                supportedLanguages={supportedLanguages}
-                                flush
-                            />
+                            <LanguageSwitcher supportedLanguages={supportedLanguages} flush />
                         </div>
                         <div
                             className={clsx("md:hidden", "!transition-all", {
-                                "max-h-0 opacity-0 overflow-hidden":
-                                    isCollapsed,
+                                "max-h-0 opacity-0 overflow-hidden": isCollapsed,
                                 "opacity-100": !isCollapsed,
                             })}
                         >
-                            <LanguageSwitcher
-                                supportedLanguages={supportedLanguages}
-                                flush
-                            />
+                            <LanguageSwitcher supportedLanguages={supportedLanguages} flush />
                         </div>
                     </div>
                 </div>

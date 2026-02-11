@@ -52,7 +52,7 @@ export default function CardWithImage({
                     "hover:border-black/20 dark:hover:border-white/20",
                     "hover:!bg-black/10 dark:hover:!bg-white/10",
                     "!transition-all",
-                    "animate-in fade-in slide-in-from-bottom-4",
+                    "animate-in fade-in slide-in-from-bottom-4"
                 )}
                 style={{
                     animationDelay: `${animationDelay}ms`,
@@ -77,7 +77,7 @@ export default function CardWithImage({
                                 "pointer-events-none",
                                 "w-full h-full object-cover object-center",
                                 "!transition-transform origin-bottom",
-                                "group-hover:scale-105 group-hover:translate-y-1",
+                                "group-hover:scale-105 group-hover:translate-y-1"
                             )}
                         />
                     ) : (
@@ -88,20 +88,13 @@ export default function CardWithImage({
                         />
                     )}
                     {!isInternalUrl(url) && (
-                        <Badge
-                            className="absolute top-2 right-2"
-                            variant="default"
-                            size="sm"
-                        >
+                        <Badge className="absolute top-2 right-2" variant="default" size="sm">
                             External
                         </Badge>
                     )}
                 </div>
                 <div className="flex flex-col gap-0.5">
-                    <Heading
-                        as="h4"
-                        className="!mb-0 !text-base !font-bold !leading-5 !break-normal"
-                    >
+                    <Heading as="h4" className="!mb-0 !text-base !font-bold !leading-5 !break-normal">
                         {title}
                     </Heading>
                 </div>
@@ -111,11 +104,7 @@ export default function CardWithImage({
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
-                                    <Tag
-                                        key={tag.label}
-                                        size="xs"
-                                        permalink={tag.permalink}
-                                    >
+                                    <Tag key={tag.label} size="xs" permalink={tag.permalink}>
                                         {tag.label}
                                     </Tag>
                                 ))}
@@ -134,11 +123,7 @@ export default function CardWithImage({
                                 )}
                             </div>
                         )}
-                        {hasDate && (
-                            <p className="!mb-0 text-xs flex-shrink-0 leading-[20px]">
-                                {date}
-                            </p>
-                        )}
+                        {hasDate && <p className="!mb-0 text-xs flex-shrink-0 leading-[20px]">{date}</p>}
                     </div>
                 )}
             </div>

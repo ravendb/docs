@@ -27,12 +27,7 @@ export default function DocItemWrapper(props: Props): ReactNode {
 
     return (
         <>
-            {showTopbar && (
-                <DocsTopbar
-                    title={title}
-                    supportedLanguages={supportedLanguages}
-                />
-            )}
+            {showTopbar && <DocsTopbar title={title} supportedLanguages={supportedLanguages} />}
             <div className="wrapper row">
                 <div className="col flex-1 min-w-0">
                     <DocItem {...props} />
