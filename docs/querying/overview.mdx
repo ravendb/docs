@@ -53,28 +53,27 @@ see_also:
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-import HowToQueryCsharp from './_how-to-query-csharp.mdx';
-import HowToQueryPython from './_how-to-query-python.mdx';
-import HowToQueryPhp from './_how-to-query-php.mdx';
-import HowToQueryNodejs from './_how-to-query-nodejs.mdx';
-
+import QueryOverviewCsharp from './content/_overview-csharp.mdx';
+import QueryOverviewPython from './content/_overview-python.mdx';
+import QueryOverviewPhp from './content/_overview-php.mdx';
+import QueryOverviewNodejs from './content/_overview-nodejs.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
-   <HowToQueryCsharp />
+   <QueryOverviewCsharp />
 </LanguageContent>
 
 <LanguageContent language="python">
-   <HowToQueryPython />
+   <QueryOverviewPython />
 </LanguageContent>
 
 <LanguageContent language="php">
-   <HowToQueryPhp />
+   <QueryOverviewPhp />
 </LanguageContent>
 
 <LanguageContent language="nodejs">
-   <HowToQueryNodejs />
+   <QueryOverviewNodejs />
 </LanguageContent>
 
 
