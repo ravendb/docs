@@ -56,7 +56,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Indexes](https://docs.ravendb.net/indexes/querying/query-index): Overview of indexing capabilities in RavenDB.
 
-- [Document Extensions](https://docs.ravendb.net/document-extensions/overview-extensions): Details on extending document functionalities.
+- [Document Extensions](https://docs.ravendb.net/document-extensions/overview): Details on extending document functionalities.
 
 - [Data Archival](https://docs.ravendb.net/data-archival/overview): Methods for archiving data in RavenDB.
 
