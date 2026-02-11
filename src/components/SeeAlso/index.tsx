@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import { SeeAlsoItem } from "./SeeAlsoItem";
-import { useVersionedLink } from "./useVersionedLink";
 import { SeeAlsoItemType } from "./types";
 
 interface Props {
@@ -10,7 +9,6 @@ interface Props {
 }
 
 export default function SeeAlso({ items, className }: Props) {
-    const { getVersionedLink } = useVersionedLink();
 
     if (!items || items.length === 0) {
         return null;
@@ -31,7 +29,6 @@ export default function SeeAlso({ items, className }: Props) {
                     <SeeAlsoItem
                         key={idx}
                         item={item}
-                        versionedLink={getVersionedLink(item)}
                     />
                 ))}
             </div>

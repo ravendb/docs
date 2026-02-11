@@ -4,19 +4,20 @@ import { Icon } from "@site/src/components/Common/Icon";
 import { getIconName, parsePath } from "./utils";
 import clsx from "clsx";
 import { SeeAlsoItemType } from "./types";
+import { useVersionedLink } from "./useVersionedLink";
 
 interface SeeAlsoItemProps {
     item: SeeAlsoItemType;
-    versionedLink: string;
 }
 
-export function SeeAlsoItem({ item, versionedLink }: SeeAlsoItemProps) {
+export function SeeAlsoItem({ item }: SeeAlsoItemProps) {
     const iconName = getIconName(item.source);
     const { mainCategory, restOfPath, fullPath } = parsePath(item.path);
+    const { getVersionedLink } = useVersionedLink();
 
     return (
         <Link
-            href={versionedLink}
+            href={getVersionedLink(item)}
             className={clsx(
                 "flex items-center py-3 px-2 gap-4",
                 "border-b border-black/10 dark:border-white/10 !text-inherit",
