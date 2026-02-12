@@ -10,8 +10,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Licensing Overview
+
 <Admonition type="note" title="">
 
 * RavenDB is activated using a JSON format license key.  
@@ -27,36 +30,45 @@ import LanguageContent from "@site/src/components/LanguageContent";
   To renew your license see [renew license](../licensing/renew-license.mdx).  
 
 * In this page:
-    * [License types](../licensing/overview.mdx#license-types)
-        * [Developer](../licensing/overview.mdx#developer)
-        * [Community](../licensing/overview.mdx#community)
-        * [Professional](../licensing/overview.mdx#professional)
-        * [Enterprise](../licensing/overview.mdx#enterprise)
-        * [ISV Licenses](../licensing/overview.mdx#isv-licenses)
-    * [ISV Bank-of-Cores License](../licensing/overview.mdx#isv-bank-of-cores-license)
-    * [Manage license view](../licensing/overview.mdx#manage-license-view)
+    * [License types](../licensing/overview#license-types)
+        * [Developer license](../licensing/overview#developer-license)
+        * [Community license](../licensing/overview#community-license)
+        * [Professional license](../licensing/overview#professional-license)
+        * [Enterprise license](../licensing/overview#enterprise-license)
+        * [ISV licenses](../licensing/overview#isv-licenses)
+    * [ISV Bank-of-Cores license](../licensing/overview#isv-bank-of-cores-license)
+    * [Manage License view](../licensing/overview#manage-license-view)
 
 </Admonition>
-## License types
+
+<Panel heading="License types">
 
 <Admonition type="info" title="">
 Visit the [pricing page](https://ravendb.net/buy) to see which features are included with each license type.
 </Admonition>
-### Developer
+
+<ContentFrame>
+
+### Developer license
 
 * The developer license is for development use only and isn't applicable for commercial use.  
   You must upgrade this license before going into production.   
 * It is fully featured but temporary - the license lasts 6 months and can be renewed.  
-* Certificates exceeding 4 months expiration period are Not allowed to be used with this license.  
+* Certificates whose expiration period exceeds 4 months **cannot** be used with this license.  
   Automatic renewal of Let’s Encrypt certificates is disabled.  
 * When you are ready to go into production:  
-   * Be sure to choose a license that has all features with which your client was developed.  
-     Note that if you use [Let's encrypt](../start/installation/setup-wizard.mdx#secure-setup-with-a-free-let) 
-     for the new license, you will not be able to simply replace the license since you are 
-     using a dev subdomain. Instead, you can create a new cluster.  
+   * Be sure to choose a license that offers all the features with which your client was developed.  
+     <Admonition type="note" title="Note">
+     If you use [Let's encrypt](../start/installation/setup-wizard#secure-setup-with-a-free-lets-encrypt-certificate) for the new license, you will not be able to simply replace the license since you are using a dev subdomain.  
+     Instead, you can create a new cluster.  
+      </Admonition>
    * [Upgrade to a production license](https://ravendb.net/buy) and then [replace](../licensing/replace-license.mdx) the developer license.  
 * The developer license can be obtained [here](https://ravendb.net/buy#developer).
-### Community
+
+</ContentFrame>
+<ContentFrame>
+
+### Community license
 
 * A basic production-grade license.
 * Community licenses last one year and can be renewed every year.  
@@ -69,9 +81,10 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
   If you run your server with a Community license and a new RavenDB major version is released, 
   Studio will continue to function for **14 days** before it is blocked.  
   During this period, a pop-up notification will show when Studio is started:  
+
   ![Grace period](./assets/grace-period.png)
+
   You can: 
-  
    * **Close the notification and keep on working**  
      For 14 days, after which Studio will be blocked until the server is upgraded or the license replaced.  
    * **Replace your license**  
@@ -80,24 +93,37 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
      Upgrade to the latest major version.  
   
   </Admonition>
-### Professional
+
+</ContentFrame>
+<ContentFrame>
+
+### Professional license
 
 * A standard production-grade license.  
 * Extended automatically if the server has access to RavenDB's License Server.  
-### Enterprise
+
+</ContentFrame>
+<ContentFrame>
+
+### Enterprise license
 
 * A high-performance, fully-featured production-grade license.  
 * Extended automatically if the server has access to RavenDB's License Server.  
-### ISV Licenses
+
+</ContentFrame>
+<ContentFrame>
+
+### ISV licenses
 
 * ISV licenses are commercial licenses that allow you to redistribute RavenDB with your software  
   for on-premise installation and use by your customers.  
 * Available ISV license types are: Essential, Professional, and Enterprise.  
 * [Contact RavenDB for more details](https://ravendb.net/contact).
 
+</ContentFrame>
+</Panel>
 
-
-## ISV Bank-of-Cores License
+<Panel heading="ISV Bank-of-Cores license">
 
 An ISV Bank-of-Cores license allows you to generate RavenDB licenses on your own for a given number of cores.  
 If you purchase a 128-cores license, for example, you can use it to generate 8 licenses for 8-core machines, 
@@ -109,7 +135,9 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
   enabled by all the sublicenses you create.  
 * [Contact RavenDB for more details](https://ravendb.net/contact).  
 
-<Admonition type="note" title="Generating bank-of-cores licenses" id="generating-bank-of-cores-licenses" href="#generating-bank-of-cores-licenses">
+<ContentFrame>
+
+## Generating bank-of-cores licenses
 
 * When you purchase a bank-of-cores license, you are given a login key.  
   To generate licenses, enter your key at: [https://licenses.ravendb.net/isv](https://licenses.ravendb.net/isv)  
@@ -150,11 +178,10 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
 
      ![Sublicenses list](./assets/bank-of-cores_sublicenses-list.png)
 
-</Admonition>
+</ContentFrame>
+</Panel>
 
-
-
-## Manage license view
+<Panel heading="Manage License view">
 
 ![About page](./assets/about-page.png)
 
@@ -214,5 +241,6 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
 
       ![Support plan tab](./assets/support_plan_tab.png)
 
+</Panel>
 
 

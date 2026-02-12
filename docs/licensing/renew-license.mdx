@@ -10,85 +10,87 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Renew License
 <Admonition type="note" title="">
 
-* When your license **expires** Studio is blocked.  
+* When your license expires, Studio is blocked.  
   Client API operations and other RavenDB features will continue to work.  
-  However, any usage of expired RavenDB licenses is outside the license agreement  
-  and doesn't comply with the [EULA terms](https://ravendb.net/terms).  
+  However, any usage of expired RavenDB licenses is outside the license agreement and doesn't comply with the [EULA terms](https://ravendb.net/terms).  
 
-* **Renew your license** as described below.  
+* Renew your license as described below.  
 
 * In this page:
-    * [Renew commercial licenses](../licensing/renew-license.mdx#renew-commercial-licenses)
-    * [Renew Developer & Community licenses](../licensing/renew-license.mdx#renew-developer--community-licenses)
+   * [Renew commercial licenses](../licensing/renew-license.mdx#renew-commercial-licenses)
+     * [Automatic renewal](../licensing/renew-license.mdx#automatic-renewal)
+     * [Manual renewal](../licensing/renew-license.mdx#manual-renewal)
+   * [Renew Developer & Community licenses](../licensing/renew-license#renew-developer-community-licenses)
 
 </Admonition>
-## Renew commercial licenses
 
-* This section relates to all commercial licenses: **Professional**, **Enterprise**, and all **ISV licenses**.  
+<Panel heading="Renew commercial licenses">
 
-<Admonition type="note" title="">
-**Automatic renewal**:  
-If your server has an active connection to RavenDB's [License Server](../licensing/overview.mdx#license-server),  
-and if the [DisableAutoUpdate](../licensing/configuration.mdx#licensedisableautoupdate) configuration is Not set to true,  
-then these commercial licenses will be automatically renewed.  
-</Admonition>
+This section relates to all commercial licenses: **Professional**, **Enterprise**, and all **ISV licenses**.  
 
-<Admonition type="note" title="">
-**Manual (offline) renewal**:  
-If the connection to the License Server is unavailable, contact [customer service](https://ravendb.net/contact) to extend your license.  
-A license renewal email will be sent to you (the license ID will stay the **same**).  
-Copy the new license key from the mail and proceed with one of the following options.  
+<ContentFrame>
 
-**Either**:  
+### Automatic renewal:  
 
-* Replace the existing license key with the new one from Studio, as described [here](../licensing/replace-license.mdx#replace-license-from-studio).
+These commercial licenses will be automatically renewed if:  
+- Your server has an active connection to RavenDB's license server at `api.ravendb.net`,  
+- **And** the [DisableAutoUpdate](../licensing/configuration.mdx#licensedisableautoupdate) configuration option is set to **false**.  
 
-**Or**:  
+</ContentFrame>
 
-* Set [DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi) to true.
+<ContentFrame>
 
-* Activate the new license key using the [configuration keys](../licensing/activate-license.mdx#activate-license-with-configuration-keys).
+### Manual renewal:  
 
-* Restart your server (needed only if any configuration key was changed).  
-</Admonition>
+If the connection to RavenDB's [license server](../licensing/overview#manage-license-view) is unavailable, contact [customer service](https://ravendb.net/contact) to extend your license.  
+A renewal email will be sent to you, with a new license that keeps your existing license ID.  
+Copy the renewed license to the clipboard, and register it using either Studio or a configuration key, as you prefer.  
 
+* To register your new license **using Studio**:  
+  Follow the procedure described [here](../licensing/replace-license.mdx#replace-license-from-studio).
 
+* To register your new license **using a configuration key**:  
+   - Set the [DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi) configuration option to **true**.
+   - Activate the new license using a configuration key as described [here](../licensing/activate-license#activate-your-license-using-a-configuration-key).
+   - Restart your server to make it read the set configuration key.  
 
-## Renew Developer & Community licenses
+</ContentFrame>
+</Panel>
 
-* The **Developer** and **Community** licenses are renewed from Studio,  
-  the 'Renew' button is available only for those license types.  
-  <Admonition type="note" title="">
-  
-     - Servers using a Community license are **required to run the latest major version**.  
-       E.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, 
-       you will be required to upgrade RavenDB to version `7.0`.  
-     - Running a major version older than the latest with a Community license will **block your server's access to Studio**.  
-     - This requirement does not apply to licenses other than _Community_.  
-  </Admonition>
+<Panel heading="Renew Developer & Community licenses">
 
-* They can be renewed when there are less than 30 days remaining on your current license.
+* The **Developer** and **Community** licenses can be renewed from Studio.  
+  The **Renew** button is available only for these license types.  
+
+* Servers using a **Community** license are **required to run the latest major version**.  
+  E.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, you will be required to upgrade RavenDB to version `7.0`.  
+  Running a major version older than the latest with a Community license, will **block your server's access to Studio**.  
+ 
+* **Developer** and **Community** licenses can be renewed when less than 30 days remain until expiration.  
+
+<ContentFrame>
+
+To renew your license, open the **About** view and click the **Renew license** option:
 
 ![Renew License](./assets/renew-license.png)
 
 1. **About**  
-   Click to open Studio _About_ view  
+   Click to open the **About** view.  
 
-2. **Renew**  
-   Click the _Renew License_ button  
+2. **Renew license**  
+   Click to request and register a license.  
+   ![Renew and Submit](./assets/renew-and-submit.png)  
+   **A**. **Renew**  
+   Click to request a renewed license with the same ID as the existing one.  
+   **B**. **Submit**  
+   When the renewed license arrives via email, paste and submit it.
 
-   * ![Renew and Submit](./assets/renew-and-submit.png)  
-
-**A**. **Renew**  
-  Click to renew the current license.  
-  The renewed license will be sent to you by mail.  
-
-**B**. **Submit**  
-   Paste the renewed license key and click Submit.
-
-
+</ContentFrame>
+</Panel>
 

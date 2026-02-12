@@ -27,6 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
   * [Remarks](../server/embedded.mdx#remarks)  
 
 </Admonition>
+
 ## Overview
 
 RavenDB can be easily embedded in your application.  
@@ -61,8 +62,6 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
 </TabItem>
 </Tabs>
 
-
-
 ## Prerequisites and Recommendations
 
 * **Prerequisites**  
@@ -75,6 +74,7 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
    * Projects targeting `.NET Framework 4.6.1+` that use the old `packages.config` 
      for NuGet packages maintenance, should migrate to `PackageReference` package management.  
      Find additional details [below](../server/embedded.mdx#migrating-from--to--in-old-csproj-projects).  
+
 ### `.NET` Core Runtime:
 
 RavenDB Embedded **does not include** the `.NET` Core runtime engine required for its operation.  
@@ -130,8 +130,6 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
 </TabItem>
 </Tabs>
 
-
-
 ## Installation
 
 * Create a new project (.`NET Standard 2.0+`, `.NET Core 2.0+`, `.NET Framework 4.6.1+`).
@@ -142,8 +140,6 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
 `}
 </CodeBlock>
 </TabItem>
-
-
 
 ## Starting the Server
 
@@ -159,8 +155,6 @@ EmbeddedServer.Instance.StartServer();
 </TabItem>
 
 For more control over the server startup, pass `StartServer` a `ServerOptions` object.
-
-
 
 ## Server Options
 
@@ -239,14 +233,13 @@ Use `<embedded server>.ServerProcessExited` to observe when the server has crash
 
 Event data is of type `ServerProcessExitedEventArgs`.
 
-
-
 ## Embedded server licensing
 
 * The **same license types** available for Standalone RavenDB servers, are available for Embedded servers.  
 * A licensed server can be managed using Studio, and is given a superior feature set to that of 
   non-registered servers. See the full list of license types and their features [here](https://ravendb.net/buy).  
 * An embedded server can be licensed using **Configuration options** or an **Environment variable**.  
+
 ### Licensing configuration options
 
 Embedded server licensing configuration options are gathered in the `ServerOptions.Licensing` class.  
@@ -280,6 +273,7 @@ After acquiring a license, it can be passed to the server either as a string or 
 `}
 </CodeBlock>
 </TabItem>
+
 #### Available LicensingOptions configuration options:
 
 | Name | Type | Description |
@@ -291,6 +285,7 @@ After acquiring a license, it can be passed to the server either as a string or 
 | **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br/>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options. |
 | **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br/>`true`: disable verification<br/>`false`: enable verification |
 | **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated. |
+
 ### License an embedded server using an Environment variable
 
 You can pass the same configuration options to the embedded server using environment variables.  
@@ -345,8 +340,6 @@ jq -c . "$INPUT_FILE"
 
 * Or, you can keep your license file in a folder accessible to the application that embeds your server, 
   and provide the path to the license file in the `RAVEN_LicensePath` environment variable.  
-
-
 
 ## `.NET` FrameworkVersion
 

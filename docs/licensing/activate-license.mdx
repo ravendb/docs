@@ -10,45 +10,51 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Activate License 
+
 <Admonition type="note" title="">
 
 * Each RavenDB cluster must be registered with its own license.  
 
-* The license key is sent to the email that was provided when obtaining the license.  
-  There are a few ways to **activate your license**, see below.  
+* The license key is sent to the email address that was provided when obtaining the license.  
+
+* You can activate your license using configuration keys, or via Studio.  
 
 * In this article:
-
-  * [Activate license with configuration keys](../licensing/activate-license.mdx#activate-license-with-configuration-keys)
-  * [Activate license from the Studio](../licensing/activate-license.mdx#activate-license-from-the-studio)
+   * [Activate your license using a configuration key](../licensing/activate-license#activate-your-license-using-a-configuration-key)
+   * [Activate your license via Studio](../licensing/activate-license#activate-your-license-via-studio)
 
 </Admonition>
-## Activate license with configuration keys
 
-* You can activate the license using either one of the following configuration keys:  
+<Panel heading="Activate your license using a configuration key">
+
+* You can activate your license using either of the following configuration keys:  
   * [License](../licensing/configuration.mdx#license)  
+    Use this key to provide your license string directly, as the key's value.  
+    E.g., `"License": "{ your license string }"`  
   * [License.Path](../licensing/configuration.mdx#licensepath)  
+    Use this key to provide the path to a file containing your license.  
+    E.g., `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
 
-* These configuration keys can be set in _setting.json_ or as environment variables.  
-  Learn more in [configuration overview](../server/configuration/configuration-options.mdx).
+* The configuration keys can be set in the `setting.json` file or as environment variables.  
+  Learn more in the [configuration overview](../server/configuration/configuration-options.mdx) page.
 
+</Panel>
 
+<Panel heading="Activate your license via Studio">
 
-## Activate license from the Studio
-
-You can activate the license from the Studio:  
+To activate your license via Studio, open the **About** view and click the **Register license** option:
 
 ![Register License Button](./assets/register-license-button.png)
 
 1. **About**  
-   Click to open the _About_ view in the Studio.
+   Click to open the **About** view.
    
-2. **Activate**  
-   Click the _Register License_ button. The following form will open:
+2. **Register license**  
+   Click to register and submit your license using the following form:  
+   ![Register License Form](./assets/register-license-form.png)
 
-![Register License Form](./assets/register-license-form.png)
-
-
-
+</Panel>

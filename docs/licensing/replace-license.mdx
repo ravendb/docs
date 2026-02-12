@@ -10,63 +10,57 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Replace License
+
 <Admonition type="note" title="">
 
-* Upon [upgrading your license](https://ravendb.net/buy), RavenDB will send 
-  your new license key to the email provided when obtaining the license.  
+* Your new license will be sent to the email address you provided [while obtaining it](https://ravendb.net/buy).  
 
 * Replace the existing license with the new one using Studio, as shown below.  
 
-* If you upgrade to RavenDB 6.0, you need to upgrade your current license key 
-  before applying it to the new version. Use our online license upgrade tool 
-  as explained [below](../licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x) 
-  to upgrade your key.  
+* To upgrade RavenDB from a version older than `6.x` to version `6.x` and above, you must upgrade your license key before applying it to your new RavenDB. Learn [below](../licensing/replace-license#upgrade-a-license-key-older-than-6-x) how to do this.  
 
 * In this page:
-    * [Replace license from Studio](../licensing/replace-license.mdx#replace-license-from-studio)  
-    * [Maintain auto-renewal of Let's Encrypt certificates](../licensing/replace-license.mdx#maintain-auto-renewal-of-let)  
-    * [Upgrade a License Key For RavenDB 6.x](../licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x)  
+    * [Replace your license from Studio](../licensing/replace-license#replace-your-license-from-studio)  
+    * [Maintain auto-renewal of Let's Encrypt certificates](../licensing/replace-license#maintain-auto-renewal-of-let-s-encrypt-certificates)  
+    * [Upgrade a license key older than 6.x](../licensing/replace-license#upgrade-a-license-key-older-than-6-x)
 
 </Admonition>
-## Replace license from Studio
 
-Replace the existing license with the new one from the Studio:
+<Panel heading="Replace your license from Studio">
+
+To replace your existing license with a new one, open the **About** view and click the **Replace license** option:
 
 ![Replace License](./assets/replace-license_button.png)
 
 1. **About**  
-   Click to open the Studio _About_ view  
+   Click to open the **About** view.  
 
-2. **Replace**  
-   Click the _Replace License_ button
+2. **Replace license**  
+   Click to paste and submit your new license.  
+   ![Paste and Submit](./assets/replace-license_paste-and-submit.png)
 
-![Paste and Submit](./assets/replace-license_paste-and-submit.png)
+</Panel>
 
+<Panel heading="Maintain auto-renewal of Let's Encrypt certificates">
 
+* If you installed RavenDB using the [Setup Wizard](../start/installation/setup-wizard.mdx) and used a Let's Encrypt certificate, contact [customer support](https://ravendb.net/contact) when changing your license to maintain certificates auto-renewal.  
+* If you fail to do so, changing your license ID will cause a mismatch between your new license ID and the ID that Let's Encrypt expects when renewing the certificate.  
 
-## Maintain auto-renewal of Let's Encrypt certificates 
+</Panel>
 
-* If you set RavenDB up using the [Setup Wizard](../start/installation/setup-wizard.mdx) 
-  and used a Let's Encrypt certificate,  contact [customer support](https://ravendb.net/contact) 
-  when changing your license to maintain auto-renewals of certificates.  
-* Otherwise, changing your license ID will cause a mismatch between the new 
-  license ID and the ID that Let's Encrypt expects when renewing the certificate.  
+<Panel heading="Upgrade a license key older than 6.x">
 
-
-
-## Upgrade a License Key For RavenDB 6.x
-
-If you have a license for a RavenDB version older than `6.x`, upgrading to version `6.0` 
-will require you to upgrade your license key. Upgrading your key can be done in a few seconds 
-using our online [License upgrade tool](https://ravendb.net/l/8O2YU1).  
+If you have a license for a RavenDB version lower than `6.x`, you must upgrade the license before you can apply it to RavenDB `6.x` or above.  
+To upgrade your license in a few seconds, use our online [License upgrade tool](https://ravendb.net/l/8O2YU1).  
 
 ![Replace License Tool](./assets/replace-license_replace-license-tool.png)
 
 A new key will be sent to the email address you registered your current license with.  
 [Replace](../licensing/replace-license.mdx#replace-license-from-studio) your current key with the new one.  
 
-
-
+</Panel>
 

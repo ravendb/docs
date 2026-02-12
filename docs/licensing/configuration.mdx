@@ -10,13 +10,37 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Configuration: License Options
 
-## License
+<Admonition type="note" title="">
+
+* Use the configuration keys listed below to set licensing options for your RavenDB server.  
+
+* Learn how to set these keys in the [configuration overview](../server/configuration/configuration-options).
+
+* On this page:
+   * [License](../licensing/configuration#license)  
+   * [License.Path](../licensing/configuration#licensepath)  
+   * [License.Eula.Accepted](../licensing/configuration#licenseeulaaccepted)  
+   * [License.CanActivate](../licensing/configuration#licensecanactivate)  
+   * [License.CanForceUpdate](../licensing/configuration#licensecanforceupdate)  
+   * [License.CanRenewLicense / License.CanRenew](../licensing/configuration#licensecanrenewlicense--licensecanrenew)  
+   * [License.SkipLeasingErrorsLogging](../licensing/configuration#licenseskipleasingerrorslogging)  
+   * [License.DisableAutoUpdate](../licensing/configuration#licensedisableautoupdate)  
+   * [License.DisableAutoUpdateFromApi](../licensing/configuration#licensedisableautoupdatefromapi)  
+   * [License.DisableLicenseSupportCheck](../licensing/configuration#licensedisablelicensesupportcheck)  
+
+</Admonition>
+
+<ContentFrame>
+
+### License
 
 * When using this configuration key in _settings.json_ embed the license key as a **string**, e.g.:  
-  `"License": "{ paste your license key including curly brackets here }"`.  
+  `"License": "{ paste your license key including curly brackets here }"`  
 
 * When using this configuration key as an [environment variable](../server/configuration/configuration-options.mdx#environment-variables) embed the JSON license key **object**.  
 
@@ -25,26 +49,27 @@ import LanguageContent from "@site/src/components/LanguageContent";
 - **Default**: `null`
 - **Scope**: Server-wide only
 
-
+</ContentFrame>
+<ContentFrame>
 
 ## License.Path
 
-Save the license key to a `license.json` file.  
-Provide the path to this file in the 'License.Path' configuration key:
+* Save the license key to a `license.json` file.  
+* Provide the path to this file in the 'License.Path' configuration key:  
+  Either as a **full** path to the license file, e.g.:  
+  `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+  Or as a **relative** path to the license file from the Server folder, e.g.:  
+  `"License.Path": "License\\license.json"`  
+  (where the 'License' folder is under the 'Server' folder)
 
-  * Either the **full** path to the license file, e.g.:  
-    `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
-
-  * Or, a **relative** path to the license file from the Server folder, e.g.:  
-    `"License.Path": "License\\license.json"`  
-    (where 'License' folder is under the 'Server' folder)
 - **Type**: `string`
 - **Default**: `license.json`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.Eula.Accepted
+### License.Eula.Accepted
 
 Indicates if End-User License Agreement was accepted.
 
@@ -52,9 +77,10 @@ Indicates if End-User License Agreement was accepted.
 - **Default**: `false`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.CanActivate
+### License.CanActivate
 
 EXPERT ONLY.  
 Indicates if license can be activated.  
@@ -63,9 +89,10 @@ Indicates if license can be activated.
 - **Default**: `true`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.CanForceUpdate
+### License.CanForceUpdate
 
 EXPERT ONLY.  
 Indicates if license can be updated from the License Server (api.ravendb.net).
@@ -74,9 +101,10 @@ Indicates if license can be updated from the License Server (api.ravendb.net).
 - **Default**: `true`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.CanRenewLicense / License.CanRenew
+### License.CanRenewLicense / License.CanRenew
 
 EXPERT ONLY.  
 Indicates if license can be renewed from the License Server (api.ravendb.net).  
@@ -86,9 +114,10 @@ Relevant only for Developer and Community licenses.
 - **Default**: `true`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.SkipLeasingErrorsLogging
+### License.SkipLeasingErrorsLogging
 
 EXPERT ONLY.  
 Skip logging of lease license errors.
@@ -97,9 +126,10 @@ Skip logging of lease license errors.
 - **Default**: `false`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.DisableAutoUpdate
+### License.DisableAutoUpdate
 
 EXPERT ONLY.  
 Disable all updates of the license, from string, from path and from the License Server (api.ravendb.net). 
@@ -108,9 +138,10 @@ Disable all updates of the license, from string, from path and from the License 
 - **Default**: `false`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.DisableAutoUpdateFromApi
+### License.DisableAutoUpdateFromApi
 
 EXPERT ONLY.  
 Disable automatic updates of the license from the License Server (api.ravendb.net).  
@@ -123,9 +154,10 @@ Can still update the license by either:
 - **Default**: `false`
 - **Scope**: Server-wide only
 
+</ContentFrame>
+<ContentFrame>
 
-
-## License.DisableLicenseSupportCheck
+### License.DisableLicenseSupportCheck
 
 EXPERT ONLY.  
 Disable checking the license support options from the License Server (api.ravendb.net).
@@ -134,5 +166,4 @@ Disable checking the license support options from the License Server (api.ravend
 - **Default**: `false`
 - **Scope**: Server-wide only
 
-
-
+</ContentFrame>

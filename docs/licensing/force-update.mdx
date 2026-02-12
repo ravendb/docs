@@ -10,41 +10,44 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Force License Update
 <Admonition type="note" title="">
 
-* Every 24 hours (counted from server startup), RavenDB will check the [License Server](../licensing/overview.mdx#license-server)  
-  to see if there are any updates made to your current license that need to be applied.  
-  This is done for all license types.  
+* RavenDB contacts the license server at `api.ravendb.net` every 24 hours (counted from server startup), to check if there are any updates in your current license that need to be applied.  
+This routine is implemented for all license types.  
+  <Admonition type="note" title="">
+  The automatic update is applied provided that:  
+   * There is an active connection to the license server,  
+   * **And** the [DisableAutoUpdate](../licensing/configuration.mdx#licensedisableautoupdate) configuration option is set to **false**.  
+  </Admonition>
 
-* This automatic update will be applied provided that:  
-  * You have an active connection to RavenDB's License Server (api.ravendb.net).  
-  * [DisableAutoUpdate](../licensing/configuration.mdx#licensedisableautoupdate) is set to false.  
-
-* If changes were made to your current license and you want to **apply immediately**,    
-  then you can **force the update from Studio**.  
-  This action also requires an active connection to the [License Server](../licensing/overview.mdx#license-server).
+* If changes were made to your current license and you want to **apply them immediately**, you can also **force an immediate update** from Studio.  
+  This, too, is only available if there is an active connection to the license server.
 
 * In this page:
-    * [Force license update from Studio](../licensing/force-update.mdx#force-license-update-from-studio)
+   * [Force license update from Studio](../licensing/force-update.mdx#force-license-update-from-studio)
 
 </Admonition>
-## Force license update from Studio
+
+<Panel heading="Force license update from Studio">
+
+To force an immediate update of your license, open the **About** view and click the **Force update** option:
 
 ![Force Update](./assets/force-update.png)
 
 1. **About**  
-   Click to open the Studio _About_ view.  
+   Click to open the **About** view.  
 
-2. **Force Update**  
+2. **Force update**  
+   Click to force an immediate update of your current license.  
+   <Admonition type="note" title="">
+   Set the [DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi) configuration option to determine where the license is updated from:  
+   * When **true**, the license is updated from the [configuration keys](../licensing/activate-license#activate-your-license-using-a-configuration-key).  
+   * When **false**, the license is updated from the license server, provided there is an active connection to it.  
+    </Admonition>
 
-   * Click the _Force Update_ button.  
-     This will update your current license immediately.  
-   
-   * If [DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi) is set to _true_,
-     the license will be updated from the [configuration keys](../licensing/activate-license.mdx#activate-license-with-configuration-keys).  
-     If set to _false_, the license will be updated from the [License Server](../licensing/overview.mdx#license-server), provided you have an active connection.  
-
-
+</Panel>
 
