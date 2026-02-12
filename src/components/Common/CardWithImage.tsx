@@ -65,9 +65,8 @@ export default function CardWithImage({
                         "flex items-center justify-center",
                         "rounded-xl mb-4 overflow-hidden",
                         "relative aspect-[79/24]",
-                        hasImage
-                            ? "bg-black/40"
-                            : "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]",
+                        !hasImage &&
+                            "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]",
                     )}
                 >
                     {hasImage ? (
