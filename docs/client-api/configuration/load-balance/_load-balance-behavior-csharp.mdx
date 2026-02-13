@@ -77,7 +77,7 @@ var documentStore = new DocumentStore
         LoadBalanceBehavior = LoadBalanceBehavior.UseSessionContext,
         
         // Assign a method that sets the default context string
-        // This string will be used for sessions that do Not provide a context string
+        // This method will be used for sessions that do Not have their context string set explicitly
         // A sample GetDefaultContext method is defined below
         LoadBalancerPerSessionContextSelector = GetDefaultContext,
         
@@ -92,11 +92,21 @@ var documentStore = new DocumentStore
 <TabItem value="LoadBalance_6" label="LoadBalance_6">
 <CodeBlock language="csharp">
 {`// A customized method for getting a default context string 
+
+public const string ContextKey = "RavenDB.Context";
+
 private string GetDefaultContext(string dbName)
 \{
-    // Method is invoked by RavenDB with the database name
-    // Use that name - or return any string of your choice
-    return "DefaultContextString";
+    // Get the string set by the web application elsewhere.
+    var ctx = System.Web.HttpContext.Current;
+    if (ctx == null)
+    {
+      // return a safe default
+      return dbName;
+    }
+
+    // Return the context set elsewhere or default to the dbName
+    return (ctx.Items[ContextKey] as string) ?? dbName;
 \}
 `}
 </CodeBlock>
@@ -120,12 +130,14 @@ using (var session = documentStore.OpenSession())
 {`// Open a session that will use a UNIQUE context string:
 using (var session = documentStore.OpenSession())
 \{
-    // Call SetContext, pass a unique context string for this session
-    session.Advanced.SessionInfo.SetContext("SomeOtherContext");
+    // Call 'SetContext' to assign a dedicated context string for this session.
+    // For example: "team/9-A", representing the team that the employees loaded in this session belong to.
+    session.Advanced.SessionInfo.SetContext("team/9-A");
     
-    // For all Read & Write requests made in this session,
-    // node to access is calculated from the unique string & the seed defined on the store
-    var employee = session.Load<Employee>("employees/1-A");
+    // For all Read & Write requests made in this session, including the following load calls,
+    // a node to access is calculated from the unique string & the seed defined on the store
+    var employee1 = session.Load<Employee>("employees/1-A");
+    var employee2 = session.Load<Employee>("employees/3-A");
 \}
 `}
 </CodeBlock>
@@ -250,15 +262,13 @@ using (documentStore)
 
 ## When to use 
 
-* Distributing _Read & Write_ requests among the cluster nodes can be beneficial  
-  when a set of sessions handle a specific set of documents or similar data.  
-  Load balancing can be achieved by routing requests from the sessions that handle similar topics to the same node, while routing other sessions to other nodes.  
+* When a session handles a specific set of documents or data, that can be scoped under a shared context. 
+  Setting the context can greatly reduce chances for conflicts. It can be useful, when used with the [optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency/), 
+  to ensure that requests for the same data are routed to the same node.
  
-* Another usage example can be setting the session's context to be the current user.  
-  Thus spreading the _Read & Write_ requests per user that logs into the application.  
+* When a user or a tenant owns their data and can benefit from having them served from one node. Also, in regards to the conflicts and the optimistic concurrency checks mentioned above.
 
-* Once setting the load balance to be per session-context,  
-  in the case when detecting that many or all sessions send requests to the same node,  
+* Once setting the load balance to be per session-context, in the case when detecting that many or all sessions send requests to the same node,  
   a further level of node randomization can be added by changing the seed.  
 
 
