@@ -67,12 +67,19 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 
 2. **Review the consent**  
   Click to read the AI assistant [EULA](https://ravendb.net/legal/ravendb/ai-assistant-terms-of-use) (End-User License Agreement) and either consent and enable the assistant or leave the assistant disabled.  
-  ![Consent](./assets/ai-assistant_consent.png)
-    <Admonition type="note" title="">
-    * **Note** that consenting cannot be undone from the UI.  
-      To cancel your consent after approving it, [contact us](https://ravendb.net/contact).
-    * Also note that you **will** be able to disable or enable the AI assistant even after providing your consent, using [configuration keys](../studio/ai-assistant#configuration).
-    </Admonition>
+  
+    ![Consent](./assets/ai-assistant_consent.png)
+      <Admonition type="note" title="">
+      * **Note** that consenting cannot be undone from the UI.  
+        To cancel your consent after approving it, [contact us](https://ravendb.net/contact).
+      * Also note that you **will** be able to disable or enable the AI assistant even after providing your consent, using [configuration keys](../studio/ai-assistant#configuration).
+      </Admonition>
+
+---
+
+You can always see the consent statement and your current consent status in Studio's **About** view:
+
+![About view](./assets/ai-assistant_view-consent.png)
 
 </ContentFrame>
 
@@ -86,8 +93,11 @@ The AI assistant is **disabled by default**. To enable it, you must provide expl
 
 * **Usage tokens**  
   A monthly quota of usage tokens is allocated per customer. The tokens are consumed by AI assistant usage.  
-  When the tokens run out, assistant prompts are no longer processed by the [backend service](../studio/ai-assistant#ravendb-backend-service) or the [LLM](../studio/ai-assistant#llm-service-provider).  
-  The tokens quota is automatically renewed each month.  
+   * When the tokens run out, assistant prompts are no longer processed by either the [backend service](../studio/ai-assistant#ravendb-backend-service) or the [LLM](../studio/ai-assistant#llm-service-provider).  
+   * The usage token quota is automatically renewed each month.  
+   * You can always see the renewal date and your current token usage in Studio's **About** view:
+
+     ![Tokens usage](./assets/ai-assistant_tokens-usage.png)
 
 </ContentFrame>
 
