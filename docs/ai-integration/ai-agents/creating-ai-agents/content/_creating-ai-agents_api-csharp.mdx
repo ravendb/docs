@@ -9,1319 +9,1680 @@ import Panel from "@site/src/components/Panel";
 
 <Admonition type="note" title="">
 
-* To create an AI agent, a client defines its configuration, provides it with settings and tools, and registers the agent with the server.  
+* To create an AI agent, the client defines its configuration, sets its parameters and tools,  
+  and registers the agent with the server.    
+    
+* Once the agent is created, the client can initiate or resume **conversations**, get LLM responses,  
+  and perform actions based on LLM insights.
 
-* Once the agent is created, the client can initiate or resume conversations, get LLM responses, and perform actions based on LLM insights.  
-
-* This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
+* This article provides a step-by-step guide to creating an AI agent and interacting with it using the **Client API**.  
+  To create an AI agent from Studio, see [Creating AI agents - Studio](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio).
 
 * In this article:
-   * [Creating a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
-   * [Defining an agent configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#defining-an-agent-configuration)
-      * [Set the agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-the-agent-id)
-      * [Define a response object](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#define-a-response-object)
-      * [Add agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#add-agent-parameters)
-      * [Set maximum number of iterations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-maximum-number-of-iterations)
-      * [Set chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)
-   * [Adding agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools)
+   * [Create a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
+   * [Define the agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#defining-an-agent-configuration)
+   * [Add agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools)
       * [Query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools)
-         * [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
       * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
-   * [Creating the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-the-agent)
-   * [Retrieving existing agent configurations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#retrieving-existing-agent-configurations)
-   * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
-      * [Setting a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation)
-      * [Processing action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#processing-action-tool-requests)
-         * [Action-tool Handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers)
-         * [Action-tool Receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers)
-      * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
-      * [Setting user prompt and running the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation)
-   * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
-   * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)
+   * [Create the agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-the-agent)
+   * [Manage conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
+      * [Create a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation)
+      * [Process action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#processing-action-tool-requests)
+         * [Action-tool handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers)
+         * [Action-tool receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers)
+      * [Set user prompt and RUN the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation)
+      * [Handle the conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
+      * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
+   * [Full example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)    
+   * [Retrieve existing agents](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#retrieving-existing-agent-configurations)
+   * [Syntax](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#syntax)
 
 </Admonition>
 
-<Panel heading="Creating a connection string">
+<span id="creating-a-connection-string"></span>
+<Panel heading="Create a connection string">
 
-Your agent will need a connection string to connect with the LLM. Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
-(You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings))
-
-You can use a local `Ollama` model if your considerations are mainly speed, cost, open-source, or security,  
-Or you can use a remote `OpenAI` service for its additional resources and capabilities.  
-
-* **Example**  
-  <Tabs groupId='languageSyntax'>
-  <TabItem value="open-ai-cs" label="open-ai-cs">
-  ```csharp
-  using (var store = new DocumentStore())
-  {
-    // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "open-ai-cs",
-
-        // Connection type
-        ModelType = AiModelType.Chat,
-
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings(
-            apiKey: "your-api-key",
-            endpoint: "https://api.openai.com/v1",
-            // LLM model for text generation
-            model: "gpt-4.1")
-    };
-
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-  }
-  ```
-  </TabItem>
-  <TabItem value="ollama-cs" label="ollama-cs">
-  ```csharp
-  using (var store = new DocumentStore())
-  {
-    // Define the connection string to Ollama
-    var connectionString = new AiConnectionString
-    {
-        // Connection string name & identifier
-        Name = "ollama-cs",
-
-        // Connection type
-        ModelType = AiModelType.Chat,
-
-        // Ollama connection settings
-        OllamaSettings = new OllamaSettings(
-            // LLM Ollama model for text generation
-            model: "llama3.2",
-            // local URL
-            uri: "http://localhost:11434/")
-    };
-
-    // Deploy the connection string to the server
-    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(operation);
-  }
-  ```
-  </TabItem>
-  </Tabs>
-
-* **Syntax**  
-  <Tabs groupId='languageSyntax'>
-  <TabItem value="open-ai-cs-syntax" label="open-ai-cs-syntax">
-  ```csharp
-  public class AiConnectionString
-  {
-    public string Name { get; set; }
-    public AiModelType ModelType { get; set; }
-    public string Identifier { get; set; }
-    public OpenAiSettings OpenAiSettings { get; set; }
-    ...
-  }
-
-  public class OpenAiSettings : AbstractAiSettings
-  {
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-    public int? Dimensions { get; set; }
-    public string OrganizationId { get; set; }
-    public string ProjectId { get; set; }
-  }
-  ```
-  </TabItem>
-  <TabItem value="ollama-cs-syntax" label="ollama-cs-syntax">
-  ```csharp
-  public class AiConnectionString
-  {
-    public string Name { get; set; }
-    public AiModelType ModelType { get; set; }
-    public string Identifier { get; set; }
-    public OllamaSettings OllamaSettings { get; set; }
-    ...
-  }
-
-  public class OllamaSettings : AbstractAiSettings
-  {
-    public string Model { get; set; }
-    public string Uri { get; set; }
-  }
-  ```
-  </TabItem>
-  </Tabs>
-
-</Panel>
-
-<Panel heading="Defining an agent configuration">
-
-To create an AI agent you need to prepare an **agent configuration** and populate it with 
-your settings and tools.  
-
-Start by creating a new `AiAgentConfiguration` instance.  
-While creating the instance, pass its constructor:  
-
-- The agent's Name  
-- The [connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string) you created  
-- A System prompt  
-
-The agent will send the system prompt you define here to the LLM to define its basic characteristics, including its role, purpose, behavior, and the tools it can use.  
-
-* **Example**  
-  ```csharp
-  // Start setting an agent configuration
-  var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
-  @"You work for a human experience manager.
-  The manager uses your services to find which employee has made the largest profit and to suggest 
-  a reward.
-  The manager provides you with the name of a country, or with the word ""everything"" to indicate 
-  all countries.
-  Then you:
-  1. use a query tool to load all the orders sent to the selected country,
-  or a query tool to load all orders sent to all countries.
-  2. calculate which employee made the largest profit.
-  3. use a query tool to learn in what general area this employee lives.
-  4. find suitable vacations sites or other rewards based on the employee's residence area.
-  5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions.
-  When you're done, return these details in your answer to the user as well.");
-  ```
-
-* `AiAgentConfiguration` Constructor  
-  ```csharp
-  public AiAgentConfiguration(string name, string connectionStringName, string systemPrompt);
-  ```
-
-* `AiAgentConfiguration` Class  
-  ```csharp
-  public class AiAgentConfiguration
-  {
-    // A unique identifier given to the AI agent configuration
-    public string Identifier { get; set; }
-
-    // The name of the AI agent configuration
-    public string Name { get; set; }
-
-    // Connection string name
-    public string ConnectionStringName { get; set; }
-
-    // The system prompt that defines the role and purpose of the agent and the LLM
-    public string SystemPrompt { get; set; }
-
-    // An example object that sets the layout for the LLM's response to the user.
-    // The object is translated to a schema before it is sent to the LLM.
-    public string SampleObject { get; set; }
-
-    // A schema that sets the layout for the LLM's response to the user.
-    // If both a sample object and a schema are defined, only the schema is used.
-    public string OutputSchema { get; set; }
-
-    // A list of Query tools that the LLM can use (through the agent) to access the database
-    public List<AiAgentToolQuery> Queries { get; set; } = new List<AiAgentToolQuery>();
-
-    // A list of Action tools that the LLM can use to trigger the user to action
-    public List<AiAgentToolAction> Actions { get; set; } = new List<AiAgentToolAction>();
-
-    // Agent parameters whose value the client passes to the LLM each time a chat is started, 
-    // for stricter control over queries initiated by the LLM and as a means for interaction 
-    // between the client and the LLM.  
-    public List<AiAgentParameter> Parameters { get; set; } = new List<AiAgentParameter>();
-
-    // The trimming configuration defines if and how the conversation is summarized, 
-    // to minimize the amount of data passed to the LLM when a conversation is started.  
-    public AiAgentChatTrimmingConfiguration ChatTrimming { get; set; } = new  
-        AiAgentChatTrimmingConfiguration(new AiAgentSummarizationByTokens());
+Your agent will need a connection string to connect to a **conversational or text generation LLM**.  
+RavenDB supports the following providers for these model types:  
+[Ollama](../../../ai-integration/connection-strings/ollama),
+[OpenAI and compatible providers](../../../ai-integration/connection-strings/open-ai),
+and [Azure OpenAI](../../../ai-integration/connection-strings/azure-open-ai).
+   
+Choose the model that best suits your needs:  
+You can use a local _Ollama_ model if your priorities are speed, cost, open-source usage, or security.  
+Or use a remote _OpenAI_ service for its broader resources and capabilities.
     
-    // Control over the number of times that the LLM is allowed to use agent tools to handle 
-    // a user prompt.  
-    public int? MaxModelIterationsPerCall { get; set; }
-  }
-  ```
+* **From the Client API**:  
+  Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation, as shown in the example below.    
 
-Once the initial agent configuration is created, we need to add it a few additional elements.  
+* **From the Studio**:    
+  You can define a connection string in the _AI Connection Strings_ view.
+  See [AI connection strings - Overview](../../../ai-integration/connection-strings/overview).  
+  You can also create a connection string when defining an AI agent.
+  See [Configure basic settings](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings).  
 
-<ContentFrame>
-
-### Set the agent ID
-Use the `Identifier` property to provide the agent with a unique ID that the 
-system will recognize it by.  
-
+---
+    
+**Example**
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Connection_string_to_open_ai" label="Connection_string_to_open_ai">
 ```csharp
-// Set agent ID
-agent.Identifier = "reward-productive-employee";
-```
+using (var store = new DocumentStore())
+{
+  // Define the connection string to OpenAI
+  var connectionString = new AiConnectionString
+  {
+      // Connection string name & identifier
+      Name = "open-ai-cs",
 
-</ContentFrame>
-<ContentFrame>
+      // Connection type
+      ModelType = AiModelType.Chat,
 
-### Define a response object
-Define a [structured output](https://platform.openai.com/docs/guides/structured-outputs) response object that the LLM will populate with its response to the user.  
+      // OpenAI connection settings
+      OpenAiSettings = new OpenAiSettings(
+          apiKey: "your-api-key",
+          endpoint: "https://api.openai.com/v1",
+          // LLM model for text generation
+          model: "gpt-4.1")
+  };
 
-To define the response object, you can use the `SampleObject` and/or the `OutputSchema` property   
-* `SampleObject` is a straightforward sample of the response object that you expect the LLM to return.  
-  It is usually simpler to define the response object this way.  
-* `OutputSchema` is a formal JSON schema that the LLM can understand.  
-  Even when defining the response object as a `SampleObject`, RavenDB will translate the object to a JSON schema before sending it to the LLM. If you prefer it however, you can explicitly define it as a schema yourself.  
-* If you define both a sample object and a schema, the agent will send only the schema to the LLM.  
-
-<Tabs groupId='responseObject'>
-<TabItem value="sample-object" label="sample-object">
-```csharp
-// Set sample object
-agent.SampleObject = "{" +
-                        "\"suggestedReward\": \"your suggestions for a reward\", " +
-                        "\"employeeId\": \"the ID of the employee that made the largest profit\", " +
-                        "\"profit\": \"the profit the employee made\"" +
-                      "}";
+  // Deploy the connection string to the server
+  var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+  var putConnectionStringResult = store.Maintenance.Send(operation);
+}
 ```
 </TabItem>
-<TabItem value="json-schema" label="json-schema">
+<TabItem value="Connection_string_to_azure_open_ai" label="Connection_string_to_azure_open_ai">
 ```csharp
-// Set output schema
-agent.OutputSchema = "{" +
-          "\"name\": \"RHkxaWo5ZHhMM1RuVnIzZHhxZm9vM0c0UnYrL0JWbkhyRDVMd0tJa1g4Yz0\", " +
-          "\"strict\": true, " +
-          "\"schema\": {" +
-            "\"type\": \"object\", " +
-            "\"properties\": {" +
-              "\"employeeID\": {" +
-                "\"type\": \"string\", " +
-                "\"description\": \"the ID of the employee that made the largest profit\"" +
-              "}, " +
-              "\"profit\": {" +
-                "\"type\": \"string\", " +
-                "\"description\": \"the profit the employee made\"" +
-              "}, " +
-              "\"suggestedReward\": {" +
-                "\"type\": \"string\", " +
-                "\"description\": \"your suggestions for a reward\"" +
-              "}" +
-            "}, " +
-            "\"required\": [" +
-              "\"employeeID\", " +
-              "\"profit\", " +
-              "\"suggestedReward\"" +
-            "], " +
-            "\"additionalProperties\": false" +
-          "}" +
-        "}";
+using (var store = new DocumentStore())
+{
+  // Define the connection string to OpenAI
+  var connectionString = new AiConnectionString
+  {
+      // Connection string name & identifier
+      Name = "azure-open-ai-cs",
+
+      // Connection type
+      ModelType = AiModelType.Chat,
+
+      // Azure OpenAI connection settings
+      AzureOpenAiSettings = new AzureOpenAiSettings
+      {
+          ApiKey = "your-api-key",
+          Endpoint = "https://your-resource-name.openai.azure.com",
+    
+          // Name of chat model to use
+          Model = "gpt-4o-mini",
+    
+          DeploymentName = "your-deployment-name"
+        }
+  };
+
+  // Deploy the connection string to the server
+  var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+  var putConnectionStringResult = store.Maintenance.Send(operation);
+}
+```
+</TabItem>    
+<TabItem value="Connection_string_to_ollama" label="Connection_string_to_ollama">
+```csharp
+using (var store = new DocumentStore())
+{
+  // Define the connection string to Ollama
+  var connectionString = new AiConnectionString
+  {
+      // Connection string name & identifier
+      Name = "ollama-cs",
+
+      // Connection type
+      ModelType = AiModelType.Chat,
+
+      // Ollama connection settings
+      OllamaSettings = new OllamaSettings(
+          // LLM Ollama model for text generation
+          model: "llama3.2",
+          // local URL
+          uri: "http://localhost:11434/")
+  };
+
+  // Deploy the connection string to the server
+  var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+  var putConnectionStringResult = store.Maintenance.Send(operation);
+}
 ```
 </TabItem>
 </Tabs>
 
-</ContentFrame>
+---
+    
+**Syntax reference**    
+See the dedicated syntax sections in the following articles for full configuration details:    
+* [Ollama (syntax)](../../../ai-integration/connection-strings/ollama#syntax)  
+* [OpenAI and compatible providers (syntax)](../../../ai-integration/connection-strings/open-ai#syntax)  
+* [Azure OpenAI (syntax)](../../../ai-integration/connection-strings/azure-open-ai#syntax)  
+
+</Panel>
+
+<span id="defining-an-agent-configuration"></span>
+<Panel heading="Define the agent">
+    
+* To define an AI agent in C#, create a new `AiAgentConfiguration` instance.  
+  You can use either of the following constructor overloads:
+
+  ```csharp
+  var agentConfiguration = AiAgentConfiguration();
+  var agentConfiguration = AiAgentConfiguration(
+      "your_agent_name", "your_connection_string_name", "the_system_prompt");
+  ```
+
+* Populate the `AiAgentConfiguration` instance with your system prompt, agent settings, and tools.  
+  The following sections explain how to configure each component of the agent:    
+  * [System prompt](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#system-prompt)  
+  * [Agent name](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-name)  
+  * [Agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-id)  
+  * [Connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#connection-string)  
+  * [Expected response format](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#expected-response-format)  
+  * [Agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-parameters)  
+  * [Maximum number of iterations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#maximum-number-of-iterations)  
+  * [Chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#chat-trimming-configuration)          
+
+---
+    
 <ContentFrame>
+### System prompt
+    
+This prompt defines the agent's role and capabilities.  
+It provides general context to guide the LLM's responses throughout the conversation.
 
-### Add agent parameters
-Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
-Values for agent parameters are provided by the client, or by a user through the client, 
-when a chat is started.  
-When the agent is requested to use a query tool that uses agent parameters, it replaces these parameters with the values provided by the user before running the query.  
-Using agent parameters allows the client to focus the queries and the entire interaction on its current needs.  
-
-In the example below, an agent parameter is used to determine what area 
-of the world a query will handle. 
-
-To add an agent parameter create an `AiAgentParameter` instance, initialize it with 
-the parameter's **name** and **description** (explaining to the LLM what the parameter 
-is for), and pass this instance to the `agent.Parameters.Add` method.  
-
-* **Example**  
-  ```csharp
-  //  Set agent parameters
-  agent.Parameters.Add(new AiAgentParameter(
-      "country", "A specific country that orders were shipped to, " +
-      "or \"everywhere\" to look for orders shipped to all countries"));
-  ```
-
-* `AiAgentParameter` Definition 
-  ```csharp
-  public AiAgentParameter(string name, string description);
-  ```
-
+```csharp
+agentConfiguration.SystemPrompt = @"
+    You work for a human experience manager. 
+    
+    The manager uses your services to find which employee has made the largest profit
+    and to suggest a reward. The manager provides you with the name of a country, 
+    or with the word 'everything' to indicate all countries.
+    
+    Then you:
+    1. Use a query tool to load all the orders sent to the selected country,
+       or a query tool to load all orders sent to all countries.
+    2. Calculate which employee made the largest profit.
+    3. Use a query tool to learn in what general area this employee lives.
+    4. Find suitable vacation sites or other rewards based on the employee's residence area.
+    5. Use an action tool to store in the database the employee's ID, profit,  
+       and your reward suggestions.
+       When you're done, return these details in your answer to the user as well.";
+```    
 </ContentFrame>
+    
 <ContentFrame>
+### Agent name
+    
+Set a unique name for the agent.
 
-### Set maximum number of iterations
-You can limit the number of times that the LLM is allowed to request the usage of 
-agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall` to change this limit.  
+```csharp
+agentConfiguration.Name = "Reward productive employee";
+```    
+</ContentFrame>
 
-* **Example**  
-  ```csharp
-  // Limit the number of times the LLM can request for tools in response to a single user prompt
-  agent.MaxModelIterationsPerCall = 3;
-  ```
+<ContentFrame>
+### Agent ID
 
-* `MaxModelIterationsPerCall` Definition  
-  ```csharp
-  public int? MaxModelIterationsPerCall
-  ```
+Provide a unique identifier for the agent.  
+Only lowercase letters (`a-z`), numbers (`0-9`) and hyphens (`-`) are allowed in the identifier.  
+If not specified, it will be auto-generated from the agent name.    
+ 
+```csharp
+agentConfiguration.Identifier = "reward-productive-employee";
+``` 
+</ContentFrame>
+    
+<ContentFrame>
+### Connection string
+    
+Provide the name of the connection string you created above in [Create a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string).    
+    
+```csharp
+agentConfiguration.ConnectionStringName = connectionString.Name;
+```    
+</ContentFrame>
+    
+<ContentFrame>
+### Expected response format   
 
+Define a response format using a [structured output](https://platform.openai.com/docs/guides/structured-outputs) that the LLM will populate as its reply.  
+This will be the format you expect to receive from the LLM via the agent during the conversation.      
+
+You can define it in one of two ways:
+    
+* **Sample response object**:  
+  Set the `sampleObject` property with a representative JSON object.  
+  This object is not sent to the model directly - RavenDB uses it to generate a JSON schema, which is sent to the model.
+  This option is simpler and suitable in most cases.
+    
+* **Custom JSON schema**:   
+  Set the `outputSchema` property with a full JSON schema.  
+  This gives you more control over the structure, types, and validation rules.
+    
+**Precedence rule**:  
+If you define both `sampleObject` and `outputSchema`, only the schema will be sent to the model.
+  
+<Tabs groupId='sampleResponseObject'>
+<TabItem value="Sample_response_object" label="Sample_response_object">
+```csharp 
+// Sample response object
+agentConfiguration.SampleObject = @"
+    {
+      ""suggestedReward"": ""your suggestions for a reward"",
+      ""employeeId"": ""the ID of the employee that made the largest profit"",
+      ""profit"": ""the profit the employee made""
+    }";
+```    
+</TabItem>
+<TabItem value="JSON_schema" label="JSON_schema">
+```csharp
+// Response JSON schema
+agentConfiguration.OutputSchema = @"
+    {
+      ""name"": ""RHkxaWo5ZHhMM1RuVnIzZHhxZm9vM0c0UnYrL0JWbkhyRDVMd0tJa1g4Yz0"",
+      ""strict"": true,
+      ""schema"": {
+        ""type"": ""object"",
+        ""properties"": {
+          ""employeeID"": {
+            ""type"": ""string"",
+            ""description"": ""the ID of the employee that made the largest profit""
+          },
+          ""profit"": {
+            ""type"": ""string"",
+            ""description"": ""the profit the employee made""
+          },
+          ""suggestedReward"": {
+            ""type"": ""string"",
+            ""description"": ""your suggestions for a reward""
+          }
+        },
+        ""required"": [
+          ""employeeID"",
+          ""profit"",
+          ""suggestedReward""
+        ],
+        ""additionalProperties"": false
+      }
+    }";
+```
+</TabItem>
+</Tabs>    
+</ContentFrame>
+
+<ContentFrame>
+### Agent parameters   
+
+Agent parameters let you define named placeholders for values used in queries inside query tools.
+    
+At configuration time, you define the parameter name (e.g. `country`),  
+which you can then use in the RQL of your [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) as a placeholder (e.g. `$country`).  
+The values for these parameters are Not set by the LLM - 
+you must provide the actual value at [conversation startup](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation).
+
+When the agent is requested to execute a query that references an agent parameter,   
+it replaces each placeholder with the corresponding value you supplied at chat startup, before running the query.    
+    
+This allows the same query tool to adapt to different contexts based on user-provided input -
+such as geographic region, product category, or customer ID - tailoring the agent’s behavior and ensuring that queries run only within the intended data scope.   
+
+To add an agent parameter:  
+* create an `AiAgentParameter` instance,
+* initialize it with the parameter's **name** and **description** (explaining to the LLM what the parameter is for), 
+* and pass this instance to the `agent.Parameters.Add` method. 
+
+```csharp
+agentConfiguration.Parameters.Add(new AiAgentParameter(
+    // Use '$country' in your query to reference this parameter
+    "country",
+    // Explain to the LLM what this parameter is for
+    @"
+        A specific country that orders were shipped to, 
+        or ""everywhere"" to look for orders shipped to all countries
+    "));
+```
+</ContentFrame>
+    
+<ContentFrame>
+### Maximum number of iterations
+  
+Set a limit on how many times the LLM is allowed to invoke agent tools in response to a single user prompt.  
+
+<TabItem>
+```csharp
+agentConfiguration.MaxModelIterationsPerCall = 3;
+```
+</TabItem>    
+    
 <Admonition type="note" title="">
-Note that you can improve the TTFB (Time To First Byte) by getting the LLM's response in chunks using streaming.  
-Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
+* Note that you can reduce Time To First Byte (TTFB) by streaming the LLM response as it's being generated.  
+  This allows the LLM to return selected fields in chunks before the full response is complete.  
+* Find more about streaming in [Streaming LLM responses - overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) 
+  and in [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses) below.  
 </Admonition>
+    
+</ContentFrame>    
 
-</ContentFrame>
 <ContentFrame>
+### Chat trimming configuration 
 
-### Set chat trimming configuration
+You can configure RavenDB to automatically trim long conversations by summarizing older messages stored in the chat conversation document.
+When the total number of tokens exceeds the configured threshold, RavenDB will generate a summary and replace the earlier part of the conversation with it.
 
-To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
-use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
-with the instance.  
+Optionally, the original (unsummarized) conversation can be saved in a document under the `@conversations-history` collection.
+You can also configure how long these history documents are retained before they expire. 
 
-When creating the instance, pass its constructor a summarization strategy using 
-a `AiAgentSummarizationByTokens` class.  
+To configure chat trimming:  
+* Create an `AiAgentSummarizationByTokens` instance.  
+  Use it to define the maximum number of tokens allowed in the conversation, and the number of tokens to retain after summarization.    
+* Create an `AiAgentHistoryConfiguration` instance.  
+  Use it to define how long conversation-history documents should be kept before expiration.
+* Create an `AiAgentChatTrimmingConfiguration` instance.  
+  Pass both the summarization and history configuration objects to its constructor. 
+    
+```csharp
+AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
+{
+  // When the number of tokens stored in the conversation exceeds this limit
+  // summarization of old messages will be triggered.
+  MaxTokensBeforeSummarization = 32768,
+  // The maximum number of tokens that the conversation is allowed to contain
+  // after summarization. 
+  MaxTokensAfterSummarization = 1024
+};
 
-The original conversation, before it was summarized, can optionally be 
-kept in the `@conversations-history` collection.  
-To determine whether to keep the original messages and for how long, also pass the 
-`AiAgentChatTrimmingConfiguration` constructor an `AiAgentHistoryConfiguration` instance 
-with your settings.  
-
-* **Example**  
-  ```csharp
-  // Set chat trimming configuration
-  AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
-  {
-    // When the number of tokens stored in the conversation exceeds this limit
-    // summarization of old messages will be triggered.
-    MaxTokensBeforeSummarization = 32768,
-    // The maximum number of tokens that the conversation is allowed to contain
-    // after summarization. 
-    MaxTokensAfterSummarization = 1024
-  };
-  agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
-  ```
-
-* **Syntax**  
-  ```csharp
-  public class AiAgentSummarizationByTokens
-  {
-    // The maximum number of tokens allowed before summarization is triggered.
-    public long? MaxTokensBeforeSummarization { get; set; }
-
-    // The maximum number of tokens allowed in the generated summary.
-    public long? MaxTokensAfterSummarization { get; set; }
-  }
-
-  public class AiAgentHistoryConfiguration
-  {
-    // Enables history for AI agents conversations.
-    public AiAgentHistoryConfiguration()
-
-    // Enables history for AI agents conversations,
-    // with `expiration` determining the timespan after which history documents expire.
-    public AiAgentHistoryConfiguration(TimeSpan expiration)
-
-    // The timespan after which history documents expire.
-    public int? HistoryExpirationInSec { get; set; }
-  }
-  ```
-
+AiAgentHistoryConfiguration historyConfig = new AiAgentHistoryConfiguration()
+{
+  // Set how long conversation-history documents are retained (in seconds)    
+  HistoryExpirationInSec = 86400 // 1 day
+};
+  
+// Set the chat trimming configuration
+agentConfiguration.ChatTrimming = 
+    new AiAgentChatTrimmingConfiguration(summarization, historyConfig);
+```
 </ContentFrame>
+    
 </Panel>
 
 <Panel heading="Adding agent tools">
 
-You can enhance your agent with Query and Action tools, that allow the LLM to query your database and trigger client actions.  
-After defining agent tools and submitting them to the LLM, it is up to the LLM to decide if and when to use them. 
+* You can enhance your agent with **Query tools** and **Action tools**,  
+  components that allow the LLM to query your database and trigger client-side actions.  
+
+* Once tools are defined and submitted as part of the agent configuration,  
+  it’s up to the LLM to decide **if** and **when** to invoke them during a conversation.
+
+---
 
 <ContentFrame>
 
 ### Query tools
 
-[Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
-A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
-
-* **Passing values to query tools**  
-   * Query tools optionally include [parameters](../../../ai-integration/ai-agents/overview#query-parameters), identified by a `$` prefix.  
-     Both the user and the LLM can pass values to these parameters.  
-   * **Passing values from the user**  
-     Users can pass values to queries through **agent parameters**.  
-     If agent parameters are defined in the agent configuration -  
-       * The client has to provide values for them when initiating a conversation with the agent.  
-       * The parameters can be included in query tools RQL queries.  
-     Before running a query, the agent will replace any agent parameter included in it with its value.  
-   * **Passing values from the LLM**  
-     The LLM can pass values to queries through a **parameters schema**.  
-      * The parameters schema layout is defined as part of the query tool.  
-      * When the LLM requests the agent to run a query, it will add parameter values to the request.  
-      * You can define a parameters schema either as a **sample object** or a **formal JSON schema**.  
-        If you define both, the LLM will pass parameter values only through the JSON schema.  
-      * Before running a query, the agent will replace any parameter included in it with its value.  
+* [Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
+  Each query tool includes:  
+  * **Description** - a natural-language description that tells the LLM when to use it, 
+  * **RQL** - an [RQL query](../../../client-api/session/querying/what-is-rql) that defines what data to retrieve.
+    
+* To run a query tool at agent startup and provide initial context to the LLM **before** the conversation begins,  
+  see: [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries) below.
+    
+* **Passing values to a query tool**  
+  The RQL in the query tool may include parameter placeholders prefixed with `$` (e.g. `$country`).  
+  Both the user and the LLM can pass values to these parameters.  
+  * **Passing values from the user**:  
+    Users can pass values to queries through [Agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#agent-parameters).  
+    If agent parameters are defined in the agent configuration -  
+    * The client must provide values for them when initiating a conversation with the agent.
+    * Before executing the query, the agent will replace the placeholders with the provided values.
+  * **Passing values from the LLM**:  
+    You can define parameters that the LLM will fill in dynamically based on the conversation context when it invokes the query.
+    To do this, define a sample object (or a formal JSON schema) that describes the parameters the LLM is expected to supply when requesting the agent to run the query.    
+    * If both a sample object and a JSON schema are defined, the schema is used.  
+    * If only a sample object is provided, RavenDB will convert it into a JSON schema.  
+    * When the LLM triggers the tool, it will fill in values for the defined parameters based on the conversation.
+  * Note:   
+    You cannot define both an agent parameter and a tool parameter with the same name.  
+    Each parameter name must be unique across both types.
 
 * **Example**  
-   * The first query tool will be used by the LLM when it needs to retrieve all the 
-     orders sent to any place in the world. (the system prompt instructs it to use this 
-     tool when the user enters "everywhere" when the conversation is started.)  
-   * The second query tool will be used by the LLM when it needs to retrieve all the 
-     orders that were sent to a particular country, using the `$country` agent parameter.  
-   * The third tool retrieves from the database the general location of an employee.  
-     To do this it uses a `$employeeId` parameter, whose value is set by the LLM in its 
-     request to run this tool.  
+  The example below defines three query tools:  
+  * **The first query tool** is used by the LLM to retrieve all orders sent anywhere in the world.  
+    The system prompt instructs it to use this tool when the user starts the conversation with the value "everywhere".
+  * **The second query tool** retrieves all orders sent to a specific country,  
+    using the `$country` agent parameter provided by the client at conversation startup.
+  * **The third query tool** retrieves the general location of an employee,  
+    using the `$employeeId` parameter, whose value is set by the LLM when it requests to run this tool.   
 
           ```csharp
-          agent.Queries =
+          agentConfiguration.Queries =
           [
-            // Set a query tool that triggers the agent to retrieve all the orders sent everywhere
+            // Set a query tool to retrieve all orders sent everywhere.
             new AiAgentToolQuery
             {
                 // Query tool name
                 Name = "retrieve-orders-sent-to-all-countries",
 
-                // Query tool description
-                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
+                // Query description
+                Description = 
+                    "A query that allows you to retrieve all orders sent to all countries",
 
-                // Query tool RQL query
-                Query = "from Orders as O select O.Employee, O.Lines.Quantity",
+                // RQL query
+                Query = @"
+                    from Orders as o
+                    select o.Employee, o.Lines.Quantity",
 
-                // Sample parameters object for the query tool
-                // The LLM can use this object to pass parameters to the query tool
+                // Sample parameters object for the query tool, here no params are defined
                 ParametersSampleObject = "{}"
             },
         
-            // Set a query tool that triggers the agent to retrieve all the orders sent to a 
-            // specific country
+            // Set a query tool to retrieve all orders sent to a specific country.
+            // The country is provided by the user as an agent parameter.
             new AiAgentToolQuery
             {
                 Name = "retrieve-orders-sent-to-a-specific-country",
-                Description = "a query tool that allows you to retrieve all orders sent " + 
-                "to a specific country",
-                Query = "from Orders as O where O.ShipTo.Country == $country select O.Employee, " + 
-                "O.Lines.Quantity",
+                Description = 
+                    "A query that allows you to retrieve all orders sent to a specific country",
+                Query = @"
+                    from Orders as o
+                    where o.ShipTo.Country == $country
+                    select o.Employee, o.Lines.Quantity",
                 ParametersSampleObject = "{}"
             },
 
-            // Set a query tool that triggers the agent to retrieve the performer's
-            // residence region details (country, city, and region) from the database
+            // Set a query to retrieve the performer's residence details from the database.
+            // The employee ID is provided by the LLM when it requests to run this tool.
             new AiAgentToolQuery
             {
                 Name = "retrieve-performer-living-region",
-                Description = "a query tool that allows you to retrieve an employee's country, " + 
-                "city, and region, by the employee's ID",
-                Query = "from Employees as E where id() == $employeeId select E.Address.Country, " + 
-                "E.Address.City, E.Address.Region",
-                ParametersSampleObject = "{" +
-                              "\"employeeId\": \"embed the employee's ID here\"" +
-                                         "}"
+                Description = @"
+                    A query that allows you to retrieve an employee's country,
+                    city, and region, by the employee's ID",
+                Query = @"
+                    from Employees as e 
+                    where id() == $employeeId
+                    select e.Address.Country, e.Address.City, e.Address.Region",
+                ParametersSampleObject = @"
+                {
+                    ""employeeId"": ""embed the employee's ID here""
+                }"
             }
           ];
           ```
-
-* **Syntax**  
-  Query tools are defined in a list of `AiAgentToolQuery` classes.  
-  ```csharp
-  public class AiAgentToolQuery
-  {
-      public string Name { get; set; }
-      public string Description { get; set; }
-      public string Query { get; set; }
-      public string ParametersSampleObject { get; set; }
-      public string ParametersSchema { get; set; }
-  }
-  ```
-
+    
+---
+    
 #### <u>Initial-context queries</u>
 
-* You can set a query tool as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
-   * An initial-context query is **not allowed** to use LLM parameters, since the query 
-     runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
-   * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
+* Use the `Options.AddToInitialContext` property to configure a query tool as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries)
+  so that it executes immediately when the agent starts, before the LLM receives any user input.  
+  The results are provided to the LLM as part of the initial conversation context.
+ 
+   * An initial-context query is **not allowed** to use LLM parameters because the LLM has no opportunity to supply values - the query runs before the conversation starts.
+   * An initial-context query **can use** agent parameters, since their values are supplied by the client at conversation startup.
 
-*  You can use the `Options.AllowModelQueries` property to Enable or Disable a query tool .  
-   * When a query tool is enabled, the LLM can freely trigger its execution.  
-   * When a query tool is disabled, the LLM cannot trigger its execution.  
-   * If a query tool is set as an initial-context query, it will be executed when the conversation 
-     starts even if disabled using `AllowModelQueries`.  
+*  Use the `options.allowModelQueries` property to control whether the LLM is allowed to trigger the query tool later in the conversation.
+   * If `AllowModelQueries` is _true_, the LLM can trigger the query anytime during the conversation.
+   * If `AllowModelQueries` is _false_, the LLM cannot invoke the query tool.
+   * If the query tool is set as an initial-context query, it will be executed at startup regardless of the `AllowModelQueries` setting.     
 
 * **Example**  
-  Set a query tool that runs when the agent is started and retrieves all the orders sent everywhere.
+  Set a query tool to retrieve all orders sent worldwide.  
+  The query will run when the agent is started.    
+    
   ```csharp
   new AiAgentToolQuery
   {
      Name = "retrieve-orders-sent-to-all-countries",
-     Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-     Query = "from Orders as O select O.Employee, O.Lines.Quantity",
-     ParametersSampleObject = "{}"
+     Description = 
+         "a query tool that allows you to retrieve all orders sent to all countries.",
+     Query = @" 
+         from Orders as o
+         select o.Employee, o.Lines.Quantity",
+     ParametersSampleObject = "{}",
 
+     // Initial-context query configuration
      Options = new AiAgentToolQueryOptions
      {
-         // The LLM is allowed to trigger the execution of this query during the conversation
+         // Run the query at conversation startup and provide its results to the LLM
+         AddToInitialContext = true,
+    
+         // Also allow the LLM to trigger this query later in the conversation
          AllowModelQueries = true,
-
-         // The query will be executed when the conversation starts 
-         // and its results will be added to the initial context
-         AddToInitialContext = true
       }
   }
   ```
 
-* `AiAgentToolQueryOptions` Class  
-  ```csharp
-  public class AiAgentToolQueryOptions : IDynamicJson
-  {
-      public bool? AllowModelQueries { get; set; }
-      public bool? AddToInitialContext { get; set; }
-  }
-    ```
-
-* `AiAgentToolQueryOptions` Properties
-  |Property|Type|Description|
-  |--------|----|-----------|
-  |`AllowModelQueries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
-  |`AddToInitialContext`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
-
-      <Admonition type="note" title="">
-      Note: the two flags can be set regardless of each other.  
-        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `false`  
-          will cause the query to be executed when the conversation starts,  
-          but the LLM will not be able to trigger its execution later in the conversation.  
-        * Setting `AddToInitialContext` to `true` and `AllowModelQueries` to `true`  
-          will cause the query to be executed when the conversation starts,  
-          and the LLM will also be able to trigger its execution later in the conversation.  
-      </Admonition>
-
 </ContentFrame>
+    
 <ContentFrame>
 
 ### Action tools
 
-Action tools allow the LLM to trigger the client to action (e.g., to modify or add a document).  
-An action tool includes a natural-language **description** that explains the LLM what the tool is capable of, and a **schema** that the LLM will fill with details related to the requested action before sending it to the agent.  
+* Action tools allow the LLM to instruct the client to perform an operation (e.g., to modify or create a document).  
+  This communication is mediated by the agent, which receives the tool call from the LLM and passes the request to the client.
+    
+    Each action tool includes:  
+    * **Description** - a natural-language description that tells the LLM what the tool does,  
+    * **Schema** - a schema that the LLM will fill with the required action data before sending it to the agent.
+    
+* Once the client completes the requested action, it must send a response back to the LLM indicating the result,
+  for example, `"done"`. 
 
-In the example below, the action tool requests the client to store an employee's details 
-in the database. The LLM will provide the employee's ID and other details whenever it requests the agent 
-to apply the tool. 
+* In the following example, the action tool requests the client to store an employee’s details in the database.  
+  The LLM will provide the employee's ID and other details whenever it triggers the tool.
 
-When the client finishes performing the action, it is required to send the LLM 
-a response that explains how it went, e.g. `done`.  
-
-* **Example**  
-  The following action tool sends to the client employee details that the tool needs to store in the database.  
   ```csharp
-  agent.Actions =
+  agentConfiguration.Actions =
   [
-    // Set an action tool that triggers the client to store the performer's details
-    new AiAgentToolAction
-        {
-            Name = "store-performer-details",
-            Description = "an action tool that allows you to store the ID of the employee that made " +
-                          "the largest profit, the profit, and your suggestions for a reward, in the " + 
-                          "database.",
-            ParametersSampleObject = "{" +
-                        "\"suggestedReward\": \"embed your suggestions for a reward here\", " +
-                        "\"employeeId\": \"embed the employee’s ID here\", " +
-                        "\"profit\": \"embed the employee’s profit here\"" +
-                                         "}"
-        }
+      // Set an action tool to store the performer's details
+      new AiAgentToolAction
+      {
+          Name = "store-performer-details",
+          Description = @"
+              An action tool that allows you to store the ID of the employee that made the
+              largest profit, the profit amount, and your reward suggestion in the database.",
+          ParametersSampleObject = @"
+          {
+              ""suggestedReward"": ""Embed your suggestions for a reward here"",
+              ""employeeId"": ""Embed the employee’s ID here"",
+              ""profit"": ""Embed the employee’s profit here""
+          }
+      }
   ];
   ```
-
-* **Syntax**  
-  Action tools are defined in a list of `AiAgentToolAction` classes.  
-  ```csharp
-  public class AiAgentToolAction
-  {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string ParametersSampleObject { get; set; }
-    public string ParametersSchema { get; set; }
-  }
-  ```
 </ContentFrame>
 
 </Panel>
 
-<Panel heading="Creating the Agent">
+<span id="creating-the-agent"></span>
+<Panel heading="Create the agent">
 
-The agent configuration is ready, and we can now register the agent with the server using the `CreateAgent` method.  
-
-* Create a response object class that matches the response schema defined in your agent configuration.  
-* Call `CreateAgent` and pass it -  
-   * The agent configuration  
-   * A new instance of the response object class  
-
+* Once the agent configuration is complete,  
+  register the agent with the server using the `CreateAgent` or `CreateAgentAsync` method:
+  * Define a response object class that matches the response schema in your agent configuration.    
+  * Call `CreateAgent` and pass:  
+    * The agent configuration  
+    * A new instance of the response object class
+    
 * **Example**  
+    
+  <Tabs groupId='languageSyntax'>  
+  <TabItem value="Create_agent" label="Create_agent">
   ```csharp
-  // Create the agent
-  // Pass it an object for its response
-  var createResult = await store.AI.CreateAgentAsync(agent, new Performer
-  {
-    suggestedReward = "your suggestions for a reward",
-    employeeId = "the ID of the employee that made the largest profit",
-    profit = "the profit the employee made"
-  });
-
-  // An object for the LLM response
-  public class Performer
-  {
-     public string suggestedReward;
-     public string employeeId;
-     public string profit;
-  }
-  ```
-
-* `CreateAgent` Overloads  
-  ```csharp
-  // Asynchronously creates or updates an AI agent configuration on the database, 
-  // with the given schema as an example for a response object
-  Task<AiAgentConfigurationResult> CreateAgentAsync<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject, CancellationToken token = default)
-  
-  // Creates or updates (synchronously) an AI agent configuration on the database
-  AiAgentConfigurationResult CreateAgent(AiAgentConfiguration configuration)
-  
-  // Asynchronously creates or updates an AI agent configuration on the database
-  Task<AiAgentConfigurationResult> CreateAgentAsync(AiAgentConfiguration configuration, CancellationToken token = default)
-  
-  // Creates or updates (synchronously) an AI agent configuration on the database, 
-  // with the given schema as an example for a response object
-  AiAgentConfigurationResult CreateAgent<TSchema>(AiAgentConfiguration configuration, TSchema sampleObject) where TSchema : new()
-  ```
-
-* `CreateAgent` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | configuration | `AiAgentConfiguration` | The agent configuration |
-  | sampleObject | `TSchema` | Example response object |
-
-  | Return value | Description |
-  |--------------|-------------|
-  | `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID. |
-
-</Panel>
-
-<Panel heading="Retrieving existing agent configurations">
-
-You can retrieve the configuration of **an existing agent** using `GetAgent`.  
-
-* **Example**  
-  ```csharp
-  // Retrieve an existing agent configuration by its ID
-  var existingAgent = store.AI.GetAgent("reward-productive-employee");
-  ```
-
-You can also retrieve the configurations of **all existing agents** using `GetAgents`.  
-
-* **Example**  
-  ```csharp
-  // Extract the agent configurations from the response into a new list
-  var existingAgentsList = store.AI.GetAgents();
-  var agents = existingAgentsList.AiAgents;
-  ```
-
-* `GetAgent` and `GetAgents` Overloads  
-  ```csharp
-  // Synchronously retrieves the configuration of an AI agent by its ID
-  AiAgentConfiguration GetAgent(string agentId)
-
-  // Asynchronously retrieves the configuration of an AI agent by its ID
-  async Task<AiAgentConfiguration> GetAgentAsync(string agentId, CancellationToken token = default)
-
-  // Synchronously retrieves the configurations of all AI agents
-  GetAiAgentsResponse GetAgents()
-
-  // Asynchronously retrieves the configurations of all AI agents
-  Task<GetAiAgentsResponse> GetAgentsAsync(CancellationToken token = default)
-  ```
-
-* `GetAgent` and `GetAgents` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | agentId | `string` | The unique ID of the agent you want to retrieve |
-
-  | Return value | Description |
-  |--------------|-------------|
-  | `AiAgentConfiguration` | The agent configuration |
-  | `GetAiAgentsResponse` | The response containing a list of all agent configurations |
-
-* `GetAiAgentsResponse` class  
-  ```csharp
-  public class GetAiAgentsResponse
-  {
-      public List<AiAgentConfiguration> AiAgents { get; set; }
-  }
-  ```
-
-</Panel>
-
-<Panel heading="Managing conversations">
-
-<ContentFrame>
-
-### Setting a conversation:
-
-* Set a conversation using the `store.AI.Conversation` method.  
-  Pass `Conversation`:  
-   * The **agent ID**  
-   * The **conversation ID**  
-     The conversation ID that you provide when starting a conversation determines whether a new conversation will start, or an existing conversation will be continued.  
-     <Admonition type="note" title="">
-      * Conversations are kept in the `@conversations` collection.  
-        A conversation document's name starts with a prefix (such as `Chats/`) that can be 
-        set when the conversation is initiated.  
-      * You can -  
-        **Provide a full ID**, including a prefix and the ID that follows it.  
-        **Provide a prefix that ends with `/` or `|`** to trigger automatic ID creation, 
-        similarly to the creation of automatic IDs for documents.  
-      * If you pass the method the ID of an existing conversation (e.g. `"Chats/0000000000000008883-A"`) 
-        the conversation will be retrieved from storage and continued where you left off.  
-      * If you provide an empty prefix (e.g. `"Chats/`), a new conversation will start.  
-      </Admonition>
-   * Values for **agent parameters**, if defined, in an `AiConversationCreationOptions` instance.  
-* Set the user prompt using the `SetUserPrompt`method.  
-  The user prompt informs the agent of the user's requests and expectations for this chat.  
-* Use the value returned by the `Conversation` method to run the chat.
-
-* **Example**  
-  ```csharp
-  // Create a conversation instance
-  // Initialize it with - 
-  // The agent's ID, 
-  // A prefix (Performers/) for conversations stored in the @Conversations collection,
-  // Agent parameters' values
-  var chat = store.AI.Conversation(
-      createResult.Identifier,
-      "Performers/",
-      new AiConversationCreationOptions().AddParameter("country", "France"));
-  ```
-
-* `Conversation` Definition  
-  ```csharp
-  public IAiConversationOperations Conversation(string agentId, string conversationId, AiConversationCreationOptions creationOptions, string changeVector = null)
-  ```
-
-* `Conversation` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | agentId | `string` | The agent unique ID |
-  | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
-  | creationOptions | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
-  | changeVector | `string` | Optional change vector for concurrency control |
-
-  | Return value | Description |
-  |--------------|-------------|
-  | `IAiConversationOperations` | The conversation operations interface for conversation management.<br />Methods of this interface like `Run`, `StreamAsync`, `Handle`, and others, allow you to send messages, receive responses, handle action tools, and manage various other aspects of the conversation lifecycle. |
-
-* `SetUserPrompt` Definition  
-  ```csharp
-  void SetUserPrompt(string userPrompt);
-  ```
-* `AiConversationCreationOptions` Class  
-  Use this class to set conversation creation options, including values for agent parameters and the conversation's expiration time if it remains idle.  
-  ```csharp
-  // Conversation creation options, including agent parameters and idle expiration configuration
-  public class AiConversationCreationOptions
-  {
-      // Values for agent parameters defined in the agent configuration
-      // Used to provide context or input values at the start of the conversation
-      public Dictionary<string, object> Parameters { get; set; }
-
-      // Optional expiration time (in seconds)
-      // If the conversation is idle for longer than this, it will be automatically deleted
-      public int? ExpirationInSec { get; set; }
-
-      // Initializes a new conversation instance with no parameters
-      // Use when you want to configure conversation options incrementally
-      public AiConversationCreationOptions();
-
-      // Initializes a new conversation instance and passes it a set of parameter values
-      public AiConversationCreationOptions(Dictionary<string, object> parameters);
-
-      // Adds an agent parameter value for this conversation
-      // Returns the current instance to allow method chaining
-      public AiConversationCreationOptions AddParameter(string name, object value);
-  }
-  ```
-
-</ContentFrame>
-<ContentFrame>
-
-### Processing action-tool requests:
-During the conversation, the LLM can request the agent to trigger action tools.  
-The agent will pass a requested action tool's name and parameters to the client,  
-and it is then up to the client to process the request.  
-
-The client can process an action-tool request using a [handler](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers) or a [receiver](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers).  
-
-#### <u>Action-tool Handlers</u>
-A **handler** is created for a specific action tool and registered with the server using the `Handle` method.  
-When the LLM triggers this action tool with an action request, the handler is invoked to process the request, returns a response to the LLM, and ends automatically.  
-
-<Admonition type="note" title="">
-Handlers are typically used for simple, immediate operations like storing a document in the database and returning a confirmation, performing a quick calculation and sending its results, and other scenarios where the response can be generated and returned in a single step.  
-</Admonition>
-
-* To **create a handler**,  
-  pass the `Handle` method -  
-   * The action tool's name.  
-   * An object to populate with the data sent with the action request.  
-     Make sure that the object has the same structure defined for the action tool's parameters schema.  
-
-* When an **action request for this tool is received**,  
-  the handler will be given -  
-   * The populated object with the data sent with the action request.  
-
-* When you **finish handling the requested action**,  
-  `return` a response that will be sent by the agent back to the LLM.  
-
-* **Example**  
-  In this example, the action tool is requested to store an employee's details in the database.  
-  ```csharp
-  // "store-performer-details" action tool handler
-  chat.Handle("store-performer-details", (Performer performer) =>
-  {
-      using (var session = store.OpenSession())
-      {
-          // store the values in the Performers collection in the database
-          session.Store(performer);
-          session.SaveChanges();
-      }
-
-      // return to the agent an indication that the action went well.
-      return "done";
-  });
-
-  // An object that represents the arguments provided by the LLM for this tool call
-  public class Performer
-  {
-      public string suggestedReward;
-      public string employeeId;
-      public string profit;
-  }
-  ```
-* `Handle` overloads  
-  ```csharp
-  void Handle<TArgs>(string actionName, Func<TArgs, Task<object>> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
-
-  void Handle<TArgs>(string actionName, Func<TArgs, object> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel) where TArgs : class;
-  
-  void Handle<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, Task<object>> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
-
-  void Handle<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, object> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel) where TArgs : class;
-  ```
-
-* `Handle` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | actionName | `string` | The action tool name |
-  | action | `Func<TArgs, Task<object>>` or `Func<TArgs, object>` or `Func<AiAgentActionRequest, TArgs, Task<object>>` or `Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the action request and returns a response to the LLM |
-  | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
-
-#### <u>Action-tool Receivers</u>
-A **receiver** is created for a specific action tool and registered with the server using the `Receive` method.  
-When the LLM triggers this action tool with an action request, the receiver is invoked to process the request, but unlike a handler, the receiver remains active until `AddActionResponse` is explicitly called to close the pending request and send a response to the LLM.  
-  
-<Admonition type="note" title="">
-Receivers are typically used asynchronously for multi-step or delayed operations such as waiting for an external event or for user input before responding, performing long-running operations like batch processing or integration with an external system, and other use cases where the response cannot be generated immediately.  
-</Admonition>
-
-* To **create a receiver**,  
-  pass the `Receive` method -  
-   * The action tool's name.  
-   * An object to populate with the data sent with the action request.  
-     Make sure that this object has the same structure defined for the action tool's parameters schema.  
-
-* When an **action request for this tool is received**,  
-  the receiver will be given -  
-   * An `AiAgentActionRequest` object containing the details of the action request.  
-   * The populated object with the data sent with the action request.  
-
-* When you **finish handling the requested action**,  
-  call `AddActionResponse`. Pass it -  
-   * The action tool's ID.  
-   * The response to send back to the LLM.  
-     <Admonition type="note" title="">
-     Note that the response can be sent at any time, even after the receiver has finished executing,  
-     and from any context, not necessarily from within the receiver callback.  
-     </Admonition>
-
-* **Example**  
-  In this example, a receiver gets a recommendation for rewards that can be given to a performant employee and processes it.  
-  <Tabs groupId='receiver'>
-  <TabItem value="Asynchronous" label="Asynchronous">
-  ```csharp
-  chat.Receive("store-performer-details", async (AiAgentActionRequest request, Performer performer) =>
-  {
-    // Perform asynchronous work
-    using (var session = store.OpenAsyncSession())
-    {
-        await session.StoreAsync(performer);
-        await session.SaveChangesAsync();
-    }
-
-    // Example: Send a notification email asynchronously
-    await EmailService.SendNotificationAsync("manager@company.com", performer);
-
-    // Manually send the response to close the action
-    chat.AddActionResponse(request.ToolId, "done");
-  });
+  var createdAgentResult = await store.AI.CreateAgentAsync(
+      agentConfiguration, 
+      new Performer
+          {
+            SuggestedReward = "Your suggestions for a reward",
+            EmployeeId = "The ID of the employee that made the largest profit",
+            Profit = "The profit the employee made"
+          });
   ```
   </TabItem>
-  <TabItem value="Synchronous" label="Synchronous">
+  <TabItem value="Performer_class" label="Performer_class">
   ```csharp
-  chat.Receive("store-performer-details", (AiAgentActionRequest request, Performer performer) =>
+  public class Performer
   {
-    // Perform synchronous work
-    using (var session = store.OpenSession())
-    {
-        session.Store(performer);
-        session.SaveChanges();
-    }
-
-    // Add any processing logic here
-
-    // Manually send the response and close the action
-    chat.AddActionResponse(request.ToolId, "done");
-  });
+     public string SuggestedReward;
+     public string EmployeeId;
+     public string Profit;
+  }
   ```
   </TabItem>
   </Tabs>
 
-* `Receive` Overloads  
-  ```csharp
-  // Registers an Asynchronous receiver for an action tool
-  void Receive<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, Task> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
-
-  // Registers a Synchronous receiver for an action tool
-  void Receive<TArgs>(string actionName, Action<AiAgentActionRequest, TArgs> action, AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
-  ```
-
-* `Receive` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | actionName | `string` | The action tool name |
-  | action | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request |
-  | aiHandleError | `AiHandleErrorStrategy` | Errors handling strategy.<br /> `SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions.|
-
-* `AddActionResponse` Definition
-  ```csharp
-  // Closes the action request and sends the response back to the LLM
-  void AddActionResponse(string toolId, string actionResponse)
-  ```
-
-* `AddActionResponse` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | toolId | `string` | The action request unique ID |
-  | actionResponse | `string` | The response to send back to the LLM through the agent |
-
-* `AiAgentActionRequest` Class  
-  Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
-  ```csharp
-  public class AiAgentActionRequest
-  {
-    // Action tool name
-    public string Name;
-
-    // Action tool unique ID
-    public string ToolId;
-
-    // Request arguments provided by the LLM
-    public string Arguments;
-  }
-  ```
-
-</ContentFrame>
-<ContentFrame>
-
-### Conversation response:
-
-The LLM response is returned by the agent to the client in an `AiAnswer` object, with an answer to the user prompt and the conversation status, indicating whether the conversation is complete or a further "turn" is required.  
-
-* `AiAnswer`Syntax  
-  ```csharp
-  public class AiAnswer<TAnswer>
-  {
-      // The answer content produced by the AI
-      public TAnswer Answer;
-
-      // The status of the conversation
-      public AiConversationResult Status;
-  }
-
-  public enum AiConversationResult
-  {
-      // The conversation has completed and a final answer is available
-      Done,
-      // Further interaction is required, such as responding to tool requests
-      ActionRequired
-  }
-  ```
-
-</ContentFrame>
-<ContentFrame>
-
-### Setting user prompt and running the conversation:
-
-Set the user prompt using the `SetUserPrompt` method, and run the conversation using the
-`RunAsync` method.
-<Admonition type="note" title="">
-You can also use `StreamAsync` to **stream** the LLM's response as it is generated.  
-Learn how to do this in the [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses) section.
-</Admonition>
-
-```csharp
-// Set the user prompt and run the conversation
-chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
-
-var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
-
-if (LLMResponse.Status == AiConversationResult.Done)
-{
-    // The LLM successfully processed the user prompt and returned its response.
-    // The performer's ID, profit, and suggested rewards were stored in the Performers
-    // collection by the action tool, and are also returned in the final LLM response.
-}
-```
-
-See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example).  
-
-</ContentFrame>
 </Panel>
 
-<Panel heading="Stream LLM responses">
+<span id="managing-conversations"></span>
+<Panel heading="Manage conversations">
 
-You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
+<ContentFrame>
 
-Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
+<span id="setting-a-conversation"></span>
+### Create a conversation:
+
+* Create a conversation using the `Store.AI.Conversation` method. Pass:  
+  * The agent ID.  
+  * The conversation ID or conversation document prefix.
+  * Conversation creation options - including values for any agent parameters, if defined.
+
+* The object returned by the `Conversation` method is used to run the conversation.  
+   See [Set user prompt and run the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation).
 
 * **Example**  
+  <TabItem>
   ```csharp
-  // A StringBuilder, used in this example to collect the streamed response
-  var reward = new StringBuilder();
+  // Create a conversation:      
+  var chat = store.AI.Conversation(
+      // The agent ID
+      createdAgentResult.Identifier,
+      // The conversation document prefix
+      "Performers/",
+      // Add an agent parameter
+      new AiConversationCreationOptions().AddParameter("country", "France"));
+  ```
+  </TabItem>
 
-  // Using StreamAsync to collect the streamed response
-  // The response property to stream is in this case `suggestedReward`
-  var LLMResponse = await chat.StreamAsync<Performer>(responseObj => responseObj.suggestedReward, str =>
+  <Admonition type="note" title="">
+      
+  Conversations are stored as documents in the `@conversations` collection.  
+  The conversation ID or prefix you provide determines whether a new conversation will start or an existing one will resume:
+      
+  * **Start a new conversation**  
+    To start a new conversation, provide a prefix ending with  `/` or `|` (e.g., `Performers/`).  
+    RavenDB will auto-generate the rest of the conversation document ID (see [document ID generation](../../../server/kb/document-identifier-generation)).
+      
+  * **Resume an existing conversation**  
+    To resume an existing conversation, provide the full ID of an existing conversation document  
+    (e.g., `Performers/0000000000000008883-A`).  
+    The conversation will be retrieved from storage and resumed from where it left off.
+      
+  </Admonition>
+    
+</ContentFrame>
+    
+<ContentFrame>
+
+<span id="processing-action-tool-requests"></span>
+### Process action-tool requests
+
+* During the conversation, the LLM may request the agent to trigger an action tool.  
+  When this happens, the agent forwards the tool’s name and parameters to the client -  
+  and it’s up to the client to handle the request.
+
+* The client can process an action-tool request using either a [Handler](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers) 
+  or a [Receiver](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers).  
+
+---
+
+#### <u>Action-tool Handlers</u>
+    
+A **handler** is created for a specific action tool and registered with the server using the `Handle` method.  
+When the LLM triggers the action tool, the handler is invoked to process the request.
+After processing is complete, the handler returns a result to the agent, which then sends it to the LLM as the tool’s response.    
+
+<Admonition type="note" title="">
+**When to use a handler**:      
+Handlers are typically used for simple, immediate operations such as storing a document in the database and returning a confirmation, 
+performing a quick calculation and returning the result, or any scenario where the response can be generated and returned in a single step.  
+</Admonition>
+
+* To **create a handler**, call the `Handle` method and pass:  
+  * The action tool's name.  
+  * A handler function that receives an object matching the structure of the action tool’s parameters schema.
+    The object will be automatically populated with data from the LLM when it triggers the tool.
+
+* When you **finish processing the requested action**, simply `return` a result.  
+  The agent will forward this result to the LLM as the tool’s response.
+
+* **Example**  
+  This handler stores the performer’s details in the database when the LLM triggers the `store-performer-details` action tool.  
+
+  <Tabs groupId='languageSyntax'>  
+  <TabItem value="Handler" label="Handler">
+  ```csharp
+  // Handler for the "store-performer-details" action tool
+  chat.Handle(
+      "store-performer-details", // Action tool's name
+      (Performer performer) =>   // Handler function  
+      {
+          using (var session = store.OpenSession())
+          {
+              // Store the performer’s data in the database    
+              session.Store(performer);
+              session.SaveChanges();
+          }
+
+          // Return a response back to the LLM 
+          return "done";
+      }
+  );     
+  ```
+  </TabItem>
+  <TabItem value="Performer_class" label="Performer_class">
+  ```csharp
+  // Class matching the action tool’s parameters schema         
+  public class Performer
   {
-    // Callback invoked with the arrival of each incoming chunk of the processed property
-
-    reward.Append(str); // Add the incoming chunk to the StringBuilder instance
-    return Task.CompletedTask; // Return with an indication that the chunk was processed
-
-  }, CancellationToken.None);
-
-  if (LLMResponse.Status == AiConversationResult.Done)
-  {
-    // Handle the full response when ready
-
-    // The streamed property was fully loaded and handled by the callback above,
-    // remaining parts of the response (including other properties if exist)
-    // will arrive when the whole response is ready and can be handled here.
+     public string SuggestedReward;
+     public string EmployeeId;
+     public string Profit;
   }
   ```
+  </TabItem>
+  </Tabs>
+    
+---
 
-* `StreamAsync` Overloads:  
+#### <u>Action-tool Receivers</u>
 
-      ```csharp
-      // The property to stream is indicated using a lambda expression
-      Task<AiAnswer<TAnswer>> StreamAsync<TAnswer>
-      (Expression<Func<TAnswer, string>> streamPropertyPath, 
-      Func<string, Task> streamedChunksCallback, CancellationToken token = default);
-      ```
+A **receiver** is created for a specific action tool and registered with the server using the `Receive` method.    
+When the LLM triggers the action tool, the receiver is invoked to process the request.    
+Unlike a _handler_, the receiver remains active until `AddActionResponse` is explicitly called to complete the pending request and send a response to the LLM.    
+  
+<Admonition type="note" title="">
+**When to use a receiver**:   
+Receivers are typically used for asynchronous, multi-step, or delayed operations, such as waiting for user input or an external event,
+performing a long-running task like batch processing or external system integration, or any case where the response cannot be generated immediately.   
+</Admonition>
 
-      ```csharp
-      // The property to stream is indicated as a string, using its name 
-      Task<AiAnswer<TAnswer>> StreamAsync<TAnswer>
-      (string streamPropertyPath, 
-      Func<string, Task> streamedChunksCallback, CancellationToken token = default);
-      ```
+* To **create a receiver**, call the `receive` method and pass:   
+  * The action tool's name.  
+  * A handler delegate that receives:
+    * A request object containing metadata about the request (e.g., the tool ID).
+    * A parameter object that matches the structure of the action tool’s schema.
+      This object will be automatically populated with data from the LLM when it triggers the tool. 
 
-* `StreamAsync` Properties
-  | Property | Type | Description |
-  |----------|------|-------------|
-  | streamPropertyPath | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
-  | streamPropertyPath | `string` | The name of the property in the response object to stream.<br /><ul><li>**The selected property must be a simple string** (and not a JSON object or an array, for example).</li><li>It is recommended that this would be the <strong>first property defined in the response schema</strong>.<br />The LLM processes the properties in the order they are defined. Streaming the first property will ensure that streaming to the user starts immediately even if it takes the LLM time to process later properties.</li></ul> |
-  | streamedChunksCallback | `Func<string, Task>` | A callback function that is invoked with each incoming chunk of the streamed property |
-  | token | `CancellationToken` | An optional token that can be used to cancel the streaming operation |
+* When you **finish handling the requested action**, call `AddActionResponse` and pass:  
+   * The action tool's ID.  
+   * The response to send back to the LLM.      
+     <Admonition type="note" title="">
+     Note that the response can be sent at any time, even after the receiver finishes executing,  
+     and from any context, not just inside the receiver callback.  
+     </Admonition>
 
-  | Return value | Description |
-  |--------------|-------------|
-  | `Task<AiAnswer<TAnswer>>` | After streaming the specified property, the return value contains the final conversation result and status (e.g. "Done" or "ActionRequired"). |
+* **Example**  
+  In this example, the receiver stores the performer’s details, sends a notification, and then responds to the LLM.
+    
+  <Tabs groupId='languageSyntax'>  
+  <TabItem value="Receiver_sync" label="Receiver_sync">
+  ```csharp
+  // Receiver for the "store-performer-details" action tool
+  chat.Receive(
+      "store-performer-details", // Action tool's name
+      (AiAgentActionRequest request, Performer performer) => // The receiver handler
+      {
+          using (var session = store.OpenSession())
+          {
+              // Store performer details      
+              session.Store(performer);
+              session.SaveChanges();
+          }
+          
+          // Perform a long-running operation
+          // For example, send a notification email
+          // (EmailService is assumed to be defined elsewhere)
+          EmailService.SendNotification("manager@company.com", performer);     
+      
+          // Call 'AddActionResponse' to send a response back to the LLM when done
+          // and close the request
+          chat.AddActionResponse(request.ToolId, "done");
+      });
+  ```
+  </TabItem>
+  <TabItem value="Receiver_async" label="Receiver_async">
+  ```csharp
+  // Receiver for the "store-performer-details" action tool
+  chat.Receive(
+      "store-performer-details", // Action tool's name
+      async (AiAgentActionRequest request, Performer performer) => // The receiver handler
+      {
+          using (var asyncSession = store.OpenAsyncSession())
+          {
+              // Store performer details   
+              await asyncSession.StoreAsync(performer);
+              await asyncSession.SaveChangesAsync();
+          }
+      
+          // Perform a long-running operation
+          // For example, send a notification email
+          // (EmailService is assumed to be defined elsewhere)
+          await EmailService.SendNotificationAsync("manager@company.com", performer);
+      
+          // Call 'AddActionResponse' to send a response back to the LLM when done
+          // and close the request
+          chat.AddActionResponse(request.ToolId, "done");
+      });
+  ```
+  </TabItem>
+  <TabItem value="Performer_class" label="Performer_class">
+  ```csharp
+  // Class matching the action tool’s parameters schema         
+  public class Performer
+  {
+      public string SuggestedReward;
+      public string EmployeeId;
+      public string Profit;
+  }
+  ```
+  </TabItem>
+  </Tabs>
 
+</ContentFrame>
+    
+<ContentFrame>
+
+<span id="setting-user-prompt-and-running-the-conversation"></span>     
+### Set user prompt and RUN the conversation
+
+Set the user prompt using the `SetUserPrompt` method,  
+then run the conversation using `Run` or `RunAsync`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Run_sync" label="Run_sync">
+```csharp
+// Set the user prompt
+chat.SetUserPrompt(@"
+    Send suggestions to reward the employee that made the largest profit
+    and store the results in the database");
+
+// Run the conversation
+var LLMResponse = chat.Run<Performer>();
+    
+// Check the LLM's response status    
+if (LLMResponse.Status == AiConversationResult.Done)
+{
+    // The LLM successfully processed the user prompt and returned a response.
+    // The performer's ID, profit, and suggested rewards were stored in the Performers
+    // collection by the action tool, and are also included in the final LLM response.
+    var answer = LLMResponse.Answer;
+}
+```
+</TabItem>
+<TabItem value="Run_async" label="Run_async">
+```csharp
+// Set the user prompt
+chat.SetUserPrompt(@"
+    Send suggestions to reward the employee that made the largest profit
+    and store the results in the database");
+
+// Run the conversation
+var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+
+// Check the LLM's response status    
+if (LLMResponse.Status == AiConversationResult.Done)
+{
+    // The LLM successfully processed the user prompt and returned a response.
+    // The performer's ID, profit, and suggested rewards were stored in the Performers
+    // collection by the action tool, and are also included in the final LLM response.
+    var answer = LLMResponse.Answer;
+}    
+```
+</TabItem>
+</Tabs>    
+
+<Admonition type="note" title="">
+Instead of `Run` or `RunAsync`, you can use `StreamAsync` to **stream** the LLM's response as it is generated.  
+See [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).
+</Admonition>
+
+</ContentFrame>
+    
+<ContentFrame>
+
+<span id="conversation-response"></span>
+### Handle the conversation response:
+
+* Each time you call `Run` (or `RunAsync`), the agent returns an `AiAnswer` response object to the client.  
+  This object contains:  
+  * `Answer` -  The LLM's reply to the user prompt (if available).  
+  * `Status` - The current state of the conversation.  
+  * `Usage` - Token usage reported by the model for generating this answer.  
+              Reflects usage for the current turn only.  
+  * `Elapsed` - The total time elapsed to produce the answer.  
+                Measured from the server's request to the LLM until the response was received.
+
+* The status can be:
+  * `"Done"`  
+    The conversation is complete, and a final answer is available in the answer field.  
+  * `"ActionRequired"`  
+    The conversation requires further interaction.  
+    For example, the LLM may have triggered a tool request, and the conversation is paused until the client processes it.
+    
+* See [Return value of Run & Stream](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#return-value-of--run----stream)
+  in the [Syntax](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#syntax) section below.    
+
+</ContentFrame>
+    
+<ContentFrame>
+    
+### Stream LLM responses
+
+* Instead of calling `Run` / `RunAsync`, which returns the LLM's response to the client when it is fully prepared,  
+  you can call `StreamAsync` to [Stream llm responses](../../../ai-integration/ai-agents/overview#streaming-llm-responses),
+  and receive the LLM's response in real time as it is being generated.
+
+* Streaming allows the client to start processing the response before it is complete,  
+  which can improve the application's responsiveness and perceived speed. 
+    
+* The selected property to stream must be a simple `string` (and not a JSON object or an array, for example).
+    
+* It is recommended that the property to stream would be the first one defined in the response schema.  
+  The LLM processes the properties in the order they are defined. 
+  Streaming the first property will ensure that streaming starts immediately even if it takes the LLM time to process later properties.
+
+* **Example**
+  ```csharp
+  // A StringBuilder, used to collect the streamed response
+  var rewardText = new StringBuilder();
+    
+  // Call 'StreamAsync' to collect the streamed response
+  var LLMResponse = await chat.StreamAsync<Performer>(
+      // The response property to stream
+      responseObj => responseObj.SuggestedReward,
+    
+      // Callback function invoked with each incoming chunk of the streamed property    
+      str =>
+      {
+        rewardText.Append(str); // Add the incoming chunk to the StringBuilder instance
+        return Task.CompletedTask; // Return with an indication that the chunk was processed    
+      },
+      CancellationToken.None);
+    
+  // Check the conversation status
+  if (LLMResponse.Status == AiConversationResult.Done)
+  {
+      // The streamed property (`SuggestedReward`) was processed chunk by chunk above
+      // and is fully received.
+      // Other properties in the response (e.g., EmployeeId, Profit) are not streamed,
+      // they will be available in the final response object once the conversation is complete.
+      var answer = LLMResponse.Answer;
+  }
+  ```
+</ContentFrame>
+    
 </Panel>
 
 <Panel heading="Full example">
 
-The agent's user in this example is a human experience manager.  
-The agent helps its user to reward employees by searching, using query tools, 
-for orders sent to a certain country or (if the user prompts it "everywhere") 
-to all countries, and finding the employee that made the largest profit.  
-The agent then runs another query tool to find, by the employee's ID (that 
-was fetched from the retrieved orders) the employee's residence region, 
-and finds rewards suitable for the employee based on this region.  
-Finally, it uses an action tool to store the employee's ID, profit, and reward 
-suggestions in the `Performers` collection in the database, and returns the same 
-details in its final response as well.  
+In this example, the agent’s user is a **Human Experience Manager**.  
+The agent assists the user in rewarding top-performing employees by following these steps:
+    
+* **Search for relevant orders**:  
+  The agent uses a **Query Tool** to retrieve orders shipped to a specific country,  
+  or to all countries if the user prompts it with "everywhere".
+* **Identify the top performer**:  
+  From the retrieved orders, it calculates which employee generated the highest profit.
+* **Retrieve employee details**:  
+  Using the employee’s ID from the top order,  
+  the agent runs another **Query Tool** to fetch the employee’s region of residence.
+* **Find suitable rewards**:  
+  Based on the employee’s region, the agent looks up appropriate reward options.
+* **Store and respond**:  
+  It uses an **Action Tool** to store the employee’s ID, profit, and suggested rewards in the `Performers` collection.  
+  The same information is also returned in the agent’s final response.
 
 ```csharp
 public async Task createAndRunAiAgent_full()
 {
     var store = new DocumentStore();
 
-    // Define connection string to OpenAI
+    // Define a connection string to OpenAI
+    // ====================================
+    
     var connectionString = new AiConnectionString
     {
         Name = "open-ai-cs",
         ModelType = AiModelType.Chat,
+    
         OpenAiSettings = new OpenAiSettings(
             apiKey: "your-api-key",
             endpoint: "https://api.openai.com/v1",
-            // LLM model for text generation
             model: "gpt-4.1")
     };
 
-    // Deploy connection string to server
+    // Deploy the connection string to the server  
     var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
     var putConnectionStringResult = store.Maintenance.Send(operation);
+    
+    // DEFINE THE AGENT
+    // ================
 
-    using var session = store.OpenAsyncSession();
-
-    // Start setting an agent configuration
-    var agent = new AiAgentConfiguration("reward-productive-employee", connectionString.Name,
-    @"You work for a human experience manager.
-    The manager uses your services to find which employee has made the largest profit and to suggest 
-    a reward.
-    The manager provides you with the name of a country, or with the word ""everything"" to indicate 
-    all countries.
-    Then you:
-    1. use a query tool to load all the orders sent to the selected country,
-    or a query tool to load all orders sent to all countries.
-    2. calculate which employee made the largest profit.
-    3. use a query tool to learn in what general area this employee lives.
-    4. find suitable vacations sites or other rewards based on the employee's residence area.
-    5. use an action tool to store in the database the employee's ID, profit, and your reward suggestions.
-    When you're done, return these details in your answer to the user as well.");
-
-    // Set agent ID
-    agent.Identifier = "reward-productive-employee";
-
-    // Define LLM response object
-    agent.SampleObject = "{" +
-                            "\"EmployeeID\": \"embed the employee’s ID here\"," +
-                            "\"Profit\": \"embed the profit made by the employee here\"," +
-                            "\"SuggestedReward\": \"embed suggested rewards here\"" +
-                         "}";
-
-    //  Set agent parameters
-    agent.Parameters.Add(new AiAgentParameter(
-                                  "country", "A specific country that orders were shipped to, " +
-                                  "or \"everywhere\" to look for orders shipped to all countries"));
-
-    agent.Queries =
-    [
-        // Set a query tool to retrieve all orders sent everywhere
-        new AiAgentToolQuery
-            {
-                // Query tool name
-                Name = "retrieve-orders-sent-to-all-countries",
-
-                // Query tool description
-                Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-
-                // Query tool RQL query
-                Query = "from Orders as O select O.Employee, O.Lines.Quantity",
-
-                // Sample parameters object 
-                ParametersSampleObject = "{}"
-            },
+    var agentConfiguration = new AiAgentConfiguration(
+        "Reward productive employee",
+        connectionString.Name,
+        @"
+            You work for a human experience manager.
+    
+            The manager uses your services to find which employee has made the largest profit
+            and to suggest a reward. The manager provides you with the name of a country,
+            or with the word 'everything' to indicate all countries.
         
-            // Set a query tool to retrieve all orders sent to a specific country
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-orders-sent-to-a-specific-country",
-                Description = 
-                       "a query tool that allows you to retrieve all orders sent to a specific country",
-                Query = 
-                       "from Orders as O where O.ShipTo.Country == " + 
-                       "$country select O.Employee, O.Lines.Quantity",
-                ParametersSampleObject = "{}"
-            },
+            Then you:
+            1. Use a query tool to load all the orders sent to the selected country,
+               or a query tool to load all orders sent to all countries.
+            2. Calculate which employee made the largest profit.
+            3. Use a query tool to learn in what general area this employee lives.
+            4. Find suitable vacation sites or other rewards based on the employee's residence area.
+            5. Use an action tool to store in the database the employee's ID, profit, 
+               and your reward suggestions.
+               When you're done, return these details in your answer to the user as well.
+        ");
 
-            // Set a query tool to retrieve the performer's residence region details from the database
-            new AiAgentToolQuery
-            {
-                Name = "retrieve-performer-living-region",
-                Description = 
-                        "a query tool that allows you to retrieve an employee's country, city, and " + 
-                        "region, by the employee's ID",
-                Query = "from Employees as E where id() == $employeeId select E.Address.Country, " + 
-                        "E.Address.City, E.Address.Region",
-                ParametersSampleObject = "{" +
-                          "\"employeeId\": \"embed the employee's ID here\"" +
-                         "}"
-            }
-    ];
+    // Optionally, set the agent ID 
+    // If not provided, the identifier will be auto-generated from the agent's name.
+    agentConfiguration.Identifier = "reward-productive-employee";
 
-    agent.Actions =
-    [
-        // Set an action tool to store the performer's details
-        new AiAgentToolAction
-            {
-                Name = "store-performer-details",
-                Description = 
-                    "an action tool that allows you to store the ID of the employee that made " +
-                    "the largest profit, the profit, and your suggestions for a reward, in the database.",
-                ParametersSampleObject = "{" +
-                          "\"suggestedReward\": \"embed your suggestions for a reward here\", " +
-                          "\"employeeId\": \"embed the employee’s ID here\", " +
-                          "\"profit\": \"embed the employee’s profit here\"" +
-                               "}"
-            }
-    ];
-
+    // Define the LLM response object
+    agentConfiguration.SampleObject = @"
+    {    
+        ""SuggestedReward"": ""Embed your suggestions for a reward here"",
+        ""EmployeeID"": ""Embed the ID of the employee that made the largest profit here"",
+        ""Profit"": ""Embed the profit the employee made here""
+    }";
+    
+    // Set agent parameters
+    agentConfiguration.Parameters.Add(new AiAgentParameter(
+        "country",
+        @"A specific country that orders were shipped to,
+          or ""everywhere"" to look for orders shipped to all countries"));
+    
+    // Set a limit on how many times the LLM is allowed to invoke agent tools
+    // in response to a single user prompt.
+    agentConfiguration.MaxModelIterationsPerCall = 3;
+    
     // Set chat trimming configuration
-    AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
+    var summarization = new AiAgentSummarizationByTokens()
     {
-        // Summarize old messages When the number of tokens stored in the conversation exceeds this limit
+        // When the number of tokens stored in the conversation exceeds this limit
+        // summarization of old messages will be triggered.
         MaxTokensBeforeSummarization = 32768,
-        // Max number of tokens that the conversation is allowed to contain after summarization
+        // The maximum number of tokens that the conversation is allowed to contain
+        // after summarization.
         MaxTokensAfterSummarization = 1024
     };
 
-    agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
+    agentConfiguration.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
+    
+    // ADD AGENT TOOLS
+    // ===============
 
-    // Limit the number of times the LLM can request for tools in response to a single user prompt
-    agent.MaxModelIterationsPerCall = 3;
+    // Query tools:
+    agentConfiguration.Queries =
+    [
+        // Set a query tool to retrieve all orders sent everywhere
+        new AiAgentToolQuery
+        {
+            // Query tool name
+            Name = "retrieve-orders-sent-to-all-countries",
 
-    var createResult = await store.AI.CreateAgentAsync(agent, new Performer
-    {
-        suggestedReward = "your suggestions for a reward",
-        employeeId = "the ID of the employee that made the largest profit",
-        profit = "the profit the employee made"
-    });
+            // Query description
+            Description = "A query that allows you to retrieve all orders sent to all countries",
 
-    // Set chat ID, prefix, agent parameters.
-    // (specific country activates one query tool,"everywhere" activates another)
+            // RQL
+            Query = @"
+                from Orders as o
+                select o.Employee, o.Lines.Quantity",
+
+            // Sample parameters object 
+            ParametersSampleObject = "{}"
+        },
+        
+        // Set a query tool to retrieve all orders sent to a specific country
+        new AiAgentToolQuery
+        {
+            Name = "retrieve-orders-sent-to-a-specific-country",
+            Description = 
+                   "A query that allows you to retrieve all orders sent to a specific country",
+            Query = @"
+                from Orders as o
+                where o.ShipTo.Country == $country
+                select o.Employee, o.Lines.Quantity",
+            ParametersSampleObject = "{}"
+        },
+
+        // Set a query tool to retrieve the performer's residence details from the database
+        new AiAgentToolQuery
+        {
+            Name = "retrieve-performer-living-region",
+            Description = @" 
+                A query that allows you to retrieve an employee's country,
+                city, and region, by the employee's ID",
+            Query = @"
+                from Employees as e 
+                where id() == $employeeId
+                select e.Address.Country, e.Address.City, e.Address.Region",
+            ParametersSampleObject = @"
+                {
+                    ""employeeId"": ""Embed the employee's ID here""
+                }"
+        }
+    ];
+
+    // Action tools:
+    agentConfiguration.Actions =
+    [
+        // Set an action tool to store the performer's details
+        new AiAgentToolAction
+        {
+            Name = "store-performer-details",
+            Description = @"
+                An action tool that allows you to store the ID of the employee that made the
+                largest profit, the profit amount, and your reward suggestion in the database.",
+            ParametersSampleObject = @"
+                {
+                    ""SuggestedReward"": ""Embed your suggestions for a reward here"",
+                    ""EmployeeId"": ""Embed the employee’s ID here"",
+                    ""Profit"": ""Embed the employee’s profit here""
+                }"
+        }
+    ];
+
+    // Create/deploy the agent
+    // =======================
+    var createdAgentResult = await store.AI.CreateAgentAsync(
+        agentConfiguration,
+        new Performer
+            {
+                SuggestedReward = "Your suggestions for a reward",
+                EmployeeId = "The ID of the employee that made the largest profit",
+                Profit = "The profit the employee made"
+            });
+
+    // Create a conversation with the agent
+    // ====================================
     var chat = store.AI.Conversation(
-        createResult.Identifier,
-        "Performers/",
+        // The conversation document prefix
+        createdAgentResult.Identifier,
+        // The conversation document prefix
+        "Performers/",                
+        // The agent parameter
         new AiConversationCreationOptions().AddParameter("country", "France"));
-
-    // Handle the action tool that the LLM uses to store the performer's details in the database
+    
+    // Define a handler for the "store-performer-details" action tool
+    // ==============================================================
     chat.Handle("store-performer-details", (Performer performer) =>
     {
-        using (var session1 = store.OpenSession())
+        using (var session = store.OpenSession())
         {
-            // store values in Performers collection in database
-            session1.Store(performer);
-            session1.SaveChanges();
+            // Store the performer details in the database
+            session.Store(performer);
+            session.SaveChanges();
         }
         return "done";
     });
 
-    // Set user prompt and run chat
-    chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
+    // Set user prompt:
+    // ================
+    chat.SetUserPrompt(@"
+        Send suggestions to reward the employee that made the largest profit
+        and store the results in the database.");
 
+    // Run the chat/conversation:
+    // ==========================
     var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
 
     if (LLMResponse.Status == AiConversationResult.Done)
     {
-        // The LLM successfully processed the user prompt and returned its response.
+        // The LLM successfully processed the user prompt and returned a response.
         // The performer's ID, profit, and suggested rewards were stored in the Performers
-        // collection by the action tool, and are also returned in the final LLM response.
+        // collection by the action tool, and are also included in the final LLM response.
+        var answer = LLMResponse.Answer;
     }
 }
 ```
+</Panel>
+
+<span id="retrieving-existing-agent-configurations"></span>
+<Panel heading="Retrieve existing agents"> 
+
+You can retrieve the configuration of **an existing agent** using `GetAgent`.  
+  
+```csharp
+// Retrieve an existing agent configuration by its ID
+var existingAgent = store.AI.GetAgent("reward-productive-employee");
+```
+
+You can also retrieve the configurations of **all existing agents** using `GetAgents`.  
+
+```csharp
+// Retrieve ALL existing agentS
+var existingAgentsList = store.AI.GetAgents();
+var agents = existingAgentsList.AiAgents;
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+    
+### Agent configuration    
+    
+`AiAgentConfiguration`    
+
+<TabItem>
+```csharp
+public class AiAgentConfiguration
+{
+    // A unique identifier given to the AI agent.
+    public string Identifier { get; set; }
+    
+    // The agent name.
+    public string Name { get; set; }
+    
+    // The name of the connection string used to connect to the LLM service. 
+    public string ConnectionStringName { get; set; }
+    
+    // The system prompt that defines the role and purpose of the agent and the LLM.
+     public string SystemPrompt { get; set; }
+    
+    // An example object (as string) that sets the expected format of the LLM's response.
+    // The object is translated to a schema before it is sent to the LLM.
+    public string SampleObject { get; set; }
+    
+    // A JSON schema that sets the expected format of LLM's response.
+    // If both a sample object and a schema are defined, only the schema is used.
+    public string OutputSchema { get; set; }
+    
+    // A list of Query tools that the LLM can use (through the agent) to access the database.
+    // The LLM decides when to call them based on user input and context.
+    public List<AiAgentToolQuery> Queries { get; set; }= [];
+    
+    // A list of Action tools that the LLM can use to trigger the user to action.
+    // The LLM decides when to call them based on user input and context.
+    public List<AiAgentToolAction> Actions { get; set; } = [];
+    
+    // The agent parameters used in the query tools.
+    // Their values must be provided each time you start a new chat.   
+    public List<AiAgentParameter> Parameters { get; set; } = new ();
+    
+    // Define if and how the conversation is summarized, 
+    // to minimize the amount of data passed to the LLM when a conversation is started. 
+    public AiAgentChatTrimmingConfiguration ChatTrimming { get; set; } = 
+        new(new AiAgentSummarizationByTokens());
+    
+    // The maximum number of times the LLM is allowed to invoke agent tools
+    // in response to a single user prompt.  
+    public int? MaxModelIterationsPerCall { get; set; }
+
+    // Indicate whether the agent is disabled.
+    public bool Disabled { get; set; }
+}
+```    
+</TabItem>     
+    
+`AiAgentToolQuery`
+    
+<TabItem>
+```csharp
+public class AiAgentToolQuery
+{
+    // The name of the query tool.
+    public string Name { get; set; }
+    
+    // A description of the query tool.
+    // This helps the LLM understand when to invoke this query.
+    public string Description { get; set; }
+    
+    // The RQL query that will be executed against the database when this query tool is invoked.   
+    public string Query { get; set; }
+    
+    // A sample object representing the query parameters 
+    // that the LLM is expected to provide when invoking this query tool.
+    // Should be a JSON-formatted string.
+    public string ParametersSampleObject { get; set; }
+    
+    // The JSON schema representing the query parameters.    
+    // If both a sample object and a schema are defined, only the schema is used.
+    public string ParametersSchema { get; set; }
+    
+    // Options for the query tool.
+    public AiAgentToolQueryOptions Options { get; set; }
+}
+```    
+</TabItem>    
+    
+`AiAgentToolQueryOptions`
+    
+<TabItem>
+```csharp
+public class AiAgentToolQueryOptions 
+{
+    // true: the model is allowed to execute this query on demand based on its own judgment.
+    // false: the model cannot call this query (unless executed as part of initial context).
+    // null: server-side defaults apply
+    public bool? AllowModelQueries { get; set; }
+    
+    // true: the query is executed when conversation starts 
+    //       and its results are added to the initial context.
+    // false: the query is not be executed for the initial context.
+    // null: server-side defaults apply
+    public bool? AddToInitialContext { get; set; }
+}
+```    
+</TabItem>    
+    
+`AiAgentToolAction`
+
+<TabItem>
+```csharp
+public class AiAgentToolAction
+{
+    // The name of the action tool.
+   public string Name { get; set; }
+    
+    // A description of the action tool.
+    // This helps the LLM understand when to trigger this action.
+    public string Description { get; set; }
+    
+    // Define the format in which the LLM will supply data for the requested action
+    // when it decides to trigger this action tool.
+    // The LLM will fill in values for the specified fields based on the conversation context
+    // and any relevant data it has access to.
+    // This should be a JSON-formatted string.
+    public string ParametersSampleObject { get; set;
+    
+    // The JSON schema defines the structure and types of the output you expect from the model.
+    // If both a sample object and a schema are defined, only the schema is used.
+    public string ParametersSchema { get; set; }
+}
+```    
+</TabItem>    
+    
+`AiAgentParameter`
+    
+<TabItem>
+```csharp
+public class AiAgentParameter 
+{
+    // The name of the parameter.
+    public string Name { get; set; }
+    
+    // A description of the parameter.
+    public string Description { get; set; }
+    
+    // Controls whether the parameter value should be sent to the LLM.
+    // `false`: The parameter is hidden from the model (not included in prompts/echo messages).
+    //          Use this for sensitive values like userId, tenantId, companyId, etc.
+    // `true`: The parameter is explicitly exposed to the model.
+    // `undefined` (default): Treated as exposed to the model.
+    public bool? SendToModel { get; set; }
+}
+```
+</TabItem>
+    
+`AiAgentChatTrimmingConfiguration`
+
+<TabItem>
+```csharp
+public class AiAgentChatTrimmingConfiguration
+{
+    // Options for trimming the chat messages into a compact prompt
+    // when token count exceeds a threshold.
+    public AiAgentSummarizationByTokens Tokens { get; set; }
+    
+    // History documents are the copies of chat messages that have been summarized or truncated.
+    // if null, no conversation history documents are created when conversation trimming occurs.
+    public AiAgentHistoryConfiguration History { get; set; }
+}
+```    
+</TabItem>
+    
+`AiAgentSummarizationByTokens`
+    
+<TabItem>
+```csharp
+public class AiAgentSummarizationByTokens
+{
+    // Summarization will be triggered when the total number of tokens used in the conversation
+    // exceeds this limit.
+    public long? MaxTokensBeforeSummarization { get; set; }
+    
+    // The maximum number of tokens to retain in the conversation after summarization.
+    // Messages exceeding this limit will be removed, starting from the oldest.
+    // Default: 1024
+    public long? MaxTokensAfterSummarization { get; set; }
+}
+```    
+</TabItem>    
+    
+`AiAgentHistoryConfiguration`
+    
+<TabItem>
+```csharp
+public class AiAgentHistoryConfiguration
+{
+   
+   // This property defines the timespan after which conversation history documents expire. 
+   public int? HistoryExpirationInSec { get; set; }
+}
+```    
+</TabItem>
+    
+---    
+    
+### Creating the agent   
+    
+<TabItem>
+```csharp
+// Available overloads:
+// ====================
+
+// Creates or updates (synchronously) an AI agent configuration on the database.
+AiAgentConfigurationResult CreateAgent(AiAgentConfiguration configuration)
+
+// Creates or updates (synchronously) an AI agent configuration on the database, 
+// with the given schema as an example for a response object.
+AiAgentConfigurationResult CreateAgent<TSchema>(AiAgentConfiguration configuration,
+    TSchema sampleObject) where TSchema : new()
+
+// Asynchronously creates or updates an AI agent configuration on the database
+Task<AiAgentConfigurationResult> CreateAgentAsync(AiAgentConfiguration configuration,
+    CancellationToken token = default)
+        
+// Asynchronously creates or updates an AI agent configuration on the database, 
+// with the given schema as an example for a response object.
+Task<AiAgentConfigurationResult> CreateAgentAsync<TSchema>(AiAgentConfiguration configuration,
+    TSchema sampleObject, CancellationToken token = default)        
+```
+</TabItem>
+
+| Property      | Type | Description |
+|---------------|------|-------------|
+| **configuration** | `AiAgentConfiguration` | The agent configuration |
+| **sampleObject**  | `TSchema`              | Example response object |
+
+| Return value | Description |
+|--------------|-------------|
+| `AiAgentConfigurationResult` | The result of the agent configuration creation or update, including the agent's ID. |
+
+<TabItem>
+```csharp
+public class AiAgentConfigurationResult
+{
+    public string Identifier { get; set; } // The agent ID
+    public long RaftCommandIndex { get; set; }
+} 
+```
+</TabItem>
+    
+--- 
+    
+### Create a conversation    
+    
+<TabItem>
+```csharp
+// Opens a conversation with an agent.
+public IAiConversationOperations Conversation(
+    string agentId, 
+    string conversationId,
+    AiConversationCreationOptions creationOptions,
+    string changeVector = null)
+```
+</TabItem>
+    
+| Parameter           | Type     | Description          |
+|---------------------|----------|----------------------|
+| **agentId**         | `string` | The agent unique ID. |
+| **conversationId**  | `string` | The conversation document ID or a conversation document prefix (to auto-generate the ID). |
+| **creationOptions** | `AiConversationCreationOptions` | Conversation creation options. |
+| **changeVector**    | `string` | An optional change vector for concurrency control. |    
+
+`AiConversationCreationOptions`
+ 
+<TabItem>
+```csharp
+public class AiConversationCreationOptions 
+{
+    // Values for agent parameters defined in the agent configuration.
+    public Dictionary<string, object> Parameters { get; set; }
+    
+    // Optional expiration time (in seconds).
+    // If the conversation is idle for longer than this, it will be automatically deleted.
+    public int? ExpirationInSec { get; set; }
+}
+```
+</TabItem>
+    
+---
+    
+### Return value of creating a &nbsp; `Conversation`
+    
+Calling `Store.AI.Conversation` returns the `IAiConversationOperations` interface,  
+which includes the following methods for conversation management:
+    
+<TabItem>
+```csharp 
+// Set the user prompt for the conversation
+void SetUserPrompt(string userPrompt);
+```    
+</TabItem>
+    
+| Parameter      | Type     | Description |
+|----------------|----------|-------------|
+| **userPrompt** | `string` | The text of the user’s message. |    
+
+<TabItem>
+```csharp    
+// Handle overloads:
+// Define a handler to handle an action tool, 
+// the handler returns the action response back to the LLM directly.
+void Handle<TArgs>(string actionName, Func<TArgs, Task<object>> action,
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel);
+void Handle<TArgs>(string actionName, Func<TArgs, object> action,
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
+    where TArgs : class;
+void Handle<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, Task<object>> action, 
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel);
+void Handle<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, object> action, 
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel)
+    where TArgs : class;
+```    
+</TabItem>
+
+| Parameter         | Type     | Description |
+|-------------------|----------|-------------| 
+| **actionName**    | `string` | The name of the action tool to handle. |
+| **action**        | `Func<TArgs, Task<object>>`<br/>or<br/>`Func<TArgs, object>`<br/>or<br/>`Func<AiAgentActionRequest, TArgs, Task<object>>`<br/>or<br/>`Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the arguments and returns a response to the LLM. |
+| **aiHandleError** | `AiHandleErrorStrategy` | An optional strategy for handling errors during execution.<br/>`SendErrorsToModel` - Send errors to the model for handling.<br/>`RaiseImmediately` - throw error exceptions. |    
+
+<TabItem>
+```csharp 
+// Receive overloads:
+// Define a receiver to handle an action tool, 
+// Need to explicitly call 'AddActionResponse' to send the action response back to the LLM.
+void Receive<TArgs>(string actionName, Func<AiAgentActionRequest, TArgs, Task> action, 
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel);
+void Receive<TArgs>(string actionName, Action<AiAgentActionRequest, TArgs> action,
+    AiHandleErrorStrategy aiHandleError = AiHandleErrorStrategy.SendErrorsToModel);
+```    
+</TabItem>
+
+| Parameter         | Type     | Description  |
+|-------------------|----------|--------------|
+| **actionName**    | `string` | The name of the action tool to handle. |
+| **action**        | `Func<AiAgentActionRequest, TArgs, Task>`<br/>or<br/>`Action<AiAgentActionRequest, TArgs>` | A handler function that processes action request and returns a response to the LLM. |
+| **aiHandleError** | `AiHandleErrorStrategy` | An optional strategy for handling errors during execution.<br/>`SendErrorsToModel` - Send errors to the model for handling.<br />`RaiseImmediately` - throw error exceptions. |    
+    
+<TabItem>
+```csharp
+// AddActionResponse overloads:
+// Closes the action request and sends the response back to the LLM.
+void AddActionResponse(string toolId, string actionResponse);
+void AddActionResponse<TResponse>(string toolId, TResponse actionResponse)
+    where TResponse : class;
+```    
+</TabItem>
+
+| Parameter          | Type     | Description        |
+|--------------------|----------|--------------------|
+| **toolId**         | `string` | The identifier of the action request. |
+| **actionResponse** | `string` | The response to send back to the LLM through the agent. |
+
+<TabItem>
+```csharp
+// Run overloads:
+// Execute one “turn” of the conversation: 
+// Sends the current prompt, processes any required actions, and awaits the agent’s reply.
+AiAnswer<TAnswer> Run<TAnswer>();
+Task<AiAnswer<TAnswer>> RunAsync<TAnswer>(CancellationToken token = default);
+
+// Stream overloads:
+// Execute one “turn” of the conversation streaming the specified property's value 
+// for immediate feedback.  
+// Sends the current prompt, processes any required actions, 
+// and awaits the agent’s reply while invoking the callback with streamed values.
+Task<AiAnswer<TAnswer>> StreamAsync<TAnswer>(
+    string streamPropertyPath,
+    Func<string, Task> streamedChunksCallback, CancellationToken token = default);
+Task<AiAnswer<TAnswer>> StreamAsync<TAnswer>(
+    Expression<Func<TAnswer, string>> streamPropertyPath,
+    Func<string, Task> streamedChunksCallback, CancellationToken token = default);
+
+```    
+</TabItem>
+    
+| Parameter                  | Type     | Description        |
+|----------------------------|----------|--------------------|    
+| **streamPropertyPath**     | `string` | The property in the response object to stream.<br/>The selected property must be a simple string. |
+| **streamPropertyPath**     | `Expression<Func<TAnswer, string>>` | A lambda expression that selects the property to stream from the response object.<br/>The selected property must be a simple string. |
+| **streamedChunksCallback** | `(chunk) => void`   | This callback is invoked for each incoming streamed chunk from the LLM response. | 
+| token                      | `CancellationToken` | An optional token used to cancel the streaming operation. | 
+   
+<TabItem>
+```csharp
+// Retrieve the list of action-tool requests the AI agent needs you to execute.
+IEnumerable<AiAgentActionRequest> RequiredActions();
+```    
+</TabItem>
+    
+---
+    
+### Return value of &nbsp; `Run` &nbsp; & &nbsp; `Stream`
+    
+<TabItem>
+```csharp
+public class AiAnswer<TAnswer>
+{
+    // The LLM's reply to the user prompt.  
+    public TAnswer Answer;
+    
+    // The current status of the conversation. 
+    public AiConversationResult Status;
+    
+    // Token usage reported by the model for generating this answer.  
+    // Reflects usage for the current turn only.      
+    public AiUsage Usage;
+    
+    // The total time elapsed to produce the answer.  
+    // Measured from the server's request to the LLM until the response was received.
+    public TimeSpan Elapsed;
+}
+    
+public enum AiConversationResult
+{
+    // The conversation is complete, 
+    // and a final answer is available in the answer field.
+    Done,
+
+    // Further interaction is required, such as responding to tool requests.
+    ActionRequired,
+}
+
+public class AiUsage
+{
+    public long PromptTokens { get; set; }
+    public long CompletionTokens { get; set; }
+    public long TotalTokens { get; set; }
+    public long CachedTokens { get; set; }
+    public long ReasoningTokens { get; set; }
+}    
+```    
+</TabItem>    
+    
 </Panel>
