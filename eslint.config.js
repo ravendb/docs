@@ -38,6 +38,7 @@ module.exports = [
         HTMLButtonElement: "readonly",
         HTMLDivElement: "readonly",
         HTMLLIElement: "readonly",
+        HTMLImageElement: "readonly",
         MouseEvent: "readonly",
         KeyboardEvent: "readonly",
         Node: "readonly",

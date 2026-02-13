@@ -3,7 +3,7 @@ import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import { IconName } from "@site/src/typescript/iconName";
 import Badge from "@site/src/components/Common/Badge";
-import CardImage from "@site/src/components/Common/CardImage";
+import LazyImage from "@site/src/components/Common/LazyImage";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import { clsx } from "clsx";
 
@@ -44,9 +44,9 @@ export default function CardWithImageHorizontal({
                         "relative flex items-center",
                     )}
                 >
-                    <CardImage
+                    <LazyImage
                         imgSrc={imgSrc}
-                        imgAlt={imgAlt}
+                        alt={imgAlt}
                         className={clsx(
                             "pointer-events-none",
                             "w-full h-auto object-contain",

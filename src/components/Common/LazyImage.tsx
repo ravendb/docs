@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import ThemedImage from "@theme/ThemedImage";
+import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 
 export interface LazyImageProps
     extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -16,21 +16,12 @@ export default function LazyImage({
     ...props
 }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
-    const resolveSrc = (s: any) => {
-        if (typeof s === "object" && s !== null && "default" in s) {
-            return s.default;
-        }
-        return s;
-    };
-    const finalSrc = imgSrc || src;
-    const isThemedImage =
-        typeof finalSrc === "object" &&
-        finalSrc !== null &&
-        !("default" in finalSrc) &&
-        ("light" in finalSrc || "dark" in finalSrc);
-    const handleLoad = () => {
+
+    const handleLoaded = () => {
         setIsLoaded(true);
     };
+
+    const sources = getSources({ imgSrc, src });
 
     return (
         <span
@@ -49,40 +40,40 @@ export default function LazyImage({
                     aria-hidden="true"
                 />
             )}
-            {isThemedImage ? (
-                <ThemedImage
-                    {...props}
-                    sources={{
-                        light: resolveSrc(
-                            (finalSrc as { light: string; dark: string }).light,
-                        ),
-                        dark: resolveSrc(
-                            (finalSrc as { light: string; dark: string }).dark,
-                        ),
-                    }}
-                    alt={alt}
-                    className={clsx(
-                        className,
-                        "transition-opacity duration-300",
-                        !isLoaded ? "opacity-0" : "opacity-100",
-                    )}
-                    onLoad={handleLoad}
-                    loading="lazy"
-                />
-            ) : (
-                <img
-                    {...props}
-                    src={resolveSrc(finalSrc)}
-                    alt={alt}
-                    className={clsx(
-                        className,
-                        "transition-opacity duration-300",
-                        !isLoaded ? "opacity-0" : "opacity-100",
-                    )}
-                    onLoad={handleLoad}
-                    loading="lazy"
-                />
-            )}
+            <ThemedImage
+                {...props}
+                sources={sources}
+                alt={alt}
+                className={clsx(
+                    className,
+                    "transition-opacity duration-300",
+                    !isLoaded ? "opacity-0" : "opacity-100",
+                )}
+                onLoad={handleLoaded}
+                onError={handleLoaded}
+                loading="lazy"
+            />
         </span>
     );
+}
+
+function getSources({
+    imgSrc,
+    src,
+}: Pick<LazyImageProps, "imgSrc" | "src">): ThemedImageProps["sources"] {
+    if (src) {
+        return {
+            light: src,
+            dark: src,
+        };
+    }
+
+    if (typeof imgSrc === "string") {
+        return {
+            light: imgSrc,
+            dark: imgSrc,
+        };
+    }
+
+    return imgSrc;
 }
