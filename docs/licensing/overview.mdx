@@ -100,7 +100,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 ### Professional license
 
 * A standard production-grade license.  
-* Extended automatically if the server has access to RavenDB's License Server.  
+* Extended automatically if the server has access to RavenDB's License server.  
 
 </ContentFrame>
 <ContentFrame>
@@ -108,7 +108,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 ### Enterprise license
 
 * A high-performance, fully-featured production-grade license.  
-* Extended automatically if the server has access to RavenDB's License Server.  
+* Extended automatically if the server has access to RavenDB's License server.  
 
 </ContentFrame>
 <ContentFrame>
@@ -189,25 +189,25 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
    Click to open the About page and view RavenDB version, license, support info, and more.  
 
 2. **License**  
+   ![License Info](./assets/about_license-section.png)
 
-      ![License Info](./assets/license_info.png)
-
-      * A. Informs you of your current license type  
-      * B. Informs you of your license expiration date  
-      * C. Informs you whether your server is currently connected to RavenDB's license server.  
-        When connected, you can:  
-        ![License Options](./assets/license_options.png)
-        * **Renew License** to extend its expiration date
-        * **Replace** your license
-        * **Force update** to sync with the license server
-      
-        <Admonition type="info" title="">
-        Connectivity issues are often caused by a firewall blocking the connection, 
-        or the server running offline.  
-
-        * Make sure that RavenDB has access to `api.ravendb.net`.  
-        * Click the refresh button to check the connection.  
+      * **A**. **License type**  
+        shows whether your server runs with a valid license,  
+        and if so - displays the license type and expiration date.  
+      * **B**. **License server**  
+        Shows whether your server can reach the License server to update or renew the license.
+        <Admonition type="note" title="">
+        Connectivity issues are often caused by a firewall blocking the connection, or RavenDB running offline.  
+        If the License server is unavailable, the following dialog will be displayed:
+        ![License Options](./assets/license-server-unavailable.png)
+         * Make sure that RavenDB has access to `api.ravendb.net`.  
+         * Click **Test again** to recheck the connection.  
         </Admonition>
+      * **C**. **Register license**  
+        Click to [submit and activate](../licensing/activate-license) your license:  
+        When the license is activated, the **Register license** button will be replaced with these buttons:  
+        * [Replace](../licensing/replace-license) - to replace your license with a new one.
+        * [Force update](../licensing/force-update) - to trigger an immediate license update.
 
 3. **Software Version**  
    
@@ -215,10 +215,10 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
    
       * **Server version**  
         Shows your current server version.  
-        Click `Changelog` to see logged version changes. 
+        Click **Changelog** to see logged version changes. 
       * **Updates**  
         Informs you whether you are using the latest server version.  
-        Click Check for updates to see if an update is available.  
+        Click **Check for updates** to see if an update is available.  
 
 4. **Support & Community**  
 
@@ -230,13 +230,13 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
       * **Let's solve it together**  
         Allows you to join our developers Discord community.  
 
-5. **License details tab**  
-   Details the features that are enabled for your server with each license type.  
+5. **License details** tab  
+   Details the features that your license enables for your server.  
    Use the scrollbar to slide through the full features list.  
 
       ![License Details tab](./assets/license_details_tab.png)
 
-6. **Support plan tab**  
+6. **Support plan** tab  
    Specifies your current support plan and allows you to upgrade it.  
 
       ![Support plan tab](./assets/support_plan_tab.png)
