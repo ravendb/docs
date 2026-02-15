@@ -31,13 +31,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this page:
     * [License types](../licensing/overview#license-types)
-        * [Developer license](../licensing/overview#developer-license)
-        * [Community license](../licensing/overview#community-license)
-        * [Professional license](../licensing/overview#professional-license)
-        * [Enterprise license](../licensing/overview#enterprise-license)
-        * [ISV licenses](../licensing/overview#isv-licenses)
+       * [Developer license](../licensing/overview#developer-license)
+       * [Community license](../licensing/overview#community-license)
+       * [Professional license](../licensing/overview#professional-license)
+       * [Enterprise license](../licensing/overview#enterprise-license)
+       * [ISV licenses](../licensing/overview#isv-licenses)
     * [ISV Bank-of-Cores license](../licensing/overview#isv-bank-of-cores-license)
-    * [Manage License view](../licensing/overview#manage-license-view)
+    * [Licensing an Embedded server](../licensing/overview#licensing-an-embedded-server)
+       * [TestDriver server license](../licensing/overview#testdriver-server-license)
+    * [Studio license management](../licensing/overview#studio-license-management)
 
 </Admonition>
 
@@ -181,7 +183,29 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
 </ContentFrame>
 </Panel>
 
-<Panel heading="Manage License view">
+<Panel heading="Licensing an Embedded server">
+
+* The license types that can be applied to an [embedded server](../server/embedded) are the same as those of a regular RavenDB server, providing the same feature sets.  
+* Licensing options can be applied using the `ServerOptions.LicensingOptions` class:
+   * Pass a license string via `ServerOptions.LicensingOptions.License`.
+   * Alternatively, pass a license file path via `ServerOptions.LicensingOptions.LicensePath`.
+* For details and code samples, see the [embedded server licensing section](../server/embedded#embedded-server-licensing).
+
+---
+
+### TestDriver server license
+
+* TestDriver, used for unit tests, runs an embedded server that can be licensed [in the same way](../server/embedded#embedded-server-licensing) as a regular embedded server.  
+* Make sure you license your TestDriver server so your tests are not affected by the limitations of an unlicensed server.  
+  <Admonition type="note" title="">
+  You can configure the server to throw a `LicenseExpiredException` if it fails to validate a license.  
+  To enable this option, set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` to `true`.  
+  </Admonition>
+* For a full explanation and code samples, see the [TestDriver page](../start/test-driver.mdx#licensing).
+
+</Panel>
+
+<Panel heading="Studio license management">
 
 ![About page](./assets/about-page.png)
 

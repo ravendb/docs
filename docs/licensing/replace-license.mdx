@@ -36,10 +36,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 If you [activated your license](../licensing/activate-license) using a configuration key, you may have used either the `License` or the `License.Path` key. Replace the value of the key you used with the new license information:
 
   * [License](../licensing/configuration.mdx#license)  
-    Use this key to provide your license as a string value.  
-    E.g., `"License": "{ replace with your new license }"`  
+    Allows you to provide the license text directly, as the key's value.
+    E.g., `"License": "{ replace with the full text of your new license }"`  
   * [License.Path](../licensing/configuration.mdx#licensepath)  
-    Use this key to provide the path to a file that contains your license.  
+    Allows you to provide a path to a file that contains your new license.
     E.g., `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
 
 * The configuration keys can be set in the `settings.json` file or as environment variables.  
