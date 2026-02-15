@@ -1,6 +1,6 @@
 ---
-title: "Installation: License a RavenDB Docker Image"
-sidebar_label: License Under Docker
+title: "License under Docker"
+sidebar_label: "License under Docker"
 sidebar_position: 5
 ---
 
@@ -13,21 +13,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Installation: License a RavenDB Docker Image
+# License under Docker
 
 <Admonition type="note" title="">
 
-* This page explains how to pass a license to a RavenDB server that runs in a Docker container or under a Linux or a Unix system.  
-* A license can be passed to RavenDB in one of the following methods:  
+* This page explains how to pass a license to a RavenDB server that runs in a Docker container or under Linux or Unix.  
+* A license can be passed to RavenDB in one of the following ways:  
    * A path to the license file can be passed to the server via CLI.  
    * Either a path to the license file or the full license text can be passed to the server in the `settings.json` configuration file.  
    * A `RAVEN_License` environment variable can be set.  
 
-* In this page:  
+* In this article:  
   * [Prerequisites](../licensing/license-under-docker.mdx#prerequisites)  
   * [Licensing a RavenDB docker image](../licensing/license-under-docker.mdx#licensing-a-ravendb-docker-image)  
      * [Passing a Path to the License File via CLI](../licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli)  
-     * [Passing a License via `settings.json`](../licensing/license-under-docker#passing-a-license-via-settingsjson)  
+     * [Passing a License via `settings.json`](../licensing/license-under-docker.mdx#passing-a-license-via-settingsjson)  
      * [Setting a `RAVEN_License` Environment Variable](../licensing/license-under-docker#setting-a-raven_license-environment-variable)  
   * [Licensing RavenDB under Linux](../licensing/license-under-docker.mdx#licensing-ravendb-under-linux)  
 
@@ -36,9 +36,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Prerequisites">
 
 * Docker images of RavenDB versions up to `5.x` require no special permissions 
-  since they are installed and handled by the `root` user, that is innately allowed 
-  to access any RavenDB property, including its license.  
-* Docker images of RavenDB `6.0` and on are executed by a **regular user** for 
+  since they are installed and handled by the `root` user, that is inherently allowed to access any RavenDB property, including its license.  
+* Docker images of RavenDB `6.0` and later are executed by a **regular user** for 
   security reasons, requiring that this user would be explicitly permitted to access 
   RavenDB properties, including any mounted license folder.  
 * Read more about this in the dedicated [migration page](../migration/server/docker.mdx).  
@@ -73,8 +72,7 @@ using Docker's CLI.
 When RavenDB is executed this way, the license folder will be mounted and the environment variable set with the license.  
 RavenDB will fetch the license from the environment variable the first time it accesses a database.  
 
-To verify that the server is licensed run it as shown above, create a new database or access an existing one, 
-and then open the **About** view.   
+To verify that the server is licensed, run it as shown above, create a new database or access an existing one, and then open the **About** view.   
 
 ![About view: Licensed Server](./assets/licensed-server.png)
 
@@ -92,7 +90,7 @@ Provide the license as a property of the `settings.json` configuration file in o
 </ContentFrame>
 <ContentFrame>
 
-## Setting a `RAVEN_License` Environment Variable}  
+## Setting a `RAVEN_License` Environment Variable
 
 The full license text can also be added as a docker `RAVEN_License` environment variable when the server is executed.  
 

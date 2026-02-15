@@ -50,7 +50,7 @@ While running RavenDB with a community license, users are required to use the la
 * This policy is enforced when entering Studio. Initially, a dismissible popup reminder appears when Studio is opened. If RavenDB is not upgraded, dismissing the message will no longer be possible, and Studio will be blocked until the server is upgraded.  
 * To solve this issue either upgrade RavenDB or install a license that doesn't enforce this requirement, like a developer license.
 
-Learn moreabout the community license [here](../licensing/overview#community-license).
+Learn more about the community license [here](../licensing/overview#community-license).
 
 <hr />
 
@@ -63,13 +63,12 @@ If more than two weeks passed since you acquired a license and you haven't appli
 
 ### Validating a license on an RHEL 9 machine fails with InvalidDataException
 
-The scenario for this issue includes a RavenDB `6.0.103` or older node failure to launch on `RHEL 9` (Red Hat Enterprise Linux 9) or other Linux distributions that use the same cryptographic policy, with Studio showing `InvalidDataException` license validation errors. It results from an OS restriction over using the `SHA-1` algorithm, that these versions of RavenDB relied upon for license validation.  
+The scenario for this issue includes a RavenDB `6.0.103` or older node failure to launch on `RHEL 9` (Red Hat Enterprise Linux 9) or other Linux distributions that use the same cryptographic policy, with Studio showing `InvalidDataException` license validation errors. It results from an OS restriction on using the `SHA-1` algorithm, that these versions of RavenDB relied upon for license validation.  
 
 The issue is resolved on RavenDB `6.0.104` or higher, which adjusts license validation to avoid the `SHA-1` policy issue.
 
 If upgrading RavenDB is not possible at the moment, a temporary workaround can be changing the OS cryptographic policy to allow `SHA-1`, and restarting RavenDB:
 ```bash
-// Allow SHA-1 in system crypto policies, then restart RavenDB:  
 sudo update-crypto-policies --set DEFAULT:SHA1 
 sudo systemctl restart ravendb
 ```
@@ -79,7 +78,7 @@ sudo systemctl restart ravendb
 ### ISV license cannot be upgraded via online tool
 
 Upgrading an ISV license through the portal tool will fail because ISV licenses are not eligible for these automatic upgrades.
-If you have an ISV license and you want to upgrade RavenDB, please contact RavenDB support and request for the upgrade.  
+If you have an ISV license and you want to upgrade RavenDB, please contact RavenDB support and request an upgrade.  
 
 <hr />
 

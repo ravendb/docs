@@ -1,6 +1,6 @@
 ---
-title: "Force License Update"
-sidebar_label: Force Update
+title: "Force license update"
+sidebar_label: "Force license update"
 sidebar_position: 4
 ---
 
@@ -13,7 +13,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Force License Update
+# Force license update
 <Admonition type="note" title="">
 
 * RavenDB contacts the License server at `api.ravendb.net` every 24 hours (counted from server startup), to check if there are any updates in your current license that need to be applied.  
@@ -27,7 +27,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * You can also **force an immediate update** via Studio, as described below, if changes were made to your current license and you want to apply them immediately.  
   This option, too, is only available if there is an active connection to the License server.
 
-* In this page:
+* In this article:
    * [Force license update from Studio](../licensing/force-update.mdx#force-license-update-from-studio)
 
 </Admonition>
@@ -45,7 +45,7 @@ To force an immediate update of your license, open the **About** view and click 
    Click to force an immediate update of your current license.  
    <Admonition type="note" title="">
    Set the [DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi) configuration option to determine where the license is updated from:  
-   * When **true**, the license is updated from the [configuration keys](../licensing/activate-license#activate-your-license-using-a-configuration-key).  
+   * When **true**, the license is updated from the [configuration key](../licensing/activate-license#activate-your-license-using-a-configuration-key).  
    * When **false**, the license is updated from the License server, provided there is an active connection to it.  
     </Admonition>
 

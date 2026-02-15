@@ -39,12 +39,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ### License
 
-* When using this configuration key in _settings.json_ embed the license key as a **string**, e.g.:  
+* When using this configuration key in _settings.json_, embed the license key as a **string**, e.g.:  
   `"License": "{ paste your license key including curly brackets here }"`  
+* When using this configuration key as an [environment variable](../server/configuration/configuration-options.mdx#environment-variables), embed the JSON license key **object**.  
+* If `License` is set, it overrides the `License.Path` configuration key.  
 
-* When using this configuration key as an [environment variable](../server/configuration/configuration-options.mdx#environment-variables) embed the JSON license key **object**.  
-
-* If `License` is specified, it overrides the `License.Path` configuration.  
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide only
@@ -52,7 +51,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 </ContentFrame>
 <ContentFrame>
 
-## License.Path
+### License.Path
 
 * Save the license key to a `license.json` file.  
 * Provide the path to this file in the 'License.Path' configuration key:  
@@ -71,7 +70,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ### License.Eula.Accepted
 
-Indicates if End-User License Agreement was accepted.
+Indicates whether the EULA (End User License Agreement) has been accepted.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -95,7 +94,7 @@ Indicates if license can be activated.
 ### License.CanForceUpdate
 
 EXPERT ONLY.  
-Indicates if license can be updated from the License Server (api.ravendb.net).
+Indicates if license can be updated from the License Server at `api.ravendb.net`.
 
 - **Type**: `bool`
 - **Default**: `true`
@@ -107,7 +106,7 @@ Indicates if license can be updated from the License Server (api.ravendb.net).
 ### License.CanRenewLicense / License.CanRenew
 
 EXPERT ONLY.  
-Indicates if license can be renewed from the License Server (api.ravendb.net).  
+Indicates if license can be renewed from the License Server at `api.ravendb.net`.  
 Relevant only for Developer and Community licenses.
 
 - **Type**: `bool`
@@ -132,7 +131,7 @@ Skip logging of lease license errors.
 ### License.DisableAutoUpdate
 
 EXPERT ONLY.  
-Disable all updates of the license, from string, from path and from the License Server (api.ravendb.net). 
+Disable all license updates: from a string, from a path, and from the License Server at `api.ravendb.net`. 
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -144,12 +143,12 @@ Disable all updates of the license, from string, from path and from the License 
 ### License.DisableAutoUpdateFromApi
 
 EXPERT ONLY.  
-Disable automatic updates of the license from the License Server (api.ravendb.net).  
+Disable automatic updates of the license from the License Server at `api.ravendb.net`.  
 Can still update the license by either:  
-
-* Setting the [License](../licensing/configuration.mdx#license) configuration
-* Setting the [License.Path](../licensing/configuration.mdx#licensepath) configuration
+* Setting the [License](../licensing/configuration.mdx#license) configuration key
+* Setting the [License.Path](../licensing/configuration.mdx#licensepath) configuration key
 * Replacing the _license.json_ file on disk
+
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
@@ -160,7 +159,7 @@ Can still update the license by either:
 ### License.DisableLicenseSupportCheck
 
 EXPERT ONLY.  
-Disable checking the license support options from the License Server (api.ravendb.net).
+Disable checking the license support options from the License Server at `api.ravendb.net`.
 
 - **Type**: `bool`
 - **Default**: `false`

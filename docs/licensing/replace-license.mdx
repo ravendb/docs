@@ -1,6 +1,6 @@
 ---
-title: "Replace License"
-sidebar_label: Replace License
+title: "Replace license"
+sidebar_label: "Replace license"
 sidebar_position: 2
 ---
 
@@ -13,7 +13,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Replace License
+# Replace license
 
 <Admonition type="note" title="">
 
@@ -21,9 +21,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * A new license will be sent to the email address you provided [while obtaining it](https://ravendb.net/buy).  
 
-* To upgrade RavenDB from a version older than `6.x` to version `6.x` and above, you must upgrade your current license before applying it to your new RavenDB. Learn [below](../licensing/replace-license#upgrade-a-license-older-than-6-x) how to do this.  
+* To upgrade RavenDB from a version older than `6.x` to version `6.x` and above, you must upgrade your current license before applying it to your new RavenDB.  
+  Learn [below](../licensing/replace-license#upgrade-a-license-older-than-6-x) how to do this.  
 
-* In this page:
+* In this article:
     * [Replace your license using a configuration key](../licensing/replace-license#replace-your-license-using-a-configuration-key)  
     * [Replace your license via Studio](../licensing/replace-license#replace-your-license-via-studio)  
     * [Maintain auto-renewal of Let's Encrypt certificates](../licensing/replace-license#maintain-auto-renewal-of-let-s-encrypt-certificates)  
@@ -36,11 +37,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 If you [activated your license](../licensing/activate-license) using a configuration key, you may have used either the `License` or the `License.Path` key. Replace the value of the key you used with the new license information:
 
   * [License](../licensing/configuration.mdx#license)  
-    Allows you to provide the license text directly, as the key's value.
-    E.g., `"License": "{ replace with the full text of your new license }"`  
+    Allows you to provide the license text directly, as the key's value.  
+    e.g., `"License": "{ replace with the full text of your new license }"`  
   * [License.Path](../licensing/configuration.mdx#licensepath)  
-    Allows you to provide a path to a file that contains your new license.
-    E.g., `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+    Allows you to provide a path to a file that contains your new license.  
+    e.g., `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
 
 * The configuration keys can be set in the `settings.json` file or as environment variables.  
   Learn more in the [configuration overview](../server/configuration/configuration-options.mdx) page.
@@ -51,7 +52,7 @@ If you [activated your license](../licensing/activate-license) using a configura
 
 To replace your existing license with a new one, open the **About** view and click the **Replace** option:
 
-![Replace License](./assets/replace-license_button.png)
+![Replace license](./assets/replace-license_button.png)
 
 1. **About**  
    Click to open the **About** view.  
@@ -74,7 +75,7 @@ To replace your existing license with a new one, open the **About** view and cli
 If you have a license for a RavenDB version lower than `6.x`, you must upgrade the license before applying it to RavenDB `6.x` or above.  
 You can upgrade your license in a few seconds using our online [License upgrade tool](https://ravendb.net/l/8O2YU1).  
 
-![Replace License Tool](./assets/replace-license_replace-license-tool.png)
+![Replace license tool](./assets/replace-license_replace-license-tool.png)
 
 A new license will be sent to the email address you registered your current license with.  
 [Replace](../licensing/replace-license#replace-your-license-via-studio) your current license with the new one.  

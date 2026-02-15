@@ -21,15 +21,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
   The license is sent to the email address provided while obtaining it.  
 
 * A few license types are available.  
-  The license type you acquire and activate RavenDB with, determines the database's feature set.  
+  The license type you acquire and activate RavenDB with determines the database's feature set.  
    * Learn more below about each license type.  
-   * visit the [pricing page](https://ravendb.net/buy) to see the entire feature set 
+   * Visit the [pricing page](https://ravendb.net/buy) to see the entire feature set 
      made available by each type.  
  
 * Each license has a specific expiration date.  
-  To renew your license see [renew license](../licensing/renew-license.mdx).  
+  To renew your license, see [renew license](../licensing/renew-license.mdx).  
 
-* In this page:
+* In this article:
     * [License types](../licensing/overview#license-types)
        * [Developer license](../licensing/overview#developer-license)
        * [Community license](../licensing/overview#community-license)
@@ -61,7 +61,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 * When you are ready to go into production:  
    * Be sure to choose a license that offers all the features with which your client was developed.  
      <Admonition type="note" title="Note">
-     If you use [Let's encrypt](../start/installation/setup-wizard#secure-setup-with-a-free-lets-encrypt-certificate) for the new license, you will not be able to simply replace the license since you are using a dev subdomain.  
+     If you use [Let's Encrypt](../start/installation/setup-wizard#secure-setup-with-a-free-lets-encrypt-certificate) for the new license, you will not be able to simply replace the license since you are using a dev subdomain.  
      Instead, you can create a new cluster.  
       </Admonition>
    * [Upgrade to a production license](https://ravendb.net/buy) and then [replace](../licensing/replace-license.mdx) the developer license.  
@@ -75,7 +75,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 * A basic production-grade license.
 * Community licenses last one year and can be renewed every year.  
 * Servers using a Community license are **required to run the latest major version**.  
-  E.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, 
+  e.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, 
   you will be required to upgrade RavenDB to version `7.0`.  
   Running RavenDB of an older version than the latest with a Community license will **block your 
   server's access to Studio**.  
@@ -90,7 +90,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
    * **Close the notification and keep on working**  
      For 14 days, after which Studio will be blocked until the server is upgraded or the license replaced.  
    * **Replace your license**  
-     Acquire a non community license that allows you to use an older version.  
+     Acquire a non-Community license that allows you to use an older version.  
    * **Download a new server version**  
      Upgrade to the latest major version.  
   
@@ -128,12 +128,11 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 <Panel heading="ISV Bank-of-Cores license">
 
 An ISV Bank-of-Cores license allows you to generate RavenDB licenses on your own for a given number of cores.  
-If you purchase a 128-cores license, for example, you can use it to generate 8 licenses for 8-core machines, 
-16 licenses for 4-core machines, or any other combination that suits your needs.  
+If you purchase a 128-core license, for example, you can use it to generate 8 licenses for 8-core machines, 16 licenses for 4-core machines, or any other combination that suits your needs.  
 
 * Available bank-of-cores license types are: Essential, Professional, and Enterprise.  
 * The same license type, allowing the same feature set, is available for all generated sublicenses.  
-  E.g., if the license type you acquire includes the AI integration feature, this feature will be 
+  e.g., if the license type you acquire includes the AI integration feature, this feature will be 
   enabled by all the sublicenses you create.  
 * [Contact RavenDB for more details](https://ravendb.net/contact).  
 
@@ -154,7 +153,7 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
      ![License generation login page](./assets/bank-of-cores_login-email.png)
 
 * An email message with a sign-in link will be sent to the provided email address.  
-  Use this link to enter the bank of cores management page.  
+  Use this link to enter the bank-of-cores management page.  
 
      ![License generation management page](./assets/bank-of-cores_manage-main.png)
 
@@ -164,12 +163,14 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
         The features that are available for the licenses you generate here.  
      3. **Generate new sublicense**  
         Use this section to assign cores to a new sublicense.  
-        ![Generate license](./assets/bank-of-cores_generate-license.png)  
+
+          ![Generate license](./assets/bank-of-cores_generate-license.png)  
+          
           * _Cores count_ - The number of cores you want to assign this sublicense.  
           * _Sublicense tag_ - A tag you want to recognize the sublicense by.  
           * _Customer name_ - The identity of the sublicense's owner.  
-          * _Expiration date_ - The date in which this sublicense will expire and its cores will be returned to your bank.  
-            **Note**: Leavine this field empty will set the expiration date to that of the main license.  
+          * _Expiration date_ - The date on which this sublicense will expire and its cores will be returned to your bank.  
+            **Note**: Leaving this field empty will set the expiration date to that of the main license.  
           * _Generate_ - Click to generate the new sublicense.  
 
 * Generating a sublicense will create a key that you can copy or download and register RavenDB with.  
@@ -216,7 +217,7 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
    ![License Info](./assets/about_license-section.png)
 
       * **A**. **License type**  
-        shows whether your server runs with a valid license,  
+        Shows whether your server runs with a valid license,  
         and if so - displays the license type and expiration date.  
       * **B**. **License server**  
         Shows whether your server can reach the License server to update or renew the license.
@@ -252,13 +253,13 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
 
 4. **Support & Community**  
 
-      ![Support & Community](./assets/support_and_ommunity.png)
+      ![Support & Community](./assets/support_and_community.png)
 
       * **Support type**  
         Informs you of the support type you are entitled to,  
-        and allows you to join our community GitHub discussions.  
+        and allows you to join our community GitHub Discussions.  
       * **Let's solve it together**  
-        Allows you to join our developers Discord community.  
+        Allows you to join our developers' Discord community.  
 
 5. **License details** tab  
    Details the features that your license enables for your server.  
