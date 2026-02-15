@@ -30,16 +30,16 @@ import ContentFrame from "@site/src/components/ContentFrame";
   To renew your license, see [renew license](../licensing/renew-license.mdx).  
 
 * In this article:
-    * [License types](../licensing/overview#license-types)
-       * [Developer license](../licensing/overview#developer-license)
-       * [Community license](../licensing/overview#community-license)
-       * [Professional license](../licensing/overview#professional-license)
-       * [Enterprise license](../licensing/overview#enterprise-license)
-       * [ISV licenses](../licensing/overview#isv-licenses)
-    * [ISV Bank-of-Cores license](../licensing/overview#isv-bank-of-cores-license)
-    * [Licensing an Embedded server](../licensing/overview#licensing-an-embedded-server)
-       * [TestDriver server license](../licensing/overview#testdriver-server-license)
-    * [Studio license management](../licensing/overview#studio-license-management)
+    * [License types](../licensing/overview.mdx#license-types)
+       * [Developer license](../licensing/overview.mdx#developer-license)
+       * [Community license](../licensing/overview.mdx#community-license)
+       * [Professional license](../licensing/overview.mdx#professional-license)
+       * [Enterprise license](../licensing/overview.mdx#enterprise-license)
+       * [ISV licenses](../licensing/overview.mdx#isv-licenses)
+    * [ISV Bank-of-Cores license](../licensing/overview.mdx#isv-bank-of-cores-license)
+    * [Licensing an Embedded server](../licensing/overview.mdx#licensing-an-embedded-server)
+       * [TestDriver server license](../licensing/overview.mdx#testdriver-server-license)
+    * [Studio license management](../licensing/overview.mdx#studio-license-management)
 
 </Admonition>
 
@@ -186,7 +186,7 @@ If you purchase a 128-core license, for example, you can use it to generate 8 li
 
 <Panel heading="Licensing an Embedded server">
 
-* The license types that can be applied to an [embedded server](../server/embedded) are the same as those of a regular RavenDB server, providing the same feature sets.  
+* The license types that can be applied to an [embedded server](../server/embedded.mdx) are the same as those of a regular RavenDB server, providing the same feature sets.  
 * Licensing options can be applied using the `ServerOptions.LicensingOptions` class:
    * Pass a license string via `ServerOptions.LicensingOptions.License`.
    * Alternatively, pass a license file path via `ServerOptions.LicensingOptions.LicensePath`.
@@ -196,7 +196,7 @@ If you purchase a 128-core license, for example, you can use it to generate 8 li
 
 ### TestDriver server license
 
-* TestDriver, used for unit tests, runs an embedded server that can be licensed [in the same way](../server/embedded#embedded-server-licensing) as a regular embedded server.  
+* TestDriver, used for unit tests, runs an embedded server that can be licensed [in the same way](../server/embedded.mdx#embedded-server-licensing) as a regular embedded server.  
 * Make sure you license your TestDriver server so your tests are not affected by the limitations of an unlicensed server.  
   <Admonition type="note" title="">
   You can configure the server to throw a `LicenseExpiredException` if it fails to validate a license.  
@@ -232,12 +232,12 @@ If you purchase a 128-core license, for example, you can use it to generate 8 li
         Click to [submit and activate](../licensing/activate-license) your license.  
         <Admonition type="note" title="">
         When the license is activated, the **Register license** button will be replaced with these buttons:  
-         * [Renew](../licensing/renew-license)  
+         * [Renew](../licensing/renew-license.mdx)  
            Use this button to renew your license and extend its validity. The renewed license will have the same license ID as the current license.  
            Note that the **Renew** button is only available for **Developer** and **Community** licenses, as other (commercial) licenses are automatically renewed.  
          * [Replace](../licensing/replace-license)  
            Use this button to replace your license with a new one.
-         * [Force update](../licensing/force-update)  
+         * [Force update](../licensing/force-update.mdx)  
            Use this button to trigger an immediate license update.
         </Admonition>
 3. **Software Version**  
