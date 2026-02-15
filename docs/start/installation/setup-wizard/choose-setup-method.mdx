@@ -1,0 +1,138 @@
+---
+title: "Choose Setup Method"
+sidebar_label: "Choose Setup Method"
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* After running the Setup Wizard and accepting the EULA as described in the [Overview](../../../start/installation/setup-wizard/overview.mdx),  
+  the next step is to choose the **setup method** you want to proceed with.    
+    
+* In this article:
+  * [Available setup methods](../../../start/installation/setup-wizard/choose-setup-method.mdx#available-setup-methods)  
+  * [Set up a new cluster](../../../start/installation/setup-wizard/choose-setup-method.mdx#set-up-a-new-cluster)  
+  * [Create a package for external setup](../../../start/installation/setup-wizard/choose-setup-method.mdx#create-a-package-for-external-setup)  
+  * [Use an existing setup package](../../../start/installation/setup-wizard/choose-setup-method.mdx#use-an-existing-setup-package)   
+
+</Admonition>
+
+<Panel heading="Available setup methods">
+
+The following setup methods are available:
+    
+![Choose setup method](./assets/choose-setup-method.png)
+ 
+1. **Set up a new cluster**  
+   Configure a new cluster (single-node or multi-node)  
+   and start the **first RavenDB instance** on the machine where the Setup Wizard is running.  
+   Learn more below in [Set up a new cluster](../../../start/installation/setup-wizard/choose-setup-method.mdx#set-up-a-new-cluster).  
+
+2. **Create a package for external setup**    
+   Prepare a configuration package without starting a server locally.  
+   Learn more below in [Create a package for external setup](../../../start/installation/setup-wizard/choose-setup-method.mdx#create-a-package-for-external-setup).  
+
+3. **Use an existing setup package**    
+   Apply a previously generated setup package to join a node to a cluster.  
+   Learn more below in [Use an existing setup package](../../../start/installation/setup-wizard/choose-setup-method.mdx#use-an-existing-setup-package).
+    
+4. Click **"Continue"** to proceed to the next step in the wizard, which is [Providing the license key](../../../start/installation/setup-wizard/provide-license-key.mdx).
+
+</Panel>
+
+<Panel heading="Set up a new cluster">
+
+* Use this flow when you want to configure a new cluster (single-node or multi-node)    
+  and start the **first RavenDB instance** on the machine where the Setup Wizard is running.    
+  The wizard will guide you through the configuration process.  
+    
+* If you define a multi-node cluster, then at the end of this flow the wizard will generate a setup package (ZIP)  
+  that you will use with the **Use setup package** method to add the remaining nodes.  
+
+* The following table summarizes the step-by-step flow for this setup method.    
+    
+    <TabItem value="Set_up_a_new_cluster" label="Set_up_a_new_cluster">        
+        
+    |    | Step                                  | What you do                                        |
+    |----|---------------------------------------|----------------------------------------------------|
+    | ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+    | ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
+    | 🔀 | [Choose setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx) | Select **"Set up new cluster"**. |
+    | 🔑 | [Provide license](../../../start/installation/setup-wizard/provide-license-key.mdx) | Enter your license key. |
+    | 🔒 | [Choose security option](../../../start/installation/setup-wizard/choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
+    | 🌐 | [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
+    | ⚙️ | [Additional settings](../../../start/installation/setup-wizard/additional-settings.mdx) | Configure optional settings. |
+    | 📝 | [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) | Review your settings before proceeding. |
+    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard applies your configuration and certificate (if applicable).<br/>A setup package is generated. |
+    | 🚀 | [Start the **first** configured node](../../../start/installation/setup-wizard/finish-setup.mdx#restarting-the-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
+    | 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx) | If creating a multi-node cluster,<br/>continue with **"Use setup package"** to add the remaining nodes. | 
+        
+    </TabItem>
+
+</Panel>
+
+<Panel heading="Create a package for external setup">
+
+* Use this flow when you want to prepare a configuration (single-node or multi-node) and **deploy it elsewhere**,  
+  without starting a node on the local machine where the Setup Wizard is running.  
+    
+* The Setup Wizard will generate a setup package (ZIP) containing the configuration,  
+  which you can later apply on other machines (for example in isolated environments or automated deployment pipelines) using the **Use setup package** method.   
+    
+* The following table summarizes the step-by-step flow for this setup method.        
+    
+    <TabItem value="Create_package_for_external_setup" label="Create_package_for_external_setup"> 
+        
+    |     | Step                               | What you do                                           |
+    |-----|------------------------------------|-------------------------------------------------------|
+    | ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+    | ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
+    | 🔀 | [Choose setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx) | Select **"Create package for external setup"**. |
+    | 🔑 | [Provide license](../../../start/installation/setup-wizard/provide-license-key.mdx) | Enter your license key. |
+    | 🔒 | [Choose security option](../../../start/installation/setup-wizard/choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
+    | 🌐 | [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
+    | ⚙️ | [Additional settings](../../../start/installation/setup-wizard/additional-settings.mdx) | ️Configure optional settings. |
+    | 📝 | [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) | Review your settings before proceeding. |
+    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard creates the setup package with your configuration. |
+    | 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx) | On each target machine, run the Setup Wizard and use **Use setup package** to set up and start the cluster nodes. |
+        
+    </TabItem>
+
+</Panel> 
+
+<Panel heading="Use an existing setup package">
+
+* Choose this flow when you already have a setup package (ZIP) created using one of the previous methods.  
+  Use this method when:    
+  * Setting up an additional node in an existing cluster.
+  * Setting up a new cluster from a pre-configured package.        
+    
+* The Setup Wizard will apply the predefined configuration to the machine you run it on and add the node to the cluster.
+    
+* Repeat this process on each target machine to complete the cluster setup for each node in the cluster.
+
+<TabItem value="Use_setup_package" label="Use_setup_package">
+    
+|    | Step                                  | What you do                                         |
+|----|---------------------------------------|-----------------------------------------------------|
+| ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+| ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
+| 🔀 | [Choose setup method](../../../start/installation/setup-wizard/use-setup-package.mdx#select-use-package) | Select **"Use setup package"**. |
+| 📥️ | [Upload setup package](../../../start/installation/setup-wizard/use-setup-package.mdx#upload-setup-package) | Upload the setup package (ZIP) created earlier. |
+| 🖥️ | [Select node](../../../start/installation/setup-wizard/use-setup-package.mdx#select-node) | Select the node you want to set up from the package |
+| ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/use-setup-package.mdx#in-progress) | Wait while the wizard applies the configuration to this node. |
+| 🚀 | [Start the node](../../../start/installation/setup-wizard/use-setup-package.mdx#restart-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
+| 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx#repeat) | Repeat this process on each target machine to add the remaining nodes to the cluster. |
+    
+</TabItem>
+
+</Panel>
