@@ -17,8 +17,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* RavenDB is activated using a JSON format license key.  
-  The key is sent to the email address provided while obtaining the license.  
+* RavenDB is activated using a JSON format license.  
+  The license is sent to the email address provided while obtaining it.  
 
 * A few license types are available.  
   The license type you acquire and activate RavenDB with, determines the database's feature set.  
@@ -204,11 +204,17 @@ If you purchase a 128-cores license, for example, you can use it to generate 8 l
          * Click **Test again** to recheck the connection.  
         </Admonition>
       * **C**. **Register license**  
-        Click to [submit and activate](../licensing/activate-license) your license:  
+        Click to [submit and activate](../licensing/activate-license) your license.  
+        <Admonition type="note" title="">
         When the license is activated, the **Register license** button will be replaced with these buttons:  
-        * [Replace](../licensing/replace-license) - to replace your license with a new one.
-        * [Force update](../licensing/force-update) - to trigger an immediate license update.
-
+         * [Renew](../licensing/renew-license)  
+           Use this button to renew your license and extend its validity. The renewed license will have the same license ID as the current license.  
+           Note that the **Renew** button is only available for **Developer** and **Community** licenses, as other (commercial) licenses are automatically renewed.  
+         * [Replace](../licensing/replace-license)  
+           Use this button to replace your license with a new one.
+         * [Force update](../licensing/force-update)  
+           Use this button to trigger an immediate license update.
+        </Admonition>
 3. **Software Version**  
    
       ![Software Version](./assets/software_version.png)

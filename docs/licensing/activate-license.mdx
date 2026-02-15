@@ -19,7 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Each RavenDB cluster must be registered with its own license.  
 
-* The license key is sent to the email address that was provided when obtaining the license.  
+* The license is sent to the email address that was provided while obtaining it.  
 
 * You can activate your license using configuration keys, or via Studio.  
 
@@ -33,13 +33,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * You can activate your license using either of the following configuration keys:  
   * [License](../licensing/configuration.mdx#license)  
-    Use this key to provide your license string directly, as the key's value.  
-    E.g., `"License": "{ your license string }"`  
+    Use this key to provide your license as a string value.  
+    E.g., `"License": "{ your full license string }"`  
   * [License.Path](../licensing/configuration.mdx#licensepath)  
-    Use this key to provide the path to a file containing your license.  
+    Use this key to provide the path to a file that contains your license.  
     E.g., `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
 
-* The configuration keys can be set in the `setting.json` file or as environment variables.  
+* The configuration keys can be set in the `settings.json` file or as environment variables.  
   Learn more in the [configuration overview](../server/configuration/configuration-options.mdx) page.
 
 </Panel>
