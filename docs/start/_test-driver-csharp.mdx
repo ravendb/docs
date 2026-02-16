@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -13,22 +15,23 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page: 
    - [`RavenTestDriver`](../start/test-driver.mdx#raventestdriver)
-   - [Pre-initializing the store: `PreInitialize`](../start/test-driver.mdx#pre-initializing-the-store:-preinitialize)
-   - [Configure the server: `ConfigureServer`](../start/test-driver.mdx#configure-the-server:-configureserver)
+   - [Pre-initializing the store: `PreInitialize`](../start/test-driver#pre-initializing-the-store-preinitialize)
+   - [Configure the server: `ConfigureServer`](../start/test-driver#configure-the-server-configureserver)
    - [Unit test](../start/test-driver.mdx#unit-test)
    - [Complete example](../start/test-driver.mdx#complete-example)
-   - [Continuous Integration (CI) Servers](../start/test-driver.mdx#continuous-integration-(ci)-servers)
+   - [Continuous Integration (CI) Servers](../start/test-driver#continuous-integration-ci-servers)
    - [Licensing](../start/test-driver.mdx#licensing)
 
 </Admonition>
 
-## `RavenTestDriver`
+<Panel heading="RavenTestDriver">
 
 Start by creating a class that derives from `RavenTestDriver`.  
 Find below a list of test driver methods, followed by [samples](../start/test-driver.mdx#complete-example).  
 
 ### TestDriver Methods
 
+<ContentFrame>
 #### `DatabaseDumpFilePath`
 Override the path to the database dump file that is loaded when calling ImportDatabase.  
 <TabItem value="csharp" label="csharp">
@@ -37,6 +40,9 @@ Override the path to the database dump file that is loaded when calling ImportDa
 `}
 </CodeBlock>
 </TabItem>  
+
+</ContentFrame>
+<ContentFrame>
 
 #### `DatabaseDumpFileStream`
 Allow overriding the stream containing the database dump loaded when calling ImportDatabase.  
@@ -47,6 +53,9 @@ Allow overriding the stream containing the database dump loaded when calling Imp
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+<ContentFrame>
+
 #### `GetDocumentStore`
 Get an IDocumentStore instance for the requested database.  
 <TabItem value="csharp" label="csharp">
@@ -56,7 +65,10 @@ Get an IDocumentStore instance for the requested database.
 `}
 </CodeBlock>
 </TabItem>  
-  
+
+</ContentFrame>  
+<ContentFrame>
+
 #### `PreInitialize`
 Pre-initialize IDocumentStore.  
 <TabItem value="csharp" label="csharp">
@@ -65,6 +77,9 @@ Pre-initialize IDocumentStore.
 `}
 </CodeBlock>
 </TabItem>  
+
+</ContentFrame>
+<ContentFrame>
 
 #### `PreConfigureDatabase`
 Pre configure the database record before creating it.  
@@ -75,6 +90,9 @@ Pre configure the database record before creating it.
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+<ContentFrame>
+
 #### `SetupDatabase`
 Initialize the database  
 <TabItem value="csharp" label="csharp">
@@ -83,6 +101,9 @@ Initialize the database
 `}
 </CodeBlock>
 </TabItem>  
+
+</ContentFrame>
+<ContentFrame>
 
 #### `DriverDisposed`  
 An event raised when the test driver is disposed of  
@@ -93,6 +114,9 @@ An event raised when the test driver is disposed of
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+<ContentFrame>
+
 #### `ConfigureServer`  
 Configure the server before running it
 <TabItem value="csharp" label="csharp">
@@ -101,6 +125,9 @@ Configure the server before running it
 `}
 </CodeBlock>
 </TabItem>  
+
+</ContentFrame>
+<ContentFrame>
 
 #### `WaitForIndexing`
 Wait for indexes to become non-stale  
@@ -112,6 +139,9 @@ Wait for indexes to become non-stale
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+<ContentFrame>
+
 #### `WaitForUserToContinueTheTest`  
 Pause the test and launch Studio to examine database state  
 <TabItem value="csharp" label="csharp">
@@ -120,6 +150,9 @@ Pause the test and launch Studio to examine database state
 `}
 </CodeBlock>
 </TabItem>  
+
+</ContentFrame>
+<ContentFrame>
 
 #### `OpenBrowser`  
 Open browser  
@@ -130,6 +163,9 @@ Open browser
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+<ContentFrame>
+
 #### `Dispose`  
 Dispose of the server  
 <TabItem value="csharp" label="csharp">
@@ -139,9 +175,10 @@ Dispose of the server
 </CodeBlock>
 </TabItem>  
 
+</ContentFrame>
+</Panel>
 
-
-## Pre-initializing the store: `PreInitialize`
+<Panel heading="Pre-initializing the store: `PreInitialize`">
 
 Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
 
@@ -158,9 +195,9 @@ protected override void PreInitialize(IDocumentStore documentStore)
 </CodeBlock>
 </TabItem>
 
+</Panel>
 
-
-## Configure the server: `ConfigureServer`
+<Panel heading="Configure the server: `ConfigureServer`">
 
 The `ConfigureServer` method allows you to be more in control of your server.  
 You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, adjust .NET framework versions, etc.
@@ -182,6 +219,7 @@ how the embedded server is going to run with just a minor [definition change](..
 
 </Admonition>
 
+<ContentFrame>
 #### Example
 
 <TabItem value="test_driver_ConfigureServer" label="test_driver_ConfigureServer">
@@ -203,10 +241,10 @@ ConfigureServer(testServerOptions);
 `}
 </CodeBlock>
 </TabItem>
+</ContentFrame>
+</Panel>
 
-
-
-## Unit test
+<Panel heading="Unit test">
 
 We use [xunit](https://www.nuget.org/packages/xunit/) for the test framework in the below example.  
 
@@ -216,15 +254,14 @@ Note that the test itself is meant to show different capabilities of the test dr
 
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
 
+<ContentFrame>
 #### Example
 
 In the example, we get an `IDocumentStore` object to our test database, deploy an index, and insert two documents into the document store.  
 
-We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
-and index are deployed (we can remove this line after the test succeeds).  
+We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents and index are deployed (we can remove this line after the test succeeds).  
 
-Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
-and we assert that we have only one such document.
+Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', and we assert that we have only one such document.
 
 <TabItem value="test_driver_MyFirstTest" label="test_driver_MyFirstTest">
 <CodeBlock language="csharp">
@@ -258,10 +295,10 @@ public void MyFirstTest()
 `}
 </CodeBlock>
 </TabItem>
+</ContentFrame>
 
-
-
-## Complete example
+</Panel>
+<Panel heading="Complete example">
 
 This is a full unit test using [Xunit](https://www.nuget.org/packages/xunit/).
 
@@ -270,8 +307,7 @@ In the test, we get an `IDocumentStore` object to our test database, deploy an i
 We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
 and index are deployed (we can remove this line after the test succeeds).  
 
-Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
-and we assert that we have only one such document.
+Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', and we assert that we have only one such document.
 
 <TabItem value="test_full_example" label="test_full_example">
 <CodeBlock language="csharp">
@@ -354,56 +390,33 @@ namespace RavenDBTestDriverFullExample
 `}
 </CodeBlock>
 </TabItem>
+</Panel>
 
-
-
-## Continuous Integration (CI) Servers
+<Panel heading="Continuous Integration (CI) Servers">
 
 Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
 Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://visualstudio.microsoft.com/team-services/).
 
+</Panel>
 
+<Panel heading="Licensing">
 
-## Licensing
-
-The embedded server that TestDriver uses while running your tests can only apply the 
-features and access the resources defined by its [license](https://ravendb.net/buy).  
-An unlicensed server, for example, will be able to use no more than 3 CPU cores, while 
-a server licensed using a [free developers license](https://ravendb.net/buy#developer) 
-will be able to use up to 9 cores and run way faster.  
+The embedded server that TestDriver uses while running your tests can only apply the features and access the resources defined by its [license](https://ravendb.net/buy).  
+E.g., an unlicensed server will be able to use no more than 3 CPU cores, while a server with a [free developers license](https://ravendb.net/buy#developer) will be able to use up to 9 cores and run way faster.  
 
 * When the server is started, its license is validated.  
-   * If the validation succeeds, the server will run, applying the capabilities defined 
-     by its license.  
-   * If the validation fails, the server may still run - but its capabilities will be 
-     limited to those defined by the basic [AGPL](https://ravendb.net/legal/ravendb/commercial-license-eula) 
-     license (e.g., using up to 3 CPU cores).  
+   * If the validation succeeds, the server will run, applying the capabilities defined by its license.  
+   * If the validation fails, the server may still run - but its capabilities will be limited to those defined by the basic [AGPL](https://ravendb.net/legal/ravendb/commercial-license-eula) license (e.g., using up to 3 CPU cores).  
      <Admonition type="note" title="">
-     If the validation fails because the license expired, and the expiration date precedes 
-     the server build date, the server will not run.  
+     If the validation fails because the license expired, and the expiration date precedes the server build date, the server will not run.  
      </Admonition>
 
-* A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` configuration option 
-  is available since RavenDB `5.4`, determining whether to throw a `LicenseExpiredException` 
-  exception if TestDriver uses an unlicensed embedded server.  
-   * If `ThrowOnInvalidOrMissingLicense` is set to **`true`** and the validation fails, 
-     a `LicenseExpiredException` exception will be thrown to **warn TestDriver users** 
-     that in lack of a valid license, their server's capabilities are limited and they 
-     may therefore miss out on much of their system's potential.  
-   * If the configuration option is set to **`false`**, **no exception will be thrown** 
-     even if a license cannot be validated.  
-   * Since RavenDB version `6.2`, `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
-     is set by default to `true` so a `LicenseExpiredException` exception **would** be thrown 
-     if the embedded server used by TestDriver fails to validate a license.  
-     Users that prefer that no exception would be thrown if an unlicensed embedded server 
-     is used, can explicitly set the configuration option to **`false`**.  
+* A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` configuration option is available since RavenDB `5.4`, determining whether to throw a `LicenseExpiredException` exception if TestDriver uses an unlicensed embedded server.  
+   * If `ThrowOnInvalidOrMissingLicense` is set to **`true`** and the validation fails, a `LicenseExpiredException` exception will be thrown to **warn TestDriver users** that in lack of a valid license, their server's capabilities are limited and they may therefore miss out on much of their system's potential.  
+   * If the configuration option is set to **`false`**, **no exception will be thrown** even if a license cannot be validated.  
+   * Since RavenDB version `6.2`, `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` is set by default to `true` so a `LicenseExpiredException` exception **would** be thrown if the embedded server used by TestDriver fails to validate a license.  
+     Users that prefer that no exception would be thrown if an unlicensed embedded server is used, can explicitly set the configuration option to **`false`**.  
 
-* Additional `TestServerOptions.Licensing` configuration options are available as well, 
-  you can read about them [here](../server/embedded.mdx#licensing-options).  
+* Read about additional licensing configuration options in the [Embedded server page](../server/embedded#embedded-server-licensing) licensing section.  
 
-
-
-
-
-
-
+</Panel>

@@ -1,0 +1,168 @@
+---
+title: "Configuration"
+sidebar_label: "Configuration"
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Configuration: License Options
+
+<Admonition type="note" title="">
+
+* Use the configuration keys listed below to set licensing options for your RavenDB server.  
+
+* Learn how to set these keys in the [configuration overview](../server/configuration/configuration-options.mdx).
+
+* On this page:
+   * [License](../licensing/configuration.mdx#license)  
+   * [License.Path](../licensing/configuration.mdx#licensepath)  
+   * [License.Eula.Accepted](../licensing/configuration.mdx#licenseeulaaccepted)  
+   * [License.CanActivate](../licensing/configuration.mdx#licensecanactivate)  
+   * [License.CanForceUpdate](../licensing/configuration.mdx#licensecanforceupdate)  
+   * [License.CanRenewLicense / License.CanRenew](../licensing/configuration.mdx#licensecanrenewlicense--licensecanrenew)  
+   * [License.SkipLeasingErrorsLogging](../licensing/configuration.mdx#licenseskipleasingerrorslogging)  
+   * [License.DisableAutoUpdate](../licensing/configuration.mdx#licensedisableautoupdate)  
+   * [License.DisableAutoUpdateFromApi](../licensing/configuration.mdx#licensedisableautoupdatefromapi)  
+   * [License.DisableLicenseSupportCheck](../licensing/configuration.mdx#licensedisablelicensesupportcheck)  
+
+</Admonition>
+
+<ContentFrame>
+
+### License
+
+* When using this configuration key in _settings.json_, embed the license key as a **string**, e.g.:  
+  `"License": "{ paste your license key including curly brackets here }"`  
+* When using this configuration key as an [environment variable](../server/configuration/configuration-options.mdx#environment-variables), embed the JSON license key **object**.  
+* If `License` is set, it overrides the `License.Path` configuration key.  
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.Path
+
+* Save the license key to a `license.json` file.  
+* Provide the path to this file in the 'License.Path' configuration key:  
+  Either as a **full** path to the license file, e.g.:  
+  `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+  Or as a **relative** path to the license file from the Server folder, e.g.:  
+  `"License.Path": "License\\license.json"`  
+  (where the 'License' folder is under the 'Server' folder)
+
+- **Type**: `string`
+- **Default**: `license.json`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.Eula.Accepted
+
+Indicates whether the EULA (End User License Agreement) has been accepted.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.CanActivate
+
+EXPERT ONLY.  
+Indicates if license can be activated.  
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.CanForceUpdate
+
+EXPERT ONLY.  
+Indicates if license can be updated from the License Server at `api.ravendb.net`.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.CanRenewLicense / License.CanRenew
+
+EXPERT ONLY.  
+Indicates if license can be renewed from the License Server at `api.ravendb.net`.  
+Relevant only for Developer and Community licenses.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.SkipLeasingErrorsLogging
+
+EXPERT ONLY.  
+Skip logging of lease license errors.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.DisableAutoUpdate
+
+EXPERT ONLY.  
+Disable all license updates: from a string, from a path, and from the License Server at `api.ravendb.net`. 
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.DisableAutoUpdateFromApi
+
+EXPERT ONLY.  
+Disable automatic updates of the license from the License Server at `api.ravendb.net`.  
+Can still update the license by either:  
+* Setting the [License](../licensing/configuration.mdx#license) configuration key
+* Setting the [License.Path](../licensing/configuration.mdx#licensepath) configuration key
+* Replacing the _license.json_ file on disk
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### License.DisableLicenseSupportCheck
+
+EXPERT ONLY.  
+Disable checking the license support options from the License Server at `api.ravendb.net`.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>

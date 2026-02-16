@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -27,7 +29,8 @@ import CodeBlock from '@theme/CodeBlock';
   * [Remarks](../server/embedded.mdx#remarks)  
 
 </Admonition>
-## Overview
+
+<Panel heading="Overview">
 
 RavenDB can be easily embedded in your application.  
 Use the Embedded package to integrate RavenDB in just a few easy steps. 
@@ -61,9 +64,8 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
 </TabItem>
 </Tabs>
 
-
-
-## Prerequisites and Recommendations
+</Panel>
+<Panel heading="Prerequisites and Recommendations">
 
 * **Prerequisites**  
    * Install [`.NET` Core runtime](https://dotnet.microsoft.com/en-us/download), 
@@ -75,6 +77,9 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
    * Projects targeting `.NET Framework 4.6.1+` that use the old `packages.config` 
      for NuGet packages maintenance, should migrate to `PackageReference` package management.  
      Find additional details [below](../server/embedded.mdx#migrating-from--to--in-old-csproj-projects).  
+
+<ContentFrame>
+
 ### `.NET` Core Runtime:
 
 RavenDB Embedded **does not include** the `.NET` Core runtime engine required for its operation.  
@@ -86,6 +91,10 @@ it declared in PATH.
 We highly recommend using the `.NET` Core framework version defined in `ServerOptions.FrameworkVersion` 
 for proper server function.  
 You can download the `.NET` Core runtime engine [here](https://dotnet.microsoft.com/download).  
+
+</ContentFrame>
+<ContentFrame>
+
 ### Migrating from `packages.config` to `PackageReference` in old csproj projects:
 
 Due to NuGet limitations, we recommend installing the Embedded package via newer package management, 
@@ -104,10 +113,10 @@ PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembl
 match the assembly reference. (Exception from HRESULT: 0x80131040)
 ```
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sample App.config" label="Sample App.config">
-<CodeBlock language="xml">
-{`<?xml version="1.0" encoding="utf-8"?>
+<br />
+#### Sample App.config:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
 <configuration>
     <startup> 
         <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
@@ -125,14 +134,12 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
     </assemblyBinding>
   </runtime>
 </configuration>
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+```
 
+</ContentFrame>
 
-
-## Installation
+</Panel>
+<Panel heading="Installation">
 
 * Create a new project (.`NET Standard 2.0+`, `.NET Core 2.0+`, `.NET Framework 4.6.1+`).
 * Grab our [NuGet package](https://www.nuget.org/packages/RavenDB.Embedded)
@@ -143,9 +150,8 @@ match the assembly reference. (Exception from HRESULT: 0x80131040)
 </CodeBlock>
 </TabItem>
 
-
-
-## Starting the Server
+</Panel>
+<Panel heading="Starting the Server">
 
 RavenDB Embedded Server is available under `EmbeddedServer.Instance`.  
 Start the server using the `StartServer` method.
@@ -160,9 +166,9 @@ EmbeddedServer.Instance.StartServer();
 
 For more control over the server startup, pass `StartServer` a `ServerOptions` object.
 
+</Panel>
 
-
-## Server Options
+<Panel heading="Server Options">
 
 Set `ServerOptions` to change server settings such as `.NET` FrameworkVersion, DataDirectory, 
 and additional options.  
@@ -189,7 +195,11 @@ and additional options.
 </TabItem>
 
 If `ServerOptions` is not provided, RavenDB server will start with a default value of `127.0.0.1:{Random Port}`.
+
+<ContentFrame>
+
 ### Setting Server Directory:
+
 In case you are not interested in installing the `.NET` run-time environment on your system, you can -  
 
 * [Download](https://ravendb.net/download) a full RavenDB version.  
@@ -209,6 +219,10 @@ In case you are not interested in installing the `.NET` run-time environment on 
 `}
 </CodeBlock>
 </TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
 ### Restarting the Server:
 To restart the server, use the `<embedded server>.RestartServerAsync()` method.  
 
@@ -227,7 +241,12 @@ In code:
 `}
 </CodeBlock>
 </TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
 ### ServerProcessExited Event:
+
 Use `<embedded server>.ServerProcessExited` to observe when the server has crashed or exited.  
 
 <TabItem value="csharp" label="csharp">
@@ -239,49 +258,52 @@ Use `<embedded server>.ServerProcessExited` to observe when the server has crash
 
 Event data is of type `ServerProcessExitedEventArgs`.
 
+</ContentFrame>
 
-
-## Embedded server licensing
+</Panel>
+<Panel heading="Embedded Server Licensing">
 
 * The **same license types** available for Standalone RavenDB servers, are available for Embedded servers.  
 * A licensed server can be managed using Studio, and is given a superior feature set to that of 
   non-registered servers. See the full list of license types and their features [here](https://ravendb.net/buy).  
 * An embedded server can be licensed using **Configuration options** or an **Environment variable**.  
+
+<ContentFrame>
+
 ### Licensing configuration options
 
-Embedded server licensing configuration options are gathered in the `ServerOptions.Licensing` class.  
+Embedded server licensing configuration options are gathered in the `ServerOptions.LicensingOptions` class.  
 After acquiring a license, it can be passed to the server either as a string or as a file.  
 
-* To pass your license to the server as a string, use the `ServerOptions.LicensingOptions.License` 
-  configuration option.  
-<TabItem value="LicensingOptions_License" label="LicensingOptions_License">
-<CodeBlock language="csharp">
-{`EmbeddedServer.Instance.StartServer(new ServerOptions
-\{
-    Licensing = new ServerOptions.LicensingOptions
-    \{
-        License = "your license here"
-    \}
-\});
-`}
-</CodeBlock>
-</TabItem>
-* To keep your license file in your file system and point the server to its path, 
-  use the `ServerOptions.LicensingOptions.LicensePath` configuration option.  
-<TabItem value="LicensingOptions_LicensePath" label="LicensingOptions_LicensePath">
-<CodeBlock language="csharp">
-{`EmbeddedServer.Instance.StartServer(new ServerOptions
-\{
-    Licensing = new ServerOptions.LicensingOptions
-    \{
-        LicensePath = "path to license.json file"
-    \}
-\});
-`}
-</CodeBlock>
-</TabItem>
-#### Available LicensingOptions configuration options:
+#### Pass to the server a license string:
+To pass your license to the server as a string, use the `ServerOptions.LicensingOptions.License` configuration option.  
+```csharp
+EmbeddedServer.Instance.StartServer(new ServerOptions
+{
+  Licensing = new ServerOptions.LicensingOptions
+  {
+      License = "your license here"
+  }
+});
+```
 
+<br />
+
+#### Pass to the server a path to a license file:
+To keep your license file in your file system and point the server to its path, use the `ServerOptions.LicensingOptions.LicensePath` configuration option.  
+```csharp
+EmbeddedServer.Instance.StartServer(new ServerOptions
+{
+  Licensing = new ServerOptions.LicensingOptions
+  {
+      LicensePath = "path to license.json file"
+  }
+});
+```
+
+<br />
+
+#### Available LicensingOptions configuration options:
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **License** | `string` | Specifies the full license string directly in the configuration.<br/>If both `License` and `LicensePath` are defined, `License` takes precedence. |
@@ -291,64 +313,61 @@ After acquiring a license, it can be passed to the server either as a string or 
 | **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br/>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options. |
 | **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br/>`true`: disable verification<br/>`false`: enable verification |
 | **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated. |
+
+</ContentFrame>
+<ContentFrame>
+
 ### License an embedded server using an Environment variable
 
 You can pass the same configuration options to the embedded server using environment variables.  
 
 * To pass your license to the server as a string, define or edit the environment variable `RAVEN_License`.  
   Provide your license as a value for this variable.  
-  **Note**, however, that you must first **reformat** the license JSON that you acquired, and 
-  turn it to a single line, eliminating new-line symbols.  
+  **Note**, however, that you must first **reformat** the license JSON that you acquired and turn it into a single line, removing all new-line characters.  
+  <Tabs groupId='languageSyntax'>
+  <TabItem value="Original_Format" label="Original_Format">
+  ```json
+  {
+    "Id": "bad5fe9b-fba4-459c-9220-36b438e06e36",
+    "Name": "rdb",
+    "Keys": [
+      "WBRG3G1zKd536ELfRbWw7x69J",
+      "zyFCZ+AcGLI9RgSyRq5r4KS7K",
+      "E0hMr5uzmbMBuxAI6WLBXZTSN",
+      "t+vGjgrVzqoycTPhHdQxNCK2v",
+      "7xOwXKUblAhZmHcDeY3xvF0jn",
+      "EZoZLdaeF0D8FFddNB8NrMWeQ",
+      "kwzAKfs1BMlXi9ZJsVZO9ABUE",
+      "yBSYoSQMqKywtLi8wJzEyMzQV",
+      "Fjc4OTo7PD0+nwIfIJ8CICCfA",
+      "iEgnwIjIEMkRAlieVc="
+      ]
+  }
+  ```
+  </TabItem>
+  <TabItem value="Reformatted" label="Reformatted">
+  ```json
+  {"Id": "bad5fe9b-fba4-459c-9220-36b438e06e36","Name": "rdb","Keys": ["WBRG3G1zKd536ELfRbWw7x69J","zyFCZ+AcGLI9RgSyRq5r4KS7K","E0hMr5uzmbMBuxAI6WLBXZTSN","t+vGjgrVzqoycTPhHdQxNCK2v","7xOwXKUblAhZmHcDeY3xvF0jn","EZoZLdaeF0D8FFddNB8NrMWeQ","kwzAKfs1BMlXi9ZJsVZO9ABUE","yBSYoSQMqKywtLi8wJzEyMzQV","Fjc4OTo7PD0+nwIfIJ8CICCfA","iEgnwIjIEMkRAlieVc="]}
+  ```
+  </TabItem>
+  </Tabs>
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Original_Format" label="Original_Format">
-<CodeBlock language="json">
-{`{
-	"Id": "bad5fe9b-fba4-459c-9220-36b438e06e36",
-	"Name": "rdb",
-	"Keys": [
-	"WBRG3G1zKd536ELfRbWw7x69J",
-	"zyFCZ+AcGLI9RgSyRq5r4KS7K",
-	"E0hMr5uzmbMBuxAI6WLBXZTSN",
-	"t+vGjgrVzqoycTPhHdQxNCK2v",
-	"7xOwXKUblAhZmHcDeY3xvF0jn",
-	"EZoZLdaeF0D8FFddNB8NrMWeQ",
-	"kwzAKfs1BMlXi9ZJsVZO9ABUE",
-	"yBSYoSQMqKywtLi8wJzEyMzQV",
-	"Fjc4OTo7PD0+nwIfIJ8CICCfA",
-	"iEgnwIjIEMkRAlieVc="
-	]
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Reformatted" label="Reformatted">
-<CodeBlock language="json">
-{`{"Id": "bad5fe9b-fba4-459c-9220-36b438e06e36","Name": "rdb","Keys": ["WBRG3G1zKd536ELfRbWw7x69J","zyFCZ+AcGLI9RgSyRq5r4KS7K","E0hMr5uzmbMBuxAI6WLBXZTSN","t+vGjgrVzqoycTPhHdQxNCK2v","7xOwXKUblAhZmHcDeY3xvF0jn","EZoZLdaeF0D8FFddNB8NrMWeQ","kwzAKfs1BMlXi9ZJsVZO9ABUE","yBSYoSQMqKywtLi8wJzEyMzQV","Fjc4OTo7PD0+nwIfIJ8CICCfA","iEgnwIjIEMkRAlieVc="]}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-     <Admonition type="info" title="">
-     You can reformat the license manually, or use a script to do it.  
-     E.g., find below a Bash script that specifies the name of the file from which the license 
-     will be read, and then uses the `-c` flag to compact the file's contents to a single line.  
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`INPUT_FILE="license.json"
-jq -c . "$INPUT_FILE"
-`}
-</CodeBlock>
-</TabItem>
-     </Admonition>
+  <Admonition type="info" title="">
+  You can reformat the license manually, or use a script to do it.  
+  Find below a Bash script that reads the license from a file and compacts it to a single line.  
+  ```plain
+  INPUT_FILE="license.json"
+  jq -c . "$INPUT_FILE"
+  ```
+  </Admonition>
 
 * Or, you can keep your license file in a folder accessible to the application that embeds your server, 
   and provide the path to the license file in the `RAVEN_LicensePath` environment variable.  
 
+</ContentFrame>
 
-
-## `.NET` FrameworkVersion
+</Panel>
+<Panel heading=".NET FrameworkVersion">
 
 The default FrameworkVersion is defined to work with any `.NET` version from the time of the RavenDB server release 
 and newer by using the `+` moderator.  
@@ -399,12 +418,14 @@ Neither will look for 4.x.
 </CodeBlock>
 </TabItem>
 
-
-
-## Security
+</Panel>
+<Panel heading="Security">
 
 RavenDB Embedded supports running a secured server.
 Just run `Secured` method in the `ServerOptions` object.
+
+<ContentFrame>
+
 ### Set up security using the certificate path:
 
 <TabItem value="security" label="security">
@@ -421,6 +442,10 @@ The first way to enable authentication is to set the
 [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 server certificate.  
 You can supply the certificate password using certPassword.  
+
+</ContentFrame>
+<ContentFrame>
+
 ### Set up security using a custom script:
 
 To access the certificate via logic that is external to RavenDB, you can use the following approach: 
@@ -447,9 +472,10 @@ This way a clean separation is kept between RavenDB and the secret store in use.
 RavenDB expects to get the raw binary representation (byte array) of the `.pfx` certificate 
 through the standard output.
 
+</ContentFrame>
 
-
-## Document Store
+</Panel>
+<Panel heading="Document Store">
 
 After starting the server you can get the `DocumentStore` from the Embedded Server and start working with RavenDB.  
 Getting the `DocumentStore` from The Embedded Server is done simply by calling `GetDocumentStore` or `GetDocumentStoreAsync` 
@@ -504,9 +530,8 @@ await EmbeddedServer.Instance.GetDocumentStoreAsync(databaseOptions);
 </TabItem>
 </Tabs>
 
-
-
-## Get Server URL and Process ID
+</Panel>
+<Panel heading="Get Server URL and Process ID">
 
 #### Server URL:
 
@@ -541,13 +566,10 @@ embedded server.
 </CodeBlock>
 </TabItem>
 
-
-
-## Remarks
+</Panel>
+<Panel heading="Remarks">
 
 * You can have only one instance of `EmbeddedServer`.  
 * The `EmbeddedServer.Instance.OpenStudioInBrowser()` method can be used to open a browser instance with Studio.  
 
-
-
-
+</Panel>
