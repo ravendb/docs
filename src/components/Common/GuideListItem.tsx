@@ -26,24 +26,35 @@ export default function GuideListItem({
         <Link
             to={url}
             className={clsx(
-                "flex items-center py-3 px-2 gap-4",
+                "flex flex-col-reverse py-3 px-2 gap-1",
                 "border-b border-black/10 dark:border-white/10 !text-inherit",
                 "hover:!no-underline",
                 "group relative",
                 "!transition-all",
                 "hover:bg-black/5 dark:hover:bg-white/5",
+                "sm:flex-row sm:items-center sm:gap-4",
             )}
         >
-            <div className="flex flex-1 items-center justify-between flex-wrap min-w-0 gap-1">
+            <div
+                className={clsx(
+                    "flex flex-col flex-1 flex-wrap justify-between min-w-0 gap-1",
+                    "lg:flex-row lg:items-center lg:flex-nowrap",
+                )}
+            >
                 <p
                     className={clsx(
-                        "!mb-0 text-base font-semibold leading-5",
-                        "overflow-hidden text-ellipsis whitespace-nowrap shrink-0",
+                        "!mb-0 font-semibold leading-5",
+                        "sm:shrink",
                     )}
                 >
                     {title}
                 </p>
-                <div className="flex gap-1 items-center flex-wrap">
+                <div
+                    className={clsx(
+                        "flex gap-1 items-center flex-wrap whitespace-normal",
+                        "sm:shrink-0",
+                    )}
+                >
                     {visibleTags.map((tag) => (
                         <Tag
                             key={tag.label}
@@ -72,8 +83,8 @@ export default function GuideListItem({
                 <p
                     className={clsx(
                         "!mb-0 text-xs",
-                        "overflow-hidden text-ellipsis text-right whitespace-nowrap",
-                        "shrink-0"
+                        "overflow-hidden truncate sm:text-right whitespace-normal",
+                        "shrink-0",
                     )}
                 >
                     {!isInternalUrl(url) && "External • "}

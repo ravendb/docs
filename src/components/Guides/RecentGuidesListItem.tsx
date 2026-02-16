@@ -43,7 +43,7 @@ export default function RecentGuidesListItem({
                     {title}
                 </Link>
             </Heading>
-            <div className="flex items-center gap-1 justify-between pointer-events-none">
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center gap-1 justify-between pointer-events-none">
                 <div className="flex gap-1 relative flex-wrap flex-1 min-w-0">
                     {visibleTags.map((tag) => (
                         <Tag
