@@ -4,7 +4,7 @@ import Heading from "@theme/Heading";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
 import Badge from "@site/src/components/Common/Badge";
-import CardImage from "@site/src/components/Common/CardImage";
+import LazyImage from "@site/src/components/Common/LazyImage";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import clsx from "clsx";
 import { useTagLimit } from "@site/src/hooks/useTagLimit";
@@ -65,15 +65,14 @@ export default function CardWithImage({
                         "flex items-center justify-center",
                         "rounded-xl mb-4 overflow-hidden",
                         "relative aspect-[79/24]",
-                        hasImage
-                            ? "bg-black/40"
-                            : "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]",
+                        !hasImage &&
+                            "bg-gradient-to-b from-[#204879] to-[#0F1425] to-[70%]",
                     )}
                 >
                     {hasImage ? (
-                        <CardImage
+                        <LazyImage
                             imgSrc={imgSrc}
-                            imgAlt={imgAlt}
+                            alt={imgAlt}
                             className={clsx(
                                 "pointer-events-none",
                                 "w-full h-full object-cover object-center",
