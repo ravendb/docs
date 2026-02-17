@@ -1,7 +1,7 @@
 import type { DocFrontMatter, DocMetadata, DocContextValue } from '@docusaurus/plugin-content-docs';
 import { DocsLanguage } from "@site/src/components/LanguageStore";
 
-interface CustomDocFrontMatter extends DocFrontMatter {
+export interface CustomDocFrontMatter extends DocFrontMatter {
     supported_languages?: DocsLanguage[];
 }
 
