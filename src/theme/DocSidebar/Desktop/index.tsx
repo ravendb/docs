@@ -10,16 +10,9 @@ import styles from "./styles.module.css";
 import Link from "@docusaurus/Link";
 import SidebarVersionDropdown from "@site/src/components/SidebarVersionDropdown";
 
-import {
-    useActiveDocContext,
-    useLatestVersion,
-} from "@docusaurus/plugin-content-docs/client";
+import { useActiveDocContext, useLatestVersion } from "@docusaurus/plugin-content-docs/client";
 import { Icon } from "@site/src/components/Common/Icon";
-import {
-    getPathType,
-    getLandingPagePath,
-    PathType,
-} from "../../../typescript/pathUtils";
+import { getPathType, getLandingPagePath, PathType } from "../../../typescript/pathUtils";
 
 function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
     const {
@@ -42,7 +35,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
             className={clsx(
                 styles.sidebar,
                 hideOnScroll && styles.sidebarWithHideableNavbar,
-                isHidden && styles.sidebarHidden,
+                isHidden && styles.sidebarHidden
             )}
         >
             {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}

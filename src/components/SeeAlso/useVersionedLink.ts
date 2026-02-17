@@ -1,7 +1,4 @@
-import {
-    useDocsVersion,
-    useActivePlugin,
-} from "@docusaurus/plugin-content-docs/client";
+import { useDocsVersion, useActivePlugin } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { SeeAlsoItemType } from "./types";
 
@@ -38,18 +35,14 @@ export function useVersionedLink() {
             return link;
         }
 
-        const isUnversionedSection = /^\/(cloud|guides|templates)(\/|$)/.test(
-            link,
-        );
+        const isUnversionedSection = /^\/(cloud|guides|templates)(\/|$)/.test(link);
 
         if (isUnversionedSection) {
             return link;
         }
 
         const versionToUse =
-            currentPluginId === "cloud" ||
-            currentPluginId === "guides" ||
-            currentPluginId === "templates"
+            currentPluginId === "cloud" || currentPluginId === "guides" || currentPluginId === "templates"
                 ? latestVersion
                 : currentVersionPath;
 

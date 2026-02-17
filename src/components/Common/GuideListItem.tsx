@@ -27,29 +27,17 @@ export default function GuideListItem({ title, url, tags = [], date }: GuideList
                 "group relative",
                 "!transition-all",
                 "hover:bg-black/5 dark:hover:bg-white/5",
-                "sm:flex-row sm:items-center sm:gap-4",
+                "sm:flex-row sm:items-center sm:gap-4"
             )}
         >
             <div
                 className={clsx(
                     "flex flex-col flex-1 flex-wrap justify-between min-w-0 gap-1",
-                    "lg:flex-row lg:items-center lg:flex-nowrap",
+                    "lg:flex-row lg:items-center lg:flex-nowrap"
                 )}
             >
-                <p
-                    className={clsx(
-                        "!mb-0 font-semibold leading-5",
-                        "sm:shrink",
-                    )}
-                >
-                    {title}
-                </p>
-                <div
-                    className={clsx(
-                        "flex gap-1 items-center flex-wrap whitespace-normal",
-                        "sm:shrink-0",
-                    )}
-                >
+                <p className={clsx("!mb-0 font-semibold leading-5", "sm:shrink")}>{title}</p>
+                <div className={clsx("flex gap-1 items-center flex-wrap whitespace-normal", "sm:shrink-0")}>
                     {visibleTags.map((tag) => (
                         <Tag key={tag.label} size="xs" permalink={tag.permalink}>
                             {tag.label}
@@ -75,7 +63,7 @@ export default function GuideListItem({ title, url, tags = [], date }: GuideList
                     className={clsx(
                         "!mb-0 text-xs",
                         "overflow-hidden truncate sm:text-right whitespace-normal",
-                        "shrink-0",
+                        "shrink-0"
                     )}
                 >
                     {!isInternalUrl(url) && "External • "}

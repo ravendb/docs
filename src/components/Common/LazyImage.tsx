@@ -2,19 +2,11 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 
-export interface LazyImageProps
-    extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     imgSrc?: string | { light: string; dark: string };
 }
 
-export default function LazyImage({
-    imgSrc,
-    src,
-    alt = "",
-    className,
-    style,
-    ...props
-}: LazyImageProps) {
+export default function LazyImage({ imgSrc, src, alt = "", className, style, ...props }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
 
     const handleLoaded = () => {
@@ -25,30 +17,18 @@ export default function LazyImage({
 
     return (
         <span
-            className={clsx(
-                "relative overflow-hidden inline-block w-full",
-                className,
-            )}
+            className={clsx("relative overflow-hidden inline-block w-full", className)}
             style={{
                 ...style,
                 minHeight: !isLoaded ? "100px" : undefined,
             }}
         >
-            {!isLoaded && (
-                <span
-                    className="absolute inset-0 skeleton rounded-[inherit] z-10"
-                    aria-hidden="true"
-                />
-            )}
+            {!isLoaded && <span className="absolute inset-0 skeleton rounded-[inherit] z-10" aria-hidden="true" />}
             <ThemedImage
                 {...props}
                 sources={sources}
                 alt={alt}
-                className={clsx(
-                    className,
-                    "transition-opacity duration-300",
-                    !isLoaded ? "opacity-0" : "opacity-100",
-                )}
+                className={clsx(className, "transition-opacity duration-300", !isLoaded ? "opacity-0" : "opacity-100")}
                 onLoad={handleLoaded}
                 onError={handleLoaded}
                 loading="lazy"
@@ -57,10 +37,7 @@ export default function LazyImage({
     );
 }
 
-function getSources({
-    imgSrc,
-    src,
-}: Pick<LazyImageProps, "imgSrc" | "src">): ThemedImageProps["sources"] {
+function getSources({ imgSrc, src }: Pick<LazyImageProps, "imgSrc" | "src">): ThemedImageProps["sources"] {
     if (src) {
         return {
             light: src,

@@ -2,10 +2,10 @@ export const PathType = {
     Cloud: "CLOUD",
     Guides: "GUIDES",
     Documentation: "DOCUMENTATION",
-    Templates: "TEMPLATES"
+    Templates: "TEMPLATES",
 } as const;
 
-export type PathType = typeof PathType[keyof typeof PathType];
+export type PathType = (typeof PathType)[keyof typeof PathType];
 
 export function getPathType(path: string): PathType {
     if (path.includes("/cloud")) {
