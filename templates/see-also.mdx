@@ -1,0 +1,77 @@
+---
+title: "See also"
+hide_table_of_contents: false
+sidebar_label: See also
+---
+
+import Admonition from "@theme/Admonition";
+import SeeAlso from "@site/src/components/SeeAlso";
+
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+
+# See also
+
+The `SeeAlso` component is used to display a list of related articles or external resources at the end of a page. It is automatically rendered in the page footer when the `see_also` property is defined in the page's frontmatter.
+
+## Usage
+
+To add a "See also" section to your page, add the `see_also` key to your MDX frontmatter:
+
+```mdx
+---
+title: "Your Page Title"
+see_also:
+    - title: "Introduction to Cloud API"
+      link: "/api/introduction"
+      source: "docs"
+      path: "Cloud API > Basics"
+    - title: "How to set up SSO"
+      link: "/guides/sso-setup"
+      source: "guides"
+      path: "Security > Authentication"
+    - title: "Website"
+      link: "https://web.site"
+      source: "external"
+      path: "External > Corporate"
+---
+```
+
+### Frontmatter Fields
+
+| Field    | Type     | Description                                                                                                                     |
+| :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| `title`  | `string` | The title of the related article.                                                                                               |
+| `link`   | `string` | The URL or internal path. For `docs`, it's automatically versioned.                                                             |
+| `source` | `Enum`   | Icons are assigned based on the source: `docs`, `cloud`, `guides`, or `external`.                                               |
+| `path`   | `string` | Breadcrumb-style path (e.g., `Category > Subcategory`). The first part is shown by default, and the full path appears on hover. |
+
+## Features
+
+### 1. Automatic Icons
+
+The component automatically selects an icon based on the `source` property:
+
+- `docs`: Document icon
+- `cloud`: Cloud icon
+- `guides`: Guides icon
+- `external`: External link icon
+
+### 2. Versioned Documentation Links
+
+For items with `source: "docs"`, the component automatically prepends the current documentation version to the `link`.
+
+- If you are on version `7.1` of the docs, a link like `/api/basics` becomes `/7.1/api/basics`.
+- If the link already starts with a version (e.g., `/8.0/api/basics`), it is used as is.
+
+### 3. Progressive Path Display
+
+The `path` property uses the `>` separator to define a hierarchy.
+
+- Only the **first part** of the path (the main category) is displayed initially.
+- The **full path** is revealed when the user hovers over the item.
+
+<Admonition type="info" title="No Import Required">
+    When using frontmatter, you do not need to import the `SeeAlso` component or add it to the body of your MDX. The `DocItemFooter` theme component handles rendering it automatically if the frontmatter exists.
+</Admonition>

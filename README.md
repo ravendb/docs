@@ -196,6 +196,12 @@ Apart from the standard Docusaurus components, this documentation uses the follo
     </LanguageContent>
     ```
 
+## Authoring tutorials
+
+Detailed articles on using custom components are available in the `templates` directory.
+
+Alternatively, you can view them at `/templates` while your local environment is active.
+
 ## Page metadata and sidebar settings
 
 Each `.mdx` file begins with a block delimited by `---` that defines metadata used by Docusaurus for rendering, sidebar navigation, and page behavior.

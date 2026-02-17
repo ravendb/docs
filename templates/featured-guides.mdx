@@ -2,13 +2,18 @@
 title: "Featured guides"
 hide_table_of_contents: false
 sidebar_label: Featured guides
+see_also:
+    - title: "New guides"
+      link: "/templates/new-guides"
+      source: "docs"
+      path: "Templates > Guides"
 ---
 
-import Admonition from '@theme/Admonition';
-import Panel from '@site/src/components/Panel';
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
 
 <head>
-  <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
 </head>
 
 # Featured guides
@@ -20,11 +25,11 @@ Featured guides are rendered on the `/guides` home page using the
 
 Open `guides/home.mdx` and locate the `FeaturedGuides` usage:
 
-````mdx
+```mdx
 import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
 
 <FeaturedGuides guidesTitles={["Begin analysis with OLAP ETL", "Other Guide"]} />
-````
+```
 
 ### How it works
 
@@ -38,20 +43,20 @@ import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
 1. **Create or edit the guide** in `guides` and set the `title` in frontmatter,
    for example:
 
-   ```mdx
-   ---
-   title: "Example Guide"
-   tags: [ai, demo]
-   image: "/img/guides-ai-agents.webp"
-   description: "Short description used in cards and lists."
-   ---
-   ```
+    ```mdx
+    ---
+    title: "Example Guide"
+    tags: [ai, demo]
+    image: "/img/guides-ai-agents.webp"
+    description: "Short description used in cards and lists."
+    ---
+    ```
 
 2. **Update `guides/home.mdx`** and set the titles you want to feature:
 
-   ````mdx
-   <FeaturedGuides guidesTitles={["Example Guide", "Begin analysis with OLAP ETL"]} />
-   ````
+    ```mdx
+    <FeaturedGuides guidesTitles={["Example Guide", "Begin analysis with OLAP ETL"]} />
+    ```
 
 3. Make sure the strings in `guidesTitles` **exactly match** the `title`
    values in the guide frontmatter (including punctuation and casing).
@@ -60,7 +65,5 @@ import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
    section will update automatically.
 
 <Admonition type="info" title="Without guidesTitles">
-If you omit the `guidesTitles` prop, `FeaturedGuides` will fall back to showing
-the two most recently updated guides based on file timestamps or `publishedAt`.
+    If you omit the `guidesTitles` prop, `FeaturedGuides` will fall back to showing the two most recently updated guides based on file timestamps or `publishedAt`.
 </Admonition>
-

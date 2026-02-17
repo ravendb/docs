@@ -5,24 +5,37 @@ import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import EditMetaRow from "@theme/EditMetaRow";
 import { HIDDEN_EDIT_PAGE_ROUTES } from "@site/src/typescript/hiddenEditPageRoutes";
 import { DocsLanguage, useLanguage } from "@site/src/components/LanguageStore";
+import SeeAlso from "@site/src/components/SeeAlso";
 import Tag from "../../Tag";
 
-const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLanguages: DocsLanguage[]) : string => {
+const getEditUrlWithLanguage = (
+    url: string,
+    language: DocsLanguage,
+    supportedLanguages: DocsLanguage[],
+): string => {
     if (!supportedLanguages || supportedLanguages.length === 0) {
         return url;
     }
 
-    const lastSlashIndex = url.lastIndexOf('/');
+    const lastSlashIndex = url.lastIndexOf("/");
     const path = url.substring(0, lastSlashIndex + 1);
-    const filename = url.substring(lastSlashIndex + 1).replace('.mdx', '');
+    const filename = url.substring(lastSlashIndex + 1).replace(".mdx", "");
 
     return `${path}_${filename}-${language}.mdx`;
-}
+};
 
 export default function DocItemFooter(): ReactNode {
     const { language } = useLanguage();
     const { metadata } = useDoc();
-    const { editUrl, lastUpdatedAt, lastUpdatedBy, tags, permalink } = metadata;
+    const {
+        editUrl,
+        lastUpdatedAt,
+        lastUpdatedBy,
+        tags,
+        permalink,
+        frontMatter,
+    } = metadata;
+    const { see_also } = frontMatter;
 
     const isPathHidden = HIDDEN_EDIT_PAGE_ROUTES.some((route) => {
         return permalink.endsWith(route);
@@ -30,13 +43,14 @@ export default function DocItemFooter(): ReactNode {
 
     const canDisplayTagsRow = tags.length > 0;
     const canDisplayEditMetaRow = !!editUrl && !isPathHidden;
+    const canDisplaySeeAlso = see_also && see_also.length > 0;
 
-    if (!canDisplayTagsRow && !canDisplayEditMetaRow) {
+    if (!canDisplayTagsRow && !canDisplayEditMetaRow && !canDisplaySeeAlso) {
         return null;
     }
 
     return (
-        <footer className={clsx(ThemeClassNames.docs.docFooter, "mt-6")}>
+        <footer className={clsx(ThemeClassNames.docs.docFooter, "mt-4")}>
             {canDisplayTagsRow && (
                 <div className="flex flex-wrap gap-2">
                     {tags.map((tag) => (
@@ -49,11 +63,16 @@ export default function DocItemFooter(): ReactNode {
             {canDisplayEditMetaRow && (
                 <EditMetaRow
                     className={clsx(ThemeClassNames.docs.docFooterEditMetaRow)}
-                    editUrl={getEditUrlWithLanguage(editUrl, language, metadata.frontMatter.supported_languages)}
+                    editUrl={getEditUrlWithLanguage(
+                        editUrl,
+                        language,
+                        metadata.frontMatter.supported_languages,
+                    )}
                     lastUpdatedAt={lastUpdatedAt}
                     lastUpdatedBy={lastUpdatedBy}
                 />
             )}
+            {canDisplaySeeAlso && <SeeAlso items={see_also} className="mb-6" />}
         </footer>
     );
 }

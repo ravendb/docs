@@ -2,13 +2,18 @@
 title: "Icon Gallery"
 hide_table_of_contents: false
 sidebar_label: Icon Gallery
+see_also:
+    - title: "Themed Images"
+      link: "/templates/themed-images"
+      source: "docs"
+      path: "Templates > Themed Images"
 ---
 
 import IconGallery from "@site/src/components/IconGallery/IconGallery";
-import Admonition from '@theme/Admonition';
+import Admonition from "@theme/Admonition";
 
 <head>
-  <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
 </head>
 
 # Icon Gallery
@@ -30,7 +35,7 @@ import { Icon } from "@site/src/components/Common/Icon";
 <IconGallery />
 
 <Admonition type="info" title="">
-Icons are automatically loaded from the `static/icons` directory. When you add a new SVG file to this directory, the icon will automatically appear in this gallery after restarting the development server.
+    Icons are automatically loaded from the `static/icons` directory. When you add a new SVG file to this directory, the icon will automatically appear in this gallery after restarting the development server.
 </Admonition>
 
 ## Icon Sizes
@@ -70,9 +75,5 @@ import { Icon } from "@site/src/components/Common/Icon";
 ```tsx
 import CardWithImage from "@site/src/components/Common/CardWithImage";
 
-<CardWithImage
-  title="Database"
-  description="Database icon"
-  imgIcon="database"
-/>
+<CardWithImage title="Database" description="Database icon" imgIcon="database" />
 ```

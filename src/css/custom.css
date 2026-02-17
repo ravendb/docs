@@ -652,3 +652,24 @@ a {
 ::-webkit-scrollbar-corner {
     background-color: inherit;
 }
+
+/* Custom styles for See also path collapse */
+.path-collapse {
+    max-width: 0;
+    overflow: hidden;
+    transition:
+        max-width 0.3s ease,
+        margin 0.3s ease;
+    white-space: pre;
+    visibility: visible;
+}
+
+.group:hover .path-collapse {
+    max-width: 100%;
+}
+
+/* Disable navigation for Docs */
+.plugin-id-default .pagination-nav,
+.plugin-id-cloud .pagination-nav {
+    display: none;
+}
