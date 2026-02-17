@@ -1,0 +1,145 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* A [Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document 
+  as a vector of identifiers.  
+  Lucene indexes can contain term vectors for documents they index.  
+* Term vectors can be used for various purposes, including similarity searches, information filtering 
+  and retrieval, and indexing.  
+  A book's index, for example, may have term vector enabled on the book's **subject** field, to be able 
+  to use this field to search for books with similar subjects.  
+* RavenDB features like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) leverage 
+  stored term vectors to accomplish their goals.
+
+* In this page:
+   * [Creating an index and enabling Term Vectors on a field](../indexes/using-term-vectors.mdx#creating-an-index-and-enabling-term-vectors-on-a-field)
+       * [Using the API](../indexes/using-term-vectors.mdx#using-the-api)  
+       * [Using Studio](../indexes/using-term-vectors.mdx#using-studio)
+
+</Admonition>
+## Creating an index and enabling Term Vectors on a field
+
+Indexes that include term vectors can be created and configured using the API 
+or Studio.  
+
+## Using the API 
+
+To create an index and enable Term Vectors on a specific field,  we can -  
+
+A. Create an index using  the `AbstractIndexCreationTask`, and specify the term vectors there.  
+B. Or, we can define our term vectors in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByTagsAndContent : AbstractIndexCreationTask<BlogPost>
+{
+    public BlogPosts_ByTagsAndContent()
+    {
+        Map = users => from doc in users
+                       select new
+                       {
+                           doc.Tags,
+                           doc.Content
+                       };
+
+        Indexes.Add(x => x.Content, FieldIndexing.Search);
+        TermVectors.Add(x => x.Content, FieldTermVector.WithPositionsAndOffsets);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operation" label="Operation">
+<CodeBlock language="csharp">
+{`IndexDefinitionBuilder<BlogPost> indexDefinitionBuilder =
+    new IndexDefinitionBuilder<BlogPost>("BlogPosts/ByTagsAndContent")
+    {
+        Map = users => from doc in users
+                       select new
+                       {
+                           doc.Tags,
+                           doc.Content
+                       },
+        Indexes =
+        {
+            { x => x.Content, FieldIndexing.Search }
+        },
+        TermVectors =
+        {
+            { x => x.Content, FieldTermVector.WithPositionsAndOffsets }
+        }
+    };
+
+IndexDefinition indexDefinition = indexDefinitionBuilder
+    .ToIndexDefinition(store.Conventions);
+
+store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Available Term Vector options include:
+
+<TabItem value="term_vectors_3" label="term_vectors_3">
+<CodeBlock language="csharp">
+{`public enum FieldTermVector
+\{
+    /// <summary>
+    /// Do not store term vectors
+    /// </summary>
+    No,
+
+    /// <summary>
+    /// Store the term vectors of each document. A term vector is a list of the document's
+    /// terms and their number of occurrences in that document.
+    /// </summary>
+    Yes,
+
+    /// <summary>
+    /// Store the term vector + token position information
+    /// </summary>
+    WithPositions,
+
+    /// <summary>
+    /// Store the term vector + Token offset information
+    /// </summary>
+    WithOffsets,
+
+    /// <summary>
+    /// Store the term vector + Token position and offset information
+    /// </summary>
+    WithPositionsAndOffsets
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Learn which Lucene API methods and constants are available [here](https://lucene.apache.org/core/3_6_2/api/all/org/apache/lucene/document/Field.TermVector.html).
+
+## Using Studio
+
+Let's use as an example one of Studio's sample indexes, `Product/Search`, that has term vector 
+enabled on its `Name` field so a feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) 
+can use this fiels to select a product and find products similar to it.  
+
+![Term vector enabled on index field](../assets/term-vector-enabled.png)
+
+We can now use a query like:
+
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`from index 'Product/Search' 
+where morelikethis(id() = 'products/7-A')
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+

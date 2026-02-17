@@ -1,0 +1,105 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* When making a query, each document in the query results is assigned a **score**.  
+  This score determines the order by which the documents come back in the results when requesting   
+  to [order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score).
+
+* Each document in the results includes this score under the `@index-score` property in its metadata.
+
+* Use `includeExplanations` in your query **to get the score details** and see how it was calculated.  
+
+    <Admonition type="info" title="">
+    * Including explanations is available only when using **Lucene** as the underlying search engine.
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
+    </Admonition>
+* This article provides examples of including explanations when making a **dynamic-query**.  
+  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations.mdx).
+
+* In this page:
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations.mdx#include-explanations-in-a-query)  
+    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx#view-explanations)  
+    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations.mdx#syntax)  
+</Admonition>
+## Include explanations in a query
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Define an object that will receive the explanations results
+let explanationsResults;
+
+const products = await session.query({ collection: "Products" })
+     // Call includeExplanations, pass a callback function
+     // Output param 'explanationsResults' will be filled with explanations results when query returns 
+    .includeExplanations(e => explanationsResults = e)
+     // Define query criteria
+     // i.e. search for docs containing Syrup -or- Lager in their Name field
+    .search("Name", "Syrup Lager")
+     // Execute the query
+    .all();
+
+// Get the score details for a specific document from 'explanationsResults'
+const id = session.advanced.getDocumentId(products[0]);
+const scoreDetails = explanationsResults.explanations[id];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where search(Name, "Syrup") or search(Name, "Lager")
+include explanations()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## View explanations
+
+* The detailed explanations can be viewed from the **Query view** in Studio.  
+* Running a query with `include explanations()` will show an additional **Explanations Tab**.
+
+![Figure 1. Explanations in the Studio](../assets/include-explanations-1.png)
+
+* Sample score details:
+
+![Figure 2. View explanations](../assets/include-explanations-2.png)
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`query.includeExplanations(explanationsCallback)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter                | Type                            | Description |
+|--------------------------|---------------------------------|-------------|
+| **explanationsCallback** | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when the query returns.</li></ul> |
+
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
+{`// The Explanations object:
+// ========================
+
+class Explanations \{
+    get explanations(): \{
+        [key: string]: string[]; // An explanations list per document ID key
+    \};
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

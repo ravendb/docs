@@ -1,0 +1,57 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
+
+## Syntax
+
+<TabItem value="timing_1" label="timing_1">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Timings(out QueryTimings timings);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var resultWithTimings = session.Advanced.DocumentQuery<Product>()
+    .Timings(out QueryTimings timings)
+    .Search(x => x.Name, "Syrup")
+    .ToList();
+
+IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var resultWithTimings = await session.Advanced.AsyncDocumentQuery<Product>()
+    .Timings(out QueryTimings timings)
+    .Search(x => x.Name, "Syrup")
+    .ToListAsync();
+
+IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products 
+where search(Name, 'Syrup')
+include timings()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+When you run the query with `include timings()` in Studio, extra tab appears. 
+
+![Figure 1. Include timings graphical results](../assets/include-timings-1.png)
+

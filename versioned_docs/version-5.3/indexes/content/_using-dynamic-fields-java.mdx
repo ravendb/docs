@@ -1,0 +1,500 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* In RavenDB different documents can have different shapes.  
+  Documents are schemaless - new fields can be added or removed as needed.
+
+* For such dynamic data, you can define indexes with __dynamic-index-fields__.
+
+* This allows querying the index on fields that aren't yet known at index creation time,  
+  which is very useful when working on highly dynamic systems.
+
+* Any value type can be indexed, string, number, date, etc.
+
+* An index definition can contain both dynamic-index-fields and regular-index-fields.
+
+* In this page:
+
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
+
+</Admonition>
+
+## Indexing documents fields KEYS
+
+<Admonition type="note" title="">
+#### Example - index any field under object
+The following allows you to:
+
+* Index any field that is under the some object from the document.
+* After index is deployed, any new field added to the this object will be indexed as well.
+__The document__:
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
+<CodeBlock language="java">
+{`public class Product \{
+    private String id;
+
+    // The KEYS under the attributes object will be dynamically indexed
+    // Fields added to this object after index creation time will also get indexed
+    private Dictionary<String, Object> attributes;
+
+    // get + set implementation ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "attributes": \{
+        "color": "Red",
+        "size": 42
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__The index__:
+
+* The following index will index any field under the `attributes` object from the document,  
+  a dynamic-index-field will be created for each such field.  
+  New fields added to the object after index creation time will be dynamically indexed as well.
+
+* The actual dynamic-index-field name on which you can query will be the attribute field __key__.  
+  e.g. Keys `color` & `size` will become the actual dynamic-index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="java">
+{`public class Products_ByAttributeKey_JS extends AbstractJavaScriptIndexCreationTask {
+    public Products_ByAttributeKey_JS() {
+        // Call 'createField' to generate dynamic-index-fields from the attributes object keys
+        // Using '_' is just a convention. Any other string can be used instead of '_'
+
+        // The actual field name will be the key
+        // The actual field terms will be derived from p.attributes[key]
+        setMaps(Sets.newHashSet(
+            "map('Products', function (p) { " +
+            "    return { " +
+            "        _: Object.keys(p.attributes).map(key => createField(key, p.attributes[key], " +
+            "            { indexing: 'Search', storage: false, termVector: null })) " +
+            "    }; " +
+            "}) "
+        ));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+__The query__:
+
+* You can now query the generated dynamic-index fields.  
+  Property `_` is Not queryable, it is only used in the index definition syntax.
+
+* To get all documents with some 'size' use:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Product> matchingDocuments = session
+    .query(Product.class, Products_ByAttributeKey_JS.class)
+    .whereEquals("size", 42)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'size' is a dynamic-index-field that was indexed from the Attributes object
+from index 'Products/ByAttributeKey/JS' where size = 42
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Example - index any field
+The following allows you to:
+
+* Define an index on a collection __without__ needing any common structure between the indexed documents.
+* After index is deployed, any new field added to the document will be indexed as well.
+
+<Admonition type="info" title="">
+
+Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
+
+</Admonition>
+__The document__:
+
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
+<CodeBlock language="java">
+{`public class Product \{
+    private String id;
+
+    // All KEYS in the document will be dynamically indexed
+    // Fields added to the document after index creation time will also get indexed
+    private String firstName;
+    private String lastName;
+    private String title;
+    // ...
+
+    // get + set implementation ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "firstName": "John",
+    "lastName": "Doe",
+    "title": "Engineer",
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__The index__:
+
+* The following index will index any field from the document,  
+  a dynamic-index-field will be created for each field.  
+  New fields added to the document after index creation time will be dynamically indexed as well.
+
+* The actual dynamic-index-field name on which you can query will be the field __key__.  
+  e.g. Keys `firstName` & `lastName` will become the actual dynamic-index-fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="java">
+{`public class Products_ByAnyField_JS extends AbstractJavaScriptIndexCreationTask {
+    public Products_ByAnyField_JS() {
+    
+        // This will index EVERY FIELD under the top level of the document
+        setMaps(Sets.newHashSet(
+            "map('Products', function (p) { " +
+            "    return { " +
+            "        _: Object.keys(p).map(key => createField(key, p[key], " +
+            "            { indexing: 'Search', storage: true, termVector: null })) " +
+            "    }; " +
+            "}) "
+        ));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+__The query__:
+
+* To get all documents with some 'lastName' use:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Product> matchingDocuments = session
+    .query(Product.class, Products_ByAnyField_JS.class)
+    .whereEquals("lastName", "Doe")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'lastName' is a dynamic-index-field that was indexed from the document
+from index 'Products/ByAnyField/JS' where lastName = "Doe"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Indexing documents fields VALUES
+
+<Admonition type="note" title="">
+#### Example - basic
+This example shows:
+
+* Only the __basic concept__ of creating a dynamic-index-field from the __value__ of a document field.
+* Documents can then be queried based on those indexed values.
+* For a more practical usage see the [Example](../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.
+__The document__:
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
+<CodeBlock language="java">
+{`public class Product \{
+    private String id;
+
+    // The VALUE of productType will be dynamically indexed
+    private String productType;
+    private int pricePerUnit;
+
+    // get + set implementation ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "productType": "Electronics",
+    "pricePerUnit": 23
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__The index__:
+
+* The following index will index the __value__ of document field 'productType'.
+
+* This value will be the dynamic-index-field name on which you can query.  
+  e.g. Field value `Electronics` will be the dynamic-index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-index" label="LINQ-index">
+<CodeBlock language="java">
+{`public class Products_ByProductType extends AbstractIndexCreationTask {
+    public Products_ByProductType() {
+    
+        // The field name will be the value of document field 'productType'
+        // The field terms will be derived from document field 'pricePerUnit'
+        map = "docs.Products.Select(p => new { " +
+              "    _ = this.CreateField(p.productType, p.pricePerUnit) " +
+              "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+__The query__:
+
+* To get all documents of some product type having a specific price per unit use:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Product> matchingDocuments = session
+    .query(Product.class, Products_ByProductType.class)
+    .whereEquals("Electronics", 23)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'Electronics' is the dynamic-index-field that was indexed from document field 'productType'
+from index 'Products/ByProductType' where Electronics = 23
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+#### Example - list
+The following allows you to:
+
+* Index __values__ from items in a list
+* After index is deployed, any item added this list in the document will be dynamically indexed as well.
+__The document__:
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
+<CodeBlock language="java">
+{`public class Product \{
+    private String id;
+    private String name;
+
+    // For each element in this list, the VALUE of property 'propName' will be dynamically indexed
+    // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
+    private List<Attribute> attributes;
+
+    // get + set implementation ...
+\}
+
+public class Attribute \{
+    private String propName;
+    private String propValue;
+
+    // get + set implementation ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`// Sample document content
+\{
+    "name": "SomeName",
+    "attributes": [
+        \{  
+            "propName": "Color",
+            "propValue": "Blue"
+        \},
+        \{
+            "propName": "Width",
+            "propValue": "10"
+        \},
+        \{
+            "propName": "Length",
+            "propValue": "20"
+        \},
+        ...
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+__The index__:
+
+* The following index will create a dynamic-index-field per item in the document's `attributes` list.  
+  New items added to the attributes list after index creation time will be dynamically indexed as well.
+
+* The actual dynamic-index-field name on which you can query will be the item's propName __value__.  
+  e.g. 'propName' value `Width` will be a dynamic-index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-index" label="LINQ-index">
+<CodeBlock language="java">
+{`public class Attributes_ByName extends AbstractIndexCreationTask {
+    public Attributes_ByName() {
+
+        // For each attribute item, the field name will be the value of field 'propName'
+        // The field terms will be derived from field 'propValue'
+        // A regular-index-field (Name) is defined as well
+        map =
+            "docs.Products.Select(p => new { " +
+            "    _ = p.attributes.Select(item => this.CreateField(item.propName, item.propValue)), " +
+            "    Name = p.name " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+__The query__:
+
+* To get all documents matching a specific attribute property use:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="java">
+{`List<Product> matchingDocuments = session
+    .query(Product.class, Attributes_ByName.class)
+    .whereEquals("Width", 10)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// 'Width' is a dynamic-index-field that was indexed from the attributes list
+from index 'Attributes/ByName' where Width = 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## CreateField syntax
+
+#### Syntax for LINQ-index:
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`object CreateField(string name, object value);
+
+object CreateField(string name, object value, bool stored, bool analyzed);
+
+object CreateField(string name, object value, CreateFieldOptions options);
+`}
+</CodeBlock>
+</TabItem>
+
+#### Syntax for JavaScript-index:
+
+<TabItem value="syntax_JS" label="syntax_JS">
+<CodeBlock language="js">
+{`createField(fieldName, fieldValue, options); // returns object
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters       |                      |                                                                                                                                                                                    |
+|------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
+| **fieldValue**   | `object`             | Value of the dynamic-index-field
+The field Terms are derived from this value.                                                                                                  |
+| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
+
+`false` - will set `FieldStorage.No` (default value)
+`true` - will set `FieldStorate.Yes`                       |
+| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
+
+`null` - `FieldIndexing.Default` (default value)
+`false` - `FieldIndexing.Exact`
+`true` - `FieldIndexing.Search` |
+| **options**      | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                                        |
+
+| CreateFieldOptions |                    |                                                                            |
+|--------------------|--------------------|----------------------------------------------------------------------------|
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
+
+<Admonition type="info" title="">
+
+* All above examples have used the character `_` in the dynamic-index-field definition.  
+  However, using `_` is just a convention. Any other string can be used instead.
+
+* This property is Not queryable, it is only used in the index definition syntax.  
+  The actual dynamic-index-fields that are generated are defined by the `CreateField` method.
+
+</Admonition>
+
+
+
+## Indexed fields & terms view
+
+The generated dynamic-index-fields and their indexed terms can be viewed in the __Terms View__.  
+Below are sample index fields & their terms generated from the last example.
+
+![Figure 1. Go to terms view](../assets/dynamic-index-fields-1.png)
+
+![Figure 2. Indexed fields & terms](../assets/dynamic-index-fields-2.png)
+
+
+
+

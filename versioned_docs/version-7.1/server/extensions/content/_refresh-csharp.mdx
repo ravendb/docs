@@ -1,0 +1,138 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector.mdx), 
+  triggering its re-indexation as well as other features that react to document updates.  
+
+* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
+
+* In this page:  
+  * [Overview](../../server/extensions/refresh.mdx#overview)  
+  * [Examples](../../server/extensions/refresh.mdx#examples)
+  * [Syntax](../../server/extensions/refresh.mdx#syntax)
+  * [Configure from Studio](../../server/extensions/refresh.mdx#configure-from-studio)
+
+
+</Admonition>
+## Overview
+
+* To set a document refresh time, add the document's `@metadata` a 
+  `@refresh` property with the designated refresh time as a value.  
+  Set the time in **UTC** format, not local time, e.g. -  
+  **"@refresh": "2025-04-22T08:00:00.0000000Z"**  
+  <Admonition type="warning" title="">
+  Metadata properties starting with `@` are for internal RavenDB usage only.  
+  Do _not_ use the metadata `@refresh` property for any other purpose than 
+  scheduling a document's refresh time for the built-in refresh feature.  
+  </Admonition>
+
+* This will cause the document to refresh **only once**.  
+  When the refresh operation takes place, it will also remove the `@refresh` property from the document.  
+     <Admonition type="info" title="The exact refresh time is determined by:" id="the-exact-refresh-time-is-determined-by" href="#the-exact-refresh-time-is-determined-by">
+
+     1. The refresh time value set for the `@refresh` property.  
+     2. The way you set the [Refresh Configuration](../../server/extensions/refresh.mdx#syntax), 
+        including -  
+         - The interval by which the server refreshes documents (set by default to 60 seconds).  
+         - The way you set **maximal items to process**, potentially limiting the number 
+           of documents that RavenDB is allowed to delete each time the refresh feature is invoked.  
+
+     </Admonition>
+
+* Refreshing a document causes its [change vector](../../server/clustering/replication/change-vector.mdx) 
+  to increment the same way it would after any other kind of update to the document.  
+  This triggers any features that react to document updating, including but not limited to:  
+   - Re-indexing of the document by indexes that cover it  
+   - [Replication](../../server/ongoing-tasks/external-replication.mdx), 
+     [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
+     and [ETL](../../server/ongoing-tasks/etl/basics.mdx) triggering  
+   - Creation of a [document revision](../../document-extensions/revisions/overview.mdx)  
+
+
+
+## Examples
+
+#### Example I  
+
+How to set refresh configuration for a database:  
+
+<TabItem value="refresh_0" label="refresh_0">
+<CodeBlock language="csharp">
+{`var refreshConfig = new RefreshConfiguration \{
+    Disabled = false, 
+    RefreshFrequencyInSec = 300,
+    MaxItemsToProcess = 1000 
+\};
+
+var result = documentStore.Maintenance.Send(new ConfigureRefreshOperation(refreshConfig));
+`}
+</CodeBlock>
+</TabItem>  
+
+This activates document refreshing and sets the interval at 5 minutes.  
+
+
+#### Example II  
+
+How to set a document to refresh 1 hour from now:  
+
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="csharp">
+{`using (var session = documentStore.OpenSession())
+\{
+    var document = session.Load<object>("users/1-A");
+
+    session.Advanced.GetMetadataFor(document)["@refresh"] = DateTime.UtcNow.AddHours(1);
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Syntax
+
+To activate and/or configure document refreshing, send the server a 
+`RefreshConfiguration` object using the `ConfigureRefreshOperation` operation.  
+#### `RefreshConfiguration`
+
+<TabItem value="refresh_config" label="refresh_config">
+<CodeBlock language="csharp">
+{`public class RefreshConfiguration
+\{
+    // Set 'Disabled' to false to enable the refresh feature
+    public bool Disabled \{ get; set; \}
+
+    // How frequently to process documents with a @refresh flag
+    public long? RefreshFrequencyInSec \{ get; set; \}
+
+    // How many items to refresh (each time the refresh task is invoked)
+    public long? MaxItemsToProcess \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **Disabled** | `bool` | If `true`, refreshing documents is disabled for the entire database.&lt;BR&gt;Default: `true` |
+| **RefreshFrequencyInSec** | `long?` | Determines how often (in seconds) the server processes documents that need to be refreshed.&lt;BR&gt;Default: `60` |
+| **MaxItemsToProcess** | `long?` | Determines the maximal number of documents the feature is allowed to refresh in one run. |
+
+
+
+## Configure from Studio
+
+Alternatively, document refreshing can also be configured via Studio, under **Settings &gt; Document Refresh**.
+
+![NoSQL DB Server - Document Refresh](../assets/StudioRefresh.png)
+
+
+
+
