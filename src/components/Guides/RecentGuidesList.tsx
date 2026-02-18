@@ -15,11 +15,7 @@ export default function RecentGuidesList({ guides }: RecentGuidesListProps) {
     return (
         <>
             {guides.map((guide, index) => (
-                <RecentGuidesListItem
-                    key={guide.url}
-                    {...guide}
-                    isLast={index === guides.length - 1}
-                />
+                <RecentGuidesListItem key={guide.url} {...guide} isLast={index === guides.length - 1} />
             ))}
         </>
     );

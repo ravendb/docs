@@ -7,10 +7,10 @@ import MarkdownImageLightbox from "@site/src/components/MarkdownImageLightbox";
 type Props = WrapperProps<typeof LayoutType>;
 
 export default function LayoutWrapper(props: Props): ReactNode {
-  return (
-    <>
-      <Layout {...props} />
-      <MarkdownImageLightbox />
-    </>
-  );
+    return (
+        <>
+            <Layout {...props} />
+            <MarkdownImageLightbox />
+        </>
+    );
 }

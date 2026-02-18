@@ -14,13 +14,7 @@ export interface RecentGuidesListItemProps {
     isLast?: boolean;
 }
 
-export default function RecentGuidesListItem({
-    title,
-    tags,
-    time,
-    url,
-    isLast,
-}: RecentGuidesListItemProps) {
+export default function RecentGuidesListItem({ title, tags, time, url, isLast }: RecentGuidesListItemProps) {
     const { visibleTags, hiddenCount, isExpanded, expandTags } = useTagLimit({
         tags,
     });
@@ -31,7 +25,7 @@ export default function RecentGuidesListItem({
                 "relative group p-4 flex flex-col gap-1 cursor-pointer !transition-colors",
                 "text-base !text-inherit",
                 "hover:bg-black/5 dark:hover:bg-white/5",
-                !isLast && "border-b border-black/10 dark:border-white/10",
+                !isLast && "border-b border-black/10 dark:border-white/10"
             )}
         >
             <Heading as="h6" className="!mb-0 !font-bold !text-inherit">
@@ -46,12 +40,7 @@ export default function RecentGuidesListItem({
             <div className="flex flex-col-reverse sm:flex-row sm:items-center gap-1 justify-between pointer-events-none">
                 <div className="flex gap-1 relative flex-wrap flex-1 min-w-0">
                     {visibleTags.map((tag) => (
-                        <Tag
-                            key={tag.label}
-                            permalink={tag.permalink}
-                            size="xs"
-                            className="pointer-events-auto"
-                        >
+                        <Tag key={tag.label} permalink={tag.permalink} size="xs" className="pointer-events-auto">
                             {tag.label}
                         </Tag>
                     ))}

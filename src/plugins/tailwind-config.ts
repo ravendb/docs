@@ -1,13 +1,10 @@
-import type { Plugin } from '@docusaurus/types';
+import type { Plugin } from "@docusaurus/types";
 
 const tailwindPlugin: Plugin = function tailwindPlugin(_context, _options) {
     return {
-        name: 'tailwind-plugin',
+        name: "tailwind-plugin",
         configurePostCss(postcssOptions) {
-            postcssOptions.plugins = [
-                require('@tailwindcss/postcss'),
-                require('autoprefixer'),
-            ];
+            postcssOptions.plugins = [require("@tailwindcss/postcss"), require("autoprefixer")];
             return postcssOptions;
         },
     };

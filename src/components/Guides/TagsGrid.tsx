@@ -37,11 +37,7 @@ export default function TagsGrid() {
             </div>
             <div className="flex flex-wrap gap-2 overflow-hidden max-h-[230px] md:max-h-[115px]">
                 {tags.map((tag) => (
-                    <Tag
-                        key={tag.key}
-                        permalink={`/guides/tags${tag.permalink}`}
-                        count={tag.count}
-                    >
+                    <Tag key={tag.key} permalink={`/guides/tags${tag.permalink}`} count={tag.count}>
                         {tag.label}
                     </Tag>
                 ))}

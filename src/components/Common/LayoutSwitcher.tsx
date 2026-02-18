@@ -9,16 +9,13 @@ interface LayoutSwitcherProps {
     onLayoutChange: (mode: LayoutMode) => void;
 }
 
-export default function LayoutSwitcher({
-    layoutMode,
-    onLayoutChange,
-}: LayoutSwitcherProps) {
+export default function LayoutSwitcher({ layoutMode, onLayoutChange }: LayoutSwitcherProps) {
     return (
         <div
             className={clsx(
                 "relative w-fit ms-auto",
                 "border border-black/10 dark:border-white/10",
-                "flex gap-1 items-center p-1 rounded-3xl shrink-0",
+                "flex gap-1 items-center p-1 rounded-3xl shrink-0"
             )}
         >
             <div
@@ -27,7 +24,7 @@ export default function LayoutSwitcher({
                     "bg-black/5 dark:bg-white/5",
                     "rounded-3xl",
                     "!transition-all",
-                    "border border-black/10 dark:border-white/10",
+                    "border border-black/10 dark:border-white/10"
                 )}
                 style={{
                     left: layoutMode === "grid" ? "4px" : "40px",
@@ -40,9 +37,7 @@ export default function LayoutSwitcher({
                     "flex items-center justify-center p-1 rounded-3xl w-[32px] h-[32px]",
                     "border-0 cursor-pointer",
                     "!transition-all",
-                    layoutMode === "grid"
-                        ? "opacity-100"
-                        : "opacity-50 hover:opacity-75",
+                    layoutMode === "grid" ? "opacity-100" : "opacity-50 hover:opacity-75"
                 )}
                 title="Grid view"
             >
@@ -55,9 +50,7 @@ export default function LayoutSwitcher({
                     "flex items-center justify-center p-1 rounded-3xl w-[32px] h-[32px]",
                     "border-0 cursor-pointer",
                     "!transition-all",
-                    layoutMode === "list"
-                        ? "opacity-100"
-                        : "opacity-50 hover:opacity-75",
+                    layoutMode === "list" ? "opacity-100" : "opacity-50 hover:opacity-75"
                 )}
                 title="List view"
             >

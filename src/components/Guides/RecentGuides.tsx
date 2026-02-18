@@ -40,9 +40,7 @@ export default function RecentGuides() {
             title: doc.title || doc.id,
             url: doc.externalUrl || doc.permalink,
             tags: doc.tags || [],
-            time: doc.lastUpdatedAt
-                ? getRelativeTime(doc.lastUpdatedAt)
-                : "Recently",
+            time: doc.lastUpdatedAt ? getRelativeTime(doc.lastUpdatedAt) : "Recently",
             lastUpdatedAt: doc.lastUpdatedAt || 0,
         }))
         .slice(0, 10);
@@ -65,7 +63,7 @@ export default function RecentGuides() {
                 className={clsx(
                     "border border-black/10 dark:border-white/10 rounded-2xl bg-black/5 dark:bg-white/5",
                     "overflow-y-auto flex flex-col flex-1 min-h-0",
-                    "scrollbar-thin scrollbar-thumb-black/10 dark:scrollbar-thumb-white/10 scrollbar-track-transparent",
+                    "scrollbar-thin scrollbar-thumb-black/10 dark:scrollbar-thumb-white/10 scrollbar-track-transparent"
                 )}
             >
                 <RecentGuidesList guides={recentGuides} />

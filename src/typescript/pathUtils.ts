@@ -2,12 +2,12 @@ export const PathType = {
     Cloud: "CLOUD",
     Guides: "GUIDES",
     Documentation: "DOCUMENTATION",
-    Templates: "TEMPLATES"
+    Templates: "TEMPLATES",
 } as const;
 
-export type PathType = typeof PathType[keyof typeof PathType];
+export type PathTypeValue = (typeof PathType)[keyof typeof PathType];
 
-export function getPathType(path: string): PathType {
+export function getPathType(path: string): PathTypeValue {
     if (path.includes("/cloud")) {
         return PathType.Cloud;
     }
@@ -20,7 +20,7 @@ export function getPathType(path: string): PathType {
     return PathType.Documentation;
 }
 
-export function getLandingPagePath(pathType: PathType, versionLabel: string): string {
+export function getLandingPagePath(pathType: PathTypeValue, versionLabel: string): string {
     if (pathType === PathType.Cloud) {
         return "/cloud";
     }

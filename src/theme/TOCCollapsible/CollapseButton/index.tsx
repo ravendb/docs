@@ -5,10 +5,7 @@ import type { Props } from "@theme/TOCCollapsible/CollapseButton";
 
 import styles from "./styles.module.css";
 
-export default function TOCCollapsibleCollapseButton({
-    collapsed,
-    ...props
-}: Props): ReactNode {
+export default function TOCCollapsibleCollapseButton({ collapsed, ...props }: Props): ReactNode {
     return (
         <button
             type="button"
@@ -17,7 +14,7 @@ export default function TOCCollapsibleCollapseButton({
                 "clean-btn",
                 styles.tocCollapsibleButton,
                 !collapsed && styles.tocCollapsibleButtonExpanded,
-                props.className,
+                props.className
             )}
         >
             <Translate

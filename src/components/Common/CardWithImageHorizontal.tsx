@@ -34,14 +34,14 @@ export default function CardWithImageHorizontal({
                     "!transition-all",
                     "!bg-black/5 dark:!bg-white/5",
                     "hover:border-black/20 dark:hover:border-white/20",
-                    "hover:!bg-black/10 dark:hover:!bg-white/10",
+                    "hover:!bg-black/10 dark:hover:!bg-white/10"
                 )}
             >
                 <div
                     className={clsx(
                         "aspect-[537/281] xl:max-w-[120px]",
                         "overflow-hidden rounded-xl",
-                        "relative flex items-center",
+                        "relative flex items-center"
                     )}
                 >
                     <LazyImage
@@ -51,15 +51,11 @@ export default function CardWithImageHorizontal({
                             "pointer-events-none",
                             "w-full h-auto object-contain",
                             "!transition-transform origin-bottom",
-                            "group-hover:scale-105",
+                            "group-hover:scale-105"
                         )}
                     />
                     {!isInternalUrl(url) && (
-                        <Badge
-                            className="absolute top-2 right-2"
-                            variant="default"
-                            size="sm"
-                        >
+                        <Badge className="absolute top-2 right-2" variant="default" size="sm">
                             External
                         </Badge>
                     )}

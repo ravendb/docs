@@ -11,36 +11,35 @@ function getOnlyIncludeVersions(): string[] | undefined {
         return undefined;
     }
 
-    return versionsEnv.split(',').map(v => v.trim());
+    return versionsEnv.split(",").map((v) => v.trim());
 }
 
 const config: Config = {
-  title: "RavenDB Documentation",
-  tagline:
-    "High-performance NoSQL database that just works.",
-  favicon: "img/favicon.ico",
+    title: "RavenDB Documentation",
+    tagline: "High-performance NoSQL database that just works.",
+    favicon: "img/favicon.ico",
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-    experimental_faster: true
-  },
+    // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+    future: {
+        v4: true, // Improve compatibility with the upcoming Docusaurus v4
+        experimental_faster: true,
+    },
 
-  customFields: {
-      latestVersion: "7.2"
-  },
+    customFields: {
+        latestVersion: "7.2",
+    },
 
-  url: "https://docs.ravendb.net/",
-  baseUrl: "/",
+    url: "https://docs.ravendb.net/",
+    baseUrl: "/",
 
-  onBrokenLinks: "ignore",
-  onBrokenMarkdownLinks: "ignore",
-  onBrokenAnchors: "ignore",
+    onBrokenLinks: "ignore",
+    onBrokenMarkdownLinks: "ignore",
+    onBrokenAnchors: "ignore",
 
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
-  },
+    i18n: {
+        defaultLocale: "en",
+        locales: ["en"],
+    },
 
     presets: [
         [
@@ -50,16 +49,15 @@ const config: Config = {
                     sidebarPath: "sidebars.ts",
                     routeBasePath: "/",
                     includeCurrentVersion: true,
-                    lastVersion: 'current',
+                    lastVersion: "current",
                     versions: {
                         current: {
                             label: "7.2",
-                            path: "7.2"
-                        }
+                            path: "7.2",
+                        },
                     },
                     onlyIncludeVersions: getOnlyIncludeVersions(),
-                    editUrl:
-                       'https://github.com/ravendb/docs/edit/main/'
+                    editUrl: "https://github.com/ravendb/docs/edit/main/",
                 },
                 blog: false,
                 theme: {
@@ -68,45 +66,45 @@ const config: Config = {
                 sitemap: {
                     lastmod: null,
                     changefreq: "weekly",
-                    priority: null
+                    priority: null,
                 },
                 googleTagManager: {
-                    containerId: "GTM-TDH4JWF2"
-                }
+                    containerId: "GTM-TDH4JWF2",
+                },
             } satisfies Preset.Options,
         ],
     ],
     plugins: [
         require.resolve("./src/plugins/tailwind-config"),
         [
-            'content-docs',
+            "content-docs",
             {
-                id: 'cloud',
-                path: 'cloud',
-                routeBasePath: 'cloud',
-                sidebarPath: require.resolve('./sidebarsCloud.js'),
-                editUrl: 'https://github.com/ravendb/docs/edit/main'
+                id: "cloud",
+                path: "cloud",
+                routeBasePath: "cloud",
+                sidebarPath: require.resolve("./sidebarsCloud.js"),
+                editUrl: "https://github.com/ravendb/docs/edit/main",
             },
         ],
         [
-            'content-docs',
+            "content-docs",
             {
-                id: 'guides',
-                path: 'guides',
-                routeBasePath: 'guides',
-                sidebarPath: require.resolve('./sidebarsGuides.js'),
+                id: "guides",
+                path: "guides",
+                routeBasePath: "guides",
+                sidebarPath: require.resolve("./sidebarsGuides.js"),
                 showLastUpdateTime: true,
             },
         ],
         [
-            'content-docs',
+            "content-docs",
             {
-                id: 'templates',
-                path: 'templates',
-                routeBasePath: 'templates',
-                sidebarPath: require.resolve('./sidebarsTemplates.js'),
+                id: "templates",
+                path: "templates",
+                routeBasePath: "templates",
+                sidebarPath: require.resolve("./sidebarsTemplates.js"),
                 showLastUpdateTime: true,
-            }
+            },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
     ],
@@ -165,13 +163,14 @@ const config: Config = {
         ],
         metadata: [
             {
-                name: 'keywords',
-                content: 'nosql, document database'
+                name: "keywords",
+                content: "nosql, document database",
             },
             {
-                name: 'description',
-                content: 'Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.'
-            }
+                name: "description",
+                content:
+                    "Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.",
+            },
         ],
         colorMode: {
             defaultMode: "dark",
@@ -210,8 +209,11 @@ const config: Config = {
                 },
                 {
                     items: [
-                        {label: "About us", href: "https://ravendb.net/about"},
-                        {label: "Legal", href: "https://ravendb.net/legal"},
+                        {
+                            label: "About us",
+                            href: "https://ravendb.net/about",
+                        },
+                        { label: "Legal", href: "https://ravendb.net/legal" },
                     ],
                 },
                 {

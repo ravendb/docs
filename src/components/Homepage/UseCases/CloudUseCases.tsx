@@ -11,10 +11,7 @@ const cloudUseCases = [
         title: "Connecting C# application to Cloud",
         imgSrc: connectingCSharpApplicationToCloudImg,
         description: (
-            <>
-                Learn how to connect to your Cloud instance with C#, and how to
-                confirm your connection is established.
-            </>
+            <>Learn how to connect to your Cloud instance with C#, and how to confirm your connection is established.</>
         ),
         url: "https://ravendb.net/articles/connecting-c-application-to-ravendb-cloud",
     },
@@ -23,8 +20,8 @@ const cloudUseCases = [
         imgSrc: connectingNodeJsApplicationToCloudImg,
         description: (
             <>
-                Learn how to connect to your Cloud instance with Node.js, and
-                how to confirm your connection is established.
+                Learn how to connect to your Cloud instance with Node.js, and how to confirm your connection is
+                established.
             </>
         ),
         url: "https://ravendb.net/articles/connecting-node-js-application-to-ravendb-cloud",
@@ -36,10 +33,7 @@ export default function CloudUseCases(): ReactNode {
         <section className="mb-8">
             <div className="flex justify-between items-baseline">
                 <Heading as="h3">Use cases</Heading>
-                <Link
-                    to="https://ravendb.net/articles"
-                    className="inline-flex text-base/4 gap-2"
-                >
+                <Link to="https://ravendb.net/articles" className="inline-flex text-base/4 gap-2">
                     See all <Icon icon="newtab" size="xs" />
                 </Link>
             </div>

@@ -30,11 +30,7 @@ export default function Tag({
         "hover:bg-black/10 dark:hover:bg-white/10 hover:!no-underline",
         isXs
             ? ["font-medium rounded-full", "text-[11px] leading-4 h-5 px-2"]
-            : [
-                  "gap-2 px-2 py-1.5 rounded-xl",
-                  "text-sm font-semibold leading-[normal]",
-                  "!transition-colors",
-              ],
+            : ["gap-2 px-2 py-1.5 rounded-xl", "text-sm font-semibold leading-[normal]", "!transition-colors"]
     );
 
     const tagContent = (
@@ -46,7 +42,7 @@ export default function Tag({
                         "flex items-center justify-center rounded-full font-bold leading-none",
                         "w-4 h-4 text-[9px]",
                         "bg-black/10",
-                        "dark:bg-white/20 dark:text-white",
+                        "dark:bg-white/20 dark:text-white"
                     )}
                 >
                     {count}
@@ -61,11 +57,7 @@ export default function Tag({
                 href={permalink}
                 rel="tag"
                 title={description}
-                className={clsx(
-                    baseClasses,
-                    "!text-inherit relative z-10",
-                    className,
-                )}
+                className={clsx(baseClasses, "!text-inherit relative z-10", className)}
                 {...props}
             >
                 {tagContent}

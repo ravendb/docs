@@ -8,11 +8,7 @@ import { DocsLanguage, useLanguage } from "@site/src/components/LanguageStore";
 import SeeAlso from "@site/src/components/SeeAlso";
 import Tag from "../../Tag";
 
-const getEditUrlWithLanguage = (
-    url: string,
-    language: DocsLanguage,
-    supportedLanguages: DocsLanguage[],
-): string => {
+const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLanguages: DocsLanguage[]): string => {
     if (!supportedLanguages || supportedLanguages.length === 0) {
         return url;
     }
@@ -27,14 +23,7 @@ const getEditUrlWithLanguage = (
 export default function DocItemFooter(): ReactNode {
     const { language } = useLanguage();
     const { metadata } = useDoc();
-    const {
-        editUrl,
-        lastUpdatedAt,
-        lastUpdatedBy,
-        tags,
-        permalink,
-        frontMatter,
-    } = metadata;
+    const { editUrl, lastUpdatedAt, lastUpdatedBy, tags, permalink, frontMatter } = metadata;
     const { see_also } = frontMatter;
 
     const isPathHidden = HIDDEN_EDIT_PAGE_ROUTES.some((route) => {
@@ -63,11 +52,7 @@ export default function DocItemFooter(): ReactNode {
             {canDisplayEditMetaRow && (
                 <EditMetaRow
                     className={clsx(ThemeClassNames.docs.docFooterEditMetaRow)}
-                    editUrl={getEditUrlWithLanguage(
-                        editUrl,
-                        language,
-                        metadata.frontMatter.supported_languages,
-                    )}
+                    editUrl={getEditUrlWithLanguage(editUrl, language, metadata.frontMatter.supported_languages)}
                     lastUpdatedAt={lastUpdatedAt}
                     lastUpdatedBy={lastUpdatedBy}
                 />
