@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 
@@ -8,10 +8,14 @@ export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement
 
 export default function LazyImage({ imgSrc, src, alt = "", className, style, ...props }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
+    const imgRef = useRef<HTMLImageElement>(null);
 
-    const handleLoaded = () => {
-        setIsLoaded(true);
-    };
+    // Check if image is already loaded after hydration
+    useEffect(() => {
+        if (imgRef.current?.complete) {
+            setIsLoaded(true);
+        }
+    }, []);
 
     const sources = getSources({ imgSrc, src });
 
@@ -26,11 +30,12 @@ export default function LazyImage({ imgSrc, src, alt = "", className, style, ...
             {!isLoaded && <span className="absolute inset-0 skeleton rounded-[inherit] z-10" aria-hidden="true" />}
             <ThemedImage
                 {...props}
+                ref={imgRef}
                 sources={sources}
                 alt={alt}
                 className={clsx(className, "transition-opacity duration-300", !isLoaded ? "opacity-0" : "opacity-100")}
-                onLoad={handleLoaded}
-                onError={handleLoaded}
+                onLoad={() => setIsLoaded(true)}
+                onError={() => setIsLoaded(true)}
                 loading="lazy"
             />
         </span>
