@@ -135,26 +135,34 @@ To modify an existing product, find it in the Products tab and click its Manage 
 
 This is a general view of the product details page:
 
-!["Figure 12 - Product Details"](./assets/portal-product-details.png "Figure 11 - Manage Product: Product Details")
+!["Figure 12 - Product Details"](./assets/portal-product-details.png)
+
+This is a general view of the serverless product details page:
+
+!["Figure 13 - Serverless Product Details"](./assets/portal-product-details-serverless.png)
 
 ### Change Instance Type and Storage  
 You can view your configuration and change your product's instance type and storage size here.  
 
-!["Figure 13 - Manage Product tab"](./assets/portal-product-details-instance-parameters.png)
+!["Figure 14 - Manage Product tab"](./assets/portal-product-details-instance-parameters.png)
 * **Change Instance Type**  
   Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.
 
-!["Figure 14 - Manage Product: Scale"](./assets/portal-product-details-edit-tier.png)
+!["Figure 15 - Manage Product: Scale"](./assets/portal-product-details-edit-tier.png)
+
+  <Admonition type="note" title="Important " id="important" href="#important">
+    Changing instance type for Serverless product is not possible. 
+  </Admonition>
 
   More details can be found [here](../cloud-scaling.mdx#scaling---change-instance-type).
 * **Change Storage**  
   Use this slider to modify your product's storage.  
 
-!["Figure 15 - Manage Product: Change Storage"](./assets/portal-product-details-edit-storage.png)
+!["Figure 16 - Manage Product: Change Storage"](./assets/portal-product-details-edit-storage.png)
 
   Disk can be migrated to **Data Disk** using *Migrate disk* button.
 
-!["Figure 16 - Manage Product: Storage"](./assets/portal-product-details-storage.png)
+!["Figure 17 - Manage Product: Storage"](./assets/portal-product-details-storage.png)
 
   More details can be found [here](../cloud-scaling.mdx#scaling---change-storage).
   
@@ -167,7 +175,7 @@ You can view your configuration and change your product's instance type and stor
 Use the security tab to download your [certificate](../../cloud/cloud-security.mdx) or determine which addresses are 
 allowed to connect your database instance.  
 
-!["Figure 17 - Manage Product: Manage access"](./assets/portal-product-details-manage-access.png)
+!["Figure 18 - Manage Product: Manage access"](./assets/portal-product-details-manage-access.png)
 
 * **Download Certificate**  
   Click this button to download your certificate.  
@@ -186,12 +194,12 @@ allowed to connect your database instance.
 * **See audit logs**
   Click this button to view audit logs. A popup will show where you have to select a year and month.
   You can download audit logs from there.
-  !["Figure 18 - See audit logs"](./assets/portal-product-details-audit-logs.png)
+  !["Figure 19 - See audit logs"](./assets/portal-product-details-audit-logs.png)
 
 * **Edit**  
   Click this button to edit your product's list of Allowed IPs.
 
-  !["Figure 19 - Manage Product: Edit IPs"](./assets/portal-product-details-allowed-ips.png)
+  !["Figure 20 - Manage Product: Edit IPs"](./assets/portal-product-details-allowed-ips.png)
 
   <Admonition type="info" title="We recommend fortifying your security by allowing access only to specific IPs" id="we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips" href="#we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips">
   You can increase your system's security further using this in-depth security measure and restrict access to
@@ -207,7 +215,7 @@ You can view features available for your product, enable, disable and configure 
 After enabling features some of them must be configured to work properly.
 </Admonition>
 
-!["Figure 20 - Manage Features: Configure or disable features"](./assets/portal-product-features-enabled.png)
+!["Figure 21 - Manage Features: Configure or disable features"](./assets/portal-product-features-enabled.png)
 
 Available features are described on [Product Features](../cloud-features.mdx) page.
 
@@ -215,22 +223,26 @@ Available features are described on [Product Features](../cloud-features.mdx) pa
 
 You can expand your cluster by adding *more product nodes* to your cluster. This helps improve *High Availability* and *task/load balancing*.
 
-!["Figure 21 - Nodes: Manage additional nodes"](./assets/portal-product-nodes-additional-nodes.png)
+!["Figure 22 - Nodes: Manage additional nodes"](./assets/portal-product-nodes-additional-nodes.png)
 
 More details can be found [here](../cloud-scaling.mdx#additional-product-nodes---general).
 
-### Maintenance and Danger Zones: Terminate and Restart your Instance
+### Maintenance and Danger Zones
 You can restart your product nodes, deploy additional tools and terminate your product here.
 
-!["Figure 22 - Manage Product: Maintenance and Termination"](./assets/portal-product-details-maintenance-and-termination.png)
+!["Figure 23 - Manage Product: Maintenance and Termination"](./assets/portal-product-details-maintenance-and-termination.png)
 * **Maintenance Zone**  
-  Use this tab to restart selected node and deploy RavenDB tools.
+  Use this tab to restart selected node and deploy RavenDB tools. For *Serverless* products, you can switch to regular deployment.
+  
+<Admonition type="danger" title="">
+Changing your product deployment type is **irreversible**.
+</Admonition>
 
-!["Figure 23 - Manage Product: Storage"](./assets/portal-product-details-maintenance-zone.png)
+!["Figure 24 - Manage Product: Storage"](./assets/portal-product-details-maintenance-zone.png)
 * **Danger Zone**  
   Use this tab's **Terminate** button to eliminate your cluster.
 
-!["Figure 24 - Manage Product: Terminate"](./assets/portal-product-details-terminate-product.png)
+!["Figure 25 - Manage Product: Terminate"](./assets/portal-product-details-terminate-product.png)
 
   <Admonition type="danger" title="">
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
