@@ -25,7 +25,7 @@ export default function Tag({
     const isXs = size === "xs";
 
     const baseClasses = clsx(
-        "inline-flex items-center select-none border",
+        "inline-flex items-center select-none border cursor-pointer",
         "bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10",
         "hover:bg-black/10 dark:hover:bg-white/10 hover:!no-underline",
         isXs
