@@ -7,6 +7,7 @@ https://issues.hibernatingrhinos.com/issue/RDoc-...
 ### Type of change
 
 - [ ] Content - docs
+- [ ] Content - cloud
 - [ ] Content - guides
 - [ ] Content - start pages/other
 - [ ] New feature (consider updating `/templates` or readme) 
