@@ -194,7 +194,7 @@ using (var asyncSession = store.OpenAsyncSession())
 
     var remoteParameters = new RemoteAttachmentParameters(
         identifier: "amazon-s3",
-        at: DateTime.UtcNow.AddDays(1));
+        at: DateTime.UtcNow.AddMinutes(1));
 
     using (var stream = File.Open(attachmentPath, FileMode.Open, FileAccess.Read))
     {
@@ -211,7 +211,7 @@ using (var asyncSession = store.OpenAsyncSession())
 }
 ```
 
-Or alternatively, if you want to add an attachment to an already existing document, you can use an operation like this: 
+Or alternatively you can do it using an `PutAttachmentOperation` operation like this: 
 
 ```csharp
 var attachmentPath = @"C:\temp\image1.png";
@@ -224,7 +224,7 @@ await using (var stream = new FileStream(
 
     var remoteParameters = new RemoteAttachmentParameters(
         identifier: "my-amazon-storage",
-        at: DateTime.UtcNow.AddDays(1));
+        at: DateTime.UtcNow.AddMinutes(1));
 
     var storeParams = new StoreAttachmentParameters(attachmentName, stream)
     {
@@ -238,7 +238,7 @@ await using (var stream = new FileStream(
 }
 ```
 
-As you can see the attachments were automatically offloaded to our S3 bucket:
+Then after one minute (for demonstration purposes) we can see the attachments were automatically offloaded to our S3 bucket:
 
 ![](./assets/Remote7.png)
 
