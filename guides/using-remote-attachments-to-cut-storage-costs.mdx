@@ -238,7 +238,7 @@ await using (var stream = new FileStream(
 }
 ```
 
-Then after one minute (for demonstration purposes) we can see the attachments were automatically offloaded to our S3 bucket:
+Then after one minute that has been requested with `DateTime.UtcNow.AddMinutes(1)`, we can see the attachments were automatically offloaded to our S3 bucket:
 
 ![](./assets/Remote7.png)
 
