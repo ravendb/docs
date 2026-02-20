@@ -42,15 +42,16 @@ export default function CardWithImage({
     });
 
     return (
-        <Link to={url} className="card-wrapper">
+        <article className="card-wrapper group">
+            <Link to={url} className={clsx("absolute inset-0 z-1", "!transition-all")} />
             <div
                 className={clsx(
-                    "card group flex h-full flex-col",
+                    "card flex h-full flex-col",
                     "p-4 overflow-hidden rounded-2xl",
                     "border border-black/10 dark:border-white/10",
-                    "!bg-black/5 dark:!bg-white/5 text-inherit hover:no-underline",
-                    "hover:border-black/20 dark:hover:border-white/20",
-                    "hover:!bg-black/10 dark:hover:!bg-white/10",
+                    "!bg-black/5 dark:!bg-white/5 text-inherit group-hover:no-underline",
+                    "group-hover:border-black/20 dark:group-hover:border-white/20",
+                    "group-hover:!bg-black/10 dark:group-hover:!bg-white/10",
                     "!transition-all",
                     "animate-in fade-in slide-in-from-bottom-4"
                 )}
@@ -99,7 +100,7 @@ export default function CardWithImage({
                 </div>
                 <p className="!mb-0 text-sm pt-2">{description}</p>
                 {(hasTags || hasDate) && (
-                    <div className="flex flex-wrap justify-between pt-2 gap-3">
+                    <div className="flex flex-wrap justify-between pt-2 gap-3 z-2">
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
@@ -126,6 +127,6 @@ export default function CardWithImage({
                     </div>
                 )}
             </div>
-        </Link>
+        </article>
     );
 }

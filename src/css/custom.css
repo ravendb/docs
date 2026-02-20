@@ -405,7 +405,7 @@ code {
 
 /* Custom display for card wrapper */
 .card-wrapper {
-    @apply flex !no-underline !text-inherit hover:!no-underline;
+    @apply flex !no-underline !text-inherit hover:!no-underline relative;
 }
 
 .card {
@@ -623,7 +623,7 @@ a {
 
 /* The track (progress bar) of the scrollbar */
 ::-webkit-scrollbar-track {
-    background-color: inherit;
+    background-color: transparent;
 }
 
 /* The entire scrollbar */

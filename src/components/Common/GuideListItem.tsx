@@ -18,18 +18,23 @@ export default function GuideListItem({ title, url, tags = [], date }: GuideList
     });
 
     return (
-        <Link
-            to={url}
+        <article
             className={clsx(
                 "flex flex-col-reverse py-3 px-2 gap-1",
                 "border-b border-black/10 dark:border-white/10 !text-inherit",
                 "hover:!no-underline",
                 "group relative",
-                "!transition-all",
-                "hover:bg-black/5 dark:hover:bg-white/5",
                 "sm:flex-row sm:items-center sm:gap-4"
             )}
         >
+            <Link
+                to={url}
+                className={clsx(
+                    "absolute inset-0 z-1",
+                    "!transition-all",
+                    "group-hover:bg-black/5 dark:group-hover:bg-white/5"
+                )}
+            />
             <div
                 className={clsx(
                     "flex flex-col flex-1 flex-wrap justify-between min-w-0 gap-1",
@@ -37,7 +42,7 @@ export default function GuideListItem({ title, url, tags = [], date }: GuideList
                 )}
             >
                 <p className={clsx("!mb-0 font-semibold leading-5", "sm:shrink")}>{title}</p>
-                <div className={clsx("flex gap-1 items-center flex-wrap whitespace-normal", "sm:shrink-0")}>
+                <div className={clsx("flex gap-1 items-center flex-wrap whitespace-normal z-2", "sm:shrink-0")}>
                     {visibleTags.map((tag) => (
                         <Tag key={tag.label} size="xs" permalink={tag.permalink}>
                             {tag.label}
@@ -70,6 +75,6 @@ export default function GuideListItem({ title, url, tags = [], date }: GuideList
                     {date}
                 </p>
             )}
-        </Link>
+        </article>
     );
 }
