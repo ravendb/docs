@@ -55,8 +55,8 @@ The following setup methods are available:
   and start the **first RavenDB instance** on the machine where the Setup Wizard is running.    
   The wizard will guide you through the configuration process.  
     
-* If you define a multi-node cluster, then at the end of this flow the wizard will generate a setup package (ZIP)  
-  that you will use with the **Use setup package** method to add the remaining nodes.  
+* At the end of this flow, the wizard generates a setup package (unless you are configuring a single-node unsecured cluster).
+  If you define a **multi-node** cluster, you will use this generated package with the **Use setup package** method to add the remaining nodes to the cluster.
 
 * The following table summarizes the step-by-step flow for this setup method.    
     
@@ -72,7 +72,7 @@ The following setup methods are available:
     | 🌐 | [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
     | ⚙️ | [Additional settings](../../../start/installation/setup-wizard/additional-settings.mdx) | Configure optional settings. |
     | 📝 | [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) | Review your settings before proceeding. |
-    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard applies your configuration and certificate (if applicable).<br/>A setup package is generated. |
+    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard applies your configuration and certificate (if applicable).<br/>A setup package (ZIP) is generated (unless configuring a single-node unsecured cluster). |
     | 🚀 | [Start the **first** configured node](../../../start/installation/setup-wizard/finish-setup.mdx#restarting-the-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
     | 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx) | If creating a multi-node cluster,<br/>continue with **"Use setup package"** to add the remaining nodes. | 
         
