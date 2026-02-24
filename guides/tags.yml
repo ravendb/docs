@@ -130,3 +130,19 @@ demo:
     label: "Demo"
     permalink: "/demo"
     description: "Content related to Demo."
+architecture:
+    label: "Architecture"
+    permalink: "/architecture"
+    description: "Content related to Architecture."
+docker:
+    label: "Docker"
+    permalink: "/docker"
+    description: "Content related to Docker."
+kubernetes:
+    label: "Kubernetes"
+    permalink: "/kubernetes"
+    description: "Content related to Kubernetes."
+containers:
+    label: "Containers"
+    permalink: "/containers"
+    description: "Content related to Containers."
