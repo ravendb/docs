@@ -223,22 +223,33 @@ When running in memory, RavenDB does not write to the disk. If the server is res
 
 ## DataDir
 
-Path to the data directory of RavenDB
+Path to the directory where RavenDB stores your data (databases, documents, and indexes).  
+Relative paths will be based from the application base directory (where the `Raven.Server` executable is located).  
+Learn more about RavenDB directory structure in: [Storage: Directory Structure](../../server/storage/directory-structure.mdx).
 
 - **Type**: `string`
-- **Default**: `Databases/{name}`
+- **Default**: `RavenData`
 - **Scope**: Server-wide or per database
 
-Relative paths will be based from the application base directory (where the Raven.Server executable is located).
+#### Examples
 
-### Examples
-
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`/home/user/databases
-`}
-</CodeBlock>
-</TabItem>
+<Tabs groupId="operatingSystem">
+  <TabItem value="Relative_path" label="Relative_path">
+    ```plain
+    MyRavenDataFolder
+    ```
+  </TabItem>
+  <TabItem value="Absolute_path_Linux" label="Absolute_path_Linux">
+    ```plain
+    /home/user/myRavenDataFolder
+    ```
+  </TabItem>
+  <TabItem value="Absolute_path_Windows" label="Absolute_path_Windows">
+    ```plain
+    C:\RavenDB\Data
+    ```
+  </TabItem>
+</Tabs>
 
 
 
