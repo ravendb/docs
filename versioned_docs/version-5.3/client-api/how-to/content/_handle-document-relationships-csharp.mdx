@@ -11,14 +11,14 @@ RavenDB offers three elegant approaches to solve this problem. Each scenario wil
 <Admonition type="note" title="">
 
 * In this page:  
-  * [Denormalization](../../client-api/how-to/handle-document-relationships.mdx#denormalization)  
-  * [Includes](../../client-api/how-to/handle-document-relationships.mdx#includes)  
-     * [One to Many Includes](../../client-api/how-to/handle-document-relationships.mdx#one-to-many-includes)  
-     * [Secondary Level Includes](../../client-api/how-to/handle-document-relationships.mdx#secondary-level-includes)  
-     * [Dictionary Includes](../../client-api/how-to/handle-document-relationships.mdx#dictionary-includes)  
-     * [Dictionary Includes: Complex Types](../../client-api/how-to/handle-document-relationships.mdx#dictionary-includes-complex-types)  
-  * [Combining Approaches](../../client-api/how-to/handle-document-relationships.mdx#combining-approaches)  
-  * [Summary](../../client-api/how-to/handle-document-relationships.mdx#summary)  
+  * [Denormalization](../../../client-api/how-to/handle-document-relationships.mdx#denormalization)  
+  * [Includes](../../../client-api/how-to/handle-document-relationships.mdx#includes)  
+     * [One to Many Includes](../../../client-api/how-to/handle-document-relationships.mdx#one-to-many-includes)  
+     * [Secondary Level Includes](../../../client-api/how-to/handle-document-relationships.mdx#secondary-level-includes)  
+     * [Dictionary Includes](../../../client-api/how-to/handle-document-relationships.mdx#dictionary-includes)  
+     * [Dictionary Includes: Complex Types](../../../client-api/how-to/handle-document-relationships.mdx#dictionary-includes-complex-types)  
+  * [Combining Approaches](../../../client-api/how-to/handle-document-relationships.mdx#combining-approaches)  
+  * [Summary](../../../client-api/how-to/handle-document-relationships.mdx#summary)  
 </Admonition>
 ## Denormalization
 
@@ -116,10 +116,10 @@ Instead of one object containing copies of the properties from another object,
 it is only necessary to hold a reference to the second object, which can be:  
 
 * a Document (as described below)  
-* a [Document Revision](../../document-extensions/revisions/client-api/session/including.mdx)  
-* a [Counter](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
-* a [Time series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
-* a [Compare exchange value](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* a [Document Revision](../../../document-extensions/revisions/client-api/session/including.mdx)  
+* a [Counter](../../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* a [Time series](../../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* a [Compare exchange value](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
 
 The server can then be instructed to pre-load the referenced object at the same time 
 that the root object is retrieved, using:
@@ -239,7 +239,7 @@ Embedded and builder variants of Include clause are essentially syntax sugar and
 
 <Admonition type="info" title="">
 Streaming query results does not support the includes feature.  
-Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 </Admonition>
 ### One to Many Includes
 

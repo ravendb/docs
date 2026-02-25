@@ -11,20 +11,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
  
-  * [Sample data](../indexes/indexing-nested-data.mdx#sample-data)
+  * [Sample data](../../indexes/indexing-nested-data.mdx#sample-data)
 
-  * [Simple index - SINGLE index-entry per document](../indexes/indexing-nested-data.mdx#simple-index---single-index-entry-per-document)    
-      * [The index](../indexes/indexing-nested-data.mdx#theIndex)
-      * [The index-entries](../indexes/indexing-nested-data.mdx#theIndexEntries)
-      * [Querying the index](../indexes/indexing-nested-data.mdx#queryingTheIndex)
-      * [When to use](../indexes/indexing-nested-data.mdx#whenToUse)
+  * [Simple index - SINGLE index-entry per document](../../indexes/indexing-nested-data.mdx#simple-index---single-index-entry-per-document)    
+      * [The index](../../indexes/indexing-nested-data.mdx#theIndex)
+      * [The index-entries](../../indexes/indexing-nested-data.mdx#theIndexEntries)
+      * [Querying the index](../../indexes/indexing-nested-data.mdx#queryingTheIndex)
+      * [When to use](../../indexes/indexing-nested-data.mdx#whenToUse)
 
-  * [Fanout index - MULTIPLE index-entries per document](../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)   
-      * [What is a fanout index](../indexes/indexing-nested-data.mdx#whatIsFanoutIndex)
-      * [Fanout index - Map index example](../indexes/indexing-nested-data.mdx#fanoutMapIndex)
-      * [Fanout index - Map-Reduce index example](../indexes/indexing-nested-data.mdx#fanoutMapReduceIndex)
-      * [Performance hints](../indexes/indexing-nested-data.mdx#performanceHints)
-      * [Paging](../indexes/indexing-nested-data.mdx#paging)
+  * [Fanout index - MULTIPLE index-entries per document](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)   
+      * [What is a fanout index](../../indexes/indexing-nested-data.mdx#whatIsFanoutIndex)
+      * [Fanout index - Map index example](../../indexes/indexing-nested-data.mdx#fanoutMapIndex)
+      * [Fanout index - Map-Reduce index example](../../indexes/indexing-nested-data.mdx#fanoutMapReduceIndex)
+      * [Performance hints](../../indexes/indexing-nested-data.mdx#performanceHints)
+      * [Paging](../../indexes/indexing-nested-data.mdx#paging)
 
 </Admonition>
 ## Sample data
@@ -246,7 +246,7 @@ try {
 
      ![Simple - index-entries](../assets/indexing-nested-data-1.png)
 
-     1. The index-entries content is visible from the Studio [Query view](../studio/database/queries/query-view.mdx).
+     1. The index-entries content is visible from the Studio [Query view](../../studio/database/queries/query-view.mdx).
 
      2. Check option: _Show raw index-entries instead of Matching documents_.
 
@@ -465,7 +465,7 @@ where Color == "red" and Size == "M"
 * <a id="fanoutMapIndexIndexEntries"/> **The index-entries**:
   ![Fanout - index-entries](../assets/indexing-nested-data-2.png)
 
-     1. The index-entries content is visible from the Studio [Query view](../studio/database/queries/query-view.mdx).
+     1. The index-entries content is visible from the Studio [Query view](../../studio/database/queries/query-view.mdx).
 
      2. Check option: _Show raw index-entries instead of Matching documents_.
 
@@ -592,7 +592,7 @@ where Color == "black"
        RavenDB will issue a **High indexing fanout ratio** alert in the Studio notification center.
 
      * You can control when this performance hint is created by setting the 
-       [PerformanceHints.Indexing.MaxIndexOutputsPerDocument](../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxindexoutputsperdocument) configuration key 
+       [PerformanceHints.Indexing.MaxIndexOutputsPerDocument](../../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxindexoutputsperdocument) configuration key 
        (default is 1024).
 
      * So, for example, adding another OnlineShop document with a `tShirt` object containing 1025 items  
@@ -608,7 +608,7 @@ where Color == "black"
 
      * A fanout index has more index-entries than the number of documents in the collection indexed.  
        Multiple index-entries "point" to the same document from which they originated,  
-       as can be seen in the above [index-entries](../indexes/indexing-nested-data.mdx#fanoutMapIndexIndexEntries) example.
+       as can be seen in the above [index-entries](../../indexes/indexing-nested-data.mdx#fanoutMapIndexIndexEntries) example.
 
      * When making a fanout index query that should return full documents (without projecting results),  
        the `TotalResults` property (available via the `QueryStatistics` object) will contain  
@@ -617,7 +617,7 @@ where Color == "black"
      * **To overcome this when paging results**, you must take into account the number of "duplicate"  
        index-entries that are skipped internally by the server when serving the resulting documents.  
 
-     * Please refer to [paging through tampered results](../indexes/querying/paging.mdx#paging-through-tampered-results) for further explanation and examples. 
+     * Please refer to [paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results) for further explanation and examples. 
 
 
 

@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The RavenDB JavaScript engine supports ECMAScript 5.1 syntax.  
   In addition, RavenDB provides a set of predefined JavaScript functions that can be used in JavaScript indexes and in other features such as subscriptions, ETL scripts, set-based patching, and more.  
-  See the full list in [Predefined JavaScript functions](../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+  See the full list in [Predefined JavaScript functions](../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
 * In this article:
-  * [Creating and deploying a JavaScript index](../indexes/javascript-indexes.mdx#creating-and-deploying-a-javascript-index)
-  * [Map index](../indexes/javascript-indexes.mdx#map-index)
-     * [Map index - basic](../indexes/javascript-indexes.mdx#example-i---map-index---basic)
-     * [Map index - with additional sources](../indexes/javascript-indexes.mdx#example-ii---map-index---with-additional-sources)
-     * [Map index - with inline string compilation](../indexes/javascript-indexes.mdx#example-iii---map-index---with-inline-string-compilation)
-  * [Multi-Map index](../indexes/javascript-indexes.mdx#multi-map-index)
-  * [Map-Reduce index](../indexes/javascript-indexes.mdx#map-reduce-index)
+  * [Creating and deploying a JavaScript index](../../indexes/javascript-indexes.mdx#creating-and-deploying-a-javascript-index)
+  * [Map index](../../indexes/javascript-indexes.mdx#map-index)
+     * [Map index - basic](../../indexes/javascript-indexes.mdx#example-i---map-index---basic)
+     * [Map index - with additional sources](../../indexes/javascript-indexes.mdx#example-ii---map-index---with-additional-sources)
+     * [Map index - with inline string compilation](../../indexes/javascript-indexes.mdx#example-iii---map-index---with-inline-string-compilation)
+  * [Multi-Map index](../../indexes/javascript-indexes.mdx#multi-map-index)
+  * [Map-Reduce index](../../indexes/javascript-indexes.mdx#map-reduce-index)
 
 </Admonition>
 
@@ -26,7 +26,7 @@ import CodeBlock from '@theme/CodeBlock';
 **Creating a JavaScript index**:
 
 * To create a JavaScript index, define a class that inherits from `AbstractJavaScriptIndexCreationTask`.  
-* This base class itself inherits from [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class),
+* This base class itself inherits from [AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class),
   which is the base class for all C# indexes.
 
 <TabItem value="js_index" label="js_index">
@@ -55,22 +55,22 @@ public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
 
 **Deploying a JavaScript index**:  
 
-* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../indexes/creating-and-deploying.mdx#deploy-a-static-index).
+* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../../indexes/creating-and-deploying.mdx#deploy-a-static-index).
 
-* Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../server/security/authorization/security-clearance-and-permissions.mdx#section-1) certificate,  
-  while **C# static indexes** require a [User/Admin](../server/security/authorization/security-clearance-and-permissions.mdx#section) certificate or higher.
+* Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../../server/security/authorization/security-clearance-and-permissions.mdx#section-1) certificate,  
+  while **C# static indexes** require a [User/Admin](../../server/security/authorization/security-clearance-and-permissions.mdx#section) certificate or higher.
 
 * To restrict the creation of JavaScript indexes to database admins (and above),  
-  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) configuration to `true`.
+  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) configuration to `true`.
 
-* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexes/indexing-basics.mdx).
+* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../../indexes/indexing-basics.mdx).
 
 
 
 ## Map index
 
 * A map index contains a single `map` function.  
-  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../indexes/javascript-indexes.mdx#multi-map-index) below.
+  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../../indexes/javascript-indexes.mdx#multi-map-index) below.
 
 * The `map` function is written as a string and specifies what content from the documents will be indexed.
 
@@ -219,7 +219,7 @@ public class BlogPostComment
 
 #### Example III - Map index - with inline string compilation
 * To define a JavaScript index using inline string compilation,  
-  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration.mdx#indexingallowstringcompilation) configuration key to _true_.
+  you must set the [Indexing.AllowStringCompilation](../../server/configuration/indexing-configuration.mdx#indexingallowstringcompilation) configuration key to _true_.
   
 * The following indexes use inline string compilation to evaluate whether each product’s `UnitsInStock` is low.
 
@@ -296,7 +296,7 @@ public class BlogPostComment
 
 </Admonition>
 
-Learn more about [Map indexes here](../indexes/map-indexes.mdx).
+Learn more about [Map indexes here](../../indexes/map-indexes.mdx).
 
 
 
@@ -358,7 +358,7 @@ where Name == "Milo"
 
 </Admonition>
 
-Learn more about [Multi-Map indexes here](../indexes/multi-map-indexes.mdx).
+Learn more about [Multi-Map indexes here](../../indexes/multi-map-indexes.mdx).
 
 
 
@@ -510,7 +510,7 @@ The following index calculates how many items were sold and the total sales amou
 
 </Admonition>
 
-Learn more about [Map-Reduce indexes here](../indexes/map-reduce-indexes.mdx).
+Learn more about [Map-Reduce indexes here](../../indexes/map-reduce-indexes.mdx).
 
 
 

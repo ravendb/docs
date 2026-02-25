@@ -4,8 +4,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 There are two methods that allow you to send a Facet query to a database:   
-- [GetFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
-- [GetMultiFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
+- [GetFacets](../../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
+- [GetMultiFacets](../../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
 
 ## GetFacets
 
@@ -40,15 +40,15 @@ There are two overloads for the **GetFacets** method and the only difference bet
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | string | A name of an index to query |
-| **query** | [IndexQuery](../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
-| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **query** | [IndexQuery](../../../../glossary/index-query.mdx) | A query definition containing all information required to query a specified index. |
+| **facets** | List&lt;[Facet](../../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example I
 
@@ -198,11 +198,11 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facetedQueries** | [FacetQuery](../../../glossary/facet-query.mdx)[] | List of the faceted queries that will be executed on the server-side. |
+| **facetedQueries** | [FacetQuery](../../../../glossary/facet-query.mdx)[] | List of the faceted queries that will be executed on the server-side. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult](../../../glossary/facet-results.mdx#facetresult)[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
+| [FacetResult](../../../../glossary/facet-results.mdx#facetresult)[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
 
 ### Example
 

@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 Following methods allow you to subscribe to counter changes:
 
-- [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounter)
-- [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounterofdocument)
-- [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcountersofdocument)
-- [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forallcounters)
+- [ForCounter](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounter)
+- [ForCounterOfDocument](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounterofdocument)
+- [ForCountersOfDocument](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcountersofdocument)
+- [ForAllCounters](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forallcounters)
 
 ## ForCounter
 
@@ -29,7 +29,7 @@ Counter changes can be observed using `forCounter` method. This will subscribe c
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+| IChangesObservable&lt;[CounterChange](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -71,7 +71,7 @@ Specific counter changes of a given document can be observed using `forCounterOf
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+| IChangesObservable&lt;[CounterChange](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -112,7 +112,7 @@ Counter changes of a specified document can be observed using `forCountersOfDocu
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+| IChangesObservable&lt;[CounterChange](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -149,7 +149,7 @@ Changes for all counters can be observed using `forAllCounters` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+| IChangesObservable&lt;[CounterChange](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -175,7 +175,7 @@ Changes for all counters can be observed using `forAllCounters` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [CounterChangeTypes](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchangetypes) | Counter change type enum |
+| **Type** | [CounterChangeTypes](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#counterchangetypes) | Counter change type enum |
 | **Name** | String | Counter name |
 | **Value** | Long | Counter value after the change |
 | **DocumentId** | String | Counter document identifier |

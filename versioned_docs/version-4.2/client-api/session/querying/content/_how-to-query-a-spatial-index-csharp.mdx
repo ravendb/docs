@@ -10,9 +10,9 @@ spatial methods. The following article will cover the methods `Spatial()`, `Orde
 and `OrderByDistanceDescending`.  
 
 * In this page:  
-  * [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)  
-  * [OrderByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)  
-  * [OrderByDistanceDescending](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistancedescending)  
+  * [Spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)  
+  * [OrderByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistance)  
+  * [OrderByDistanceDescending](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#orderbydistancedescending)  
 
 </Admonition>
 ## Spatial
@@ -307,7 +307,7 @@ IOrderedQueryable<T> OrderByDistance<T>(
 | **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
 | **shapeWkt** | `string` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | `double` | Used to define a point from which distance will be measured |
-| **roundFactor** | `double` | A distance interval in kilometers. The distance from the point is rounded up to the nearest interval. The results within the same interval are then sorted by another order. This other order is the next [chained ordering](../../../indexes/querying/sorting.mdx#chaining-orderings), or if no other order was specified, then by ascending order of document Id. See example [below](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#example-ii-1). |
+| **roundFactor** | `double` | A distance interval in kilometers. The distance from the point is rounded up to the nearest interval. The results within the same interval are then sorted by another order. This other order is the next [chained ordering](../../../../indexes/querying/sorting.mdx#chaining-orderings), or if no other order was specified, then by ascending order of document Id. See example [below](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#example-ii-1). |
 
 ### Example I
 
@@ -489,7 +489,7 @@ IOrderedQueryable<T> OrderByDistanceDescending<T>(
 | **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
 | **shapeWkt** | `string` | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | `double` | Used to define a point from which distance will be measured |
-| **roundFactor** | `double` | A distance interval in kilometers. The measured distance is rounded up to the nearest interval. The results within the same distance interval are then sorted by another order. This other order is the next [chained ordering](../../../indexes/querying/sorting.mdx#chaining-orderings), or if no other order was specified, then by ascending order of document Id. See example [above](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#example-ii-1). |
+| **roundFactor** | `double` | A distance interval in kilometers. The measured distance is rounded up to the nearest interval. The results within the same distance interval are then sorted by another order. This other order is the next [chained ordering](../../../../indexes/querying/sorting.mdx#chaining-orderings), or if no other order was specified, then by ascending order of document Id. See example [above](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#example-ii-1). |
 
 ### Example
 

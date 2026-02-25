@@ -35,23 +35,23 @@ public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFac
 ### Properties
 | Name | Type | Description |
 | - | - | - |
-| disabled | `boolean` (default: false) | [Disable](../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database |
-| encrypted | `boolean` (default: false) | Enable database [Encryption](../../../server/security/encryption/database-encryption.mdx) |
+| disabled | `boolean` (default: false) | [Disable](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database |
+| encrypted | `boolean` (default: false) | Enable database [Encryption](../../../../server/security/encryption/database-encryption.mdx) |
 | deletionInProgress | `Map<String, DeletionInProgress>` | Mark the deletion of the database from specific nodes |
-| topology | `DatabaseTopology` | Topology is _'null'_ by default. The server will decide on which nodes to place the database according to the [Replication Factor](../../../glossary/replication-factor.mdx) |
-| conflictSolverConfig | `ConflictSolver` | Specify the strategy to resolve [Conflicts](../../../server/clustering/replication/replication-conflicts.mdx) |
-| indexes | `Map<String, IndexDefinition>` | Define [Indexes](../../../indexes/creating-and-deploying.mdx#using-maintenance-operations) |
-| autoIndexes | `Map<String, AutoIndexDefinition>` | Define [Auto Indexes](../../../indexes/creating-and-deploying.mdx#using-maintenance-operations) |
-| settings | `Map<String, String>` | Provide [Configuration](../../../server/configuration/configuration-options.mdx) settings |
-| revisions | `RevisionsConfiguration` | Set [Revisions configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) |
-| expiration | `ExpirationConfiguration` | Set [Expiration](../../../server/extensions/expiration.mdx) configuration |
-| ravenConnectionStrings | `Map<String, RavenConnectionString>` | Add [Raven Connection String](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)|
-| sqlConnectionStrings | `Map<String, SqlConnectionString>` | Add [SQL Connection String](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) |
-| periodicBackups | `List<PeriodicBackupConfiguration>` | Add [Backup](../../../server/ongoing-tasks/backup-overview.mdx) tasks |
-| externalReplications | `List<ExternalReplications>` | Add [External Replication](../../../server/ongoing-tasks/external-replication.mdx) tasks |
-| ravenEtls | `List<RavenEtlConfiguration>` | Add [Raven ETL](../../../server/ongoing-tasks/etl/raven.mdx) tasks |
-| sqlEtls | `List<SqlEtlConfiguration>` | Add [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) tasks |
-| client | `ClientConfiguration` | Set [Client Configuration](../../../studio/server/client-configuration.mdx) |
+| topology | `DatabaseTopology` | Topology is _'null'_ by default. The server will decide on which nodes to place the database according to the [Replication Factor](../../../../glossary/replication-factor.mdx) |
+| conflictSolverConfig | `ConflictSolver` | Specify the strategy to resolve [Conflicts](../../../../server/clustering/replication/replication-conflicts.mdx) |
+| indexes | `Map<String, IndexDefinition>` | Define [Indexes](../../../../indexes/creating-and-deploying.mdx#using-maintenance-operations) |
+| autoIndexes | `Map<String, AutoIndexDefinition>` | Define [Auto Indexes](../../../../indexes/creating-and-deploying.mdx#using-maintenance-operations) |
+| settings | `Map<String, String>` | Provide [Configuration](../../../../server/configuration/configuration-options.mdx) settings |
+| revisions | `RevisionsConfiguration` | Set [Revisions configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) |
+| expiration | `ExpirationConfiguration` | Set [Expiration](../../../../server/extensions/expiration.mdx) configuration |
+| ravenConnectionStrings | `Map<String, RavenConnectionString>` | Add [Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)|
+| sqlConnectionStrings | `Map<String, SqlConnectionString>` | Add [SQL Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) |
+| periodicBackups | `List<PeriodicBackupConfiguration>` | Add [Backup](../../../../server/ongoing-tasks/backup-overview.mdx) tasks |
+| externalReplications | `List<ExternalReplications>` | Add [External Replication](../../../../server/ongoing-tasks/external-replication.mdx) tasks |
+| ravenEtls | `List<RavenEtlConfiguration>` | Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven.mdx) tasks |
+| sqlEtls | `List<SqlEtlConfiguration>` | Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx) tasks |
+| client | `ClientConfiguration` | Set [Client Configuration](../../../../studio/server/client-configuration.mdx) |
 
 #### Remarks
 If `Topology` is specified, the `replicationFactor` will be ignored.  

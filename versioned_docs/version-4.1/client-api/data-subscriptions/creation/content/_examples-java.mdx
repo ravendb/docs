@@ -7,12 +7,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 In this page:  
 
-[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-on-all-documents-in-a-collection)  
-[Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-filtering)  
-[Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-filtering-and-projection)  
-[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-load-document-in-filter-projection)  
-[Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-include-statement)  
-[Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples.mdx#create-revisions-enabled-subscription)  
+[Create subscription on all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-on-all-documents-in-a-collection)  
+[Create subscription with filtering](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-filtering)  
+[Create subscription with filtering and projection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-filtering-and-projection)  
+[Create subscription with load document in filter projection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-load-document-in-filter-projection)  
+[Create subscription with include statement](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-include-statement)  
+[Create revisions enabled subscription](../../../../client-api/data-subscriptions/creation/examples.mdx#create-revisions-enabled-subscription)  
 
 </Admonition>
 ## Create subscription on all documents in a collection
@@ -123,7 +123,7 @@ name = store.subscriptions().create(options);
 ## Create subscription with include statement
 
 Here we create a subscription on Orders collection, which returns the orders and brings along all products mentioned in the order as included documents. 
-See the usage example [here](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
+See the usage example [here](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
 
 Include statements supported only with raw RQL. Include statements come in two forms, like in any other RQL statements:  
 1. Include statement in the end of the query, starting with the `include` keyword, followed by paths to the field containing the ids of the documents to include.  
@@ -166,7 +166,7 @@ store.subscriptions().create(options);
 ## Create revisions enabled subscription
 
 Here we create a subscription on Orders collection, which returns current and previous version of the subscriptions. 
-Please see the [page](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) dedicated to subscriptions with revisions for more details and examples.
+Please see the [page](../../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) dedicated to subscriptions with revisions for more details and examples.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Generic-syntax" label="Generic-syntax">

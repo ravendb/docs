@@ -5,15 +5,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions.mdx) 
+Use the methods described in this page to customize the [conventions](../../../client-api/configuration/conventions.mdx) 
 by which entities are deserialized as they are received by the client.  
 
 * In this page:  
-  * [CustomizeJsonDeserializer](../../client-api/configuration/deserialization.mdx#customizejsondeserializer)  
-  * [DeserializeEntityFromBlittable](../../client-api/configuration/deserialization.mdx#deserializeentityfromblittable)  
-  * [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/deserialization.mdx#preservedocumentpropertiesnotfoundonmodel)  
-  * [DefaultRavenSerializationBinder](../../client-api/configuration/deserialization.mdx#defaultravenserializationbinder)  
-  * [Number Deserialization](../../client-api/configuration/deserialization.mdx#number-deserialization)  
+  * [CustomizeJsonDeserializer](../../../client-api/configuration/deserialization.mdx#customizejsondeserializer)  
+  * [DeserializeEntityFromBlittable](../../../client-api/configuration/deserialization.mdx#deserializeentityfromblittable)  
+  * [PreserveDocumentPropertiesNotFoundOnModel](../../../client-api/configuration/deserialization.mdx#preservedocumentpropertiesnotfoundonmodel)  
+  * [DefaultRavenSerializationBinder](../../../client-api/configuration/deserialization.mdx#defaultravenserializationbinder)  
+  * [Number Deserialization](../../../client-api/configuration/deserialization.mdx#number-deserialization)  
 
 </Admonition>
 ## Deserialization
@@ -82,7 +82,7 @@ prevent gadgets from running RCE (Remote Code Execution) attacks while
 data is deserialized by the client.  
 
 Read about this security convention and maintaining deserialization security 
-[here](../../client-api/security/deserialization-security.mdx).  
+[here](../../../client-api/security/deserialization-security.mdx).  
 
 
 ## Number Deserialization
@@ -90,7 +90,7 @@ Read about this security convention and maintaining deserialization security
 * RavenDB client supports all common numeric value types (including `int`, `long`, 
   `double`, `decimal`, etc.) out of the box.  
 * Note that although deserialization of `decimals` is fully supported, there are 
-  [server side limitations](../../server/kb/numbers-in-ravendb.mdx) to numbers in this range.  
+  [server side limitations](../../../server/kb/numbers-in-ravendb.mdx) to numbers in this range.  
 * Other number types, like `BigInteger`, must be handled using custom deserialization.
 
 

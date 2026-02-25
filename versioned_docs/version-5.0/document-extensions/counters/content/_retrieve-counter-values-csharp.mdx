@@ -5,20 +5,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use [CountersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`Get` to retrieve the value of **a single Counter**,  
-  or [CountersFor](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`GetAll` to retrieve the values of **all the Counters of a document**.  
+* Use [CountersFor](../../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`Get` to retrieve the value of **a single Counter**,  
+  or [CountersFor](../../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).`GetAll` to retrieve the values of **all the Counters of a document**.  
 
 * In this page:  
 
-  * [Get Method - Retrieve a single Counter's value](../../document-extensions/counters/retrieve-counter-values.mdx#get-method---retrieve-a-single-counter)  
-      - [Get Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)  
-      - [Get Usage](../../document-extensions/counters/retrieve-counter-values.mdx#get-usage-flow)  
-      - [Get Code Sample](../../document-extensions/counters/retrieve-counter-values.mdx#get-code-sample)  
+  * [Get Method - Retrieve a single Counter's value](../../../document-extensions/counters/retrieve-counter-values.mdx#get-method---retrieve-a-single-counter)  
+      - [Get Syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)  
+      - [Get Usage](../../../document-extensions/counters/retrieve-counter-values.mdx#get-usage-flow)  
+      - [Get Code Sample](../../../document-extensions/counters/retrieve-counter-values.mdx#get-code-sample)  
 
-  * [GetAll Method - Retrieve all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#getall-method---retrieve-all-counters-of-a-document)  
-      - [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
-      - [GetAll Usage](../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage-flow)  
-      - [GetAll Code Sample](../../document-extensions/counters/retrieve-counter-values.mdx#getall-code-sample)
+  * [GetAll Method - Retrieve all Counters of a document](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-method---retrieve-all-counters-of-a-document)  
+      - [GetAll Syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
+      - [GetAll Usage](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage-flow)  
+      - [GetAll Code Sample](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-code-sample)
 </Admonition>
 ## Get Method - Retrieve a single Counter's value
 
@@ -46,7 +46,7 @@ import CodeBlock from '@theme/CodeBlock';
   * Open a session  
   * Create an instance of `CountersFor`.  
       * Either pass `CountersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
+      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../client-api/session/loading-entities.mdx#load).  
   * Execute `CountersFor.Get`
 
 <Admonition type="note" title="">
@@ -92,7 +92,7 @@ using (var session = docStore.OpenSession())
 * Open a session.    - 
 * Create an instance of `CountersFor`.  
    * Either pass `CountersFor` an explicit document ID, -or-  
-   * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
+   * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../client-api/session/loading-entities.mdx#load).  
 * Execute `CountersFor.GetAll`.
 
 <Admonition type="note" title="">

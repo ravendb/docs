@@ -9,15 +9,15 @@ import Panel from '@site/src/components/Panel';
 
 * Logging settings are loaded from configuration sources (environment variables, _settings.json_, or command-line arguments) when the server starts.
   Command-line arguments override _settings.json_, and _settings.json_ overrides environment variables.  
-  * See the full list of available logging keys in: [Logs Options](../../../../server/configuration/logs-configuration.mdx).
-  * Learn how to configure them in: [Configuration overview](../../../../server/configuration/configuration-options.mdx). 
+  * See the full list of available logging keys in: [Logs Options](../../../../../server/configuration/logs-configuration.mdx).
+  * Learn how to configure them in: [Configuration overview](../../../../../server/configuration/configuration-options.mdx). 
     
 * After the server is up and running,  
   you can override the logging minimum level and configure logging filters at **runtime**:  
   * From the **Client API** - use `SetLogsConfigurationOperation`, as explained below.  
   * From the **Studio** - see: [Admin Logs view](../../../../studio/server/debug/admin-logs).
 
-* Learn more about RavenDB's logging system in the [Logging](../../../../server/troubleshooting/logging.mdx) article. 
+* Learn more about RavenDB's logging system in the [Logging](../../../../../server/troubleshooting/logging.mdx) article. 
     
 * In this article:
     * [Set logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-logs-configuration)
@@ -133,7 +133,7 @@ await store.Maintenance.Server.SendAsync(setLogsOp);
 If you're using an external `NLog.config` file,  
 you can define the logging level and filters directly in the XML file using `<logger>` and `<rules>`.
 
-* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).
+* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).
 
 * Note: When an external NLog config file is used, its settings override any values set via `SetLogsConfigurationOperation`.
 

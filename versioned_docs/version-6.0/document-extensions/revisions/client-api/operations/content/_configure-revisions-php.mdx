@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -16,15 +16,15 @@ import CodeBlock from '@theme/CodeBlock';
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
+* By default, the operation will be applied to the [default database](../../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
-  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
+  * [Replace configuration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
+  * [Modify configuration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
+  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
 
 </Admonition>
 ## Replace configuration
@@ -203,7 +203,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 | **minimumRevisionsToKeep** | `?int` | &lt;ul&gt;&lt;li&gt;This number of revisions will be kept per document.&lt;/li&gt;&lt;li&gt;Older revisions exceeding this number will be purged upon the next document modification.&lt;li&gt; **Default** : `None` = no limit &lt;/li&gt;&lt;/ul&gt; |
 | **minimumRevisionAgeToKeep** | `?Duration` | &lt;ul&gt;&lt;li&gt;Limit the number of revisions kept per document by their age.&lt;/li&gt;&lt;li&gt;Revisions that are older than this time will be purged upon the next document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no age limit&lt;/li&gt;&lt;ul&gt; |
 | **disabled** | `bool` | &lt;ul&gt;&lt;li&gt;`fFalse` ( **Default** ) - Revisions will be created and purged according to the configuration.&lt;/li&gt;&lt;li&gt;`True` - No revisions will be created or purged.&lt;/li&gt;&lt;/ul&gt; |
-| **purgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
+| **purgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
 | **maximumRevisionsToDeleteUponDocumentUpdate** | `?int` | &lt;ul&gt;&lt;li&gt;The maximum number of revisions to delete upon each document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no limit,<br/> all revisions that pend purging will be deleted.&lt;/li&gt;&lt;/ul&gt; |
 
 

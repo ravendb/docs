@@ -5,20 +5,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* For a general revisions overview see: [Revisions Overview](../../../document-extensions/revisions/overview.mdx).
+* For a general revisions overview see: [Revisions Overview](../../../../document-extensions/revisions/overview.mdx).
 
-* Document revisions can be managed from the [Studio](../../../studio/database/settings/document-revisions.mdx) or from the **Client API**.
+* Document revisions can be managed from the [Studio](../../../../studio/database/settings/document-revisions.mdx) or from the **Client API**.
 
 * From the **Client API**, revisions can be configured and managed by:
-    * [Store Operations](../../../document-extensions/revisions/client-api/overview.mdx#revisions-store-operations)
-    * [Session Methods](../../../document-extensions/revisions/client-api/overview.mdx#revisions-session-methods)
+    * [Store Operations](../../../../document-extensions/revisions/client-api/overview.mdx#revisions-store-operations)
+    * [Session Methods](../../../../document-extensions/revisions/client-api/overview.mdx#revisions-session-methods)
 
 </Admonition>
 ## Revisions Store Operations
 
-* [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) - apply a revision configuration
-* [ConfigureRevisionsForConflictsOperation](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx) - manage conflicting documents revisions
-* [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions.mdx) - get revisions
+* [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) - apply a revision configuration
+* [ConfigureRevisionsForConflictsOperation](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx) - manage conflicting documents revisions
+* [GetRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx) - get revisions
 
 
 
@@ -26,20 +26,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Get revisions**:
 
-    * [getFor](../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions) - retrieve all revisions kept for a document.
-    * [getMetadataFor](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata) - retrieve metadata for all revisions kept for a document.
-    * [get](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time) - retrieve revisions by change vector or creation time.
-    * Read [here](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions) about **lazy versions** of `getFor`, `getMetadataFor`, and `get`.
+    * [getFor](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-all-revisions) - retrieve all revisions kept for a document.
+    * [getMetadataFor](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata) - retrieve metadata for all revisions kept for a document.
+    * [get](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-creation-time) - retrieve revisions by change vector or creation time.
+    * Read [here](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions) about **lazy versions** of `getFor`, `getMetadataFor`, and `get`.
 * **Include revisions**:
 
-    * [includeRevisions](../../../document-extensions/revisions/client-api/session/including.mdx#section) - include revisions when retrieving documents via `session.load` or `session.query`.
-    * [rawQuery](../../../document-extensions/revisions/client-api/session/including.mdx#including-revisions-with-sessionadvancedrawquery) - Learn how to include revisions when retrieving documents via raw queries.
+    * [includeRevisions](../../../../document-extensions/revisions/client-api/session/including.mdx#section) - include revisions when retrieving documents via `session.load` or `session.query`.
+    * [rawQuery](../../../../document-extensions/revisions/client-api/session/including.mdx#including-revisions-with-sessionadvancedrawquery) - Learn how to include revisions when retrieving documents via raw queries.
 * **Count revisions**:
 
-    * [getCountFor](../../../document-extensions/revisions/client-api/session/counting.mdx#getcountfor) - get the number of revisions kept for a document.
+    * [getCountFor](../../../../document-extensions/revisions/client-api/session/counting.mdx#getcountfor) - get the number of revisions kept for a document.
 * **Force revision creation**:
 
-    * [forceRevisionCreationFor](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-api) - create a revision even if revision configuration is disabled.
+    * [forceRevisionCreationFor](../../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-api) - create a revision even if revision configuration is disabled.
 
 
 

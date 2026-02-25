@@ -6,36 +6,36 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This article is about running a full-text search with a **dynamic query**.  
-  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching.mdx).  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../../indexes/querying/searching.mdx).  
 
 * Use the `Search()` method to query for documents that contain specified term/s
   within the text of the specified document field/s.
 
 * When running a full-text search with a dynamic query, the **auto-index** created by the server 
-  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers.mdx#ravendb).  
+  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb).  
   All generated terms are lower-cased, so the search is **case-insensitive**.  
 
 * Gain additional control over term tokenization by running a full-text search 
-  using a [static-index](../../../../indexes/querying/searching.mdx), where the used 
+  using a [static-index](../../../../../indexes/querying/searching.mdx), where the used 
   analyzer is configurable.  
 
 <Admonition type="info" title="">
 
 * A **boost** value can be set for each search to prioritize results. 
-  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results.mdx).
+  Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx).
   
 * User experience can be enhanced by requesting text fragments that **highlight** 
-  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
+  the searched terms in the results. Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
 </Admonition>
 * In this page:
-  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
-  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
-  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
-  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
-  * [Search operators](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
-  * [Search options](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
-  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
-  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
+  * [Search for single term](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
+  * [Search for multiple terms](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
+  * [Search in complex object](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
+  * [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
+  * [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
+  * [Using wildcards](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
+  * [Syntax](../../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
 
 </Admonition>
 ## Search for single term
@@ -111,7 +111,7 @@ where search(Notes, "University")
     Text is lower-cased and Not tokenized.
   
   * `search(Notes)`  
-    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers.mdx#ravendb) (RavenStandardAnalyzer). 
+    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb) (RavenStandardAnalyzer). 
     Calling the `Search()` method targets these terms to find matching documents.
 
 
@@ -122,7 +122,7 @@ where search(Notes, "University")
 
 * By default, the logical operator between these terms is 'OR'.
 
-* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
+* This behavior can be modified. See section [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
 
 <Admonition type="note" title="">
 
@@ -239,7 +239,7 @@ where search(Notes, "University Sales Japanese")
 
 * By default, the logical operator between consecutive search methods is 'OR'.
 
-* This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
+* This behavior can be modified. See section [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
 
 <Admonition type="note" title="">
 
@@ -928,7 +928,7 @@ IDocumentQueryBase<T> Search<TValue>(
 | __searchTerms__   | string / 
 `IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for.
 Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
-| __boost__         | decimal                             | The boost value.<br/>Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results.mdx).<br/>&lt;strong&gt;Default&lt;/strong&gt; is `1.0` |
+| __boost__         | decimal                             | The boost value.<br/>Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx).<br/>&lt;strong&gt;Default&lt;/strong&gt; is `1.0` |
 | __options__       | `SearchOptions` enum                | Logical operator to use between consecutive Search methods.<br/> Can be `Or`, `And`, `Not`, or `Guess`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOptions.Guess`              |
 | __@operator__     | `SearchOperator` enum               | Logical operator to use between multiple terms in the same Search method.<br/>Can be `Or` or `And`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOperation.Or`                   |
 

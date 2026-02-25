@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article covers the following methods:
 
-  - [Load](../../client-api/session/loading-entities.mdx#load)
-  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
-  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
-  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
-  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
-  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
-  - [Stream](../../client-api/session/loading-entities.mdx#stream)
+  - [Load](../../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload)
+  - [IsLoaded](../../../client-api/session/loading-entities.mdx#isloaded)
+  - [Stream](../../../client-api/session/loading-entities.mdx#stream)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+* For loading entities lazily see [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 </Admonition>
 ## Load
@@ -200,7 +200,7 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+The `conditionalLoad` method takes a document's [change vector](../../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 

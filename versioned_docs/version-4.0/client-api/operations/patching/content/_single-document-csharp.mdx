@@ -8,13 +8,13 @@ The **Patch** operation is used to perform partial document updates without havi
 
 This page deals with patch operations on single documents.
 
-Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document.mdx#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document.mdx#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+Patching has three possible interfaces: [Typed Session API](../../../../client-api/operations/patching/single-document.mdx#typed-session-api), [Non-Typed Session API](../../../../client-api/operations/patching/single-document.mdx#non-typed-session-api), and [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api).
 
 Patching can be done from the client as well as in the studio.  
 
 * In this page:  
-  * [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
-  * [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+  * [API overview](../../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Examples](../../../../client-api/operations/patching/single-document.mdx#examples)  
 </Admonition>
 
 ## API overview
@@ -44,7 +44,7 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **delta** | `U` | Value to be added. |
 
-* Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb.mdx) in JavaScript
+* Note the numeric values [restrictions](../../../../server/kb/numbers-in-ravendb.mdx) in JavaScript
 
 ### Set Field Value
 `Session.Advanced.Patch`
@@ -174,7 +174,7 @@ Task<PatchStatus> SendAsync(PatchOperation operation,
 ## List of Script Methods
 
 This is a list of a few of the javascript methods that can be used in patch scripts. See the 
-more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 
 | Method | Arguments | Description |
 | - | - | - |

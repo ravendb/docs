@@ -9,17 +9,17 @@ import CodeBlock from '@theme/CodeBlock';
   There are two options: **dynamic** spatial query, and spatial **index** query.  
 
   * **Dynamic spatial query**  
-    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
+    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
     An auto-index will be created by the server.  
   
   * **Spatial index query**  
     Documents' spatial data can be indexed in a static index (**described in this article**),  
-    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial.mdx)).  
+    and a spatial query can then be executed over this index (see [query a spatial index](../../indexes/querying/spatial.mdx)).  
 
 * In this page:
-  * [Create index with spatial field](../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
-  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
-  * [Spatial indexing strategies](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
+  * [Create index with spatial field](../../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
 
 </Admonition>
 ## Create index with spatial field
@@ -28,7 +28,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
-* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
+* A spatial index can also be defined from [Studio](../../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
 
 #### Exmaple:
 
@@ -148,7 +148,7 @@ object CreateSpatialField(string shapeWkt);          // Shape in WKT string form
   Use the `Spatial` method from `AbstractIndexCreationTask` to modify this setting.
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
-  Learn more about each strategy [below](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
+  Learn more about each strategy [below](../../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
 
 * Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
 

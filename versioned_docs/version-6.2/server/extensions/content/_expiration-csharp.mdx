@@ -10,11 +10,11 @@ import CodeBlock from '@theme/CodeBlock';
 * You can enable or disable the expiration feature while the database is already live with data.  
 
 * In this page:  
-  * [Expiration feature usages](../../server/extensions/expiration.mdx#expiration-feature-usages)  
-  * [Configuring the expiration feature](../../server/extensions/expiration.mdx#configuring-the-expiration-feature)  
-     * [Configure expiration settings using the client API](../../server/extensions/expiration.mdx#configure-expiration-settings-using-the-client-api)  
-  * [Setting the document expiration time](../../server/extensions/expiration.mdx#setting-the-document-expiration-time)  
-  * [Eventual consistency considerations](../../server/extensions/expiration.mdx#eventual-consistency-considerations)  
+  * [Expiration feature usages](../../../server/extensions/expiration.mdx#expiration-feature-usages)  
+  * [Configuring the expiration feature](../../../server/extensions/expiration.mdx#configuring-the-expiration-feature)  
+     * [Configure expiration settings using the client API](../../../server/extensions/expiration.mdx#configure-expiration-settings-using-the-client-api)  
+  * [Setting the document expiration time](../../../server/extensions/expiration.mdx#setting-the-document-expiration-time)  
+  * [Eventual consistency considerations](../../../server/extensions/expiration.mdx#eventual-consistency-considerations)  
  </Admonition>
 ## Expiration feature usages
 
@@ -40,7 +40,7 @@ It is possible to:
 * Set the maximal number of documents that RavenDB is allowed to delete per interval.  
   Default value: **All expired documents**  
 <Admonition type="info" title="">
-[Learn how to configure expiration settings via Studio](../../studio/database/settings/document-expiration.mdx)
+[Learn how to configure expiration settings via Studio](../../../studio/database/settings/document-expiration.mdx)
 </Admonition>
 ### Configure expiration settings using the client API  
 
@@ -101,7 +101,7 @@ object and sending it to RavenDB using a `ConfigureExpirationOperation` operatio
   </Admonition>
 * If and when the expiration feature is enabled, it will process all documents 
   carrying the `@expires` flag and automatically delete each document 
-  [by its expiration time](../../server/extensions/expiration.mdx#eventual-consistency-considerations).  
+  [by its expiration time](../../../server/extensions/expiration.mdx#eventual-consistency-considerations).  
 * To set the document expiration time from the client, use the following code:
 <TabItem value="expiration1" label="expiration1">
 <CodeBlock language="csharp">

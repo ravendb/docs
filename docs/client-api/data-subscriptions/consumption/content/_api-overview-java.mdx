@@ -6,11 +6,11 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:  
-   * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
-   * [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
-   * [Run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
-   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
-   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
+   * [Create the subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
+   * [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
+   * [Run the subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
+   * [SubscriptionBatch&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+   * [SubscriptionWorker&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Create the subscription worker
@@ -63,7 +63,7 @@ All other parameters are optional and will default to their respective default v
 | **subscriptionName**                | `String`                                | The name of the subscription to which the worker will connect.                                                                                                                                                                                                                                                                                                                                                    |
 | **timeToWaitBeforeConnectionRetry** | `Duration`                              | The time to wait before attempting to reconnect after a non-aborting failure during subscription processing. Default: 5 seconds.                                                                                                                                                                                                                                                                                  |
 | **ignoreSubscriberErrors**          | `boolean`                               | Determines if subscription processing is aborted when the worker's batch-handling code throws an unhandled exception.<br/><br/>`true` – subscription processing will continue.<br/><br/>`false` (Default) – subscription processing will be aborted.                                                                                                                                                                  |
-| **strategy**                        | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
+| **strategy**                        | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
 | **maxDocsPerBatch**                 | `int`                                   | The maximum number of documents that the server will try to retrieve and send to the client in a batch. If the server doesn't find as many documents as specified, it will send the documents it has found without waiting. Default: 4096.                                                                                                                                                                        |
 | **closeWhenNoDocsLeft**             | `boolean`                               | Determines whether the subscription connection closes when no new documents are available.<br/><br/>`true` – The subscription worker processes all available documents and stops when none remain, at which point the `run` method throws a `SubscriptionClosedException`.<br/>Useful for ad-hoc, one-time processing.<br/><br/>`false` (Default) – The subscription worker remains active, waiting for new documents. |
 | **sendBufferSizeInBytes**           | `int`                                   | The size in bytes of the TCP socket buffer used for _sending_ data.<br/>Default: 32,768 bytes (32 KiB).                                                                                                                                                                                                                                                                                                            |
@@ -73,8 +73,8 @@ All other parameters are optional and will default to their respective default v
 
 ## Run the subscription worker
 
-After [creating](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
-To start processing, you need to call the `run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).
+After [creating](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
+To start processing, you need to call the `run` method of the [SubscriptionWorker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).
 
 The `run` function takes a delegate, which is your client-side code responsible for processing the received document batches.
 
@@ -147,7 +147,7 @@ if T is `ObjectNode`, no deserialization will take place
 | Method Signature             | Return Type               | Description                                                                                                                                                                                                             |
 |------------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
 | **close()**                  | `void`                    | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running.                                                                                             |
-| **run (multiple overloads)** | `CompletableFuture<Void>` | Call `run` to begin the worker's batch processing.<br/>Pass the batch processing delegates to this method<br/>(see [above](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)). |
+| **run (multiple overloads)** | `CompletableFuture<Void>` | Call `run` to begin the worker's batch processing.<br/>Pass the batch processing delegates to this method<br/>(see [above](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)). |
 
 </Admonition>
 

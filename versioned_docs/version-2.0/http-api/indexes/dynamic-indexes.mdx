@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 Rather than define indexes up front, RavenDB can analyze a query and create an auto index on the fly. Further uses of similar queries (using the same parameters) will result in the auto index being re-used.
 
-Automatic indexes have their age, and that is tracked internally by RavenDB. If an automatic index isn't being used, it will become idle and eventually abandoned (see [index priorities](../../server/administration/index-administration.mdx#index-prioritization)). If it is a very young index, we will decide it was a temporary index after all, and remove it from the system completely.
+Automatic indexes have their age, and that is tracked internally by RavenDB. If an automatic index isn't being used, it will become idle and eventually abandoned (see [index priorities](../../../server/administration/index-administration.mdx#index-prioritization)). If it is a very young index, we will decide it was a temporary index after all, and remove it from the system completely.
 
 
 <Admonition type="note" title="">

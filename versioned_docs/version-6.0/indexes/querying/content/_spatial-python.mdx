@@ -9,21 +9,21 @@ import CodeBlock from '@theme/CodeBlock';
   You have two options:
 
     * **Dynamic spatial query**  
-      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
       An auto-index will be created by the server.
 
     * **Spatial index query**  
-      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data.mdx))  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data.mdx))  
       and then make a spatial query on this index ( **described in this article** ).
 
 * A few examples of querying a spatial index are provided below.  
-  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query.mdx).  
-  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-api).  
+  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx).  
+  Find all spatial API methods listed [here](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-api).  
 
 * Examples in this page:
-    * [Search by radius](../../indexes/querying/spatial.mdx#search-by-radius)
-    * [Search by shape](../../indexes/querying/spatial.mdx#search-by-shape)
-    * [Sort results](../../indexes/querying/spatial.mdx#sort-results)
+    * [Search by radius](../../../indexes/querying/spatial.mdx#search-by-radius)
+    * [Search by shape](../../../indexes/querying/spatial.mdx#search-by-shape)
+    * [Sort results](../../../indexes/querying/spatial.mdx#sort-results)
 
 </Admonition>
 ## Search by radius
@@ -107,11 +107,11 @@ where spatial.within(
   in the specified relation to the given shape.
 
 * The shape in the query is specified as either a **circle** or a **polygon** in a WKT format.  
-  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#polygonrules).
+  See polygon rules [here](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#polygonrules).
 
 * The relation to the shape can be one of: `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS`.
 
-* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape) query.
+* See more usage examples in the [dynamic search by shape](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape) query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -272,9 +272,9 @@ order by spatial.distance(
 </TabItem>
 </Tabs>
 
-* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) article.
+* More sorting examples are available in the [dynamic spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) article.
 
-* To get the **distance** for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#getresultingdistance).
+* To get the **distance** for each resulting entity see [get resulting distance](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#getresultingdistance).
 
 
 

@@ -5,24 +5,24 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* With the introduction of time series, RavenDB has extended its [JavaScript support](../../../server/kb/javascript-engine.mdx)
-  to include manipulations involving time series data when patching [single](../../../client-api/operations/patching/single-document.mdx#patching-how-to-perform-single-document-patch-operations)
-  or [multiple](../../../client-api/operations/patching/set-based.mdx) documents.
+* With the introduction of time series, RavenDB has extended its [JavaScript support](../../../../server/kb/javascript-engine.mdx)
+  to include manipulations involving time series data when patching [single](../../../../client-api/operations/patching/single-document.mdx#patching-how-to-perform-single-document-patch-operations)
+  or [multiple](../../../../client-api/operations/patching/set-based.mdx) documents.
 
 * Time series capabilities can be achieved via JavaScript when using the following methods:
-  * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch.mdx) - perform patch via the _Session_
-  * [PatchOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchoperation) - perform patch via a _Store_ operation
-  * [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation) - perform query & patch via a _Store_ operation
+  * [session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx) - perform patch via the _Session_
+  * [PatchOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchoperation) - perform patch via a _Store_ operation
+  * [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation) - perform query & patch via a _Store_ operation
 
 * The server treats timestamps passed in the scripts as **UTC**, no conversion is applied by the client to local time.
 
 * In this page:  
-  * [JavaScript time series API methods](../../../document-extensions/timeseries/client-api/javascript-support.mdx#javascript-time-series-api-methods)  
-     * [timeseries - choose a time series](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section)  
-     * [timeseries.append - append an entry](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-1)  
-     * [timeseries.delete - delete entries](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
-     * [timeseries.get - get entries](../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
-  * [Examples](../../../document-extensions/timeseries/client-api/javascript-support.mdx#examples)  
+  * [JavaScript time series API methods](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#javascript-time-series-api-methods)  
+     * [timeseries - choose a time series](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section)  
+     * [timeseries.append - append an entry](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-1)  
+     * [timeseries.delete - delete entries](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
+     * [timeseries.get - get entries](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
+  * [Examples](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#examples)  
 
 </Admonition>
 ## JavaScript time series API methods
@@ -97,7 +97,7 @@ Values are returned in an array of time series entries, i.e. -
 ## Examples
 
 * This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
-  The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch.mdx).
+  The script is passed to method [session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx).
 <TabItem value="TS_region-Session_Patch-Append-TS-Entries" label="TS_region-Session_Patch-Append-TS-Entries">
 <CodeBlock language="csharp">
 {`var baseTime = DateTime.UtcNow;
@@ -141,7 +141,7 @@ session.SaveChanges();
 </TabItem>
 
 * This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
-  The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation)  operation.
+  The script is passed to the [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation)  operation.
 <TabItem value="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs" label="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs">
 <CodeBlock language="csharp">
 {`PatchByQueryOperation deleteByQueryOp = new PatchByQueryOperation(new IndexQuery

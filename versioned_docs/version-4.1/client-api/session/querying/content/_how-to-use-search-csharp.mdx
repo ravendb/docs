@@ -7,7 +7,7 @@ Use the `Search()` extension method to perform a full-text search on a particula
 desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
 
 An index's terms are derived from the values of the documents' textual fields. These values were converted into one or more terms 
-depending on which [Lucene analyzer](../../../indexes/using-analyzers.mdx) the index used.  
+depending on which [Lucene analyzer](../../../../indexes/using-analyzers.mdx) the index used.  
 
 ## Syntax
 
@@ -29,8 +29,8 @@ depending on which [Lucene analyzer](../../../indexes/using-analyzers.mdx) the i
 | **searchTerms** | string | A string of the desired search terms separated by spaces (i.e. to search for "john" or "jack", pass the string "john&nbsp;jack"). 
 Wildcards can be used: `?` for any single character, `*` for any substring. |
 | **boost** | decimal | Boost value. Default: `1`. |
-| **options** | [SearchOptions](../../../indexes/querying/searching.mdx#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
-| **@operator** | [SearchOperator](../../../indexes/querying/searching.mdx#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
+| **options** | [SearchOptions](../../../../indexes/querying/searching.mdx#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **@operator** | [SearchOperator](../../../../indexes/querying/searching.mdx#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
 
 ## Example I - Dynamic Query
 

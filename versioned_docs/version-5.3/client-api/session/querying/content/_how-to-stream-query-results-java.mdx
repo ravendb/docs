@@ -27,9 +27,9 @@ To stream results, use the `stream` method from the `advanced` session operation
 * __Query limitations:__:
 
     * A streaming query does not wait for indexing by design.  
-      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
+      So calling [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
 
-    * Using [include](../../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
+    * Using [include](../../../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
 
 
 
@@ -50,7 +50,7 @@ To stream results, use the `stream` method from the `advanced` session operation
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [IDocumentQuery](../../../querying/overview.mdx#session-advanced-documentquery) or [IRawDocumentQuery](../../../querying/overview.mdx#session-advanced-rawquery) | Query to stream results for. |
+| **query** | [IDocumentQuery](../../../../querying/overview.mdx#session-advanced-documentquery) or [IRawDocumentQuery](../../../../querying/overview.mdx#session-advanced-rawquery) | Query to stream results for. |
 | `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
 
 | Return Value | |

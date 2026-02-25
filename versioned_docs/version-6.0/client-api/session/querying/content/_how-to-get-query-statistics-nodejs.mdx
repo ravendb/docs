@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
   are returned in the `QueryStatistics` object.
 
 * In This Page:
-    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)
-    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)
+    * [Get query statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)
+    * [Syntax](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)
 
 </Admonition>
 ## Get query statistics
@@ -67,7 +67,7 @@ const indexNameUsed = stats.value.indexName;      // Get index name used in quer
 | **isStale**         | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
 | **durationInMs**    | `number`  | Query duration on the server side in Milliseconds                                                                                                                  |
 | **totalResults**    | `number`  | The total count of results that matched the query                                                                                                                  |
-| **skippedResults**  | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results). |
+| **skippedResults**  | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../../indexes/querying/paging.mdx#paging-through-tampered-results). |
 | **scannedResults**  | `long?`   | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                              |
 | **timestamp**       | `Date`    | The time when the query results were unstale                                                                                                                       |
 | **indexName**       | `string`  | The name of the queried index                                                                                                                                      |

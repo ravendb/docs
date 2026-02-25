@@ -5,12 +5,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 There are various methods with many overloads that allow a user to download documents from a database and convert them to entities. This article will cover the following methods:
 
-- [Load](../../client-api/session/loading-entities.mdx#load)
-- [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
-- [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
-- [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
-- [Stream](../../client-api/session/loading-entities.mdx#stream)
-- [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+- [Load](../../../client-api/session/loading-entities.mdx#load)
+- [Load with Includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
+- [Load - multiple entities](../../../client-api/session/loading-entities.mdx#load---multiple-entities)
+- [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith)
+- [Stream](../../../client-api/session/loading-entities.mdx#stream)
+- [IsLoaded](../../../client-api/session/loading-entities.mdx#isloaded)
 
 ## Load
 
@@ -89,7 +89,7 @@ You can load it by specifying an integer value as the identifier:
 
 #### Converting to String Identifier
 
-Even if the identifier is a string, you can use the `Load<T>(ValueType)` overload. The client is aware of the [ID generation conventions](../configuration/conventions/identifier-generation/global.mdx) (collectionName/number),
+Even if the identifier is a string, you can use the `Load<T>(ValueType)` overload. The client is aware of the [ID generation conventions](../../configuration/conventions/identifier-generation/global.mdx) (collectionName/number),
 so you could load the entity with the key `employees/1` by using the code:
 
 <TabItem value="loading_entities_1_4" label="loading_entities_1_4">
@@ -348,7 +348,7 @@ IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
 
 | Return Value | |
 | ------------- | ----- |
-| IEnumerator&lt;[StreamResult](../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
+| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
 
 ### Example I
 

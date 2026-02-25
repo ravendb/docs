@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
+* A Session object is obtained from the [Document Store](../../../client-api/what-is-a-document-store.mdx).  
 
 * A Session can operate Synchronously or Asynchronously.  
   * `OpenSession()` - Open a Session for a **Synchrounous** mode of operation.  
@@ -18,9 +18,9 @@ import CodeBlock from '@theme/CodeBlock';
 * If no database is specified then the Default Database (stored in the Document Store) is assumed.  
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
-  * [Session Options](../../client-api/session/opening-a-session.mdx#session-options)  
-  * [Example](../../client-api/session/opening-a-session.mdx#example)
+  * [Syntax](../../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session Options](../../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Example](../../../client-api/session/opening-a-session.mdx#example)
 </Admonition>
 ## Syntax
 
@@ -58,7 +58,7 @@ IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
 | Parameter | Type | Description |
 |-|-|-|
 | **database** | `string` | The Session will operate on this database, overriding the default database set in the document store |
-| **options** | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options) |
+| **options** | `SessionOptions` | An object with Session configuration options. See details [below](../../../client-api/session/opening-a-session.mdx#session-options) |
 
 | Return Value | Description |
 |-|-|
@@ -72,11 +72,11 @@ The `SessionOptions` object contains various options to configure the Session's 
 
 | Option | Type | Description | Default Value |
 | --- | --- | --- | --- |
-| **Database** | string | The Session will operate on this database, overriding the Default Database. | `null` - the Session operates on the [Default Database](../../client-api/setting-up-default-database.mdx) |
-| **NoTracking** | boolean | Whether the Session should track changes made to all entities that it has either loaded, stored, or queried on. <br/>See [Disable Tracking Example](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false` |
-| **NoCaching** | boolean | Whether the Session should cache the server responses. <br/>See [Disable Caching Example](../../client-api/session/configuration/how-to-disable-caching.mdx) | `false` |
+| **Database** | string | The Session will operate on this database, overriding the Default Database. | `null` - the Session operates on the [Default Database](../../../client-api/setting-up-default-database.mdx) |
+| **NoTracking** | boolean | Whether the Session should track changes made to all entities that it has either loaded, stored, or queried on. <br/>See [Disable Tracking Example](../../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false` |
+| **NoCaching** | boolean | Whether the Session should cache the server responses. <br/>See [Disable Caching Example](../../../client-api/session/configuration/how-to-disable-caching.mdx) | `false` |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ The request executor the Session should use | `null` - the default request executor is used |
-| **TransactionMode** | `TransactionMode` | Specify the Session's transaction mode (`SingleNode` / `ClusterWide`). <br/>See [Cluster-Wide Transactions](../../server/clustering/cluster-transactions.mdx) | `SingleNode` |
+| **TransactionMode** | `TransactionMode` | Specify the Session's transaction mode (`SingleNode` / `ClusterWide`). <br/>See [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions.mdx) | `SingleNode` |
 
 
 

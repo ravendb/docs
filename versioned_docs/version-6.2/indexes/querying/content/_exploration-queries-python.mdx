@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [raw_rql](../../querying/overview.mdx#session-advanced-raw_query), 
+  to a dataset after its retrieval by [raw_rql](../../../querying/overview.mdx#session-advanced-raw_query), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an 
@@ -16,30 +16,30 @@ import CodeBlock from '@theme/CodeBlock';
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [with caution](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
+  [with caution](../../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
   since scanning and filtering all the data retrieved by a query cost substantial 
-  [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
+  [server resources and user waiting time](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
     <Admonition type="warning" title="">
 
     We recommend that you -  
 
-    * [Limit](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
+    * [Limit](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
       the number of records that an exploration query filters.  
-    * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
-      so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
+    * Use [where](../../../indexes/querying/filtering.mdx) in recurring queries, 
+      so the query would [use an index](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
 
 * In this page:  
-   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
-   * [When should exploration queries be used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
-   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
-   * [Usage examples](../../indexes/querying/exploration-queries.mdx#usage-examples)
-      * [With collection queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
-      * [With queries that use an index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
-      * [With projections](../../indexes/querying/exploration-queries.mdx#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
+   * [`filter`](../../../indexes/querying/exploration-queries.mdx#filter)
+   * [When should exploration queries be used](../../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Syntax](../../../indexes/querying/exploration-queries.mdx#syntax)
+   * [Usage examples](../../../indexes/querying/exploration-queries.mdx#usage-examples)
+      * [With collection queries](../../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With queries that use an index](../../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With projections](../../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
 
 </Admonition>
 
@@ -50,9 +50,9 @@ In Python, exploration queries can be applied via RQL using the `filter` keyword
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
 The provided filtering operations resemble those implemented by 
-[where](../../indexes/querying/filtering.mdx) and can be further enhanced 
+[where](../../../indexes/querying/filtering.mdx) and can be further enhanced 
 by Javascript functions of your own.  
-Read [here](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) 
+Read [here](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) 
 about creating and using your own Javascript function in your filters.  
 
 
@@ -121,7 +121,7 @@ filter_limit 500 // limit the number of filtered records
 `}
 </CodeBlock>
 </TabItem>
-* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
+* Use [where](../../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering 
   in subsequent queries.  
 </Admonition>
@@ -205,7 +205,7 @@ The filtered results can be projected using `select`, like those of any other qu
 #### With user-defined JavaScript functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
-[declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
+[declare](../../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
 use it as part of your `filter` condition to freely adapt the filtering 
 to your needs.  
 

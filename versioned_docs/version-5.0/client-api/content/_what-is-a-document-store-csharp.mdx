@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* The **Document Store** is the main Client API object which establishes and manages the communication between your client application and a [RavenDB cluster](../server/clustering/overview.mdx). 
+* The **Document Store** is the main Client API object which establishes and manages the communication between your client application and a [RavenDB cluster](../../server/clustering/overview.mdx). 
 Communication is done via HTTP requests.  
 
-* The Document Store holds the [Cluster Topology](../server/clustering/rachis/cluster-topology.mdx), the [Authentication Certificate](../client-api/setting-up-authentication-and-authorization.mdx), 
+* The Document Store holds the [Cluster Topology](../../server/clustering/rachis/cluster-topology.mdx), the [Authentication Certificate](../../client-api/setting-up-authentication-and-authorization.mdx), 
 and any configurations & customizations that you may have applied.  
 
 * Caching is built in. All requests to the server(s) and their responses are cached within the Document Store.  
@@ -18,14 +18,14 @@ and any configurations & customizations that you may have applied.
 * The Document Store is thread safe - implemented in a thread safe manner.  
 
 * The Document Store exposes methods to perform operations such as:  
-  * [Session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) - Use the Session object to perform operations on a specific database  
-  * [Operations](../client-api/operations/what-are-operations.mdx) - Manage the server with a set of low level operation commands  
-  * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) - Useful when inserting a large amount of data  
-  * [Conventions](../client-api/configuration/conventions.mdx) - Customize the Client API behavior  
-  * [Changes API](../client-api/changes/what-is-changes-api.mdx) - Receive messages from the server  
-  * [Aggressive caching](../client-api/how-to/setup-aggressive-caching.mdx) - Configure caching behavior  
-  * [Events](../client-api/session/how-to/subscribe-to-events.mdx) - Perform custom actions in response to the Session's operations  
-  * [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) - Define & manage data processing on the client side
+  * [Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) - Use the Session object to perform operations on a specific database  
+  * [Operations](../../client-api/operations/what-are-operations.mdx) - Manage the server with a set of low level operation commands  
+  * [Bulk insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) - Useful when inserting a large amount of data  
+  * [Conventions](../../client-api/configuration/conventions.mdx) - Customize the Client API behavior  
+  * [Changes API](../../client-api/changes/what-is-changes-api.mdx) - Receive messages from the server  
+  * [Aggressive caching](../../client-api/how-to/setup-aggressive-caching.mdx) - Configure caching behavior  
+  * [Events](../../client-api/session/how-to/subscribe-to-events.mdx) - Perform custom actions in response to the Session's operations  
+  * [Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) - Define & manage data processing on the client side
 
 </Admonition>
 

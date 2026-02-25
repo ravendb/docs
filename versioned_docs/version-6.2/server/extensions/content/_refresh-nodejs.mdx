@@ -5,16 +5,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector.mdx), 
+* The Refresh feature increments a document's [change vector](../../../server/clustering/replication/change-vector.mdx), 
   triggering its re-indexation as well as other features that react to document updates.  
 
-* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
+* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
 
 * In this page:  
-  * [Overview](../../server/extensions/refresh.mdx#overview)  
-  * [Examples](../../server/extensions/refresh.mdx#examples)
-  * [Syntax](../../server/extensions/refresh.mdx#syntax)
-  * [Configure from Studio](../../server/extensions/refresh.mdx#configure-from-studio)
+  * [Overview](../../../server/extensions/refresh.mdx#overview)  
+  * [Examples](../../../server/extensions/refresh.mdx#examples)
+  * [Syntax](../../../server/extensions/refresh.mdx#syntax)
+  * [Configure from Studio](../../../server/extensions/refresh.mdx#configure-from-studio)
 
 </Admonition>
 ## Overview
@@ -29,16 +29,16 @@ The exact time that the document refreshes is not determined by the value of `@r
 - rather, the server refreshes documents at regular intervals determined by the Refresh 
 Configuration. The default interval is 60 seconds.  
 
-Refreshing a document causes its [change vector](../../server/clustering/replication/change-vector.mdx) 
+Refreshing a document causes its [change vector](../../../server/clustering/replication/change-vector.mdx) 
 to increment the same way it would after any other kind of update to the document. 
 This triggers any features that react to documents updating, including but not limited 
 to:  
 
 * The document is re-indexed by any indexes that cover it.  
-* [Replication](../../server/ongoing-tasks/external-replication.mdx), 
-  [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
-  and [ETL](../../server/ongoing-tasks/etl/basics.mdx) are triggered.
-* A [revision](../../document-extensions/revisions/overview.mdx) of the document is created.  
+* [Replication](../../../server/ongoing-tasks/external-replication.mdx), 
+  [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
+  and [ETL](../../../server/ongoing-tasks/etl/basics.mdx) are triggered.
+* A [revision](../../../document-extensions/revisions/overview.mdx) of the document is created.  
 
 
 

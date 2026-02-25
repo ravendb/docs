@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
   Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
-  with the default configuration of the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
+  with the default configuration of the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
 
 * Optimistic concurrency can be **enabled** for:
    * A specific document  
@@ -23,10 +23,10 @@ import CodeBlock from '@theme/CodeBlock';
   in a way that is suitable in a given scenario.
 
 * In this page:
-  * [Enable for specific session](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-session)
-  * [Enable globally](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-globally)
-  * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
-  * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
+  * [Enable for specific session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-session)
+  * [Enable globally](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-globally)
+  * [Disable for specific document (when enabled on session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
+  * [Enable for specific document (when disabled on session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
 
 <Admonition type="warning" title="">
 
@@ -43,7 +43,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="info" title="">
 
 A detailed description of transactions and concurrency control in RavenDB is available here: 
-[Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx)
+[Transaction support in RavenDB](../../../../client-api/faq/transaction-support.mdx)
 
 </Admonition>
 
@@ -95,7 +95,7 @@ await session.saveChanges(); // This will throw a ConcurrencyException
 
 * Optimistic concurrency can also be _enabled_ for all sessions that are opened under a document store.
 
-* Use the [store.Conventions.UseOptimisticConcurrency](../../../client-api/configuration/conventions.mdx#useoptimisticconcurrency) convention to enable globally.
+* Use the [store.Conventions.UseOptimisticConcurrency](../../../../client-api/configuration/conventions.mdx#useoptimisticconcurrency) convention to enable globally.
 
 <TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
 <CodeBlock language="js">
@@ -118,7 +118,7 @@ store.conventions.useOptimisticConcurrency = true;
 * Optimistic concurrency can be _disabled_ when **storing** a specific document,  
   even when it is _enabled_ for an entire session (or globally).
 
-* This is done by passing `null` as a change vector value to the [store](../../../client-api/session/storing-entities.mdx) method.
+* This is done by passing `null` as a change vector value to the [store](../../../../client-api/session/storing-entities.mdx) method.
 
 <TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
 <CodeBlock language="js">
@@ -159,7 +159,7 @@ store.conventions.useOptimisticConcurrency = true;
 * Optimistic concurrency can be _enabled_ when **storing** a specific document,  
   even when it is _disabled_ for an entire session (or globally).
 
-* This is done by passing `string.Empty` as the change vector value to the [store](../../../client-api/session/storing-entities.mdx) method.  
+* This is done by passing `string.Empty` as the change vector value to the [store](../../../../client-api/session/storing-entities.mdx) method.  
   Setting the change vector to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exist.
   A `ConcurrencyException` will be thrown if the document already exists.
 

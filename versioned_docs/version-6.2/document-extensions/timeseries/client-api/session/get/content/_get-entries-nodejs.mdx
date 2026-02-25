@@ -7,29 +7,29 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `timeSeriesFor.get` to retrieve a range of entries from a **single** time series.  
   To retrieve a range of entries from **multiple** series, 
-  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
+  use the [GetMultipleTimeSeriesOperation](../../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
 
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
 * By default, the session will track the retrieved time series data. 
-  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
+  See [disable tracking](../../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
 
 * When getting the time series entries,  
   you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
-  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+  Learn more [below](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
 
 * Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
-  Learn more in [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+  Learn more in [Including time series](../../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
 
 * In this page:  
-  * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
-  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
-     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
-     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
-     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
-  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
-  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+  * [`get` usage](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
+  * [Examples](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
+     * [Get all entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
+     * [Get range of entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
 
 </Admonition>
 ## `get` usage 
@@ -37,8 +37,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.  
 * Create an instance of `timeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
-      e.g. a document object returned from [session.query](../../../../../querying/overview.mdx) or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../../../querying/overview.mdx) or from [session.load](../../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `timeSeriesFor.get`.
 
@@ -84,10 +84,10 @@ const tsEntries = await session
 #### Get entries with multiple values:
 
 * Here, we check if a stock's closing price is rising consecutively over three days.  
-  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+  This example is based on the sample entries that were entered in [this example](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
 
 * Since each time series entry contains multiple StockPrice values,  
-  we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx)
+  we include a sample that uses [named time series values](../../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx)
   to make the code easier to read.
 
 <Tabs groupId='languageSyntax'>
@@ -145,7 +145,7 @@ if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) {
 ## Include parent and tagged documents
 
 * When retrieving time series entries using `timeSeriesFor.get`,  
-  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../document-extensions/timeseries/overview.mdx#tags).  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../../document-extensions/timeseries/overview.mdx#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 

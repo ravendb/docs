@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 ## What are conflicts?
 When two or more changes of a single document are done concurrently in two separate nodes, 
 RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
+For more information about conflicts and their resolution, see [article about conflicts](../../../server/clustering/replication/replication-conflicts.mdx).  
 
 <Admonition type="note" title="">
 By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
@@ -43,7 +43,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 </CodeBlock>
 </TabItem>
 
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector.mdx).
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../../server/clustering/replication/change-vector.mdx).
 
 ## Modifying conflict resolution from the client-side
 In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.

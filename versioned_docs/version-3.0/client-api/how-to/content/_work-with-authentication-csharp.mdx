@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 There are two ways to authenticate database users in RavenDB. The first one is Windows Authentication which requires to provide credentials in the form of a login / password / domain triple. 
 The second option you can choose is OAuth with an API Key. Before you will work with a database in authenticated manner, first you need to go to the RavenDB server and configure an access there.
-Detailed information about necessary server side work to setup the authentication you will find in a server configuration article [Authentication and authorization](../../server/configuration/authentication-and-authorization.mdx).
+Detailed information about necessary server side work to setup the authentication you will find in a server configuration article [Authentication and authorization](../../../server/configuration/authentication-and-authorization.mdx).
 
 Server recognizes the requested authentication type based on headers of a request sent by the client, so the `DocumentStore` needs to be properly configured in order to 
 be able to perform any actions against a database with enabled authentication.
@@ -73,6 +73,6 @@ you should create the `DocumentStore` as below to have the admin access to the `
 
 ## Connection string
 
-The Windows credentials or Api Key can be also specified in the connection string. Look [here](../setting-up-connection-string.mdx) for more details.
+The Windows credentials or Api Key can be also specified in the connection string. Look [here](../../setting-up-connection-string.mdx) for more details.
 
 

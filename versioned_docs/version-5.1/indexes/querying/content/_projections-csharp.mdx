@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 There are couple of ways to perform projections in RavenDB:
 
-- projections using [Select](../../indexes/querying/projections.mdx#select)
-- using [SelectFields](../../indexes/querying/projections.mdx#selectfields)
-- using [ProjectInto](../../indexes/querying/projections.mdx#projectinto)
-- using [OfType (As)](../../indexes/querying/projections.mdx#oftype-(as))
+- projections using [Select](../../../indexes/querying/projections.mdx#select)
+- using [SelectFields](../../../indexes/querying/projections.mdx#selectfields)
+- using [ProjectInto](../../../indexes/querying/projections.mdx#projectinto)
+- using [OfType (As)](../../../indexes/querying/projections.mdx#oftype-(as))
 
 ## What are Projections and When to Use Them
 
@@ -35,7 +35,7 @@ Another consideration to take into account is the cost of running the projection
 
 ## Projections and Stored Fields
 
-If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index.mdx).
+If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../../indexes/storing-data-in-index.mdx).
 
 ## Select
 The most basic projection can be done using LINQ `Select` method:
@@ -541,7 +541,7 @@ select {
 
 ## SelectFields
 
-The `SelectFields` method can only be used with the [Document Query](../../client-api/session/querying/document-query/what-is-document-query.mdx). 
+The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx). 
 It has two overloads:
 
 <TabItem value="csharp" label="csharp">
@@ -669,7 +669,7 @@ select Name, Phone
 The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior).  
+[here](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior).  
 
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
@@ -740,7 +740,7 @@ select Name, Phone
 
 ## OfType (As)
 
-`OfType` or `As` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection).
+`OfType` or `As` is a client-side projection. You can read more about it [here](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection).
 
 
 

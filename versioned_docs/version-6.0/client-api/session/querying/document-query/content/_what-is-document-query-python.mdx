@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * RavenDB Queries can be executed via `query`, `document_query` or directly using `RQL`.  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).  
+  Learn more in [Query Overview](../../../../../client-api/session/querying/how-to-query.mdx).  
 * In the Python client API, `query` methods and their equivalent `document_query` methods 
   provide the same functionality. (This is different from the C# client implementation, 
   which often provides different functionality for `Query` methods and their `DocumentQuery` 
@@ -15,9 +15,9 @@ import CodeBlock from '@theme/CodeBlock';
   `document_query` examples as well.  
 
 * In this page:
-  * [`document_query` Examples](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#document_query-examples)
-  * [Convert between `document_query` and `query`](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-document_query-and-query)
-  * [Available Custom Methods and Extensions](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-document_query-and-query)
+  * [`document_query` Examples](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#document_query-examples)
+  * [Convert between `document_query` and `query`](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-document_query-and-query)
+  * [Available Custom Methods and Extensions](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-document_query-and-query)
 
 </Admonition>
 ## `document_query` Examples
@@ -97,7 +97,7 @@ products = list(session.advanced.document_query(object_type=Product).skip(5).tak
 </Tabs>
 #### Query an index
 
-Please refer to [Querying an index](../../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using document_query.
+Please refer to [Querying an index](../../../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using document_query.
 
 
 
@@ -128,19 +128,19 @@ query_results = list(doc_query.where_greater_than("freight", 25))
 ## Available Custom Methods and Extensions
 
 - add_or_der
-- [query] [after_query_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [query] [after_stream_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-- [query] [aggregate_by](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [query] [aggregate_using](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [query] [after_query_executed](../../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [query] [after_stream_executed](../../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [query] [aggregate_by](../../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [query] [aggregate_using](../../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - and_also
-- [query] [before_query_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-- [boost](../../../../client-api/session/querying/text-search/boost-search-results.mdx)
+- [query] [before_query_executed](../../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [boost](../../../../../client-api/session/querying/text-search/boost-search-results.mdx)
 - close_subclause
 - cmp_xchg
 - contains_all
 - contains_any
-- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [count_lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- [count](../../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [count_lazily](../../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
 - distinct
 - explain_scores
 - first
@@ -148,62 +148,62 @@ query_results = list(doc_query.where_greater_than("freight", 25))
 - fuzzy
 - get_index_query
 - get_query_result
-- [group_by](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
-- [group_by_array_values](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
-- [group_by_array_content](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [query] [highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- [group_by](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
+- [group_by_array_values](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
+- [group_by_array_content](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [query] [highlight](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
 - include
 - include_explanations
 - intersect
 - invoke_after_query_executed
 - invoke_after_stream_eExecuted
-- [query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [long_count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [query] [lazily](../../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [long_count](../../../../../client-api/session/querying/how-to-count-query-results.mdx)
 - more_like_this
 - negate_next
-- [not](../../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
-- [query] [no_caching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [query] [no_tracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [not](../../../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
+- [query] [no_caching](../../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [query] [no_tracking](../../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
 - of_type
 - open_subclause
-- [order_by](../../../../client-api/session/querying/sort-query-results.mdx)
-- [order_by_descending](../../../../client-api/session/querying/sort-query-results.mdx)
-- [query] [order_by_distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [query] [order_by_distance_descending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [order_by_score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [order_by_score_descending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [order_by](../../../../../client-api/session/querying/sort-query-results.mdx)
+- [order_by_descending](../../../../../client-api/session/querying/sort-query-results.mdx)
+- [query] [order_by_distance](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
+- [query] [order_by_distance_descending](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [order_by_score](../../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [order_by_score_descending](../../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 - or_else
-- [query] [projection](../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- [query] [projection](../../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
 - proximity
-- [query] [random_ordering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [query] [relates_to_shape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
-- [search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- [query] [random_ordering](../../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [query] [relates_to_shape](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
+- [search](../../../../../client-api/session/querying/text-search/full-text-search.mdx)
 - select_fields
 - select_time_series
 - single
 - single_or_default
 - skip
-- [query] [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- [query] [spatial](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
 - statistics
-- [suggest_using](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- [suggest_using](../../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 - take
-- [query] [timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- [query] [timings](../../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
 - using_default_operator
-- [query] [wait_for_non_stale_results](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [query] [wait_for_non_stale_results](../../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 - where
 - WhereBetween
-- [where_ends_with](../../../../client-api/session/querying/text-search/ends-with-query.mdx)
+- [where_ends_with](../../../../../client-api/session/querying/text-search/ends-with-query.mdx)
 - where_equals
-- [where_exists](../../../../client-api/session/querying/how-to-filter-by-field.mdx)
+- [where_exists](../../../../../client-api/session/querying/how-to-filter-by-field.mdx)
 - where_greater_than
 - where_greater_than_or_equal
 - where_in
 - where_less_than
 - where_less_than_or_equal
-- [where_lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- [where_lucene](../../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
 - where_not_equals
-- [where_regex](../../../../client-api/session/querying/text-search/using-regex.mdx)
-- [where_starts_with](../../../../client-api/session/querying/text-search/starts-with-query.mdx)
+- [where_regex](../../../../../client-api/session/querying/text-search/using-regex.mdx)
+- [where_starts_with](../../../../../client-api/session/querying/text-search/starts-with-query.mdx)
 - within_radius_of
 
 

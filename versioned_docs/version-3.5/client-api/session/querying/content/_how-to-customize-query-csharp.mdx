@@ -5,25 +5,25 @@ import CodeBlock from '@theme/CodeBlock';
 
 Following query customization options are available in `IDocumentQueryCustomization` interface:
 
-- [BeforeQueryExecution](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecution)
-- [CustomSortUsing](../../../client-api/session/querying/how-to-customize-query.mdx#customsortusing)
-- [Highlight](../../../client-api/session/querying/how-to-customize-query.mdx#highlight)
-- [Include](../../../client-api/session/querying/how-to-customize-query.mdx#include)
-- [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [RelatesToShape](../../../client-api/session/querying/how-to-customize-query.mdx#relatestoshape)
-- [SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../client-api/session/querying/how-to-customize-query.mdx#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
-- [SetHighlighterTags](../../../client-api/session/querying/how-to-customize-query.mdx#sethighlightertags)
-- [ShowTimings](../../../client-api/session/querying/how-to-customize-query.mdx#showtimings)
-- [SortByDistance](../../../client-api/session/querying/how-to-customize-query.mdx#sortbydistance)
-- [Spatial](../../../client-api/session/querying/how-to-customize-query.mdx#spatial)
-- [TransformResults](../../../client-api/session/querying/how-to-customize-query.mdx#transformresults)
-- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
-- [WaitForNonStaleResultsAsOf](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasof)
-- [WaitForNonStaleResultsAsOfLastWrite](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite)
-- [WaitForNonStaleResultsAsOfNow](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasofnow)
-- [WithinRadiusOf](../../../client-api/session/querying/how-to-customize-query.mdx#withinradiusof)
+- [BeforeQueryExecution](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecution)
+- [CustomSortUsing](../../../../client-api/session/querying/how-to-customize-query.mdx#customsortusing)
+- [Highlight](../../../../client-api/session/querying/how-to-customize-query.mdx#highlight)
+- [Include](../../../../client-api/session/querying/how-to-customize-query.mdx#include)
+- [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [NoTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [RelatesToShape](../../../../client-api/session/querying/how-to-customize-query.mdx#relatestoshape)
+- [SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../../client-api/session/querying/how-to-customize-query.mdx#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
+- [SetHighlighterTags](../../../../client-api/session/querying/how-to-customize-query.mdx#sethighlightertags)
+- [ShowTimings](../../../../client-api/session/querying/how-to-customize-query.mdx#showtimings)
+- [SortByDistance](../../../../client-api/session/querying/how-to-customize-query.mdx#sortbydistance)
+- [Spatial](../../../../client-api/session/querying/how-to-customize-query.mdx#spatial)
+- [TransformResults](../../../../client-api/session/querying/how-to-customize-query.mdx#transformresults)
+- [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [WaitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasof)
+- [WaitForNonStaleResultsAsOfLastWrite](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite)
+- [WaitForNonStaleResultsAsOfNow](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasofnow)
+- [WithinRadiusOf](../../../../client-api/session/querying/how-to-customize-query.mdx#withinradiusof)
 
 ## BeforeQueryExecution
 
@@ -38,7 +38,7 @@ Allows you to modify the index query just before it is executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action&lt;[IndexQuery](../../../glossary/index-query.mdx)&gt; | Action that will modify IndexQuery. |
+| **action** | Action&lt;[IndexQuery](../../../../glossary/index-query.mdx)&gt; | Action that will modify IndexQuery. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -68,7 +68,7 @@ Allows you to modify the index query just before it is executed.
 
 ## CustomSortUsing
 
-Allows you to use custom sorter on the server. Dedicated article can be found [here](../../../indexes/querying/sorting.mdx#custom-sorting).
+Allows you to use custom sorter on the server. Dedicated article can be found [here](../../../../indexes/querying/sorting.mdx#custom-sorting).
 
 <TabItem value="customize_12_0" label="customize_12_0">
 <CodeBlock language="csharp">
@@ -92,13 +92,13 @@ IDocumentQueryCustomization CustomSortUsing(string typeName, bool descending);
 
 ## Highlight
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-use-highlighting.mdx).
 
 
 
 ## Include
 
-Please check our dedicated [article](../../../indexes/querying/handling-document-relationships.mdx).
+Please check our dedicated [article](../../../../indexes/querying/handling-document-relationships.mdx).
 
 
 
@@ -214,7 +214,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 ## RelatesToShape
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
 
 
 
@@ -256,7 +256,7 @@ If set to true, multiple index entries will be send from the same document (assu
 
 ## SetHighlighterTags
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-use-highlighting.mdx).
 
 
 
@@ -302,11 +302,11 @@ Returned timings:
 
 ## SortByDistance
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
 
 ## Spatial
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
 
 
 
@@ -491,7 +491,7 @@ IDocumentQueryCustomization WaitForNonStaleResultsAsOfNow(TimeSpan waitTimeout);
 
 ## WithinRadiusOf
 
-Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
+Please check our dedicated [article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx).
 
 
 

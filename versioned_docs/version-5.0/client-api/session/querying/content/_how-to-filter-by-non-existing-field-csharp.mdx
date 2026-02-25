@@ -8,13 +8,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * There are situations where over time new fields are added to documents.  
   You may need to create a list of all of the documents that don't have these fields.  
-   * You can then write a [patch](../../../client-api/operations/patching/set-based.mdx#update-by-static-index-query-result) 
+   * You can then write a [patch](../../../../client-api/operations/patching/set-based.mdx#update-by-static-index-query-result) 
      to add the missing fields.
 
 * To find documents with a missing field you can either:
-   * [Query a Static Index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
-   * [Query the collection to create an Auto Index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-to-create-an-auto-index) 
-   * [Use Studio to filter by non-existing field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-filter-by-non-existing-field)  
+   * [Query a Static Index](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+   * [Query the collection to create an Auto Index](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-to-create-an-auto-index) 
+   * [Use Studio to filter by non-existing field](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-filter-by-non-existing-field)  
 
 
 </Admonition>
@@ -29,7 +29,7 @@ The index definition must also index a field that exists in every document (such
   query an index that indexes the fields `Freight` and `Id`. 
 * If your static index does not contain the desired field, either
    * Modify your index definition to index the specific field.  (This will trigger re-indexing.)
-   * [Create an auto-index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-to-create-an-auto-index). 
+   * [Create an auto-index](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-to-create-an-auto-index). 
      
 ### Example: Query a Static Index
 
@@ -187,8 +187,8 @@ from "Orders"
 where exists("Company") and not exists("Freight")
 ```
 
-In Studio we always use [RQL](../../../indexes/querying/what-is-rql.mdx) syntax.  
-Like the [LINQ syntax examples above](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index), 
+In Studio we always use [RQL](../../../../indexes/querying/what-is-rql.mdx) syntax.  
+Like the [LINQ syntax examples above](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index), 
 we must first call a field that exists in every document in the collection 
 and then the field that does not exist in some of them.
 
@@ -199,7 +199,7 @@ and then the field that does not exist in some of them.
 2. **Query**  
    Select to open the Query view.
 3. **Query editor**  
-   Write the query according to the [RQL example](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#example-a-query-that-creates-an-auto-index) described above.  
+   Write the query according to the [RQL example](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#example-a-query-that-creates-an-auto-index) described above.  
 4. **Run Query**  
    Click or press ctrl+enter to run the query.
 5. **Index used**  

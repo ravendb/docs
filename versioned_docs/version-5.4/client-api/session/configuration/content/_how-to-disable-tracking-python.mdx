@@ -9,10 +9,10 @@ import CodeBlock from '@theme/CodeBlock';
   All changes are then persisted when `save_changes` is called.  
 
 * **Tracking can be disabled** by any of the following:  
-    * [Disable tracking for a specific entity in a session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-a-specific-entity-in-a-session)
-    * [Disable tracking for all entities in a session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-all-entities-in-a-session)
-    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+    * [Disable tracking for a specific entity in a session](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-a-specific-entity-in-a-session)
+    * [Disable tracking for all entities in a session](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-all-entities-in-a-session)
+    * [Disable tracking for query results](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-for-query-results)
+    * [Customize tracking in conventions](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 </Admonition>
 ## Disable tracking for a specific entity in a session
 
@@ -119,7 +119,7 @@ session.save_changes()
 * You can further customize and fine-tune which entities will not be tracked  
   by configuring the `should_ignore_entity_changes` convention method on the document store.
 * This customization rule will apply to all sessions opened for this document store.
-* Implement rules under your [ShouldIgnoreEntityChanges](../../../client-api/session/configuration/how-to-disable-tracking.mdx#syntax) subclass.  
+* Implement rules under your [ShouldIgnoreEntityChanges](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#syntax) subclass.  
   Apply the class's `check` method to control the ignore flow.
 
 #### Example:

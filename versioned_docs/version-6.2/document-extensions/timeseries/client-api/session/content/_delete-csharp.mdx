@@ -12,11 +12,11 @@ import CodeBlock from '@theme/CodeBlock';
       To remove the whole time series simply delete all its entries.
 
 * In this page:  
-    * [`Delete` usage](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/delete.mdx#examples)
-      * [Delete single entry](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-single-entry)
-      * [Delete range of entries](../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-range-of-entries)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
+    * [`Delete` usage](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-usage)
+    * [Examples](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#examples)
+      * [Delete single entry](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-single-entry)
+      * [Delete range of entries](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#delete-range-of-entries)
+    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
   
 </Admonition>
 ## `Delete` usage
@@ -26,8 +26,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.  
 * Create an instance of `TimeSeriesFor` and pass it the following:
     * Provide an explicit document ID, or -   
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
-      e.g. a document object returned from [session.Query](../../../../querying/overview.mdx) or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../../querying/overview.mdx) or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `TimeSeriesFor.Delete`:
     * Provide a single timestamp to delete a specific entry, or -  
@@ -47,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
 ## Examples
 
 In the following examples we delete time series entries appended by sample code in the 
-[Append](../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
+[Append](../../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
 #### Delete single entry:
 
 <TabItem value="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point" label="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point">

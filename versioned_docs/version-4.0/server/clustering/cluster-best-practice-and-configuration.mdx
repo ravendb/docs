@@ -36,7 +36,7 @@ and thus no [Raft](../../glossary/raft-algorithm.mdx)
 command will be created, although any database on the surviving node will still be responsive to the user.  
 
 **Odd number of 3 or more nodes:**  
-For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions.mdx), 
+For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../../server/clustering/cluster-transactions.mdx), 
 so having an odd number of nodes makes achieving the majority easier.
 
 

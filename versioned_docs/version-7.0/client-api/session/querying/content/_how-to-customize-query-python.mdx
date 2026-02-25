@@ -5,26 +5,26 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use the below customization methods over a specific [query](../../../querying/overview.mdx).  
+* Use the below customization methods over a specific [query](../../../../querying/overview.mdx).  
 
 * The customization methods can be set for both **dynamic** and **index** queries.  
 
 * A query can be customized on the Store or Session level by calling various methods from the rich API.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
+  Learn more in [Subscribing to Events](../../../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Customization methods available:
 
-  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#before_query_executed)
-  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_query_executed)
-  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_stream_executed)
-  - [no_caching](../../../client-api/session/querying/how-to-customize-query.mdx#no_caching)
-  - [no_tracking](../../../client-api/session/querying/how-to-customize-query.mdx#no_tracking)
-  - [projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
-  - [random_ordering](../../../client-api/session/querying/how-to-customize-query.mdx#random_ordering)
-  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
-  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query.mdx#wait_for_non_stale_results)
+  - [before_query_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#before_query_executed)
+  - [after_query_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#after_query_executed)
+  - [after_stream_executed](../../../../client-api/session/querying/how-to-customize-query.mdx#after_stream_executed)
+  - [no_caching](../../../../client-api/session/querying/how-to-customize-query.mdx#no_caching)
+  - [no_tracking](../../../../client-api/session/querying/how-to-customize-query.mdx#no_tracking)
+  - [projection](../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [random_ordering](../../../../client-api/session/querying/how-to-customize-query.mdx#random_ordering)
+  - [timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [wait_for_non_stale_results](../../../../client-api/session/querying/how-to-customize-query.mdx#wait_for_non_stale_results)
 
-* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
+* [Methods return value](../../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
 
 </Admonition>
@@ -88,7 +88,7 @@ results = list(
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
+| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../../glossary/index-query.mdx) param. |
 
 </Admonition>
 
@@ -152,7 +152,7 @@ result = list(
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
+| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../../glossary/query-result.mdx) param. |
 
 </Admonition>
 
@@ -162,7 +162,7 @@ result = list(
 
 * Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
 
-* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
+* Learn more in [how to stream query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
 <Admonition type="note" title="">
 
@@ -189,7 +189,7 @@ result = list(
 
 * You can use the `no_caching` customization method to disable query caching.
 
-* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+* Learn more in [disable caching per session](../../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 <Admonition type="note" title="">
 
@@ -237,11 +237,11 @@ result = list(
 
 ## `no_tracking`
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `no_tracking` customization to disable entity tracking.  
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+* See [disable entity tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="">
 
@@ -289,8 +289,8 @@ result = list(
 
 ## `projection`
 
-* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
+* By default, when [querying an index](../../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../../indexes/storing-data-in-index.mdx).  
   <Admonition type="note" title="">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
@@ -302,8 +302,8 @@ result = list(
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
-    * [Project index query results](../../../indexes/querying/projections.mdx)
-    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+    * [Project index query results](../../../../indexes/querying/projections.mdx)
+    * [Project dynamic query results](../../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="">
 
@@ -410,7 +410,7 @@ class ProjectionBehavior(Enum):
 
 * Use `random_ordering` to order the query results randomly.  
 
-* Learn [here](../../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
+* Learn [here](../../../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
 
 <Admonition type="note" title="">
 
@@ -469,7 +469,7 @@ class ProjectionBehavior(Enum):
 
 * Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+* Learn more in [how to include query timings](../../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="">
 
@@ -530,17 +530,17 @@ results = list(
 ## `wait_for_non_stale_results`
 
 * All RavenDB queries provide results using an index, even when an index is not specified.  
-  See detailed explanation in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * If `wait_for_non_stale_results` is used, the query will wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is unable to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+* Note: This feature is Not available when [streaming the query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+* Learn more about stale results in [stale indexes](../../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="">
 

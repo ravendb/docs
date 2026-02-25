@@ -10,15 +10,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `PutSortersOperation` to deploy a custom sorter to the RavenDB server.  
   Once deployed, you can use it to sort query results for all queries made on the __database__  
-  that is scoped to your [Document Store](../../../../client-api/setting-up-default-database.mdx).  
+  that is scoped to your [Document Store](../../../../../client-api/setting-up-default-database.mdx).  
 
-* To deploy a custom sorter that will apply cluster-wide, to all databases, see [put server-wide sorter](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx).
+* To deploy a custom sorter that will apply cluster-wide, to all databases, see [put server-wide sorter](../../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx).
 
-* A custom sorter can also be uploaded to the server from the [Studio](../../../../studio/database/settings/custom-sorters.mdx).
+* A custom sorter can also be uploaded to the server from the [Studio](../../../../../studio/database/settings/custom-sorters.mdx).
 
 * In this page:
-    * [Put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#put-custom-sorter)
-    * [Syntax](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#syntax)
+    * [Put custom sorter](../../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#put-custom-sorter)
+    * [Syntax](../../../../../client-api/operations/maintenance/sorters/put-sorter.mdx#syntax)
 
 </Admonition>
 ## Put custom sorter
@@ -79,7 +79,7 @@ await store.Maintenance.SendAsync(putSortersOp);
 <Admonition type="note" title="">
 
 You can now order your query results using the custom sorter.  
-A query example is available [here](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
+A query example is available [here](../../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
 
 </Admonition>
 

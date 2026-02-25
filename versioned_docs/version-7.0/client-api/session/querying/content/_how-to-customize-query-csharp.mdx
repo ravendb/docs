@@ -5,27 +5,27 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use `Customize()` to set the following customization options on a specific [Query](../../../querying/overview.mdx).   
+* Use `Customize()` to set the following customization options on a specific [Query](../../../../querying/overview.mdx).   
   Can be set for both **dynamic** and **index** queries.
 
-* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API.
+* Each such customization can also be implemented via the [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) API.
 
 * A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
+  Learn more in [Subscribing to Events](../../../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Customization methods available:
 
-  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-  - [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-  - [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-  - [Projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
-  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-  - [Timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
-  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+  - [BeforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+  - [AfterQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+  - [AfterStreamExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+  - [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [NoTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [Projection](../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [Timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
-* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
+* [Methods return value](../../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
 
 </Admonition>
@@ -122,7 +122,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
+| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../../glossary/index-query.mdx) param. |
 
 </Admonition>
 
@@ -218,7 +218,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
+| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../../glossary/query-result.mdx) param. |
 
 </Admonition>
 
@@ -228,7 +228,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
 
-* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
+* Learn more in [how to stream query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
 <Admonition type="note" title="">
 
@@ -320,7 +320,7 @@ var streamResults = session.Advanced.Stream(query);
 
 | Parameters | Type | Description                                                                                                                                                                                  |
 |------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object.mdx) param. |
+| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../../glossary/blittable-json-reader-object.mdx) param. |
 
 </Admonition>
 
@@ -332,7 +332,7 @@ var streamResults = session.Advanced.Stream(query);
 
 * You can use the `NoCaching` customization to disable query caching.
 
-* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+* Learn more in [disable caching per session](../../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 <Admonition type="note" title="">
 
@@ -403,11 +403,11 @@ var streamResults = session.Advanced.Stream(query);
 
 ## NoTracking
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `NoTracking` customization to disable entity tracking.  
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+* See [disable entity tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="">
 
@@ -478,8 +478,8 @@ var streamResults = session.Advanced.Stream(query);
 
 ## Projection
 
-* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
+* By default, when [querying an index](../../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../../indexes/storing-data-in-index.mdx).  
   <Admonition type="note" title="">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
@@ -492,8 +492,8 @@ var streamResults = session.Advanced.Stream(query);
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
   
-  * [Project index query results](../../../indexes/querying/projections.mdx)
-  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+  * [Project index query results](../../../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="">
 
@@ -629,7 +629,7 @@ public enum ProjectionBehavior \{
 
 * Use `RandomOrdering` to order the query results randomly.  
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
+* More ordering options are available in this [Sorting](../../../../client-api/session/querying/sort-query-results.mdx) article.  
 
 <Admonition type="note" title="">
 
@@ -705,7 +705,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 * The timing statistics will be included in the query results.
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+* Learn more in [how to include query timings](../../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="">
 
@@ -785,17 +785,17 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 ## WaitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+* Note: This feature is Not available when [streaming the query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+* Learn more about stale results in [stale indexes](../../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="">
 

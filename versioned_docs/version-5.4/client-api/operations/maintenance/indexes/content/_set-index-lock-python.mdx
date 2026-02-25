@@ -14,15 +14,15 @@ import CodeBlock from '@theme/CodeBlock';
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 * In this page:
-    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
-    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
-    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
-    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
+    * [Lock modes](../../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
+    * [Sample usage flow](../../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
+    * [Set lock mode - single index](../../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
 
 </Admonition>
 ## Lock modes
@@ -47,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Consider the following scenario:
 
-* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
+* Your client application defines and [deploys a static-index](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
   However, if the index lock mode is `UNLOCK`, the next time your application will start,  

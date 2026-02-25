@@ -5,18 +5,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Compare-Exchange items can be included when [loading entities](../../../client-api/session/loading-entities.mdx) 
-  and when making [queries](../../../client-api/session/querying/how-to-query.mdx).
+* Compare-Exchange items can be included when [loading entities](../../../../client-api/session/loading-entities.mdx) 
+  and when making [queries](../../../../client-api/session/querying/how-to-query.mdx).
 
-* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+* The Session [tracks](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   the included Compare Exchange items which means their value can be accessed  
   in that Session without making an additional call to the server.
 
 * In this page:
-    * [Sample data](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#sample-data)
-    * [Include CmpXchg items when loading](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-loading)
-    * [Include CmpXchg items when querying](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying)
-    * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)
+    * [Sample data](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#sample-data)
+    * [Include CmpXchg items when loading](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-loading)
+    * [Include CmpXchg items when querying](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying)
+    * [Syntax](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)
 
 </Admonition>
 ## Sample data
@@ -397,7 +397,7 @@ select includeCmpXchg(c)
 </Tabs>
 
 * Note:  
-  Similar to the above dynamic query example, you can query the index with a [raw query](../../../indexes/querying/query-index.mdx#sessionadvancedrawquery) using the provided RQL.
+  Similar to the above dynamic query example, you can query the index with a [raw query](../../../../indexes/querying/query-index.mdx#sessionadvancedrawquery) using the provided RQL.
 
 </Admonition>
 
@@ -427,7 +427,7 @@ __When loading entities or making queries__:
 
 __When querying with RQL__:  
 
-* Use the [include](../../../client-api/session/querying/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
+* Use the [include](../../../../client-api/session/querying/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
 
 <TabItem value="sql" label="sql">
 <CodeBlock language="sql">
@@ -441,7 +441,7 @@ __When querying with RQL__:
 
 __When using javascript functions within RQL__:
 
-* Use `includes.cmpxchg()` In [javascript functions](../../../client-api/session/querying/what-is-rql.mdx#declare) within RQL queries. 
+* Use `includes.cmpxchg()` In [javascript functions](../../../../client-api/session/querying/what-is-rql.mdx#declare) within RQL queries. 
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

@@ -7,16 +7,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Compare Exchange Values can be included in `Session.Load` calls and in queries.  
 
-* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
+* The Session [tracks](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
 Compare Exchange Values, which means that after it has been included, the value can 
 be accessed and modified in that Session without requiring an additional call to 
 the server.  
 
-* The Compare Exchange include syntax is based on the [include builder](../../../client-api/how-to/handle-document-relationships.mdx#includes).  
+* The Compare Exchange include syntax is based on the [include builder](../../../../client-api/how-to/handle-document-relationships.mdx#includes).  
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)  
-  * [Examples](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)  
+  * [Syntax](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)  
+  * [Examples](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -48,7 +48,7 @@ along with `Session.Load()` or LINQ queries.
 
 #### RQL
 
-In an RQL query, you can use the [`include` keyword](../../../indexes/querying/what-is-rql.mdx#include) 
+In an RQL query, you can use the [`include` keyword](../../../../indexes/querying/what-is-rql.mdx#include) 
 followed by `cmpxchg()` to include a compare exchange value:  
 
 <TabItem value="sql" label="sql">
@@ -58,9 +58,9 @@ followed by `cmpxchg()` to include a compare exchange value:
 </CodeBlock>
 </TabItem>
 
-In [javascript functions](../../../indexes/querying/what-is-rql.mdx#declare) within queries, 
+In [javascript functions](../../../../indexes/querying/what-is-rql.mdx#declare) within queries, 
 use `includes.cmpxchg()` (see the RawQuery example 
-[below](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)):  
+[below](../../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)):  
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

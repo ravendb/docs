@@ -15,9 +15,9 @@ import CodeBlock from '@theme/CodeBlock';
   To properly unarchive a document, use the `archived.unarchive()` method as described below.
 
 * In this article:
-  * [Unarchive documents - from the Client API](../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-client-api)
-  * [Unarchive documents - from the Studio](../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-studio)
-  * [Unarchiving documents with index-based patch queries](../data-archival/unarchiving-documents.mdx#unarchiving-documents-with-index-based-patch-queries)
+  * [Unarchive documents - from the Client API](../../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-client-api)
+  * [Unarchive documents - from the Studio](../../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-studio)
+  * [Unarchiving documents with index-based patch queries](../../data-archival/unarchiving-documents.mdx#unarchiving-documents-with-index-based-patch-queries)
 
 </Admonition>
 ## Unarchive documents - from the Client API
@@ -141,7 +141,7 @@ await store.Operations.SendAsync(patchByQueryOp);
 **Example**:
 
 The following patch script, used directly in the Studio,
-performs the same operation as the [Client API example](../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-client-api) shown above.
+performs the same operation as the [Client API example](../../data-archival/unarchiving-documents.mdx#unarchive-documents---from-the-client-api) shown above.
 It will unarchive all archived documents in the _Orders_ collection.
 
 ![Unarchive documents](../assets/unarchive-documents.png)
@@ -150,7 +150,7 @@ It will unarchive all archived documents in the _Orders_ collection.
 2. Enter the patch script.
 3. Click to execute the patch.
 4. You can test the patch on a sample document before executing the whole operation.  
-   Learn more in [Test patch](../studio/database/documents/patch-view.mdx#test-patch).
+   Learn more in [Test patch](../../studio/database/documents/patch-view.mdx#test-patch).
 
 
 
@@ -164,7 +164,7 @@ It will unarchive all archived documents in the _Orders_ collection.
   As a result, no documents will be unarchived by the patch operation.
 
 * For example, the following patch query uses a dynamic query that creates an auto-index.  
-  If the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key is set to its default `ExcludeArchived` value,
+  If the [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key is set to its default `ExcludeArchived` value,
   then even if archived documents exist in the _Orders_ collection with `ShipTo.Country == 'USA'`, they will not be matched -  because the auto-index does not include them -  
   and the patch operation will not unarchive any documents.
 
@@ -192,11 +192,11 @@ Two possible workarounds are:
    Use this option only if including archived documents in the index aligns with your indexing strategy.
    
       **For auto-indexes**:  
-      Set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key to `IncludeArchived`.  
+      Set the [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key to `IncludeArchived`.  
       **For static-indexes**:  
-      Set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key to `IncludeArchived`,  
+      Set the [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key to `IncludeArchived`,  
       or - configure the definition of the specific static-index to include archived documents.  
-      See [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing).
+      See [Archived documents and indexing](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing).
 
 2. **Use a collection query instead of an index query**:  
    Run a simple collection-based query that does not rely on an index.  

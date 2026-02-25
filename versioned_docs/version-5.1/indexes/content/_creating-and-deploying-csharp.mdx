@@ -26,38 +26,38 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Indexes created by issuing a query are called `dynamic` or `Auto` indexes. 
    * They can be easily identified. Their name starts with the `Auto/` prefix.
-   * If no [Auto-Index](../indexes/creating-and-deploying.mdx#auto-indexes) exists to satisfy a query, 
+   * If no [Auto-Index](../../indexes/creating-and-deploying.mdx#auto-indexes) exists to satisfy a query, 
      a new Auto-Index will be created and maintained automatically.
 * Indexes created explicitly by the user are called `static`.
-   * [To use a Static Index in a query](../indexes/querying/basics.mdx#example-iv---querying-a-specified-index), 
+   * [To use a Static Index in a query](../../indexes/querying/basics.mdx#example-iv---querying-a-specified-index), 
      **you must specify the index in the query definition**. If you don't specify the index, 
      RavenDB will look for an auto-index and potentially create a new one.  
    * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
-     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask), 
-     our [map-indexes](../indexes/map-indexes.mdx) article, [indexing multiple collections](../indexes/multi-map-indexes.mdx), 
-     and [map-reduce indexing](../indexes/map-reduce-indexes.mdx)).  
+     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask), 
+     our [map-indexes](../../indexes/map-indexes.mdx) article, [indexing multiple collections](../../indexes/multi-map-indexes.mdx), 
+     and [map-reduce indexing](../../indexes/map-reduce-indexes.mdx)).  
 
 </Admonition>
 
 * In this page:
-   * [Static indexes](../indexes/creating-and-deploying.mdx#static-indexes)
-      * [Using AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask)
-         * [Naming Convention](../indexes/creating-and-deploying.mdx#naming-convention)
-         * [Sending to Server](../indexes/creating-and-deploying.mdx#sending-to-server)
-         * [Creating an Index with Custom Configuration](../indexes/creating-and-deploying.mdx#creating-an-index-with-custom-configuration)
-         * [Using Assembly Scanner](../indexes/creating-and-deploying.mdx#using-assembly-scanner)
-         * [Example](../indexes/creating-and-deploying.mdx#example)
-      * [Using Maintenance Operations](../indexes/creating-and-deploying.mdx#using-maintenance-operations)
-         * [IndexDefinitionBuilder](../indexes/creating-and-deploying.mdx#indexdefinitionbuilder)
-   * [Auto-indexes](../indexes/creating-and-deploying.mdx#auto-indexes)
-      * [Naming Convention](../indexes/creating-and-deploying.mdx#naming-convention-1)
-      * [Auto Indexes and Indexing State](../indexes/creating-and-deploying.mdx#auto-indexes-and-indexing-state)
+   * [Static indexes](../../indexes/creating-and-deploying.mdx#static-indexes)
+      * [Using AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask)
+         * [Naming Convention](../../indexes/creating-and-deploying.mdx#naming-convention)
+         * [Sending to Server](../../indexes/creating-and-deploying.mdx#sending-to-server)
+         * [Creating an Index with Custom Configuration](../../indexes/creating-and-deploying.mdx#creating-an-index-with-custom-configuration)
+         * [Using Assembly Scanner](../../indexes/creating-and-deploying.mdx#using-assembly-scanner)
+         * [Example](../../indexes/creating-and-deploying.mdx#example)
+      * [Using Maintenance Operations](../../indexes/creating-and-deploying.mdx#using-maintenance-operations)
+         * [IndexDefinitionBuilder](../../indexes/creating-and-deploying.mdx#indexdefinitionbuilder)
+   * [Auto-indexes](../../indexes/creating-and-deploying.mdx#auto-indexes)
+      * [Naming Convention](../../indexes/creating-and-deploying.mdx#naming-convention-1)
+      * [Auto Indexes and Indexing State](../../indexes/creating-and-deploying.mdx#auto-indexes-and-indexing-state)
 
 </Admonition>
 
 ## Static indexes
 
-There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). You can also [scan an assembly](../indexes/creating-and-deploying.mdx#using-assembly-scanner) and deploy all found indexes.
+There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) or create a [custom class](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). You can also [scan an assembly](../../indexes/creating-and-deploying.mdx#using-assembly-scanner) and deploy all found indexes.
 
 ---
 
@@ -122,7 +122,7 @@ If an index exists on the server and the stored definition is the same as the on
 
 #### Creating an Index with Custom Configuration
 
-If you need to create an index with a custom [`index configuration`](../server/configuration/indexing-configuration.mdx) you can set them in the index class constructor like so: 
+If you need to create an index with a custom [`index configuration`](../../server/configuration/indexing-configuration.mdx) you can set them in the index class constructor like so: 
 <TabItem value="indexes_9" label="indexes_9">
 <CodeBlock language="csharp">
 {`var indexesToDeploy = new List<AbstractIndexCreationTask>
@@ -171,7 +171,7 @@ await store.ExecuteIndexesAsync(indexesToDeploy);
 
 ### Using Maintenance Operations
 
-The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/operations/maintenance/indexes/put-indexes.mdx)) can be used also to send index(es) to the server.
+The `PutIndexesOperation` maintenance operation (which API references can be found [here](../../client-api/operations/maintenance/indexes/put-indexes.mdx)) can be used also to send index(es) to the server.
 
 The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. But you lose the ability to deploy using the assembly scanner. You will also have to use string-based names of indexes when querying.
 
@@ -246,7 +246,7 @@ will result in a creation of a index named `Auto/Employees/ByFirstNameAndLastNam
 
 ### Auto Indexes and Indexing State
 
-To reduce the server load, if auto-indexes are not queried for a certain amount of time defined in `Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin` setting (30 minutes by default), then they will be marked as `Idle`. You can read more about the implications of marking index as `Idle` [here](../studio/database/indexes/indexes-list-view.mdx#index-list-view).
+To reduce the server load, if auto-indexes are not queried for a certain amount of time defined in `Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin` setting (30 minutes by default), then they will be marked as `Idle`. You can read more about the implications of marking index as `Idle` [here](../../studio/database/indexes/indexes-list-view.mdx#index-list-view).
 
 Setting this configuration option to a high value may result in performance degradation due to the possibility of having a high amount of unnecessary work that is all redundant and not needed by indexes to perform. This is _not_ a recommended configuration.
 

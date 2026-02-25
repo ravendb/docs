@@ -5,26 +5,26 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Prior to this article, it is recommended that you first read the [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
-  For a basic indexes overview see [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* Prior to this article, it is recommended that you first read the [Query Overview](../../../client-api/session/querying/how-to-query.mdx).  
+  For a basic indexes overview see [Indexes Overview](../../../studio/database/indexes/indexes-overview.mdx).
 * This article is a basic overview of how to __query a static index__.  
   Indexing the content of your documents allows for __fast document retrieval__ when querying the index.
 
 * Examples in this article show querying an index.  
-  For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+  For dynamic query examples see [Query Overview](../../../client-api/session/querying/how-to-query.mdx).
 
 * You can query an index with either of the following:
-      * [Session.Query](../../indexes/querying/query-index.mdx#sessionquery) (using LINQ)
-      * [Session.Advanced.DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) (low-level API)
-      * [Session.Advanced.RawQuery](../../indexes/querying/query-index.mdx#sessionadvancedrawquery) (using RQL)
-      * [Query from Studio](../../studio/database/queries/query-view.mdx) (using [RQL](../../client-api/session/querying/what-is-rql.mdx))
+      * [Session.Query](../../../indexes/querying/query-index.mdx#sessionquery) (using LINQ)
+      * [Session.Advanced.DocumentQuery](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) (low-level API)
+      * [Session.Advanced.RawQuery](../../../indexes/querying/query-index.mdx#sessionadvancedrawquery) (using RQL)
+      * [Query from Studio](../../../studio/database/queries/query-view.mdx) (using [RQL](../../../client-api/session/querying/what-is-rql.mdx))
 
 </Admonition>
 ## Session.Query
 
 * The following examples __query an index__ using the session's `Query` method which supports LINQ.  
 
-* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
+* Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
 
 <Admonition type="note" title="">
 
@@ -233,7 +233,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+* Read more about filtering [here](../../../indexes/querying/filtering.mdx).
 
 </Admonition>
 
@@ -327,7 +327,7 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging.mdx).
+* Read more about paging [here](../../../indexes/querying/paging.mdx).
 
 </Admonition>
 
@@ -339,8 +339,8 @@ limit 5, 10 // skip 5, take 10
   giving you more flexibility and control when making complex queries.
 
 * For more information about _DocumentQuery_ see:
-    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query.mdx)
-    * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
+    * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query.mdx)
+    * [Query -vs- DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query.mdx)
 
 __Example__:
 
@@ -477,7 +477,7 @@ where LastName == "King"
 
 ## Session.Advanced.RawQuery
 
-* Queries defined with [Query](../../indexes/querying/query-index.mdx#sessionquery) or [DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with [Query](../../../indexes/querying/query-index.mdx#sessionquery) or [DocumentQuery](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `RawQuery` method.

@@ -9,13 +9,13 @@ import CodeBlock from '@theme/CodeBlock';
   delivering just the data needed instead of the original full document content.
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
+  For projecting results when querying a **static-index** see [project index query results](../../../../indexes/querying/projections.mdx).
 
 * In this article:
-    * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
-    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
-    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
-    * [Syntax](../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
+    * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+    * [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
+    * [Projecting nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
+    * [Syntax](../../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
 
 </Admonition>
 ## Projections overview
@@ -27,16 +27,16 @@ import CodeBlock from '@theme/CodeBlock';
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
-* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
+* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
 
 * An alias name can be given to the projected fields, and any calculations can be applied within the projection.
 **When to use projections**:
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+  Projection queries are also useful with [subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -66,14 +66,14 @@ import CodeBlock from '@theme/CodeBlock';
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example-v---projection-with-calculations)
+  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example-v---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-  * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
-  * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
+  * [Databases.QueryTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
+  * [Databases.QueryOperationTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
 
 
 
@@ -526,7 +526,7 @@ selectFields(queryData, projectionClass, projectionBehavior);
 | **properties**         | `string[]`  | List of field names to project                                                                                                                          |
 | **queryData**          | `QueryData` | Object with projection query definitions                                                                                                                |
 | **projectionClass**    | `object`    | The class type of the projected fields                                                                                                                  |
-| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../indexes/querying/projections.mdx). |
+| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../../indexes/querying/projections.mdx). |
 
 
 

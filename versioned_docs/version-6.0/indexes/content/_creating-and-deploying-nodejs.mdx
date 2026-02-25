@@ -6,28 +6,28 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This article explains how to create indexes in RavenDB.  
-  For a general overview of indexes, see [What are indexes](../indexes/what-are-indexes.mdx).
+  For a general overview of indexes, see [What are indexes](../../indexes/what-are-indexes.mdx).
 
 * You can either:
-    * [create a Static-index](../indexes/creating-and-deploying.mdx#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
-    * let the RavenDB server [create an Auto-index](../indexes/creating-and-deploying.mdx#creating-auto-indexes) for you based on query patterns.
+    * [create a Static-index](../../indexes/creating-and-deploying.mdx#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
+    * let the RavenDB server [create an Auto-index](../../indexes/creating-and-deploying.mdx#creating-auto-indexes) for you based on query patterns.
 
 * Static-indexes can be created:
     * using the Client API, as outlined in this article, or
-    * from the [Indexes list view](../studio/database/indexes/indexes-list-view.mdx) in the Studio.
+    * from the [Indexes list view](../../studio/database/indexes/indexes-list-view.mdx) in the Studio.
 * In this page:
-    * [Static-indexes](../indexes/creating-and-deploying.mdx#static-indexes)
-        * [Define a static-index](../indexes/creating-and-deploying.mdx#define-a-static-index)
-        * [Deploy a static-index](../indexes/creating-and-deploying.mdx#deploy-a-static-index)
-            * [Deploy single index](../indexes/creating-and-deploying.mdx#deploy-single-index)
-            * [Deploy multiple indexes](../indexes/creating-and-deploying.mdx#deploy-multiple-indexes)
-            * [Deploy syntax](../indexes/creating-and-deploying.mdx#deploy-syntax)
-            * [Deployment behavior](../indexes/creating-and-deploying.mdx#deployment-behavior)
-        * [Creating a static-index - Example](../indexes/creating-and-deploying.mdx#create-a-static-index---example)
-        * [Creating a static-index - using an Operation](../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation)
-    * [Auto-indexes](../indexes/creating-and-deploying.mdx#auto-indexes)
-        * [Creating auto-indexes](../indexes/creating-and-deploying.mdx#creating-auto-indexes)
-        * [Disabling auto-indexes](../indexes/creating-and-deploying.mdx#disabling-auto-indexes)
+    * [Static-indexes](../../indexes/creating-and-deploying.mdx#static-indexes)
+        * [Define a static-index](../../indexes/creating-and-deploying.mdx#define-a-static-index)
+        * [Deploy a static-index](../../indexes/creating-and-deploying.mdx#deploy-a-static-index)
+            * [Deploy single index](../../indexes/creating-and-deploying.mdx#deploy-single-index)
+            * [Deploy multiple indexes](../../indexes/creating-and-deploying.mdx#deploy-multiple-indexes)
+            * [Deploy syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax)
+            * [Deployment behavior](../../indexes/creating-and-deploying.mdx#deployment-behavior)
+        * [Creating a static-index - Example](../../indexes/creating-and-deploying.mdx#create-a-static-index---example)
+        * [Creating a static-index - using an Operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation)
+    * [Auto-indexes](../../indexes/creating-and-deploying.mdx#auto-indexes)
+        * [Creating auto-indexes](../../indexes/creating-and-deploying.mdx#creating-auto-indexes)
+        * [Disabling auto-indexes](../../indexes/creating-and-deploying.mdx#disabling-auto-indexes)
 
 </Admonition>
 
@@ -41,14 +41,14 @@ import CodeBlock from '@theme/CodeBlock';
 * Static-indexes can perform calculations, data conversions, and other processes behind the scenes.  
   This reduces the workload at query time by offloading these costly operations to the indexing phase.
 * To query with a static-index, you must explicitly specify the index in the query definition.  
-  For more details, see [Querying an index](../indexes/querying/query-index.mdx).
+  For more details, see [Querying an index](../../indexes/querying/query-index.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
 
 ##### Define a static-index using a custom class
 * To define a static-index using a custom class, extend the `AbstractJavaScriptIndexCreationTask` class.
-* This method is recommended over the [Creating an index using an operation](../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation) method  
+* This method is recommended over the [Creating an index using an operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation) method  
   for its simplified index definition, offering a straightforward way to define the index.
 <TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="js">
@@ -58,7 +58,7 @@ import CodeBlock from '@theme/CodeBlock';
 `}
 </CodeBlock>
 </TabItem>
-* A complete example of creating a static-index is provided [below](../indexes/creating-and-deploying.mdx#create-a-static-index---example).
+* A complete example of creating a static-index is provided [below](../../indexes/creating-and-deploying.mdx#create-a-static-index---example).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -73,7 +73,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 ##### Customizing configuration
-* You can set various [indexing configuration](../server/configuration/indexing-configuration.mdx) values within the index definition.
+* You can set various [indexing configuration](../../server/configuration/indexing-configuration.mdx) values within the index definition.
 * Setting a configuration value within the index will override the matching indexing configuration values set at the server or database level.
 <TabItem value="indexes_2" label="indexes_2">
 <CodeBlock language="js">
@@ -100,13 +100,13 @@ import CodeBlock from '@theme/CodeBlock';
 * To begin indexing data, the index must be deployed to the server.
 * This section provides options for deploying indexes that inherit from `AbstractJavaScriptIndexCreationTask`.
 * To create and deploy an index using the `IndexDefinition` class via `PutIndexesOperation`,  
-  see [Creating a static-index - using an Operation](../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation).
+  see [Creating a static-index - using an Operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation).
 <Admonition type="note" title="">
 
 ##### Deploy single index
 * Use `execute()` or `executeIndex()` to deploy a single index.
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
-  See the [syntax](../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
+  See the [syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
 
 <TabItem value="indexes_3" label="indexes_3">
 <CodeBlock language="js">
@@ -132,7 +132,7 @@ await documentStore.executeIndex(new Orders_ByTotal());
   If it fails, it will repeat the execution by calling the `execute` method for each index, one by one,  
   in separate requests.
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
-  See the [syntax](../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
+  See the [syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
 
 <TabItem value="indexes_5" label="indexes_5">
 <CodeBlock language="js">
@@ -178,7 +178,7 @@ createIndexes(indexes, store, conventions);
 | Parameter          | Type                  | Description                                                                                                       |
 |--------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------|
 | **store**          | `object`              | Your document store object.                                                                                       |
-| **conventions**    | `DocumentConventions` | The [Conventions](../client-api/configuration/conventions.mdx) used by the document store.                            |
+| **conventions**    | `DocumentConventions` | The [Conventions](../../client-api/configuration/conventions.mdx) used by the document store.                            |
 | **database**       | `string`              | The target database to deploy the index to. If not specified, the default database set on the store will be used. |
 | **index**          | `object`              | The index object to deploy.                                                                                       |
 | **indexes**        | `object[]`            | A list of index objects to deploy.                                                                                |
@@ -194,7 +194,7 @@ createIndexes(indexes, store, conventions);
   you can choose between **Rolling** index deployment or **Parallel** index deployment.
 * Rolling deployment applies the index to one node at a time,  
   while Parallel deployment deploys the index on all nodes simultaneously.
-* Learn more in [Rolling index deployment](../indexes/rolling-index-deployment.mdx).
+* Learn more in [Rolling index deployment](../../indexes/rolling-index-deployment.mdx).
 
 </Admonition>
 
@@ -206,7 +206,7 @@ createIndexes(indexes, store, conventions);
     * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
       The new index will replace the existing index once it becomes non-stale.
     * If you want to swap the indexes immediately, you can do so through the Studio.  
-      For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing).
+      For more details, see [Side by side indexing](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing).
 * **If the index definition is unchanged**:
     * If the definition of the index being deployed is identical to the one on the server,  
       the existing index will not be overwritten.
@@ -271,19 +271,19 @@ async function main() \{
 
 ## Create a static-index - using an Operation
 
-* An index can also be defined and deployed using the [PutIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes.mdx) maintenance operation.
+* An index can also be defined and deployed using the [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx) maintenance operation.
 
 * When using this operation:
 
-    * Unlike the [naming convention](../indexes/creating-and-deploying.mdx#naming-convention) used with indexes inheriting from `AbstractJavaScriptIndexCreationTask`,  
+    * Unlike the [naming convention](../../indexes/creating-and-deploying.mdx#naming-convention) used with indexes inheriting from `AbstractJavaScriptIndexCreationTask`,  
       you can choose any string-based name for the index.   
       However, when querying, you must use that string-based name rather than the index class type.
 
-    * You can also modify various low-level settings available in the [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) class.
+    * You can also modify various low-level settings available in the [IndexDefinition](../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) class.
 
 * Consider using this operation only if inheriting from `AbstractJavaScriptIndexCreationTask` is not an option.
 
-* For a detailed explanation and examples, refer to the dedicated article: [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes.mdx).
+* For a detailed explanation and examples, refer to the dedicated article: [Put Indexes Operation](../../client-api/operations/maintenance/indexes/put-indexes.mdx).
 
 
 
@@ -302,9 +302,9 @@ async function main() \{
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
   If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
   (Static-indexes are not taken into account when determining which auto-index should handle the query).
-* Note: dynamic queries can be issued either when [querying](../studio/database/queries/query-view.mdx#query-view) or when [patching](../studio/database/documents/patch-view.mdx#patch-configuration).
+* Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../studio/database/documents/patch-view.mdx#patch-configuration).
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
-  For more details, see [Query a collection - with filtering (dynamic query)](../client-api/session/querying/how-to-query.mdx#dynamicQuery).
+  For more details, see [Query a collection - with filtering (dynamic query)](../../client-api/session/querying/how-to-query.mdx#dynamicQuery).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -345,12 +345,12 @@ where FirstName = "Robert" and LastName = "King"
 * This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
   as well as for databases that were just restored from a snapshot or a backup.
 * To set the time before marking an index as idle, use the
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
   Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
 * An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
   or when resetting the index.
 * If not resumed, the idle auto-index will be deleted by the server after the time period defined in the
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
   (72 hours by default).
 
 </Admonition>
@@ -365,15 +365,15 @@ where FirstName = "Robert" and LastName = "King"
 
 **How to disable**:
 
-* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes) configuration key.
+* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes) configuration key.
   This will affect all queries made both from the **Client API** and the **Studio**.
 
 * Alternatively, you can disable auto-indexes from the Studio.  
   However, this will affect queries made only from the **Studio**.
 
-    * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../studio/database/queries/query-view.mdx#query-settings).
-    * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../studio/database/documents/patch-view.mdx#patch-settings).
-    * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches).
+    * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../../studio/database/queries/query-view.mdx#query-settings).
+    * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../../studio/database/documents/patch-view.mdx#patch-settings).
+    * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches).
 
 
 

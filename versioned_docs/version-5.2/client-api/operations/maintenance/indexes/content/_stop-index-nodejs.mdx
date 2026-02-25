@@ -7,12 +7,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `StopIndexOperation` to __pause a single index__ in the database.
 
-* To pause indexing for ALL indexes in the database use the [pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
+* To pause indexing for ALL indexes in the database use the [pause indexing operation](../../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
-    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
+    * [Overview](../../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
+    * [Pause index example](../../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
+    * [Syntax](../../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -22,9 +22,9 @@ import CodeBlock from '@theme/CodeBlock';
 __On which node the index is paused__:
 
 * When pausing the index from the __client__:  
-  The index will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
+  The index will be paused on the [preferred node](../../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
 
-* When pausing the index from the __Studio__ (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)):  
+* When pausing the index from the __Studio__ (from the [indexes list view](../../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)):  
   The index will be paused on the local node the browser is opened on, even if it is Not the preferred node.
 
 </Admonition>
@@ -45,18 +45,18 @@ __When index is paused on a node__:
 
 __How to resume the index__:
 
-* To resume the index from the client - see [resume index](../../../../client-api/operations/maintenance/indexes/start-index.mdx).
+* To resume the index from the client - see [resume index](../../../../../client-api/operations/maintenance/indexes/start-index.mdx).
 
-* To resume the index from the Studio - go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
+* To resume the index from the Studio - go to the [indexes list view](../../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * Pausing the index is __Not a persistent operation__.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling the database state).  
-      Toggling the database state can be done from [database list view](../../../../studio/database/databases-list-view.mdx#database-actions) in Studio,  
-      or from the client by sending the [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx).
+      Toggling the database state can be done from [database list view](../../../../../studio/database/databases-list-view.mdx#database-actions) in Studio,  
+      or from the client by sending the [ToggleDatabasesStateOperation](../../../../../client-api/operations/server-wide/toggle-databases-state.mdx).
 
-* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will also resume the normal operation of the index  
+* [Resetting](../../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will also resume the normal operation of the index  
   on the local node where the reset action was performed.  
 
 * Modifying the index definition will resume the normal operation of the index  

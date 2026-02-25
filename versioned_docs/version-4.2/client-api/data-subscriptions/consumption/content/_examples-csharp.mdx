@@ -7,15 +7,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 In this page:  
 
-[Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)  
-[Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)  
-[Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)  
-[Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-left)  
-[Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)  
-[Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-works-with-a-session)  
-[Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)  
-[Subscription that works with lowest level API](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-works-with-lowest-level-api)  
-[Subscription workers with a primary and a secondary node](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-a-primary-and-a-secondary-node)  
+[Subscription workers with failover on other nodes](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)  
+[Worker with a specified batch size](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)  
+[Client with full exception handling and processing retries](../../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)  
+[Subscription that ends when no documents left](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-left)  
+[Worker that processes dynamic objects](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)  
+[Subscription that works with a session](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-works-with-a-session)  
+[Subscription that uses included documents](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)  
+[Subscription that works with lowest level API](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-works-with-lowest-level-api)  
+[Subscription workers with a primary and a secondary node](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-a-primary-and-a-secondary-node)  
 
 </Admonition>
 ## Subscription workers with failover on other nodes
@@ -294,7 +294,7 @@ _ = subscriptionWorker.Run(batch =>
 ## Subscription that uses included documents
 
 Here we create a subscription utilizing the includes feature, by processing `Order` documents and including all `Product`s of each order.  
-When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht) object, 
+When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht) object, 
 and for each order line, we obtain the `Product` document and process it alongside with the `Order`.
 
 <TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">

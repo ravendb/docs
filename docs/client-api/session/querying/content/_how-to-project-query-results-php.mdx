@@ -9,17 +9,17 @@ import CodeBlock from '@theme/CodeBlock';
   delivering just the data needed instead of the original full document content. 
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
+  For projecting results when querying a **static-index** see [project index query results](../../../../indexes/querying/projections.mdx).
 
 * In this page:
 
-  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+  * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
 
-  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
-      * [`select`, `selectFields`](../../../client-api/session/querying/how-to-project-query-results.mdx#select,-selectfields)  
-      * [`ofType`](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)  
+  * [Projection Methods](../../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+      * [`select`, `selectFields`](../../../../client-api/session/querying/how-to-project-query-results.mdx#select,-selectfields)  
+      * [`ofType`](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)  
 
-  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
+  * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -32,7 +32,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
 * Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
 
@@ -43,7 +43,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  Projection queries are also useful with [subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -73,19 +73,19 @@ import CodeBlock from '@theme/CodeBlock';
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a [single projection request](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query) can be made per query.  
+* Only a [single projection request](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query) can be made per query.  
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
+  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
-      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
+      * [Databases.QueryTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
+      * [Databases.QueryOperationTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
 
 
 

@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Once you have archived documents in your database (see how to [enable](../data-archival/enable-data-archiving.mdx) and [schedule](../data-archival/schedule-document-archiving.mdx) document archiving),  
+* Once you have archived documents in your database (see how to [enable](../../data-archival/enable-data-archiving.mdx) and [schedule](../../data-archival/schedule-document-archiving.mdx) document archiving),  
   RavenDB features can detect these documents and handle them in different ways.
 
 * Some features, like indexes and data subscriptions, provide native support for configuring whether to:
@@ -21,16 +21,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Learn more below about how various RavenDB features interact with archived documents.
 * In this article:  
-  * [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing)
-  * [Archived documents and querying](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-querying)
-  * [Archived documents and data subscriptions](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions)
-  * [Archived documents and document extensions](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-document-extensions)
-  * [Archived documents and smuggler (export/import)](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-smuggler-(export/import))
-  * [Archived documents and expiration](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-expiration)
-  * [Archived documents and ETL](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-etl)
-  * [Archived documents and backup](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-backup)
-  * [Archived documents and replication](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-replication)
-  * [Archived documents and patching](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-patching)
+  * [Archived documents and indexing](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing)
+  * [Archived documents and querying](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-querying)
+  * [Archived documents and data subscriptions](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions)
+  * [Archived documents and document extensions](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-document-extensions)
+  * [Archived documents and smuggler (export/import)](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-smuggler-(export/import))
+  * [Archived documents and expiration](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-expiration)
+  * [Archived documents and ETL](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-etl)
+  * [Archived documents and backup](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-backup)
+  * [Archived documents and replication](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-replication)
+  * [Archived documents and patching](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-patching)
 
 </Admonition>
 ## Archived documents and indexing
@@ -42,7 +42,7 @@ import CodeBlock from '@theme/CodeBlock';
 * **Configuring indexing behavior - Static indexes**:
     * **At the database level or server-wide**:  
       To control whether static indexes process archived documents from the source collection,  
-      set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)
+      set the [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)
       configuration key at either the database level or server-wide (default: `ExcludeArchived`).
     * Note that this setting applies only to static-indexes that are using _Documents_ as their data source.
       This global configuration does Not apply to static-indexes based on _Time Series_ or _Counters_, which default to `IncludeArchived`.
@@ -53,7 +53,7 @@ import CodeBlock from '@theme/CodeBlock';
 * **Configuring indexing behavior - Auto indexes:**
     * **At the database level or server-wide**:  
       To control whether auto-indexes process archived documents at the database level or server-wide,  
-      set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key (default `ExcludeArchived`).
+      set the [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key (default `ExcludeArchived`).
     * **Per index**:  
       Unlike static indexes, you cannot configure this behavior per auto-index,  
       because dynamic queries (which trigger auto-index creation) do not provide a way to control this setting.
@@ -64,7 +64,7 @@ import CodeBlock from '@theme/CodeBlock';
 ##### Configuring archived document processing for a static index - from the Client API
 
 You can configure how a static index handles archived documents when creating the index using the Client API.
-This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
 <Admonition type="note" title="">
 
@@ -264,11 +264,11 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 ##### Configuring archived document processing for a static index - from the Studio
 
 You can configure how a static index handles archived documents directly from the Studio.  
-This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
 ![Configure index](../assets/configure-static-index.png)
 
-1. Open the [Indexes list view](../studio/database/indexes/indexes-list-view.mdx) and select the index you want to configure,
+1. Open the [Indexes list view](../../studio/database/indexes/indexes-list-view.mdx) and select the index you want to configure,
    or create a new index.
 2. Scroll down and open the **Archived Data** tab.
 3. Click to select how this index should process archived documents:
@@ -286,19 +286,19 @@ This setting will **override** the global configuration defined by the [Indexing
 * **Full collection queries**:  
   * Queries that scan an entire collection without any filtering condition (e.g. `from Orders`) will include archived documents.  
   * These queries are not influenced by indexing configuration related to archived documents because they do not use indexes.
-  * Learn more about full collection queries in [Full collection query](../client-api/session/querying/how-to-query.mdx#collectionQuery).  
+  * Learn more about full collection queries in [Full collection query](../../client-api/session/querying/how-to-query.mdx#collectionQuery).  
 
 * **Dynamic queries (auto-indexes)**:
   * When making a dynamic query, RavenDB creates an auto-index to serve it.
-    Whether that index processes archived documents depends on the value of the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key at the time the query is made.
+    Whether that index processes archived documents depends on the value of the [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key at the time the query is made.
   * Once created, the auto-index retains that behavior.
     Query results will continue to reflect the configuration that was in effect when the index was first built - even if the setting is changed later.
-  * Learn more about dynamic queries in [Query a collection - with filtering](../client-api/session/querying/how-to-query.mdx#dynamicQuery).
+  * Learn more about dynamic queries in [Query a collection - with filtering](../../client-api/session/querying/how-to-query.mdx#dynamicQuery).
 
 * **Querying static-indexes**:  
   * When querying a static-index, the results will include, exclude, or consist solely of archived documents depending on how the static-index was configured.
     The index behavior is determined by:  
-      * the value of the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)  configuration key at the time the static-index was created, or -
+      * the value of the [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)  configuration key at the time the static-index was created, or -
       * the explicit setting in the index definition, which overrides the global configuration key.
   * The index's archived data processing behavior can be modified after its creation using the Studio or the Client API.
 
@@ -324,7 +324,7 @@ This setting will **override** the global configuration defined by the [Indexing
 ##### Configuring archived document processing for a data subscription task - from the Client API
 
 You can configure how a subscription task handles archived documents when creating the subscription using the Client API.  
-This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
 
 <Admonition type="note" title="">
 
@@ -368,11 +368,11 @@ Example:
 ##### Configuring archived document processing for a data subscription task - from the Studio
 
 You can configure how a subscription task handles archived documents directly from the Studio.  
-This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
 
 ![Configure subscription](../assets/configure-subscription.png)
 
-1. Open the [Ongoing tasks list view](../studio/database/tasks/ongoing-tasks/general-info.mdx) and select the subscription task you want to configure,  
+1. Open the [Ongoing tasks list view](../../studio/database/tasks/ongoing-tasks/general-info.mdx) and select the subscription task you want to configure,  
    or create a new subscription.
 2. Click to select how the subscription query should process archived documents:
    * **Default**: The subscription will use the behavior set by the global configuration.
@@ -410,7 +410,7 @@ This setting will **override** the global configuration defined by the [Subscrip
 You can control whether archived documents are included when exporting or importing a database.
 ##### Export/Import archived documents - from the Client API
 
-[Smuggler](../client-api/smuggler/what-is-smuggler.mdx), RavenDB’s tool for database export and import, can be configured to include or exclude archived documents.
+[Smuggler](../../client-api/smuggler/what-is-smuggler.mdx), RavenDB’s tool for database export and import, can be configured to include or exclude archived documents.
 By default, archived documents are **included** in the operation.
 
 <Admonition type="note" title="">
@@ -465,7 +465,7 @@ In this example, imported data **includes** archived documents:
 
 ## Archived documents and expiration
 
-* Archiving can be used alongside other features, such as [Document expiration](../server/extensions/expiration.mdx).  
+* Archiving can be used alongside other features, such as [Document expiration](../../server/extensions/expiration.mdx).  
  
 * For example, a document can be scheduled to be archived after six months and expired after one year.  
   This allows you to keep recent documents active and quickly accessible, move older documents to archival storage where slower access is acceptable,
@@ -495,11 +495,11 @@ In this example, imported data **includes** archived documents:
 
 ## Archived documents and ETL
 
-* An ETL transformation script can examine each source document’s [metadata](../server/ongoing-tasks/etl/raven.mdx#accessing-metadata)
+* An ETL transformation script can examine each source document’s [metadata](../../server/ongoing-tasks/etl/raven.mdx#accessing-metadata)
   for the existence of the `@archived: true` property, which indicates that the document is archived.
   Based on this check, the script can decide how to handle the document - for example, skip it entirely or send only selected fields.
 
-* With [RavenDB ETL](../server/ongoing-tasks/etl/raven.mdx), documents that are archived in the source database and sent to the target
+* With [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx), documents that are archived in the source database and sent to the target
   are not archived in the destination database.
 
 * In the following example, the ETL script checks whether the document is archived, and skips it if it is:
@@ -532,8 +532,8 @@ loadToOrders(this);
 
 ## Archived documents and replication
 
-Archived documents are included in [Internal](../server/clustering/replication/replication-overview.mdx#internal-replication) replication, 
-[External](../server/clustering/replication/replication-overview.mdx#external-replication) replication, and [Hub/Sink](../server/clustering/replication/replication-overview.mdx#hubsink-replication) replication -   
+Archived documents are included in [Internal](../../server/clustering/replication/replication-overview.mdx#internal-replication) replication, 
+[External](../../server/clustering/replication/replication-overview.mdx#external-replication) replication, and [Hub/Sink](../../server/clustering/replication/replication-overview.mdx#hubsink-replication) replication -   
 no special configuration is required.
 
 
@@ -541,14 +541,14 @@ no special configuration is required.
 ## Archived documents and patching
 
 * Patching can be used to **schedule** multiple documents for archiving. See the dedicated sections:   
-  [Schedule multiple documents for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-studio).  
-  [Schedule multiple documents for archiving - from the Client API](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api).  
+  [Schedule multiple documents for archiving - from the Studio](../../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-studio).  
+  [Schedule multiple documents for archiving - from the Client API](../../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api).  
 
 * Patching is used to **unarchive** documents.  
-  See the dedicated article [Unarchiving documents](../data-archival/unarchiving-documents.mdx).   
+  See the dedicated article [Unarchiving documents](../../data-archival/unarchiving-documents.mdx).   
 
 * When **cloning** an archived document using the `put` method within a patching script  
-  (see this [clone document example](../client-api/operations/patching/single-document.mdx#clone-document)) the cloned document will Not be archived,  
+  (see this [clone document example](../../client-api/operations/patching/single-document.mdx#clone-document)) the cloned document will Not be archived,  
   and the `@archived: true` property will be removed from the cloned document.
 
 

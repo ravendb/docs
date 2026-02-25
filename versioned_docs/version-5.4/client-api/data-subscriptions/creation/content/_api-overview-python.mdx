@@ -6,11 +6,11 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:  
-   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)  
-   * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
-   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
-   * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
-   * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-query)  
+   * [Create subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)  
+   * [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
+   * [Update subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
+   * [SubscriptionUpdateOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
+   * [Subscription query](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-query)  
 
 </Admonition>
 ## Create subscription
@@ -71,7 +71,7 @@ An RQL statement will be built based on the fields.
 | **query** (Optional)         | `str`                                    | RQL query that describes the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                                                                                                                          |
 | **change_vector** (Optional) | `str`                                    | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                           |
 | **mentor_node** (Optional)   | `str`                                    | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                 |
-| **includes** (Optional)      | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). |
+| **includes** (Optional)      | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). |
 
 
 
@@ -99,7 +99,7 @@ Modifies an existing data subscription. These methods are accessible at `Documen
 
 ## SubscriptionUpdateOptions
 
-Inherits from `SubscriptionCreationOptions` and has all the same fields (see [above](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)) plus the two additional fields described below:  
+Inherits from `SubscriptionCreationOptions` and has all the same fields (see [above](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)) plus the two additional fields described below:  
 
 <TabItem value="sub_update_options" label="sub_update_options">
 <CodeBlock language="python">

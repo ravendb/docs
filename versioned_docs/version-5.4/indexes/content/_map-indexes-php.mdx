@@ -11,18 +11,18 @@ import CodeBlock from '@theme/CodeBlock';
 * The mapping functions can be considered the **core** of indexes.  
 
 * In This Page:  
-   * [Indexing single fields](../indexes/map-indexes.mdx#indexing-single-fields)
-   * [Combining multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields)
-   * [Indexing partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
-   * [Filtering data within fields](../indexes/map-indexes.mdx#filtering-data-within-fields)
-   * [Indexing nested data](../indexes/map-indexes.mdx#indexing-nested-data)
-   * [Indexing Missing Fields](../indexes/map-indexes.mdx#indexing-missing-fields)
+   * [Indexing single fields](../../indexes/map-indexes.mdx#indexing-single-fields)
+   * [Combining multiple fields](../../indexes/map-indexes.mdx#combining-multiple-fields)
+   * [Indexing partial field data](../../indexes/map-indexes.mdx#indexing-partial-field-data)
+   * [Filtering data within fields](../../indexes/map-indexes.mdx#filtering-data-within-fields)
+   * [Indexing nested data](../../indexes/map-indexes.mdx#indexing-nested-data)
+   * [Indexing Missing Fields](../../indexes/map-indexes.mdx#indexing-missing-fields)
 
 <Admonition type="info" title="Also see:" id="also-see" href="#also-see">
 
-* Indexing fields from [related documents](../indexes/indexing-related-documents.mdx)  
-* Aggregating data with [Map-Reduce indexes](../indexes/map-reduce-indexes.mdx)  
-* Indexing multiple collections with [Multi-Map indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+* Indexing fields from [related documents](../../indexes/indexing-related-documents.mdx)  
+* Aggregating data with [Map-Reduce indexes](../../indexes/map-reduce-indexes.mdx)  
+* Indexing multiple collections with [Multi-Map indexes](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
 * [Running calculations and storing the results in the index to reduce query time](https://demo.ravendb.net/demos/python/static-indexes/store-fields-in-index)  
 
 </Admonition>
@@ -61,7 +61,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 
 You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`.  
 This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, 
-you can read [this](../indexes/creating-and-deploying.mdx) article before proceeding.
+you can read [this](../../indexes/creating-and-deploying.mdx) article before proceeding.
 
 - The next step is to create the indexing function itself. This is done by setting the `map` property with our function in a **parameterless constructor**.
 
@@ -100,10 +100,10 @@ you can read [this](../indexes/creating-and-deploying.mdx) article before procee
 </TabItem>
 </Tabs>
 
-- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server 
-  and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method.  
+- The final step is to [deploy it](../../indexes/creating-and-deploying.mdx) to the server 
+  and issue a query using the session [Query](../../client-api/session/querying/how-to-query.mdx) method.  
   To query an index, the name of the index must be called by the query.  
-  If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying.mdx#auto-indexes).
+  If the index isn't called, RavenDB will either use or create an [auto index](../../indexes/creating-and-deploying.mdx#auto-indexes).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -771,17 +771,17 @@ where Country = 'USA'
 </Tabs>
 
 If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document.  
-Learn more [here](../indexes/indexing-related-documents.mdx).  
+Learn more [here](../../indexes/indexing-related-documents.mdx).  
 
 
 
 ## Indexing Missing Fields
 
 By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
-using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+using the [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
 configuration option.  
 
-The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+The option [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
 determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
 
 

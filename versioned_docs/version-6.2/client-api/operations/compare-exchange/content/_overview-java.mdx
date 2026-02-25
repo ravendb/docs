@@ -7,28 +7,28 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The **Compare Exchange** feature allows you to perform cluster-wide _interlocked_ distributed operations.  
 
-* Unique **Keys** can be reserved in the [Database Group](../../../studio/database/settings/manage-database-group.mdx) accross the cluster.  
+* Unique **Keys** can be reserved in the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) accross the cluster.  
   Each key has an associated **Value**.  
 
 * Modifying these values is an ***interlocked compare exchange*** operation.  
 
-* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx),  
+* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx),  
   or by using RQL in a query (see example-I below)  
 
 <Admonition type="info" title="">
 Compare exchange key/value pairs can be created and managed explicitly in your code.  
 Starting from RavenDB 5.2, they can also be created and managed automatically by RavenDB.  
 Compare exchange entries that are automatically administered by RavenDB are called 
-**Atomic Guards**, read more about them [here](../../../client-api/session/cluster-transaction/atomic-guards.mdx).  
+**Atomic Guards**, read more about them [here](../../../../client-api/session/cluster-transaction/atomic-guards.mdx).  
 </Admonition>
 
 
 * In this page:  
-  * [Compare Exchange Transaction Scope](../../../client-api/operations/compare-exchange/overview.mdx#compare-exchange-transaction-scope)  
-  * [Creating a Key](../../../client-api/operations/compare-exchange/overview.mdx#creating-a-key)  
-  * [Updating a Key](../../../client-api/operations/compare-exchange/overview.mdx#updating-a-key)  
-  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation)  
-  * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)  
+  * [Compare Exchange Transaction Scope](../../../../client-api/operations/compare-exchange/overview.mdx#compare-exchange-transaction-scope)  
+  * [Creating a Key](../../../../client-api/operations/compare-exchange/overview.mdx#creating-a-key)  
+  * [Updating a Key](../../../../client-api/operations/compare-exchange/overview.mdx#updating-a-key)  
+  * [Example I - Email Address Reservation](../../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation)  
+  * [Example II- Reserve a Shared Resource](../../../../client-api/operations/compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)  
 </Admonition>
 ## Compare Exchange Transaction Scope
 
@@ -50,7 +50,7 @@ Compare exchange entries that are automatically administered by RavenDB are call
 
 * When creating a _new_ 'Compare Exchange Key', the index should be set to `0`.  
 
-* The [Put](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) operation will succeed only if this key doesn't exist yet.  
+* The [Put](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) operation will succeed only if this key doesn't exist yet.  
 
 * Note: Two different keys _can_ have the same values as long as the keys are unique.  
 
@@ -59,9 +59,9 @@ Compare exchange entries that are automatically administered by RavenDB are call
 
 * Updating a 'Compare Exchange' key can be divided into 2 phases:
 
-  1. [Get](../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx) the existing _Key_. The associated _Value_ and _Index_ are received.  
+  1. [Get](../../../../client-api/operations/compare-exchange/get-compare-exchange-value.mdx) the existing _Key_. The associated _Value_ and _Index_ are received.  
 
-  2. The _Index_ obtained from the read operation is provided to the [Put](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) operation along with the new _Value_ to be saved.  
+  2. The _Index_ obtained from the read operation is provided to the [Put](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) operation along with the new _Value_ to be saved.  
      This save will succeed only if the index that is provided to the 'Put' operation is the **same** as the index that was received from the server in the previous 'Get', 
      which means that the _Value_ was not modified by someone else between the read and write operations.
 

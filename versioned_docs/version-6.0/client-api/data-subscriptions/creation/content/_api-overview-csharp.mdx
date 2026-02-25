@@ -6,12 +6,12 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:  
-   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)
-   * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)
-   * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
-   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
-   * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
-   * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-query)  
+   * [Create subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)
+   * [SubscriptionCreationOptions&lt;T&gt;](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)
+   * [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
+   * [Update subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
+   * [SubscriptionUpdateOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
+   * [Subscription query](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-query)  
 
 </Admonition>
 ## Create subscription
@@ -56,8 +56,8 @@ Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
 | Parameter      | Type                             | Description                                                                                                                                                                                  |
 |----------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **predicate**  | `Expression<Func<T, bool>>`      | An optional lambda expression that returns a boolean.<br/>This predicate defines the filter criteria for the subscription documents.                                                          |
-| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)           |
-| **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions) |
+| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)           |
+| **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions) |
 | **database**   | `string`                         | The name of the database where the subscription task will be created. If `null`, the default database configured in the DocumentStore will be used.                                          |
 | **token**      | `CancellationToken`              | Cancellation token used in to halt the subscription creation process.                                                                                                                  |
 
@@ -95,7 +95,7 @@ A generic version of the subscription creation options object.
 | **Name**         | `string`                                 | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                                                                                                                                 |
 | **Filter**       | `Expression<Func<T, bool>>`              | Lambda expression defining the filter logic for the subscription. Will be translated to a JavaScript function.                                                                                                                                                                                                                                                                                      |
 | **Projection**   | `Expression<Func<T, object>>`            | Lambda expression defining the projection that will be sent by the subscription for each matching document. Will be translated to a JavaScript function.                                                                                                                                                                                                                                            |
-| **Includes**     | `Action<ISubscriptionIncludeBuilder<T>>` | An action that defines include clauses for the subscription. [Included documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) and/or [included counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters) will be part of the batch sent by the subscription. Include methods can be chained. |
+| **Includes**     | `Action<ISubscriptionIncludeBuilder<T>>` | An action that defines include clauses for the subscription. [Included documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) and/or [included counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters) will be part of the batch sent by the subscription. Include methods can be chained. |
 | **ChangeVector** | `string`                                 | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                                  |
 | **MentorNode**   | `string`                                 | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                       |
 
@@ -130,7 +130,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 | Parameter    | Type                        | Description                                                                                                                                                        |
 |--------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions) |
+| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions) |
 | **database** | `string`                    | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in the DocumentStore will be used.                    |
 | **token**    | `CancellationToken`         | Cancellation token used to halt the update process.                                                                                                                |
 
@@ -142,7 +142,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 ## SubscriptionUpdateOptions
 
-`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)
+`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)
 and adds two additional fields:
 
 <TabItem value="sub_update_options" label="sub_update_options">
@@ -158,7 +158,7 @@ and adds two additional fields:
 
 | Parameter     | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |---------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. This allows you to modify the subscription's name: provide the Id and submit a new name in the Name field. |
+| **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. This allows you to modify the subscription's name: provide the Id and submit a new name in the Name field. |
 | **CreateNew** | `bool`  | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
 
 
@@ -215,7 +215,7 @@ where filterLines(o, "products/1-A")
 <Admonition type="info" title="Revisions" id="revisions" href="#revisions">
 
 To define a data subscription that sends document revisions to the client,  
-you must first [configure revisions](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration)
+you must first [configure revisions](../../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration)
 for the specific collection managed by the subscription.
 
 The subscription should be defined in a special way:  

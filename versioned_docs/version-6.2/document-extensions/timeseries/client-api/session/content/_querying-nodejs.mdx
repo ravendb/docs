@@ -10,23 +10,23 @@ import CodeBlock from '@theme/CodeBlock';
   
 * Time series queries can be made using:  
   * The `query` method 
-  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql.mdx),
-    which can be provided to a `rawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
+  * Or directly through [RQL](../../../../../client-api/session/querying/what-is-rql.mdx),
+    which can be provided to a `rawQuery` or executed from the Studio's [Query view](../../../../../studio/database/queries/query-view.mdx).
 
 * In this page:  
-    * [Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
-        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
-        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
-        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
-        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
-        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
-        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
+    * [Query](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
+        * [Query usage](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
+        * [Query examples](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
+        * [Query syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
+    * [RawQuery](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
+        * [RawQuery usage](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
+        * [RawQuery examples](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
+        * [RawQuery syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
     
 </Admonition>
 
 <Admonition type="info" title="">
-Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -41,7 +41,7 @@ Learn more about time series queries in the [section dedicated to this subject](
   * `TimeSeriesRawResult` for non-aggregated data, or -  
   * `TimeSeriesAggregationResult` for aggregated data  
 * Note:  
-  The RavenDB client translates the query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+  The RavenDB client translates the query to [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### Query examples
 
 * This query filters users by their age and retrieves their HeartRates time series.
@@ -128,8 +128,8 @@ select timeseries(
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
-  This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
 <CodeBlock language="js">
@@ -257,7 +257,7 @@ select timeseries(
 </Tabs>
 ### Query syntax
 
-The `session.query` syntax is available [here](../../../../querying/overview.mdx#syntax).
+The `session.query` syntax is available [here](../../../../../querying/overview.mdx#syntax).
 
 Extend the `session.query` method with `selectTimeSeries()`.
 
@@ -289,7 +289,7 @@ The time series query builder has one method:
 | Return value                    | Description                                                                                                               |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | `TimeSeriesRawResult[]`         | The returned value for non-aggregated data                                                                                |
-| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) |
+| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) |
 
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="js">
@@ -482,7 +482,7 @@ select timeseries(
 |------------|----------|----------------------|
 |  **query** | `string` | The RQL query string |
 
-The return value is the same as listed under the [query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax).
+The return value is the same as listed under the [query syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax).
 
 
 

@@ -10,17 +10,17 @@ import CodeBlock from '@theme/CodeBlock';
 * RavenDB time series are stored and managed as document extensions, achieving much greater speed and efficiency compared to storing them as JSON-formatted data within a document.
 
 * In this page:  
-  * [Time series architecture](../../document-extensions/timeseries/design.mdx#time-series-architecture)  
-      * [Time series as a document extension](../../document-extensions/timeseries/design.mdx#time-series-as-a--document-extension)
-      * [The `HasTimeSeries` flag](../../document-extensions/timeseries/design.mdx#the--flag)
-      * [The time series entry](../../document-extensions/timeseries/design.mdx#the-time-series-entry)
-      * [Segmentation](../../document-extensions/timeseries/design.mdx#segmentation)
-      * [Compression](../../document-extensions/timeseries/design.mdx#compression)
-  * [Updating time series](../../document-extensions/timeseries/design.mdx#updating-time-series)  
-      * [Document change](../../document-extensions/timeseries/design.mdx#document-change)  
-      * [No conflicts](../../document-extensions/timeseries/design.mdx#no-conflicts)  
-      * [Transactions](../../document-extensions/timeseries/design.mdx#transactions)  
-      * [Case insensitive](../../document-extensions/timeseries/design.mdx#case-insensitive)  
+  * [Time series architecture](../../../document-extensions/timeseries/design.mdx#time-series-architecture)  
+      * [Time series as a document extension](../../../document-extensions/timeseries/design.mdx#time-series-as-a--document-extension)
+      * [The `HasTimeSeries` flag](../../../document-extensions/timeseries/design.mdx#the--flag)
+      * [The time series entry](../../../document-extensions/timeseries/design.mdx#the-time-series-entry)
+      * [Segmentation](../../../document-extensions/timeseries/design.mdx#segmentation)
+      * [Compression](../../../document-extensions/timeseries/design.mdx#compression)
+  * [Updating time series](../../../document-extensions/timeseries/design.mdx#updating-time-series)  
+      * [Document change](../../../document-extensions/timeseries/design.mdx#document-change)  
+      * [No conflicts](../../../document-extensions/timeseries/design.mdx#no-conflicts)  
+      * [Transactions](../../../document-extensions/timeseries/design.mdx#transactions)  
+      * [Case insensitive](../../../document-extensions/timeseries/design.mdx#case-insensitive)  
 
 </Admonition>
 ## Time series architecture
@@ -31,7 +31,7 @@ import CodeBlock from '@theme/CodeBlock';
 * The document and the time series reference each another:
   * The document's metadata keeps a reference to the time series **name**.  
     The time series **data** itself is stored in a separate location.
-  * The [segments](../../document-extensions/timeseries/design.mdx#segmentation) containing the time series data keep a reference to the document ID.
+  * The [segments](../../../document-extensions/timeseries/design.mdx#segmentation) containing the time series data keep a reference to the document ID.
 ### The&nbsp;`HasTimeSeries`&nbsp;flag
 
 * When a document has one or more time series,  
@@ -76,14 +76,14 @@ In other words, `1.672` takes up more space than `1672`.
 * At the server storage level, time series data is divided into **segments**.  
 
 * Each segment contains a number of consecutive entries from the same time series and aggregated values that RavenDB automatically updates in the segment's header. 
-  See [TimeSeriesSegment](../../document-extensions/timeseries/indexing.mdx#section-5) for the detailed class syntax.
+  See [TimeSeriesSegment](../../../document-extensions/timeseries/indexing.mdx#section-5) for the detailed class syntax.
 
 * **Segments size and limitations**:  
     * Segments have a maximum size of 2 KB.  
       What this limit practically means, is that a segment can only contain up to 32k entries.   
       Time series larger than that would always be stored in multiple segments.  
     * In practice, segments usually contain far less than 32k entries, depending on the size of the entries (after compression).  
-      For example, in the [Northwind sample dataset](../../studio/database/tasks/create-sample-data.mdx), the _Companies_ documents all have a time series called _StockPrice_.  
+      For example, in the [Northwind sample dataset](../../../studio/database/tasks/create-sample-data.mdx), the _Companies_ documents all have a time series called _StockPrice_.  
       These time series are stored in segments that have ~10-20 entries each.  
     * The maximum time gap between the first and last entries in a segment is ~24.86 days (`int.MaxValue` milliseconds).  
       Adding an entry that is further than that from the first segment entry, would add it as the first entry of a new segment.  

@@ -19,14 +19,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
+    * [Indexing documents fields KEYS](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
 
 </Admonition>
 
@@ -524,13 +524,13 @@ object CreateField(string name, object value, CreateFieldOptions options);
 |------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **name**   | `string`            | Name of the dynamic-index-field                                                                                                                                 |
 | **value**  | `object`            | Value of the dynamic-index-field <br/> The field Terms are derived from this value.                                                                             |
-| **stored** | `bool`              | Sets [FieldStorage](../indexes/storing-data-in-index.mdx) <br/><br/> `False` - will set `FieldStorage.NO` (default value) <br/> `True` - will set `FieldStorate.YES` |
-| **analyzed** | `bool`            | Sets [FieldIndexing](../indexes/using-analyzers.mdx) <br/><br/> `None` - `FieldIndexing.Default` (default value) <br/> `False` - `FieldIndexing.Exact` <br/> `True` - `FieldIndexing.Search` |
+| **stored** | `bool`              | Sets [FieldStorage](../../indexes/storing-data-in-index.mdx) <br/><br/> `False` - will set `FieldStorage.NO` (default value) <br/> `True` - will set `FieldStorate.YES` |
+| **analyzed** | `bool`            | Sets [FieldIndexing](../../indexes/using-analyzers.mdx) <br/><br/> `None` - `FieldIndexing.Default` (default value) <br/> `False` - `FieldIndexing.Exact` <br/> `True` - `FieldIndexing.Search` |
 | **options**  | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                     |
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage** | `FieldStorage` | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Storage** | `FieldStorage` | Learn about [storing data](../../indexes/storing-data-in-index.mdx) in the index. |
 | **Indexing** | `FieldIndexing` | |
 | **TermVector** | `FieldTermVector` | |
 

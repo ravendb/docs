@@ -8,44 +8,44 @@ import CodeBlock from '@theme/CodeBlock';
 * **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
  
 * In this article:  
-  * [How to set conventions](../../client-api/configuration/conventions.mdx#how-to-set-conventions)  
-  * [Conventions:](../../client-api/configuration/conventions.mdx#conventions:)  
-      [customFetch](../../client-api/configuration/conventions.mdx#customfetch)  
-      [disableAtomicDocumentWritesInClusterWideTransaction](../../client-api/configuration/conventions.mdx#disableatomicdocumentwritesinclusterwidetransaction)  
-      [disableTopologyUpdates](../../client-api/configuration/conventions.mdx#disabletopologyupdates)  
-      [findCollectionName](../../client-api/configuration/conventions.mdx#findcollectionname)  
-      [findJsType](../../client-api/configuration/conventions.mdx#_findjstype)  
-      [findJsTypeName](../../client-api/configuration/conventions.mdx#_findjstypename)  
-      [firstBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
-      [identityPartsSeparator](../../client-api/configuration/conventions.mdx#identitypartsseparator)  
-      [loadBalanceBehavior](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
-      [loadBalancerContextSeed](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
-      [loadBalancerPerSessionContextSelector](../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
-      [maxHttpCacheSize](../../client-api/configuration/conventions.mdx#maxhttpcachesize)  
-      [maxNumberOfRequestsPerSession](../../client-api/configuration/conventions.mdx#maxnumberofrequestspersession)  
-      [readBalanceBehavior](../../client-api/configuration/conventions.mdx#readbalancebehavior)  
-      [requestTimeout](../../client-api/configuration/conventions.mdx#requesttimeout)  
-      [secondBroadcastAttemptTimeout](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout)  
-      [sendApplicationIdentifier](../../client-api/configuration/conventions.mdx#sendapplicationidentifier)  
-      [shouldIgnoreEntityChanges](../../client-api/configuration/conventions.mdx#shouldignoreentitychanges)  
-      [storeDatesInUtc](../../client-api/configuration/conventions.mdx#storedatesinutc)  
-      [storeDatesWithTimezoneInfo](../../client-api/configuration/conventions.mdx#storedateswithtimezoneinfo)  
-      [syncJsonParseLimit](../../client-api/configuration/conventions.mdx#syncjsonparselimit)  
-      [throwIfQueryPageSizeIsNotSet](../../client-api/configuration/conventions.mdx#throwifquerypagesizeisnotset)  
-      [transformClassCollectionNameToDocumentIdPrefix](../../client-api/configuration/conventions.mdx#transformclasscollectionnametodocumentidprefix)  
-      [useCompression](../../client-api/configuration/conventions.mdx#usecompression)  
-      [useJsonlStreaming](../../client-api/configuration/conventions.mdx#usejsonlstreaming)  
-      [useOptimisticConcurrency](../../client-api/configuration/conventions.mdx#useoptimisticconcurrency)  
-      [waitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforindexesaftersavechangestimeout)  
-      [waitForNonStaleResultsTimeout](../../client-api/configuration/conventions.mdx#waitfornonstaleresultstimeout)  
-      [waitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions.mdx#waitforreplicationaftersavechangestimeout)  
+  * [How to set conventions](../../../client-api/configuration/conventions.mdx#how-to-set-conventions)  
+  * [Conventions:](../../../client-api/configuration/conventions.mdx#conventions:)  
+      [customFetch](../../../client-api/configuration/conventions.mdx#customfetch)  
+      [disableAtomicDocumentWritesInClusterWideTransaction](../../../client-api/configuration/conventions.mdx#disableatomicdocumentwritesinclusterwidetransaction)  
+      [disableTopologyUpdates](../../../client-api/configuration/conventions.mdx#disabletopologyupdates)  
+      [findCollectionName](../../../client-api/configuration/conventions.mdx#findcollectionname)  
+      [findJsType](../../../client-api/configuration/conventions.mdx#_findjstype)  
+      [findJsTypeName](../../../client-api/configuration/conventions.mdx#_findjstypename)  
+      [firstBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
+      [identityPartsSeparator](../../../client-api/configuration/conventions.mdx#identitypartsseparator)  
+      [loadBalanceBehavior](../../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [loadBalancerContextSeed](../../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [loadBalancerPerSessionContextSelector](../../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
+      [maxHttpCacheSize](../../../client-api/configuration/conventions.mdx#maxhttpcachesize)  
+      [maxNumberOfRequestsPerSession](../../../client-api/configuration/conventions.mdx#maxnumberofrequestspersession)  
+      [readBalanceBehavior](../../../client-api/configuration/conventions.mdx#readbalancebehavior)  
+      [requestTimeout](../../../client-api/configuration/conventions.mdx#requesttimeout)  
+      [secondBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout)  
+      [sendApplicationIdentifier](../../../client-api/configuration/conventions.mdx#sendapplicationidentifier)  
+      [shouldIgnoreEntityChanges](../../../client-api/configuration/conventions.mdx#shouldignoreentitychanges)  
+      [storeDatesInUtc](../../../client-api/configuration/conventions.mdx#storedatesinutc)  
+      [storeDatesWithTimezoneInfo](../../../client-api/configuration/conventions.mdx#storedateswithtimezoneinfo)  
+      [syncJsonParseLimit](../../../client-api/configuration/conventions.mdx#syncjsonparselimit)  
+      [throwIfQueryPageSizeIsNotSet](../../../client-api/configuration/conventions.mdx#throwifquerypagesizeisnotset)  
+      [transformClassCollectionNameToDocumentIdPrefix](../../../client-api/configuration/conventions.mdx#transformclasscollectionnametodocumentidprefix)  
+      [useCompression](../../../client-api/configuration/conventions.mdx#usecompression)  
+      [useJsonlStreaming](../../../client-api/configuration/conventions.mdx#usejsonlstreaming)  
+      [useOptimisticConcurrency](../../../client-api/configuration/conventions.mdx#useoptimisticconcurrency)  
+      [waitForIndexesAfterSaveChangesTimeout](../../../client-api/configuration/conventions.mdx#waitforindexesaftersavechangestimeout)  
+      [waitForNonStaleResultsTimeout](../../../client-api/configuration/conventions.mdx#waitfornonstaleresultstimeout)  
+      [waitForReplicationAfterSaveChangesTimeout](../../../client-api/configuration/conventions.mdx#waitforreplicationaftersavechangestimeout)  
 
 </Admonition>
 ## How to set conventions
 
 * Access the conventions via the `conventions` property of the `DocumentStore` object.
 
-* The conventions set on a Document Store will apply to ALL [sessions](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../client-api/operations/what-are-operations.mdx) associated with that store.
+* The conventions set on a Document Store will apply to ALL [sessions](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../../client-api/operations/what-are-operations.mdx) associated with that store.
  
 * Customizing the conventions can only be set **before** calling `documentStore.initialize()`.  
   Trying to do so after calling _initialize()_ will throw an exception.
@@ -199,9 +199,9 @@ set findJsTypeName(value);
 * Use the `firstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.  
  
 * In the first attempt, the request executor will send a single request to the selected node.  
-  Learn about the "selected node" in: [Client logic for choosing a node](../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+  Learn about the "selected node" in: [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
  
-* A [second attempt](../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout) will be held upon failure.
+* A [second attempt](../../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout) will be held upon failure.
  
 * DEFAULT: `5 seconds`
 
@@ -226,7 +226,7 @@ set firstBroadcastAttemptTimeout(firstBroadcastAttemptTimeout);
 
 * DEFAULT: `/` (forward slash)
     
-* Applies only to: [HiLo IDs](../../server/kb/document-identifier-generation.mdx#hilo-algorithm-id).
+* Applies only to: [HiLo IDs](../../../server/kb/document-identifier-generation.mdx#hilo-algorithm-id).
 
 <TabItem value="identityPartsSeparatorSyntax" label="identityPartsSeparatorSyntax">
 <CodeBlock language="js">
@@ -249,7 +249,7 @@ set identityPartsSeparator(value);
   * `loadBalancerPerSessionContextSelector`
   * `loadBalancerContextSeed`
 
-* Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
+* Learn more in the dedicated [Load balance behavior](../../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -263,10 +263,10 @@ set identityPartsSeparator(value);
 * **Disabling Caching**:
 
     * To disable caching globally, set `MaxHttpCacheSize` to zero.
-    * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
+    * To disable caching per session, see: [Disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 * Note: RavenDB also supports Aggressive Caching.  
-  Learn more about that in article [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching.mdx).
+  Learn more about that in article [Setup aggressive caching](../../../client-api/how-to/setup-aggressive-caching.mdx).
 
 <TabItem value="maxHttpCacheSizeSyntax" label="maxHttpCacheSizeSyntax">
 <CodeBlock language="js">
@@ -302,7 +302,7 @@ set maxNumberOfRequestsPerSession(value);
 #### readBalanceBehavior
 * Configure the **read request behavior** by setting the `readBalanceBehavior` convention.
 
-* Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
+* Learn more in the dedicated [Read balance behavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -328,7 +328,7 @@ set requestTimeout(value);
 #### secondBroadcastAttemptTimeout
 * Use the `secondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
  
-* Upon failure of the [first attempt](../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout) the request executor will resend the command to all nodes simultaneously.
+* Upon failure of the [first attempt](../../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout) the request executor will resend the command to all nodes simultaneously.
  
 * DEFAULT: `30 seconds`
 
@@ -369,7 +369,7 @@ set sendApplicationIdentifier(sendApplicationIdentifier)
 #### shouldIgnoreEntityChanges
 * Set the `shouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.  
  
-* Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
+* Learn more in [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -522,7 +522,7 @@ set useJsonlStreaming(value);
   Optimistic Concurrency checks will be applied for all sessions opened from the Document Store. 
 
 * Learn more about Optimistic Concurrency and the various ways to enable it in article  
-  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+  [how to enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
 
 * DEFAULT: `false`  
 

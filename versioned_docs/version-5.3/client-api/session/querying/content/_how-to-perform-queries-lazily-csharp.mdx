@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
   You can __define a query as lazy__ and execute it later when query results are actually needed.  
 
 * This article contains lazy queries examples.  
-  __Prior to this article__, please refer to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx)  for general knowledge about  
+  __Prior to this article__, please refer to [perform requests lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx)  for general knowledge about  
   RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
 
 * In this page:
-  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
-  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
-  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
-  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
-  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
+  * [Lazy query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy facets query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
+  * [Syntax](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
@@ -64,7 +64,7 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // DocumentQuery is execu
 </TabItem>
 </Tabs>
 
-* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
+* Learn more about queries in this [query overview](../../../../client-api/session/querying/how-to-query.mdx).
 
 
 
@@ -161,7 +161,7 @@ List<string> suggestions = suggest["FullName"].Suggestions;
 </TabItem>
 </Tabs>
 
-* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
+* Learn more about suggestions in [query for suggestions](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
 
 
 
@@ -270,7 +270,7 @@ public class Products_ByCategoryAndPrice :
 </TabItem>
 </Tabs>
 
-* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
+* Learn more about facets in [perform faceted search](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 
 
 

@@ -8,7 +8,7 @@ a basic score is calculated for each document in the results by the underlying e
 
 Providing a **boost value** to some fields allows you to prioritize the resulting documents.  
 The boost value is integrated with the basic score, making the document rank higher.  
-Automatic ordering of the results by the score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).
+Automatic ordering of the results by the score is [configurable](../../indexes/boosting.mdx#automatic-score-based-ordering).
 
 From the index perspective we can associate to an index entry a boosting factor.  
 The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
@@ -75,7 +75,7 @@ Boosting is also available at the query level.
 * By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
   the results will be automatically ordered by the score.
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexingorderbyscoreautomaticallywhenboostingisinvolved)    
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyscoreautomaticallywhenboostingisinvolved)    
   configuration key.
 
 </Admonition>

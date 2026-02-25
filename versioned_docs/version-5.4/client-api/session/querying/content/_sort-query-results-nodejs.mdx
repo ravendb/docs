@@ -8,8 +8,8 @@ import CodeBlock from '@theme/CodeBlock';
 * When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
 
-    * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting.mdx) is involved in the query.  
-      Learn more in [Automatic score-based ordering](../../../indexes/boosting.mdx#automatic-score-based-ordering).
+    * Note: An exception to the above rule is when [Boosting](../../../../indexes/boosting.mdx) is involved in the query.  
+      Learn more in [Automatic score-based ordering](../../../../indexes/boosting.mdx#automatic-score-based-ordering).
 
 * Sorting is applied by the server after the query filtering stage.  
   Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
@@ -18,29 +18,29 @@ import CodeBlock from '@theme/CodeBlock';
 * Multiple sorting actions can be chained.
 
 * This article provides examples of sorting query results when making a **dynamic-query**.  
-  For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting.mdx).
+  For sorting results when querying a **static-index** see [sort index query results](../../../../indexes/querying/sorting.mdx).
 
 * In this page:
-    * [Order by field value](../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value)
+    * [Order by field value](../../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value)
  
-    * [Order by score](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-        * [Get resulting score](../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)
+    * [Order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+        * [Get resulting score](../../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)
   
-    * [Order by random](../../../client-api/session/querying/sort-query-results.mdx#order-by-random)
+    * [Order by random](../../../../client-api/session/querying/sort-query-results.mdx#order-by-random)
    
-    * [Order by spatial](../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
+    * [Order by spatial](../../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
      
-    * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-count-(aggregation-query))
+    * [Order by count (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-count-(aggregation-query))
   
-    * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-(aggregation-query))
+    * [Order by sum (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-(aggregation-query))
 
-    * [Force ordering type](../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)
+    * [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)
 
-    * [Chain ordering](../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
+    * [Chain ordering](../../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
 
-    * [Custom sorters](../../../client-api/session/querying/sort-query-results.mdx#custom-sorters) 
+    * [Custom sorters](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters) 
 
-    * [Syntax](../../../client-api/session/querying/sort-query-results.mdx#syntax)
+    * [Syntax](../../../../client-api/session/querying/sort-query-results.mdx#syntax)
 
 </Admonition>
 ## Order by field value
@@ -83,7 +83,7 @@ order by UnitsInStock as long
 
 * In the above example, the ordering type was set to `Long`.
 
-* Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) below.
+* Different ordering can be forced - see [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) below.
 
 </Admonition>
 
@@ -134,7 +134,7 @@ The score details can be retrieved by either:
 * **Request to include explanations**:  
   You can get the score details and see how it was calculated by requesting to include explanations in the query. 
   Currently, this is only available when using Lucene as the underlying indexing engine.  
-  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations.mdx).
+  Learn more in [Include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
 
 * **Get score from metadata**:  
   The score is available in the `@index-score` metadata property within each result.  
@@ -208,13 +208,13 @@ order by random()
 * If your data contains geographical locations,  
   spatial query results can be sorted based on their distance from a specific point.
 
-* See detailed explanation in [Spatial Sorting](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
+* See detailed explanation in [Spatial Sorting](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
 
 
 
 ## Order by count (aggregation query)
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `count` aggregation operation used in the query.
+* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `count` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -250,7 +250,7 @@ select key() as "Category", count()
 
 ## Order by sum (aggregation query)
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `sum` aggregation operation used in the query.
+* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `sum` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -403,9 +403,9 @@ order by UnitsInStock as long desc, score(), Name
 * The Lucene indexing engine allows you to create your own custom sorters.  
   Custom sorters can be deployed to the server by either:  
 
-     * Sending the [Put Sorters Operation](../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
+     * Sending the [Put Sorters Operation](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
   
-     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../studio/database/settings/custom-sorters.mdx).
+     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../../studio/database/settings/custom-sorters.mdx).
 
 * Once the custom sorter is deployed, you can sort the query results with it.
 

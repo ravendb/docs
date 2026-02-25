@@ -6,10 +6,10 @@ import CodeBlock from '@theme/CodeBlock';
 #Manage file systems
 
 This article will describe the following commands that enable you to manage file systems on a server:    
-- [CreateFileSystemAsync ](../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#createfilesystemasync)   
-- [CreateOrUpdateFileSystemAsync](../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#createorupdatefilesystemasync)   
-- [EnsureFileSystemExistsAsync ](../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#ensurefilesystemexistsasync)    
-- [DeleteFileSystemAsync ](../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#deletefilesystemasync)  
+- [CreateFileSystemAsync ](../../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#createfilesystemasync)   
+- [CreateOrUpdateFileSystemAsync](../../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#createorupdatefilesystemasync)   
+- [EnsureFileSystemExistsAsync ](../../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#ensurefilesystemexistsasync)    
+- [DeleteFileSystemAsync ](../../../../../file-system/client-api/commands/admin/manage-filesystems.mdx#deletefilesystemasync)  
 
 
 
@@ -26,7 +26,7 @@ This method is used to create a new file system. If the file system already exis
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **filesystemDocument** | [FileSystemDocument](../../../../glossary/file-system-document.mdx) |  The document containing all configuration options for a new file system (e.g. active bundles, name/id, data path) |
+| **filesystemDocument** | [FileSystemDocument](../../../../../glossary/file-system-document.mdx) |  The document containing all configuration options for a new file system (e.g. active bundles, name/id, data path) |
 
 ---
 
@@ -80,7 +80,7 @@ This method creates a new file system or updates the configuration of an already
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **filesystemDocument** | [FileSystemDocument](../../../../glossary/file-system-document.mdx) |  The document containing all configuration options for a new file system (e.g. active bundles, name/id, data path) |
+| **filesystemDocument** | [FileSystemDocument](../../../../../glossary/file-system-document.mdx) |  The document containing all configuration options for a new file system (e.g. active bundles, name/id, data path) |
 | **newFileSystemName** | string | The new file system name, if `null` then current file system name will be used (`store.AsyncFilesCommands.FileSystem`) |
 
 ---

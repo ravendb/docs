@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 By default, optimistic concurrency checks are **disabled**. Changes made outside our session object will be overwritten. Concurrent changes to the same document will use
-the Last Write Wins strategy so a lost update anomaly is possible with the default configuration of the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
+the Last Write Wins strategy so a lost update anomaly is possible with the default configuration of the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
 
 You can enable the optimistic concurrency strategy either globally, at the document store level or a per session basis.  
 In either case, with optimistic concurrency enabled, RavenDB will generate a concurrency exception (and abort all
@@ -20,7 +20,7 @@ If the session were to try to save to `users/2-A` as well with optimistic concur
 will be cancelled.
 </Admonition>
 
-You can also control optimistic concurrency per specific document. To enable it, [provide a Change Vector to Store](../../../client-api/session/storing-entities.mdx).  
+You can also control optimistic concurrency per specific document. To enable it, [provide a Change Vector to Store](../../../../client-api/session/storing-entities.mdx).  
 If you do not provide a change vector or if the change vector is `null`, optimistic concurrency will be disabled.  
 
 Setting the 'Change Vector' to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exists.
@@ -29,7 +29,7 @@ Setting optimistic concurrency per specific document overrides the use of the `u
 
 <Admonition type="info" title="">
 For a detailed description of transactions and concurrency control in RavenDB please refer to the  
-[Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
+[Transaction support in RavenDB](../../../../client-api/faq/transaction-support.mdx) article.
 </Admonition>
 
 ## Enabling for a specific Session

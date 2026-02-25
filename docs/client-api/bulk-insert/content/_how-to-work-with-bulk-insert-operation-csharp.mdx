@@ -7,19 +7,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
 * It is an optimized time-saving approach with a few 
-  [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations) 
+  [limitations](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations) 
   like the possibility that interruptions will occur during the operation.  
 
 In this page:
 
-* [Syntax](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
-* [`BulkInsertOperation`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoperation) 
-  * [Methods](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#methods)
-  * [Limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
-  * [Example](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#example)
-* [`BulkInsertOptions`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
-  * [`CompressionLevel`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section)
-  * [`SkipOverwriteIfUnchanged`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section-1)
+* [Syntax](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
+* [`BulkInsertOperation`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoperation) 
+  * [Methods](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#methods)
+  * [Limitations](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
+  * [Example](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#example)
+* [`BulkInsertOptions`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
+  * [`CompressionLevel`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section)
+  * [`SkipOverwriteIfUnchanged`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section-1)
 
 </Admonition>
 
@@ -50,7 +50,7 @@ In this page:
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **database** | `string` | The name of the database to perform the bulk operation on.<br/>If `null`, the DocumentStore `Database` will be used. |
-| **options** | `BulkInsertOptions` | [Options](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
+| **options** | `BulkInsertOptions` | [Options](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
 | **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
 
 | Return Value | |
@@ -65,7 +65,7 @@ In this page:
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **options** | `BulkInsertOptions` | [Options](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
+| **options** | `BulkInsertOptions` | [Options](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
 | **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
 
 | Return Value | |
@@ -102,10 +102,10 @@ The following methods can be used when creating a bulk insert.
      some of your data not to persist on the server yet.  
    * If the operation was interrupted and you choose to re-insert the whole dataset in a new 
      operation, you can set 
-     [SkipOverwriteIfUnchanged](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section-1) 
+     [SkipOverwriteIfUnchanged](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#section-1) 
      as `true` so the operation will overwrite existing documents only if they changed since 
      the last insertion.  
-   * **If you need full transactionality**, using [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
+   * **If you need full transactionality**, using [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
      may be a better option.  
      Note that if `session` is used all of the data is processed in a single transaction, so the 
      server must have sufficient resources to handle the entire data set included in the transaction.  

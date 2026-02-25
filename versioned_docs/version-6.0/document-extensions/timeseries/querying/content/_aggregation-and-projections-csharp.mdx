@@ -9,19 +9,19 @@ import CodeBlock from '@theme/CodeBlock';
   (such as Min, Max, Count, Average, etc.) to a group of entries within a chosen time frame,  
   such as an hour or a week.
 
-* For an overview of the available time series queries, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
+* For an overview of the available time series queries, please refer to [Time series querying](../../../../document-extensions/timeseries/client-api/session/querying.mdx).
 
 * In this page:  
-  * [Grouping and aggregation options](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#grouping-and-aggregation-options)  
-  * [Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#examples)
-      * [Aggregate entries with single value](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-with-single-value)
-      * [Aggregate entries with multiple values](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-with-multiple-values)
-      * [Aggregate entries without grouping by time frame](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-without-grouping-by-time-frame)
-      * [Aggregate entries filtered by referenced document](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-filtered-by-referenced-document)
-      * [Secondary grouping by tag](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#secondary-grouping-by-tag)
-      * [Group by dynamic criteria](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#group-by-dynamic-criteria)
-      * [Project document data in addition to aggregated data](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#project-document-data-in-addition-to-aggregated-data)
-  * [Syntax](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#syntax)  
+  * [Grouping and aggregation options](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#grouping-and-aggregation-options)  
+  * [Examples](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#examples)
+      * [Aggregate entries with single value](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-with-single-value)
+      * [Aggregate entries with multiple values](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-with-multiple-values)
+      * [Aggregate entries without grouping by time frame](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-without-grouping-by-time-frame)
+      * [Aggregate entries filtered by referenced document](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#aggregate-entries-filtered-by-referenced-document)
+      * [Secondary grouping by tag](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#secondary-grouping-by-tag)
+      * [Group by dynamic criteria](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#group-by-dynamic-criteria)
+      * [Project document data in addition to aggregated data](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#project-document-data-in-addition-to-aggregated-data)
+  * [Syntax](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#syntax)  
 
 </Admonition>
 ## Grouping and aggregation options
@@ -40,7 +40,7 @@ import CodeBlock from '@theme/CodeBlock';
   * `Years`
 
 * **Secondary grouping**:  
-  After grouping by a time unit, you can also perform a _secondary grouping_ by the time series [tag](../../../document-extensions/timeseries/overview.mdx#tags).
+  After grouping by a time unit, you can also perform a _secondary grouping_ by the time series [tag](../../../../document-extensions/timeseries/overview.mdx#tags).
 
 * **Aggregate values**:  
   You can select one or more aggregation functions to retrieve aggregated values for each group.  
@@ -251,7 +251,7 @@ select SP(c)
 
 * The tag in each entry in the "StockPrices" series contains an Employee document ID.
 
-* In this example, we load this [referenced document](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
+* In this example, we load this [referenced document](../../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
   and filter the entries by its properties.
 
 <Tabs groupId='languageSyntax'>

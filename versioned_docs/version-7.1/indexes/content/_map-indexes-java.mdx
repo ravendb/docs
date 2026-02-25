@@ -12,16 +12,16 @@ import CodeBlock from '@theme/CodeBlock';
   JavaScript indexes); they can be considered the **core** of indexes.  
 
 * In this page: 
-   * [Indexing single fields](../indexes/map-indexes.mdx#indexing-single-fields)
-   * [Combining multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields) 
-   * [Indexing partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
-   * [Indexing nested data](../indexes/map-indexes.mdx#indexing-nested-data)
+   * [Indexing single fields](../../indexes/map-indexes.mdx#indexing-single-fields)
+   * [Combining multiple fields](../../indexes/map-indexes.mdx#combining-multiple-fields) 
+   * [Indexing partial field data](../../indexes/map-indexes.mdx#indexing-partial-field-data)
+   * [Indexing nested data](../../indexes/map-indexes.mdx#indexing-nested-data)
 
 <Admonition type="info" title="Also see:" id="also-see" href="#also-see">
 
-* Indexing fields from [Related documents](../indexes/indexing-related-documents.mdx)  
-* Indexing fields from multiple collections using [Multi-Map Indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
-* Indexing Multiple Collections using [Multi-Map indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes). 
+* Indexing fields from [Related documents](../../indexes/indexing-related-documents.mdx)  
+* Indexing fields from multiple collections using [Multi-Map Indexes](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+* Indexing Multiple Collections using [Multi-Map indexes](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes). 
 
 </Admonition>
 
@@ -81,7 +81,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 </TabItem>
 </Tabs>
 
-- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../indexes/querying/query-index.mdx) method:
+- The final step is to [deploy it](../../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../../indexes/querying/query-index.mdx) method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -264,7 +264,7 @@ where FullName = 'Robert King'
 
 In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
-You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+You can read more about analyzers and `Full Text Search` [here](../../indexes/using-analyzers.mdx).
 
 </Admonition>
 
@@ -492,7 +492,7 @@ where Country = 'USA'
 </TabItem>
 </Tabs>
 
-If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../../indexes/indexing-related-documents.mdx).
 
 
 

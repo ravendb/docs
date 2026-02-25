@@ -6,20 +6,20 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This page contains examples of **creating a subscription**.  
-  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../../client-api/data-subscriptions/consumption/examples.mdx).
 
-* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx).
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../../client-api/data-subscriptions/creation/api-overview.mdx).
 
 * In this page:  
-   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
-   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
-   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
-   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
-   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
-   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)  
-   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---subscribe-to-revisions)  
-   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---via-update)
-   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)
+   * [Create subscription - for all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
+   * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
+   * [Create subscription - filter and project fields](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
+   * [Create subscription - project data from a related document](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
+   * [Create subscription - include documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
+   * [Create subscription - include counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)  
+   * [Create subscription - subscribe to revisions](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---subscribe-to-revisions)  
+   * [Create subscription - via update](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---via-update)
+   * [Update existing subscription](../../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)
 
 </Admonition>
 ## Create subscription - for all documents in a collection
@@ -129,7 +129,7 @@ const subscriptionName = await documentStore.subscriptions.create(\{ query \});
 ## Create subscription - project data from a related document 
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) that is loaded using the `load` method.
+we also project data from a [related document](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents) that is loaded using the `load` method.
 
 <TabItem value="create_4" label="create_4">
 <CodeBlock language="js">
@@ -170,7 +170,7 @@ Here we create a subscription on the _Orders_ collection, which will send all th
 In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client. 
 This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
 
-See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
+See how to consume this type of subscription [here](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Builder-syntax" label="Builder-syntax">
@@ -222,10 +222,10 @@ const subscriptionName = await documentStore.subscriptions.create({ query });
 
 Include statements can be added to the subscription with a _builder_ object.  
 This builder is assigned to the  `includes` property in the _options_ object.  
-It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). 
+It supports methods for including documents as well as [counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). 
 These methods can be chained.
 
-See this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx#include-methods) for all available include methods.
+See this [API overview](../../../../client-api/data-subscriptions/creation/api-overview.mdx#include-methods) for all available include methods.
 
 To include related documents, use method `includeDocuments`.  
 (See the _Builder-syntax_ tab in the example above).
@@ -248,7 +248,7 @@ The include statements can be written in two ways:
 
 <Admonition type="info" title="">
 
-If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
+If you include documents when making a [projection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
 the include will search for the specified paths in the projected fields rather than in the original document.
 
 </Admonition>
@@ -332,7 +332,7 @@ Here we create a simple revisions subscription on the _Orders_ collection that w
 </TabItem>
 </Tabs>
 
-Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).
+Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).
 
 
 

@@ -13,13 +13,13 @@ import CodeBlock from '@theme/CodeBlock';
   that deserialization is forbidden or allowed for.  
 
 * In this page:  
-  * [Securing Deserialization](../../client-api/security/deserialization-security.mdx#securing-deserialization)  
-  * [Invoking a Gadget](../../client-api/security/deserialization-security.mdx#invoking-a-gadget)  
-  * [DefaultRavenSerializationBinder](../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)  
-     * [RegisterForbiddenNamespace](../../client-api/security/deserialization-security.mdx#section)  
-     * [RegisterForbiddenType](../../client-api/security/deserialization-security.mdx#section-1)  
-     * [RegisterSafeType](../../client-api/security/deserialization-security.mdx#section-2)  
-  * [Example](../../client-api/security/deserialization-security.mdx#example)  
+  * [Securing Deserialization](../../../client-api/security/deserialization-security.mdx#securing-deserialization)  
+  * [Invoking a Gadget](../../../client-api/security/deserialization-security.mdx#invoking-a-gadget)  
+  * [DefaultRavenSerializationBinder](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)  
+     * [RegisterForbiddenNamespace](../../../client-api/security/deserialization-security.mdx#section)  
+     * [RegisterForbiddenType](../../../client-api/security/deserialization-security.mdx#section-1)  
+     * [RegisterSafeType](../../../client-api/security/deserialization-security.mdx#section-2)  
+  * [Example](../../../client-api/security/deserialization-security.mdx#example)  
 
 </Admonition>
 ## Securing Deserialization
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
     `System.Data.DataViewManager, System.Xml.XmlDocument/XmlDataDocument`  
     `System.Management.Automation.PSObject`  
 
-* Users can easily [modify](../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder) 
+* Users can easily [modify](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder) 
   the list of namespaces and object types for which deserialization is forbidden 
   or allowed.  
 
@@ -107,7 +107,7 @@ allow the deserialization of trusted object types.
 Define a `DefaultRavenSerializationBinder` instance, use the dedicated 
 methods to forbid or allow the deserialization of entities, and register 
 the defined instance as a serialization convention as shown 
-[below](../../client-api/security/deserialization-security.mdx#example).  
+[below](../../../client-api/security/deserialization-security.mdx#example).  
 
 <Admonition type="note" title="">
 Be sure to update the default deserializer list **before** the initialization 

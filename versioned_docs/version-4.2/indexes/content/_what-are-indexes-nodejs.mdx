@@ -3,15 +3,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. You can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes.mdx) page.
+Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. You can read more about this (including mitigation techniques) on the [Stale Indexes](../../indexes/stale-indexes.mdx) page.
 
 The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
 
 ## Basic Example
 
-In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx) and enable querying by `FirstName`, `LastName`, or both.
+In our example, we will create an index that will map documents from the `Employees` [collection](../../client-api/faq/what-is-a-collection.mdx) and enable querying by `FirstName`, `LastName`, or both.
 
-- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying.mdx)).
+- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../../indexes/creating-and-deploying.mdx)).
 
 <TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="js">
@@ -37,7 +37,7 @@ class Employees_ByNameAndCountry extends AbstractJavaScriptIndexCreationTask \{
 </CodeBlock>
 </TabItem>
 
-- The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying.mdx)) so the indexing process can start indexing documents.
+- The next step is to send an index to a server (more about index deployment options can be found [here](../../indexes/creating-and-deploying.mdx)) so the indexing process can start indexing documents.
 
 <TabItem value="indexes_2" label="indexes_2">
 <CodeBlock language="js">
@@ -68,14 +68,14 @@ const employeesFromUK = await session
 </CodeBlock>
 </TabItem>
 
-More examples with detailed descriptions can be found [here](../indexes/indexing-basics.mdx).
+More examples with detailed descriptions can be found [here](../../indexes/indexing-basics.mdx).
 
 ## Remarks
 
 <Admonition type="warning" title="Remember" id="remember" href="#remember">
 A frequent mistake is to treat indexes as SQL Views, but they are not analogous. The **result of a query for the given index is a full document**, not only the fields that were indexed. 
 
-This behavior can be altered by [storing](../indexes/storing-data-in-index.mdx) fields and doing [projections](../indexes/querying/projections.mdx).
+This behavior can be altered by [storing](../../indexes/storing-data-in-index.mdx) fields and doing [projections](../../indexes/querying/projections.mdx).
 </Admonition>
 
 

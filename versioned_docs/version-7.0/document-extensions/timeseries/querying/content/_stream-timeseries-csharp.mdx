@@ -10,15 +10,15 @@ import CodeBlock from '@theme/CodeBlock';
   2. Stream time series query results.
 
 * In this page:
-  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
-  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
+  * [Syntax](../../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
+  * [Examples](../../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
 
 </Admonition>
 ## Syntax
 
 ### Stream a time series directly:  
 
-Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx)), 
+Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx)), 
 and call `Stream()`/`StreamAsync()`.  
 
 <TabItem value="csharp" label="csharp">
@@ -39,7 +39,7 @@ Task<IAsyncEnumerator<T>> StreamAsync(DateTime? from = null, DateTime? to = null
 ### Stream results of time series queries:  
 
 This syntax is the same as the syntax for streaming query results in general, 
-found [here](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+found [here](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
 <TabItem value="stream_methods" label="stream_methods">
 <CodeBlock language="csharp">
@@ -69,12 +69,12 @@ IEnumerator<TimeSeriesStreamResult<T>> Stream(
 
 | Parameters | Type | Description |
 | - | - | - |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx#sessionquery), [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
-| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
+| **query** | [IQueryable](../../../../client-api/session/querying/how-to-query.mdx#sessionquery), [IDocumentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
+| **streamQueryStats** | `out` [StreamQueryStatistics](../../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
 
 | Return Value | Description |
 | - | - |
-| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
+| IEnumerator&lt;[StreamResult](../../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
 
 
 

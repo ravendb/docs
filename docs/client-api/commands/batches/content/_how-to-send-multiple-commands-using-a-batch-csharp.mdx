@@ -14,9 +14,9 @@ import CodeBlock from '@theme/CodeBlock';
 * The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
 
 * In this page:
-    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
-    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
-    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
+    * [Examples](../../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
+    * [Available batch commands](../../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
+    * [Syntax](../../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -131,8 +131,8 @@ using (store.GetRequestExecutor()
 * `SingleNodeBatchCommand` can also be executed using the session's request executor.
 
 * Note that the transaction created for the HTTP request when executing `SingleNodeBatchCommand`
-  is separate from the transaction initiated by the session's [SaveChanges](../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
-  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support.mdx).
+  is separate from the transaction initiated by the session's [SaveChanges](../../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
+  Learn more about transactions in RavenDB in [Transaction support](../../../../client-api/faq/transaction-support.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">

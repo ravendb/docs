@@ -16,19 +16,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
+  See [paging and performance](../../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * **Paging policy**:  
   To prevent executing queries that do not specify a page size, you can set the 
-  [ThrowIfQueryPageSizeIsNotSet](../../client-api/configuration/querying.mdx#throwifquerypagesizeisnotset) 
+  [ThrowIfQueryPageSizeIsNotSet](../../../client-api/configuration/querying.mdx#throwifquerypagesizeisnotset) 
   convention, which can be useful during development or testing phases.
 
 * In this page:  
 
-  * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
-  * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
-  * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
-  * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
+  * [No-paging example](../../../indexes/querying/paging.mdx#no---paging-example)
+  * [Paging examples](../../../indexes/querying/paging.mdx#paging-examples)
+  * [Paging and performance](../../../indexes/querying/paging.mdx#paging-and-performance)
+  * [Paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
@@ -231,9 +231,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehintsmaxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../../server/configuration/performance-hints-configuration.mdx#performancehintsmaxnumberofresults) configuration key.
 
-* As suggested by this performance hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
+* As suggested by this performance hint, you may consider using [Streaming query results](../../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
   
      ![Figure 1. Performance Hint](../assets/performance-hint.png)
 
@@ -249,9 +249,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:  
 
-    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
+    1. When making a [Projection query](../../../indexes/querying/projections.mdx) with [Distinct](../../../indexes/querying/distinct.mdx).
   
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In these cases:
 

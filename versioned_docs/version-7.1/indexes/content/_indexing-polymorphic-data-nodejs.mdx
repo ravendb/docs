@@ -9,11 +9,11 @@ import CodeBlock from '@theme/CodeBlock';
   and do not consider the inheritance hierarchy.
 
 * In this page:
-    * [The challenge](../indexes/indexing-polymorphic-data.mdx#the-challenge)
-    * [Possible solutions:](../indexes/indexing-polymorphic-data.mdx#possible-solutions)
-        * [Multi-map index](../indexes/indexing-polymorphic-data.mdx#multi-map-index)
-        * [Polymorphic index](../indexes/indexing-polymorphic-data.mdx#polymorphic-index)
-        * [Customize collection](../indexes/indexing-polymorphic-data.mdx#customize-collection)
+    * [The challenge](../../indexes/indexing-polymorphic-data.mdx#the-challenge)
+    * [Possible solutions:](../../indexes/indexing-polymorphic-data.mdx#possible-solutions)
+        * [Multi-map index](../../indexes/indexing-polymorphic-data.mdx#multi-map-index)
+        * [Polymorphic index](../../indexes/indexing-polymorphic-data.mdx#polymorphic-index)
+        * [Customize collection](../../indexes/indexing-polymorphic-data.mdx#customize-collection)
 
 </Admonition>
 ## The challenge
@@ -106,7 +106,7 @@ However, what if we need to query across ALL animal collections?
 <Admonition type="note" title="">
 
 <a id="multi-map-index"/> **Multi-Map Index**:
-Writing a [Multi-map index](../indexes/multi-map-indexes.mdx) enables getting results from all collections the index was defined for.
+Writing a [Multi-map index](../../indexes/multi-map-indexes.mdx) enables getting results from all collections the index was defined for.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="MultiMap_Index" label="MultiMap_Index">
@@ -220,7 +220,7 @@ where name == "Mitzy"
 This option involves customizing the collection name that is assigned to documents created from  
 subclasses of the _Animal_ class.
 
-This is done by setting the [findCollectionName](../client-api/configuration/conventions.mdx#findcollectionname) convention on the document store.
+This is done by setting the [findCollectionName](../../client-api/configuration/conventions.mdx#findcollectionname) convention on the document store.
 
 <TabItem value="define_convention" label="define_convention">
 <CodeBlock language="js">

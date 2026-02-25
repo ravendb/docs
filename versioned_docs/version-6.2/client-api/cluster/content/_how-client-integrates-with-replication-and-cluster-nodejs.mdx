@@ -6,11 +6,11 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:
-  * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)
-  * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#cluster-topology-in-the-client)
-  * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#topology-discovery)
-  * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#configuring-topology-nodes)
-  * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#write-assurance-and-database-groups)
+  * [Failover behavior](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)
+  * [Cluster topology in the client](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#cluster-topology-in-the-client)
+  * [Topology discovery](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#topology-discovery)
+  * [Configuring topology nodes](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#configuring-topology-nodes)
+  * [Write assurance and database groups](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#write-assurance-and-database-groups)
 
 </Admonition>
 ## Failover behavior
@@ -23,7 +23,7 @@ import CodeBlock from '@theme/CodeBlock';
   If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the `ReadBalanceBehavior` and `LoadBalanceBehavior` configuration values.
-  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview.mdx). 
+  For more information about the different values and the node selection process, see [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx). 
       
      <Admonition type="note" title="">
      Each failure to connect to a node spawns a health check for that node.  

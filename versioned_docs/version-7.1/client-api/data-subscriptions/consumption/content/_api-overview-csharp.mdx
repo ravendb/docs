@@ -6,12 +6,12 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:  
-   * [Create the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)  
-   * [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
-   * [Run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
-   * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
-   * [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem)  
-   * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
+   * [Create the subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)  
+   * [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
+   * [Run the subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
+   * [SubscriptionBatch&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+   * [SubscriptionBatch&lt;T&gt;.Item](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem)  
+   * [SubscriptionWorker&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Create the subscription worker
@@ -19,7 +19,7 @@ import CodeBlock from '@theme/CodeBlock';
 A subscription worker can be created using the following `GetSubscriptionWorker` methods available through the `Subscriptions` property of the `DocumentStore`.
 
 Note: Simply creating the worker is insufficient;  
-after creating the worker, you need to [run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker) to initiate document processing.
+after creating the worker, you need to [run the subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker) to initiate document processing.
 
 <TabItem value="subscriptionWorkerGeneration" label="subscriptionWorkerGeneration">
 <CodeBlock language="csharp">
@@ -86,7 +86,7 @@ All other parameters are optional and will default to their respective default v
 | **MaxErroneousPeriod**              | `TimeSpan`                    | The maximum amount of time a subscription connection can remain in an erroneous state before it is terminated. Default: 5 minutes.                                                                                                                                                                                                                                                                                |
 | **Strategy**                        | `SubscriptionOpeningStrategy` | This enum configures how the server handles connection attempts from workers to a specific subscription task.<br/>Default: `OpenIfFree`.                                                                                                                             |
 
-Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).
+Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).
 
 <TabItem value="strategy_enum" label="strategy_enum">
 <CodeBlock language="csharp">
@@ -112,8 +112,8 @@ Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../c
 
 ## Run the subscription worker
 
-After [creating](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
-To start processing, you need to call the `Run` method of the [SubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).  
+After [creating](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker) a subscription worker, the subscription worker is still not processing any documents.  
+To start processing, you need to call the `Run` method of the [SubscriptionWorker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert).  
 
 The `Run` function takes a delegate, which is your client-side code responsible for processing the received document batches.
 
@@ -144,7 +144,7 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 
 | Member                   | Type                              | Description                                                                                                                                                            |
 |--------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem) below. |
+| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem) below. |
 | **NumberOfItemsInBatch** | `int`                             | Number of items in the batch.                                                                                                                                          |
 
 | Method Signature       | Return value            | Description                                                                                                       |
@@ -157,7 +157,7 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 ##### Subscription worker connectivity
 
 As long as there is no exception, the worker will continue addressing the same server that the first batch was received from.  
-If the worker fails to reach that node, it will try to [failover](../../../client-api/configuration/load-balance/overview.mdx) to another node from the session's topology list.  
+If the worker fails to reach that node, it will try to [failover](../../../../client-api/configuration/load-balance/overview.mdx) to another node from the session's topology list.  
 The node that the worker succeeded connecting to, will inform the worker which node is currently responsible for data subscriptions.  
 
 </Admonition>
@@ -215,7 +215,7 @@ Using it outside this scope may cause unexpected behavior.
 | **DisposeAsync()**                             | `Task`        | Async version of `Dispose()`.                                                                                                                                                                                           |
 | **Dispose(bool waitForSubscriptionTask)**      | `void`        | Aborts the subscription worker, but allows deciding whether to wait for the `Run` function task or not.                                                                                                                 |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `Task`        | Async version of `DisposeAsync(bool waitForSubscriptionTask)`.                                                                                                                                                          |
-| **Run (multiple overloads)**                   | `Task`        | Call `Run` to begin the worker's batch processing.<br/>Pass the batch processing delegates to this method<br/>(see [above](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)). |
+| **Run (multiple overloads)**                   | `Task`        | Call `Run` to begin the worker's batch processing.<br/>Pass the batch processing delegates to this method<br/>(see [above](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)). |
 
 </Admonition>
 

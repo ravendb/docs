@@ -8,24 +8,24 @@ import CodeBlock from '@theme/CodeBlock';
 * In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) 
   to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded.mdx) package with the same set of 
-  [prerequisites](../server/embedded.mdx#prerequisite) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../../server/embedded.mdx) package with the same set of 
+  [prerequisites](../../server/embedded.mdx#prerequisite) as embedded servers to run the tests.  
 
 * In this page: 
-   - [`RavenTestDriver`](../start/test-driver.mdx#raventestdriver)
-   - [Pre-initializing the store: `PreInitialize`](../start/test-driver.mdx#pre-initializing-the-store:-preinitialize)
-   - [Configure the server: `ConfigureServer`](../start/test-driver.mdx#configure-the-server:-configureserver)
-   - [Unit test](../start/test-driver.mdx#unit-test)
-   - [Complete example](../start/test-driver.mdx#complete-example)
-   - [Continuous Integration (CI) Servers](../start/test-driver.mdx#continuous-integration-(ci)-servers)
-   - [Licensing](../start/test-driver.mdx#licensing)
+   - [`RavenTestDriver`](../../start/test-driver.mdx#raventestdriver)
+   - [Pre-initializing the store: `PreInitialize`](../../start/test-driver.mdx#pre-initializing-the-store:-preinitialize)
+   - [Configure the server: `ConfigureServer`](../../start/test-driver.mdx#configure-the-server:-configureserver)
+   - [Unit test](../../start/test-driver.mdx#unit-test)
+   - [Complete example](../../start/test-driver.mdx#complete-example)
+   - [Continuous Integration (CI) Servers](../../start/test-driver.mdx#continuous-integration-(ci)-servers)
+   - [Licensing](../../start/test-driver.mdx#licensing)
 
 </Admonition>
 
 ## `RavenTestDriver`
 
 Start by creating a class that derives from `RavenTestDriver`.  
-Find below a list of test driver methods, followed by [samples](../start/test-driver.mdx#complete-example).  
+Find below a list of test driver methods, followed by [samples](../../start/test-driver.mdx#complete-example).  
 
 ### TestDriver Methods
 
@@ -167,7 +167,7 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 
 * `ConfigureServer` can only be set once per test run.  
   It needs to be set before `GetDocumentStore` is called.  
-  See an [example](../start/test-driver.mdx#complete-example) below.  
+  See an [example](../../start/test-driver.mdx#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
   `System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
@@ -175,10 +175,10 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 <Admonition type="info" title="TestServerOptions" id="testserveroptions" href="#testserveroptions">
 
 Defining TestServerOptions allows you to be more in control of 
-how the embedded server is going to run with just a minor [definition change](../start/test-driver.mdx#example-2).
+how the embedded server is going to run with just a minor [definition change](../../start/test-driver.mdx#example-2).
 
-* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../server/Embedded.mdx#serveroptions).  
-* It's important to be sure that the correct [.NET FrameworkVersion](../server/embedded.mdx#net-frameworkversion) is set.
+* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../../server/Embedded.mdx#serveroptions).  
+* It's important to be sure that the correct [.NET FrameworkVersion](../../server/embedded.mdx#net-frameworkversion) is set.
 
 </Admonition>
 
@@ -214,7 +214,7 @@ We use [xunit](https://www.nuget.org/packages/xunit/) for the test framework in 
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
 </Admonition>
 
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx#complete-example)
 
 #### Example
 
@@ -402,7 +402,7 @@ will be able to use up to 9 cores and run way faster.
      </Admonition>
 
 * Additional `TestServerOptions.Licensing` configuration options are available as well, 
-  you can read about them [here](../server/embedded.mdx#licensing-options).  
+  you can read about them [here](../../server/embedded.mdx#licensing-options).  
 
 
 

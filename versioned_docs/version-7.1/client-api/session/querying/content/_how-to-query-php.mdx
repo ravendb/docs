@@ -10,33 +10,33 @@ import CodeBlock from '@theme/CodeBlock';
     * Using the session's `documentQuery` method  
     * Using **RQL**:  
         * via the session's `rawQuery` method  
-        * via the Studio's [Query view](../../../studio/database/queries/query-view.mdx)  
+        * via the Studio's [Query view](../../../../studio/database/queries/query-view.mdx)  
 
 * Queries defined using `query` or `documentQuery` are translated by the RavenDB client 
-  to [RQL](../../../client-api/session/querying/what-is-rql.mdx) when sent to the server.  
+  to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) when sent to the server.  
 * All RavenDB queries use an **index** to provide results, even when an index is not explicitly defined.  
-  Learn more [below](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+  Learn more [below](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article shows examples of dynamic queries only.  
-  For index query examples see [querying an index](../../../indexes/querying/query-index.mdx).
-* The entities returned by the query are 'loaded' and **tracked** by the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
+  For index query examples see [querying an index](../../../../indexes/querying/query-index.mdx).
+* The entities returned by the query are 'loaded' and **tracked** by the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
-    * Query returns a [projection](../../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)  
+    * Query returns a [projection](../../../../client-api/session/querying/how-to-project-query-results.mdx)  
+    * Tracking is [disabled](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)  
 
 * Query results are **cached** by default.  
-  To disable query caching see [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
+  To disable query caching see [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
 
 * Queries are timed out after a configurable time period.  
-  See [query timeout](../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
+  See [query timeout](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
 * In this page:
-  * [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index)  
-  * [session.query](../../../client-api/session/querying/how-to-query.mdx#sessionquery)  
-  * [session.advanced.documentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery)  
-  * [session.advanced.rawQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery)
-  * [Custom methods](../../../client-api/session/querying/how-to-query.mdx#custom-methods)  
-  * [Syntax](../../../client-api/session/querying/how-to-query.mdx#syntax)  
+  * [Queries always provide results using an index](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index)  
+  * [session.query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery)  
+  * [session.advanced.documentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery)  
+  * [session.advanced.rawQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery)
+  * [Custom methods](../../../../client-api/session/querying/how-to-query.mdx#custom-methods)  
+  * [Syntax](../../../../client-api/session/querying/how-to-query.mdx#syntax)  
 
 </Admonition>
 ## Queries always provide results using an index 
@@ -47,17 +47,17 @@ import CodeBlock from '@theme/CodeBlock';
   and determine which index should be used to retrieve the requested data.
 
 * Indexes allow to provide query results without scanning the entire dataset each and every time.
-    * Learn more about indexes, their general concept, and the different **index types** in this [indexes overview](../../../studio/database/indexes/indexes-overview.mdx) article.
+    * Learn more about indexes, their general concept, and the different **index types** in this [indexes overview](../../../../studio/database/indexes/indexes-overview.mdx) article.
     * You can choose the underlying **search engine** that will be used by the RavenDB indexes.  
-      Learn more in [selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
+      Learn more in [selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
 
 <Admonition type="info" title="">
 
 We differentiate between the following **3 query scenarios**:
 
-1. [Index query](../../../client-api/session/querying/how-to-query.mdx#indexquery)
-2. [Dynamic query](../../../client-api/session/querying/how-to-query.mdx#dynamicquery)
-3. [Full collection query](../../../client-api/session/querying/how-to-query.mdx#collectionquery)
+1. [Index query](../../../../client-api/session/querying/how-to-query.mdx#indexquery)
+2. [Dynamic query](../../../../client-api/session/querying/how-to-query.mdx#dynamicquery)
+3. [Full collection query](../../../../client-api/session/querying/how-to-query.mdx#collectionquery)
 
 For each scenario, a different index type is used, as described below.
 
@@ -73,10 +73,10 @@ For each scenario, a different index type is used, as described below.
 * You can specify which **STATIC-index** the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
-  when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).  
+  when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).  
 
 * Example RQL: &nbsp; `from index "Employees/ByFirstName" where FirstName == "Laura"`  
-  See more examples in [querying an index](../../../indexes/querying/query-index.mdx).
+  See more examples in [querying an index](../../../../indexes/querying/query-index.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -109,11 +109,11 @@ For each scenario, a different index type is used, as described below.
 * Over time, an optimal set of indexes is generated by the query optimizer to answer your queries.
 
 * RQL Example: &nbsp; `from Employees where FirstName == "Laura"`  
-  See more examples [below](../../../client-api/session/querying/how-to-query.mdx#sessionquery).
+  See more examples [below](../../../../client-api/session/querying/how-to-query.mdx#sessionquery).
 * Note: Counters and Time series are an exception to this flow.  
   Dynamic queries on counters and time series values don't create auto-indexes.  
-  However, a static-index can be defined on [Time series](../../../document-extensions/timeseries/indexing.mdx) 
-  and [Counters](../../../document-extensions/counters/indexing.mdx).
+  However, a static-index can be defined on [Time series](../../../../document-extensions/timeseries/indexing.mdx) 
+  and [Counters](../../../../document-extensions/counters/indexing.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -142,7 +142,7 @@ For each scenario, a different index type is used, as described below.
   * RavenDB uses the raw collection documents as the source for this query.  
 
   * Example RQL: &nbsp; `from Employees where id() == "employees/1-A"`  
-    See more examples [below](../../../client-api/session/querying/how-to-query.mdx#sessionquery).
+    See more examples [below](../../../../client-api/session/querying/how-to-query.mdx#sessionquery).
 
 </Admonition>
 
@@ -153,9 +153,9 @@ For each scenario, a different index type is used, as described below.
   Both the LINQ method syntax and the LINQ query syntax are supported.  
 
 * The following examples show **dynamic queries** that do not specify which index to use.  
-  Please refer to [querying an index](../../../indexes/querying/query-index.mdx) for other examples.
+  Please refer to [querying an index](../../../../indexes/querying/query-index.mdx) for other examples.
 
-* Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
+* Querying can be enhanced using these [extension methods](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
  
 <Admonition type="note" title="">
 
@@ -300,8 +300,8 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 * Below is a simple _DocumentQuery_ usage.  
   For a full description and more examples see:  
-    * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query.mdx)
-    * [query -vs- documentQuery](../../../client-api/session/querying/document-query/query-vs-document-query.mdx)
+    * [What is a document query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx)
+    * [query -vs- documentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx)
 
 **Example**:
 
@@ -339,9 +339,9 @@ from "Employees" where FirstName = "Robert"
 
 ## session.advanced.rawQuery
 
-* Queries defined with [query](../../../client-api/session/querying/how-to-query.mdx#sessionquery) 
-  or [documentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) 
-  are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with [query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery) 
+  or [documentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) 
+  are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
@@ -370,28 +370,28 @@ $employees = $session
 
 ## Custom methods
 
-Available custom methods for session's [query](../../../client-api/session/querying/how-to-query.mdx#sessionquery) method:
+Available custom methods for session's [query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery) method:
 
-- [aggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [count](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [countLazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [customize](../../../client-api/session/querying/how-to-customize-query.mdx)
-- [highlight](../../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- [include](../../../client-api/how-to/handle-document-relationships.mdx)
-- [intersect](../../../client-api/session/querying/how-to-use-intersect.mdx)
-- [lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [longCount](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [moreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis.mdx)
-- [ofType](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
-- [orderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [orderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [orderByScore](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [orderByScoreDescending](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [projectInto](../../../client-api/session/querying/how-to-project-query-results.mdx)
-- [search](../../../client-api/session/querying/text-search/full-text-search.mdx)
-- [spatial](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
-- [statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx)
-- [suggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [countLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [customize](../../../../client-api/session/querying/how-to-customize-query.mdx)
+- [highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- [include](../../../../client-api/how-to/handle-document-relationships.mdx)
+- [intersect](../../../../client-api/session/querying/how-to-use-intersect.mdx)
+- [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [longCount](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [moreLikeThis](../../../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- [ofType](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
+- [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
+- [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [orderByScore](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [orderByScoreDescending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [projectInto](../../../../client-api/session/querying/how-to-project-query-results.mdx)
+- [search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- [statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx)
+- [suggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 
 
 
@@ -424,7 +424,7 @@ public function rawQuery(?string $className, string $query): RawDocumentQueryInt
 
 | Return Value | |
 | - | - |
-| `DocumentQueryInterface`<br/>`RawDocumentQueryInterface` | Interfaces exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query.mdx#custom-methods) |
+| `DocumentQueryInterface`<br/>`RawDocumentQueryInterface` | Interfaces exposing additional query methods and [extensions](../../../../client-api/session/querying/how-to-query.mdx#custom-methods) |
  
 
 

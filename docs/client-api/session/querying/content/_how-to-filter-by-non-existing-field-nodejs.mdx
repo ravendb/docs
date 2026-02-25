@@ -8,9 +8,9 @@ import CodeBlock from '@theme/CodeBlock';
 * There are situations where new fields are added to some documents in a collection over time.  
 
 * To find the documents that are missing the newly added fields you can either:  
-    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
-    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
-    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
+    * [Query the collection (dynamic query)](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to Run an RQL Query](../../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -18,11 +18,11 @@ import CodeBlock from '@theme/CodeBlock';
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not` and `whereExists` extension methods, accessible from the [query](../../../client-api/session/querying/how-to-query.mdx) API, 
+use the `not` and `whereExists` extension methods, accessible from the [query](../../../../client-api/session/querying/how-to-query.mdx) API, 
 as shown below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
+Learn more about the dynamic query flow [here](../../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
 
 **Example**
 
@@ -122,9 +122,9 @@ where true and not exists("freight")
 
 ## Use Studio to Run an RQL Query
 
-* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
+* Documents can be searched by missing fields using Studio's [Query view](../../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+* Use an [RQL](../../../../client-api/session/querying/what-is-rql.mdx) expression such as:
 <TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    

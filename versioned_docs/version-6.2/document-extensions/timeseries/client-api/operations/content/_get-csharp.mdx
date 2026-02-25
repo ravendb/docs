@@ -6,19 +6,19 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
-  You can also retrieve entries from a single time series using the Session's [TimesSeriesFor.Get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
+  You can also retrieve entries from a single time series using the Session's [TimesSeriesFor.Get](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
 
 * Use `GetMultipleTimeSeriesOperation` to retrieve entries from **multiple** time series.
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
+* For a general _Operations_ overview, see [What are Operations](../../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-single-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
-      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-multiple-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example-1)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
+      * [Get entries - from single time series](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-single-time-series)  
+         * [Example](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#example)  
+         * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
+      * [Get entries - from multiple time series](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-multiple-time-series)  
+         * [Example](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#example-1)  
+         * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
 
 </Admonition>
 ## Get entries - from single time series
@@ -67,7 +67,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 | **to**                | `DateTime?` | Get time series entries ending at this timestamp (inclusive).<br/> Default: `DateTime.MaxValue`                                                                        |
 | **start**             | `int`       | The position of the first result to retrieve (for paging)<br/>Default: 0                                                                                                                                              |
 | **pageSize**          | `int`       | Number of results per page to retrieve (for paging)<br/>Default: `int.MaxValue`                                                                                                                                                  |
-| **returnFullResults** | `bool`      | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
+| **returnFullResults** | `bool`      | This param is only relevant when [getting incremental time series data](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
 
 **Return Value**: 
 
@@ -95,7 +95,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 
 <Admonition type="info" title="">
 
-* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
+* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, the returned object will be `null`.
 * No exceptions are generated.
 
@@ -152,7 +152,7 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 | **ranges**            | `IEnumerable<TimeSeriesRange>` | Provide a `TimeSeriesRange` object for each time series from which you want to retrieve data                                                                          |
 | **start**             | `int`                          | The position of the first result to retrieve (for paging)<br/>Default: 0                                                                                               |
 | **pageSize**          | `int`                          | Number of results per page to retrieve (for paging)<br/>Default: `int.MaxValue`                                                                                        |
-| **returnFullResults** | `bool`                         | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
+| **returnFullResults** | `bool`                         | This param is only relevant when [getting incremental time series data](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
  
 <TabItem value="TimeSeriesRange-class" label="TimeSeriesRange-class">
 <CodeBlock language="csharp">

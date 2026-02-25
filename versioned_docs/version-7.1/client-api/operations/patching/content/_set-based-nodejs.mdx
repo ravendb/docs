@@ -7,25 +7,25 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Set-based patch operations allow you to apply changes to a set of documents that match specific criteria instead of separately targeting each document.
 
-* To perform patch operations on a single document see [Single Document Patch Operations](../../../client-api/operations/patching/single-document.mdx).  
-  Set-based patching can also be done from the [Studio](../../../studio/database/documents/patch-view.mdx).
+* To perform patch operations on a single document see [Single Document Patch Operations](../../../../client-api/operations/patching/single-document.mdx).  
+  Set-based patching can also be done from the [Studio](../../../../studio/database/documents/patch-view.mdx).
 
 * In this page: 
-  * [Overview](../../../client-api/operations/patching/set-based.mdx#overview)
-      * [Defining set-based patching](../../../client-api/operations/patching/set-based.mdx#defining-set-based-patching)
-      * [Important characteristics](../../../client-api/operations/patching/set-based.mdx#important-characteristics)
-  * [Examples](../../../client-api/operations/patching/set-based.mdx#examples)
-      * [Update by collection query](../../../client-api/operations/patching/set-based.mdx#update-by-collection-query)
-      * [Update by collection query - access metadata](../../../client-api/operations/patching/set-based.mdx#update-by-collection-query---access-metadata)
-      * [Update by dynamic query](../../../client-api/operations/patching/set-based.mdx#update-by-dynamic-query)
-      * [Update by static index query](../../../client-api/operations/patching/set-based.mdx#update-by-static-index-query)
-      * [Update all documents](../../../client-api/operations/patching/set-based.mdx#update-all-documents)
-      * [Update by document ID](../../../client-api/operations/patching/set-based.mdx#update-by-document-id)
-      * [Update by document ID using parameters](../../../client-api/operations/patching/set-based.mdx#update-by-document-id-using-parameters)
-      * [Allow updating stale results](../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results)
-  * [Syntax](../../../client-api/operations/patching/set-based.mdx#syntax)  
-      * [Send syntax](../../../client-api/operations/patching/set-based.mdx#send-syntax)  
-      * [PatchByQueryOperation syntax](../../../client-api/operations/patching/set-based.mdx#syntax)  
+  * [Overview](../../../../client-api/operations/patching/set-based.mdx#overview)
+      * [Defining set-based patching](../../../../client-api/operations/patching/set-based.mdx#defining-set-based-patching)
+      * [Important characteristics](../../../../client-api/operations/patching/set-based.mdx#important-characteristics)
+  * [Examples](../../../../client-api/operations/patching/set-based.mdx#examples)
+      * [Update by collection query](../../../../client-api/operations/patching/set-based.mdx#update-by-collection-query)
+      * [Update by collection query - access metadata](../../../../client-api/operations/patching/set-based.mdx#update-by-collection-query---access-metadata)
+      * [Update by dynamic query](../../../../client-api/operations/patching/set-based.mdx#update-by-dynamic-query)
+      * [Update by static index query](../../../../client-api/operations/patching/set-based.mdx#update-by-static-index-query)
+      * [Update all documents](../../../../client-api/operations/patching/set-based.mdx#update-all-documents)
+      * [Update by document ID](../../../../client-api/operations/patching/set-based.mdx#update-by-document-id)
+      * [Update by document ID using parameters](../../../../client-api/operations/patching/set-based.mdx#update-by-document-id-using-parameters)
+      * [Allow updating stale results](../../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results)
+  * [Syntax](../../../../client-api/operations/patching/set-based.mdx#syntax)  
+      * [Send syntax](../../../../client-api/operations/patching/set-based.mdx#send-syntax)  
+      * [PatchByQueryOperation syntax](../../../../client-api/operations/patching/set-based.mdx#syntax)  
 
 </Admonition>
 ## Overview
@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
   * To achieve that in RavenDB, define the following two components within a `PatchByQueryOperation`:  
   
       1. __The query__:  
-         An [RQL](../../../client-api/session/querying/what-is-rql.mdx) query that defines the set of documents to update.  
+         An [RQL](../../../../client-api/session/querying/what-is-rql.mdx) query that defines the set of documents to update.  
          Use the exact same syntax as you would when querying the database/indexes for usual data retrieval.  
     
       2. __The update__:  
@@ -81,14 +81,14 @@ update  \{
   has been modified or deleted while patching is in progress.
 
 * __Patching stale indexes__:  
-  By default, set-based patch operations will only succeed if the index is Not [stale](../../../indexes/stale-indexes.mdx).  
+  By default, set-based patch operations will only succeed if the index is Not [stale](../../../../indexes/stale-indexes.mdx).  
   For indexes that are frequently updated, you can explicitly allow patching on stale results if needed.  
-  An example can be seen in the [Allow updating stale results](../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results) example.
+  An example can be seen in the [Allow updating stale results](../../../../client-api/operations/patching/set-based.mdx#allow-updating-stale-results) example.
 
 * __Manage lengthy patch operations__:  
   The set-based patch operation (`PatchByQueryOperation`) runs in the server background may take a long time to complete.  
   Executing the operation via the `Send` method return an object that can be __awaited for completion__ or __aborted__ (killed). 
-  Learn more about this and see dedicated examples in [Manage length operations](../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+  Learn more about this and see dedicated examples in [Manage length operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
 
 </Admonition>
 

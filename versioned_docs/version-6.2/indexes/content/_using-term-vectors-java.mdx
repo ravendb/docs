@@ -3,7 +3,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is leveraging the term vectors to accomplish its purposes.
+[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../../client-api/session/querying/how-to-use-morelikethis.mdx) is leveraging the term vectors to accomplish its purposes.
 
 To create an index and enable Term Vectors on a specific field we can create an index using  the `AbstractIndexCreationTask`, then specify the term vectors there, or define our term vectors in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).
 

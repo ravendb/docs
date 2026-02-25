@@ -9,23 +9,23 @@ import CodeBlock from '@theme/CodeBlock';
   at a later time, when its results are actually needed.  
 
 * This article contains examples for lazy queries. Prior to reading it, please refer 
-  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
+  to [perform requests lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx) 
   for general knowledge about RavenDB's lazy behavior and other request types that can be 
   executed lazily within a session.
 
 * In this page:
-  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
-  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
-  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
-  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
-  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
+  * [Lazy query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy facets query](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
+  * [Syntax](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
 
-To run a [regular query](../../../client-api/session/querying/how-to-query.mdx) 
-(not a [suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
-query or a [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)) 
+To run a [regular query](../../../../client-api/session/querying/how-to-query.mdx) 
+(not a [suggestions](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
+query or a [faceted search](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)) 
 lazily, use `.lazily()` as follows.  
 
 <TabItem value="lazy_1" label="lazy_1">
@@ -61,7 +61,7 @@ count = lazy_count.value  # Query is executed here
 
 ## Lazy suggestions query
 
-To run a suggestions search lazily, use [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
+To run a suggestions search lazily, use [suggest_using](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
 along with `.execute_lazy()` as shown below.
 
 <TabItem value="lazy_7" label="lazy_7">
@@ -165,7 +165,7 @@ class Products_ByCategoryAndPrice(AbstractIndexCreationTask):
 </Tabs>
 
 <Admonition type="note" title="">
-Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
+Learn more about facets in [perform faceted search](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 </Admonition>
 
 

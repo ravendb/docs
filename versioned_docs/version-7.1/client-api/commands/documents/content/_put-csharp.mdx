@@ -10,13 +10,13 @@ import CodeBlock from '@theme/CodeBlock';
 * When using `PutDocumentCommand`, you must explicitly **specify the collection** to which the document will belong, 
   otherwise, the document will be placed in the `@empty` collection. See how this is done in the example below.
 
-* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities.mdx).  
-  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities.mdx).
+* To insert a document to the database using a higher-level method, see [storing entities](../../../../client-api/session/storing-entities.mdx).  
+  To update an existing document using a higher-level method, see [update entities](../../../../client-api/session/updating-entities.mdx).
 
 * In this page:
 
-   * [Examples](../../../client-api/commands/documents/put.mdx#examples)
-   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
+   * [Examples](../../../../client-api/commands/documents/put.mdx#examples)
+   * [Syntax](../../../../client-api/commands/documents/put.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -177,7 +177,7 @@ var theDocumentCV = putResult.ChangeVector;
 | Parameter        | Type                        | Description                                                                                                                                                                                                                                          |
 |------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string`                    | Unique ID under which document will be stored.                                                                                                                                                                                                       |
-| **changeVector** | `string`                    | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
+| **changeVector** | `string`                    | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
 | **document**     | `BlittableJsonReaderObject` | The document to store. Use:<br/>`session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`.                                                                                                  |
 
 <TabItem value="syntax_2" label="syntax_2">

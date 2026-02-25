@@ -6,18 +6,18 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * Indexes in RavenDB enable efficient querying by processing raw data and providing fast query results without scanning the entire dataset each and every time.
-  Learn more in the [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview) below.
+  Learn more in the [Indexes overview](../../indexes/what-are-indexes.mdx#indexes-overview) below.
 
-* This page provides a [Basic example](../indexes/what-are-indexes.mdx#basic-example) of creating, deploying, and querying an index.
-  Additional examples can be found in [Creating and deploying indexes](../indexes/creating-and-deploying.mdx), [Map Indexes](../indexes/map-indexes.mdx),
+* This page provides a [Basic example](../../indexes/what-are-indexes.mdx#basic-example) of creating, deploying, and querying an index.
+  Additional examples can be found in [Creating and deploying indexes](../../indexes/creating-and-deploying.mdx), [Map Indexes](../../indexes/map-indexes.mdx),
   and many other articles under the "Indexes" menu.
 
 * In this page:
-    * [Indexes overview](../indexes/what-are-indexes.mdx#indexes-overview)
-    * [Types of indexes](../indexes/what-are-indexes.mdx#types-of-indexes)
-    * [Basic example](../indexes/what-are-indexes.mdx#basic-example)
-    * [Understanding index query results](../indexes/what-are-indexes.mdx#understanding-index-query-results)
-    * [If indexes exhaust system resources](../indexes/what-are-indexes.mdx#if-indexes-exhaust-system-resources)
+    * [Indexes overview](../../indexes/what-are-indexes.mdx#indexes-overview)
+    * [Types of indexes](../../indexes/what-are-indexes.mdx#types-of-indexes)
+    * [Basic example](../../indexes/what-are-indexes.mdx#basic-example)
+    * [Understanding index query results](../../indexes/what-are-indexes.mdx#understanding-index-query-results)
+    * [If indexes exhaust system resources](../../indexes/what-are-indexes.mdx#if-indexes-exhaust-system-resources)
 
 </Admonition>
 
@@ -27,7 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Indexes are fundamental to RavenDB’s query execution, enabling efficient query performance by processing the underlying data and delivering faster results.
 * ALL queries in RavenDB use an index to deliver results and ensure optimal performance.  
-  Learn more in [Queries always provide results using an index](../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+  Learn more in [Queries always provide results using an index](../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 **Main concepts**:
 
 * When discussing indexes in RavenDB, three key components come into play:
@@ -35,13 +35,13 @@ import CodeBlock from '@theme/CodeBlock';
     * The indexing process
     * The indexed data
 
-* Each of these components is described in detail in [Indexes - The moving parts](../studio/database/indexes/indexes-overview.mdx#indexes---the-moving-parts).
+* Each of these components is described in detail in [Indexes - The moving parts](../../studio/database/indexes/indexes-overview.mdx#indexes---the-moving-parts).
 **The indexing process**:
 
 * The indexing process iterates over the raw documents, creating an **index-entry** for each document that is processed.
-  (Usually a single index-entry is created per raw document, unless working with a [fanout index](../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)).
+  (Usually a single index-entry is created per raw document, unless working with a [fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)).
 * Each index-entry contains **index-fields**, and each index-field contains content (**index-terms**) that was generated from the raw documents,
-  as defined by the index definition and depending on the [analyzer](../indexes/using-analyzers.mdx) used.
+  as defined by the index definition and depending on the [analyzer](../../indexes/using-analyzers.mdx) used.
 * A map is built between the indexed-terms and the documents they originated from,  
   enabling you to query for documents based on the indexed data.
 **Automatic data processing**:
@@ -57,14 +57,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * RavenDB indexes are designed to run asynchronously in the background.
 * The indexing process does not block or interrupt database operations, such as writing data or running queries,
-  though queries may temporarily return [stale results](../indexes/stale-indexes.mdx) until the index is fully updated.
+  though queries may temporarily return [stale results](../../indexes/stale-indexes.mdx) until the index is fully updated.
 **Separate storage**:
 
 * Indexes store their processed data separately, ensuring that the raw data remains unaffected.  
   This separation helps maintain the integrity of the raw data while allowing the index to optimize query performance.
 
 * If system resources become strained due to indexing, it may require adjustments to the index design, hardware, or other factors.
-  Learn more in [If indexes exhaust system resources](../indexes/what-are-indexes.mdx#if-indexes-exhaust-system-resources).
+  Learn more in [If indexes exhaust system resources](../../indexes/what-are-indexes.mdx#if-indexes-exhaust-system-resources).
 
 
 
@@ -75,13 +75,13 @@ import CodeBlock from '@theme/CodeBlock';
     * **Map** indexes -vs- **Map-Reduce** indexes
     * **Single-Collection** (Single-Map) indexes -vs- **Multi-Collection** (Multi-Map) indexes
 
-* For a detailed description of each type, refer to section [Index types](../studio/database/indexes/indexes-overview.mdx#index-types).
+* For a detailed description of each type, refer to section [Index types](../../studio/database/indexes/indexes-overview.mdx#index-types).
 
 
 
 ## Basic example
 
-In this example we create a static-index that indexes content from documents in the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx).  
+In this example we create a static-index that indexes content from documents in the `Employees` [collection](../../client-api/faq/what-is-a-collection.mdx).  
 This allows querying for _Employee_ documents by any of the index-fields (`FullName`, `LastName`, `Country`).
 
 <Admonition type="note" title="">
@@ -90,10 +90,10 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
 
 * The first step is to define the index.  
   One way to do this is by extending the `AbstractIndexCreationTask` class.  
-  Learn more in [Define a static-index using a custom class](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask).
+  Learn more in [Define a static-index using a custom class](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask).
 * Other methods to create a static-index are:
-  * [Creating a static-index using an Operation](../client-api/operations/maintenance/indexes/put-indexes.mdx)
-  * [Creating a static-index from the Studio](../studio/database/indexes/indexes-list-view.mdx)
+  * [Creating a static-index using an Operation](../../client-api/operations/maintenance/indexes/put-indexes.mdx)
+  * [Creating a static-index from the Studio](../../studio/database/indexes/indexes-list-view.mdx)
 
 <TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="java">
@@ -120,7 +120,7 @@ public static class Employees_ByNameAndCountry extends AbstractIndexCreationTask
 
 * The next step is to deploy the index to the RavenDB server.  
   One way to do this is by calling `execute()` on the index instance.  
-* Additional methods for deploying static-indexes are described in [Deploy a static index](../indexes/creating-and-deploying.mdx#deploy-a-static-index).  
+* Additional methods for deploying static-indexes are described in [Deploy a static index](../../indexes/creating-and-deploying.mdx#deploy-a-static-index).  
 * Once deployed, the indexing process will start indexing documents.  
 
 <TabItem value="indexes_2" label="indexes_2">
@@ -141,7 +141,7 @@ new Employees_ByNameAndCountry().execute(store);
 * Now you can query the _Employees_ collection using the index.  
   In this example we query for _Employee_ documents, **filtering results based on index-fields** `LastName` and `Country`.
   The results will include only the _Employee_ documents that match the query predicate.
-* For detailed guidance on querying with an index, refer to the [Querying an index](../indexes/querying/query-index.mdx).
+* For detailed guidance on querying with an index, refer to the [Querying an index](../../indexes/querying/query-index.mdx).
 
 <TabItem value="indexes_3" label="indexes_3">
 <CodeBlock language="java">
@@ -170,7 +170,7 @@ A common mistake is treating indexes like SQL Views, but they are not analogous.
 The results of a query for a given index are the **full raw documents** that match the query predicate,  
 and not just the indexed fields.
 
-This behavior can be changed by applying [Projections](../indexes/querying/projections.mdx),  
+This behavior can be changed by applying [Projections](../../indexes/querying/projections.mdx),  
 which let you project the query results into selected fields instead of returning the entire document.
 
 </Admonition>
@@ -211,10 +211,10 @@ you can enable the option to show "raw index entries" instead of the matching do
     * Your [cloud instance](/cloud/cloud-instances#a-production-cloud-cluster) (if used) may require optimization.
     * Hardware upgrades may be necessary to better support your workload.
 
-* Refer to the [Indexing Performance View](../studio/database/indexes/indexing-performance.mdx) in the Studio to monitor and analyze the indexing process.  
+* Refer to the [Indexing Performance View](../../studio/database/indexes/indexing-performance.mdx) in the Studio to monitor and analyze the indexing process.  
   This view provides graphical representations and detailed statistics of all index activities at each stage.
 
-* Additionally, refer to the [Common indexing issues](../studio/database/indexes/indexing-performance.mdx#common-indexing-issues) section
+* Additionally, refer to the [Common indexing issues](../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues) section
   for troubleshooting and resolving indexing challenges.
 
 

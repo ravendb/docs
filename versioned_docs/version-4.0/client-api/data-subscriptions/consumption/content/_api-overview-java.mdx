@@ -7,11 +7,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 In this page:  
 
-[Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
-[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
-[Running subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)  
-[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
-[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
+[Subscription worker generation](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
+[Running subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+[SubscriptionWorker&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Subscription worker generation
@@ -128,7 +128,7 @@ if T is `ObjectNode`, no deserialization will take place
 | Method Signature| Return Type | Description |
 |--------|:-----|-------------| 
 | **close()** | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running. |
-| **run (multiple overloads)** | `CompletableFuture<Void>` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)). |
+| **run (multiple overloads)** | `CompletableFuture<Void>` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)). |
 
 </Admonition>
 

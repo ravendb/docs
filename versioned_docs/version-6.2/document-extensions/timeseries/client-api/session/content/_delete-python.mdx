@@ -10,9 +10,9 @@ import CodeBlock from '@theme/CodeBlock';
 * A time series is removed when all of its entries are deleted.  
 
 * In this page:  
-    * [usage](../../../../document-extensions/timeseries/client-api/session/delete.mdx#usage)
-    * [Example](../../../../document-extensions/timeseries/client-api/session/delete.mdx#example)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
+    * [usage](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#usage)
+    * [Example](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#example)
+    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/delete.mdx#syntax)
   
 </Admonition>
 ## usage
@@ -22,9 +22,9 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.  
 * Create an instance of `time_series_for` and pass it the following:
     * Provide an explicit document ID, or -   
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
-      e.g. a document object returned from [session.query](../../../../querying/overview.mdx) 
-      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../../querying/overview.mdx) 
+      or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `time_series_for.delete_at` and provide the **timestamp** of an entry you want to delete,  
   -or-  
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
 ## Example
 
 In the following example we delete a time series entry appended by sample code in the 
-[Append](../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
+[Append](../../../../../document-extensions/timeseries/client-api/session/append.mdx) article.  
 <TabItem value="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point" label="timeseries_region_Delete-TimeSeriesFor-Single-Time-Point">
 <CodeBlock language="python">
 {`# Delete a single entry

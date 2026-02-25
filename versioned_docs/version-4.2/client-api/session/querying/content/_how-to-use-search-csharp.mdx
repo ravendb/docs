@@ -9,7 +9,7 @@ the desired search terms separated by spaces. These search terms are matched wit
 As of v4.2 you can also pass an array of the search terms.  
 
 An index's terms are derived from the values of the documents' fields. These values were each converted into one or more terms 
-depending on which [Lucene analyzer](../../../indexes/using-analyzers.mdx) the index used.  
+depending on which [Lucene analyzer](../../../../indexes/using-analyzers.mdx) the index used.  
 
 ## Syntax
 
@@ -33,8 +33,8 @@ depending on which [Lucene analyzer](../../../indexes/using-analyzers.mdx) the i
 Alternatively, you can pass an array (or other `IEnumerable`) of search terms. 
 Wildcards can be used: `?` for any single character, `*` for any substring. |
 | **boost** | decimal | Boost value. Default: `1`. |
-| **options** | [SearchOptions](../../../indexes/querying/searching.mdx#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
-| **@operator** | [SearchOperator](../../../indexes/querying/searching.mdx#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
+| **options** | [SearchOptions](../../../../indexes/querying/searching.mdx#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **@operator** | [SearchOperator](../../../../indexes/querying/searching.mdx#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
 
 ## Example I - Dynamic Query
 

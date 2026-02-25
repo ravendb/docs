@@ -38,6 +38,6 @@ The longer answer is that instead of joining, RavenDB (like other NoSQL solution
 * **Client side joins**
     Of course, you can load the Artist by its id when you load a Track. This approach can be costly when you use it to load a collection of Tracks, so it is not recommended.
 * **Server side joins**
-    RavenDB's extensibility mechanism allows you to extend RavenDB to handle joins at the server side (eliminating network cost from simulating joins). The documentation about [Read Triggers](../server/extending/triggers/read?version=1.0.mdx) contains an example of how to do just that.
+    RavenDB's extensibility mechanism allows you to extend RavenDB to handle joins at the server side (eliminating network cost from simulating joins). The documentation about [Read Triggers](../../server/extending/triggers/read?version=1.0.mdx) contains an example of how to do just that.
 
 When using denormalization, you'll probably want to look at how to make [denormalized updates](https://ravendb.net/docs/faq/denormalized-updates?version=1.0).

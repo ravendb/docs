@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The `TryConvert()` method can be used to safely convert values to numerical types.  
 
-* Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb.mdx).  
+* Learn more about how numbers are stored in RavenDB [here](../../server/kb/numbers-in-ravendb.mdx).  
 
 * In this page:  
   * [Syntax](..\indexes\number-type-conversion.mdx#syntax)  
@@ -18,7 +18,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 The following methods are used to convert values into one of the common primitive numerical 
 types - `int`, `long`, `float`, or `double`. They are called from within the 
-[Map](../indexes/map-indexes.mdx) or [Reduce](../indexes/map-reduce-indexes.mdx) functions of the 
+[Map](../../indexes/map-indexes.mdx) or [Reduce](../../indexes/map-reduce-indexes.mdx) functions of the 
 index. If the submitted value cannot be converted to the specified type, these methods return 
 `null`.  
 
@@ -58,7 +58,7 @@ In **JavaScript syntax**, use `tryConvertToNumber()`.
 ## Examples
 
 The class `Item` has fields of type `int`, `long`, `float`, `double`, `string`, and an object 
-field of type [Company](../start/about-examples.mdx). The following indexes take an `Item` 
+field of type [Company](../../start/about-examples.mdx). The following indexes take an `Item` 
 entity and attempt to convert each of its fields into the corresponding type. In case of 
 failure, the field is indexed with value `-1` instead.  
 
@@ -123,7 +123,7 @@ failure, the field is indexed with value `-1` instead.
 </CodeBlock>
 </TabItem>
 </Tabs>
-This next index takes the [`string` field `Employee.Address.PostalCode`](../start/about-examples.mdx) 
+This next index takes the [`string` field `Employee.Address.PostalCode`](../../start/about-examples.mdx) 
 and attempts to convert it to `long`.  
 
 The query below it finds all employees that do not have a valid `PostalCode` field - whether 

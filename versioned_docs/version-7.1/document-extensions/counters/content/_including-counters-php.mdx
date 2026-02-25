@@ -12,11 +12,11 @@ import CodeBlock from '@theme/CodeBlock';
   so their values can be accessed later in the same session without making additional requests to the server.
     
 * To see how to include counters when creating a subscription, see
-  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+  [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
 
 </Admonition>
 
-* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
+* **Including Counters when using [session.load](../../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `include_counter`  
     * Include multiple Counters using `include_counters`  
 
@@ -49,7 +49,7 @@ $productPage = $session->load(Product::class, "products/1-C", function($includeB
 </TabItem>
 </Tabs>
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
     * Include a single Counter using `include_counter`.  
     * Include multiple Counters using `include_counters`.  
 

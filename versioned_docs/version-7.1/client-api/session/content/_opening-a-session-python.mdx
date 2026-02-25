@@ -5,19 +5,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
+* A Session object is obtained from the [Document Store](../../../client-api/what-is-a-document-store.mdx).  
 
 * Open a session using `open_session()`.  
 
 * Various Session options can be configured using the `SessionOptions` object.  
-  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.  
+  If no database is specified in the options then the [Default Database](../../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.  
 
 * Be sure to wrap the session variable using a 'with' statement to ensure proper disposal.
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
-  * [Session options](../../client-api/session/opening-a-session.mdx#session-options)  
-  * [Open session example](../../client-api/session/opening-a-session.mdx#open-session-example)
+  * [Syntax](../../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session options](../../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Open session example](../../../client-api/session/opening-a-session.mdx#open-session-example)
 </Admonition>
 ## Syntax
 
@@ -38,7 +38,7 @@ def open_session(
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `str`              | The session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options). |
+| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../../client-api/session/opening-a-session.mdx#session-options). |
 
 | Return Value                                 | Description                   |
 |----------------------------------------------|-------------------------------|
@@ -53,16 +53,16 @@ def open_session(
 | Option                                                  | Type               | Description                                                                                                                                                                                                                               | Default Value                                         |
 |---------------------------------------------------------|------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **database**                                            | `str`                | The Session will operate on this database,<br/>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
-| **no_tracking**                                         | `bool`               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`False` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `False`                                               |
-| **no_caching**                                          | `bool`               | `True` - Server responses will not be cached.<br/>`False` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `False`                                               |
+| **no_tracking**                                         | `bool`               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`False` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) | `False`                                               |
+| **no_caching**                                          | `bool`               | `True` - Server responses will not be cached.<br/>`False` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `False`                                               |
 | **request_executor**                                    | `RequestExecutor`  | ( _Advanced option_ ) <br/>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
-| **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br/>`SINGLE_NODE` / `CLUSTER_WIDE`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)      | `SINGLE_NODE`                                         |
+| **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br/>`SINGLE_NODE` / `CLUSTER_WIDE`<br/>Learn more in [Cluster-wide vs. Single-node](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)      | `SINGLE_NODE`                                         |
 
 * Experts Only:
 
 | Option                                                             | Type                | Description                                                                                                                                                                                                                                             | Default Value |
 |--------------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **disable_atomic_document_writes_in_cluster_wide_transaction**     | `bool`                | **Experts only**<br/>`True` - Disable Atomic-Guards in cluster-wide sessions.<br/>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../compare-exchange/atomic-guards.mdx) | `False`       |
+| **disable_atomic_document_writes_in_cluster_wide_transaction**     | `bool`                | **Experts only**<br/>`True` - Disable Atomic-Guards in cluster-wide sessions.<br/>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../../compare-exchange/atomic-guards.mdx) | `False`       |
 
 
 

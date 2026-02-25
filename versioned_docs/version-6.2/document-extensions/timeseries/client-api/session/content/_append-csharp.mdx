@@ -15,19 +15,19 @@ import CodeBlock from '@theme/CodeBlock';
     * **Modifying an existing time series entry**  
       Use `Append` to update the data of an existing entry with the specified timestamp.
 
-* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
+* Each call to `Append` handles a **single** [time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
 
 * To append **multiple** entries in a single transaction you can:  
   * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
-  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).
-  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
-    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx). 
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).
+  * Append entries directly on the _Store_ via [Operations](../../../../../client-api/operations/what-are-operations.mdx). 
+    Learn more in [Append time series operations](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx). 
 * In this page:
-    * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
-        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
-        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
+    * [`Append` usage](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-usage)
+    * [Examples](../../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+        * [Append entries with a single value](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+        * [Append entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
 
 </Admonition>
 ## `Append` usage
@@ -37,8 +37,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.
 * Create an instance of `TimeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
-      e.g. a document object returned from [session.Query](../../../../querying/overview.mdx) or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../../querying/overview.mdx) or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `TimeSeriesFor.Append` and pass it the time series entry details.
 * Call `session.SaveChanges` for the action to take effect on the server.
@@ -81,7 +81,7 @@ using (var session = store.OpenSession())
 #### Append entries with multiple values:
 
 * In this example, we append multi-value StockPrice entries.  
-* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+* Notice the clarity gained by [naming the values](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">

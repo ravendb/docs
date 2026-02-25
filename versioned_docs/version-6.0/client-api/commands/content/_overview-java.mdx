@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * RavenDB's Client API is structured in layers.  
-  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store.mdx) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
+  At the highest layer, you interact with the [document store](../../../client-api/what-is-a-document-store.mdx) and the [document session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
   which handle most common database tasks like loading, saving, and querying documents.
 
 * Beneath this high-level interface are Operations and Commands:
@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
      * Operations provide management functionality outside the session's context,  
        like creating a database, performing bulk actions, or managing server-wide configurations.
      
-     * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations.mdx).
+     * Learn more about Operations in [what are Operations](../../../client-api/operations/what-are-operations.mdx).
 
    * **Commands**:  
 
@@ -35,9 +35,9 @@ import CodeBlock from '@theme/CodeBlock';
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
-    * [Examples](../../client-api/commands/overview.mdx#examples)  
-    * [Available commands](../../client-api/commands/overview.mdx#available-commands)  
-    * [Syntax](../../client-api/commands/overview.mdx#syntax)  
+    * [Examples](../../../client-api/commands/overview.mdx#examples)  
+    * [Available commands](../../../client-api/commands/overview.mdx#available-commands)  
+    * [Syntax](../../../client-api/commands/overview.mdx#syntax)  
 
 </Admonition>
 ## Examples
@@ -74,14 +74,14 @@ import CodeBlock from '@theme/CodeBlock';
 * **The Following low-level commands are available**:
     * ConditionalGetDocumentsCommand
     * CreateSubscriptionCommand
-    * [DeleteDocumentCommand](../../client-api/commands/documents/delete.mdx)
+    * [DeleteDocumentCommand](../../../client-api/commands/documents/delete.mdx)
     * DeleteSubscriptionCommand
     * DropSubscriptionConnectionCommand
     * ExplainQueryCommand
     * GetClusterTopologyCommand
     * GetConflictsCommand
     * GetDatabaseTopologyCommand
-    * [GetDocumentsCommand](../../client-api/commands/documents/get.mdx)
+    * [GetDocumentsCommand](../../../client-api/commands/documents/get.mdx)
     * GetIdentitiesCommand
     * GetNextOperationIdCommand
     * GetNodeInfoCommand
@@ -101,12 +101,12 @@ import CodeBlock from '@theme/CodeBlock';
     * MultiGetCommand
     * NextHiLoCommand
     * NextIdentityForCommand
-    * [PutDocumentCommand](../../client-api/commands/documents/put.mdx)
+    * [PutDocumentCommand](../../../client-api/commands/documents/put.mdx)
     * PutSecretKeyCommand
     * QueryCommand
     * QueryStreamCommand
     * SeedIdentityForCommand
-    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)
+    * [SingleNodeBatchCommand](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)
     * WaitForRaftIndexCommand
 
 

@@ -119,11 +119,11 @@ int count = lazyCount.Value; // DocumentQuery is executed here
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [SuggestionQuery](../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
+| **query** | [SuggestionQuery](../../../../glossary/suggestion-query.mdx) | A suggestion query definition containing all information required to query a specified index. |
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy&lt;[SuggestionQueryResult](../../../glossary/suggestion-query-result.mdx)&gt; | Lazy query initializer containing array of all suggestions for executed query. |
+| Lazy&lt;[SuggestionQueryResult](../../../../glossary/suggestion-query-result.mdx)&gt; | Lazy query initializer containing array of all suggestions for executed query. |
 
 ### Example
 
@@ -163,14 +163,14 @@ List<string> suggestions = suggest["Name"].Suggestions;
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **facets** | List&lt;[Facet](../../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy&lt;[FacetResults](../../../glossary/facet-results.mdx)&gt; | Lazy query initializer containing Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| Lazy&lt;[FacetResults](../../../../glossary/facet-results.mdx)&gt; | Lazy query initializer containing Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example
 

@@ -13,16 +13,16 @@ These **mapping functions** are **LINQ-based functions** or  **JavaScript functi
 
 You can:
 
-- [Index single fields](../indexes/map-indexes.mdx#index-single-fields)
-- [Combine multiple fields](../indexes/map-indexes.mdx#combine-multiple-fields)
-- [Index partial field data](../indexes/map-indexes.mdx#index-partial-field-data)
-- [Filter data within fields](../indexes/map-indexes.mdx#filter-data-within-fields)
-- [Index nested data](../indexes/map-indexes.mdx#index-nested-data)
-- [Index fields from related documents](../indexes/indexing-related-documents.mdx)
-- [Index multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
-- [Aggregate data with Map-Reduce](../indexes/map-reduce-indexes.mdx)
+- [Index single fields](../../indexes/map-indexes.mdx#index-single-fields)
+- [Combine multiple fields](../../indexes/map-indexes.mdx#combine-multiple-fields)
+- [Index partial field data](../../indexes/map-indexes.mdx#index-partial-field-data)
+- [Filter data within fields](../../indexes/map-indexes.mdx#filter-data-within-fields)
+- [Index nested data](../../indexes/map-indexes.mdx#index-nested-data)
+- [Index fields from related documents](../../indexes/indexing-related-documents.mdx)
+- [Index multiple collections](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [Aggregate data with Map-Reduce](../../indexes/map-reduce-indexes.mdx)
 - [Run calculations and store the results in the index to reduce query time](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
-- [Configure whether to index a document if the specified fields are `null`](../indexes/map-indexes.mdx#configure-whether-to-index-a-document-if-the-specified-fields-are-null)
+- [Configure whether to index a document if the specified fields are `null`](../../indexes/map-indexes.mdx#configure-whether-to-index-a-document-if-the-specified-fields-are-null)
 
 </Admonition>
 ## Index single fields
@@ -56,7 +56,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 </TabItem>
 </Tabs>
 
-You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying.mdx) article before proceeding.
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../../indexes/creating-and-deploying.mdx) article before proceeding.
 
 - The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
 
@@ -108,10 +108,10 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
 </TabItem>
 </Tabs>
 
-- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server 
-  and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method.  
+- The final step is to [deploy it](../../indexes/creating-and-deploying.mdx) to the server 
+  and issue a query using the session [Query](../../client-api/session/querying/how-to-query.mdx) method.  
   To query an index, the name of the index must be called by the query.  
-  If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying.mdx#auto-indexes).
+  If the index isn't called, RavenDB will either use or create an [auto index](../../indexes/creating-and-deploying.mdx#auto-indexes).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -358,7 +358,7 @@ where FullName = 'Robert King'
 In this example, the index field `Query` combines all values from various Employee fields into one. 
 The default Analyzer on fields is changed to enable `Full-Text Search` operations. The matches no longer need to be exact.
 
-You can read more about analyzers and `Full-Text Search` [here](../indexes/using-analyzers.mdx).
+You can read more about analyzers and `Full-Text Search` [here](../../indexes/using-analyzers.mdx).
 
 </Admonition>
 
@@ -858,35 +858,35 @@ where Country = 'USA'
 </TabItem>
 </Tabs>
 
-If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../../indexes/indexing-related-documents.mdx).
 
 
 
 ## Index fields from related documents
 
-Read the article dedicated to [indexing related documents](../indexes/indexing-related-documents.mdx).
+Read the article dedicated to [indexing related documents](../../indexes/indexing-related-documents.mdx).
 
 
 
 ## Aggregate data with Map-Reduce
 
-Read the article dedicated to [Map-Reduce indexes](../indexes/map-reduce-indexes.mdx).
+Read the article dedicated to [Map-Reduce indexes](../../indexes/map-reduce-indexes.mdx).
 
 
 
 ## Index multiple collections
 
-Read the article dedicated to [Multi-Map indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+Read the article dedicated to [Multi-Map indexes](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
 
 
 
 ## Configure whether to index a document if the specified fields are `null`
 
 By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
-using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+using the [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
 configuration option.  
 
-The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+The option [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
 determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
 
 

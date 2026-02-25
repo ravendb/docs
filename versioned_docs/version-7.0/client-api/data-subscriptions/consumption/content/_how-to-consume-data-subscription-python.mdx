@@ -12,10 +12,10 @@ import CodeBlock from '@theme/CodeBlock';
 * There are several ways to create and configure the SubscriptionWorker - see `SubscriptionWorkerOptions`.  
 
 * In this page:
-  * [`subscription_worker` lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscription_worker-lifecycle)  
-  * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
-  * [Worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)
-  * [Determining which workers a subscription will serve](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
+  * [`subscription_worker` lifecycle](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscription_worker-lifecycle)  
+  * [Error handling](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
+  * [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)
+  * [Determining which workers a subscription will serve](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
 
 </Admonition>
 ## `subscription_worker` lifecycle
@@ -54,7 +54,7 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
 * The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
+* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
 * The worker is unable to connect to any of the servers.
 * The worker could not receive the node responsible for the task  
   (this can happen when there is no leader in the cluster).
@@ -80,7 +80,7 @@ _ = worker_w_batch.run(_throw_exception)
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `ignore_subscriber_errors` is set to _false_ (default):  
@@ -97,7 +97,7 @@ depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptio
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
+Two properties in the [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `time_to_wait_before_connection_retry`  
@@ -150,7 +150,7 @@ and determine what happens when one worker is connected and another tries to con
 
 * `SubscriptionOpeningStrategy.CONCURRENT`  
   The server allows multiple workers to connect to the same subscription **concurrently**.  
-  Read more about concurrent subscriptions [here](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).
+  Read more about concurrent subscriptions [here](../../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).
 
 
 
@@ -163,15 +163,15 @@ which additional workers the subscription can serve until all worker connections
 
 </Admonition>
 
-* A subscription that serves one or more [CONCURRENT](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) workers, 
+* A subscription that serves one or more [CONCURRENT](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) workers, 
   **can only serve other concurrent workers** until all connections are dropped. 
-  If a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
+  If a worker with a [one worker per subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
   strategy attempts to connect -  
    * The connection attempt will be rejected.  
    * `SubscriptionInUseException` will be thrown.  
 
-* A subscription that serves a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) strategy, 
-  **cannot** serve [CONCURRENT](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) 
+* A subscription that serves a worker with a [one worker per subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) strategy, 
+  **cannot** serve [CONCURRENT](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) 
   workers until that worker's connection is dropped. 
   If a concurrent worker attempts to connect -  
    * The connection attempt will be rejected.  

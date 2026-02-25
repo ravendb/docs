@@ -16,22 +16,22 @@ import CodeBlock from '@theme/CodeBlock';
       Use `append_single` or `append` to update the data of an existing entry with the specified timestamp.
 
 * Each call to `append_single` handles a **single** time series value at 
-  a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
+  a **single** [time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
   Each call to `append` can handle **multiple** time series values at 
-  a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
+  a **single** [time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
 
 * To append **multiple** entries in a single transaction you can:  
    * Call `append_single` or `append` as many times as needed before calling `session.save_changes`, as shown in the examples below.  
-   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
-   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
-     Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx).  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+   * Append entries directly on the _Store_ via [Operations](../../../../../client-api/operations/what-are-operations.mdx). 
+     Learn more in [Append time series operations](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx).  
 
 * In this page:
-    * [Usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
-       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
-       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
+    * [Usage](../../../../../document-extensions/timeseries/client-api/session/append.mdx#usage)
+    * [Examples](../../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+       * [Append entries with a single value](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -41,9 +41,9 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.
 * Create an instance of `time_series_for` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
-      e.g. a document object returned from [session.query](../../../../querying/overview.mdx) 
-      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../../querying/overview.mdx) 
+      or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `time_series_for.append_single` or `time_series_for.append` and pass it the time series entry details.
 * Call `session.save_changes` for the action to take effect on the server.

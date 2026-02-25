@@ -10,15 +10,15 @@ import CodeBlock from '@theme/CodeBlock';
 * Multiple pending lazy operations can be executed together, see below. 
 
 * In this page:
-   * [Operations that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)  
-      * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)  
-      * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)  
-      * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
-      * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
-      * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
-      * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)  
-      * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)     
-   * [Execute all pending lazy operations](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-pending-lazy-operations)  
+   * [Operations that can be executed lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)  
+      * [Load entities](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)  
+      * [Load entities with include](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)  
+      * [Load entities starting with](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
+      * [Conditional load](../../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
+      * [Run query](../../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
+      * [Get revisions](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)  
+      * [Get compare-exchange value](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)     
+   * [Execute all pending lazy operations](../../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-pending-lazy-operations)  
 
 </Admonition>
 
@@ -27,7 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 <a id="loadEntities"/> __Load entities__
 
-* [Load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
+* [Load](../../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
   Loading entities can be executed __lazily__.   
 
 <TabItem value="lazy_Load" label="lazy_Load">
@@ -48,7 +48,7 @@ Employee employee = lazyEmployee.Value; // 'Load' operation is executed here
 <Admonition type="note" title="">
 <a id="loadWithInclude"/> __Load entities with include__
 
-* [Load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
+* [Load with include](../../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
   Loading entities with include can be executed __lazily__.
 
 <Tabs groupId='languageSyntax'>
@@ -90,7 +90,7 @@ Supplier supplier = session.Load<Supplier>(product.SupplierId);
 <Admonition type="note" title="">
 <a id="loadStartingWith"/> __Load entities starting with__
 
-* [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+* [LoadStartingWith](../../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
   Loading entities with a common prefix can be executed __lazily__.
 
 <TabItem value="lazy_LoadStartingWith" label="lazy_LoadStartingWith">
@@ -112,7 +112,7 @@ var employees = lazyEmployees.Value; // 'Load' operation is executed here
 <Admonition type="note" title="">
 <a id="conditionalLoad"/> __Conditional load__
 
-* [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
+* [ConditionalLoad](../../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
   * If the entity is already loaded to the session:  
     no server call is made, the tracked entity is returned.    
   * If the entity is Not already loaded to the session:  
@@ -159,7 +159,7 @@ using (var session2 = store.OpenSession())
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
-  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+  Learn more about running queries lazily in [lazy queries](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
 <TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="csharp">
@@ -182,7 +182,7 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
 <Admonition type="note" title="">
 <a id="getRevisions"/> __Get revisions__
 
-* All methods for [getting revisions](../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
+* All methods for [getting revisions](../../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
 
 <TabItem value="lazy_Revisions" label="lazy_Revisions">
 <CodeBlock language="csharp">
@@ -205,7 +205,7 @@ List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed
 <Admonition type="note" title="">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
-* [Getting compare-exchange](../../../client-api/session/cluster-transaction.mdx#get-compare-exchange-lazily) values can be executed __lazily__.
+* [Getting compare-exchange](../../../../client-api/session/cluster-transaction.mdx#get-compare-exchange-lazily) values can be executed __lazily__.
 
 <TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">
 <CodeBlock language="csharp">

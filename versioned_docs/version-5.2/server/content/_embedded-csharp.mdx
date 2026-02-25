@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
 
-  * [Overview](../server/embedded.mdx#overview)  
-  * [Prerequisites](../server/embedded.mdx#prerequisites)  
-  * [Getting Started](../server/embedded.mdx#getting-started)  
-      * [Installation](../server/embedded.mdx#installation)  
-      * [Starting the Server](../server/embedded.mdx#starting-the-server)  
-      * [.NET FrameworkVersion](../server/embedded.mdx#net-frameworkversion)
-      * [Security](../server/embedded.mdx#security)  
-      * [Document Store](../server/embedded.mdx#document-store)  
-      * [Get Server URL and Process ID](../server/embedded.mdx#get-server-url-and-process-id)  
+  * [Overview](../../server/embedded.mdx#overview)  
+  * [Prerequisites](../../server/embedded.mdx#prerequisites)  
+  * [Getting Started](../../server/embedded.mdx#getting-started)  
+      * [Installation](../../server/embedded.mdx#installation)  
+      * [Starting the Server](../../server/embedded.mdx#starting-the-server)  
+      * [.NET FrameworkVersion](../../server/embedded.mdx#net-frameworkversion)
+      * [Security](../../server/embedded.mdx#security)  
+      * [Document Store](../../server/embedded.mdx#document-store)  
+      * [Get Server URL and Process ID](../../server/embedded.mdx#get-server-url-and-process-id)  
 
 </Admonition>
 ## Overview
@@ -62,7 +62,7 @@ There is one prerequisite and one recommendation for the Embedded package:
 Prerequsite:
 
 - Install [.NET Core runtime](https://dotnet.microsoft.com/en-us/download) either manually or [along with a RavenDB full version](embedded#setting-server-directory)
-  - Be sure that the RavenDB server [FrameworkVersion](../server/embedded.mdx#net-frameworkversion) definition matches the .NET Core 
+  - Be sure that the RavenDB server [FrameworkVersion](../../server/embedded.mdx#net-frameworkversion) definition matches the .NET Core 
     version that you install.  
 
 Recommendation:
@@ -158,7 +158,7 @@ For more control on how to start the server, pass to `StartServer` method a `Ser
 
 ### ServerOptions
 
-Set ServerOptions to change server settings such as .NET FrameworkVersion, DataDirectory or [other ServerOptions](../server/embedded.mdx#other-serveroptions). 
+Set ServerOptions to change server settings such as .NET FrameworkVersion, DataDirectory or [other ServerOptions](../../server/embedded.mdx#other-serveroptions). 
 
 #### .NET FrameworkVersion
 
@@ -218,8 +218,8 @@ Neither will look for 4.x.
 | **AcceptEula** |  bool | If set to `false`, will ask to accept our terms & conditions |
 | **ServerUrl** | string | What address we want to start our server (default `127.0.0.1:0`) |
 | **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
-| **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
-| **ServerDirectory** | string | The path to the server binary files&lt;sup&gt;[*](../server/embedded.mdx#setting-server-directory) |
+| **CommandLineArgs** | `List<string>` | The [command lines arguments](../../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
+| **ServerDirectory** | string | The path to the server binary files&lt;sup&gt;[*](../../server/embedded.mdx#setting-server-directory) |
 
 <TabItem value="start_server_with_options" label="start_server_with_options">
 <CodeBlock language="csharp">
@@ -304,7 +304,7 @@ serverOptions.Secured(
 </CodeBlock>
 </TabItem>
 
-The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
+The first way to enable authentication is to set the [certificate with the path to your .pfx](../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 server certificate. You may supply the certificate password using certPassword.  
 
 #### Set up security using a custom script

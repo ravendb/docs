@@ -5,20 +5,20 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to retrieve,
+* In addition to limiting time series query results by specifying the [range of entries](../../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to retrieve,
   you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
 
-* For an overview of the available time series queries, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
+* For an overview of the available time series queries, please refer to [Time series querying](../../../../document-extensions/timeseries/client-api/session/querying.mdx).
 
 * In this page:  
-  * [Filter by value](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-value)
-  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-tag)
-  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
+  * [Filter by value](../../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-value)
+  * [Filter by tag](../../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-tag)
+  * [Filter by referenced document](../../../../document-extensions/timeseries/querying/filtering.mdx#filter-by-referenced-document)
 
 </Admonition>
 ## Filter by value
 
-* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview.mdx#values).
+* A time series entry can have up to 32 [values](../../../../document-extensions/timeseries/overview.mdx#values).
 
 * A time series query can filter entries based on these values.  
 
@@ -106,7 +106,7 @@ select timeseries (
 
 ## Filter by tag
 
-* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview.mdx#tags).
+* A time series entry can have an optional [tag](../../../../document-extensions/timeseries/overview.mdx#tags).
 
 * A time series query can filter entries based on this tag.  
 
@@ -277,7 +277,7 @@ select timeseries (
 
 ## Filter by referenced document
 
-* A time series entry's [tag](../../../document-extensions/timeseries/overview.mdx#tags) can contain the **ID of a document**.
+* A time series entry's [tag](../../../../document-extensions/timeseries/overview.mdx#tags) can contain the **ID of a document**.
 
 * A time series query can filter entries based on the contents of this referenced document.  
   The referenced document is loaded, and entries are filtered by its properties.

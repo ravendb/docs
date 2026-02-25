@@ -16,18 +16,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-   * [What are related documents](../indexes/indexing-related-documents.mdx#what-are-related-documents)
+   * [What are related documents](../../indexes/indexing-related-documents.mdx#what-are-related-documents)
 
 
-   * [Index related documents - With tracking](../indexes/indexing-related-documents.mdx#index-related-documents---with-tracking)
-     * [Example I - basic](../indexes/indexing-related-documents.mdx#example-i---basic)
-     * [Example II - list](../indexes/indexing-related-documents.mdx#example-ii---list)
-     * [Tracking implications](../indexes/indexing-related-documents.mdx#tracking-implications)
-   * [Index related documents - No tracking](../indexes/indexing-related-documents.mdx#index-related-documents---no-tracking)
-     * [Example III - no tracking](../indexes/indexing-related-documents.mdx#index-related-documents---no-tracking)
-     * [No-tracking implications](../indexes/indexing-related-documents.mdx#no-tracking-implications)
-   * [Document changes that cause re-indexing](../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)
-   * [LoadDocument Syntax](../indexes/indexing-related-documents.mdx#loaddocument-syntax)
+   * [Index related documents - With tracking](../../indexes/indexing-related-documents.mdx#index-related-documents---with-tracking)
+     * [Example I - basic](../../indexes/indexing-related-documents.mdx#example-i---basic)
+     * [Example II - list](../../indexes/indexing-related-documents.mdx#example-ii---list)
+     * [Tracking implications](../../indexes/indexing-related-documents.mdx#tracking-implications)
+   * [Index related documents - No tracking](../../indexes/indexing-related-documents.mdx#index-related-documents---no-tracking)
+     * [Example III - no tracking](../../indexes/indexing-related-documents.mdx#index-related-documents---no-tracking)
+     * [No-tracking implications](../../indexes/indexing-related-documents.mdx#no-tracking-implications)
+   * [Document changes that cause re-indexing](../../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)
+   * [LoadDocument Syntax](../../indexes/indexing-related-documents.mdx#loaddocument-syntax)
   
 </Admonition>
 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 * **What is tracked**:  
   Both the documents from the **indexed collection** and the **indexed related documents** are tracked for changes.  
   Re-indexing will be triggered per any change in either collection.  
-  (See changes that cause re-indexing [here](../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
+  (See changes that cause re-indexing [here](../../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
 
 * **The index**:  
   Following the above `Product - Category` relationship from the Northwind sample database,  
@@ -316,7 +316,7 @@ where BookNames = "The Witcher"
 
 * **Re-indexing** will be triggered whenever any document in the collection that is referenced by `LoadDocument` is changed. 
   Even when indexing just a single field from the related document, any change to any other field will cause re-indexing. 
-  (See changes that cause re-indexing [here](../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
+  (See changes that cause re-indexing [here](../../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
 
 * Frequent re-indexing will increase CPU usage and reduce performance,  
   and index results may be stale for prolonged periods.
@@ -334,7 +334,7 @@ where BookNames = "The Witcher"
 * **What is tracked**:  
    * Only the documents from the **indexed collection** are tracked for changes and can trigger re-indexing.  
      Any change done to any document in the **indexed related documents** will Not trigger re-indexing.  
-     (See changes that cause re-indexing [here](../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
+     (See changes that cause re-indexing [here](../../indexes/indexing-related-documents.mdx#document-changes-that-cause-re-indexing)).
 
 * **The index**:  
 <Tabs groupId='languageSyntax'>

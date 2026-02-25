@@ -14,11 +14,11 @@ import CodeBlock from '@theme/CodeBlock';
   see `SubscriptionWorkerOptions`.  
 
 * In this page:
-  * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
-  * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
-  * [Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay)  
-     * [Available Worker Strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)  
-  * [Determining Which Workers a Subscription Will Serve](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
+  * [SubscriptionWorker lifecycle](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
+  * [Error handling](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
+  * [Worker interplay](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay)  
+     * [Available Worker Strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)  
+  * [Determining Which Workers a Subscription Will Serve](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
 
 </Admonition>
 ## SubscriptionWorker lifecycle
@@ -171,7 +171,7 @@ worker is connected and another tries to connect.
 
 * `SubscriptionOpeningStrategy.Concurrent`  
   Multiple workers of the same subscription are allowed to connect it simultaneously.  
-  Read more about concurrent subscriptions [here](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
+  Read more about concurrent subscriptions [here](../../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
 
 
 
@@ -183,17 +183,17 @@ which additional workers this subscription will be able to serve until all worke
 are dropped.  
 </Admonition>
 
-* A subscription that serves one or more [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#concurrent-strategy) 
+* A subscription that serves one or more [Concurrent](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#concurrent-strategy) 
   workers, **can serve only other concurrent workers** until all worker connections are dropped.  
-  If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
+  If a worker that uses a [One Worker Per Subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
   strategy attempts to connect it -  
    * The connection attempt will be rejected.  
    * `SubscriptionInUseException` will be thrown.  
 
 * A subscription that serves a worker that uses a
-  [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
+  [One Worker Per Subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
   strategy, **cannot** serve 
-  [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#concurrent-strategy) 
+  [Concurrent](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#concurrent-strategy) 
   workers until the worker's connection is dropped.  
   If a concurrent worker attempts to connect it -  
    * The connection attempt will be rejected.  

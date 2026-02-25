@@ -8,25 +8,25 @@ import CodeBlock from '@theme/CodeBlock';
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
 
 * RavenDB provides several ways to run queries, including:  
-   * [Query](../../client-api/session/querying/how-to-query.mdx) from the basic `Session` API  
-   * [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query.mdx) from the `Session.Advanced` API  
-   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
+   * [Query](../../../client-api/session/querying/how-to-query.mdx) from the basic `Session` API  
+   * [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) from the `Session.Advanced` API  
+   * [RQL](../../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
 
 * The examples in this page demonstrate how filtering is applied by each of the above querying methods.  
 
 * In this page:
-   * [Where](../../indexes/querying/filtering.mdx#where)
-   * [Where - Numeric Property](../../indexes/querying/filtering.mdx#where---numeric-property)
-   * [Where - Nested Property](../../indexes/querying/filtering.mdx#where---nested-property)
-   * [Where + Any](../../indexes/querying/filtering.mdx#where-+-any)
-   * [Where + In](../../indexes/querying/filtering.mdx#where-+-in)
-   * [Where + ContainsAny](../../indexes/querying/filtering.mdx#where-+-containsany)
-   * [Where + ContainsAll](../../indexes/querying/filtering.mdx#where-+-containsall)
-   * [Where - StartsWith](../../indexes/querying/filtering.mdx#where---startswith)
-   * [Where - EndsWith](../../indexes/querying/filtering.mdx#where---endswith)
-   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
-   * [Where - Exists](../../indexes/querying/filtering.mdx#where---exists)
-   * [Remarks](../../indexes/querying/filtering.mdx#remarks)
+   * [Where](../../../indexes/querying/filtering.mdx#where)
+   * [Where - Numeric Property](../../../indexes/querying/filtering.mdx#where---numeric-property)
+   * [Where - Nested Property](../../../indexes/querying/filtering.mdx#where---nested-property)
+   * [Where + Any](../../../indexes/querying/filtering.mdx#where-+-any)
+   * [Where + In](../../../indexes/querying/filtering.mdx#where-+-in)
+   * [Where + ContainsAny](../../../indexes/querying/filtering.mdx#where-+-containsany)
+   * [Where + ContainsAll](../../../indexes/querying/filtering.mdx#where-+-containsall)
+   * [Where - StartsWith](../../../indexes/querying/filtering.mdx#where---startswith)
+   * [Where - EndsWith](../../../indexes/querying/filtering.mdx#where---endswith)
+   * [Where - Identifier Property](../../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [Where - Exists](../../../indexes/querying/filtering.mdx#where---exists)
+   * [Remarks](../../../indexes/querying/filtering.mdx#remarks)
 
 </Admonition>
 
@@ -505,12 +505,12 @@ where endsWith(Name, 'ra')
 ## Where - Identifier Property
 
 Once a property used in the `Where` clause is recognized as an identity property of a given entity type 
-(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
+(according to [`FindIdentityProperty` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
 and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
 It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
-loading documents with [`session.Load`](../../client-api/session/loading-entities.mdx) usage.
+loading documents with [`session.Load`](../../../client-api/session/loading-entities.mdx) usage.
 
 
 <Tabs groupId='languageSyntax'>
@@ -575,9 +575,9 @@ where startsWith(id(), 'orders/1')
 
 ## Where - Exists
 
-To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 

@@ -19,14 +19,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
+    * [Indexing documents fields KEYS](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
 
 </Admonition>
 
@@ -240,7 +240,7 @@ This example shows:
 
 * Only the __basic concept__ of creating a dynamic-index-field from the __value__ of a document field.
 * Documents can then be queried based on those indexed values.
-* For a more practical usage see the [Example](../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.
+* For a more practical usage see the [Example](../../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.
 __The document__:
 <TabItem value="dynamic_fields_7" label="dynamic_fields_7">
 <CodeBlock language="java">
@@ -457,11 +457,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **fieldValue**   | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
+| **stored**       | `bool`               | Sets [FieldStorage](../../indexes/storing-data-in-index.mdx)
 
 `false` - will set `FieldStorage.No` (default value)
 `true` - will set `FieldStorate.Yes`                       |
-| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
+| **analyzed**     | `bool`               | Sets [FieldIndexing](../../indexes/using-analyzers.mdx)
 
 `null` - `FieldIndexing.Default` (default value)
 `false` - `FieldIndexing.Exact`
@@ -470,9 +470,9 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../../indexes/using-term-vectors.mdx) in the index.    |
 
 <Admonition type="info" title="">
 

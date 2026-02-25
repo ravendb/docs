@@ -10,12 +10,12 @@ import CodeBlock from '@theme/CodeBlock';
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
+  - [`increment` usage](../../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `Increment` usage
@@ -25,8 +25,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
+    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).  
 * Call `countersFor.increment`.
 * Call `session.saveChanges` for the changes to take effect.  
 

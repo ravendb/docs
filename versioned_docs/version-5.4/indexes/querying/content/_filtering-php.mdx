@@ -8,22 +8,22 @@ import CodeBlock from '@theme/CodeBlock';
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
 
 * Index queries can be executed using -  
-   * [query_index_type](../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
-   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
+   * [query_index_type](../../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
+   * [RQL](../../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
 
 * The examples in this page demonstrate how filtering is applied by each of these methods.  
 
 * In this page:
-   * [`whereEquals` - Where equals](../../indexes/querying/filtering.mdx#whereequals---where-equals)
-   * [`whereGreaterThan` - Numeric property](../../indexes/querying/filtering.mdx#wheregreaterthan---numeric-property)
-   * [`whereGreaterThan` - Nested property](../../indexes/querying/filtering.mdx#wheregreaterthan---nested-property)
-   * [`whereIn` - Single -vs- Multiple values](../../indexes/querying/filtering.mdx#wherein---single--vs--multiple-values)
-   * [`containsAny` - Any value from specified collection](../../indexes/querying/filtering.mdx#containsany---any-value-from-specified-collection)
-   * [`containsAll` - All values from specified collection](../../indexes/querying/filtering.mdx#containsall---all-values-from-specified-collection)
-   * [`whereStartsWith` - All records with given prefix](../../indexes/querying/filtering.mdx#wherestartswith---all-records-with-given-prefix)
-   * [`whereEndsWith` - All records with given suffix](../../indexes/querying/filtering.mdx#whereendswith---all-records-with-given-suffix)
-   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
-   * [`whereExists` - Where exists or doesn't exist](../../indexes/querying/filtering.mdx#whereexists---where-exists-or-doesn)
+   * [`whereEquals` - Where equals](../../../indexes/querying/filtering.mdx#whereequals---where-equals)
+   * [`whereGreaterThan` - Numeric property](../../../indexes/querying/filtering.mdx#wheregreaterthan---numeric-property)
+   * [`whereGreaterThan` - Nested property](../../../indexes/querying/filtering.mdx#wheregreaterthan---nested-property)
+   * [`whereIn` - Single -vs- Multiple values](../../../indexes/querying/filtering.mdx#wherein---single--vs--multiple-values)
+   * [`containsAny` - Any value from specified collection](../../../indexes/querying/filtering.mdx#containsany---any-value-from-specified-collection)
+   * [`containsAll` - All values from specified collection](../../../indexes/querying/filtering.mdx#containsall---all-values-from-specified-collection)
+   * [`whereStartsWith` - All records with given prefix](../../../indexes/querying/filtering.mdx#wherestartswith---all-records-with-given-prefix)
+   * [`whereEndsWith` - All records with given suffix](../../../indexes/querying/filtering.mdx#whereendswith---all-records-with-given-suffix)
+   * [Where - Identifier Property](../../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [`whereExists` - Where exists or doesn't exist](../../../indexes/querying/filtering.mdx#whereexists---where-exists-or-doesn)
 
 </Admonition>
 
@@ -461,12 +461,12 @@ where endsWith(Name, 'ra')
 ## Where - Identifier Property
 
 Once a property used in the `whereEquals` clause is recognized as an identity property of a given entity type 
-(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
+(according to [`FindIdentityProperty` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
 and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
 It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
-loading documents using [`session->load`](../../client-api/session/loading-entities.mdx).  
+loading documents using [`session->load`](../../../client-api/session/loading-entities.mdx).  
 
 
 <Tabs groupId='languageSyntax'>
@@ -535,9 +535,9 @@ where startsWith(id(), 'orders/1')
 
 ## `whereExists` - Where exists or doesn't exist
 
-To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
